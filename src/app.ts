@@ -11,21 +11,21 @@ async function startServer() {
 
   await require('./loaders').default({ expressApp: app });
 
-  app.listen(config.port, () => {
+  app
+    .listen(config.port, () => {
+      console.log('Server listening on port: ' + config.port);
 
-    console.log("Server listening on port: " + config.port);
-
-    Logger.info(`
+      Logger.info(`
       ################################################
-      🛡️  Server listening on port: ${config.port} 🛡️ 
+      🛡️  Server listening on port: ${config.port} 🛡️
       ################################################
     `);
     })
-    .on('error', (err) => {      
+    .on('error', err => {
       Logger.error(err);
       process.exit(1);
       return;
-  });
+    });
 }
 
 startServer();

@@ -14,17 +14,17 @@ export default {
   /**
    * Your favorite port : optional change to 4000 by JRT
    */
-  port: parseInt(process.env.PORT, 10) || 4000, 
+  port: parseInt(process.env.PORT, 10) || 4000,
 
   /**
    * That long string from mlab
    */
-  databaseURL: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/test",
+  databaseURL: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/test',
 
   /**
    * Your secret sauce
    */
-  jwtSecret: process.env.JWT_SECRET || "my sakdfho2390asjod$%jl)!sdjas0i secret",
+  jwtSecret: process.env.JWT_SECRET || 'my sakdfho2390asjod$%jl)!sdjas0i secret',
 
   /**
    * Used by winston logger
@@ -42,26 +42,26 @@ export default {
 
   controllers: {
     role: {
-      name: "RoleController",
-      path: "../controllers/roleController"
-    }
+      name: 'RoleController',
+      path: '../controllers/roleController',
+    },
   },
 
   repos: {
     role: {
-      name: "RoleRepo",
-      path: "../repos/roleRepo"
+      name: 'RoleRepo',
+      path: '../repos/roleRepo',
     },
     user: {
-      name: "UserRepo",
-      path: "../repos/userRepo"
-    }
+      name: 'UserRepo',
+      path: '../repos/userRepo',
+    },
   },
 
   services: {
     role: {
-      name: "RoleService",
-      path: "../services/roleService"
-    }
+      name: 'RoleService',
+      path: '../services/roleService',
+    },
   },
 };
