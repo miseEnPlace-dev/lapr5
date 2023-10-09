@@ -69,7 +69,7 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
       if (!props.hashed) {
         if (!this.isAppropriateLength(props.value)) {
           return Result.fail<UserPassword>(
-            "Password doesn't meet criteria [1 uppercase, 1 lowercase, one digit or symbol and 8 chars min].",
+            "Password doesn't meet criteria [1 uppercase, 1 lowercase, one digit or symbol and 8 chars min]."
           );
         }
       }
@@ -77,8 +77,8 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
       return Result.ok<UserPassword>(
         new UserPassword({
           value: props.value,
-          hashed: !!props.hashed,
-        }),
+          hashed: !!props.hashed
+        })
       );
     }
   }

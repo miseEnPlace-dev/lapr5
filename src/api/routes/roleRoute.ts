@@ -20,11 +20,11 @@ export default (app: Router) => {
         name: z
           .string()
           .min(1)
-          .max(255),
+          .max(255)
       });
       return schema.parse(request.body);
     },
-    (req, res, next) => ctrl.createRole(req, res, next),
+    (req, res, next) => ctrl.createRole(req, res, next)
   );
 
   route.put(
@@ -34,10 +34,10 @@ export default (app: Router) => {
         name: z
           .string()
           .min(1)
-          .max(255),
+          .max(255)
       });
       return schema.parse(request.body);
     },
-    (req, res, next) => ctrl.updateRole(req, res, next),
+    (req, res, next) => ctrl.updateRole(req, res, next)
   );
 };

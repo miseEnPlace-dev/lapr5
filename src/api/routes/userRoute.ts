@@ -8,7 +8,7 @@ import AuthService from '../../services/userService';
 import middlewares from '../middlewares';
 import winston = require('winston');
 
-var user_controller = require('../../controllers/userController');
+const user_controller = require('../../controllers/userController');
 
 const route = Router();
 
@@ -38,7 +38,7 @@ export default (app: Router) => {
         role: z
           .string()
           .min(1)
-          .max(255),
+          .max(255)
       });
       return schema.parse(request.body);
     },
@@ -62,7 +62,7 @@ export default (app: Router) => {
         //logger.error('🔥 error: %o', e);
         return next(e);
       }
-    },
+    }
   );
 
   route.post(
@@ -76,7 +76,7 @@ export default (app: Router) => {
         password: z
           .string()
           .min(1)
-          .max(255),
+          .max(255)
       });
       return schema.parse(request.body);
     },
@@ -96,7 +96,7 @@ export default (app: Router) => {
         logger.error('🔥 error: %o', e);
         return next(e);
       }
-    },
+    }
   );
 
   /**

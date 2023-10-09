@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 const User = new mongoose.Schema(
   {
-    domainId: { 
+    domainId: {
       type: String,
       unique: true
     },
@@ -11,20 +11,20 @@ const User = new mongoose.Schema(
     firstName: {
       type: String,
       required: [true, 'Please enter first name'],
-      index: true,
+      index: true
     },
 
     lastName: {
       type: String,
       required: [true, 'Please enter last name'],
-      index: true,
+      index: true
     },
 
     email: {
       type: String,
-      lowercase: true,  
+      lowercase: true,
       unique: true,
-      index: true,
+      index: true
     },
 
     password: String,
@@ -33,10 +33,10 @@ const User = new mongoose.Schema(
 
     role: {
       type: String,
-      default: 'user',
-    },
+      default: 'user'
+    }
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 export default mongoose.model<IUserPersistence & mongoose.Document>('User', User);

@@ -1,16 +1,15 @@
+import { Result } from '../core/logic/Result';
 
-import { Result } from "../core/logic/Result";
-
-type ParseDataType = 'number' | 'string' | 'object'
+type ParseDataType = 'number' | 'string' | 'object';
 
 class ParseArrayConfig {
   private raw: any;
 
-  constructor (raw: any) {
+  constructor(raw: any) {
     this.raw = raw;
   }
 
-  public to (dataType: ParseDataType) : any[] {
+  public to(dataType: ParseDataType): any[] {
     switch (dataType) {
       case 'number':
         return JSON.parse(this.raw) as number[];
@@ -19,17 +18,16 @@ class ParseArrayConfig {
       case 'object':
         return JSON.parse(this.raw) as object[];
     }
-
   }
 }
 
 export class ParseUtils {
   public static parseBoolean(raw: any): boolean {
-    if (raw === "" || raw === undefined || raw === null || raw === "null") return false; 
+    if (raw === '' || raw === undefined || raw === null || raw === 'null') return false;
     return JSON.parse(raw);
   }
 
-  public static parseObject (raw: any): Result<any> {
+  public static parseObject(raw: any): Result<any> {
     let returnData: any;
     try {
       returnData = JSON.parse(raw);
@@ -40,7 +38,7 @@ export class ParseUtils {
     return Result.ok<any>(returnData);
   }
 
-  public static parseArray(rawArrayString: any) : ParseArrayConfig {
+  public static parseArray(rawArrayString: any): ParseArrayConfig {
     return new ParseArrayConfig(rawArrayString);
   }
 }

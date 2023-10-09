@@ -1,5 +1,5 @@
 // remove by JRT : import jwt from 'express-jwt';
-var { expressjwt: jwt } = require("express-jwt");
+const { expressjwt: jwt } = require('express-jwt');
 import config from '../../../config';
 
 /**
@@ -29,7 +29,7 @@ const isAuth = jwt({
   secret: config.jwtSecret, // The _secret_ to sign the JWTs
   userProperty: 'token', // Use req.token to store the JWT
   getToken: getTokenFromHeader, // How to extract the JWT from the request
-  algorithms: ["HS256"],  // Added by JRT
+  algorithms: ['HS256'] // Added by JRT
 });
 
 export default isAuth;

@@ -1,10 +1,9 @@
-
-import * as sinon from 'sinon'
+import * as sinon from 'sinon';
 import { DomainEvents } from '../DomainEvents';
-import { MockJobCreatedEvent } from './mocks/events/mockJobCreatedEvent'
-import { MockJobDeletedEvent } from './mocks/events/mockJobDeletedEvent'
-import { MockJobAggregateRoot } from './mocks/domain/mockJobAggregateRoot'
-import { MockPostToSocial } from './mocks/services/mockPostToSocial'
+import { MockJobCreatedEvent } from './mocks/events/mockJobCreatedEvent';
+import { MockJobDeletedEvent } from './mocks/events/mockJobDeletedEvent';
+import { MockJobAggregateRoot } from './mocks/domain/mockJobAggregateRoot';
+import { MockPostToSocial } from './mocks/services/mockPostToSocial';
 import { MockJobAggregateRootId } from './mocks/domain/mockJobAggregateRootId';
 import { UniqueEntityID } from '../../UniqueEntityID';
 
@@ -13,14 +12,13 @@ let job: MockJobAggregateRoot;
 let spy;
 
 describe('Domain Events', () => {
-
   beforeEach(() => {
     social = null;
     DomainEvents.clearHandlers();
     DomainEvents.clearMarkedAggregates();
     spy = null;
     job = null;
-  })
+  });
 
   describe('Given a JobCreatedEvent, JobDeletedEvent and a PostToSocial handler class', () => {
     it('Should be able to setup event subscriptions', () => {
@@ -31,28 +29,28 @@ describe('Domain Events', () => {
 
       expect(DomainEvents['handlersMap'][MockJobCreatedEvent.name].length).toBe(1);
       expect(DomainEvents['handlersMap'][MockJobDeletedEvent.name].length).toBe(1);
-    })
+    });
 
     it('There should be exactly one handler subscribed to the JobCreatedEvent', () => {
       social = new MockPostToSocial();
       social.setupSubscriptions();
 
       expect(DomainEvents['handlersMap'][MockJobCreatedEvent.name].length).toBe(1);
-    })
+    });
 
     it('There should be exactly one handler subscribed to the JobDeletedEvent', () => {
       social = new MockPostToSocial();
       social.setupSubscriptions();
 
       expect(DomainEvents['handlersMap'][MockJobCreatedEvent.name].length).toBe(1);
-    })
+    });
 
     it('Should add the event to the DomainEvents list when the event is created', () => {
       job = MockJobAggregateRoot.createJob({}, MockJobAggregateRootId);
       social = new MockPostToSocial();
       social.setupSubscriptions();
 
-      var domainEventsAggregateSpy = sinon.spy(DomainEvents, "markAggregateForDispatch");
+      const domainEventsAggregateSpy = sinon.spy(DomainEvents, 'markAggregateForDispatch');
 
       // setTimeout(() => {
       //   expect(domainEventsAggregateSpy.calledOnce).toBeTruthy();
@@ -62,12 +60,11 @@ describe('Domain Events', () => {
     });
 
     it('Should call the handlers when the event is dispatched after marking the aggregate root', () => {
-      
       social = new MockPostToSocial();
       social.setupSubscriptions();
 
-      var jobCreatedEventSpy = sinon.spy(social, "handleJobCreatedEvent");
-      var jobDeletedEventSpy = sinon.spy(social, "handleDeletedEvent");
+      const jobCreatedEventSpy = sinon.spy(social, 'handleJobCreatedEvent');
+      const jobDeletedEventSpy = sinon.spy(social, 'handleDeletedEvent');
 
       // Create the event, mark the aggregate
       job = MockJobAggregateRoot.createJob({}, MockJobAggregateRootId);
@@ -123,7 +120,7 @@ describe('Domain Events', () => {
       // Dispatch the event for the first job
       DomainEvents.dispatchEventsForAggregate(new UniqueEntityID('99'));
       expect(DomainEvents['markedAggregates']['length']).toBe(1);
-      
+
       // The job with two events should still be there
       expect(DomainEvents['markedAggregates'][0].domainEvents.length).toBe(2);
 
@@ -132,8 +129,6 @@ describe('Domain Events', () => {
 
       // There should be no more domain events in the list
       expect(DomainEvents['markedAggregates']['length']).toBe(0);
-
-
-    })
+    });
   });
 });

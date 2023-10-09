@@ -1,151 +1,157 @@
 import 'reflect-metadata';
 
-import * as sinon from 'sinon';
-import { Response, Request, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import sinon from 'sinon';
 import { Container } from 'typedi';
+import RoleController from '../src/controllers/roleController';
 import { Result } from '../src/core/logic/Result';
-import IRoleService from "../src/services/IServices/IRoleService";
-import RoleController from "../src/controllers/roleController";
-import IRoleDTO from '../src/dto/IRoleDTO';
 import { Role } from '../src/domain/role';
+import IRoleDTO from '../src/dto/IRoleDTO';
+import IRoleService from '../src/services/IServices/IRoleService';
 
-describe('role controller', function () {
-	const sandbox = sinon.createSandbox();
+import { afterEach, beforeEach, describe, it } from 'vitest';
 
-	beforeEach(function() {
-		Container.reset();
-		let roleSchemaInstance = require("../src/persistence/schemas/roleSchema").default;
-		Container.set("roleSchema", roleSchemaInstance);
+describe('role controller', function() {
+  const sandbox = sinon.createSandbox();
 
-		let roleRepoClass = require("../src/repos/roleRepo").default;
-		let roleRepoInstance = Container.get(roleRepoClass);
-		Container.set("RoleRepo", roleRepoInstance);
+  beforeEach(function() {
+    Container.reset();
+    const roleSchemaInstance = require('../src/persistence/schemas/roleSchema').default;
+    Container.set('roleSchema', roleSchemaInstance);
 
-		let roleServiceClass = require("../src/services/roleService").default;
-		let roleServiceInstance = Container.get(roleServiceClass);
-		Container.set("RoleService", roleServiceInstance);
-    });
+    const roleRepoClass = require('../src/repos/roleRepo').default;
+    const roleRepoInstance = Container.get(roleRepoClass);
+    Container.set('RoleRepo', roleRepoInstance);
 
-	afterEach(function() {
-		sandbox.restore();
-	});
+    const roleServiceClass = require('../src/services/roleService').default;
+    const roleServiceInstance = Container.get(roleServiceClass);
+    Container.set('RoleService', roleServiceInstance);
+  });
 
-    it('roleController unit test using roleService stub', async function () {
-		// Arrange
-        let body = { "name":'role12' };
-        let req: Partial<Request> = {};
-		req.body = body;
-        let res: Partial<Response> = {
-			json: sinon.spy()
-        };
-		let next: Partial<NextFunction> = () => {};
+  afterEach(function() {
+    sandbox.restore();
+  });
 
-		let roleServiceInstance = Container.get("RoleService");
-		sinon.stub(roleServiceInstance, "createRole").returns( Result.ok<IRoleDTO>( {"id":"123", "name": req.body.name} ));
+  it('roleController unit test using roleService stub', async function() {
+    // Arrange
+    const body = { name: 'role12' };
+    const req: Partial<Request> = {};
+    req.body = body;
+    const res: Partial<Response> = {
+      json: sinon.spy()
+    };
+    const next: Partial<NextFunction> = () => {};
 
-		const ctrl = new RoleController(roleServiceInstance as IRoleService);
+    const roleServiceInstance = Container.get('RoleService');
+    sinon.stub(roleServiceInstance, 'createRole').returns(
+      Result.ok<IRoleDTO>({ id: '123', name: req.body.name })
+    );
 
-		// Act
-		await ctrl.createRole(<Request>req, <Response>res, <NextFunction>next);
+    const ctrl = new RoleController(roleServiceInstance as IRoleService);
 
-		// Assert
-		sinon.assert.calledOnce(res.json);
-		sinon.assert.calledWith(res.json, sinon.match({ "id": "123","name": req.body.name}));
-	});
+    // Act
+    await ctrl.createRole(<Request>req, <Response>res, <NextFunction>next);
 
+    // Assert
+    sinon.assert.calledOnce(res.json);
+    sinon.assert.calledWith(res.json, sinon.match({ id: '123', name: req.body.name }));
+  });
 
-    it('roleController + roleService integration test using roleRepoistory and Role stubs', async function () {	
-		// Arrange	
-        let body = { "name":'role12' };
-        let req: Partial<Request> = {};
-		req.body = body;
+  it('roleController + roleService integration test using roleRepoistory and Role stubs', async function() {
+    // Arrange
+    const body = { name: 'role12' };
+    const req: Partial<Request> = {};
+    req.body = body;
 
-        let res: Partial<Response> = {
-			json: sinon.spy()
-        };
-		let next: Partial<NextFunction> = () => {};
+    const res: Partial<Response> = {
+      json: sinon.spy()
+    };
+    const next: Partial<NextFunction> = () => {};
 
-		sinon.stub(Role, "create").returns(Result.ok({"id":"123", "name": req.body.name}));
+    sinon.stub(Role, 'create').returns(Result.ok({ id: '123', name: req.body.name }));
 
-		let roleRepoInstance = Container.get("RoleRepo");
-		sinon.stub(roleRepoInstance, "save").returns(new Promise<Role>((resolve, reject) => {
-			resolve(Role.create({"id":"123", "name": req.body.name}).getValue())
-		}));
+    const roleRepoInstance = Container.get('RoleRepo');
+    sinon.stub(roleRepoInstance, 'save').returns(
+      new Promise<Role>((resolve, reject) => {
+        resolve(Role.create({ id: '123', name: req.body.name }).getValue());
+      })
+    );
 
-		let roleServiceInstance = Container.get("RoleService");
+    const roleServiceInstance = Container.get('RoleService');
 
-		const ctrl = new RoleController(roleServiceInstance as IRoleService);
+    const ctrl = new RoleController(roleServiceInstance as IRoleService);
 
-		// Act
-		await ctrl.createRole(<Request>req, <Response>res, <NextFunction>next);
+    // Act
+    await ctrl.createRole(<Request>req, <Response>res, <NextFunction>next);
 
-		// Assert
-		sinon.assert.calledOnce(res.json);
-		sinon.assert.calledWith(res.json, sinon.match({ "id": "123","name": req.body.name}));
-	});
+    // Assert
+    sinon.assert.calledOnce(res.json);
+    sinon.assert.calledWith(res.json, sinon.match({ id: '123', name: req.body.name }));
+  });
 
+  it('roleController + roleService integration test using spy on roleService', async function() {
+    // Arrange
+    const body = { name: 'role12' };
+    const req: Partial<Request> = {};
+    req.body = body;
 
-    it('roleController + roleService integration test using spy on roleService', async function () {		
-		// Arrange
-        let body = { "name":'role12' };
-        let req: Partial<Request> = {};
-		req.body = body;
+    const res: Partial<Response> = {
+      json: sinon.spy()
+    };
+    const next: Partial<NextFunction> = () => {};
 
-        let res: Partial<Response> = {
-			json: sinon.spy()
-        };
-		let next: Partial<NextFunction> = () => {};
+    const roleRepoInstance = Container.get('RoleRepo');
+    sinon.stub(roleRepoInstance, 'save').returns(
+      new Promise<Role>((resolve, reject) => {
+        resolve(Role.create({ id: '123', name: req.body.name }).getValue());
+      })
+    );
 
-		let roleRepoInstance = Container.get("RoleRepo");
-		sinon.stub(roleRepoInstance, "save").returns(new Promise<Role>((resolve, reject) => {
-			resolve(Role.create({"id":"123", "name": req.body.name}).getValue())
-		}));
+    const roleServiceInstance = Container.get('RoleService');
+    const roleServiceSpy = sinon.spy(roleServiceInstance, 'createRole');
 
-		let roleServiceInstance = Container.get("RoleService");		
-		const roleServiceSpy = sinon.spy(roleServiceInstance, "createRole");
+    const ctrl = new RoleController(roleServiceInstance as IRoleService);
 
-		const ctrl = new RoleController(roleServiceInstance as IRoleService);
+    // Act
+    await ctrl.createRole(<Request>req, <Response>res, <NextFunction>next);
 
-		// Act
-		await ctrl.createRole(<Request>req, <Response>res, <NextFunction>next);
+    // Assert
+    sinon.assert.calledOnce(res.json);
+    sinon.assert.calledWith(res.json, sinon.match({ id: '123', name: req.body.name }));
+    sinon.assert.calledOnce(roleServiceSpy);
+    //sinon.assert.calledTwice(roleServiceSpy);
+    sinon.assert.calledWith(roleServiceSpy, sinon.match({ name: req.body.name }));
+  });
 
-		// Assert
-		sinon.assert.calledOnce(res.json);
-		sinon.assert.calledWith(res.json, sinon.match({ "id": "123","name": req.body.name}));
-		sinon.assert.calledOnce(roleServiceSpy);
-		//sinon.assert.calledTwice(roleServiceSpy);
-		sinon.assert.calledWith(roleServiceSpy, sinon.match({name: req.body.name}));
-	});
+  it('roleController unit test using roleService mock', async function() {
+    // Arrange
+    const body = { name: 'role12' };
+    const req: Partial<Request> = {};
+    req.body = body;
 
+    const res: Partial<Response> = {
+      json: sinon.spy()
+    };
+    const next: Partial<NextFunction> = () => {};
 
-    it('roleController unit test using roleService mock', async function () {		
-		// Arrange
-        let body = { "name":'role12' };
-        let req: Partial<Request> = {};
-		req.body = body;
+    const roleServiceInstance = Container.get('RoleService');
+    const roleServiceMock = sinon.mock(roleServiceInstance, 'createRole');
+    roleServiceMock
+      .expects('createRole')
+      .once()
+      .withArgs(sinon.match({ name: req.body.name }))
+      .returns(
+        Result.ok<IRoleDTO>({ id: '123', name: req.body.name })
+      );
 
-        let res: Partial<Response> = {
-			json: sinon.spy()
-        };
-		let next: Partial<NextFunction> = () => {};
+    const ctrl = new RoleController(roleServiceInstance as IRoleService);
 
-		let roleServiceInstance = Container.get("RoleService");		
-		const roleServiceMock = sinon.mock(roleServiceInstance, "createRole")
-		roleServiceMock.expects("createRole")
-			.once()
-			.withArgs(sinon.match({name: req.body.name}))
-			.returns(Result.ok<IRoleDTO>( {"id":"123", "name": req.body.name} ));
+    // Act
+    await ctrl.createRole(<Request>req, <Response>res, <NextFunction>next);
 
-		const ctrl = new RoleController(roleServiceInstance as IRoleService);
-
-		// Act
-		await ctrl.createRole(<Request>req, <Response>res, <NextFunction>next);
-
-		// Assert
-		roleServiceMock.verify();
-		sinon.assert.calledOnce(res.json);
-		sinon.assert.calledWith(res.json, sinon.match({ "id": "123","name": req.body.name}));
-	});
+    // Assert
+    roleServiceMock.verify();
+    sinon.assert.calledOnce(res.json);
+    sinon.assert.calledWith(res.json, sinon.match({ id: '123', name: req.body.name }));
+  });
 });
-
-

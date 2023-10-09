@@ -4,11 +4,11 @@ import user from './routes/userRoute';
 import role from './routes/roleRoute';
 
 export default () => {
-	const app = Router();
+  const app = Router();
 
-	auth(app);
-	user(app);
-	role(app);
-	
-	return app
-}
+  auth(app);
+  user(app);
+  role(app);
+
+  return app;
+};
