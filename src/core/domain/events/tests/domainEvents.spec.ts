@@ -1,11 +1,13 @@
 import * as sinon from 'sinon';
+import { UniqueEntityID } from '../../UniqueEntityID';
 import { DomainEvents } from '../DomainEvents';
+import { MockJobAggregateRoot } from './mocks/domain/mockJobAggregateRoot';
+import { MockJobAggregateRootId } from './mocks/domain/mockJobAggregateRootId';
 import { MockJobCreatedEvent } from './mocks/events/mockJobCreatedEvent';
 import { MockJobDeletedEvent } from './mocks/events/mockJobDeletedEvent';
-import { MockJobAggregateRoot } from './mocks/domain/mockJobAggregateRoot';
 import { MockPostToSocial } from './mocks/services/mockPostToSocial';
-import { MockJobAggregateRootId } from './mocks/domain/mockJobAggregateRootId';
-import { UniqueEntityID } from '../../UniqueEntityID';
+
+import { beforeEach, describe, expect, it } from 'vitest';
 
 let social: MockPostToSocial;
 let job: MockJobAggregateRoot;

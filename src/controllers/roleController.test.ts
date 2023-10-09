@@ -1,15 +1,16 @@
 import * as sinon from 'sinon';
+import { beforeEach, describe, it } from 'vitest';
 
-import { Response, Request, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import { Container } from 'typedi';
 import config from '../../config';
 
 import { Result } from '../core/logic/Result';
 
+import IRoleDTO from '../dto/IRoleDTO';
 import IRoleService from '../services/IServices/IRoleService';
 import RoleController from './roleController';
-import IRoleDTO from '../dto/IRoleDTO';
 
 describe('role controller', function() {
   beforeEach(function() {});
