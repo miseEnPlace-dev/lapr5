@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { Inject, Service } from 'typedi';
 import config from '../../config';
 
-import IRoleController from './IControllers/IRoleController';
-import IRoleService from '../services/IServices/IRoleService';
 import IRoleDTO from '../dto/IRoleDTO';
+import IRoleService from '../services/IServices/IRoleService';
+import IRoleController from './IControllers/IRoleController';
 
 import { Result } from '../core/logic/Result';
 

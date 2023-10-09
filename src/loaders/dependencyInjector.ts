@@ -2,13 +2,11 @@ import { Container } from 'typedi';
 import LoggerInstance from './logger';
 
 export default ({
-  mongoConnection,
   schemas,
   controllers,
   repos,
   services
 }: {
-  mongoConnection;
   schemas: { name: string; schema: any }[];
   controllers: { name: string; path: string }[];
   repos: { name: string; path: string }[];

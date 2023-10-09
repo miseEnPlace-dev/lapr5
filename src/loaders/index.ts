@@ -1,13 +1,18 @@
-import expressLoader from './express';
+import { Express } from 'express';
 import dependencyInjectorLoader from './dependencyInjector';
-import mongooseLoader from './mongoose';
+import expressLoader from './express';
 import Logger from './logger';
+import mongooseLoader from './mongoose';
 
 import config from '../../config';
 
-export default async ({ expressApp }) => {
-  const mongoConnection = await mongooseLoader();
-  Logger.info('✌️ DB loaded and connected!');
+export default async ({ expressApp }: { expressApp: Express }) => {
+  try {
+    await mongooseLoader();
+    Logger.info('✌️ DB loaded and connected!');
+  } catch (err) {
+    Logger.error(err);
+  }
 
   const userSchema = {
     // compare with the approach followed in repos and services
@@ -41,8 +46,7 @@ export default async ({ expressApp }) => {
     path: config.services.role.path
   };
 
-  await dependencyInjectorLoader({
-    mongoConnection,
+  dependencyInjectorLoader({
     schemas: [userSchema, roleSchema],
     controllers: [roleController],
     repos: [roleRepo, userRepo],

@@ -11,14 +11,12 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 let social: MockPostToSocial;
 let job: MockJobAggregateRoot;
-let spy;
 
 describe('Domain Events', () => {
   beforeEach(() => {
     social = null;
     DomainEvents.clearHandlers();
     DomainEvents.clearMarkedAggregates();
-    spy = null;
     job = null;
   });
 
@@ -52,6 +50,7 @@ describe('Domain Events', () => {
       social = new MockPostToSocial();
       social.setupSubscriptions();
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const domainEventsAggregateSpy = sinon.spy(DomainEvents, 'markAggregateForDispatch');
 
       // setTimeout(() => {
@@ -65,7 +64,9 @@ describe('Domain Events', () => {
       social = new MockPostToSocial();
       social.setupSubscriptions();
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const jobCreatedEventSpy = sinon.spy(social, 'handleJobCreatedEvent');
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const jobDeletedEventSpy = sinon.spy(social, 'handleDeletedEvent');
 
       // Create the event, mark the aggregate

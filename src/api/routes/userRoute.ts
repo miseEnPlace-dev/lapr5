@@ -8,7 +8,7 @@ import AuthService from '../../services/userService';
 import middlewares from '../middlewares';
 import winston = require('winston');
 
-const user_controller = require('../../controllers/userController');
+import * as UserController from '../../controllers/userController';
 
 const route = Router();
 
@@ -122,5 +122,5 @@ export default (app: Router) => {
 
   app.use('/users', route);
 
-  route.get('/me', middlewares.isAuth, middlewares.attachCurrentUser, user_controller.getMe);
+  route.get('/me', middlewares.isAuth, middlewares.attachCurrentUser, UserController.getMe);
 };

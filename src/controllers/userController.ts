@@ -1,4 +1,4 @@
-import { Response, Request } from 'express';
+import { Response } from 'express';
 
 import { Container } from 'typedi';
 
@@ -6,10 +6,10 @@ import config from '../../config';
 
 import IUserRepo from '../services/IRepos/IUserRepo';
 
-import { UserMap } from '../mappers/UserMap';
 import { IUserDTO } from '../dto/IUserDTO';
+import { UserMap } from '../mappers/UserMap';
 
-exports.getMe = async function(req, res: Response) {
+export async function getMe(req, res: Response) {
   // NB: a arquitetura ONION não está a ser seguida aqui
 
   const userRepo = Container.get(config.repos.user.name) as IUserRepo;
@@ -21,4 +21,4 @@ exports.getMe = async function(req, res: Response) {
 
   const userDTO = UserMap.toDTO(user) as IUserDTO;
   return res.json(userDTO).status(200);
-};
+}

@@ -1,8 +1,14 @@
-import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import routes from '../api';
+import express, { NextFunction, Request, Response } from 'express';
 import config from '../../config';
+import routes from '../api';
+
+type RouteErr = {
+  name: string;
+  status: number;
+  message: string;
+};
 
 export default ({ app }: { app: express.Application }) => {
   /**
@@ -25,11 +31,6 @@ export default ({ app }: { app: express.Application }) => {
   // Enable Cross Origin Resource Sharing to all origins by default
   app.use(cors());
 
-  // Some sauce that always add since 2014
-  // "Lets you use HTTP verbs such as PUT or DELETE in places where the client doesn't support it."
-  // Maybe not needed anymore ?
-  app.use(require('method-override')());
-
   // Middleware that transforms the raw string of req.body into json
   app.use(bodyParser.json());
 
@@ -39,12 +40,11 @@ export default ({ app }: { app: express.Application }) => {
   /// catch 404 and forward to error handler
   app.use((req, res, next) => {
     const err = new Error('Not Found');
-    err['status'] = 404;
-    next(err);
+    next({ ...err, status: 404 });
   });
 
   /// error handlers
-  app.use((err, req, res, next) => {
+  app.use((err: RouteErr, req: Request, res: Response, next: NextFunction) => {
     /**
      * Handle 401 thrown by express-jwt library
      */
@@ -56,7 +56,7 @@ export default ({ app }: { app: express.Application }) => {
     }
     return next(err);
   });
-  app.use((err, req, res, next) => {
+  app.use((err: RouteErr, req: Request, res: Response) => {
     res.status(err.status || 500);
     res.json({
       errors: {
