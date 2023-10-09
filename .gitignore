@@ -133,4 +133,4 @@ package-lock.json
 
 build/
 
-dockervolume/*
+dockervolume
