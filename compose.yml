@@ -2,7 +2,7 @@ version: '3.1'
 services:
   mongo:
     image: mongo
-    container_name: "mongo"
+    container_name: "lapr5-mongo"
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
