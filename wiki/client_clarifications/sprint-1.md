@@ -270,4 +270,4 @@ no mapa exemplo indicado no RFP, o robot pode perfeitamente fazer o percurso da 
 
 ### End of Sprint 1
 
-_LAST UPDATE: 11/10/2023 11:50H_
+_LAST UPDATE: 11/10/2023 12:38H_
