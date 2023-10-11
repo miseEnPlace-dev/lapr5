@@ -6,6 +6,28 @@ hide empty methods
 skinparam classBackgroundColor beige
 skinparam ArrowColor #222222
 
+left to right direction
+
+package "<<aggregate>> User" {
+  entity User <<entity>> <<root>> { }
+
+  class Name <<(V,#FF8B40) value object>> {}
+  class Email <<(V,#FF8B40) value object>> {}
+  class PhoneNumber <<(V,#FF8B40) value object>> {}
+  class Role <<(V,#FF8B40) value object>> {
+    - USER
+    - FLEET_MANAGER
+    - CAMPUS_MANAGER
+    - TASK_MANAGER
+    - ADMIN
+  }
+}
+
+User "1" *-- "1" Role
+User "1" *-- "1" Name
+User "1" *-- "1" Email
+User "1" *-- "1" PhoneNumber
+
 package "<<aggregate>> Robot" {
   entity Robot <<entity>> <<root>> { }
 }
@@ -15,68 +37,121 @@ package "<<aggregate>> Drone" {
 }
 
 package "<<aggregate>> Device" {
-  entity Device <<entity>> <<root>> { }
+  entity Device <<entity>> <<root>> {
+    - isAvailable
+  }
 
   class Image <<(V,#FF8B40) value object>> {}
   class Sensor <<(V,#FF8B40) value object>> {}
+  class Brand <<(V,#FF8B40) value object>> {}
+  class SerialNumber <<(V,#FF8B40) value object>> {}
+  class DeviceCode <<(V,#FF8B40) value object>> {}
+  class Nickname <<(V,#FF8B40) value object>> {}
 }
 
 Device "1" *-- "*" Image
 Device "1" *-- "*" Sensor
+Device "1" *-- "1" Brand
+Device "1" *-- "1" SerialNumber
+Device "1" *-- "1" DeviceCode
+Device "1" *-- "1" Nickname
 
-Device <|-- Robot
+Device <|--- Robot
 Device <|-- Drone
+
+package "<<aggregate>> Floor" {
+  entity Floor <<entity>> <<root>> { }
+
+  entity Elevator <<entity>> { }
+  class FloorDescription <<(V,#FF8B40) value object>> {}
+}
+
+package "<<aggregate>> Room" {
+  entity Room <<entity>> { }
+
+  class RoomName <<(V,#FF8B40) value object>> {}
+  class RoomCategory <<(V,#FF8B40) value object>> {
+    - OFFICE
+    - LAB
+    - MEETING_ROOM
+    - CLASSROOM
+  }
+  class RoomDescription <<(V,#FF8B40) value object>> {}
+}
+
+Floor "1" *-- "1" FloorDescription
+Room "1" *-- "1" RoomDescription
+Room "1" *-- "1" RoomCategory
+
+Elevator "1" --> "2..*" Floor : is for
+
+package "<<aggregate>> Building" {
+  entity Building <<entity>> <<root>> { }
+
+  class BuildingName <<(V,#FF8B40) value object>> {}
+  class BuildingDescription <<(V,#FF8B40) value object>> {}
+  class BuildingCode <<(V,#FF8B40) value object>> {}
+  class MaxDimensions <<(V,#FF8B40) value object>> {
+    - width
+    - height
+  }
+}
+
+Elevator "1" ---> "1" Building : is for
 
 package "<<aggregate>> Passage" {
   entity Passage <<entity>> <<root>> { }
 }
 
-package "<<aggregate>> Elevator" {
-  entity Elevator <<entity>> <<root>> { }
-}
+Building "1" *-- "0..1" BuildingName
+Building "1" *-- "1" BuildingCode
+Building "1" *-- "1" BuildingDescription
+Building "1" *-- "1" MaxDimensions
 
-package "<<aggregate>> Building" {
-  entity Building <<entity>> <<root>> {
-    - name
-  }
-
-  entity Floor <<entity>> { }
-  entity Room <<entity>> { }
-
-  class RoomName <<(V,#FF8B40) value object>> {}
-}
-
-Building "1" *-- "*" Floor
+Floor "1" --> "1" Building : belongs to
 Floor "1" *-- "*" Room
 Room "1" *-- "1" RoomName
 
 package "<<aggregate>> Request" {
   entity Request <<entity>> <<root>> { }
 
-  class State <<(V,#FF8B40) value object>> {}
+  class RequestState <<(V,#FF8B40) value object>> {}
 }
 
 package "<<aggregate>> Task" {
   entity Task <<entity>> <<root>> { }
-
-  class State <<(V,#FF8B40) value object>> {}
-  class TaskType <<(V,#FF8B40) value object>> {}
 }
 
-Task "1" *-- "1" State
-Task "1" *-- "1" TaskType
+package "<<aggregate>> PickUpAndDelivery" {
+  entity PickUpAndDelivery <<entity>> <<root>> { }
 
-package "<<aggregate>> Item" {
-  entity Item <<entity>> <<root>> { }
+  class PickupDescription <<(V,#FF8B40) value object>> {}
+  class ConfirmationCode <<(V,#FF8B40) value object>> {}
 }
 
-Request "1" *-- "1" State
-Item "0..1" <-- "*" Request
+PickUpAndDelivery "1" *-- "1" PickupDescription
+PickUpAndDelivery "1" *-- "1" ConfirmationCode
+PickUpAndDelivery "1" --> "1" User : pick up contact
+PickUpAndDelivery "1" --> "1" User : delivery contact
+PickUpAndDelivery "1" --> "1" Room : pick up location
+PickUpAndDelivery "1" --> "1" Room : delivery location
 
-package "<<aggregate>> User" {
-  entity User <<entity>> <<root>> { }
+package "<<aggregate>> Survailance" {
+  entity Survailance <<entity>> <<root>> { }
 }
 
-User "1" <-- "*" Request
+Survailance "1" --> "1" User : contact
+Survailance "1" --> "1..*" Floor : target
+
+PickUpAndDelivery <|-- Task
+Survailance <|-- Task
+
+Device "1" --> "*" Task : can perform
+
+Request "1" *-- "1" RequestState
+
+Passage "1" --> "2" Floor : is for
+User "1" <-- "1" Request : is made
+Request "1" --> "1" Task : is for
 
 @enduml
