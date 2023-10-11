@@ -1,0 +1,82 @@
+@startuml dm
+
+skinparam classAttributeIconSize 0
+hide empty attributes
+hide empty methods
+skinparam classBackgroundColor beige
+skinparam ArrowColor #222222
+
+package "<<aggregate>> Robot" {
+  entity Robot <<entity>> <<root>> { }
+}
+
+package "<<aggregate>> Drone" {
+  entity Drone <<entity>> <<root>> { }
+}
+
+package "<<aggregate>> Device" {
+  entity Device <<entity>> <<root>> { }
+
+  class Image <<(V,#FF8B40) value object>> {}
+  class Sensor <<(V,#FF8B40) value object>> {}
+}
+
+Device "1" *-- "*" Image
+Device "1" *-- "*" Sensor
+
+Device <|-- Robot
+Device <|-- Drone
+
+package "<<aggregate>> Passage" {
+  entity Passage <<entity>> <<root>> { }
+}
+
+package "<<aggregate>> Elevator" {
+  entity Elevator <<entity>> <<root>> { }
+}
+
+package "<<aggregate>> Building" {
+  entity Building <<entity>> <<root>> {
+    - name
+  }
+
+  entity Floor <<entity>> { }
+  entity Room <<entity>> { }
+
+  class RoomName <<(V,#FF8B40) value object>> {}
+}
+
+Building "1" *-- "*" Floor
+Floor "1" *-- "*" Room
+Room "1" *-- "1" RoomName
+
+package "<<aggregate>> Request" {
+  entity Request <<entity>> <<root>> { }
+
+  class State <<(V,#FF8B40) value object>> {}
+}
+
+package "<<aggregate>> Task" {
+  entity Task <<entity>> <<root>> { }
+
+  class State <<(V,#FF8B40) value object>> {}
+  class TaskType <<(V,#FF8B40) value object>> {}
+}
+
+Task "1" *-- "1" State
+Task "1" *-- "1" TaskType
+
+package "<<aggregate>> Item" {
+  entity Item <<entity>> <<root>> { }
+}
+
+Request "1" *-- "1" State
+Item "0..1" <-- "*" Request
+
+package "<<aggregate>> User" {
+  entity User <<entity>> <<root>> { }
+}
+
+User "1" <-- "*" Request
+
+@enduml
