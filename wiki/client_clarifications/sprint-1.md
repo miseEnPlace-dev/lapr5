@@ -37,7 +37,7 @@ o módulo de gestão de informação corresponde a gestão de dispositivos e de 
 
 #### Resposta
 
-"o gestor de tarefas é um dos papeis desempenhados pelos utilziadores do sistema. é a pessoa responsavel por aprovar os pedidos de tarefas, e atribuir esses pedidos a um robot.
+"o gestor de tarefas é um dos papeis desempenhados pelos utilizadores do sistema. é a pessoa responsavel por aprovar os pedidos de tarefas, e atribuir esses pedidos a um robot.
 
 a "forma manual" referido, indica que existirá uma funcionalidade na aplicação para o utilizador gestor de tarefas poder consultar os pedidos efetuados e atribuir esses pedidos a um robot particular. No futuro\* existirá um algoritmo de escalonamento que fará essa atribuição de forma automática.
 
@@ -91,7 +91,7 @@ notem que uma vez que as passagens são bidirecionais, uma passagem entre o edif
 
 #### Resposta
 
-"são dois requisitos independentes. 150 apenas define o edificio. posteriormente o utilizador invocará o caso de uso correspondete ao requisito 190 para criar cada piso desse edificio"
+"são dois requisitos independentes. 150 apenas define o edificio. posteriormente o utilizador invocará o caso de uso correspondente ao requisito 190 para criar cada piso desse edificio"
 
 ## [Question 7](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25045)
 
@@ -247,6 +247,7 @@ no mapa exemplo indicado no RFP, o robot pode perfeitamente fazer o percurso da 
 > Assim dessa forma existiria um ficheiro só com as dimensões para a grelha.
 >
 > Algo do genero:
+>
 > {
 > "floorId":"1",
 > "walls":[
@@ -266,7 +267,7 @@ no mapa exemplo indicado no RFP, o robot pode perfeitamente fazer o percurso da 
 
 #### Resposta
 
-"sim, é necessário que essa informação já esteja presente no sistema. quanto ao formato do mapa, será fornecido um projeto exemplo em SGRAI para desenho de labirintos que podme utilizar como base para o módulo de visualização. poderão adaptar o código e o formato de mapa de acordo com o que acharem mais adequado aos requisitos e às vossas decisões de design."
+"sim, é necessário que essa informação já esteja presente no sistema. quanto ao formato do mapa, será fornecido um projeto exemplo em SGRAI para desenho de labirintos que podem utilizar como base para o módulo de visualização. poderão adaptar o código e o formato de mapa de acordo com o que acharem mais adequado aos requisitos e às vossas decisões de design."
 
 ### End of Sprint 1
 
