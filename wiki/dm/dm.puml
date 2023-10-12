@@ -37,9 +37,7 @@ package "<<aggregate>> Drone" {
 }
 
 package "<<aggregate>> DeviceModel" {
-  entity DeviceModel <<entity>> <<root>> {
-    - isAvailable
-  }
+  entity DeviceModel <<entity>> <<root>> { }
 
   class Brand <<(V,#FF8B40) value object>> {}
   class DeviceCode <<(V,#FF8B40) value object>> {}
@@ -47,7 +45,9 @@ package "<<aggregate>> DeviceModel" {
 }
 
 package "<<aggregate>> Device" {
-  entity Device <<entity>> <<root>> { }
+  entity Device <<entity>> <<root>> {
+    - isAvailable
+  }
 
   class Image <<(V,#FF8B40) value object>> {}
   class SensorReading <<(V,#FF8B40) value object>> {}
