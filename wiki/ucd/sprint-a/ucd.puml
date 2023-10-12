@@ -1,0 +1,65 @@
+@startuml ucd-sprint-a
+
+skinparam usecase {
+    BackgroundColor LightBlue
+    BorderColor DarkBlue
+    ArrowColor DarkBlue
+    FontStyle Bold
+}
+
+:Fleet Manager: as Fleet
+:Campus Manager: as Campus
+
+left to right direction
+
+rectangle "Campus Managing" as campus {
+  usecase "150. As a campus manager, I want to create a building" as createBuilding
+  usecase "160. As a campus manager, I want to edit a building information" as editBuilding
+  usecase "170. As a campus manager, I want to list all buildings" as listBuildings
+  usecase "180. As a campus manager, I want to list all buildings with given minimum and maximum number of floors" as listBuildingsWithFloors
+  usecase "190. As a campus manager, I want to create a floor in a given building" as createFloor
+  usecase "200. As a campus manager, I want to edit information of a given floor" as editFloor
+  usecase "210. As a campus manager, I want to list all floors for a given building " as listFloors
+  usecase "220. As a campus manager, I want to list all floors with connection to other buildings" as listFloorsWithConnections
+  usecase "230. As a campus manager, I want to load a map for a given floor" as loadFloorMap
+  usecase "240. As a campus manager, I want to create a connection between 2 floors" as createConnection
+  usecase "250. As a campus manager, I want to edit a connection between 2 floors" as editConnection
+  usecase "260. As a campus manager, I want to list all the connection between 2 buildings" as listBuildingsConnections
+  usecase "270. As a campus manager, I want to create an elevator" as createElevator
+  usecase "280. As a campus manager, I want to edit an elevator" as editElevator
+  usecase "290. As a campus manager, I want to list all the elevators for a given building" as listElevators
+  usecase "300. As a campus manager, I want to list all the floors reachable by elevator for a given building" as listFloorsReachableByElevator
+  usecase "310. As a campus manager, I want to create a room in a given floor" as createRoom
+}
+
+rectangle "Fleet Managing" as fleet {
+  usecase "350. As a fleet manager, I want to create a new robot type and assign specific tasks" as createRobotType
+  usecase "360. As a fleet manager, I want to create a new robot with a given type" as createRobot
+  usecase "370. As a fleet manager, I want to disable a robot" as disableRobot
+  usecase "370. As a fleet manager, I want to search robots for a specific designation or task" as searchRobot
+}
+
+Campus --> createBuilding
+Campus --> editBuilding
+Campus --> listBuildings
+Campus --> listBuildingsWithFloors
+Campus --> createFloor
+Campus --> editFloor
+Campus --> listFloors
+Campus --> listFloorsWithConnections
+Campus --> loadFloorMap
+Campus --> createConnection
+Campus --> editConnection
+Campus --> listBuildingsConnections
+Campus --> createElevator
+Campus --> editElevator
+Campus --> listElevators
+Campus --> listFloorsReachableByElevator
+Campus --> createRoom
+
+Fleet --> createRobotType
+Fleet --> createRobot
+Fleet --> disableRobot
+Fleet --> searchRobot
+
+@enduml

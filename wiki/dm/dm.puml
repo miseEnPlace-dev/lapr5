@@ -36,28 +36,38 @@ package "<<aggregate>> Drone" {
   entity Drone <<entity>> <<root>> { }
 }
 
-package "<<aggregate>> Device" {
-  entity Device <<entity>> <<root>> {
+package "<<aggregate>> DeviceModel" {
+  entity DeviceModel <<entity>> <<root>> {
     - isAvailable
   }
 
-  class Image <<(V,#FF8B40) value object>> {}
-  class Sensor <<(V,#FF8B40) value object>> {}
   class Brand <<(V,#FF8B40) value object>> {}
-  class SerialNumber <<(V,#FF8B40) value object>> {}
   class DeviceCode <<(V,#FF8B40) value object>> {}
+  class DeviceName <<(V,#FF8B40) value object>> {}
+}
+
+package "<<aggregate>> Device" {
+  entity Device <<entity>> <<root>> { }
+
+  class Image <<(V,#FF8B40) value object>> {}
+  class SensorReading <<(V,#FF8B40) value object>> {}
+  class SerialNumber <<(V,#FF8B40) value object>> {}
   class Nickname <<(V,#FF8B40) value object>> {}
 }
 
-Device "1" *-- "*" Image
-Device "1" *-- "*" Sensor
-Device "1" *-- "1" Brand
+DeviceModel "1" *-- "1" Brand
+DeviceModel "1" *-- "1" DeviceCode
+DeviceModel "1" *-- "1" DeviceName
+
+Device "1" --> "1" DeviceModel : is for
+
 Device "1" *-- "1" SerialNumber
-Device "1" *-- "1" DeviceCode
+Device "1" *-- "*" Image
+Device "1" *-- "*" SensorReading
 Device "1" *-- "1" Nickname
 
-Device <|--- Robot
-Device <|-- Drone
+DeviceModel <|--- Robot
+DeviceModel <|-- Drone
 
 package "<<aggregate>> Floor" {
   entity Floor <<entity>> <<root>> { }
@@ -146,7 +156,7 @@ Survailance "1" --> "1..*" Floor : target
 PickUpAndDelivery <|-- Task
 Survailance <|-- Task
 
-Device "1" --> "*" Task : can perform
+DeviceModel "1" --> "*" Task : can perform
 
 Request "1" *-- "1" RequestState
 

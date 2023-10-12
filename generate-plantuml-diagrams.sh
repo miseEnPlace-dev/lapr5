@@ -26,7 +26,7 @@ do
   #-Smonochrome=$monochrome
   echo "> Processing file: $aFile"
   file=$(echo $aFile | cut -d "/" -f 3)
-  echo " >> Output file: .//$file.$exportFormat"
+  echo " >> Output file: ./$file.$exportFormat"
 
 	java -jar libs/plantuml-1.2023.1.jar $extra -t$exportFormat $aFile -o$out
 done
