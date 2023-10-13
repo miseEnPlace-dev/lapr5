@@ -36,6 +36,7 @@ rectangle "Fleet Managing" as fleet {
   usecase "350. As a fleet manager, I want to create a new robot type and assign specific tasks" as createRobotType
   usecase "360. As a fleet manager, I want to create a new robot with a given type" as createRobot
   usecase "370. As a fleet manager, I want to disable a robot" as disableRobot
+  usecase "370. As a fleet manager, I want to list all robots" as listRobots
   usecase "370. As a fleet manager, I want to search robots for a specific designation or task" as searchRobot
 }
 
@@ -60,6 +61,7 @@ Campus --> createRoom
 Fleet --> createRobotType
 Fleet --> createRobot
 Fleet --> disableRobot
+Fleet --> listRobots
 Fleet --> searchRobot
 
 @enduml
