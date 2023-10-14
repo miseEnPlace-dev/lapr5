@@ -1,7 +1,7 @@
 {
-  "name": "bulletproof-nodejs",
+  "name": "md-devices",
   "version": "1.0.0",
-  "description": "Bulletproof node.js",
+  "description": "Master Data Devices",
   "main": "src/app.ts",
   "scripts": {
     "clean": "rm -rf dist/",
@@ -28,13 +28,13 @@
     "express-basic-auth": "^1.2.0",
     "express-jwt": "^8.4.1",
     "jsonwebtoken": "^9.0.2",
-    "lodash": "^4.17.13",
     "method-override": "^3.0.0",
     "mongodb": "^4.2.1",
     "mongoose": "^6.1.0",
     "morgan": "^1.9.1",
     "reflect-metadata": "^0.1.13",
     "shallow-equal-object": "^1.1.1",
+    "sinon": "^16.1.0",
     "tsup-node": "^0.1.0",
     "tsx": "^3.13.0",
     "typedi": "^0.10.0",
@@ -57,9 +57,7 @@
     "eslint-config-prettier": "^4.2.0",
     "eslint-plugin-prettier": "^3.0.1",
     "prettier": "^1.17.0",
-    "sinon": "^16.1.0",
     "ts-node": "^10.4.0",
-    "tslint": "^6.1.3",
     "typescript": "^4.5.2"
   }
 }

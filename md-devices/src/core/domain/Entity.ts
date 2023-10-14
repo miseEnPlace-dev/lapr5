@@ -1,6 +1,6 @@
 import { UniqueEntityID } from './UniqueEntityID';
 
-const isEntity = (v: any): v is Entity<any> => {
+const isEntity = (v: unknown): v is Entity<unknown> => {
   return v instanceof Entity;
 };
 
@@ -14,17 +14,11 @@ export abstract class Entity<T> {
   }
 
   public equals(object?: Entity<T>): boolean {
-    if (object == null || object == undefined) {
-      return false;
-    }
+    if (object === null || object === undefined) return false;
 
-    if (this === object) {
-      return true;
-    }
+    if (this === object) return true;
 
-    if (!isEntity(object)) {
-      return false;
-    }
+    if (!isEntity(object)) return false;
 
     return this._id.equals(object._id);
   }

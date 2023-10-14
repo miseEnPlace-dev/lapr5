@@ -3,8 +3,8 @@ import { Mapper } from '../core/infra/Mapper';
 import { Document, Model } from 'mongoose';
 import { IRolePersistence } from '../dataschema/IRolePersistence';
 
-import IRoleDTO from '../dto/IRoleDTO';
 import { Role } from '../domain/role';
+import IRoleDTO from '../dto/IRoleDTO';
 
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 
@@ -16,7 +16,7 @@ export class RoleMap extends Mapper<Role> {
     } as IRoleDTO;
   }
 
-  public static toDomain(role: any | Model<IRolePersistence & Document>): Role {
+  public static toDomain(role: Model<IRolePersistence & Document>): Role | null {
     const roleOrError = Role.create(role, new UniqueEntityID(role.domainId));
 
     roleOrError.isFailure ? console.log(roleOrError.error) : '';

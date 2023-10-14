@@ -33,7 +33,7 @@ export class Role extends AggregateRoot<RoleProps> {
   public static create(roleDTO: IRoleDTO, id?: UniqueEntityID): Result<Role> {
     const name = roleDTO.name;
 
-    if (!!name === false || name.length === 0) {
+    if (!name || name.length === 0) {
       return Result.fail<Role>('Must provide a role name');
     } else {
       const role = new Role({ name: name }, id);

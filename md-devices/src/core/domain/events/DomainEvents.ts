@@ -1,10 +1,10 @@
-import { IDomainEvent } from './IDomainEvent';
 import { AggregateRoot } from '../AggregateRoot';
 import { UniqueEntityID } from '../UniqueEntityID';
+import { IDomainEvent } from './IDomainEvent';
 
 export class DomainEvents {
   private static handlersMap = {};
-  private static markedAggregates: AggregateRoot<any>[] = [];
+  private static markedAggregates: AggregateRoot<unknown>[] = [];
 
   /**
    * @method markAggregateForDispatch
@@ -14,7 +14,7 @@ export class DomainEvents {
    * the unit of work.
    */
 
-  public static markAggregateForDispatch(aggregate: AggregateRoot<any>): void {
+  public static markAggregateForDispatch(aggregate: AggregateRoot<unknown>): void {
     const aggregateFound = !!this.findMarkedAggregateByID(aggregate.id);
 
     if (!aggregateFound) {
@@ -22,16 +22,16 @@ export class DomainEvents {
     }
   }
 
-  private static dispatchAggregateEvents(aggregate: AggregateRoot<any>): void {
+  private static dispatchAggregateEvents(aggregate: AggregateRoot<unknown>): void {
     aggregate.domainEvents.forEach((event: IDomainEvent) => this.dispatch(event));
   }
 
-  private static removeAggregateFromMarkedDispatchList(aggregate: AggregateRoot<any>): void {
+  private static removeAggregateFromMarkedDispatchList(aggregate: AggregateRoot<unknown>): void {
     const index = this.markedAggregates.findIndex(a => a.equals(aggregate));
     this.markedAggregates.splice(index, 1);
   }
 
-  private static findMarkedAggregateByID(id: UniqueEntityID): AggregateRoot<any> {
+  private static findMarkedAggregateByID(id: UniqueEntityID): AggregateRoot<unknown> {
     let found: AggregateRoot<any> = null;
     for (const aggregate of this.markedAggregates) {
       if (aggregate.id.equals(id)) {
@@ -71,7 +71,7 @@ export class DomainEvents {
     const eventClassName: string = event.constructor.name;
 
     if (this.handlersMap.hasOwnProperty(eventClassName)) {
-      const handlers: any[] = this.handlersMap[eventClassName];
+      const handlers: unknown[] = this.handlersMap[eventClassName];
       for (const handler of handlers) {
         handler(event);
       }

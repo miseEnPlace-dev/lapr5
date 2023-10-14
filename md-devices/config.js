@@ -30,38 +30,38 @@ export default {
    * Used by winston logger
    */
   logs: {
-    level: process.env.LOG_LEVEL || 'info',
+    level: process.env.LOG_LEVEL || 'info'
   },
 
   /**
    * API configs
    */
   api: {
-    prefix: '/api',
+    prefix: '/api'
   },
 
   controllers: {
     role: {
       name: 'RoleController',
-      path: '../controllers/roleController',
-    },
+      path: '../controllers/roleController'
+    }
   },
 
   repos: {
     role: {
       name: 'RoleRepo',
-      path: '../repos/roleRepo',
+      path: '../repos/roleRepo'
     },
     user: {
       name: 'UserRepo',
-      path: '../repos/userRepo',
-    },
+      path: '../repos/userRepo'
+    }
   },
 
   services: {
     role: {
       name: 'RoleService',
-      path: '../services/roleService',
-    },
-  },
+      path: '../services/roleService'
+    }
+  }
 };
