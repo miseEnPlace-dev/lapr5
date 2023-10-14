@@ -269,6 +269,50 @@ no mapa exemplo indicado no RFP, o robot pode perfeitamente fazer o percurso da 
 
 "sim, é necessário que essa informação já esteja presente no sistema. quanto ao formato do mapa, será fornecido um projeto exemplo em SGRAI para desenho de labirintos que podem utilizar como base para o módulo de visualização. poderão adaptar o código e o formato de mapa de acordo com o que acharem mais adequado aos requisitos e às vossas decisões de design."
 
+## [Question 16.1](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25070)
+
+> Podemos dizer então que o carregamento do mapa, apenas adiciona o seguinte: as dimensões das salas, onde ficam as paredes do piso, onde ficam os elevadores e onde ficam as passagens.
+> Apenas temos de indicar qual é que é o id do objeto (sala, passagem, elevador ou parede) e qual é a sua dimensão ou posição.
+> Caso o utilizador coloque a referência para um objeto que ainda não exista (por exemplo um elevador que ainda não foi criado) o ficheiro deve ser considerado inválido?
+
+#### Resposta
+
+"Em SGRAI será disponibilizado o exemplo: https://www.dei.isep.ipp.pt/~jpp/LAPR5/Thumb_Raiser_LAPR5.html
+
+O ficheiro JSON correspondente ao mapa encontra-se em https://www.dei.isep.ipp.pt/~jpp/LAPR5/mazes/LAPR5.json
+
+Notem que se trata de um exemplo que podme usar como base e que terá que ser adapatdo à realidade dos requisitos apresentados no RFP e de acordo com as vossas decisões de design"
+
+## [Question 17](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25118)
+
+> há a possibilidade de inibir um robo. No entanto, para além deste "estado" que outros estados pretende que existam? em funcionamento, ocupado, livre, a executar tarefa? Ou basta apenas inibido - desinibido?
+
+#### Resposta
+
+"funcionalmente não existe esse conceito de "estado" que referes. poderá ser no entanto algo util em termos técnicos. De um ponto de vista funcional pretende-se que seja possivel inibir ou desinibr um robot e que essa informação seja devidamente utilizada nos restantes casos de uso. por exemplo, um robot inibido não pode executar tarefas."
+
+## [Question 18](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25119)
+
+> no enunciado, refere que o robo tem sensores. Para si, neste momento, é importante haver a distinção entre tipos de sensores? ou é apenas relevante referir que tem sensores, independentemente, do seu tipo?
+>
+> Quantos sensores deve ter o robo?
+>
+> O ID do sensor tem alguma caracteristica especifica?
+
+#### Resposta
+
+"o tratamento de sensores está fora do âmbito do RFP"
+
+## [Question 19](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25101)
+
+> Poderia explicar as diferenças entre estas duas user stories, US350 e US360?
+
+#### Resposta
+
+"o requisito 360 permite definir que tipos de robots existem. por exemplo "Tipo A: Robot marca X modelo Y com capacidade de executar tarefas de vigilância" e "Tipo B: Robot marca W modelo Z com capacidade de executar tarefas de vigilância e pickeup&delivery"
+
+o requisito 370 permite indicar que robots existem e de que tipo cada um é, por exemplo "Robot 'ABC32' do tipo A", "Robot 'Brian2' do tipo A" e "Robot 'Stew' do tipo B""
+
 ### End of Sprint 1
 
-_LAST UPDATE: 11/10/2023 12:38H_
+_LAST UPDATE: 14/10/2023 11:23H_
