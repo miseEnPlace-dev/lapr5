@@ -313,6 +313,16 @@ Notem que se trata de um exemplo que podme usar como base e que terá que ser ad
 
 o requisito 370 permite indicar que robots existem e de que tipo cada um é, por exemplo "Robot 'ABC32' do tipo A", "Robot 'Brian2' do tipo A" e "Robot 'Stew' do tipo B""
 
+## [Question 20](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25047)
+
+> O nome do edifício tem limitações como, por exemplo, tem de ter uma letra e números? E para além do nome do edifício, que mais informação deve ser guardada sobre o edifício.
+
+#### Resposta
+
+"o código do edificio é obrigatório, no máximo 5 caracteres, letras e digitos, podendo conter espaços no meio"
+"o nome do edificio é opcional, no máximo 50 caracteres alfanuméricos"
+"a breve descrição é opcional, com o máximo de 255 caracteres"
+
 ### End of Sprint 1
 
-_LAST UPDATE: 14/10/2023 11:23H_
+_LAST UPDATE: 14/10/2023 15:17H_
