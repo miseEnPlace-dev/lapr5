@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { Container } from 'typedi';
 
-import config from '../../config';
+import config from '../../config.mjs';
 
 import IUserRepo from '../services/IRepos/IUserRepo';
 

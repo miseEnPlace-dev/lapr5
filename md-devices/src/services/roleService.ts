@@ -1,5 +1,5 @@
 import { Inject, Service } from 'typedi';
-import config from '../../config';
+import config from '../../config.mjs';
 import { Result } from '../core/logic/Result';
 import { Role } from '../domain/role/role';
 import IRoleDTO from '../dto/IRoleDTO';

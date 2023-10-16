@@ -3,5 +3,6 @@ export interface IUserDTO {
   lastName: string;
   email: string;
   password: string;
+  phoneNumber: string;
   role: string;
 }

@@ -13,6 +13,7 @@ interface UserProps {
   email: UserEmail;
   password: UserPassword;
   role: Role;
+  phoneNumber: string;
 }
 
 export class User extends AggregateRoot<UserProps> {
@@ -48,6 +49,14 @@ export class User extends AggregateRoot<UserProps> {
     this.props.role = value;
   }
 
+  get phoneNumber(): string {
+    return this.props.phoneNumber;
+  }
+
+  set phoneNumber(value: string) {
+    this.props.phoneNumber = value;
+  }
+
   private constructor(props: UserProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -57,7 +66,8 @@ export class User extends AggregateRoot<UserProps> {
       { argument: props.firstName, argumentName: 'firstName' },
       { argument: props.lastName, argumentName: 'lastName' },
       { argument: props.email, argumentName: 'email' },
-      { argument: props.role, argumentName: 'role' }
+      { argument: props.role, argumentName: 'role' },
+      { argument: props.phoneNumber, argumentName: 'phoneNumber' }
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);

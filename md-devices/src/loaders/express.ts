@@ -1,6 +1,6 @@
 import cors from 'cors';
 import express, { NextFunction, Request, Response, json } from 'express';
-import config from '../../config';
+import config from '../../config.mjs';
 import routes from '../api';
 
 type RouteErr = {
@@ -38,8 +38,8 @@ export default ({ app }: { app: express.Application }) => {
 
   /// catch 404 and forward to error handler
   app.use((req, res, next) => {
-    const err = new Error('Not Found');
-    next({ ...err, status: 404 });
+    const err = new Error('NotFound');
+    next({ ...err, status: 404, message: 'Not found' });
   });
 
   /// error handlers
@@ -50,14 +50,15 @@ export default ({ app }: { app: express.Application }) => {
     if (err.name === 'UnauthorizedError') {
       return res
         .status(err.status)
-        .send({ message: err.message })
+        .json({ message: err.message })
         .end();
     }
     return next(err);
   });
-  app.use((err: RouteErr, req: Request, res: Response) => {
-    res.status(err.status || 500);
-    res.json({
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  app.use((err: RouteErr, req: Request, res: Response, _: NextFunction) => {
+    res.status(err.status || 500).json({
       errors: {
         message: err.message
       }

@@ -3,7 +3,7 @@ import { Inject, Service } from 'typedi';
 import argon2 from 'argon2';
 import { randomBytes } from 'crypto';
 import jwt from 'jsonwebtoken';
-import config from '../../config';
+import config from '../../config.mjs';
 
 import { IUserDTO } from '../dto/IUserDTO';
 import { UserMap } from '../mappers/UserMap';
@@ -67,14 +67,12 @@ export default class UserService implements IUserService {
         hashed: true
       }).getValue();
       const email = UserEmail.create(userDTO.email).getValue();
-      let role: Role;
 
       const roleOrError = await this.getRole(userDTO.role);
-      if (roleOrError.isFailure) {
+      if (roleOrError.isFailure)
         return Result.fail<{ userDTO: IUserDTO; token: string }>(roleOrError.error);
-      } else {
-        role = roleOrError.getValue();
-      }
+
+      const role = roleOrError.getValue();
 
       const userOrError = await User.create({
         firstName: userDTO.firstName,
