@@ -3,7 +3,7 @@ import { Mapper } from '../core/infra/Mapper';
 import { Document, Model } from 'mongoose';
 import { IRolePersistence } from '../dataschema/IRolePersistence';
 
-import { Role } from '../domain/role';
+import { Role } from '../domain/role/role';
 import IRoleDTO from '../dto/IRoleDTO';
 
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';

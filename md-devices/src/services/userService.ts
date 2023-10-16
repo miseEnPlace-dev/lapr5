@@ -12,11 +12,11 @@ import IUserService from '../services/IServices/IUserService';
 import IRoleRepo from './IRepos/IRoleRepo';
 import IUserRepo from './IRepos/IUserRepo';
 
-import { User } from '../domain/user';
-import { UserEmail } from '../domain/userEmail';
-import { UserPassword } from '../domain/userPassword';
+import { User } from '../domain/user/user';
+import { UserEmail } from '../domain/user/userEmail';
+import { UserPassword } from '../domain/user/userPassword';
 
-import { Role } from '../domain/role';
+import { Role } from '../domain/role/role';
 
 import { Logger } from 'winston';
 import { Result } from '../core/logic/Result';
@@ -62,19 +62,17 @@ export default class UserService implements IUserService {
       const hashedPassword = await argon2.hash(userDTO.password, { salt });
       this.logger.silly('Creating user db record');
 
-      const password = await UserPassword.create({
+      const password = UserPassword.create({
         value: hashedPassword,
         hashed: true
       }).getValue();
-      const email = await UserEmail.create(userDTO.email).getValue();
-      let role: Role;
+      const email = UserEmail.create(userDTO.email).getValue();
 
       const roleOrError = await this.getRole(userDTO.role);
-      if (roleOrError.isFailure) {
+      if (roleOrError.isFailure)
         return Result.fail<{ userDTO: IUserDTO; token: string }>(roleOrError.error);
-      } else {
-        role = roleOrError.getValue();
-      }
+
+      const role = roleOrError.getValue();
 
       const userOrError = await User.create({
         firstName: userDTO.firstName,

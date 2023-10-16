@@ -4,7 +4,7 @@ export interface IGuardResult {
 }
 
 export interface IGuardArgument {
-  argument: any;
+  argument: unknown;
   argumentName: string;
 }
 
@@ -19,7 +19,7 @@ export class Guard {
     return { succeeded: true };
   }
 
-  public static againstNullOrUndefined(argument: any, argumentName: string): IGuardResult {
+  public static againstNullOrUndefined(argument: unknown, argumentName: string): IGuardResult {
     if (argument === null || argument === undefined) {
       return { succeeded: false, message: `${argumentName} is null or undefined` };
     } else {
@@ -36,7 +36,11 @@ export class Guard {
     return { succeeded: true };
   }
 
-  public static isOneOf(value: any, validValues: any[], argumentName: string): IGuardResult {
+  public static isOneOf(
+    value: unknown,
+    validValues: unknown[],
+    argumentName: string
+  ): IGuardResult {
     let isValid = false;
     for (const validValue of validValues) {
       if (value === validValue) {
@@ -49,7 +53,9 @@ export class Guard {
     } else {
       return {
         succeeded: false,
-        message: `${argumentName} isn't oneOf the correct types in ${JSON.stringify(validValues)}. Got "${value}".`
+        message: `${argumentName} isn't oneOf the correct types in ${JSON.stringify(
+          validValues
+        )}. Got "${value}".`
       };
     }
   }
@@ -63,8 +69,21 @@ export class Guard {
     }
   }
 
-  public static allInRange(numbers: number[], min: number, max: number, argumentName: string): IGuardResult {
-    let failingResult: IGuardResult = null;
+  public static isPositiveNumber(num: number, argumentName: string): IGuardResult {
+    if (num <= 0) {
+      return { succeeded: false, message: `${argumentName} is not greater than 0.` };
+    } else {
+      return { succeeded: true };
+    }
+  }
+
+  public static allInRange(
+    numbers: number[],
+    min: number,
+    max: number,
+    argumentName: string
+  ): IGuardResult {
+    let failingResult: IGuardResult | null = null;
     for (const num of numbers) {
       const numIsInRangeResult = this.inRange(num, min, max, argumentName);
       if (!numIsInRangeResult.succeeded) failingResult = numIsInRangeResult;

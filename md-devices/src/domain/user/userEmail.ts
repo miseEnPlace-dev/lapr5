@@ -1,8 +1,9 @@
-import { ValueObject } from '../core/domain/ValueObject';
-import { Result } from '../core/logic/Result';
-import { Guard } from '../core/logic/Guard';
+import { ValueObject } from '../../core/domain/ValueObject';
+import { Guard } from '../../core/logic/Guard';
+import { Result } from '../../core/logic/Result';
 
 interface UserEmailProps {
+  [key: string]: string;
   value: string;
 }
 

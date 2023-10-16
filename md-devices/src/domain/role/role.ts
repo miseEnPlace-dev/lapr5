@@ -1,10 +1,10 @@
-import { AggregateRoot } from '../core/domain/AggregateRoot';
-import { UniqueEntityID } from '../core/domain/UniqueEntityID';
+import { AggregateRoot } from '../../core/domain/AggregateRoot';
+import { UniqueEntityID } from '../../core/domain/UniqueEntityID';
 
-import { Result } from '../core/logic/Result';
+import { Result } from '../../core/logic/Result';
 import { RoleId } from './roleId';
 
-import IRoleDTO from '../dto/IRoleDTO';
+import IRoleDTO from '../../dto/IRoleDTO';
 
 interface RoleProps {
   name: string;

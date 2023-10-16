@@ -1,7 +1,7 @@
 import { Inject, Service } from 'typedi';
 
-import { Role } from '../domain/role';
-import { RoleId } from '../domain/roleId';
+import { Role } from '../domain/role/role';
+import { RoleId } from '../domain/role/roleId';
 import { RoleMap } from '../mappers/RoleMap';
 import IRoleRepo from '../services/IRepos/IRoleRepo';
 
