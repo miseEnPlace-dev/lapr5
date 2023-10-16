@@ -14,13 +14,13 @@ The use cases of each sprint are described in [this section](./ucd/readme.md).
 
 ## Group Members
 
-| Student Nr. | Name            |
-| ----------- | --------------- |
-| 1211299     | André Barros    | 5 |
-| 1211277     | Carlos Lopes    | 1 |
-| 1211285     | Ricardo Moreira | 3 |
-| 1211289     | Tomás Lopes     | 4 |
-| 1211288     | Tomás Russo     | 2 |
+| Student Nr. | Name            | No. |
+| ----------- | --------------- | --- |
+| 1211299     | André Barros    | 5   |
+| 1211277     | Carlos Lopes    | 1   |
+| 1211285     | Ricardo Moreira | 3   |
+| 1211289     | Tomás Lopes     | 4   |
+| 1211288     | Tomás Russo     | 2   |
 
 ## Requirements
 
