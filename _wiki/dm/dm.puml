@@ -73,6 +73,7 @@ package "<<aggregate>> Floor" {
   entity Floor <<entity>> <<root>> { }
 
   entity Elevator <<entity>> { }
+  entity FloorMap <<entity>> { }
   class FloorDescription <<(V,#FF8B40) value object>> {}
 }
 
@@ -89,8 +90,9 @@ package "<<aggregate>> Room" {
   class RoomDescription <<(V,#FF8B40) value object>> {}
 }
 
-Floor "1" *-- "1" FloorDescription
-Room "1" *-- "1" RoomDescription
+Floor "1" *-- "0..1" FloorMap
+Floor "1" *-- "0..1" FloorDescription
+Room "1" *-- "0..1" RoomDescription
 Room "1" *-- "1" RoomCategory
 
 Elevator "1" --> "2..*" Floor : is for
@@ -98,9 +100,9 @@ Elevator "1" --> "2..*" Floor : is for
 package "<<aggregate>> Building" {
   entity Building <<entity>> <<root>> { }
 
+  class BuildingCode <<(V,#FF8B40) value object>> {}
   class BuildingName <<(V,#FF8B40) value object>> {}
   class BuildingDescription <<(V,#FF8B40) value object>> {}
-  class BuildingCode <<(V,#FF8B40) value object>> {}
   class MaxDimensions <<(V,#FF8B40) value object>> {
     - width
     - height
@@ -115,7 +117,7 @@ package "<<aggregate>> Passage" {
 
 Building "1" *-- "0..1" BuildingName
 Building "1" *-- "1" BuildingCode
-Building "1" *-- "1" BuildingDescription
+Building "1" *-- "0..1" BuildingDescription
 Building "1" *-- "1" MaxDimensions
 
 Floor "1" --> "1" Building : belongs to
