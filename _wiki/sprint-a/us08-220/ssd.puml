@@ -1,18 +1,23 @@
-@startuml US4004_SSD
+@startuml us08-220_ssd
 autonumber
 
 actor CM as "Campus Manager"
-actor System as "System"
+participant SYS as "RobDroneGo System" <<system (C4)>>
 
 activate CM
-activate System
 
-CM -> System : wants to create a building
+CM -> SYS : wants to create a building
+activate SYS
 
-note left: POST
+CM <- SYS : asks for the building name
+deactivate SYS
 
-deactivate System
+CM -> SYS : types the building name
+activate SYS
+
+CM <- SYS : returns confirmation message
+deactivate SYS
+
 deactivate CM
-
 
 @enduml
