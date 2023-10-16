@@ -1,11 +1,11 @@
-import { Service, Inject } from 'typedi';
+import { Inject, Service } from 'typedi';
 import config from '../../config';
+import { Result } from '../core/logic/Result';
+import { Role } from '../domain/role/role';
 import IRoleDTO from '../dto/IRoleDTO';
-import { Role } from '../domain/role';
+import { RoleMap } from '../mappers/RoleMap';
 import IRoleRepo from '../services/IRepos/IRoleRepo';
 import IRoleService from './IServices/IRoleService';
-import { Result } from '../core/logic/Result';
-import { RoleMap } from '../mappers/RoleMap';
 
 @Service()
 export default class RoleService implements IRoleService {
@@ -28,7 +28,7 @@ export default class RoleService implements IRoleService {
 
   public async createRole(roleDTO: IRoleDTO): Promise<Result<IRoleDTO>> {
     try {
-      const roleOrError = await Role.create(roleDTO);
+      const roleOrError = Role.create(roleDTO);
 
       if (roleOrError.isFailure) {
         return Result.fail<IRoleDTO>(roleOrError.errorValue());

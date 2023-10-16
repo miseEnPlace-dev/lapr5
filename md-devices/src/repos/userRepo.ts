@@ -4,9 +4,9 @@ import { Document, Model } from 'mongoose';
 import { IUserPersistence } from '../dataschema/IUserPersistence';
 
 import { Logger } from 'winston';
-import { User } from '../domain/user';
-import { UserEmail } from '../domain/userEmail';
-import { UserId } from '../domain/userId';
+import { User } from '../domain/user/user';
+import { UserEmail } from '../domain/user/userEmail';
+import { UserId } from '../domain/user/userId';
 import { UserMap } from '../mappers/UserMap';
 import IUserRepo from '../services/IRepos/IUserRepo';
 
