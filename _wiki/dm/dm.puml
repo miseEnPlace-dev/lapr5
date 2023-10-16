@@ -109,8 +109,8 @@ package "<<aggregate>> Building" {
 
 Elevator "1" ---> "1" Building : is for
 
-package "<<aggregate>> Passage" {
-  entity Passage <<entity>> <<root>> { }
+package "<<aggregate>> Connector" {
+  entity Connector <<entity>> <<root>> { }
 }
 
 Building "1" *-- "0..1" BuildingName
@@ -146,21 +146,21 @@ PickUpAndDelivery "1" --> "1" User : delivery contact
 PickUpAndDelivery "1" --> "1" Room : pick up location
 PickUpAndDelivery "1" --> "1" Room : delivery location
 
-package "<<aggregate>> Survailance" {
-  entity Survailance <<entity>> <<root>> { }
+package "<<aggregate>> Surveillance" {
+  entity Surveillance <<entity>> <<root>> { }
 }
 
-Survailance "1" --> "1" User : contact
-Survailance "1" --> "1..*" Floor : target
+Surveillance "1" --> "1" User : contact
+Surveillance "1" --> "1..*" Floor : target
 
 PickUpAndDelivery <|-- Task
-Survailance <|-- Task
+Surveillance <|-- Task
 
 DeviceModel "1" --> "*" Task : can perform
 
 Request "1" *-- "1" RequestState
 
-Passage "1" --> "2" Floor : is for
+Connector "1" --> "2" Floor : is for
 User "1" <-- "1" Request : is made
 Request "1" --> "1" Task : is for
 
