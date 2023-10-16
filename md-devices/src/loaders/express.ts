@@ -1,6 +1,5 @@
-import bodyParser from 'body-parser';
 import cors from 'cors';
-import express, { NextFunction, Request, Response } from 'express';
+import express, { NextFunction, Request, Response, json } from 'express';
 import config from '../../config';
 import routes from '../api';
 
@@ -32,7 +31,7 @@ export default ({ app }: { app: express.Application }) => {
   app.use(cors());
 
   // Middleware that transforms the raw string of req.body into json
-  app.use(bodyParser.json());
+  app.use(json());
 
   // Load API routes
   app.use(config.api.prefix, routes());
