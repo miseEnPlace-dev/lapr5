@@ -314,6 +314,50 @@ Notem que se trata de um exemplo que podme usar como base e que terá que ser ad
 
 o requisito 370 permite indicar que robots existem e de que tipo cada um é, por exemplo "Robot 'ABC32' do tipo A", "Robot 'Brian2' do tipo A" e "Robot 'Stew' do tipo B""
 
+## [Question 20](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25164)
+
+> relativamente à US250 o que é que pretende que seja possivel editar numa passagem entre edificios?
+
+#### Resposta
+
+"deve ser possivel corrigir todos os dados da passagem"
+
+## [Question 21](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25168)
+
+> Em relação às User Stories de edição, temos já uma ideia das informações que são opcionais, mas queremos ter a certeza daquilo que é editável ou não. Posto isto, poderia indicar que informações pretende editar nas US160, US200, US250 e US280?
+
+#### Resposta
+
+"requisito 160 - editar edificio - todas as informações à exceção do código do edificio
+
+requisito 200 - editar piso - todas as informações à exceção do edificio a que o piso se refere
+
+requisito 250 - editar passagem - todas as informações
+
+requisito 280 - editar elevador - todas as informações à exceção do edificio a que o piso se refere
+"
+
+## [Question 22](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25171)
+
+> Relativamente à US350 foi referido numa resposta anterior "o requisito 350 permite definir que tipos de robots existem. por exemplo "Tipo A: Robot marca X modelo Y com capacidade de executar tarefas de vigilância"
+>
+> Pretende alguma regra de negócio para o limite de caracteres para o tipo, marca e modelo?
+
+#### Resposta
+
+"tipo de robot: obrigatório, alfanumericos, maximo 25 caracteres
+marca: obrigatório, maximo 50 caracteres
+modelo: obrigatório, máximo 100 caracteres"
+
+## [Question 23](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25188)
+
+> Que dados e quais as suas regras de negócio pretende para o piso, elevador, passagem e sala?
+> Além do óbvio e obrigatório como o edifício no caso do piso, o edifício e os pisos que serve no caso do elevador, os edifícios e pisos no caso da passagem e o edifício e piso no caso da sala.
+
+#### Resposta
+
+_AINDA POR RESPONDER_
+
 ### End of Sprint 1
 
-_LAST UPDATE: 14/10/2023 15:17H_
+_LAST UPDATE: 16/10/2023 20:11H_
