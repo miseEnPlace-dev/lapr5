@@ -1,5 +1,5 @@
 import { Inject, Service } from 'typedi';
-import config from '../../config';
+import config from '../../config.mjs';
 
 import IRoleDTO from '../dto/IRoleDTO';
 import IRoleController from './IControllers/IRoleController';

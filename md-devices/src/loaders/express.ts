@@ -1,6 +1,6 @@
 import cors from 'cors';
 import express, { NextFunction, Request, Response, json } from 'express';
-import config from '../../config';
+import config from '../../config.mjs';
 import routes from '../api';
 
 type RouteErr = {

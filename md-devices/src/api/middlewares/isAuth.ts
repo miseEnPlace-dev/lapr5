@@ -1,6 +1,6 @@
 // remove by JRT : import jwt from 'express-jwt';
 import { expressjwt as jwt } from 'express-jwt';
-import config from '../../../config';
+import config from '../../../config.mjs';
 
 /**
  * We are assuming that the JWT will come in a header with the form
