@@ -5,15 +5,13 @@ import { z } from 'zod';
 import { IUserDTO } from '../../dto/IUserDTO';
 import AuthService from '../../services/userService';
 
+import winston from 'winston';
 import middlewares from '../middlewares';
-import winston = require('winston');
 
 import * as UserController from '../../controllers/userController';
 
-const route = Router();
-
 export default (app: Router) => {
-  app.use('/auth', route);
+  const route = Router();
 
   route.post(
     '/signup',

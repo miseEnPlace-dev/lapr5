@@ -1,25 +1,24 @@
-import { Container, Service, Inject } from 'typedi';
+import { Inject, Service } from 'typedi';
 
-import jwt from 'jsonwebtoken';
-import config from '../../config';
 import argon2 from 'argon2';
 import { randomBytes } from 'crypto';
+import jwt from 'jsonwebtoken';
+import config from '../../config';
 
-//import MailerService from './mailer.ts.bak';
-
-import IUserService from '../services/IServices/IUserService';
-import { UserMap } from '../mappers/UserMap';
 import { IUserDTO } from '../dto/IUserDTO';
+import { UserMap } from '../mappers/UserMap';
+import IUserService from '../services/IServices/IUserService';
 
-import IUserRepo from './IRepos/IUserRepo';
 import IRoleRepo from './IRepos/IRoleRepo';
+import IUserRepo from './IRepos/IUserRepo';
 
 import { User } from '../domain/user';
-import { UserPassword } from '../domain/userPassword';
 import { UserEmail } from '../domain/userEmail';
+import { UserPassword } from '../domain/userPassword';
 
 import { Role } from '../domain/role';
 
+import { Logger } from 'winston';
 import { Result } from '../core/logic/Result';
 
 @Service()
@@ -27,7 +26,7 @@ export default class UserService implements IUserService {
   constructor(
     @Inject(config.repos.user.name) private userRepo: IUserRepo,
     @Inject(config.repos.role.name) private roleRepo: IRoleRepo,
-    @Inject('logger') private logger
+    @Inject('logger') private logger: Logger
   ) {}
 
   public async SignUp(userDTO: IUserDTO): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
@@ -36,7 +35,9 @@ export default class UserService implements IUserService {
       const found = !!userDocument;
 
       if (found) {
-        return Result.fail<{ userDTO: IUserDTO; token: string }>('User already exists with email=' + userDTO.email);
+        return Result.fail<{ userDTO: IUserDTO; token: string }>(
+          'User already exists with email=' + userDTO.email
+        );
       }
 
       /**
@@ -61,7 +62,10 @@ export default class UserService implements IUserService {
       const hashedPassword = await argon2.hash(userDTO.password, { salt });
       this.logger.silly('Creating user db record');
 
-      const password = await UserPassword.create({ value: hashedPassword, hashed: true }).getValue();
+      const password = await UserPassword.create({
+        value: hashedPassword,
+        hashed: true
+      }).getValue();
       const email = await UserEmail.create(userDTO.email).getValue();
       let role: Role;
 
@@ -96,14 +100,20 @@ export default class UserService implements IUserService {
 
       await this.userRepo.save(userResult);
       const userDTOResult = UserMap.toDTO(userResult) as IUserDTO;
-      return Result.ok<{ userDTO: IUserDTO; token: string }>({ userDTO: userDTOResult, token: token });
+      return Result.ok<{ userDTO: IUserDTO; token: string }>({
+        userDTO: userDTOResult,
+        token: token
+      });
     } catch (e) {
       this.logger.error(e);
       throw e;
     }
   }
 
-  public async SignIn(email: string, password: string): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
+  public async SignIn(
+    email: string,
+    password: string
+  ): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
     const user = await this.userRepo.findByEmail(email);
 
     if (!user) {
