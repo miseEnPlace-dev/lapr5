@@ -153,8 +153,8 @@ package "<<aggregate>> Survailance" {
 Survailance "1" --> "1" User : contact
 Survailance "1" --> "1..*" Floor : target
 
-PickUpAndDelivery <|-- Task
-Survailance <|-- Task
+PickUpAndDelivery --|> Task
+Survailance --|> Task
 
 DeviceModel "1" --> "*" Task : can perform
 

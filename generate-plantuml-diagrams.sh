@@ -8,7 +8,7 @@ out=
 if [ $1 ]; then
   baseDir=$1
 else
-  baseDir=wiki
+  baseDir=_wiki
 fi
 
 for out_dir in `find $baseDir -name "$out" -type d`;
