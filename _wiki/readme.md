@@ -2,7 +2,7 @@
 
 ## Domain Model
 
-![Domain Model](./dm/dm.svg)
+![Domain Model](./dm/assets/dm.svg)
 
 ## Client Clarifications
 

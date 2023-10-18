@@ -26,11 +26,11 @@ _Notes:_
 
 ##### Logical
 
-![views/level-1/logical-view.svg]
+![Level 1 Logical View](views/level-1/assets/logical-view.svg)
 
 ##### Processes
 
-![views/level-1/process-view.svg]
+![Level 1 Processes View](views/level-1/assets/process-view.svg)
 
 ---
 
@@ -38,19 +38,19 @@ _Notes:_
 
 #### Logical
 
-![views/level-2/logical-view.svg]
+![Level 2 Logical View](views/level-2/assets/logical-view.svg)
 
 ##### Processes
 
-![views/level-2/process-view.svg]
+![Level 2 Processes View](views/level-2/assets/process-view.svg)
 
 ##### Implementation
 
-![views/level-2/implementation-view.svg]
+![Level 2 Implementation View](views/level-2/assets/implementation-view.svg)
 
 ##### Physical
 
-![views/level-2/physical-view.svg]
+![Level 2 Physical View](views/level-2/assets/physical-view.svg)
 
 ---
 
@@ -58,16 +58,16 @@ _Notes:_
 
 ##### Logical
 
-![views/level-3/logical-view.svg]
+![Level 3 Logical View](views/level-3/assets/logical-view.svg)
 
 ##### Processes
 
-![views/level-3/process-view.svg]
+![Level 3 Processes View](views/level-3/assets/process-view.svg)
 
 ##### Implementation
 
-![views/level-3/implementation-view.svg]
+![Level 3 Implementation View](views/level-3/assets/implementation-view.svg)
 
 ##### Physical
 
-![views/level-3/physical-view.svg]
+![Level 3 Physical View](views/level-3/assets/physical-view.svg)
