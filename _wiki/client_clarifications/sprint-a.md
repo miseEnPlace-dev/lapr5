@@ -349,10 +349,9 @@ requisito 280 - editar elevador - todas as informações à exceção do edifici
 marca: obrigatório, maximo 50 caracteres
 modelo: obrigatório, máximo 100 caracteres"
 
-## [Question 23](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25188)
+## [Question 23](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25225)
 
-> Que dados e quais as suas regras de negócio pretende para o piso, elevador, passagem e sala?
-> Além do óbvio e obrigatório como o edifício no caso do piso, o edifício e os pisos que serve no caso do elevador, os edifícios e pisos no caso da passagem e o edifício e piso no caso da sala.
+> É desejável que o sistema possibilite a anulação de uma tarefa por parte do utilizador após a sua solicitação, no caso de ainda não ter sido executada?
 
 #### Resposta
 
@@ -360,4 +359,4 @@ _AINDA POR RESPONDER_
 
 ### End of Sprint 1
 
-_LAST UPDATE: 16/10/2023 20:11H_
+_LAST UPDATE: 18/10/2023 11:27H_
