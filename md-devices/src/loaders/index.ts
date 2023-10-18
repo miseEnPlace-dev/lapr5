@@ -15,9 +15,8 @@ export default async ({ expressApp }: { expressApp: Express }) => {
   }
 
   const userSchema = {
-    // compare with the approach followed in repos and services
-    name: 'userSchema',
-    schema: '../persistence/schemas/userSchema'
+    name: config.schemas.user.name,
+    schema: config.schemas.user.schema
   };
 
   const roleSchema = {
@@ -46,11 +45,31 @@ export default async ({ expressApp }: { expressApp: Express }) => {
     path: config.services.role.path
   };
 
+  const buildingController = {
+    name: config.controllers.building.name,
+    path: config.controllers.building.path
+  };
+
+  const buildingRepo = {
+    name: config.repos.building.name,
+    path: config.repos.building.path
+  };
+
+  const buildingService = {
+    name: config.services.building.name,
+    path: config.services.building.path
+  };
+
+  const buildingSchema = {
+    name: config.schemas.building.name,
+    schema: config.schemas.building.schema
+  };
+
   dependencyInjectorLoader({
-    schemas: [userSchema, roleSchema],
-    controllers: [roleController],
-    repos: [roleRepo, userRepo],
-    services: [roleService]
+    schemas: [userSchema, roleSchema, buildingSchema],
+    controllers: [roleController, buildingController],
+    repos: [roleRepo, userRepo, buildingRepo],
+    services: [roleService, buildingService]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');
 

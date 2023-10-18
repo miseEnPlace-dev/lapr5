@@ -3,6 +3,7 @@ import { UniqueEntityID } from '../../core/domain/UniqueEntityID';
 import { Guard } from '../../core/logic/Guard';
 import { Result } from '../../core/logic/Result';
 import { Role } from '../role/role';
+import { PhoneNumber } from './phoneNumber';
 import { UserEmail } from './userEmail';
 import { UserId } from './userId';
 import { UserPassword } from './userPassword';
@@ -13,7 +14,7 @@ interface UserProps {
   email: UserEmail;
   password: UserPassword;
   role: Role;
-  phoneNumber: string;
+  phoneNumber: PhoneNumber;
 }
 
 export class User extends AggregateRoot<UserProps> {
@@ -49,12 +50,8 @@ export class User extends AggregateRoot<UserProps> {
     this.props.role = value;
   }
 
-  get phoneNumber(): string {
+  get phoneNumber(): PhoneNumber {
     return this.props.phoneNumber;
-  }
-
-  set phoneNumber(value: string) {
-    this.props.phoneNumber = value;
   }
 
   private constructor(props: UserProps, id?: UniqueEntityID) {

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { IBuildingPersistence } from '../../dataschema/IBuildingPersistence';
 
-const Building = new mongoose.Schema(
+const BuildingSchema = new mongoose.Schema(
   {
     code: {
       type: String,
@@ -14,11 +14,10 @@ const Building = new mongoose.Schema(
 
     maxDimensions: {
       width: Number,
-      height: Number,
-      required: true
+      height: Number
     }
   },
   { timestamps: true }
 );
 
-export default mongoose.model<IBuildingPersistence & mongoose.Document>('Building', Building);
+export default mongoose.model<IBuildingPersistence & mongoose.Document>('Building', BuildingSchema);

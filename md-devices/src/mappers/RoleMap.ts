@@ -1,8 +1,5 @@
 import { Mapper } from '../core/infra/Mapper';
 
-import { Document, Model } from 'mongoose';
-import { IRolePersistence } from '../dataschema/IRolePersistence';
-
 import { Role } from '../domain/role/role';
 import IRoleDTO from '../dto/IRoleDTO';
 
@@ -16,15 +13,15 @@ export class RoleMap extends Mapper<Role> {
     } as IRoleDTO;
   }
 
-  public static toDomain(role: Model<IRolePersistence & Document>): Role | null {
-    const roleOrError = Role.create(role, new UniqueEntityID(role.domainId));
+  public static toDomain(role: IRoleDTO): Role | null {
+    const roleOrError = Role.create(role, new UniqueEntityID(role.id));
 
     roleOrError.isFailure ? console.log(roleOrError.error) : '';
 
     return roleOrError.isSuccess ? roleOrError.getValue() : null;
   }
 
-  public static toPersistence(role: Role): any {
+  public static toPersistence(role: Role) {
     return {
       domainId: role.id.toString(),
       name: role.name

@@ -34,7 +34,9 @@ export default class RoleRepo implements IRoleRepo {
 
         const roleCreated = await this.roleSchema.create(rawRole);
 
-        return RoleMap.toDomain(roleCreated);
+        const roleDomain = RoleMap.toDomain(roleCreated);
+        if (!roleDomain) throw new Error('Role not created');
+        return roleDomain;
       } else {
         roleDocument.name = role.name;
         await roleDocument.save();

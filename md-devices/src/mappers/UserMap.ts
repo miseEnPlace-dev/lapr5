@@ -10,6 +10,8 @@ import { User } from '../domain/user/user';
 import { UserEmail } from '../domain/user/userEmail';
 import { UserPassword } from '../domain/user/userPassword';
 
+import { IUserPersistence } from '@/dataschema/IUserPersistence';
+import { PhoneNumber } from '@/domain/user/phoneNumber';
 import RoleRepo from '../repos/roleRepo';
 
 export class UserMap extends Mapper<User> {
@@ -24,11 +26,13 @@ export class UserMap extends Mapper<User> {
     } as IUserDTO;
   }
 
-  public static async toDomain(raw: any): Promise<User> {
+  public static async toDomain(raw: IUserPersistence): Promise<User | null> {
     const userEmailOrError = UserEmail.create(raw.email);
     const userPasswordOrError = UserPassword.create({ value: raw.password, hashed: true });
+    const phoneNumberOrError = PhoneNumber.create(raw.phoneNumber);
     const repo = Container.get(RoleRepo);
     const role = await repo.findByDomainId(raw.role);
+    if (!role) throw new Error('Role not found');
 
     const userOrError = User.create(
       {
@@ -36,9 +40,10 @@ export class UserMap extends Mapper<User> {
         lastName: raw.lastName,
         email: userEmailOrError.getValue(),
         password: userPasswordOrError.getValue(),
+        phoneNumber: phoneNumberOrError.getValue(),
         role: role
       },
-      new UniqueEntityID(raw.domainId)
+      new UniqueEntityID(raw._id)
     );
 
     userOrError.isFailure ? console.log(userOrError.error) : '';
@@ -46,7 +51,7 @@ export class UserMap extends Mapper<User> {
     return userOrError.isSuccess ? userOrError.getValue() : null;
   }
 
-  public static toPersistence(user: User): any {
+  public static toPersistence(user: User) {
     const a = {
       domainId: user.id.toString(),
       email: user.email.value,

@@ -40,10 +40,29 @@ export default {
     prefix: '/api'
   },
 
+  schemas: {
+    user: {
+      name: 'userSchema',
+      schema: '../persistence/schemas/userSchema'
+    },
+    role: {
+      name: 'roleSchema',
+      schema: '../persistence/schemas/roleSchema'
+    },
+    building: {
+      name: 'buildingSchema',
+      schema: '../persistence/schemas/buildingSchema'
+    }
+  },
+
   controllers: {
     role: {
       name: 'RoleController',
       path: '../controllers/roleController'
+    },
+    building: {
+      name: 'BuildingController',
+      path: '../controllers/buildingController'
     }
   },
 
@@ -55,6 +74,10 @@ export default {
     user: {
       name: 'UserRepo',
       path: '../repos/userRepo'
+    },
+    building: {
+      name: 'BuildingRepo',
+      path: '../repos/buildingRepo'
     }
   },
 
@@ -62,6 +85,10 @@ export default {
     role: {
       name: 'RoleService',
       path: '../services/roleService'
+    },
+    building: {
+      name: 'BuildingService',
+      path: '../services/buildingService'
     }
   }
 };
