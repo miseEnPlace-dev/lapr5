@@ -10,12 +10,12 @@ import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 export class BuildingMap extends Mapper<Building> {
   public static toDTO(building: Building): IBuildingDTO {
     return {
-      code: building.code.id.toString(),
+      code: building.code.toString(),
       maxDimensions: {
-        width: building.maxDimensions.value.width,
-        height: building.maxDimensions.value.height
+        width: building.maxDimensions.width,
+        height: building.maxDimensions.height
       },
-      name: building.name.value
+      name: building.name?.value
     };
   }
 
@@ -24,19 +24,20 @@ export class BuildingMap extends Mapper<Building> {
   ): Building | null {
     const buildingOrError = Building.create(building, new UniqueEntityID(building._id));
 
-    buildingOrError.isFailure ? console.log(buildingOrError.error) : '';
+    buildingOrError.isFailure && console.log(buildingOrError.error);
 
     return buildingOrError.isSuccess ? buildingOrError.getValue() : null;
   }
 
-  public static toPersistence(role: Building) {
+  public static toPersistence(building: Building) {
+    console.log(building.maxDimensions);
     return {
-      code: role.code.id.toString(),
+      code: building.code.toString(),
       maxDimensions: {
-        width: role.maxDimensions.value.width,
-        height: role.maxDimensions.value.height
+        width: building.maxDimensions.width,
+        height: building.maxDimensions.height
       },
-      name: role.name.value
+      name: building.name?.value
     };
   }
 }

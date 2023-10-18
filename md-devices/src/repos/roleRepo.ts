@@ -1,16 +1,20 @@
-import { Inject, Service } from 'typedi';
+import Container, { Service } from 'typedi';
 
 import { Role } from '../domain/role/role';
 import { RoleId } from '../domain/role/roleId';
 import { RoleMap } from '../mappers/RoleMap';
 import IRoleRepo from '../services/IRepos/IRoleRepo';
 
+import config from 'config.mjs';
 import { Document, FilterQuery, Model } from 'mongoose';
 import { IRolePersistence } from '../dataschema/IRolePersistence';
 
 @Service()
 export default class RoleRepo implements IRoleRepo {
-  constructor(@Inject('roleSchema') private roleSchema: Model<IRolePersistence & Document>) {}
+  private roleSchema: Model<IRolePersistence & Document>;
+  constructor() {
+    this.roleSchema = Container.get(config.schemas.role.name);
+  }
 
   public async exists(role: Role): Promise<boolean> {
     const idX = role.id instanceof RoleId ? (<RoleId>role.id).toValue() : role.id;

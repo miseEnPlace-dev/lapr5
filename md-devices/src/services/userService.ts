@@ -1,4 +1,4 @@
-import { Inject, Service } from 'typedi';
+import Container, { Service } from 'typedi';
 
 import argon2 from 'argon2';
 import { randomBytes } from 'crypto';
@@ -18,16 +18,17 @@ import { UserPassword } from '../domain/user/userPassword';
 
 import { Role } from '../domain/role/role';
 
-import { Logger } from 'winston';
 import { Result } from '../core/logic/Result';
 
 @Service()
 export default class UserService implements IUserService {
-  constructor(
-    @Inject(config.repos.user.name) private userRepo: IUserRepo,
-    @Inject(config.repos.role.name) private roleRepo: IRoleRepo,
-    @Inject('logger') private logger: Logger
-  ) {}
+  private userRepo: IUserRepo;
+  private roleRepo: IRoleRepo;
+
+  constructor() {
+    this.userRepo = Container.get(config.repos.user.name);
+    this.roleRepo = Container.get(config.repos.role.name);
+  }
 
   public async SignUp(userDTO: IUserDTO): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
     try {
@@ -58,9 +59,7 @@ export default class UserService implements IUserService {
        */
 
       const salt = randomBytes(32);
-      this.logger.silly('Hashing password');
       const hashedPassword = await argon2.hash(userDTO.password, { salt });
-      this.logger.silly('Creating user db record');
 
       const password = UserPassword.create({
         value: hashedPassword,
@@ -88,10 +87,8 @@ export default class UserService implements IUserService {
 
       const userResult = userOrError.getValue();
 
-      this.logger.silly('Generating JWT');
       const token = this.generateToken(userResult);
 
-      this.logger.silly('Sending welcome email');
       //await this.mailer.SendWelcomeEmail(userResult);
 
       //this.eventDispatcher.dispatch(events.user.signUp, { user: userResult });
@@ -103,7 +100,7 @@ export default class UserService implements IUserService {
         token: token
       });
     } catch (e) {
-      this.logger.error(e);
+      console.log(e);
       throw e;
     }
   }
@@ -121,11 +118,8 @@ export default class UserService implements IUserService {
     /**
      * We use verify from argon2 to prevent 'timing based' attacks
      */
-    this.logger.silly('Checking password');
     const validPassword = await argon2.verify(user.password.value, password);
     if (validPassword) {
-      this.logger.silly('Password is valid!');
-      this.logger.silly('Generating JWT');
       const token = this.generateToken(user) as string;
 
       const userDTO = UserMap.toDTO(user) as IUserDTO;
@@ -149,7 +143,6 @@ export default class UserService implements IUserService {
      * because it doesn't have _the secret_ to sign it
      * more information here: https://softwareontheroad.com/you-dont-need-passport
      */
-    this.logger.silly(`Sign JWT for userId: ${user._id}`);
 
     const id = user.id.toString();
     const email = user.email.value;

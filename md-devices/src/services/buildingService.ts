@@ -1,6 +1,6 @@
 import { IBuildingDTO } from '@/dto/IBuildingDTO';
 import { BuildingMap } from '@/mappers/BuildingMap';
-import { Inject, Service } from 'typedi';
+import Container, { Service } from 'typedi';
 import config from '../../config.mjs';
 import { Result } from '../core/logic/Result';
 import { Building } from '../domain/building/building';
@@ -9,20 +9,22 @@ import IBuildingService from './IServices/IBuildingService';
 
 @Service()
 export default class BuildingService implements IBuildingService {
-  constructor(@Inject(config.repos.building.name) private BuildingRepo: IBuildingRepo) {}
+  private buildingRepo: IBuildingRepo;
+  constructor() {
+    this.buildingRepo = Container.get(config.repos.building.name);
+  }
+
   public async createBuilding(BuildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>> {
     try {
-      const BuildingOrError = Building.create(BuildingDTO);
+      const buildingOrError = Building.create(BuildingDTO);
 
-      if (BuildingOrError.isFailure) {
-        return Result.fail<IBuildingDTO>(BuildingOrError.errorValue());
-      }
+      if (buildingOrError.isFailure) return Result.fail<IBuildingDTO>(buildingOrError.errorValue());
 
-      const BuildingResult = BuildingOrError.getValue();
+      const buildingResult = buildingOrError.getValue();
 
-      await this.BuildingRepo.save(BuildingResult);
+      await this.buildingRepo.save(buildingResult);
 
-      const BuildingDTOResult = BuildingMap.toDTO(BuildingResult) as IBuildingDTO;
+      const BuildingDTOResult = BuildingMap.toDTO(buildingResult) as IBuildingDTO;
       return Result.ok<IBuildingDTO>(BuildingDTOResult);
     } catch (e) {
       throw e;

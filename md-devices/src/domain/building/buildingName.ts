@@ -18,10 +18,8 @@ export class BuildingName extends ValueObject<BuildingNameProps> {
 
   public static create(name: string): Result<BuildingName> {
     const guardResult = Guard.againstNullOrUndefined(name, 'name');
-    if (!guardResult.succeeded) {
-      return Result.fail<BuildingName>(guardResult.message);
-    } else {
-      return Result.ok<BuildingName>(new BuildingName({ value: name }));
-    }
+    if (!guardResult.succeeded) return Result.fail<BuildingName>(guardResult.message);
+
+    return Result.ok<BuildingName>(new BuildingName({ value: name }));
   }
 }

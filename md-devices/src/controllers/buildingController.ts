@@ -1,4 +1,4 @@
-import { Inject, Service } from 'typedi';
+import Container, { Service } from 'typedi';
 import config from '../../config.mjs';
 
 import { IBuildingDTO } from '@/dto/IBuildingDTO';
@@ -9,9 +9,10 @@ import IBuildingController from './IControllers/IBuildingController';
 
 @Service()
 export default class BuildingController implements IBuildingController {
-  constructor(
-    @Inject(config.services.building.name) private buildingServiceInstance: IBuildingService
-  ) {}
+  private buildingServiceInstance: IBuildingService;
+  constructor() {
+    this.buildingServiceInstance = Container.get(config.services.building.name) as IBuildingService;
+  }
 
   public async createBuilding(req: Request, res: Response, next: NextFunction) {
     try {
@@ -19,9 +20,9 @@ export default class BuildingController implements IBuildingController {
         req.body as IBuildingDTO
       )) as Result<IBuildingDTO>;
 
-      if (roleOrError.isFailure) {
-        return res.status(402).send();
-      }
+      console.log('roleOrError: ', roleOrError);
+
+      if (roleOrError.isFailure) return res.status(402).send();
 
       const roleDTO = roleOrError.getValue();
       return res.json(roleDTO).status(201);

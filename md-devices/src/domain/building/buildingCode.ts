@@ -9,4 +9,8 @@ export class BuildingCode extends Entity<null> {
   private constructor(id?: UniqueEntityID) {
     super(null, id);
   }
+
+  public static create(id: string): BuildingCode {
+    return new BuildingCode(UniqueEntityID.caller(id));
+  }
 }

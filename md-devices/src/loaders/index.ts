@@ -20,9 +20,8 @@ export default async ({ expressApp }: { expressApp: Express }) => {
   };
 
   const roleSchema = {
-    // compare with the approach followed in repos and services
-    name: 'roleSchema',
-    schema: '../persistence/schemas/roleSchema'
+    name: config.schemas.role.name,
+    schema: config.schemas.role.schema
   };
 
   const roleController = {

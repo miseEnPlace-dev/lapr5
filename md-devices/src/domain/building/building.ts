@@ -8,13 +8,10 @@ import { BuildingMaxDimensions } from './buildingMaxDimensions';
 import { BuildingName } from './buildingName';
 
 interface BuildingProps {
-  code: string;
-  name?: string;
-  description?: string;
-  maxDimensions: {
-    width: number;
-    height: number;
-  };
+  code: BuildingCode;
+  name?: BuildingName;
+  description?: BuildingDescription;
+  maxDimensions: BuildingMaxDimensions;
 }
 
 export class Building extends AggregateRoot<BuildingProps> {
@@ -23,23 +20,19 @@ export class Building extends AggregateRoot<BuildingProps> {
   }
 
   get code(): BuildingCode {
-    return BuildingCode.caller(this.props.code);
+    return this.props.code;
   }
 
-  get name(): BuildingName {
-    return BuildingName.caller(this.props.name);
+  get name(): BuildingName | undefined {
+    return this.props.name;
   }
 
-  get description(): BuildingDescription {
-    return BuildingDescription.caller(this.props.description);
+  get description(): BuildingDescription | undefined {
+    return this.props.description;
   }
 
   get maxDimensions(): BuildingMaxDimensions {
-    return BuildingMaxDimensions.caller(this.props.maxDimensions);
-  }
-
-  get buildingCode(): BuildingCode {
-    return BuildingCode.caller(this.code);
+    return this.props.maxDimensions;
   }
 
   private constructor(props: BuildingProps, id?: UniqueEntityID) {
@@ -49,24 +42,15 @@ export class Building extends AggregateRoot<BuildingProps> {
   public static create(props: BuildingProps, id?: UniqueEntityID): Result<Building> {
     const guardedProps = [
       { argument: props.code, argumentName: 'code' },
-      { argument: props.name, argumentName: 'name' },
-      { argument: props.description, argumentName: 'description' },
       { argument: props.maxDimensions, argumentName: 'maxDimensions' }
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
 
-    if (!guardResult.succeeded) {
-      return Result.fail<Building>(guardResult.message);
-    } else {
-      const building = new Building(
-        {
-          ...props
-        },
-        id
-      );
+    if (!guardResult.succeeded) return Result.fail<Building>(guardResult.message);
 
-      return Result.ok<Building>(building);
-    }
+    const building = new Building({ ...props }, id);
+
+    return Result.ok<Building>(building);
   }
 }

@@ -14,8 +14,12 @@ interface BuildingMaxDimensionsProps {
 }
 
 export class BuildingMaxDimensions extends ValueObject<BuildingMaxDimensionsProps> {
-  get value(): { width: number; height: number } {
-    return this.props.dimensions;
+  get width(): number {
+    return this.props.dimensions.width;
+  }
+
+  get height(): number {
+    return this.props.dimensions.height;
   }
 
   private constructor(props: BuildingMaxDimensionsProps) {
@@ -26,12 +30,10 @@ export class BuildingMaxDimensions extends ValueObject<BuildingMaxDimensionsProp
     const guardResult =
       Guard.isPositiveNumber(width, 'width') && Guard.isPositiveNumber(height, 'height');
 
-    if (!guardResult.succeeded) {
-      return Result.fail<BuildingMaxDimensions>(guardResult.message);
-    } else {
-      return Result.ok<BuildingMaxDimensions>(
-        new BuildingMaxDimensions({ dimensions: { width, height } })
-      );
-    }
+    if (!guardResult.succeeded) return Result.fail<BuildingMaxDimensions>(guardResult.message);
+
+    return Result.ok<BuildingMaxDimensions>(
+      new BuildingMaxDimensions({ dimensions: { width, height } })
+    );
   }
 }

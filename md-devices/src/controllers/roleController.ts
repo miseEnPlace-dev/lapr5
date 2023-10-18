@@ -1,4 +1,4 @@
-import { Inject, Service } from 'typedi';
+import Container, { Service } from 'typedi';
 import config from '../../config.mjs';
 
 import IRoleDTO from '../dto/IRoleDTO';
@@ -10,7 +10,10 @@ import IRoleService from '../services/IServices/IRoleService';
 
 @Service()
 export default class RoleController implements IRoleController {
-  constructor(@Inject(config.services.role.name) private roleServiceInstance: IRoleService) {}
+  private roleServiceInstance: IRoleService;
+  constructor() {
+    this.roleServiceInstance = Container.get(config.services.role.name) as IRoleService;
+  }
 
   public async createRole(req: Request, res: Response, next: NextFunction) {
     try {

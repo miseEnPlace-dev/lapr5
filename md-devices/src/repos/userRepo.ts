@@ -1,9 +1,9 @@
-import { Inject, Service } from 'typedi';
+import Container, { Service } from 'typedi';
 
 import { Document, Model } from 'mongoose';
 import { IUserPersistence } from '../dataschema/IUserPersistence';
 
-import { Logger } from 'winston';
+import config from 'config.mjs';
 import { User } from '../domain/user/user';
 import { UserEmail } from '../domain/user/userEmail';
 import { UserId } from '../domain/user/userId';
@@ -12,10 +12,11 @@ import IUserRepo from '../services/IRepos/IUserRepo';
 
 @Service()
 export default class UserRepo implements IUserRepo {
-  constructor(
-    @Inject('userSchema') private userSchema: Model<IUserPersistence & Document>,
-    @Inject('logger') private logger: Logger
-  ) {}
+  private userSchema: Model<IUserPersistence & Document>;
+
+  constructor() {
+    this.userSchema = Container.get(config.schemas.user.name);
+  }
 
   public async exists(userId: UserId | string): Promise<boolean> {
     const idX = userId instanceof UserId ? (<UserId>userId).id.toValue() : userId;
