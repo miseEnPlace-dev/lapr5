@@ -16,32 +16,58 @@ _Notes:_
 
 ## 1.1. Client Specifications
 
+---
+
 ## 2. Analysis
 
 ### 2.1. Views
 
 #### Level 1
 
-##### Logic
+##### Logical
+
+![views/level-1/logical-view.svg]
 
 ##### Processes
+
+![views/level-1/process-view.svg]
+
+---
 
 #### Level 2
 
-##### Logic
+#### Logical
+
+![views/level-2/logical-view.svg]
 
 ##### Processes
 
+![views/level-2/process-view.svg]
+
 ##### Implementation
 
+![views/level-2/implementation-view.svg]
+
 ##### Physical
+
+![views/level-2/physical-view.svg]
+
+---
 
 #### Level 3
 
-##### Logic
+##### Logical
+
+![views/level-3/logical-view.svg]
 
 ##### Processes
 
+![views/level-3/process-view.svg]
+
 ##### Implementation
 
+![views/level-3/implementation-view.svg]
+
 ##### Physical
+
+![views/level-3/physical-view.svg]

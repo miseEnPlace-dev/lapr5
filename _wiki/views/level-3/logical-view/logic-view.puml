@@ -1,0 +1,56 @@
+@startuml logic-view
+
+top to bottom direction
+
+interface "MD API" as API
+
+component "MD Devices" as MDD <<component>> <<system (C4)>> {
+  portin " " AS P1
+  portin "Persistence API" as P2
+
+  folder "Frameworks & Drivers Layer" #80FFFF {
+    component "Routing" as ROUTE <<component>> {
+    }
+    component "Persistence" as PERSISTENCE <<component>> {
+    }
+  }
+
+  component "Data Model" as DATA <<component>> {
+  }
+  component "DTO" as DTO <<component>> {
+  }
+
+  folder "Interface Adapters Layer" #80FF80 {
+    component "Controller" as CTRL <<component>> {
+    }
+    component "Repository" as REPO <<component>> {
+    }
+  }
+
+  folder "Application Business Rules" #FF8080 {
+    component "Application Service" as SRV <<component>> {
+    }
+  }
+
+  folder "Enterprise Business Rules" #FFC080 {
+    component "Domain Model DDD" as MODEL <<component>> {
+    }
+  }
+}
+
+API -- P1
+
+ROUTE --- P1
+PERSISTENCE -- P2
+
+ROUTE -(0- CTRL : Controller API
+PERSISTENCE -0)- REPO : Persistence API
+PERSISTENCE -(0)- REPO : Data Model API
+
+CTRL -(0-- SRV : App Services API
+CTRL -(0)-- SRV : DTO API
+REPO -0)-- SRV : Repo API
+
+SRV -(0- MODEL : Model API
+
+@enduml

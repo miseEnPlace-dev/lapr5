@@ -1,5 +1,4 @@
 @startuml logic-view
-top to bottom direction
 
 interface "Admin UI" as AUI
 interface "Campus Manager UI" as CUI
@@ -7,9 +6,19 @@ interface "Fleet Manager UI" as FUI
 interface "Task Manager UI" as TUI
 interface "User UI" as UUI
 
-component "RobDroneGo System" <<system (C4)>> {
-  port P1
+component "Rob" <<component>> <<system (C4)>> {
+  portin " " as P1
+
+  component "Visualization" as V <<component>> <<system (C4)>> {
+  }
+
+  component "MD Devices" as MDD <<component>> <<system (C4)>> {
+  }
 }
+
+
+V -- P1
+MDD -0)- V
 
 AUI -- P1
 CUI -- P1
