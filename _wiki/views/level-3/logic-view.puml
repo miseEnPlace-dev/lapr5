@@ -4,12 +4,12 @@ top to bottom direction
 
 interface "MD API" as API
 
-component "MD Devices" as MDD <<component>> <<system (C4)>> {
-  portin " " AS P1
+component "MD Management" as MDM <<component>> <<system (C4)>> {
+  portin " " as P1
   portin "Persistence API" as P2
 
   Interface "Controller API" as CTRL_API
-  Interface "Data Model API" AS DATA_API
+  Interface "Data Model API" as DATA_API
 
 
   folder "Frameworks & Drivers Layer" #80FFFF {

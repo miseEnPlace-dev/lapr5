@@ -6,19 +6,29 @@ interface "Fleet Manager UI" as FUI
 interface "Task Manager UI" as TUI
 interface "User UI" as UUI
 
-component "Rob" <<component>> <<system (C4)>> {
+component "RobDroneGo System" <<component>> <<system (C4)>> {
   portin " " as P1
 
+  Interface "API-Management" as API
+  Interface "API-Planning" as PAPI
+  
   component "Visualization" as V <<component>> <<system (C4)>> {
   }
 
-  component "MD Devices" as MDD <<component>> <<system (C4)>> {
+  component "MD Management" as MDM <<component>> <<system (C4)>> {
+  }
+
+  component "Planning" as P <<component>> <<system (C4)>> {
   }
 }
 
 
 V -- P1
-MDD -0)- V
+MDM -up- API
+V --( API
+P --( API
+P -- PAPI
+MDM -up-( PAPI
 
 AUI -- P1
 CUI -- P1

@@ -1,6 +1,6 @@
 @startuml implemantation-view
 
-component "MD Devices" as MDD <<component>> <<system (C4)>> {
+component "MD Management" as MDM <<component>> <<system (C4)>> {
   folder Infrastructure as I {
     package Persistence as PERS {}
     package Routes as ROUTE {}
