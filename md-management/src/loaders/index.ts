@@ -64,11 +64,31 @@ export default async ({ expressApp }: { expressApp: Express }) => {
     schema: config.schemas.building.schema
   };
 
+  const floorSchema = {
+    name: config.schemas.floor.name,
+    schema: config.schemas.floor.schema
+  };
+
+  const floorService = {
+    name: config.services.floor.name,
+    path: config.services.floor.path
+  };
+
+  const floorRepo = {
+    name: config.repos.floor.name,
+    path: config.repos.floor.path
+  };
+
+  const floorController = {
+    name: config.controllers.floor.name,
+    path: config.controllers.floor.path
+  };
+
   dependencyInjectorLoader({
-    schemas: [userSchema, roleSchema, buildingSchema],
-    controllers: [roleController, buildingController],
-    repos: [roleRepo, userRepo, buildingRepo],
-    services: [roleService, buildingService]
+    schemas: [userSchema, roleSchema, buildingSchema, floorSchema],
+    controllers: [roleController, buildingController, floorController],
+    repos: [roleRepo, userRepo, buildingRepo, floorRepo],
+    services: [roleService, buildingService, floorService]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');
 

@@ -12,15 +12,11 @@ const floorCreateSchema = z.object({
     .string()
     .min(1)
     .max(255),
-  name: z
-    .string()
-    .max(255)
-    .optional(),
   description: z
     .string()
     .max(255)
     .optional(),
-  maxDimensions: z.object({
+  dimensions: z.object({
     width: z.number().min(1),
     height: z.number().min(1)
   })
