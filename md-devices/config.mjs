@@ -52,6 +52,10 @@ export default {
     building: {
       name: 'buildingSchema',
       schema: '../persistence/schemas/buildingSchema'
+    },
+    floor: {
+      name: 'floorSchema',
+      schema: '../persistence/schemas/floorSchema'
     }
   },
 
@@ -63,6 +67,10 @@ export default {
     building: {
       name: 'BuildingController',
       path: '../controllers/buildingController'
+    },
+    floor: {
+      name: 'FloorController',
+      path: '../controllers/floorController'
     }
   },
 
@@ -78,6 +86,10 @@ export default {
     building: {
       name: 'BuildingRepo',
       path: '../repos/buildingRepo'
+    },
+    floor: {
+      name: 'FloorRepo',
+      path: '../repos/floorRepo'
     }
   },
 
@@ -89,6 +101,10 @@ export default {
     building: {
       name: 'BuildingService',
       path: '../services/buildingService'
+    },
+    floor: {
+      name: 'FloorService',
+      path: '../services/floorService'
     }
   }
 };
