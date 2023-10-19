@@ -12,10 +12,12 @@ const buildingCreateSchema = z.object({
     .string()
     .min(1)
     .max(5),
-  name: z.string().min(1),
+  name: z
+    .string()
+    .max(50)
+    .optional(),
   description: z
     .string()
-    .min(1)
     .max(255)
     .optional(),
   maxDimensions: z.object({

@@ -1,5 +1,4 @@
 import { ValueObject } from '../../core/domain/ValueObject';
-import { Guard } from '../../core/logic/Guard';
 import { Result } from '../../core/logic/Result';
 
 interface BuildingNameProps {
@@ -17,8 +16,7 @@ export class BuildingName extends ValueObject<BuildingNameProps> {
   }
 
   public static create(name: string): Result<BuildingName> {
-    const guardResult = Guard.againstNullOrUndefined(name, 'name');
-    if (!guardResult.succeeded) return Result.fail<BuildingName>(guardResult.message);
+    if (name.length > 50) throw new Error('Building name must be 50 characters or less.');
 
     return Result.ok<BuildingName>(new BuildingName({ value: name }));
   }
