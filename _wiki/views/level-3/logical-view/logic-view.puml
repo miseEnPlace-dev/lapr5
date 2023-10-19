@@ -8,6 +8,10 @@ component "MD Devices" as MDD <<component>> <<system (C4)>> {
   portin " " AS P1
   portin "Persistence API" as P2
 
+  Interface "Controller API" as CTRL_API
+  Interface "Data Model API" AS DATA_API
+
+
   folder "Frameworks & Drivers Layer" #80FFFF {
     component "Routing" as ROUTE <<component>> {
     }
@@ -19,6 +23,12 @@ component "MD Devices" as MDD <<component>> <<system (C4)>> {
   }
   component "DTO" as DTO <<component>> {
   }
+
+  Interface "App Services API" AS SRV_API
+  Interface "DTO API" AS DTO_API
+  Interface "Repo API" AS REPO_API
+  Interface "Model API" AS MODEL_API
+  Interface "Persistence API" AS PERSISTENCE_API
 
   folder "Interface Adapters Layer" #80FF80 {
     component "Controller" as CTRL <<component>> {
@@ -43,14 +53,25 @@ API -- P1
 ROUTE --- P1
 PERSISTENCE -- P2
 
-ROUTE -(0- CTRL : Controller API
-PERSISTENCE -0)- REPO : Persistence API
-PERSISTENCE -(0)- REPO : Data Model API
+ROUTE --( CTRL_API
+CTRL -up- CTRL_API
+PERSISTENCE -- PERSISTENCE_API
+REPO -up-( PERSISTENCE_API 
+PERSISTENCE --( DATA_API 
+REPO -up-( DATA_API 
+DATA --( DATA_API 
 
-CTRL -(0-- SRV : App Services API
-CTRL -(0)-- SRV : DTO API
-REPO -0)-- SRV : Repo API
+CTRL --( SRV_API
+SRV -up-( SRV_API
+SRV -up-( DTO_API
+CTRL --( DTO_API
+DTO --( DTO_API
 
-SRV -(0- MODEL : Model API
+REPO -- REPO_API
+SRV -up-( REPO_API 
+
+SRV --( MODEL_API 
+REPO --( MODEL_API 
+MODEL -up- MODEL_API 
 
 @enduml
