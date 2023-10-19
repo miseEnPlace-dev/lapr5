@@ -1,7 +1,7 @@
 {
-  "name": "md-devices",
+  "name": "md-management",
   "version": "1.0.0",
-  "description": "Master Data Devices",
+  "description": "Master Data Management",
   "main": "src/app.ts",
   "scripts": {
     "clean": "rm -rf dist/",

@@ -4,7 +4,7 @@ import { Result } from '../core/logic/Result';
 import { Role } from '../domain/role/role';
 import IRoleDTO from '../dto/IRoleDTO';
 import { RoleMap } from '../mappers/RoleMap';
-import IRoleRepo from '../services/IRepos/IRoleRepo';
+import IRoleRepo from './IRepos/IRoleRepo';
 import IRoleService from './IServices/IRoleService';
 
 @Service()

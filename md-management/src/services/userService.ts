@@ -7,7 +7,7 @@ import config from '../../config.mjs';
 
 import { IUserDTO } from '../dto/IUserDTO';
 import { UserMap } from '../mappers/UserMap';
-import IUserService from '../services/IServices/IUserService';
+import IUserService from './IServices/IUserService';
 
 import IRoleRepo from './IRepos/IRoleRepo';
 import IUserRepo from './IRepos/IUserRepo';
