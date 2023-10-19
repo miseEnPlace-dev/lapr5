@@ -1,13 +1,36 @@
 @startuml process-view
 autonumber
-participant SYS as "MD Management" <<system (C4)>>
+participant ROUTE as ":BuildingRoute"
+participant CTRL as ":BuildingController"
+participant SRV as ":BuildingService"
+participant BUILD as ":building:Building"
+participant REPO as ":BuildingRepo"
+participant MAP as ":BuildingMap"
+participant PERS as "buildingPersistence:IBuildingPersistence"
+participant MODEL as ":Model<IBuildingPersistence & Document>"
 
+?o-> ROUTE : POST /buildings
+activate ROUTE
 
-?o-> SYS : POST /buildings
-activate SYS
-
-SYS -> SYS : createBuilding(building)
-<-- SYS : 201 Created
-deactivate SYS
+ROUTE -> CTRL : createBuilding(request)
+activate CTRL
+CTRL -> SRV : createBuilding(buildingDTO)
+activate SRV
+SRV -> BUILD** : create()
+SRV -> REPO : save(building)
+activate REPO
+REPO -> MAP : toPersitence(building)
+activate MAP
+deactivate MAP
+REPO -> PERS** : create()
+REPO -> MODEL : create(buildingPersistence)
+activate MODEL
+deactivate MODEL
+deactivate REPO
+deactivate SRV
+CTRL --> ROUTE : building
+deactivate CTRL
+<-- ROUTE : 201 Created
+deactivate ROUTE
 
 @enduml
