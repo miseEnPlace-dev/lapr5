@@ -1,0 +1,23 @@
+@startuml physical-view
+
+node "Server 1: ?" as S1 {
+  component "Browser" as B <<component>> {
+    component "Visualization" as V <<component>> {
+    }
+  }
+}
+
+node "Server 2: ?" as S2 {
+  component "MDManagement" as MDM <<component>> { 
+  }
+}
+ 
+node "Server 3: ?" as S3 {
+  component "Planning" as P <<component>>  { 
+   }
+} 
+
+S1 -- S2 : http/s
+S2 -- S3 : http/s
+
+@enduml
