@@ -23,7 +23,7 @@ export class User extends AggregateRoot<UserProps> {
   }
 
   get userId(): UserId {
-    return UserId.caller(this.id);
+    return UserId.create(this.id);
   }
 
   get email(): UserEmail {

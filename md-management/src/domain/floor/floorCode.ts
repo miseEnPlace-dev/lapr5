@@ -11,6 +11,6 @@ export class FloorCode extends Entity<null> {
   }
 
   public static create(id: string): FloorCode {
-    return new FloorCode(UniqueEntityID.caller(id));
+    return new FloorCode(UniqueEntityID.create(id));
   }
 }

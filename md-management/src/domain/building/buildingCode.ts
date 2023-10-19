@@ -11,10 +11,10 @@ export class BuildingCode extends Entity<null> {
   }
 
   public static create(id: string): BuildingCode {
-    if (id.length < 5) throw new Error('Building code must be at least 5 characters long');
+    if (id.length > 5) throw Error('Building code cannot have more than 5 characters');
     if (!/^[a-zA-Z0-9 ]+$/.test(id))
-      throw new Error('Building code must contain only letters, numbers and spaces');
+      throw Error('Building code must contain only letters, numbers and spaces');
 
-    return new BuildingCode(UniqueEntityID.caller(id));
+    return new BuildingCode(UniqueEntityID.create(id));
   }
 }
