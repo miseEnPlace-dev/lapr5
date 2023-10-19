@@ -1,0 +1,17 @@
+@startuml physical-view
+
+node "Server 1" as S1 {
+  package "Browser" <<component>> as C1 {
+    component "Visualização" <<component>> {}
+  }
+}
+
+node "Server 2" as S2 {
+  component "MD Management" <<component>> {  }
+}
+
+node "Server 3" as S3 {
+  component "Planning" <<component>>  {  }
+}
+
+@enduml
