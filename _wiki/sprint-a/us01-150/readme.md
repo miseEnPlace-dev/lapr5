@@ -60,6 +60,10 @@ o nome do edificio é opcional, no máximo 50 caracteres alfanuméricos"
 
 ### 2.1. Views
 
+All the global views are available in the [views](../../views/readme.md) document.
+
+The views presented here are the ones that are relevant to this user story.
+
 #### Level 1
 
 ##### Processes

@@ -1,4 +1,4 @@
-@startuml logic-view
+@startuml logical-view
 top to bottom direction
 
 interface "Admin UI" as AUI

@@ -1,4 +1,4 @@
-@startuml logic-view
+@startuml logical-view
 
 interface "Admin UI" as AUI
 interface "Campus Manager UI" as CUI
