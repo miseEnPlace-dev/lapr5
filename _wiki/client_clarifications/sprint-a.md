@@ -2,6 +2,8 @@
 
 This document is a collection of clarifications for the first sprint. The doubts are synthesized for easier reading.
 
+---
+
 ## [Question 1](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=24951)
 
 > Quanto às tarefas que o robot realiza, eu e o meu grupo ficámos com incertezas relativamente a alguns tópicos.Realmente, um robot pode ser do tipo robisep ou droneisep e, sabemos que cada um destes tipos de robot, tem possíveis tarefas associadas. No entanto, supondo que, por exemplo, as tarefas de vigilância, limpeza e entrega de objetos estavam associadas ao tipo robisep, era possível existir um robot desse mesmo tipo que realizasse todas essas tarefas e, em simultâneo, existir outro robot também desse tipo mas, com permissões de apenas fazer limpeza e vigilância ou, até mesmo, só poder fazer limpeza?
@@ -355,8 +357,61 @@ modelo: obrigatório, máximo 100 caracteres"
 
 ### Answer
 
-_AINDA POR RESPONDER_
+"não existe atualmente requisito para eliminar pedidos de tarefas."
 
-### End of Sprint 1
+## [Question 24](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25265)
 
-_LAST UPDATE: 18/10/2023 11:27H_
+> Os atributos do robot têm algum tipo de formatação/restrição?
+
+### Answer
+
+- código identificativo, obrigatório, alfanumerico, max 30 caracteres, único no sistema
+- nickname, obrigatório, obrigatório, alfanumerico, max 30 caracteres, único no sistema
+- tipo de robot, obrigatório
+- número de série, obrigatório, alfanumerico, max 50 caracteres, único para um dado tipo de robot
+- descrição, opcional, alfanumerico, max. 250 caracteres"
+
+## [Question 25](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25276)
+
+### Answer
+
+> Deveria o nome da sala ser único?
+
+### Answer
+
+"Sim"
+
+## [Question 26](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25267)
+
+> há alguma restrição para o ID do elevador?
+
+### Answer
+
+"não sei a que se refere quando refere "ID"
+assumindo que a sua pergunta é sobre se há necessidade de identificar os elevadores, cada elevador terá um número identificativo único no edificio. De momento assume-se que existe apenas um elevador em cada edificio."
+
+## [Question 27](hhttps://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25290)
+
+> Can we assume that rooms are always rectangular? Does one room have only one door?
+
+### Answer
+
+"Yes. currently there is only the need to support rectangular rooms with just one door"
+
+## [Question 28](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25298)
+
+> Gostaria de saber que atributos deveria ter o elevador, para além de uma lista de pisos aos quais consegue aceder dentro do seu edifício. Algumas das ideias que me surgiram foram o piso em que estava localizado naquele momento, número de série, fabricante ou descrição.
+
+### Answer
+
+- edificio (obrigatório)
+- número identificativo (obrigatório, único no edificio)
+- lista de pisos do edificio servidos pelo elevador (obrigatório)
+- marca (opcional, alfanumerico, 50 caracteres)
+- modelo (opcional, mas obrigatório se marca for introduzido, alfanumerico, 50 caracteres)
+- número de série do fabricante (opcional, alfanumerico, 50 caracteres)
+- breve descrição (opcional, alfanumerico, 250 caracteres)
+
+---
+
+_LAST UPDATE: 20/10/2023 17:56H_
