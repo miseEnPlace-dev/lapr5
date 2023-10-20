@@ -8,6 +8,8 @@ participant REPO as ":BuildingRepo"
 participant MAP as ":BuildingMap"
 participant PERS as "buildingPersistence:IBuildingPersistence"
 participant MODEL as ":Model<IBuildingPersistence & Document>"
+participant NBUILD as ":newBuilding:Building"
+participant DTO as ":buildingDTO:IBuildingDTO"
 
 ?o-> ROUTE : POST /buildings
 activate ROUTE
@@ -26,9 +28,19 @@ REPO -> PERS** : create()
 REPO -> MODEL : create(buildingPersistence)
 activate MODEL
 deactivate MODEL
+REPO -> MAP : toDomain(buildingPersistence)
+activate MAP
+MAP -> NBUILD** : create()
+deactivate MAP
+REPO --> SRV : newBuilding
 deactivate REPO
+SRV -> MAP : toDto(newBuilding)
+activate MAP
+MAP -> DTO** : create()
+deactivate MAP
+SRV --> CTRL : sucess(buildingDTO)
 deactivate SRV
-CTRL --> ROUTE : building
+CTRL --> ROUTE : sucess(buildingDTO)
 deactivate CTRL
 <-- ROUTE : 201 Created
 deactivate ROUTE

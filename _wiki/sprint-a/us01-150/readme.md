@@ -82,18 +82,6 @@ The views presented here are the ones that are relevant to this user story.
 
 #### Level 3
 
-##### Logical
-
-![Level 3 Logical View](views/level-3/assets/logical-view.svg)
-
 ##### Processes
 
 ![Level 3 Processes View](views/level-3/assets/process-view.svg)
-
-##### Implementation
-
-![Level 3 Implementation View](views/level-3/assets/implementation-view.svg)
-
-##### Physical
-
-![Level 3 Physical View](views/level-3/assets/physical-view.svg)
