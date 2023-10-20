@@ -30,7 +30,6 @@ export class BuildingMap extends Mapper<Building> {
   }
 
   public static toPersistence(building: Building) {
-    console.log(building.maxDimensions);
     return {
       code: building.code.toString(),
       maxDimensions: {
