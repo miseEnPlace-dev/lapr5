@@ -12,8 +12,6 @@
 
 **"As a Campus Manager, I want to create a building."**
 
-_Notes:_
-
 ## 1.1. Client Specifications
 
 ## [Question](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25033)
