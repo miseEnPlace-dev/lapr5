@@ -100,12 +100,14 @@ package "<<aggregate>> Building" {
 
   class BuildingCode <<(V,#FF8B40) value object>> {}
   class BuildingName <<(V,#FF8B40) value object>> {}
+  
   entity Elevator <<entity>> { }
   class ElevatorIdentifier <<(V,#FF8B40) value object>> {}
   class ElevatorBrand <<(V,#FF8B40) value object>> {}
   class ElevatorModel <<(V,#FF8B40) value object>> {}
   class ElevatorSerialNumber <<(V,#FF8B40) value object>> {}
   class ElevatorDescription <<(V,#FF8B40) value object>> {}
+
   class BuildingDescription <<(V,#FF8B40) value object>> {}
   class MaxDimensions <<(V,#FF8B40) value object>> {
     - width

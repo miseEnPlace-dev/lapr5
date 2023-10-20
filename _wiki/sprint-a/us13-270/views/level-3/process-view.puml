@@ -1,0 +1,48 @@
+@startuml process-view
+autonumber
+participant ROUTE as ":ElevatorRoute"
+participant CTRL as ":ElevatorController"
+participant SRV as ":ElevatorService"
+participant BUILD as ":elevator:Elevator"
+participant REPO as ":ElevatorRepo"
+participant MAP as ":ElevatorMap"
+participant PERS as "elevatorPersistence:IElevatorPersistence"
+participant MODEL as ":Model<IElevatorPersistence & Document>"
+participant NBUILD as ":newElevator:Elevator"
+participant DTO as ":elevatorDTO:IElevatorDTO"
+
+?o-> ROUTE : POST /elevators
+activate ROUTE
+
+ROUTE -> CTRL : createElevator(request)
+activate CTRL
+CTRL -> SRV : createElevator(elevatorDTO)
+activate SRV
+SRV -> BUILD** : create()
+SRV -> REPO : save(elevator)
+activate REPO
+REPO -> MAP : toPersitence(elevator)
+activate MAP
+deactivate MAP
+REPO -> PERS** : create()
+REPO -> MODEL : create(elevatorPersistence)
+activate MODEL
+deactivate MODEL
+REPO -> MAP : toDomain(elevatorPersistence)
+activate MAP
+MAP -> NBUILD** : create()
+deactivate MAP
+REPO --> SRV : newElevator
+deactivate REPO
+SRV -> MAP : toDto(newElevator)
+activate MAP
+MAP -> DTO** : create()
+deactivate MAP
+SRV --> CTRL : sucess(elevatorDTO)
+deactivate SRV
+CTRL --> ROUTE : sucess(elevatorDTO)
+deactivate CTRL
+<-- ROUTE : 201 Created
+deactivate ROUTE
+
+@enduml

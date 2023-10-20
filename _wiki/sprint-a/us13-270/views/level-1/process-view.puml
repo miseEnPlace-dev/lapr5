@@ -6,9 +6,8 @@ participant SYS as "RobDroneGo System" <<system (C4)>>
 
 activate CM
 
-CM -> SYS : asks to create a building with code,name,description,max dimensions
+CM -> SYS : asks to create an elevator with id,brand,model,serial number,description
 activate SYS
-
 CM <-- SYS : returns confirmation message
 deactivate SYS
 
