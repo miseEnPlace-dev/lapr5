@@ -18,6 +18,7 @@ import { UserPassword } from '../domain/user/userPassword';
 
 import { Role } from '../domain/role/role';
 
+import { PhoneNumber } from '@/domain/user/phoneNumber';
 import { Result } from '../core/logic/Result';
 
 @Service()
@@ -66,6 +67,7 @@ export default class UserService implements IUserService {
         hashed: true
       }).getValue();
       const email = UserEmail.create(userDTO.email).getValue();
+      const phoneNumber = PhoneNumber.create(userDTO.phoneNumber).getValue();
 
       const roleOrError = await this.getRole(userDTO.role);
       if (roleOrError.isFailure)
@@ -73,12 +75,13 @@ export default class UserService implements IUserService {
 
       const role = roleOrError.getValue();
 
-      const userOrError = await User.create({
+      const userOrError = User.create({
         firstName: userDTO.firstName,
         lastName: userDTO.lastName,
-        email: email,
-        role: role,
-        password: password
+        phoneNumber,
+        email,
+        role,
+        password
       });
 
       if (userOrError.isFailure) {
@@ -129,7 +132,7 @@ export default class UserService implements IUserService {
     }
   }
 
-  private generateToken(user) {
+  private generateToken(user: User) {
     const today = new Date();
     const exp = new Date(today);
     exp.setDate(today.getDate() + 60);
@@ -148,15 +151,15 @@ export default class UserService implements IUserService {
     const email = user.email.value;
     const firstName = user.firstName;
     const lastName = user.lastName;
-    const role = user.role.id.value;
+    const role = user.role.id.toValue();
 
     return jwt.sign(
       {
-        id: id,
-        email: email, // We are gonna use this in the middleware 'isAuth'
-        role: role,
-        firstName: firstName,
-        lastName: lastName,
+        id,
+        email, // We are gonna use this in the middleware 'isAuth'
+        role,
+        firstName,
+        lastName,
         exp: exp.getTime() / 1000
       },
       config.jwtSecret

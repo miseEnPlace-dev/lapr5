@@ -7,7 +7,7 @@ participant SYS as "MD Management" <<system (C4)>>
 activate SYS
 
 SYS -> SYS : createBuilding(building)
-<-- SYS : 201 Created
+<-- SYS : 201 Created (building JSON)
 deactivate SYS
 
 @enduml
