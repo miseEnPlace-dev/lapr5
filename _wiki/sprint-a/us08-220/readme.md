@@ -10,9 +10,7 @@
 
 ## 1. Requirements
 
-**"As a Campus Manager, I want to list floors with connectors to other buildings."**
-
-_Notes:_
+**"As a Campus Manager, I want to list floors with passages to other buildings."**
 
 ## 1.1. Client Specifications
 
@@ -28,35 +26,35 @@ The robots will travel through the floors of the buildings.
 
 ### 2.1. Views
 
+All the global views are available in the [views](../../views/readme.md) document.
+
+The views presented here are the ones that are relevant to this user story.
+
 #### Level 1
-
-##### Logic View
-
-![Level 1 Logic View](../../views/level-1/logic-view/logic-view.svg)
 
 ##### Processes View
 
-![Level 1 Processes View](assets/us08-220_ssd.svg)
+![Level 1 Processes View](views/level-1/assets/us08-level1_processes.svg)
 
 #### Level 2
 
-##### Logic View
-
 ##### Processes View
 
-##### Implementation View
+![Level 2 Processes View](views/level-2/assets/us08-level2_processes.svg)
 
-##### Physical View
+<!-- ##### Implementation View -->
+
+<!-- ##### Physical View -->
 
 #### Level 3
 
-##### Logic View
-
 ##### Processes View
 
-##### Implementation View
+![Level 3 Processes View](views/level-3/assets/us08-level3_processes.svg)
 
-##### Physical View
+<!-- ##### Implementation View -->
+
+<!-- ##### Physical View -->
 
 ### 2.2. Tests
 

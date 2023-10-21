@@ -1,0 +1,18 @@
+@startuml us08-level3_processes
+autonumber
+
+participant ROUTE as ":FloorRoute"
+participant CTRL as ":FloorController"
+
+?o-> ROUTE : GET /buildings/{id}/floors?filter=connectors
+activate ROUTE
+
+  ROUTE -> CTRL : listFloorsWithPassages(...)
+  activate CTRL
+
+  deactivate CTRL
+  
+<-- ROUTE : 201 Created
+deactivate ROUTE
+
+@enduml
