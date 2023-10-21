@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { Container } from 'typedi';
 
 import IBuildingController from '@/controllers/IControllers/IBuildingController';
-import config from '../../../config.mjs';
+import config from '@/config.mjs';
 import { validate } from '../middlewares/validate';
 
 const buildingCreateSchema = z.object({

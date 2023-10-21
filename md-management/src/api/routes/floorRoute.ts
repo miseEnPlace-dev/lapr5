@@ -5,7 +5,7 @@ import { Container } from 'typedi';
 import IFloorController from '../../controllers/IControllers/IFloorController';
 import { validate } from '../middlewares/validate';
 
-import config from '../../../config.mjs';
+import config from '@/config.mjs';
 
 const floorCreateSchema = z.object({
   code: z

@@ -1,5 +1,5 @@
 import Container, { Service } from 'typedi';
-import config from '../../config.mjs';
+import config from '@/config.mjs';
 
 import { IFloorDTO } from '@/dto/IFloorDTO';
 import IFloorService from '@/services/IServices/IFloorService';

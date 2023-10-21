@@ -1,7 +1,7 @@
 import { IBuildingDTO } from '@/dto/IBuildingDTO';
 import { BuildingMap } from '@/mappers/BuildingMap';
 import Container, { Service } from 'typedi';
-import config from '../../config.mjs';
+import config from '@/config.mjs';
 import { Result } from '../core/logic/Result';
 import { Building } from '../domain/building/building';
 import IBuildingRepo from './IRepos/IBuildingRepo';

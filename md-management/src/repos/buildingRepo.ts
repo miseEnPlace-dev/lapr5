@@ -5,7 +5,7 @@ import { Building } from '@/domain/building/building';
 import { BuildingCode } from '@/domain/building/buildingCode';
 import { BuildingMap } from '@/mappers/BuildingMap';
 import IBuildingRepo from '@/services/IRepos/IBuildingRepo';
-import config from 'config.mjs';
+import config from '@/config.mjs';
 import { Document, FilterQuery, Model } from 'mongoose';
 import { IRolePersistence } from '../dataschema/IRolePersistence';
 

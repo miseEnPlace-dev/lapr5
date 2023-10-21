@@ -1,3 +1,4 @@
 dockervolume
 **/node_modules
 out/
+*.code-workspace

@@ -1,5 +1,5 @@
 import Container, { Service } from 'typedi';
-import config from '../../config.mjs';
+import config from '@/config.mjs';
 import { Result } from '../core/logic/Result';
 import IFloorRepo from './IRepos/IFloorRepo';
 import IFloorService from './IServices/IFloorService';

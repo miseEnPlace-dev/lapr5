@@ -5,7 +5,7 @@ import { Floor } from '@/domain/floor/floor';
 import { FloorCode } from '@/domain/floor/floorCode';
 
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
-import config from 'config.mjs';
+import config from '@/config.mjs';
 import { Document, FilterQuery, Model } from 'mongoose';
 import { IRolePersistence } from '../dataschema/IRolePersistence';
 import { FloorMap } from '@/mappers/FloorMap';
