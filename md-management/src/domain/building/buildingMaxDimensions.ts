@@ -27,10 +27,13 @@ export class BuildingMaxDimensions extends ValueObject<BuildingMaxDimensionsProp
   }
 
   public static create(width: number, height: number): Result<BuildingMaxDimensions> {
-    const guardResult =
-      Guard.isPositiveNumber(width, 'width') && Guard.isPositiveNumber(height, 'height');
+    const widthGuardResult = Guard.isPositiveNumber(width, 'width');
+    if (!widthGuardResult.succeeded)
+      return Result.fail<BuildingMaxDimensions>(widthGuardResult.message);
 
-    if (!guardResult.succeeded) return Result.fail<BuildingMaxDimensions>(guardResult.message);
+    const heightGuardResult = Guard.isPositiveNumber(height, 'height');
+    if (!heightGuardResult.succeeded)
+      return Result.fail<BuildingMaxDimensions>(heightGuardResult.message);
 
     return Result.ok<BuildingMaxDimensions>(
       new BuildingMaxDimensions({ dimensions: { width, height } })

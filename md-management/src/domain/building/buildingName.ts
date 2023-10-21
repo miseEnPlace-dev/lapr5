@@ -16,7 +16,8 @@ export class BuildingName extends ValueObject<BuildingNameProps> {
   }
 
   public static create(name: string): Result<BuildingName> {
-    if (name.length > 50) throw new Error('Building name must be 50 characters or less.');
+    if (name.length > 50)
+      return Result.fail<BuildingName>('Building name must be 50 characters or less');
 
     return Result.ok<BuildingName>(new BuildingName({ value: name }));
   }

@@ -2,13 +2,14 @@
 autonumber
 participant ROUTE as ":ElevatorRoute"
 participant CTRL as ":ElevatorController"
+participant BSRV as ":BuildingService"
 participant SRV as ":ElevatorService"
-participant BUILD as ":elevator:Elevator"
+participant ELEV as ":elevator:Elevator"
 participant REPO as ":ElevatorRepo"
 participant MAP as ":ElevatorMap"
 participant PERS as "elevatorPersistence:IElevatorPersistence"
 participant MODEL as ":Model<IElevatorPersistence & Document>"
-participant NBUILD as ":newElevator:Elevator"
+participant NELEV as ":newElevator:Elevator"
 participant DTO as ":elevatorDTO:IElevatorDTO"
 
 ?o-> ROUTE : POST /elevators
@@ -16,9 +17,12 @@ activate ROUTE
 
 ROUTE -> CTRL : createElevator(request)
 activate CTRL
-CTRL -> SRV : createElevator(elevatorDTO)
+CTRL -> BSRV : building=getBuildingWithId(buildingId)
+activate BSRV
+
+CTRL -> SRV : createElevator(elevatorDTO,building)
 activate SRV
-SRV -> BUILD** : create()
+SRV -> ELEV** : create()
 SRV -> REPO : save(elevator)
 activate REPO
 REPO -> MAP : toPersitence(elevator)
@@ -30,7 +34,7 @@ activate MODEL
 deactivate MODEL
 REPO -> MAP : toDomain(elevatorPersistence)
 activate MAP
-MAP -> NBUILD** : create()
+MAP -> NELEV** : create()
 deactivate MAP
 REPO --> SRV : newElevator
 deactivate REPO

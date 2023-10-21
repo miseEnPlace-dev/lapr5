@@ -17,7 +17,9 @@ export class BuildingDescription extends ValueObject<BuildingDescriptionProps> {
 
   public static create(description: string): Result<BuildingDescription> {
     if (description.length > 255)
-      throw new Error('Building description must be 255 characters or less.');
+      return Result.fail<BuildingDescription>(
+        'Building description must be 255 characters or less'
+      );
     return Result.ok<BuildingDescription>(new BuildingDescription({ value: description }));
   }
 }

@@ -2,6 +2,7 @@ import { AggregateRoot } from '../../core/domain/AggregateRoot';
 import { UniqueEntityID } from '../../core/domain/UniqueEntityID';
 import { Guard } from '../../core/logic/Guard';
 import { Result } from '../../core/logic/Result';
+import { Elevator } from '../elevator/elevator';
 import { BuildingCode } from './buildingCode';
 import { BuildingDescription } from './buildingDescription';
 import { BuildingMaxDimensions } from './buildingMaxDimensions';
@@ -12,6 +13,7 @@ interface BuildingProps {
   name?: BuildingName;
   description?: BuildingDescription;
   maxDimensions: BuildingMaxDimensions;
+  elevator?: Elevator;
 }
 
 export class Building extends AggregateRoot<BuildingProps> {
@@ -33,6 +35,10 @@ export class Building extends AggregateRoot<BuildingProps> {
 
   get maxDimensions(): BuildingMaxDimensions {
     return this.props.maxDimensions;
+  }
+
+  get elevator(): Elevator | undefined {
+    return this.props.elevator;
   }
 
   private constructor(props: BuildingProps, id?: UniqueEntityID) {
