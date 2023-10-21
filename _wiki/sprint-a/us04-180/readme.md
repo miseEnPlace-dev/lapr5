@@ -8,8 +8,6 @@
 | UC           | ARQSI                   |
 | Observations | GET                     |
 
-## 1.
+## 1. Requirements
 
-## 2. Requirements
-
-**"As a Campus Manager, I want to list buildings with min & max floors."**
+> ### "As a Campus Manager, I want to list buildings with min & max floors."

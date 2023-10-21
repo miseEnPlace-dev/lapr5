@@ -8,8 +8,6 @@
 | UC           | ARQSI                  |
 | Observations | PATCH                  |
 
-## 1.
+## 1. Requirements
 
-## 2. Requirements
-
-**"As a Fleet Manager, I want to disable a robot."**
+> ### "As a Fleet Manager, I want to disable a robot."

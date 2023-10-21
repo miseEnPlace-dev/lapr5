@@ -8,8 +8,6 @@
 | UC           | ARQSI                   |
 | Observations | GET                     |
 
-## 1.
+## 1. Requirements
 
-## 2. Requirements
-
-**"As a Campus Manager, I want to list connectors between 2 buildings."**
+> ### "As a Campus Manager, I want to list connectors between 2 buildings."

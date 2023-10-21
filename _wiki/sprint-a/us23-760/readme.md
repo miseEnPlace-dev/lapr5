@@ -8,8 +8,6 @@
 | UC           | ARQSI       |
 | Observations |             |
 
-## 1.
+## 1. Requirements
 
-## 2. Requirements
-
-**"As a Solution Architect, I want a justified and clear diagram of which components will exist in the solution and what their integration interfaces are, indicating the type of information and information structure to be shared."**
+> ### "As a Solution Architect, I want a justified and clear diagram of which components will exist in the solution and what their integration interfaces are, indicating the type of information and information structure to be shared."

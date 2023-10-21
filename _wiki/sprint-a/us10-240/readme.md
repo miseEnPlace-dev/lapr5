@@ -8,8 +8,6 @@
 | UC           | ARQSI                   |
 | Observations | POST                    |
 
-## 1.
+## 1. Requirements
 
-## 2. Requirements
-
-**"As a Campus Manager, I want to create a connector between buildings."**
+> ### "As a Campus Manager, I want to create a connector between buildings."

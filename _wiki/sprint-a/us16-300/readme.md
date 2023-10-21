@@ -8,8 +8,6 @@
 | UC           | ARQSI                   |
 | Observations | GET                     |
 
-## 1.
+## 1. Requirements
 
-## 2. Requirements
-
-**"As a Campus Manager, I want to list floors served by an elevator."**
+> ### "As a Campus Manager, I want to list floors served by an elevator."
