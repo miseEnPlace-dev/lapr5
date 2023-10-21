@@ -60,4 +60,6 @@ The views presented here are the ones that are relevant to this user story.
 
 ## 3. Demonstration
 
+`GET /floors?buildingId={buildingId}&filter=passages`
+
 ![us08-220_demo]()
