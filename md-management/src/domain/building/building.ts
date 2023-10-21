@@ -41,6 +41,10 @@ export class Building extends AggregateRoot<BuildingProps> {
     return this.props.elevator;
   }
 
+  set elevator(elevator: Elevator) {
+    this.props.elevator = elevator;
+  }
+
   private constructor(props: BuildingProps, id?: UniqueEntityID) {
     super(props, id);
   }
