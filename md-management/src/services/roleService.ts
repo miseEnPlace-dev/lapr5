@@ -18,12 +18,10 @@ export default class RoleService implements IRoleService {
     try {
       const role = await this.roleRepo.findByDomainId(roleId);
 
-      if (role === null) {
-        return Result.fail<IRoleDTO>('Role not found');
-      } else {
-        const roleDTOResult = RoleMap.toDTO(role) as IRoleDTO;
-        return Result.ok<IRoleDTO>(roleDTOResult);
-      }
+      if (role === null) return Result.fail<IRoleDTO>('Role not found');
+
+      const roleDTOResult = RoleMap.toDTO(role) as IRoleDTO;
+      return Result.ok<IRoleDTO>(roleDTOResult);
     } catch (e) {
       throw e;
     }
@@ -33,9 +31,7 @@ export default class RoleService implements IRoleService {
     try {
       const roleOrError = Role.create(roleDTO);
 
-      if (roleOrError.isFailure) {
-        return Result.fail<IRoleDTO>(roleOrError.errorValue());
-      }
+      if (roleOrError.isFailure) return Result.fail<IRoleDTO>(roleOrError.errorValue());
 
       const roleResult = roleOrError.getValue();
 
@@ -52,15 +48,13 @@ export default class RoleService implements IRoleService {
     try {
       const role = await this.roleRepo.findByDomainId(roleDTO.id);
 
-      if (role === null) {
-        return Result.fail<IRoleDTO>('Role not found');
-      } else {
-        role.name = roleDTO.name;
-        await this.roleRepo.save(role);
+      if (role === null) return Result.fail<IRoleDTO>('Role not found');
 
-        const roleDTOResult = RoleMap.toDTO(role) as IRoleDTO;
-        return Result.ok<IRoleDTO>(roleDTOResult);
-      }
+      role.name = roleDTO.name;
+      await this.roleRepo.save(role);
+
+      const roleDTOResult = RoleMap.toDTO(role) as IRoleDTO;
+      return Result.ok<IRoleDTO>(roleDTOResult);
     } catch (e) {
       throw e;
     }
