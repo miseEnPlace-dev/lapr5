@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { z } from 'zod';
-
 import { Container } from 'typedi';
-import IFloorController from '../../controllers/IControllers/IFloorController';
-import { validate } from '../middlewares/validate';
+
+import IFloorController from '@/controllers/IControllers/IFloorController';
+import { validate } from '@/api/middlewares/validate';
 
 import config from '@/config.mjs';
 
@@ -27,7 +27,8 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.floor.name) as IFloorController;
 
+  route.get('', (req, res, next) => ctrl.createFloor(req, res, next));
   route.post('', validate(floorCreateSchema), (req, res, next) => ctrl.createFloor(req, res, next));
 
-  app.use('/floor', route);
+  app.use('/floors', route);
 };

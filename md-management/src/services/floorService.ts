@@ -1,11 +1,13 @@
 import Container, { Service } from 'typedi';
+
 import config from '@/config.mjs';
-import { Result } from '../core/logic/Result';
-import IFloorRepo from './IRepos/IFloorRepo';
-import IFloorService from './IServices/IFloorService';
+import { Result } from '@/core/logic/Result';
+import IFloorRepo from '@/services/IRepos/IFloorRepo';
+import IFloorService from '@/services/IServices/IFloorService';
 import { IFloorDTO } from '@/dto/IFloorDTO';
 import { Floor } from '@/domain/floor/floor';
 import { FloorMap } from '@/mappers/FloorMap';
+import { BuildingCode } from '@/domain/building/buildingCode';
 
 @Service()
 export default class FloorService implements IFloorService {
@@ -26,6 +28,26 @@ export default class FloorService implements IFloorService {
 
       const FloorDTOResult = FloorMap.toDTO(floorResult) as IFloorDTO;
       return Result.ok<IFloorDTO>(FloorDTOResult);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async getAllFloors(): Promise<Result<IFloorDTO[]>> {
+    try {
+      const floors = await this.floorRepo.findAll();
+      const floorDTOs = floors.map(floor => FloorMap.toDTO(floor) as IFloorDTO);
+      return Result.ok<IFloorDTO[]>(floorDTOs);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async getBuildingFloors(buildingId: BuildingCode): Promise<Result<IFloorDTO[]>> {
+    try {
+      const floors = await this.floorRepo.findByBuildingId(buildingId);
+      const floorDTOs = floors.map(floor => FloorMap.toDTO(floor) as IFloorDTO);
+      return Result.ok<IFloorDTO[]>(floorDTOs);
     } catch (e) {
       throw e;
     }

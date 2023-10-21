@@ -25,7 +25,7 @@ export default class BuildingRepo implements IBuildingRepo {
       query as FilterQuery<IRolePersistence & Document>
     );
 
-    return !!roleDocument === true;
+    return !!roleDocument;
   }
 
   public async save(building: Building): Promise<Building> {
@@ -60,8 +60,7 @@ export default class BuildingRepo implements IBuildingRepo {
       query as FilterQuery<IRolePersistence & Document>
     );
 
-    if (buildingRecord != null) {
-      return BuildingMap.toDomain(buildingRecord);
-    } else return null;
+    if (buildingRecord != null) return BuildingMap.toDomain(buildingRecord);
+    return null;
   }
 }

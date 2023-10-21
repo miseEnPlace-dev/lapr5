@@ -15,6 +15,11 @@ const FloorSchema = new mongoose.Schema(
     maxDimensions: {
       width: Number,
       height: Number
+    },
+
+    building: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Building'
     }
   },
   { timestamps: true }

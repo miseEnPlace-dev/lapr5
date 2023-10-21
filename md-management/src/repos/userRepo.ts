@@ -3,7 +3,7 @@ import Container, { Service } from 'typedi';
 import { Document, Model } from 'mongoose';
 import { IUserPersistence } from '../dataschema/IUserPersistence';
 
-import config from 'config.mjs';
+import config from '@/config.mjs';
 import { User } from '../domain/user/user';
 import { UserEmail } from '../domain/user/userEmail';
 import { UserId } from '../domain/user/userId';
