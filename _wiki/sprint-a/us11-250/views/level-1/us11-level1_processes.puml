@@ -1,4 +1,4 @@
-@startuml us08-220_ssd
+@startuml us11-level1_processes
 autonumber
 
 actor CM as "Campus Manager"
@@ -6,13 +6,13 @@ participant SYS as "RobDroneGo System" <<system (C4)>>
 
 activate CM
 
-CM -> SYS : wants to create a building
+CM -> SYS : wants to edit a passage
 activate SYS
 
-CM <- SYS : asks for the building name
+CM <- SYS : asks for the new passage data
 deactivate SYS
 
-CM -> SYS : types the building name
+CM -> SYS : inserts the data
 activate SYS
 
 CM <- SYS : returns confirmation message

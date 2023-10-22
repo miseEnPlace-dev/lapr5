@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { Container } from 'typedi';
 import IRoleController from '../../controllers/IControllers/IRoleController';
 
-import config from '../../../config.mjs';
+import config from '@/config.mjs';
 
 export default (app: Router) => {
   const route = Router();

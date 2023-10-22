@@ -3,7 +3,7 @@ import Container, { Service } from 'typedi';
 import argon2 from 'argon2';
 import { randomBytes } from 'crypto';
 import jwt from 'jsonwebtoken';
-import config from '../../config.mjs';
+import config from '@/config.mjs';
 
 import { IUserDTO } from '../dto/IUserDTO';
 import { UserMap } from '../mappers/UserMap';

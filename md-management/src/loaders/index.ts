@@ -4,7 +4,7 @@ import expressLoader from './express';
 import Logger from './logger';
 import mongooseLoader from './mongoose';
 
-import config from '../../config.mjs';
+import config from '@/config.mjs';
 
 export default async ({ expressApp }: { expressApp: Express }) => {
   try {

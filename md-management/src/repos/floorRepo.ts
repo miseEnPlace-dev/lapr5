@@ -1,14 +1,16 @@
 import Container, { Service } from 'typedi';
 
+import config from '@/config.mjs';
+
 import { IFloorPersistence } from '@/dataschema/IFloorPersistence';
 import { Floor } from '@/domain/floor/floor';
 import { FloorCode } from '@/domain/floor/floorCode';
 
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
-import config from 'config.mjs';
 import { Document, FilterQuery, Model } from 'mongoose';
-import { IRolePersistence } from '../dataschema/IRolePersistence';
+import { IRolePersistence } from '@/dataschema/IRolePersistence';
 import { FloorMap } from '@/mappers/FloorMap';
+import { BuildingCode } from '@/domain/building/buildingCode';
 
 @Service()
 export default class FloorRepo implements IFloorRepo {
@@ -25,7 +27,7 @@ export default class FloorRepo implements IFloorRepo {
       query as FilterQuery<IRolePersistence & Document>
     );
 
-    return !!roleDocument === true;
+    return !!roleDocument;
   }
 
   public async save(floor: Floor): Promise<Floor> {
@@ -60,8 +62,30 @@ export default class FloorRepo implements IFloorRepo {
       query as FilterQuery<IFloorPersistence & Document>
     );
 
-    if (floorRecord != null) {
-      return FloorMap.toDomain(floorRecord);
-    } else return null;
+    if (floorRecord != null) return FloorMap.toDomain(floorRecord);
+    return null;
+  }
+
+  public async findAll(): Promise<Floor[]> {
+    const floorRecords = await this.floorSchema.find();
+
+    const floors = floorRecords
+      .map(floorRecord => FloorMap.toDomain(floorRecord))
+      .filter(floor => floor !== null) as Floor[];
+
+    return floors;
+  }
+
+  public async findByBuildingId(buildingId: BuildingCode): Promise<Floor[]> {
+    const query = { buildingId: buildingId.toString() };
+    const floorRecords = await this.floorSchema.find(
+      query as FilterQuery<IFloorPersistence & Document>
+    );
+
+    const floors = floorRecords
+      .map(floorRecord => FloorMap.toDomain(floorRecord))
+      .filter(floor => floor !== null) as Floor[];
+
+    return floors;
   }
 }

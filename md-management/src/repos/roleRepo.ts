@@ -5,7 +5,7 @@ import { RoleId } from '../domain/role/roleId';
 import { RoleMap } from '../mappers/RoleMap';
 import IRoleRepo from '../services/IRepos/IRoleRepo';
 
-import config from 'config.mjs';
+import config from '@/config.mjs';
 import { Document, FilterQuery, Model } from 'mongoose';
 import { IRolePersistence } from '../dataschema/IRolePersistence';
 

@@ -1,11 +1,13 @@
+import { NextFunction, Request, Response } from 'express';
 import Container, { Service } from 'typedi';
-import config from '../../config.mjs';
+
+import config from '@/config.mjs';
 
 import { IFloorDTO } from '@/dto/IFloorDTO';
 import IFloorService from '@/services/IServices/IFloorService';
-import { NextFunction, Request, Response } from 'express';
-import { Result } from '../core/logic/Result';
+import { Result } from '@/core/logic/Result';
 import IFloorController from './IControllers/IFloorController';
+import { BuildingCode } from '@/domain/building/buildingCode';
 
 @Service()
 export default class FloorController implements IFloorController {
@@ -44,6 +46,27 @@ export default class FloorController implements IFloorController {
 
       const floorDTO = floorOrError.getValue();
       return res.status(201).json(floorDTO);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  public async getBuildingFloors(req: Request, res: Response, next: NextFunction) {
+    const buildingId = BuildingCode.create(req.query.buildingId as string);
+
+    if (buildingId.isFailure) return res.status(400).send();
+
+    try {
+      // const filter = req.query.filter as string | undefined;
+
+      const floorsOrError = (await this.floorServiceInstance.getBuildingFloors(
+        buildingId.getValue()
+      )) as Result<IFloorDTO[]>;
+
+      if (floorsOrError.isFailure) return res.status(404).send();
+
+      const floorsDTO = floorsOrError.getValue();
+      return res.status(200).json(floorsDTO);
     } catch (e) {
       return next(e);
     }

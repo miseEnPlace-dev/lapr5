@@ -5,7 +5,7 @@ import { Building } from '@/domain/building/building';
 import { BuildingCode } from '@/domain/building/buildingCode';
 import { BuildingMap } from '@/mappers/BuildingMap';
 import IBuildingRepo from '@/services/IRepos/IBuildingRepo';
-import config from 'config.mjs';
+import config from '@/config.mjs';
 import { Document, FilterQuery, Model } from 'mongoose';
 import { IRolePersistence } from '../dataschema/IRolePersistence';
 
@@ -25,7 +25,7 @@ export default class BuildingRepo implements IBuildingRepo {
       query as FilterQuery<IRolePersistence & Document>
     );
 
-    return !!roleDocument === true;
+    return !!roleDocument;
   }
 
   public async save(building: Building): Promise<Building> {
@@ -60,8 +60,7 @@ export default class BuildingRepo implements IBuildingRepo {
       query as FilterQuery<IRolePersistence & Document>
     );
 
-    if (buildingRecord != null) {
-      return BuildingMap.toDomain(buildingRecord);
-    } else return null;
+    if (buildingRecord != null) return BuildingMap.toDomain(buildingRecord);
+    return null;
   }
 }
