@@ -1,6 +1,6 @@
-import { Result } from '@/core/logic/Result';
 import { Entity } from '../../core/domain/Entity';
 import { UniqueEntityID } from '../../core/domain/UniqueEntityID';
+import { Result } from '../../core/logic/Result';
 
 export class BuildingCode extends Entity<null> {
   get id(): UniqueEntityID {
