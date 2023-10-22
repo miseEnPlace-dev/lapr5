@@ -1,5 +1,5 @@
-import Container, { Service } from 'typedi';
 import config from '@/config.mjs';
+import Container, { Service } from 'typedi';
 
 import { IBuildingDTO } from '@/dto/IBuildingDTO';
 import IBuildingService from '@/services/IServices/IBuildingService';

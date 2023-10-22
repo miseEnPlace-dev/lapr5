@@ -1,28 +1,47 @@
 import { Mapper } from '../core/infra/Mapper';
 
-import { Document, ObjectId } from 'mongoose';
-
 import { IBuildingPersistence } from '@/dataschema/IBuildingPersistence';
 import { Building } from '@/domain/building/building';
+import { BuildingCode } from '@/domain/building/buildingCode';
+import { BuildingDescription } from '@/domain/building/buildingDescription';
+import { BuildingMaxDimensions } from '@/domain/building/buildingMaxDimensions';
+import { BuildingName } from '@/domain/building/buildingName';
 import { IBuildingDTO } from '@/dto/IBuildingDTO';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 
 export class BuildingMap extends Mapper<Building> {
   public static toDTO(building: Building): IBuildingDTO {
     return {
-      code: building.code.toString(),
+      code: building.code.code,
+      name: building.name?.value,
+      description: building.description?.value,
       maxDimensions: {
         width: building.maxDimensions.width,
         height: building.maxDimensions.height
-      },
-      name: building.name?.value
+      }
     };
   }
 
-  public static toDomain(
-    building: IBuildingPersistence & Document<unknown, unknown, unknown> & { _id: ObjectId }
-  ): Building | null {
-    const buildingOrError = Building.create(building, new UniqueEntityID(building._id));
+  public static toDomain(building: IBuildingPersistence): Building | null {
+    const code = BuildingCode.create(building.code).getValue();
+    const maxDimensions = BuildingMaxDimensions.create(
+      building.maxDimensions.width,
+      building.maxDimensions.height
+    ).getValue();
+    const name = building.name ? BuildingName.create(building.name).getValue() : undefined;
+    const description = building.description
+      ? BuildingDescription.create(building.description).getValue()
+      : undefined;
+
+    const buildingOrError = Building.create(
+      {
+        code,
+        maxDimensions,
+        name,
+        description
+      },
+      new UniqueEntityID(building._id)
+    );
 
     buildingOrError.isFailure && console.log(buildingOrError.error);
 
@@ -31,12 +50,14 @@ export class BuildingMap extends Mapper<Building> {
 
   public static toPersistence(building: Building) {
     return {
-      code: building.code.toString(),
+      domainId: building.id.toString(),
+      code: building.code.code,
+      name: building.name?.value,
+      description: building.description?.value,
       maxDimensions: {
         width: building.maxDimensions.width,
         height: building.maxDimensions.height
-      },
-      name: building.name?.value
+      }
     };
   }
 }

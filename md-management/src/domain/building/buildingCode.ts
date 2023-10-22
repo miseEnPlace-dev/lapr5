@@ -1,14 +1,18 @@
-import { Entity } from '../../core/domain/Entity';
-import { UniqueEntityID } from '../../core/domain/UniqueEntityID';
+import { ValueObject } from '@/core/domain/ValueObject';
 import { Result } from '../../core/logic/Result';
 
-export class BuildingCode extends Entity<null> {
-  get id(): UniqueEntityID {
-    return this._id;
+interface BuildingCodeProps {
+  [key: string]: string;
+  value: string;
+}
+
+export class BuildingCode extends ValueObject<BuildingCodeProps> {
+  get code(): string {
+    return this.props.value;
   }
 
-  private constructor(id?: UniqueEntityID) {
-    super(null, id);
+  private constructor(props: BuildingCodeProps) {
+    super(props);
   }
 
   public static create(id: string): Result<BuildingCode> {
@@ -17,6 +21,6 @@ export class BuildingCode extends Entity<null> {
     if (!/^[a-zA-Z0-9 ]+$/.test(id))
       return Result.fail<BuildingCode>('Building code must be alphanumeric');
 
-    return Result.ok<BuildingCode>(new BuildingCode(UniqueEntityID.create(id)));
+    return Result.ok<BuildingCode>(new BuildingCode({ value: id }));
   }
 }

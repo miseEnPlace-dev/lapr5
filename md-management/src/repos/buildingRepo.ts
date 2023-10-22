@@ -1,11 +1,11 @@
 import Container, { Service } from 'typedi';
 
+import config from '@/config.mjs';
 import { IBuildingPersistence } from '@/dataschema/IBuildingPersistence';
 import { Building } from '@/domain/building/building';
 import { BuildingCode } from '@/domain/building/buildingCode';
 import { BuildingMap } from '@/mappers/BuildingMap';
 import IBuildingRepo from '@/services/IRepos/IBuildingRepo';
-import config from '@/config.mjs';
 import { Document, FilterQuery, Model } from 'mongoose';
 import { IRolePersistence } from '../dataschema/IRolePersistence';
 
@@ -18,7 +18,7 @@ export default class BuildingRepo implements IBuildingRepo {
 
   public async exists(building: Building): Promise<boolean> {
     const idX =
-      building.id instanceof BuildingCode ? (<BuildingCode>building.id).id.toString() : building.id;
+      building.id instanceof BuildingCode ? (<BuildingCode>building.id).code : building.id;
 
     const query = { domainId: idX };
     const roleDocument = await this.buildingSchema.findOne(
@@ -29,7 +29,7 @@ export default class BuildingRepo implements IBuildingRepo {
   }
 
   public async save(building: Building): Promise<Building> {
-    const query = { domainId: building.id.toString() };
+    const query = { domainId: building.id } as FilterQuery<IBuildingPersistence & Document>;
 
     const buildingDocument = await this.buildingSchema.findOne(query);
 

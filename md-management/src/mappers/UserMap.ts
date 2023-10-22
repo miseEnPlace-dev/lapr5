@@ -53,12 +53,12 @@ export class UserMap extends Mapper<User> {
 
   public static toPersistence(user: User) {
     const a = {
-      domainId: user.id.toString(),
       email: user.email.value,
       password: user.password.value,
       firstName: user.firstName,
       lastName: user.lastName,
-      role: user.role.id.toValue()
+      role: user.role.id.toValue(),
+      phoneNumber: user.phoneNumber.value
     };
     return a;
   }

@@ -3,8 +3,13 @@ import { IBuildingPersistence } from '../../dataschema/IBuildingPersistence';
 
 const BuildingSchema = new mongoose.Schema(
   {
+    domainId: {
+      type: String,
+      unique: true
+    },
     code: {
       type: String,
+      required: true,
       unique: true
     },
 
