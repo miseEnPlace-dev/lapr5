@@ -5,7 +5,9 @@ participant CTRL as ":ElevatorController"
 participant SRV as ":ElevatorService"
 participant ELEV as ":elevator:Elevator"
 participant REPO as ":ElevatorRepo"
+participant FLIST as "floorList:Floor[]"
 participant BREPO as ":BuildingRepo"
+participant FREPO as ":FloorRepo"
 participant MAP as ":ElevatorMap"
 participant BUILD as ":building:Building"
 participant PERS as "elevatorPersistence:IElevatorPersistence"
@@ -18,11 +20,20 @@ activate ROUTE
 
 ROUTE -> CTRL : createElevator(request)
 activate CTRL
-CTRL -> SRV : createElevator(elevatorDTO,buildingDTO)
+CTRL -> SRV : createElevator(elevatorDTO,buildingCode,floorCodes)
 activate SRV
-SRV -> BREPO : exists(buildingDTO.code)
+SRV -> BREPO : exists(buildingCode)
 activate BREPO
 deactivate BREPO
+SRV -> FLIST** : create()
+loop for each floorCode in floorCodes
+  SRV -> FREPO : floor=findWithCode(floorCode)
+  activate FREPO
+  deactivate FREPO
+  SRV -> FLIST : add(floor)
+  activate FLIST
+  deactivate FLIST
+end
 SRV -> ELEV** : create()
 SRV -> REPO : save(elevator)
 activate REPO

@@ -16,9 +16,6 @@ export default {
    */
   port: parseInt(process.env.PORT, 10) || 4000,
 
-  /**
-   * That long string from mlab
-   */
   databaseURL: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/test',
 
   /**
