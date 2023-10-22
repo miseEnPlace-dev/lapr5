@@ -4,15 +4,11 @@ participant ROUTE as ":ElevatorRoute"
 participant CTRL as ":ElevatorController"
 participant SRV as ":ElevatorService"
 participant ELEV as ":elevator:Elevator"
-participant REPO as ":ElevatorRepo"
 participant FLIST as "floorList:Floor[]"
 participant BREPO as ":BuildingRepo"
 participant FREPO as ":FloorRepo"
 participant MAP as ":ElevatorMap"
-participant BUILD as ":building:Building"
-participant PERS as "elevatorPersistence:IElevatorPersistence"
-participant MODEL as ":Model<IElevatorPersistence & Document>"
-participant NELEV as ":newElevator:Elevator"
+participant BUILD as "building:Building"
 participant DTO as ":elevatorDTO:IElevatorDTO"
 
 ?o-> ROUTE : POST /elevators
@@ -35,29 +31,14 @@ loop for each floorCode in floorCodes
   deactivate FLIST
 end
 SRV -> ELEV** : create()
-SRV -> REPO : save(elevator)
-activate REPO
-REPO -> MAP : toPersitence(elevator)
-activate MAP
-deactivate MAP
-REPO -> PERS** : create()
-REPO -> MODEL : create(elevatorPersistence)
-activate MODEL
-deactivate MODEL
-REPO -> MAP : toDomain(elevatorPersistence)
-activate MAP
-MAP -> NELEV** : create()
-deactivate MAP
-REPO --> SRV : newElevator
-deactivate REPO
-SRV -> BREPO : addElevatorForCode(buildingDTO.code, newElevator)
+SRV -> BREPO : addElevatorForCode(buildingCode, newElevator)
 activate BREPO
-BREPO -> BREPO: elevator=findWithCode(buildingDTO.code)
+BREPO -> BREPO: building=findWithCode(buildingCode)
 BREPO -> BUILD : setElevator(elevator)
 activate BUILD
 deactivate BUILD
 deactivate BREPO
-SRV -> MAP : toDto(newElevator)
+SRV -> MAP : toDto(elevator)
 activate MAP
 MAP -> DTO** : create()
 deactivate MAP
