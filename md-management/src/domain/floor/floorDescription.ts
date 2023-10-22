@@ -17,7 +17,7 @@ export class FloorDescription extends ValueObject<FloorDescriptionProps> {
 
   public static create(description: string): Result<FloorDescription> {
     if (description.length > 255)
-      throw new Error('Floor description must be 255 characters or less.');
+      return Result.fail<FloorDescription>('Floor description must be 255 characters or less.');
     return Result.ok<FloorDescription>(new FloorDescription({ value: description }));
   }
 }

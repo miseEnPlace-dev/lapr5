@@ -1,3 +1,4 @@
+import { Result } from '@/core/logic/Result';
 import { Entity } from '../../core/domain/Entity';
 import { UniqueEntityID } from '../../core/domain/UniqueEntityID';
 
@@ -10,7 +11,7 @@ export class FloorCode extends Entity<null> {
     super(null, id);
   }
 
-  public static create(id: string): FloorCode {
-    return new FloorCode(UniqueEntityID.create(id));
+  public static create(id: string): Result<FloorCode> {
+    return Result.ok<FloorCode>(new FloorCode(new UniqueEntityID(id)));
   }
 }
