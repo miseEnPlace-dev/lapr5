@@ -29,3 +29,9 @@ This views can be used as a foundation to understand the system from a global pe
 ### Implementation View
 
 ![Level 3 Implementation View](level-3/assets/implemantation-view.svg)
+
+## Use Case Diagram
+
+### Sprint A
+
+![Sprint A Use Case Diagram](assets/ucd-sprint-a.svg)
