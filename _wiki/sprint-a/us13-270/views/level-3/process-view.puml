@@ -2,11 +2,12 @@
 autonumber
 participant ROUTE as ":ElevatorRoute"
 participant CTRL as ":ElevatorController"
-participant BSRV as ":BuildingService"
 participant SRV as ":ElevatorService"
 participant ELEV as ":elevator:Elevator"
 participant REPO as ":ElevatorRepo"
+participant BREPO as ":BuildingRepo"
 participant MAP as ":ElevatorMap"
+participant BUILD as ":building:Building"
 participant PERS as "elevatorPersistence:IElevatorPersistence"
 participant MODEL as ":Model<IElevatorPersistence & Document>"
 participant NELEV as ":newElevator:Elevator"
@@ -17,11 +18,11 @@ activate ROUTE
 
 ROUTE -> CTRL : createElevator(request)
 activate CTRL
-CTRL -> BSRV : building=getBuildingWithId(buildingId)
-activate BSRV
-
-CTRL -> SRV : createElevator(elevatorDTO,building)
+CTRL -> SRV : createElevator(elevatorDTO,buildingDTO)
 activate SRV
+SRV -> BREPO : exists(buildingDTO.code)
+activate BREPO
+deactivate BREPO
 SRV -> ELEV** : create()
 SRV -> REPO : save(elevator)
 activate REPO
@@ -38,6 +39,13 @@ MAP -> NELEV** : create()
 deactivate MAP
 REPO --> SRV : newElevator
 deactivate REPO
+SRV -> BREPO : addElevatorForCode(buildingDTO.code, newElevator)
+activate BREPO
+BREPO -> BREPO: elevator=findWithCode(buildingDTO.code)
+BREPO -> BUILD : setElevator(elevator)
+activate BUILD
+deactivate BUILD
+deactivate BREPO
 SRV -> MAP : toDto(newElevator)
 activate MAP
 MAP -> DTO** : create()
