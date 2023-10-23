@@ -6,7 +6,7 @@ participant SYS as "MD Management" <<system (C4)>>
 ?o-> SYS : GET /buildings
 activate SYS
 
-SYS -> SYS : listBuildings()
+SYS -> SYS : getBuildings()
 <-- SYS : 200 OK (buildings JSON)
 deactivate SYS
 
