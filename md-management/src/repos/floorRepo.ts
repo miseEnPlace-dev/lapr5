@@ -6,6 +6,7 @@ import { IFloorPersistence } from '@/dataschema/IFloorPersistence';
 import { Floor } from '@/domain/floor/floor';
 import { FloorCode } from '@/domain/floor/floorCode';
 
+import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { IRolePersistence } from '@/dataschema/IRolePersistence';
 import { BuildingCode } from '@/domain/building/buildingCode';
 import { FloorMap } from '@/mappers/FloorMap';
@@ -56,8 +57,8 @@ export default class FloorRepo implements IFloorRepo {
     }
   }
 
-  public async findByDomainId(floorCode: FloorCode | string): Promise<Floor | null> {
-    const query = { code: floorCode };
+  public async findByDomainId(domainId: UniqueEntityID | string): Promise<Floor | null> {
+    const query = { domainId };
     const floorRecord = await this.floorSchema.findOne(
       query as FilterQuery<IFloorPersistence & Document>
     );
@@ -77,6 +78,16 @@ export default class FloorRepo implements IFloorRepo {
     }
 
     return floors;
+  }
+
+  public async findByCode(code: FloorCode | string): Promise<Floor | null> {
+    const query = { code };
+    const floorRecord = await this.floorSchema.findOne(
+      query as FilterQuery<IFloorPersistence & Document>
+    );
+
+    if (floorRecord != null) return FloorMap.toDomain(floorRecord);
+    return null;
   }
 
   public async findByBuildingId(buildingId: BuildingCode): Promise<Floor[]> {

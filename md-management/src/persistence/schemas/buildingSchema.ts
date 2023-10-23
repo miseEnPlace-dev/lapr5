@@ -23,7 +23,7 @@ const BuildingSchema = new mongoose.Schema(
     },
 
     elevator: {
-      type: String
+      type: mongoose.model<IBuildingPersistence>('Elevator').schema
     }
   },
   { timestamps: true }

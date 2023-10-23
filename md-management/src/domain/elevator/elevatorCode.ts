@@ -8,7 +8,7 @@ interface ElevatorCodeProps {
 }
 
 export class ElevatorCode extends ValueObject<ElevatorCodeProps> {
-  get code(): number {
+  get value(): number {
     return this.props.code;
   }
 

@@ -9,7 +9,7 @@ import { validate } from '../middlewares/validate';
 
 const elevatorCreateSchema = z.object({
   code: z.number().min(1),
-  floorIds: z.array(z.string()),
+  floorCodes: z.array(z.string()),
   brand: z.string().optional(),
   model: z.string().optional(),
   serialNumber: z.string().optional(),

@@ -24,7 +24,7 @@ export default class ElevatorService implements IElevatorService {
 
   public async getElevator(buildingCode: string): Promise<Result<IElevatorDTO>> {
     try {
-      const building = await this.buildingRepo.findByDomainId(buildingCode);
+      const building = await this.buildingRepo.findByCode(buildingCode);
       if (!building) return Result.fail<IElevatorDTO>('Building not found');
 
       const elevator = building.elevator;
@@ -44,8 +44,8 @@ export default class ElevatorService implements IElevatorService {
 
       const floors: Floor[] = [];
 
-      for (const floorId of elevatorDTO.floorIds) {
-        const floor = await this.floorRepo.findByDomainId(floorId);
+      for (const floorId of elevatorDTO.floorCodes) {
+        const floor = await this.floorRepo.findByCode(floorId);
         if (!floor) return Result.fail<IElevatorDTO>('Floor not found');
         //if (floor.buildingCode !== building.code) return Result.fail<IElevatorDTO>('Floor not found in building');
         floors.push(floor);

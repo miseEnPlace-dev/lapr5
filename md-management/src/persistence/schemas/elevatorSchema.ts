@@ -15,14 +15,10 @@ const Elevator = new mongoose.Schema(
 
     branding: {
       brand: {
-        type: String,
-        required: [true, 'Please enter brand'],
-        index: true
+        type: String
       },
       model: {
-        type: String,
-        required: [true, 'Please enter model'],
-        index: true
+        type: String
       }
     },
 
@@ -41,7 +37,7 @@ const Elevator = new mongoose.Schema(
       }
     ]
   },
-  { timestamps: true }
+  { timestamps: true, _id: false }
 );
 
 export default mongoose.model<IElevatorPersistence & mongoose.Document>('Elevator', Elevator);

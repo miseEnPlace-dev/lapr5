@@ -100,7 +100,7 @@ export default async ({ expressApp }: { expressApp: Express }) => {
   };
 
   dependencyInjectorLoader({
-    schemas: [userSchema, roleSchema, buildingSchema, floorSchema, elevatorSchema],
+    schemas: [elevatorSchema, userSchema, roleSchema, buildingSchema, floorSchema],
     controllers: [roleController, buildingController, floorController, elevatorController],
     repos: [roleRepo, userRepo, buildingRepo, floorRepo],
     services: [roleService, buildingService, floorService, elevatorService]

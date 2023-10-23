@@ -1,6 +1,6 @@
 export interface IElevatorDTO {
   code: number;
-  floorIds: string[];
+  floorCodes: string[];
   buildingCode: string;
   brand?: string;
   model?: string;

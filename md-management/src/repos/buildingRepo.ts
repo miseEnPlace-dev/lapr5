@@ -36,7 +36,7 @@ export default class BuildingRepo implements IBuildingRepo {
   }
 
   public async save(building: Building): Promise<Building> {
-    const query = { domainId: building.id } as FilterQuery<IBuildingPersistence & Document>;
+    const query = { id: building.id } as FilterQuery<IBuildingPersistence & Document>;
 
     const buildingDocument = await this.buildingSchema.findOne(query);
 
@@ -55,13 +55,10 @@ export default class BuildingRepo implements IBuildingRepo {
       buildingDocument.name = building.name?.value;
       buildingDocument.code = building.code?.value;
       buildingDocument.description = building.description?.value;
-      buildingDocument.elevator = building.elevator?.id.toString();
+      buildingDocument.elevator = building.elevator;
       await buildingDocument.save();
 
-      const domainBuilding = BuildingMap.toDomain(buildingDocument);
-      if (!domainBuilding) throw new Error('Building not created');
-
-      return domainBuilding;
+      return building;
     } catch (err) {
       throw err;
     }
