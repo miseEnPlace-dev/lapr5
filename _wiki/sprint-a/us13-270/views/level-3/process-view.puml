@@ -14,11 +14,11 @@ participant DTO as ":elevatorDTO:IElevatorDTO"
 ?o-> ROUTE : POST /elevators
 activate ROUTE
 
-ROUTE -> CTRL : createElevator(request)
+ROUTE -> CTRL : createElevator(elevatorDTO)
 activate CTRL
-CTRL -> SRV : createElevator(elevatorId,buildingId,floorIds)
+CTRL -> SRV : createElevator(elevatorDTO)
 activate SRV
-SRV -> BREPO : findByDomainId(buildingId)
+SRV -> BREPO : findByDomainId(elevatorDTO.buildingCode)
 activate BREPO
 deactivate BREPO
 SRV -> FLIST** : create()
@@ -26,7 +26,7 @@ note right of FLIST
   we must check if the floorIds all 
   belong to the same building
 end note
-loop for each floorId in floorIds
+loop for each floorId in elevatorDTO.floorIds
   SRV -> FREPO : floor=findWithId(floorId)
   activate FREPO
   deactivate FREPO
