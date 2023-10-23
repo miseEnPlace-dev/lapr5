@@ -1,6 +1,7 @@
 import Container, { Service } from 'typedi';
 
 import config from '@/config.mjs';
+import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { IBuildingPersistence } from '@/dataschema/IBuildingPersistence';
 import { Building } from '@/domain/building/building';
 import { BuildingCode } from '@/domain/building/buildingCode';
@@ -24,7 +25,7 @@ export default class BuildingRepo implements IBuildingRepo {
 
   public async exists(building: Building): Promise<boolean> {
     const idX =
-      building.id instanceof BuildingCode ? (<BuildingCode>building.id).code : building.id;
+      building.id instanceof BuildingCode ? (<BuildingCode>building.id).value : building.id;
 
     const query = { domainId: idX };
     const roleDocument = await this.buildingSchema.findOne(
@@ -51,6 +52,12 @@ export default class BuildingRepo implements IBuildingRepo {
         return domainBuilding;
       }
 
+      buildingDocument.name = building.name?.value;
+      buildingDocument.code = building.code?.value;
+      buildingDocument.description = building.description?.value;
+      buildingDocument.elevator = building.elevator?.id.toString();
+      await buildingDocument.save();
+
       const domainBuilding = BuildingMap.toDomain(buildingDocument);
       if (!domainBuilding) throw new Error('Building not created');
 
@@ -60,14 +67,25 @@ export default class BuildingRepo implements IBuildingRepo {
     }
   }
 
-  public async findByDomainId(buildingCode: BuildingCode | string): Promise<Building | null> {
-    const query = { id: buildingCode };
+  public async findByDomainId(domainId: UniqueEntityID | string): Promise<Building | null> {
+    const query = { _id: domainId };
 
     const buildingRecord = await this.buildingSchema.findOne(
       query as FilterQuery<IBuildingPersistence & Document>
     );
 
-    if (buildingRecord != null) return BuildingMap.toDomain(buildingRecord);
+    if (buildingRecord) return BuildingMap.toDomain(buildingRecord);
+    return null;
+  }
+
+  public async findByCode(code: BuildingCode | string): Promise<Building | null> {
+    const query = { code: code.valueOf() };
+
+    const buildingRecord = await this.buildingSchema.findOne(
+      query as FilterQuery<IBuildingPersistence & Document>
+    );
+
+    if (buildingRecord) return BuildingMap.toDomain(buildingRecord);
     return null;
   }
 }

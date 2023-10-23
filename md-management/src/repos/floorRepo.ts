@@ -6,11 +6,11 @@ import { IFloorPersistence } from '@/dataschema/IFloorPersistence';
 import { Floor } from '@/domain/floor/floor';
 import { FloorCode } from '@/domain/floor/floorCode';
 
+import { IRolePersistence } from '@/dataschema/IRolePersistence';
+import { BuildingCode } from '@/domain/building/buildingCode';
+import { FloorMap } from '@/mappers/FloorMap';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import { Document, FilterQuery, Model } from 'mongoose';
-import { IRolePersistence } from '@/dataschema/IRolePersistence';
-import { FloorMap } from '@/mappers/FloorMap';
-import { BuildingCode } from '@/domain/building/buildingCode';
 
 @Service()
 export default class FloorRepo implements IFloorRepo {
@@ -20,7 +20,7 @@ export default class FloorRepo implements IFloorRepo {
   }
 
   public async exists(floor: Floor): Promise<boolean> {
-    const idX = floor.id instanceof FloorCode ? (<FloorCode>floor.id).code : floor.id;
+    const idX = floor.id instanceof FloorCode ? (<FloorCode>floor.id).value : floor.id;
 
     const query = { domainId: idX };
     const roleDocument = await this.floorSchema.findOne(
@@ -57,7 +57,7 @@ export default class FloorRepo implements IFloorRepo {
   }
 
   public async findByDomainId(floorCode: FloorCode | string): Promise<Floor | null> {
-    const query = { domainId: floorCode };
+    const query = { code: floorCode };
     const floorRecord = await this.floorSchema.findOne(
       query as FilterQuery<IFloorPersistence & Document>
     );

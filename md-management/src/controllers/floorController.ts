@@ -3,11 +3,11 @@ import Container, { Service } from 'typedi';
 
 import config from '@/config.mjs';
 
+import { Result } from '@/core/logic/Result';
+import { BuildingCode } from '@/domain/building/buildingCode';
 import { IFloorDTO } from '@/dto/IFloorDTO';
 import IFloorService from '@/services/IServices/IFloorService';
-import { Result } from '@/core/logic/Result';
 import IFloorController from './IControllers/IFloorController';
-import { BuildingCode } from '@/domain/building/buildingCode';
 
 @Service()
 export default class FloorController implements IFloorController {
@@ -42,9 +42,7 @@ export default class FloorController implements IFloorController {
         req.body as IFloorDTO
       )) as Result<IFloorDTO>;
 
-      if (floorOrError.isFailure) {
-        return res.status(404).send();
-      }
+      if (floorOrError.isFailure) return res.status(404).send();
 
       const floorDTO = floorOrError.getValue();
       return res.status(201).json(floorDTO);

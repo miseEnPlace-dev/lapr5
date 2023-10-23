@@ -20,14 +20,12 @@ const FloorSchema = new mongoose.Schema(
     },
 
     building: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Building'
+      type: String
     },
 
     connectors: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Connector'
+        type: String
       }
     ]
   },

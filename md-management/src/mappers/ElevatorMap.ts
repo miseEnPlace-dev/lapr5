@@ -14,10 +14,10 @@ import Container from 'typedi';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 
 export class ElevatorMap extends Mapper<Elevator> {
-  public static toDTO(elevator: Elevator): IElevatorDTO {
+  public static toDTO(elevator: Elevator): Omit<IElevatorDTO, 'buildingCode'> {
     return {
       code: elevator.code.code,
-      floorCodes: elevator.floorsList.map(floor => floor.code.id.toString()),
+      floorIds: elevator.floorsList.map(floor => floor.code.value.toString()),
       brand: elevator.brand,
       model: elevator.model,
       serialNumber: elevator.serialNumber?.value,
@@ -30,10 +30,11 @@ export class ElevatorMap extends Mapper<Elevator> {
 
     const floors: Floor[] = [];
 
-    for (const floorId of elevator.floorIds) {
+    for (const floorId of elevator.floors) {
       const floor = await floorRepo.findByDomainId(floorId);
       if (!floor) throw new Error('Floor not found');
-      //if (floor.buildingCode !== building.code) return Result.fail<IElevatorDTO>('Floor not found in building');
+      /* if (floor.building.code !== building.code)
+        return Result.fail<IElevatorDTO>('Floor not found in building'); */
       floors.push(floor);
     }
 
@@ -54,7 +55,8 @@ export class ElevatorMap extends Mapper<Elevator> {
         code,
         branding,
         serialNumber,
-        description
+        description,
+        floors
       },
       new UniqueEntityID(elevator.domainId)
     );
@@ -68,7 +70,7 @@ export class ElevatorMap extends Mapper<Elevator> {
     return {
       domainId: elevator.id.toString(),
       code: elevator.code.code,
-      floorIds: elevator.floorsList.map(floor => floor.id.toString()),
+      floors: elevator.floorsList.map(floor => floor.id.toString()),
       brand: elevator.brand,
       model: elevator.model,
       serialNumber: elevator.serialNumber?.value,

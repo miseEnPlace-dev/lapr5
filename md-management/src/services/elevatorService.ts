@@ -39,7 +39,7 @@ export default class ElevatorService implements IElevatorService {
 
   public async createElevator(elevatorDTO: IElevatorDTO): Promise<Result<IElevatorDTO>> {
     try {
-      const building = await this.buildingRepo.findByDomainId(elevatorDTO.buildingId);
+      const building = await this.buildingRepo.findByCode(elevatorDTO.buildingCode);
       if (!building) return Result.fail<IElevatorDTO>('Building not found');
 
       const floors: Floor[] = [];
@@ -77,8 +77,14 @@ export default class ElevatorService implements IElevatorService {
 
       building.elevator = elevatorResult;
 
-      const ElevatorDTOResult = ElevatorMap.toDTO(elevatorResult) as IElevatorDTO;
-      return Result.ok<IElevatorDTO>(ElevatorDTOResult);
+      try {
+        await this.buildingRepo.save(building);
+
+        const elevatorDTOResult = ElevatorMap.toDTO(elevatorResult) as IElevatorDTO;
+        return Result.ok<IElevatorDTO>(elevatorDTOResult);
+      } catch (e) {
+        throw e;
+      }
     } catch (e) {
       throw e;
     }

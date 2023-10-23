@@ -2,16 +2,16 @@ import Container, { Service } from 'typedi';
 
 import config from '@/config.mjs';
 import { Result } from '@/core/logic/Result';
+import { BuildingCode } from '@/domain/building/buildingCode';
+import { Floor } from '@/domain/floor/floor';
+import { FloorCode } from '@/domain/floor/floorCode';
+import { FloorDescription } from '@/domain/floor/floorDescription';
+import { FloorDimensions } from '@/domain/floor/floorDimensions';
+import { IFloorDTO } from '@/dto/IFloorDTO';
+import { FloorMap } from '@/mappers/FloorMap';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import IFloorService from '@/services/IServices/IFloorService';
-import { IFloorDTO } from '@/dto/IFloorDTO';
-import { Floor } from '@/domain/floor/floor';
-import { FloorMap } from '@/mappers/FloorMap';
-import { BuildingCode } from '@/domain/building/buildingCode';
-import { FloorCode } from '@/domain/floor/floorCode';
-import { FloorDimensions } from '@/domain/floor/floorDimensions';
 import IBuildingRepo from './IRepos/IBuildingRepo';
-import { FloorDescription } from '@/domain/floor/floorDescription';
 
 @Service()
 export default class FloorService implements IFloorService {
@@ -37,7 +37,7 @@ export default class FloorService implements IFloorService {
         ? FloorDescription.create(floorDTO.description)
         : undefined;
 
-      const building = await this.buildingRepo.findByDomainId(floorDTO.buildingCode);
+      const building = await this.buildingRepo.findByCode(floorDTO.buildingCode);
       if (!building) return Result.fail<IFloorDTO>('Building does not exist');
 
       if (!floorDTO.dimensions || !floorDTO.dimensions.width || !floorDTO.dimensions.height)
@@ -50,13 +50,13 @@ export default class FloorService implements IFloorService {
         building.maxDimensions.height
       );
 
-      if (dimensions.isFailure) return Result.fail<IFloorDTO>(dimensions.error as string);
+      if (dimensions.isFailure) return Result.fail<IFloorDTO>(dimensions.error);
 
       const floorOrError = Floor.create({
         code: code.getValue(),
         description: description ? description.getValue() : undefined,
         dimensions: dimensions.getValue(),
-        building: building
+        building
       });
 
       if (floorOrError.isFailure) return Result.fail<IFloorDTO>(floorOrError.error as string);
@@ -65,8 +65,8 @@ export default class FloorService implements IFloorService {
 
       await this.floorRepo.save(floorResult);
 
-      const FloorDTOResult = FloorMap.toDTO(floorResult) as IFloorDTO;
-      return Result.ok<IFloorDTO>(FloorDTOResult);
+      const floorDTOResult = FloorMap.toDTO(floorResult) as IFloorDTO;
+      return Result.ok<IFloorDTO>(floorDTOResult);
     } catch (e) {
       throw e;
     }

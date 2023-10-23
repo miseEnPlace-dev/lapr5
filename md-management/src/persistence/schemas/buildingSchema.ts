@@ -22,12 +22,9 @@ const BuildingSchema = new mongoose.Schema(
       height: Number
     },
 
-    floors: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Floor'
-      }
-    ]
+    elevator: {
+      type: String
+    }
   },
   { timestamps: true }
 );

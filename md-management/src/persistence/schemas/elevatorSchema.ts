@@ -34,7 +34,12 @@ const Elevator = new mongoose.Schema(
     description: {
       type: String,
       index: true
-    }
+    },
+    floors: [
+      {
+        type: String
+      }
+    ]
   },
   { timestamps: true }
 );

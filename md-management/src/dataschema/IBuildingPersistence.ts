@@ -4,6 +4,7 @@ export interface IBuildingPersistence {
   code: string;
   name?: string;
   description?: string;
+  elevator?: string;
   maxDimensions: {
     width: number;
     height: number;
