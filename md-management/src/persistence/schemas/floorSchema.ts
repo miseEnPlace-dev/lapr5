@@ -12,7 +12,7 @@ const FloorSchema = new mongoose.Schema(
 
     description: String,
 
-    maxDimensions: {
+    dimensions: {
       width: Number,
       height: Number
     },

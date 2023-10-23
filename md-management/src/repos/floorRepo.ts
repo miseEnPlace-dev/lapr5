@@ -41,13 +41,13 @@ export default class FloorRepo implements IFloorRepo {
 
         const floorCreated = await this.floorSchema.create(rawFloor);
 
-        const domainFloor = FloorMap.toDomain(floorCreated);
+        const domainFloor = await FloorMap.toDomain(floorCreated);
 
         if (!domainFloor) throw new Error('Floor not created');
         return domainFloor;
       }
 
-      const domainFloor = FloorMap.toDomain(buildingDocument);
+      const domainFloor = await FloorMap.toDomain(buildingDocument);
       if (!domainFloor) throw new Error('Floor not created');
 
       return domainFloor;
@@ -69,9 +69,12 @@ export default class FloorRepo implements IFloorRepo {
   public async findAll(): Promise<Floor[]> {
     const floorRecords = await this.floorSchema.find();
 
-    const floors = floorRecords
-      .map(floorRecord => FloorMap.toDomain(floorRecord))
-      .filter(floor => floor !== null) as Floor[];
+    const floors: Floor[] = [];
+
+    for (const floorRecord of floorRecords) {
+      const floor = await FloorMap.toDomain(floorRecord);
+      if (floor) floors.push(floor);
+    }
 
     return floors;
   }
@@ -82,9 +85,28 @@ export default class FloorRepo implements IFloorRepo {
       query as FilterQuery<IFloorPersistence & Document>
     );
 
-    const floors = floorRecords
-      .map(floorRecord => FloorMap.toDomain(floorRecord))
-      .filter(floor => floor !== null) as Floor[];
+    const floors: Floor[] = [];
+
+    for (const floorRecord of floorRecords) {
+      const floor = await FloorMap.toDomain(floorRecord);
+      if (floor) floors.push(floor);
+    }
+
+    return floors;
+  }
+
+  public async findByBuildingIdWithElevator(buildingId: BuildingCode): Promise<Floor[]> {
+    const query = { buildingId: buildingId.toString(), hasElevator: true };
+    const floorRecords = await this.floorSchema.find(
+      query as FilterQuery<IFloorPersistence & Document>
+    );
+
+    const floors: Floor[] = [];
+
+    for (const floorRecord of floorRecords) {
+      const floor = await FloorMap.toDomain(floorRecord);
+      if (floor) floors.push(floor);
+    }
 
     return floors;
   }
