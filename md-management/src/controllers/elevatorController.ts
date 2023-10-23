@@ -14,6 +14,22 @@ export default class ElevatorController implements IElevatorController {
     this.elevatorServiceInstance = Container.get(config.services.elevator.name) as IElevatorService;
   }
 
+  public async getElevator(req: Request, res: Response, next: NextFunction) {
+    try {
+      const elevatorOrError = (await this.elevatorServiceInstance.getElevator(
+        req.params.id
+      )) as Result<IElevatorDTO>;
+
+      if (elevatorOrError.isFailure)
+        return res.status(400).send({ error: elevatorOrError.errorValue() });
+
+      const roleDTO = elevatorOrError.getValue();
+      return res.json(roleDTO).status(200);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
   public async createElevator(req: Request, res: Response, next: NextFunction) {
     try {
       const elevatorOrError = (await this.elevatorServiceInstance.createElevator(
