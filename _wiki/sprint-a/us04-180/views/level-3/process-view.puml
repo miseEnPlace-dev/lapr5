@@ -1,0 +1,35 @@
+@startuml process-view
+autonumber
+participant ROUTE as ":BuildingRoute"
+participant CTRL as ":BuildingController"
+participant SRV as ":BuildingService"
+participant BUILD as ":building:Building"
+participant REPO as ":BuildingRepo"
+participant MAP as ":BuildingMap"
+participant DTO as ":buildingDTO:IBuildingDTO"
+
+?o-> ROUTE : GET /buildings?minFloors={min}&maxFloors={max}
+activate ROUTE
+
+ROUTE -> CTRL : getBuildingsWithMinMaxFloors(min, max)
+activate CTRL
+CTRL -> SRV : getBuildingsWithMinMaxFloors(min, max)
+activate SRV
+SRV -> REPO : findBuildingsWithMinMaxFloors(min, max)
+activate REPO
+REPO -> SRV : buildings
+deactivate REPO
+loop foreach building
+    SRV -> MAP : toDto(building)
+    activate MAP
+    MAP -> DTO** : create()
+    deactivate MAP
+end
+SRV --> CTRL : sucess(buildingsDTO)
+deactivate SRV
+CTRL --> ROUTE : sucess(buildingsDTO)
+deactivate CTRL
+<-- ROUTE : 200 OK
+deactivate ROUTE
+
+@enduml
