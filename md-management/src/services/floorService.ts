@@ -29,9 +29,12 @@ export default class FloorService implements IFloorService {
 
   public async createFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {
     try {
-      const code = FloorCode.create(floorDTO.code).getValue();
+      const code = FloorCode.create(floorDTO.code);
+
+      if (code.isFailure) return Result.fail<IFloorDTO>(code.error as string);
+
       const description = floorDTO.description
-        ? FloorDescription.create(floorDTO.description).getValue()
+        ? FloorDescription.create(floorDTO.description)
         : undefined;
 
       const building = await this.buildingRepo.findByDomainId(floorDTO.buildingCode);
@@ -50,8 +53,8 @@ export default class FloorService implements IFloorService {
       if (dimensions.isFailure) return Result.fail<IFloorDTO>(dimensions.error as string);
 
       const floorOrError = Floor.create({
-        code,
-        description,
+        code: code.getValue(),
+        description: description ? description.getValue() : undefined,
         dimensions: dimensions.getValue(),
         building: building
       });

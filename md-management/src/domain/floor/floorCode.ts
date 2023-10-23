@@ -18,7 +18,8 @@ export class FloorCode extends ValueObject<FloorCodeProps> {
   public static create(id: string): Result<FloorCode> {
     if (id.length > 5) return Result.fail<FloorCode>('Building code must be 5 characters or less');
 
-    if (!/^[0-9]+$/.test(id)) return Result.fail<FloorCode>('Floor code must be a number');
+    if (!/^[a-zA-Z0-9]+$/.test(id))
+      return Result.fail<FloorCode>('Floor code must be alphanumeric');
 
     return Result.ok<FloorCode>(new FloorCode({ value: id }));
   }
