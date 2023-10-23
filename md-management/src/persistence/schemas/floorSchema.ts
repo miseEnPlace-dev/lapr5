@@ -3,12 +3,14 @@ import { IFloorPersistence } from '../../dataschema/IFloorPersistence';
 
 const FloorSchema = new mongoose.Schema(
   {
+    domainId: {
+      type: String,
+      unique: true
+    },
     code: {
       type: String,
       unique: true
     },
-
-    name: String,
 
     description: String,
 
@@ -20,7 +22,14 @@ const FloorSchema = new mongoose.Schema(
     building: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Building'
-    }
+    },
+
+    connectors: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Connector'
+      }
+    ]
   },
   { timestamps: true }
 );

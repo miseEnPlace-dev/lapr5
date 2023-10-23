@@ -11,7 +11,7 @@ participant DTO as ":buildingDTO:IBuildingDTO"
 ?o-> ROUTE : GET /buildings
 activate ROUTE
 
-ROUTE -> CTRL : listBuildings()
+ROUTE -> CTRL : getBuildings()
 activate CTRL
 CTRL -> SRV : getBuildings()
 activate SRV
