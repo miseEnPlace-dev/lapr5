@@ -55,10 +55,14 @@ export default class BuildingRepo implements IBuildingRepo {
   }
 
   public async findByDomainId(buildingCode: BuildingCode | string): Promise<Building | null> {
-    const query = { domainId: buildingCode };
+    const query = { id: buildingCode };
+    console.log('query:', query.id); // Add this line to check the structure of query
+
     const buildingRecord = await this.buildingSchema.findOne(
-      query as FilterQuery<IRolePersistence & Document>
+      query as FilterQuery<IBuildingPersistence & Document>
     );
+
+    console.log('buildingRecord:', buildingRecord); // Add this line to check the structure of buildingRecord
 
     if (buildingRecord != null) return BuildingMap.toDomain(buildingRecord);
     return null;
