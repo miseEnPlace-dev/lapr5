@@ -28,4 +28,6 @@ export default class BuildingController implements IBuildingController {
       return next(e);
     }
   }
+
+  public async getBuildingsWithMinMaxFloors(req: Request, res: Response, next: NextFunction) {}
 }

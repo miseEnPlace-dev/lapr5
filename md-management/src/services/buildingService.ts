@@ -49,4 +49,17 @@ export default class BuildingService implements IBuildingService {
       throw e;
     }
   }
+
+  public async getBuildingsWithMinMaxFloors(
+    min: number,
+    max: number
+  ): Promise<Result<IBuildingDTO[]>> {
+    try {
+      const buildings = await this.buildingRepo.findWithMinMaxFloors(min, max);
+      const buildingsDTO = buildings.map(building => BuildingMap.toDTO(building) as IBuildingDTO);
+      return Result.ok<IBuildingDTO[]>(buildingsDTO);
+    } catch (e) {
+      throw e;
+    }
+  }
 }

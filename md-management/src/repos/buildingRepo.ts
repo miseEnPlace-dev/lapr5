@@ -64,4 +64,16 @@ export default class BuildingRepo implements IBuildingRepo {
     if (buildingRecord != null) return BuildingMap.toDomain(buildingRecord);
     return null;
   }
+
+  public async findWithMinMaxFloors(min: number, max: number): Promise<Building[]> {
+    const query = {
+      'floors.min': { $exists: true }
+    };
+
+    const buildingRecords = await this.buildingSchema.find(
+      query as FilterQuery<IRolePersistence & Document>
+    );
+
+    return buildingRecords.map(buildingRecord => BuildingMap.toDomain(buildingRecord)!);
+  }
 }

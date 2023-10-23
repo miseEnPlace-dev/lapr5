@@ -5,4 +5,5 @@ import { BuildingCode } from '@/domain/building/buildingCode';
 export default interface IBuildingRepo extends Repo<Building> {
   save(role: Building): Promise<Building>;
   findByDomainId(roleId: BuildingCode | string): Promise<Building | null>;
+  findWithMinMaxFloors(min: number, max: number): Promise<Building[]>;
 }
