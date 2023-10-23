@@ -4,26 +4,25 @@ import { Guard } from '../../core/logic/Guard';
 import { Result } from '../../core/logic/Result';
 import { Floor } from '../floor/floor';
 import { ElevatorBranding } from './elevatorBranding';
+import { ElevatorCode } from './elevatorCode';
 import { ElevatorDescription } from './elevatorDescription';
-import { ElevatorIdentifier } from './elevatorIdentifier';
 import { ElevatorSerialNumber } from './elevatorSerialNumber';
 
 interface ElevatorProps {
-  id: ElevatorIdentifier;
+  code: ElevatorCode;
   branding?: ElevatorBranding;
   serialNumber?: ElevatorSerialNumber;
   description?: ElevatorDescription;
+  floors?: Floor[];
 }
 
 export class Elevator extends Entity<ElevatorProps> {
-  private floors: Floor[] = [];
-
   get id(): UniqueEntityID {
     return this._id;
   }
 
-  get code(): ElevatorIdentifier {
-    return this.props.id;
+  get code(): ElevatorCode {
+    return this.props.code;
   }
 
   get brand(): string | undefined {
@@ -42,21 +41,16 @@ export class Elevator extends Entity<ElevatorProps> {
     return this.props.serialNumber;
   }
 
-  get floorsCount(): number {
-    return this.floors.length;
-  }
-
   get floorsList(): Floor[] {
-    return this.floors;
+    return this.props.floors ?? [];
   }
 
   private constructor(props: ElevatorProps, id?: UniqueEntityID) {
     super(props, id);
-    this.floors = [];
   }
 
   public static create(props: ElevatorProps, id?: UniqueEntityID): Result<Elevator> {
-    const guardResult = Guard.againstNullOrUndefined(props.id, 'id');
+    const guardResult = Guard.againstNullOrUndefined(props.code, 'id');
 
     if (!guardResult.succeeded) return Result.fail<Elevator>(guardResult.message);
 

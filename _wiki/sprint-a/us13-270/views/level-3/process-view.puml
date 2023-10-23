@@ -14,16 +14,20 @@ participant DTO as ":elevatorDTO:IElevatorDTO"
 ?o-> ROUTE : POST /elevators
 activate ROUTE
 
-ROUTE -> CTRL : createElevator(request)
+ROUTE -> CTRL : createElevator(elevatorDTO)
 activate CTRL
-CTRL -> SRV : createElevator(elevatorDTO,buildingCode,floorCodes)
+CTRL -> SRV : createElevator(elevatorDTO)
 activate SRV
-SRV -> BREPO : exists(buildingCode)
+SRV -> BREPO : findByDomainId(elevatorDTO.buildingCode)
 activate BREPO
 deactivate BREPO
 SRV -> FLIST** : create()
-loop for each floorCode in floorCodes
-  SRV -> FREPO : floor=findWithCode(floorCode)
+note right of FLIST
+  we must check if the floorIds all 
+  belong to the same building
+end note
+loop for each floorId in elevatorDTO.floorIds
+  SRV -> FREPO : floor=findWithId(floorId)
   activate FREPO
   deactivate FREPO
   SRV -> FLIST : add(floor)
@@ -31,13 +35,9 @@ loop for each floorCode in floorCodes
   deactivate FLIST
 end
 SRV -> ELEV** : create()
-SRV -> BREPO : addElevatorForCode(buildingCode, newElevator)
-activate BREPO
-BREPO -> BREPO: building=findWithCode(buildingCode)
-BREPO -> BUILD : setElevator(elevator)
+SRV -> BUILD : addElevator(newElevator)
 activate BUILD
 deactivate BUILD
-deactivate BREPO
 SRV -> MAP : toDto(elevator)
 activate MAP
 MAP -> DTO** : create()

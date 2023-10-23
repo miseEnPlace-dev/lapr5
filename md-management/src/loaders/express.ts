@@ -60,7 +60,7 @@ export default ({ app }: { app: express.Application }) => {
   app.use((err: RouteErr, req: Request, res: Response, _: NextFunction) => {
     if (process.env.NODE_ENV === 'development') console.log('FATAL ERROR: ', err);
     res.status(err.status || 500).json({
-      errors: err
+      errors: err instanceof Object ? err.message : err
     });
   });
 };

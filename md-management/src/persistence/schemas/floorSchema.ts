@@ -12,8 +12,6 @@ const FloorSchema = new mongoose.Schema(
       unique: true
     },
 
-    name: String,
-
     description: String,
 
     dimensions: {
@@ -24,7 +22,14 @@ const FloorSchema = new mongoose.Schema(
     building: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Building'
-    }
+    },
+
+    connectors: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Connector'
+      }
+    ]
   },
   { timestamps: true }
 );

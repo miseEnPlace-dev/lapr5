@@ -16,6 +16,12 @@ export default class BuildingRepo implements IBuildingRepo {
     this.buildingSchema = Container.get(config.schemas.building.name);
   }
 
+  public async findAll(): Promise<Building[]> {
+    const buildingRecords = await this.buildingSchema.find();
+    const buildings = buildingRecords.map(b => BuildingMap.toDomain(b)) as Building[];
+    return buildings;
+  }
+
   public async exists(building: Building): Promise<boolean> {
     const idX =
       building.id instanceof BuildingCode ? (<BuildingCode>building.id).code : building.id;
@@ -56,7 +62,6 @@ export default class BuildingRepo implements IBuildingRepo {
 
   public async findByDomainId(buildingCode: BuildingCode | string): Promise<Building | null> {
     const query = { id: buildingCode };
-    console.log('query:', query.id); // Add this line to check the structure of query
 
     const buildingRecord = await this.buildingSchema.findOne(
       query as FilterQuery<IBuildingPersistence & Document>

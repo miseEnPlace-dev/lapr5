@@ -14,7 +14,7 @@ participant DTO as ":buildingDTO:IBuildingDTO"
 ?o-> ROUTE : POST /buildings
 activate ROUTE
 
-ROUTE -> CTRL : createBuilding(request)
+ROUTE -> CTRL : createBuilding(elevatorDTO)
 activate CTRL
 CTRL -> SRV : createBuilding(buildingDTO)
 activate SRV

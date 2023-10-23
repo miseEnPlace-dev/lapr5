@@ -12,19 +12,32 @@ You can check the client clarifications throughout the project in the following 
 
 The use cases of each sprint are described in [this section](./ucd/readme.md).
 
+## Definition of Ready
+
+A User Story is considered **ready** when it matches the following criteria:
+
+- The user story is well-defined and understandable
+- The acceptance criteria are well-defined and understandable
+- The user story's effort is estimated
+- The user story is well prioritized relative to other user stories
+
+## Definition of Done
+
+A User Story is considered **done** when it matches the following criteria:
+
+- The user story is implemented following the acceptance criteria
+- The user story is tested
+- The user story is documented considering the ARQSI requirements
+- The user story is reviewed by the team
+- The user story is accepted by the Product Owner
+
+
 ## Group Members
 
-| Student Nr. | Name            | No. |
-| ----------- | --------------- | --- |
-| 1211299     | André Barros    | 5   |
-| 1211277     | Carlos Lopes    | 1   |
-| 1211285     | Ricardo Moreira | 3   |
-| 1211289     | Tomás Lopes     | 4   |
-| 1211288     | Tomás Russo     | 2   |
-
-## Requirements
-
-### Sprint A
+| Student Nr. | Name         | No. |
+| ----------- | ------------ | --- |
+| 1211299     | André Barros | 5   |
+| 1211277     | Carlos Lopes | 1   |
 
 | ID                                      | Assigned To               |
 | --------------------------------------- | ------------------------- |
