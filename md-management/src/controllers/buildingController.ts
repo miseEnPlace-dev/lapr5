@@ -20,7 +20,7 @@ export default class BuildingController implements IBuildingController {
         req.body as IBuildingDTO
       )) as Result<IBuildingDTO>;
 
-      if (roleOrError.isFailure) return res.status(402).send();
+      if (roleOrError.isFailure) return res.status(400).send();
 
       const roleDTO = roleOrError.getValue();
       return res.json(roleDTO).status(201);

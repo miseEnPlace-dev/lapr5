@@ -1,7 +1,7 @@
-export interface IElevatorDTO {
+export interface IElevatorPersistence {
+  domainId: string;
   code: number;
   floorIds: string[];
-  buildingId: string;
   brand?: string;
   model?: string;
   serialNumber?: string;
