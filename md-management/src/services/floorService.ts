@@ -63,6 +63,8 @@ export default class FloorService implements IFloorService {
 
       const floorResult = floorOrError.getValue();
 
+      console.log('floorResult:', floorResult); // Add this line to check the structure of floorResult
+
       await this.floorRepo.save(floorResult);
 
       const FloorDTOResult = FloorMap.toDTO(floorResult) as IFloorDTO;

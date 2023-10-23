@@ -3,6 +3,10 @@ import { IFloorPersistence } from '../../dataschema/IFloorPersistence';
 
 const FloorSchema = new mongoose.Schema(
   {
+    domainId: {
+      type: String,
+      unique: true
+    },
     code: {
       type: String,
       unique: true

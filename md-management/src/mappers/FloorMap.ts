@@ -14,8 +14,8 @@ import BuildingRepo from '@/repos/buildingRepo';
 export class FloorMap extends Mapper<Floor> {
   public static toDTO(floor: Floor): IFloorDTO {
     return {
-      code: floor.code.toString(),
-      buildingCode: floor.building.code.toString(),
+      code: floor.code.code.toString(),
+      buildingCode: floor.building.code.code.toString(),
       description: floor.description?.value,
       dimensions: {
         width: floor.dimensions.width,
@@ -27,9 +27,13 @@ export class FloorMap extends Mapper<Floor> {
   public static async toDomain(
     floor: IFloorPersistence & Document<unknown, unknown, unknown> & { _id: ObjectId }
   ): Promise<Floor | null> {
-    const codeOrError = FloorCode.create(floor.code.toString());
+    const code = FloorCode.create(floor.code).getValue();
     const { width, height } = floor.dimensions;
+
     const repo = Container.get(BuildingRepo);
+
+    console.log('buildingCode:', floor.buildingCode); // Add this line to check the structure of buildingCode
+
     const building = await repo.findByDomainId(floor.buildingCode);
     if (!building) throw new Error('Building not found');
 
@@ -42,8 +46,8 @@ export class FloorMap extends Mapper<Floor> {
 
     const floorOrError = Floor.create(
       {
-        code: codeOrError.getValue(),
-        building: building,
+        code,
+        building,
         dimensions: floorDimensionsOrError.getValue()
       },
       new UniqueEntityID(floor._id)
@@ -56,7 +60,8 @@ export class FloorMap extends Mapper<Floor> {
 
   public static toPersistence(floor: Floor) {
     return {
-      code: floor.code.toString(),
+      code: floor.code.code.toString(),
+      domainId: floor.id.toString(),
       buildingCode: floor.building.code.toString(),
       description: floor.description?.value,
       dimensions: {
