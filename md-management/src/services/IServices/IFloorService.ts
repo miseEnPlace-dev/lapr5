@@ -7,7 +7,9 @@ export default interface IFloorService {
 
   getBuildingFloors(buildingId: BuildingCode): Promise<Result<IFloorDTO[]>>;
 
-  // updateFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>>;
+  getFloorsWithElevator(buildingId: BuildingCode): Promise<Result<IFloorDTO[]>>;
+
+  updateFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>>;
 
   //  getBuilding(BuildingId: string): Promise<Result<IBuildingDTO>>;
 }

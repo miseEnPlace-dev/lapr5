@@ -27,8 +27,11 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.floor.name) as IFloorController;
 
-  route.get('', (req, res, next) => ctrl.getBuildingFloors(req, res, next));
-  route.post('', validate(floorCreateSchema), (req, res, next) => ctrl.createFloor(req, res, next));
+  route.get('/getFloors', (req, res, next) => ctrl.getBuildingFloors(req, res, next));
+  route.get('', (req, res, next) => ctrl.getFloorsWithElevator(req, res, next));
+  route.post('/createFloor', validate(floorCreateSchema), (req, res, next) =>
+    ctrl.createFloor(req, res, next)
+  );
 
   app.use('/floors', route);
 };

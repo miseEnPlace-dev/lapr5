@@ -12,6 +12,8 @@ export class FloorCode extends Entity<null> {
   }
 
   public static create(id: string): Result<FloorCode> {
+    if (id.length > 5) return Result.fail<FloorCode>('Building code must be 5 characters or less');
+
     return Result.ok<FloorCode>(new FloorCode(new UniqueEntityID(id)));
   }
 }
