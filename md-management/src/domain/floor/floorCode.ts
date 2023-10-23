@@ -1,19 +1,25 @@
 import { Result } from '@/core/logic/Result';
-import { Entity } from '../../core/domain/Entity';
-import { UniqueEntityID } from '../../core/domain/UniqueEntityID';
+import { ValueObject } from '@/core/domain/ValueObject';
 
-export class FloorCode extends Entity<null> {
-  get id(): UniqueEntityID {
-    return this._id;
+interface FloorCodeProps {
+  [key: string]: string;
+  value: string;
+}
+
+export class FloorCode extends ValueObject<FloorCodeProps> {
+  get code(): string {
+    return this.props.value;
   }
 
-  private constructor(id?: UniqueEntityID) {
-    super(null, id);
+  private constructor(props: FloorCodeProps) {
+    super(props);
   }
 
   public static create(id: string): Result<FloorCode> {
     if (id.length > 5) return Result.fail<FloorCode>('Building code must be 5 characters or less');
 
-    return Result.ok<FloorCode>(new FloorCode(new UniqueEntityID(id)));
+    if (!/^[0-9]+$/.test(id)) return Result.fail<FloorCode>('Floor code must be a number');
+
+    return Result.ok<FloorCode>(new FloorCode({ value: id }));
   }
 }

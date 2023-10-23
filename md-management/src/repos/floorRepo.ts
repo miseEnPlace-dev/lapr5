@@ -20,7 +20,7 @@ export default class FloorRepo implements IFloorRepo {
   }
 
   public async exists(floor: Floor): Promise<boolean> {
-    const idX = floor.id instanceof FloorCode ? (<FloorCode>floor.id).id.toString() : floor.id;
+    const idX = floor.id instanceof FloorCode ? (<FloorCode>floor.id).code : floor.id;
 
     const query = { domainId: idX };
     const roleDocument = await this.floorSchema.findOne(
@@ -31,12 +31,12 @@ export default class FloorRepo implements IFloorRepo {
   }
 
   public async save(floor: Floor): Promise<Floor> {
-    const query = { domainId: floor.id.toString() };
+    const query = { domainId: floor.id } as FilterQuery<IFloorPersistence & Document>;
 
-    const buildingDocument = await this.floorSchema.findOne(query);
+    const floorDocument = await this.floorSchema.findOne(query);
 
     try {
-      if (!buildingDocument) {
+      if (!floorDocument) {
         const rawFloor = FloorMap.toPersistence(floor);
 
         const floorCreated = await this.floorSchema.create(rawFloor);
@@ -47,7 +47,7 @@ export default class FloorRepo implements IFloorRepo {
         return domainFloor;
       }
 
-      const domainFloor = await FloorMap.toDomain(buildingDocument);
+      const domainFloor = await FloorMap.toDomain(floorDocument);
       if (!domainFloor) throw new Error('Floor not created');
 
       return domainFloor;

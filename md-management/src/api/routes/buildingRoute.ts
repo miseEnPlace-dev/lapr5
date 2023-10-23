@@ -31,6 +31,8 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.building.name) as IBuildingController;
 
+  route.get('', (req, res, next) => ctrl.getBuildings(req, res, next));
+
   route.post('', validate(buildingCreateSchema), (req, res, next) =>
     ctrl.createBuilding(req, res, next)
   );

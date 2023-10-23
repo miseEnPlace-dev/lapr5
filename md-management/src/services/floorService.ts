@@ -11,6 +11,7 @@ import { BuildingCode } from '@/domain/building/buildingCode';
 import { FloorCode } from '@/domain/floor/floorCode';
 import { FloorDimensions } from '@/domain/floor/floorDimensions';
 import IBuildingRepo from './IRepos/IBuildingRepo';
+import { FloorDescription } from '@/domain/floor/floorDescription';
 
 @Service()
 export default class FloorService implements IFloorService {
@@ -26,39 +27,36 @@ export default class FloorService implements IFloorService {
     throw new Error('Method not implemented.');
   }
 
-  public async createFloor(FloorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {
+  public async createFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {
     try {
-      console.log('FloorDTO:', FloorDTO); // Add this line to check the structure of FloorDTO
+      const code = FloorCode.create(floorDTO.code).getValue();
+      const description = floorDTO.description
+        ? FloorDescription.create(floorDTO.description).getValue()
+        : undefined;
 
-      const building = await this.buildingRepo.findByDomainId(FloorDTO.buildingCode);
-
+      const building = await this.buildingRepo.findByDomainId(floorDTO.buildingCode);
       if (!building) return Result.fail<IFloorDTO>('Building does not exist');
 
-      console.log('building:', building.maxDimensions); // Add this line to check the structure of building
-
-      const floorCode = FloorCode.create(FloorDTO.code);
-
-      if (floorCode.isFailure) return Result.fail<IFloorDTO>('Floor code is invalid');
-
-      if (!FloorDTO.dimensions || !FloorDTO.dimensions.width || !FloorDTO.dimensions.height)
+      if (!floorDTO.dimensions || !floorDTO.dimensions.width || !floorDTO.dimensions.height)
         return Result.fail<IFloorDTO>('Floor dimensions are invalid');
 
       const dimensions = FloorDimensions.create(
-        FloorDTO.dimensions.width,
-        FloorDTO.dimensions.height,
+        floorDTO.dimensions.width,
+        floorDTO.dimensions.height,
         building.maxDimensions.width,
         building.maxDimensions.height
       );
 
-      if (dimensions.isFailure) return Result.fail<IFloorDTO>('Floor dimensions are invalid');
+      if (dimensions.isFailure) return Result.fail<IFloorDTO>(dimensions.error as string);
 
       const floorOrError = Floor.create({
-        code: floorCode.getValue(),
-        building: building,
-        dimensions: dimensions.getValue()
+        code,
+        description,
+        dimensions: dimensions.getValue(),
+        building: building
       });
 
-      if (floorOrError.isFailure) return Result.fail<IFloorDTO>('Floor could not be created');
+      if (floorOrError.isFailure) return Result.fail<IFloorDTO>(floorOrError.error as string);
 
       const floorResult = floorOrError.getValue();
 
