@@ -8,8 +8,6 @@
 | UC           | ARQSI                  |
 | Observations | GET                    |
 
-## 1.
+## 1. Requirements
 
-## 2. Requirements
-
-**"As a Fleet Manager, I want to list all robots."**
+> ### "As a Fleet Manager, I want to list all robots."

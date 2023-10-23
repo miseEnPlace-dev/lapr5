@@ -8,8 +8,6 @@
 | UC           | ARQSI                  |
 | Observations | POST                   |
 
-## 1.
+## 1. Requirements
 
-## 2. Requirements
-
-**"As a Fleet Manager, I want to list all robots filtering by designation or task."**
+> ### "As a Fleet Manager, I want to list all robots filtering by designation or task."

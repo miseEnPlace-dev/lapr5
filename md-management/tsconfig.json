@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "ES2018" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "lib": ["es2017", "esnext.asynciterable"],
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+    "moduleResolution": "node" /* Specify how TypeScript looks up a file from a given module specifier. */,
+    "module": "ES2015" /* Specify what module code is generated. */,
+    "pretty": true,
+    "sourceMap": true,
+    "outDir": "dist" /* Specify an output folder for all emitted files. */,
+    "rootDir": "src" /* Specify the root folder within your source files. */,
+    "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
+    "noEmit": false,
+    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+    "preserveConstEnums": true /* Do not erase const enum declarations in generated code. */,
+    "strict": true /* Enable all strict type-checking options. */,
+    "noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "paths": {
+      "@/*": ["src/*"],
+      "@tests/*": ["src/tests/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist", "src/tests"],
+  "include": ["src/**/*"]
+}

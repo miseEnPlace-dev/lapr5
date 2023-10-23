@@ -8,8 +8,6 @@
 | UC           | ARQSI                   |
 | Observations | PUT/PATCH               |
 
-## 1.
+## 1. Requirements
 
-## 2. Requirements
-
-**"As a Campus Manager, I want to edit a floor's info."**
+> ### "As a Campus Manager, I want to edit a floor's info."

@@ -1,0 +1,13 @@
+@startuml process-view
+autonumber
+participant SYS as "MD Management" <<system (C4)>>
+
+
+?o-> SYS : POST /floors
+activate SYS
+
+SYS -> SYS : createFloor(floor)
+<-- SYS : 201 Created (floor JSON)
+deactivate SYS
+
+@enduml

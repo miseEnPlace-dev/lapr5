@@ -1,0 +1,14 @@
+@startuml us08-level2_processes
+autonumber
+
+participant SYS as "MD Management" <<system (C4)>>
+
+?o-> SYS : GET /buildings/{id}/floors?filter=passages
+activate SYS
+
+SYS -> SYS : listFloorsWithPassages(building)
+
+<-- SYS : 200 OK
+deactivate SYS
+
+@enduml

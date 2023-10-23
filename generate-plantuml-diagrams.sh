@@ -4,7 +4,7 @@ exportFormat="svg"
 #monochrome="true"
 extra="-SdefaultFontSize=20"
 #extra="-SdefaultFontName=Times New Roman -SdefaultFontSize=10"
-out=
+out="assets"
 if [ $1 ]; then
   baseDir=$1
 else

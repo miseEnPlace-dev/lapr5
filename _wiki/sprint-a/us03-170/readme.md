@@ -8,8 +8,28 @@
 | UC           | ARQSI                   |
 | Observations | GET                     |
 
-## 1.
+## 1. Requirements
 
-## 2. Requirements
+> ### "As a Campus Manager, I want to list all buildings."
 
-**"As a Campus Manager, I want to list all buildings."**
+## 1.1. Client Specifications
+
+N/A
+
+---
+
+## 2. Analysis
+
+All the global views are available in the [views](../../views/readme.md) document.
+
+The views presented here are the ones that are relevant to this user story.
+
+#### Level 1
+
+##### Processes
+
+![Level 1 Processes View](views/level-1/assets/process-view.svg)
+
+---
+
+#### Level 2

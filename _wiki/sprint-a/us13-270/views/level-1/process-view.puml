@@ -1,0 +1,16 @@
+@startuml process-view
+autonumber
+
+actor CM as "Campus Manager"
+participant SYS as "RobDroneGo System" <<system (C4)>>
+
+activate CM
+
+CM -> SYS : asks to create an elevator for a building with id,brand,model,serial number,description
+activate SYS
+CM <-- SYS : returns confirmation message
+deactivate SYS
+
+deactivate CM
+
+@enduml

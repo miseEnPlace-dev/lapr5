@@ -72,7 +72,6 @@ DeviceModel <|-- Drone
 package "<<aggregate>> Floor" {
   entity Floor <<entity>> <<root>> { }
 
-  entity Elevator <<entity>> { }
   entity FloorMap <<entity>> { }
   class FloorDescription <<(V,#FF8B40) value object>> {}
 }
@@ -95,13 +94,20 @@ Floor "1" *-- "0..1" FloorDescription
 Room "1" *-- "0..1" RoomDescription
 Room "1" *-- "1" RoomCategory
 
-Elevator "1" --> "2..*" Floor : is for
 
 package "<<aggregate>> Building" {
   entity Building <<entity>> <<root>> { }
 
   class BuildingCode <<(V,#FF8B40) value object>> {}
   class BuildingName <<(V,#FF8B40) value object>> {}
+  
+  entity Elevator <<entity>> { }
+  class ElevatorIdentifier <<(V,#FF8B40) value object>> {}
+  class ElevatorBrand <<(V,#FF8B40) value object>> {}
+  class ElevatorModel <<(V,#FF8B40) value object>> {}
+  class ElevatorSerialNumber <<(V,#FF8B40) value object>> {}
+  class ElevatorDescription <<(V,#FF8B40) value object>> {}
+
   class BuildingDescription <<(V,#FF8B40) value object>> {}
   class MaxDimensions <<(V,#FF8B40) value object>> {
     - width
@@ -109,7 +115,13 @@ package "<<aggregate>> Building" {
   }
 }
 
-Elevator "1" ---> "1" Building : is for
+Elevator "1" --> "1..*" Floor : is for
+Building "1" *-- "1" Elevator : has
+Elevator *-- "1" ElevatorIdentifier
+Elevator *-- "0..1" ElevatorBrand
+Elevator *-- "0..1" ElevatorModel
+Elevator *-- "0..1" ElevatorSerialNumber
+Elevator *-- "0..1" ElevatorDescription
 
 package "<<aggregate>> Connector" {
   entity Connector <<entity>> <<root>> { }

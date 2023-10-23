@@ -8,8 +8,6 @@
 | UC           | ARQSI                  |
 | Observations | POST                   |
 
-## 1.
+## 1. Requirements
 
-## 2. Requirements
-
-**"As a Fleet Manager, I want to add a new robot type with a name and assign specific tasks from a predefined list of tasks."**
+> ### "As a Fleet Manager, I want to add a new robot type with a name and assign specific tasks from a predefined list of tasks."

@@ -1,0 +1,20 @@
+@startuml logical-view
+top to bottom direction
+
+interface "Admin UI" as AUI
+interface "Campus Manager UI" as CUI
+interface "Fleet Manager UI" as FUI
+interface "Task Manager UI" as TUI
+interface "User UI" as UUI
+
+component "RobDroneGo System" <<component>> <<system (C4)>> {
+  portin " " as P1
+}
+
+AUI -- P1
+CUI -- P1
+FUI -- P1
+TUI -- P1
+UUI -- P1
+
+@enduml

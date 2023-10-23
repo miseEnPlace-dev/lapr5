@@ -1,0 +1,52 @@
+@startuml process-view
+autonumber
+participant ROUTE as ":ElevatorRoute"
+participant CTRL as ":ElevatorController"
+participant SRV as ":ElevatorService"
+participant ELEV as ":elevator:Elevator"
+participant FLIST as "floorList:Floor[]"
+participant BREPO as ":BuildingRepo"
+participant FREPO as ":FloorRepo"
+participant MAP as ":ElevatorMap"
+participant BUILD as "building:Building"
+participant DTO as ":elevatorDTO:IElevatorDTO"
+
+?o-> ROUTE : POST /elevators
+activate ROUTE
+
+ROUTE -> CTRL : createElevator(request)
+activate CTRL
+CTRL -> SRV : createElevator(elevatorDTO,buildingCode,floorCodes)
+activate SRV
+SRV -> BREPO : exists(buildingCode)
+activate BREPO
+deactivate BREPO
+SRV -> FLIST** : create()
+loop for each floorCode in floorCodes
+  SRV -> FREPO : floor=findWithCode(floorCode)
+  activate FREPO
+  deactivate FREPO
+  SRV -> FLIST : add(floor)
+  activate FLIST
+  deactivate FLIST
+end
+SRV -> ELEV** : create()
+SRV -> BREPO : addElevatorForCode(buildingCode, newElevator)
+activate BREPO
+BREPO -> BREPO: building=findWithCode(buildingCode)
+BREPO -> BUILD : setElevator(elevator)
+activate BUILD
+deactivate BUILD
+deactivate BREPO
+SRV -> MAP : toDto(elevator)
+activate MAP
+MAP -> DTO** : create()
+deactivate MAP
+SRV --> CTRL : sucess(elevatorDTO)
+deactivate SRV
+CTRL --> ROUTE : sucess(elevatorDTO)
+deactivate CTRL
+<-- ROUTE : 201 Created
+deactivate ROUTE
+
+@enduml

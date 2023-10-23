@@ -1,0 +1,39 @@
+@startuml process-view
+autonumber
+participant ROUTE as ":FloorRoute"
+participant CTRL as ":FloorController"
+participant SRV as ":FloorService"
+participant REPOBUILDING as ":BuildingRepo"
+participant FLOOR as ":floor:Floor"
+participant REPO as ":FloorRepo"
+participant MAP as ":FloorMap"
+participant DTO as ":FloorDTO:IFloorDTO"
+
+?o-> ROUTE : GET /floorsWithElevator
+activate ROUTE
+
+ROUTE -> CTRL : getFloorsWithElevator(request)
+activate CTRL
+CTRL -> SRV : getFloorsWithElevator(buildingCode)
+activate SRV
+SRV -> REPOBUILDING : findByDomainId(buildingCode)
+activate REPOBUILDING
+REPOBUILDING --> SRV : building
+deactivate REPOBUILDING
+SRV -> FLOOR** : create()
+SRV -> REPO : save(floor)
+activate REPO
+REPO -> MAP : toDtoList(floors)
+activate MAP
+MAP -> DTO : createList()
+deactivate MAP
+REPO --> SRV : floorsList
+deactivate REPO
+SRV --> CTRL : floorsList
+deactivate SRV
+CTRL --> ROUTE : floorsList
+deactivate CTRL
+<-- ROUTE : 200 OK (List of floors JSON)
+deactivate ROUTE
+
+@enduml
