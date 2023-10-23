@@ -22,6 +22,21 @@ export default class ElevatorService implements IElevatorService {
     this.floorRepo = Container.get(config.repos.floor.name);
   }
 
+  public async getElevator(buildingCode: string): Promise<Result<IElevatorDTO>> {
+    try {
+      const building = await this.buildingRepo.findByDomainId(buildingCode);
+      if (!building) return Result.fail<IElevatorDTO>('Building not found');
+
+      const elevator = building.elevator;
+      if (!elevator) return Result.fail<IElevatorDTO>('Elevator not found');
+
+      const elevatorDTO = ElevatorMap.toDTO(elevator) as IElevatorDTO;
+      return Result.ok<IElevatorDTO>(elevatorDTO);
+    } catch (e) {
+      throw e;
+    }
+  }
+
   public async createElevator(elevatorDTO: IElevatorDTO): Promise<Result<IElevatorDTO>> {
     try {
       const building = await this.buildingRepo.findByDomainId(elevatorDTO.buildingId);
