@@ -32,8 +32,6 @@ export class FloorMap extends Mapper<Floor> {
 
     const repo = Container.get(BuildingRepo);
 
-    console.log('buildingCode:', floor.buildingCode); // Add this line to check the structure of buildingCode
-
     const building = await repo.findByDomainId(floor.buildingCode);
     if (!building) throw new Error('Building not found');
 

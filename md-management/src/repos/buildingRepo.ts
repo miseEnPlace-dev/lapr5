@@ -67,8 +67,6 @@ export default class BuildingRepo implements IBuildingRepo {
       query as FilterQuery<IBuildingPersistence & Document>
     );
 
-    console.log('buildingRecord:', buildingRecord); // Add this line to check the structure of buildingRecord
-
     if (buildingRecord != null) return BuildingMap.toDomain(buildingRecord);
     return null;
   }
