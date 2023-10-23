@@ -1,0 +1,13 @@
+@startuml process-view
+autonumber
+participant SYS as "MD Management" <<system (C4)>>
+
+
+?o-> SYS : GET /buildings?minFloors={min}&maxFloors={max}
+activate SYS
+
+SYS -> SYS : getBuildingsWithMinMaxFloors(min, max)
+<-- SYS : 200 OK (buildings JSON)
+deactivate SYS
+
+@enduml

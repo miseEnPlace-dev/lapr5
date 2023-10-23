@@ -37,7 +37,7 @@ export default class BuildingService implements IBuildingService {
         maxDimensions
       });
 
-      if (buildingOrError.isFailure) return Result.fail<IBuildingDTO>(buildingDTO);
+      if (buildingOrError.isFailure) return Result.fail<IBuildingDTO>(buildingOrError.errorValue());
 
       const buildingResult = buildingOrError.getValue();
 
