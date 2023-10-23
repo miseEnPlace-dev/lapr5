@@ -47,7 +47,7 @@ export default class BuildingService implements IBuildingService {
         maxDimensions
       });
 
-      if (buildingOrError.isFailure) return Result.fail<IBuildingDTO>(buildingDTO);
+      if (buildingOrError.isFailure) return Result.fail<IBuildingDTO>(buildingOrError.errorValue());
 
       const buildingResult = buildingOrError.getValue();
 
@@ -55,6 +55,16 @@ export default class BuildingService implements IBuildingService {
 
       const buildingDTOResult = BuildingMap.toDTO(buildingResult) as IBuildingDTO;
       return Result.ok<IBuildingDTO>(buildingDTOResult);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async getBuildings(): Promise<Result<IBuildingDTO[]>> {
+    try {
+      const buildings = await this.buildingRepo.findAll();
+      const buildingDTOs = buildings.map(b => BuildingMap.toDTO(b) as IBuildingDTO);
+      return Result.ok<IBuildingDTO[]>(buildingDTOs);
     } catch (e) {
       throw e;
     }

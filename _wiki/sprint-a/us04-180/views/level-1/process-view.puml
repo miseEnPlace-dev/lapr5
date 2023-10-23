@@ -1,0 +1,17 @@
+@startuml process-view
+autonumber
+
+actor CM as "Campus Manager"
+participant SYS as "RobDroneGo System" <<system (C4)>>
+
+activate CM
+
+CM -> SYS : asks to list buildings with min and max floors
+activate SYS
+
+CM <-- SYS : returns list of buildings that match criteria
+deactivate SYS
+
+deactivate CM
+
+@enduml

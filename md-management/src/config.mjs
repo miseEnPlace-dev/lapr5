@@ -53,6 +53,10 @@ export default {
     floor: {
       name: 'floorSchema',
       schema: '../persistence/schemas/floorSchema'
+    },
+    elevator: {
+      name: 'elevatorSchema',
+      schema: '../persistence/schemas/elevatorSchema'
     }
   },
 
@@ -68,6 +72,10 @@ export default {
     floor: {
       name: 'FloorController',
       path: '../controllers/floorController'
+    },
+    elevator: {
+      name: 'ElevatorController',
+      path: '../controllers/elevatorController'
     }
   },
 
@@ -102,6 +110,10 @@ export default {
     floor: {
       name: 'FloorService',
       path: '../services/floorService'
+    },
+    elevator: {
+      name: 'ElevatorService',
+      path: '../services/elevatorService'
     }
   }
 };

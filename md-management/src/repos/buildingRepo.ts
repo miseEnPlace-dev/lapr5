@@ -60,6 +60,16 @@ export default class BuildingRepo implements IBuildingRepo {
     }
   }
 
+  public async findAll(): Promise<Building[]> {
+    const buildingRecords = await this.buildingSchema.find();
+
+    if (!buildingRecords || !buildingRecords.length) return [];
+
+    return buildingRecords.map(buildingRecord =>
+      BuildingMap.toDomain(buildingRecord)
+    ) as Building[];
+  }
+
   public async findByDomainId(buildingCode: BuildingCode | string): Promise<Building | null> {
     const query = { code: buildingCode };
     const buildingRecord = await this.buildingSchema.findOne(
