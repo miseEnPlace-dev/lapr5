@@ -53,6 +53,39 @@ export default class BuildingService implements IBuildingService {
     }
   }
 
+  public async updateBuilding(
+    buildingDTO: Partial<IBuildingDTO>,
+    code: string
+  ): Promise<Result<IBuildingDTO>> {
+    try {
+      const building = await this.buildingRepo.findByCode(code);
+      if (!building) return Result.fail<IBuildingDTO>('Building not found');
+
+      if (buildingDTO.name)
+        building.name = buildingDTO.name
+          ? BuildingName.create(buildingDTO.name).getValue()
+          : undefined;
+
+      if (buildingDTO.description)
+        building.description = buildingDTO.description
+          ? BuildingDescription.create(buildingDTO.description).getValue()
+          : undefined;
+
+      if (buildingDTO.maxDimensions)
+        building.maxDimensions = BuildingMaxDimensions.create(
+          buildingDTO.maxDimensions.width,
+          buildingDTO.maxDimensions.height
+        ).getValue();
+
+      await this.buildingRepo.save(building);
+
+      const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
+      return Result.ok<IBuildingDTO>(buildingDTOResult);
+    } catch (e) {
+      throw e;
+    }
+  }
+
   public async getBuildingsWithMinMaxFloors(
     min: number,
     max: number
