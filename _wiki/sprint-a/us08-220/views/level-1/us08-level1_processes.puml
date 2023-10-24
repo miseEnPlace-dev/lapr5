@@ -6,16 +6,10 @@ participant SYS as "RobDroneGo System" <<system (C4)>>
 
 activate CM
 
-CM -> SYS : wants to create a building
+CM -> SYS : wants to list floors of a building with connectors
 activate SYS
 
-CM <- SYS : asks for the building name
-deactivate SYS
-
-CM -> SYS : types the building name
-activate SYS
-
-CM <- SYS : returns confirmation message
+CM <- SYS : returns a list with the floors
 deactivate SYS
 
 deactivate CM
