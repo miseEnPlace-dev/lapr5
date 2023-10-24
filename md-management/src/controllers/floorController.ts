@@ -73,14 +73,18 @@ export default class FloorController implements IFloorController {
   }
 
   public async getFloorsWithElevator(req: Request, res: Response, next: NextFunction) {
-    const buildingId = BuildingCode.create(req.query.buildingId as string);
-
-    if (buildingId.isFailure) return res.status(400).send();
-
     try {
+      const buildingCode = BuildingCode.create(req.params.buildingCode);
+
+      console.log('buildingCode', buildingCode.getValue());
+
+      if (buildingCode.isFailure) return res.status(400).send();
+
       const floorsOrError = (await this.floorServiceInstance.getFloorsWithElevator(
-        buildingId.getValue()
+        buildingCode.getValue()
       )) as Result<IFloorDTO[]>;
+
+      console.log('floorsOrError', floorsOrError.getValue());
 
       if (floorsOrError.isFailure) return res.status(404).send();
 
