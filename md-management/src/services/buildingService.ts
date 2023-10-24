@@ -56,7 +56,7 @@ export default class BuildingService implements IBuildingService {
   ): Promise<Result<IBuildingDTO[]>> {
     try {
       const buildings = await this.buildingRepo.findWithMinMaxFloors(min, max);
-      const buildingsDTO = buildings.map(building => BuildingMap.toDTO(building) as IBuildingDTO);
+      const buildingsDTO = buildings.map(b => BuildingMap.toDTO(b) as IBuildingDTO);
       return Result.ok<IBuildingDTO[]>(buildingsDTO);
     } catch (e) {
       throw e;

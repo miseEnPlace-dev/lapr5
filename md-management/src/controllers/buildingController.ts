@@ -29,7 +29,23 @@ export default class BuildingController implements IBuildingController {
     }
   }
 
-  public async getBuildingsWithMinMaxFloors(req: Request, res: Response, next: NextFunction) {}
+  public async getBuildingsWithMinMaxFloors(req: Request, res: Response, next: NextFunction) {
+    try {
+      const min = Number(req.query.minFloors);
+      const max = Number(req.query.maxFloors);
+
+      const buildingsOrError = (await this.buildingServiceInstance.getBuildingsWithMinMaxFloors(
+        min,
+        max
+      )) as Result<IBuildingDTO[]>;
+
+      if (!buildingsOrError) return res.status(404).send();
+
+      return res.status(200).json(buildingsOrError.getValue());
+    } catch (e) {
+      return next(e);
+    }
+  }
 
   public async getBuildings(req: Request, res: Response, next: NextFunction) {
     try {

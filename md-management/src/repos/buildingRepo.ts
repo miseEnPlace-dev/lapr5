@@ -16,12 +16,6 @@ export default class BuildingRepo implements IBuildingRepo {
     this.buildingSchema = Container.get(config.schemas.building.name);
   }
 
-  public async findAll(): Promise<Building[]> {
-    const buildingRecords = await this.buildingSchema.find();
-    const buildings = buildingRecords.map(b => BuildingMap.toDomain(b)) as Building[];
-    return buildings;
-  }
-
   public async exists(building: Building): Promise<boolean> {
     const idX =
       building.id instanceof BuildingCode ? (<BuildingCode>building.id).code : building.id;
@@ -32,6 +26,24 @@ export default class BuildingRepo implements IBuildingRepo {
     );
 
     return !!roleDocument;
+  }
+
+  public async findAll(): Promise<Building[]> {
+    const buildingRecords = await this.buildingSchema.find();
+    const buildings = buildingRecords.map(b => BuildingMap.toDomain(b)) as Building[];
+    return buildings;
+  }
+
+  public async findWithMinMaxFloors(min: number, max: number): Promise<Building[]> {
+    const query = {
+      // TODO
+    };
+    const buildingRecords = await this.buildingSchema.find(
+      query as FilterQuery<IRolePersistence & Document>
+    );
+
+    const buildings = buildingRecords.map(b => BuildingMap.toDomain(b)) as Building[];
+    return buildings;
   }
 
   public async save(building: Building): Promise<Building> {
@@ -69,17 +81,5 @@ export default class BuildingRepo implements IBuildingRepo {
 
     if (buildingRecord != null) return BuildingMap.toDomain(buildingRecord);
     return null;
-  }
-
-  public async findWithMinMaxFloors(min: number, max: number): Promise<Building[]> {
-    const query = {
-      'floors.min': { $exists: true }
-    };
-
-    const buildingRecords = await this.buildingSchema.find(
-      query as FilterQuery<IRolePersistence & Document>
-    );
-
-    return buildingRecords.map(buildingRecord => BuildingMap.toDomain(buildingRecord)!);
   }
 }

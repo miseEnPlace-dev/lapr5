@@ -37,7 +37,5 @@ export default (app: Router) => {
     ctrl.createBuilding(req, res, next)
   );
 
-  route.get('', (req, res, next) => ctrl.getBuildingsWithMinMaxFloors(req, res, next));
-
   app.use('/buildings', route);
 };
