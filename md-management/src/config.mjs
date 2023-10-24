@@ -57,6 +57,10 @@ export default {
     room: {
       name: 'roomSchema',
       schema: '../persistence/schemas/roomSchema'
+    },
+    connector: {
+      name: 'connectorSchema',
+      schema: '../persistence/schemas/connectorSchema'
     }
   },
 
@@ -80,6 +84,10 @@ export default {
     room: {
       name: 'RoomController',
       path: '../controllers/roomController'
+    },
+    connector: {
+      name: 'ConnectorController',
+      path: '../controllers/connectorController'
     }
   },
 
@@ -103,6 +111,10 @@ export default {
     room: {
       name: 'RoomRepo',
       path: '../repos/roomRepo'
+    },
+    connector: {
+      name: 'ConnectorRepo',
+      path: '../repos/connectorRepo'
     }
   },
 
@@ -126,6 +138,10 @@ export default {
     room: {
       name: 'RoomService',
       path: '../services/roomService'
+    },
+    connector: {
+      name: 'ConnectorService',
+      path: '../services/connectorService'
     }
   }
 };
