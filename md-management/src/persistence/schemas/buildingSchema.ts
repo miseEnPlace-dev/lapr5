@@ -23,7 +23,35 @@ const BuildingSchema = new mongoose.Schema(
     },
 
     elevator: {
-      type: mongoose.model<IBuildingPersistence>('Elevator').schema
+      domainId: {
+        type: String,
+        unique: true
+      },
+      code: {
+        type: String,
+        index: true
+      },
+      branding: {
+        brand: {
+          type: String
+        },
+        model: {
+          type: String
+        }
+      },
+      serialNumber: {
+        type: String,
+        index: true
+      },
+      description: {
+        type: String,
+        index: true
+      },
+      floors: [
+        {
+          type: String
+        }
+      ]
     }
   },
   { timestamps: true }

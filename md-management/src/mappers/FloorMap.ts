@@ -1,7 +1,5 @@
 import { Mapper } from '../core/infra/Mapper';
 
-import { Document, ObjectId } from 'mongoose';
-
 import config from '@/config.mjs';
 import { IFloorPersistence } from '@/dataschema/IFloorPersistence';
 import { Floor } from '@/domain/floor/floor';
@@ -26,9 +24,7 @@ export class FloorMap extends Mapper<Floor> {
     };
   }
 
-  public static async toDomain(
-    floor: IFloorPersistence & Document<unknown, unknown, unknown> & { _id: ObjectId }
-  ): Promise<Floor | null> {
+  public static async toDomain(floor: IFloorPersistence): Promise<Floor | null> {
     const code = FloorCode.create(floor.code).getValue();
     const { width, height } = floor.dimensions;
 
@@ -55,7 +51,7 @@ export class FloorMap extends Mapper<Floor> {
         building,
         dimensions: floorDimensionsOrError.getValue()
       },
-      new UniqueEntityID(floor._id)
+      new UniqueEntityID(floor.domainId)
     );
 
     floorOrError.isFailure && console.log(floorOrError.error);
@@ -63,10 +59,10 @@ export class FloorMap extends Mapper<Floor> {
     return floorOrError.isSuccess ? floorOrError.getValue() : null;
   }
 
-  public static toPersistence(floor: Floor) {
+  public static toPersistence(floor: Floor): IFloorPersistence {
     return {
       code: floor.code.value.toString(),
-      domainId: floor.id.toValue(),
+      domainId: floor.id.toString(),
       building: floor.building.id.toString(),
       description: floor.description?.value,
       dimensions: {

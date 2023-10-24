@@ -1,4 +1,4 @@
-import { Elevator } from '@/domain/elevator/elevator';
+import { IElevatorPersistence } from './IElevatorPersistence';
 
 export interface IBuildingPersistence {
   _id: string;
@@ -6,7 +6,7 @@ export interface IBuildingPersistence {
   code: string;
   name?: string;
   description?: string;
-  elevator?: Elevator;
+  elevator?: IElevatorPersistence;
   maxDimensions: {
     width: number;
     height: number;

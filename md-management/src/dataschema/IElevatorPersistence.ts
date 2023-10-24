@@ -1,9 +1,7 @@
-import { Floor } from '@/domain/floor/floor';
-
 export interface IElevatorPersistence {
   domainId: string;
   code: number;
-  floors: Floor[];
+  floors: string[];
   brand?: string;
   model?: string;
   serialNumber?: string;

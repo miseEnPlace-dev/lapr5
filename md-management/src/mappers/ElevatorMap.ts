@@ -8,6 +8,7 @@ import { ElevatorDescription } from '@/domain/elevator/elevatorDescription';
 import { ElevatorSerialNumber } from '@/domain/elevator/elevatorSerialNumber';
 import { IElevatorDTO } from '@/dto/IElevatorDTO';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
+import { FloorMap } from './FloorMap';
 
 export class ElevatorMap extends Mapper<Elevator> {
   public static toDTO(elevator: Elevator): Omit<IElevatorDTO, 'buildingCode'> {
@@ -34,13 +35,19 @@ export class ElevatorMap extends Mapper<Elevator> {
       ? ElevatorDescription.create(elevator.description).getValue()
       : undefined;
 
+    const domainFloors = [];
+    for (const floor of elevator.floors) {
+      const domainFloor = await FloorMap.toDomain(floor);
+      domainFloor && domainFloors.push(domainFloor);
+    }
+
     const elevatorOrError = Elevator.create(
       {
         code,
         branding,
         serialNumber,
         description,
-        floors: elevator.floors
+        floors: domainFloors
       },
       new UniqueEntityID(elevator.domainId)
     );
@@ -50,11 +57,12 @@ export class ElevatorMap extends Mapper<Elevator> {
     return elevatorOrError.isSuccess ? elevatorOrError.getValue() : null;
   }
 
-  public static toPersistence(elevator: Elevator) {
+  public static toPersistence(elevator: Elevator): IElevatorPersistence {
+    const floors = elevator.floors.map(floor => floor.id.toString());
     return {
-      domainId: elevator.id.toValue(),
+      domainId: elevator.id.toString(),
       code: elevator.code.value,
-      floors: elevator.floors,
+      floors,
       brand: elevator.brand,
       model: elevator.model,
       serialNumber: elevator.serialNumber?.value,

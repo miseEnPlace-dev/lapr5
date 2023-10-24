@@ -6,6 +6,7 @@ import { IBuildingPersistence } from '@/dataschema/IBuildingPersistence';
 import { Building } from '@/domain/building/building';
 import { BuildingCode } from '@/domain/building/buildingCode';
 import { BuildingMap } from '@/mappers/BuildingMap';
+import { ElevatorMap } from '@/mappers/ElevatorMap';
 import IBuildingRepo from '@/services/IRepos/IBuildingRepo';
 import { Document, FilterQuery, Model } from 'mongoose';
 import { IRolePersistence } from '../dataschema/IRolePersistence';
@@ -55,7 +56,8 @@ export default class BuildingRepo implements IBuildingRepo {
       buildingDocument.name = building.name?.value;
       buildingDocument.code = building.code?.value;
       buildingDocument.description = building.description?.value;
-      buildingDocument.elevator = building.elevator;
+      if (building.elevator)
+        buildingDocument.elevator = ElevatorMap.toPersistence(building.elevator);
       await buildingDocument.save();
 
       return building;
