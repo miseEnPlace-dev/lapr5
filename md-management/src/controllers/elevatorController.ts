@@ -14,10 +14,10 @@ export default class ElevatorController implements IElevatorController {
     this.elevatorServiceInstance = Container.get(config.services.elevator.name) as IElevatorService;
   }
 
-  public async getElevator(req: Request, res: Response, next: NextFunction) {
+  public async getElevatorForBuilding(req: Request, res: Response, next: NextFunction) {
     try {
-      const elevatorOrError = (await this.elevatorServiceInstance.getElevator(
-        req.params.id
+      const elevatorOrError = (await this.elevatorServiceInstance.getElevatorForBuilding(
+        req.query.building as string
       )) as Result<IElevatorDTO>;
 
       if (elevatorOrError.isFailure)

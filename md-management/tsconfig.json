@@ -15,7 +15,7 @@
     "outDir": "dist" /* Specify an output folder for all emitted files. */,
     "rootDir": "src" /* Specify the root folder within your source files. */,
     "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
-    "noEmit": false,
+    "noEmit": true,
     "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
     "preserveConstEnums": true /* Do not erase const enum declarations in generated code. */,
     "strict": true /* Enable all strict type-checking options. */,
@@ -26,6 +26,6 @@
       "@tests/*": ["src/tests/*"]
     }
   },
-  "exclude": ["node_modules", "dist", "src/tests"],
-  "include": ["src/**/*"]
+  "exclude": ["node_modules", "dist"],
+  "include": ["src/**/*", "tests/**/*"]
 }

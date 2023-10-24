@@ -1,6 +1,5 @@
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { Repo } from '@/core/infra/Repo';
-import { BuildingCode } from '@/domain/building/buildingCode';
 import { Floor } from '@/domain/floor/floor';
 import { FloorCode } from '@/domain/floor/floorCode';
 

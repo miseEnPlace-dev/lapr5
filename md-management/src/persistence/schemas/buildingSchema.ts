@@ -4,8 +4,7 @@ import { IBuildingPersistence } from '../../dataschema/IBuildingPersistence';
 const BuildingSchema = new mongoose.Schema(
   {
     domainId: {
-      type: String,
-      unique: true
+      type: String
     },
     code: {
       type: String,
@@ -24,8 +23,7 @@ const BuildingSchema = new mongoose.Schema(
 
     elevator: {
       domainId: {
-        type: String,
-        unique: true
+        type: String
       },
       code: {
         type: String,

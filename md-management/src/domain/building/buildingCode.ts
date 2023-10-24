@@ -1,4 +1,4 @@
-import { ValueObject } from '@/core/domain/ValueObject';
+import { ValueObject } from '../../core/domain/ValueObject';
 import { Result } from '../../core/logic/Result';
 
 interface BuildingCodeProps {
@@ -18,7 +18,7 @@ export class BuildingCode extends ValueObject<BuildingCodeProps> {
   public static create(id: string): Result<BuildingCode> {
     if (id.length > 5)
       return Result.fail<BuildingCode>('Building code must be 5 characters or less');
-    if (!/^[a-zA-Z0-9]+$/.test(id))
+    if (!/^[a-zA-Z0-9\t\s]+$/.test(id))
       return Result.fail<BuildingCode>('Building code must be alphanumeric');
 
     return Result.ok<BuildingCode>(new BuildingCode({ value: id }));
