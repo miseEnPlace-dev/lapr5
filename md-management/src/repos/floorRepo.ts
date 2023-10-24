@@ -31,6 +31,23 @@ export default class FloorRepo implements IFloorRepo {
     return !!roleDocument;
   }
 
+  public async findBuildingCodesWithMinMaxFloors(min: number, max: number): Promise<string[]> {
+    const floors = await this.floorSchema.aggregate([
+      {
+        $group: {
+          _id: '$building',
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $match: {
+          count: { $gte: min, $lte: max }
+        }
+      }
+    ]);
+    return floors.map(f => f._id);
+  }
+
   public async save(floor: Floor): Promise<Floor> {
     const query = { domainId: floor.id } as FilterQuery<IFloorPersistence & Document>;
 

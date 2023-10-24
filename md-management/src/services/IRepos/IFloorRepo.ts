@@ -8,6 +8,7 @@ export default interface IFloorRepo extends Repo<Floor> {
   save(floor: Floor): Promise<Floor>;
   findByDomainId(floorId: UniqueEntityID | string): Promise<Floor | null>;
   findByCode(floorCode: FloorCode | string): Promise<Floor | null>;
+  findBuildingCodesWithMinMaxFloors(min: number, max: number): Promise<string[]>;
   findAll(): Promise<Floor[]>;
   findByBuildingId(buildingId: BuildingCode): Promise<Floor[]>;
   findByBuildingIdWithElevator(buildingId: BuildingCode): Promise<Floor[]>;

@@ -10,12 +10,15 @@ import { Result } from '../core/logic/Result';
 import { Building } from '../domain/building/building';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import IBuildingService from './IServices/IBuildingService';
+import IFloorRepo from './IRepos/IFloorRepo';
 
 @Service()
 export default class BuildingService implements IBuildingService {
   private buildingRepo: IBuildingRepo;
+  private floorRepo: IFloorRepo;
   constructor() {
     this.buildingRepo = Container.get(config.repos.building.name);
+    this.floorRepo = Container.get(config.repos.floor.name);
   }
 
   public async createBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>> {
@@ -55,7 +58,13 @@ export default class BuildingService implements IBuildingService {
     max: number
   ): Promise<Result<IBuildingDTO[]>> {
     try {
-      const buildings = await this.buildingRepo.findWithMinMaxFloors(min, max);
+      const buildingCodes = await this.floorRepo.findBuildingCodesWithMinMaxFloors(min, max);
+      const buildings: Building[] = [];
+      for (const buildingCode of buildingCodes) {
+        const building = await this.buildingRepo.findByDomainId(buildingCode);
+        if (!building) throw new Error('Building not found');
+        buildings.push(building);
+      }
       const buildingsDTO = buildings.map(b => BuildingMap.toDTO(b) as IBuildingDTO);
       return Result.ok<IBuildingDTO[]>(buildingsDTO);
     } catch (e) {
