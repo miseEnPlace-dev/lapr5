@@ -141,7 +141,8 @@ export default async ({ expressApp }: { expressApp: Express }) => {
       buildingController,
       floorController,
       elevatorController,
-      roomController
+      roomController,
+      connectorController
     ],
     repos: [roleRepo, userRepo, buildingRepo, floorRepo, roomRepo, connectorRepo],
     services: [
