@@ -34,6 +34,11 @@ export default class BuildingController implements IBuildingController {
       const min = Number(req.query.minFloors);
       const max = Number(req.query.maxFloors);
 
+      if (min > max)
+        return res.status(400).send({
+          message: 'minFloors must be less than maxFloors'
+        });
+
       const buildingsOrError = (await this.buildingServiceInstance.getBuildingsWithMinMaxFloors(
         min,
         max
