@@ -41,6 +41,18 @@ export class Building extends AggregateRoot<BuildingProps> {
     return this.props.elevator;
   }
 
+  set name(name: BuildingName | undefined) {
+    this.props.name = name;
+  }
+
+  set description(description: BuildingDescription | undefined) {
+    this.props.description = description;
+  }
+
+  set maxDimensions(maxDimensions: BuildingMaxDimensions) {
+    this.props.maxDimensions = maxDimensions;
+  }
+
   set elevator(elevator: Elevator) {
     this.props.elevator = elevator;
   }
