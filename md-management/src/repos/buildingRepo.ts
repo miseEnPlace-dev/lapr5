@@ -36,18 +36,6 @@ export default class BuildingRepo implements IBuildingRepo {
     return buildings;
   }
 
-  public async findWithMinMaxFloors(min: number, max: number): Promise<Building[]> {
-    const query = {
-      // TODO
-    };
-    const buildingRecords = await this.buildingSchema.find(
-      query as FilterQuery<IRolePersistence & Document>
-    );
-
-    const buildings = buildingRecords.map(b => BuildingMap.toDomain(b)) as Building[];
-    return buildings;
-  }
-
   public async save(building: Building): Promise<Building> {
     const query = { id: building.id } as FilterQuery<IBuildingPersistence & Document>;
 

@@ -10,7 +10,7 @@ You can check the client clarifications throughout the project in the following 
 
 ## Use Case Diagram
 
-The use cases of each sprint are described in [this section](./ucd/readme.md).
+The use cases of each sprint are described in [this section](./views/readme.md).
 
 ## Definition of Ready
 
@@ -34,10 +34,13 @@ A User Story is considered **done** when it matches the following criteria:
 
 ## Group Members
 
-| Student Nr. | Name         | No. |
-| ----------- | ------------ | --- |
-| 1211299     | André Barros | 5   |
-| 1211277     | Carlos Lopes | 1   |
+| Student Nr. | Name            | No. |
+| ----------- | --------------- | --- |
+| 1211277     | Carlos Lopes    | 1   |
+| 1211288     | Tomás Russo     | 2   |
+| 1211285     | Ricardo Moreira | 3   |
+| 1211289     | Tomás Lopes     | 4   |
+| 1211299     | André Barros    | 5   |
 
 | ID                                      | Assigned To               |
 | --------------------------------------- | ------------------------- |

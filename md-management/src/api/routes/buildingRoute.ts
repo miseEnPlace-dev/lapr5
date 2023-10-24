@@ -28,7 +28,6 @@ const buildingCreateSchema = z.object({
 
 export default (app: Router) => {
   const route = Router();
-
   const ctrl = Container.get(config.controllers.building.name) as IBuildingController;
 
   route.get('', (req, res, next) => ctrl.getBuildings(req, res, next));

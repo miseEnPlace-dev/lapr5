@@ -34,6 +34,11 @@ export default class BuildingController implements IBuildingController {
       const min = Number(req.query.minFloors);
       const max = Number(req.query.maxFloors);
 
+      if (min > max)
+        return res.status(400).send({
+          message: 'minFloors must be less than maxFloors'
+        });
+
       const buildingsOrError = (await this.buildingServiceInstance.getBuildingsWithMinMaxFloors(
         min,
         max
@@ -49,6 +54,10 @@ export default class BuildingController implements IBuildingController {
 
   public async getBuildings(req: Request, res: Response, next: NextFunction) {
     try {
+      if (req.query.minFloors && req.query.maxFloors) {
+        return this.getBuildingsWithMinMaxFloors(req, res, next);
+      }
+
       const buildingsOrError = (await this.buildingServiceInstance.getBuildings()) as Result<
         IBuildingDTO[]
       >;

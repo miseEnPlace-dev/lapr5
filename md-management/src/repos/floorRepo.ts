@@ -31,6 +31,23 @@ export default class FloorRepo implements IFloorRepo {
     return !!roleDocument;
   }
 
+  public async findBuildingCodesWithMinMaxFloors(min: number, max: number): Promise<string[]> {
+    const floors = await this.floorSchema.aggregate([
+      {
+        $group: {
+          _id: '$building',
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $match: {
+          count: { $gte: min, $lte: max }
+        }
+      }
+    ]);
+    return floors.map(f => f._id);
+  }
+
   public async save(floor: Floor): Promise<Floor> {
     const query = { domainId: floor.id } as FilterQuery<IFloorPersistence & Document>;
 
@@ -90,11 +107,12 @@ export default class FloorRepo implements IFloorRepo {
     return null;
   }
 
-  public async findByBuildingId(buildingId: BuildingCode): Promise<Floor[]> {
-    const query = { buildingId: buildingId };
-    const floorRecords = await this.floorSchema.find(
-      query as FilterQuery<IFloorPersistence & Document>
-    );
+  public async findByBuildingId(buildingId: UniqueEntityID): Promise<Floor[]> {
+    const query = {
+      building: buildingId
+    } as FilterQuery<IFloorPersistence & Document>;
+
+    const floorRecords = await this.floorSchema.find(query);
 
     const floors: Floor[] = [];
 
@@ -106,8 +124,8 @@ export default class FloorRepo implements IFloorRepo {
     return floors;
   }
 
-  public async findByBuildingIdWithElevator(buildingId: BuildingCode): Promise<Floor[]> {
-    const query = { buildingId: buildingId.toString(), hasElevator: true };
+  public async findByBuildingIdWithElevator(buildingId: UniqueEntityID): Promise<Floor[]> {
+    const query = { buildingId: buildingId, hasElevator: true };
     const floorRecords = await this.floorSchema.find(
       query as FilterQuery<IFloorPersistence & Document>
     );
