@@ -32,12 +32,18 @@ export default class BuildingRepo implements IBuildingRepo {
 
   public async findAll(): Promise<Building[]> {
     const buildingRecords = await this.buildingSchema.find();
-    const buildings = buildingRecords.map(b => BuildingMap.toDomain(b)) as Building[];
+    const buildings: Building[] = [];
+
+    for (const b of buildingRecords) {
+      const building = await BuildingMap.toDomain(b);
+      if (building) buildings.push(building);
+    }
+
     return buildings;
   }
 
   public async save(building: Building): Promise<Building> {
-    const query = { id: building.id } as FilterQuery<IBuildingPersistence & Document>;
+    const query = { domainId: building.id } as FilterQuery<IBuildingPersistence & Document>;
 
     const buildingDocument = await this.buildingSchema.findOne(query);
 
@@ -47,7 +53,7 @@ export default class BuildingRepo implements IBuildingRepo {
 
         const buildingCreated = await this.buildingSchema.create(rawBuilding);
 
-        const domainBuilding = BuildingMap.toDomain(buildingCreated);
+        const domainBuilding = await BuildingMap.toDomain(buildingCreated);
 
         if (!domainBuilding) throw new Error('Building not created');
         return domainBuilding;
@@ -67,22 +73,18 @@ export default class BuildingRepo implements IBuildingRepo {
   }
 
   public async findByDomainId(domainId: UniqueEntityID | string): Promise<Building | null> {
-    const query = { _id: domainId };
+    const query: FilterQuery<IBuildingPersistence & Document> = { domainId };
 
-    const buildingRecord = await this.buildingSchema.findOne(
-      query as FilterQuery<IBuildingPersistence & Document>
-    );
+    const buildingRecord = await this.buildingSchema.findOne(query);
 
     if (buildingRecord) return BuildingMap.toDomain(buildingRecord);
     return null;
   }
 
   public async findByCode(code: BuildingCode | string): Promise<Building | null> {
-    const query = { code: code.valueOf() };
+    const query: FilterQuery<IBuildingPersistence & Document> = { code: code.toString() };
 
-    const buildingRecord = await this.buildingSchema.findOne(
-      query as FilterQuery<IBuildingPersistence & Document>
-    );
+    const buildingRecord = await this.buildingSchema.findOne(query);
 
     if (buildingRecord) return BuildingMap.toDomain(buildingRecord);
     return null;

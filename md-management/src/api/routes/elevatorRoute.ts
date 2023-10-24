@@ -21,7 +21,7 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.elevator.name) as IElevatorController;
 
-  route.get('/:id', (req, res, next) => ctrl.getElevator(req, res, next));
+  route.get('', (req, res, next) => ctrl.getElevatorForBuilding(req, res, next));
   route.post('', validate(elevatorCreateSchema), (req, res, next) =>
     ctrl.createElevator(req, res, next)
   );
