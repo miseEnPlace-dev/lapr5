@@ -11,13 +11,15 @@ describe('BuildingCode', () => {
   it('should create new code with 5 characters', () => {
     const result = BuildingCode.create('1234a');
     expect(result.isSuccess).toBe(true);
-    expect(result.getValue().id.toValue()).toBe('1234a');
+    console.log(result.getValue());
+    expect(result.getValue().value).toBe('1234a');
   });
 
   it('should allow spaces', () => {
     const result = BuildingCode.create('12 a');
     expect(result.isSuccess).toBe(true);
-    expect(result.getValue().id.toValue()).toBe('12 a');
+    console.log(result.getValue());
+    expect(result.getValue().value).toBe('12 a');
   });
 
   it('should not allow special characters', () => {
