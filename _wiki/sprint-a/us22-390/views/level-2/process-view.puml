@@ -1,0 +1,14 @@
+@startuml process-view
+autonumber
+
+participant SYS as "MD Management" <<system (C4)>>
+
+
+?o-> SYS : GET /devices/:taskId
+activate SYS
+
+SYS -> SYS : listRobots(taskId)
+<-- SYS : 200 OK (list robots JSON)
+deactivate SYS
+
+@enduml

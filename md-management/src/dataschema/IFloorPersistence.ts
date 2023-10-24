@@ -1,5 +1,4 @@
 export interface IFloorPersistence {
-  _id: string;
   domainId: string;
   code: string;
   description?: string;
@@ -7,5 +6,5 @@ export interface IFloorPersistence {
     width: number;
     height: number;
   };
-  buildingCode: string;
+  building: string;
 }

@@ -1,12 +1,12 @@
-import { Result } from '@/core/logic/Result';
 import { ValueObject } from '@/core/domain/ValueObject';
+import { Result } from '@/core/logic/Result';
 
 interface FloorCodeProps {
   [key: string]: string;
   value: string;
 }
 export class FloorCode extends ValueObject<FloorCodeProps> {
-  get code(): string {
+  get value(): string {
     return this.props.value;
   }
 

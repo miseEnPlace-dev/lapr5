@@ -53,10 +53,6 @@ export default {
     floor: {
       name: 'floorSchema',
       schema: '../persistence/schemas/floorSchema'
-    },
-    elevator: {
-      name: 'elevatorSchema',
-      schema: '../persistence/schemas/elevatorSchema'
     }
   },
 

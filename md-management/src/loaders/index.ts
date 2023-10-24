@@ -84,11 +84,6 @@ export default async ({ expressApp }: { expressApp: Express }) => {
     path: config.controllers.floor.path
   };
 
-  const elevatorSchema = {
-    name: config.schemas.elevator.name,
-    schema: config.schemas.elevator.schema
-  };
-
   const elevatorService = {
     name: config.services.elevator.name,
     path: config.services.elevator.path
@@ -100,7 +95,7 @@ export default async ({ expressApp }: { expressApp: Express }) => {
   };
 
   dependencyInjectorLoader({
-    schemas: [userSchema, roleSchema, buildingSchema, floorSchema, elevatorSchema],
+    schemas: [userSchema, roleSchema, buildingSchema, floorSchema],
     controllers: [roleController, buildingController, floorController, elevatorController],
     repos: [roleRepo, userRepo, buildingRepo, floorRepo],
     services: [roleService, buildingService, floorService, elevatorService]

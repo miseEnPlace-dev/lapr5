@@ -1,0 +1,16 @@
+@startuml process-view
+autonumber
+
+actor CM as "Fleet Manager"
+participant SYS as "RobDroneGo System" <<system (C4)>>
+
+activate CM
+
+CM -> SYS : asks to list all robots filtering by designation or task.
+activate SYS
+CM <-- SYS : returns confirmation message
+deactivate SYS
+
+deactivate CM
+
+@enduml

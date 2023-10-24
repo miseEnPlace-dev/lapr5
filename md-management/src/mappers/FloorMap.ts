@@ -1,21 +1,21 @@
 import { Mapper } from '../core/infra/Mapper';
 
-import { Document, ObjectId } from 'mongoose';
-
-import { IFloorDTO } from '@/dto/IFloorDTO';
-import { UniqueEntityID } from '../core/domain/UniqueEntityID';
-import { Floor } from '@/domain/floor/floor';
+import config from '@/config.mjs';
 import { IFloorPersistence } from '@/dataschema/IFloorPersistence';
+import { Floor } from '@/domain/floor/floor';
 import { FloorCode } from '@/domain/floor/floorCode';
+import { FloorDescription } from '@/domain/floor/floorDescription';
 import { FloorDimensions } from '@/domain/floor/floorDimensions';
+import { IFloorDTO } from '@/dto/IFloorDTO';
+import IBuildingRepo from '@/services/IRepos/IBuildingRepo';
 import Container from 'typedi';
-import BuildingRepo from '@/repos/buildingRepo';
+import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 
 export class FloorMap extends Mapper<Floor> {
   public static toDTO(floor: Floor): IFloorDTO {
     return {
-      code: floor.code.code.toString(),
-      buildingCode: floor.building.code.code.toString(),
+      code: floor.code.value,
+      buildingCode: floor.building.code.value,
       description: floor.description?.value,
       dimensions: {
         width: floor.dimensions.width,
@@ -24,15 +24,13 @@ export class FloorMap extends Mapper<Floor> {
     };
   }
 
-  public static async toDomain(
-    floor: IFloorPersistence & Document<unknown, unknown, unknown> & { _id: ObjectId }
-  ): Promise<Floor | null> {
+  public static async toDomain(floor: IFloorPersistence): Promise<Floor | null> {
     const code = FloorCode.create(floor.code).getValue();
     const { width, height } = floor.dimensions;
 
-    const repo = Container.get(BuildingRepo);
+    const repo = Container.get<IBuildingRepo>(config.repos.building.name);
 
-    const building = await repo.findByDomainId(floor.buildingCode);
+    const building = await repo.findByDomainId(floor.building);
     if (!building) throw new Error('Building not found');
 
     const floorDimensionsOrError = FloorDimensions.create(
@@ -42,13 +40,18 @@ export class FloorMap extends Mapper<Floor> {
       building.maxDimensions.height
     );
 
+    const description = floor.description
+      ? FloorDescription.create(floor.description).getValue()
+      : undefined;
+
     const floorOrError = Floor.create(
       {
         code,
+        description,
         building,
         dimensions: floorDimensionsOrError.getValue()
       },
-      new UniqueEntityID(floor._id)
+      new UniqueEntityID(floor.domainId)
     );
 
     floorOrError.isFailure && console.log(floorOrError.error);
@@ -56,11 +59,11 @@ export class FloorMap extends Mapper<Floor> {
     return floorOrError.isSuccess ? floorOrError.getValue() : null;
   }
 
-  public static toPersistence(floor: Floor) {
+  public static toPersistence(floor: Floor): IFloorPersistence {
     return {
-      code: floor.code.code.toString(),
+      code: floor.code.value.toString(),
       domainId: floor.id.toString(),
-      buildingCode: floor.building.code.toString(),
+      building: floor.building.id.toString(),
       description: floor.description?.value,
       dimensions: {
         width: floor.dimensions.width,

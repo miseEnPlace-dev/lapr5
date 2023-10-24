@@ -6,7 +6,7 @@ participant SYS as "RobDroneGo System" <<system (C4)>>
 
 activate CM
 
-CM -> SYS : asks to list floors serverd by elevator from a given building
+CM -> SYS : asks to list floors served by elevator from a given building
 activate SYS
 
 CM <-- SYS : returns list of floors

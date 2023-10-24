@@ -13,7 +13,7 @@ interface ElevatorProps {
   branding?: ElevatorBranding;
   serialNumber?: ElevatorSerialNumber;
   description?: ElevatorDescription;
-  floors?: Floor[];
+  floors: Floor[];
 }
 
 export class Elevator extends Entity<ElevatorProps> {
@@ -41,8 +41,8 @@ export class Elevator extends Entity<ElevatorProps> {
     return this.props.serialNumber;
   }
 
-  get floorsList(): Floor[] {
-    return this.props.floors ?? [];
+  get floors(): Floor[] {
+    return this.props.floors;
   }
 
   private constructor(props: ElevatorProps, id?: UniqueEntityID) {
@@ -50,7 +50,7 @@ export class Elevator extends Entity<ElevatorProps> {
   }
 
   public static create(props: ElevatorProps, id?: UniqueEntityID): Result<Elevator> {
-    const guardResult = Guard.againstNullOrUndefined(props.code, 'id');
+    const guardResult = Guard.againstNullOrUndefined(props.code, 'code');
 
     if (!guardResult.succeeded) return Result.fail<Elevator>(guardResult.message);
 

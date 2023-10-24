@@ -9,7 +9,7 @@ participant REPO as ":FloorRepo"
 participant MAP as ":FloorMap"
 participant DTO as ":FloorDTO:IFloorDTO"
 
-?o-> ROUTE : GET /floorsWithElevator
+?o-> ROUTE : GET /floors/:buildingCode
 activate ROUTE
 
 ROUTE -> CTRL : getFloorsWithElevator(request)

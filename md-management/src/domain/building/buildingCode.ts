@@ -7,7 +7,7 @@ interface BuildingCodeProps {
 }
 
 export class BuildingCode extends ValueObject<BuildingCodeProps> {
-  get code(): string {
+  get value(): string {
     return this.props.value;
   }
 

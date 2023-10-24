@@ -413,6 +413,115 @@ assumindo que a sua pergunta é sobre se há necessidade de identificar os eleva
 - número de série do fabricante (opcional, alfanumerico, 50 caracteres)
 - breve descrição (opcional, alfanumerico, 250 caracteres)
 
+## [Question 29](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25322)
+
+> Nesta US pretende-se devolver ("listar") apenas 1 elevador.
+> Que informacoes pretende, então, ver sobre esse elevador?
+
+### Answer
+
+"pretende-se listar todas as informações do elevador.
+
+notem que quando é dito que podem assumir que existe apenas um elevador é uma maneira de simplificar o problema para esta fase de prototipo, principalmente reduzindo a complexidade dos mapas e do calculo de percursos, mas nada vos impede de suportar vários elevadores no sistema se assim o entenderem"
+
+## [Question 30](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25164)
+
+> relativamente à US250 o que é que pretende que seja possivel editar numa passagem entre edificios?
+
+### Answer
+
+"deve ser possivel corrigir todos os dados da passagem"
+
+## [Question 30.1](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25164)
+
+> Seria possível dizer o que pretende indicar no que se refere à passagem entre edifícios? Seria apenas os edifícios e os pisos referentes à mesma, ou deve ser dito mais alguma coisa acerca de uma passagem?
+
+### Answer
+
+"apenas os edificios e os pisos que estão ligados por essa passagem"
+
+## [Question 31](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25265)
+
+> Os atributos do robot têm algum tipo de formatação/restrição?
+
+### Answer
+
+"código identificativo, obrigatório, alfanumerico, max 30 caracteres, único no sistema
+
+nickname, obrigatório, obrigatório, alfanumerico, max 30 caracteres, único no sistema
+
+tipo de robot, obrigatório
+
+número de série, obrigatório, alfanumerico, max 50 caracteres, único para um dado tipo de robot
+
+descrição, opcional, alfanumerico, max. 250 caracteres"
+
+## [Question 31.1](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25265)
+
+> Ao criar um novo robo, qual o estado dele por defeito, isto é, ativo ou inativo?
+> Tendo em conta a US370 seria ativo por defeito certo?
+
+### Answer
+
+"ao criar um robot ele fica no estado ativo"
+
+## [Question 32](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25267)
+
+> há alguma restrição para o ID do elevador?
+
+### Answer
+
+"não sei a que se refere quando refere "ID"
+assumindo que a sua pergunta é sobre se há necessidade de identificar os elevadores, cada elevador terá um número identificativo único no edificio. De momento assume-se que existe apenas um elevador em cada edificio."
+
+## [Question 32.1](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25267)
+
+> esse número identificativo tem alguma especificação? era isso que queria perguntar.
+
+### Answer
+
+"trata-se de um número inteiro"
+
+## [Question 33](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25332)
+
+> Em relação aos atributos que definem uma sala, quais são os limites desejados para o seu nome e descrição.
+>
+> Ainda, existem algum tamanho mínimo para criar uma sala?
+
+### Answer
+
+"nome - max 50 caracteres
+descrição - max 250 caracteres
+
+tamanho minimo da sala - 1 célula"
+
+## [Question 34](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25336)
+
+> Após análise do enunciado deparei-me com a coincidência: todos os edificios que têm elevador, este último serve todos os pisos desse edificio. Pode existir algum edifício em que o elevador não sirva todos os pisos?
+
+### Answer
+
+"sim, é possivel tal situação"
+
+## [Question 35](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25343)
+
+> No caderno de encargos, é referido que os drones movimentam-se no "espaço exterior aos edifícios existentes no ISEP" e que os robisep se movimentam através de um "sistema de rodas podendo deslocar-se nos corredores dos edifícios ou através de elevadores entre pisos de um edifício".
+> No entanto refere que "para esta fase do protótipo assume-se que os robots podem executar apenas as seguintes tarefas: transporte de um objeto de um ponto para outro e vigilância de segurança de um piso de um edifício efetuando recolha de imagens". Neste caso se quisermos criar um drone este não pode ter a tarefa de vigia uma vez que esta é relativa a um piso de um edifício(uma vez que este só pode vigiar o exterior)?
+
+### Answer
+
+"os drones estão fora do âmbito do prototipo"
+
+## [Question 36](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25353)
+
+> Relativamente à funcionalidade de criar elevador, no seguimento da sua resposta em (https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25298#p32051), gostaríamos que clarificasse quais das propriedades que indicou serem alfanuméricas podem conter espaços; por exemplo, nós acharíamos que seria sensato a descrição poder conter espaços.
+> Adicionalmente, gostaria de saber se o identificador numérico que referiu deve ser fornecido ao sistema ou gerado automaticamente pelo mesmo, dado que este deve ser único dentro de cada edifício.
+
+### Answer
+
+"todos os atributos alfanumericos podem conter espaços à exceção do número de série
+o número identificativo do elevador deve ser gerado sequencialmente pelo sistema tendo em conta o edifico, por exemplo, existirá o elevador 1 do edificio B e o elevador 1 do edificio A"
+
 ---
 
-_LAST UPDATE: 20/10/2023 17:56H_
+_LAST UPDATE: 23/10/2023 13:45H_

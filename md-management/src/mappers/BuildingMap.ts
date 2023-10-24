@@ -12,9 +12,10 @@ import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 export class BuildingMap extends Mapper<Building> {
   public static toDTO(building: Building): IBuildingDTO {
     return {
-      code: building.code.code,
+      code: building.code.value,
       name: building.name?.value,
       description: building.description?.value,
+      elevatorFloors: building.elevator?.floors.map(f => f.id.toString()),
       maxDimensions: {
         width: building.maxDimensions.width,
         height: building.maxDimensions.height
@@ -38,6 +39,7 @@ export class BuildingMap extends Mapper<Building> {
         code,
         maxDimensions,
         name,
+        elevator: building.elevator,
         description
       },
       new UniqueEntityID(building._id)
@@ -50,10 +52,11 @@ export class BuildingMap extends Mapper<Building> {
 
   public static toPersistence(building: Building) {
     return {
-      domainId: building.id.toString(),
-      code: building.code.code,
+      domainId: building.id.toValue(),
+      code: building.code.value,
       name: building.name?.value,
       description: building.description?.value,
+      elevator: building.elevator,
       maxDimensions: {
         width: building.maxDimensions.width,
         height: building.maxDimensions.height
