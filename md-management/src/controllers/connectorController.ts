@@ -59,16 +59,22 @@ export default class ConnectorController implements IConnectorController {
     }
   }
 
-  public async getConnectorsBetweenBuildings(req: Request, res: Response, next: NextFunction) {
-    const parsed = updateSchema.safeParse(req.query);
+  public async getConnectors(req: Request, res: Response, next: NextFunction) {
+    try {
+      let connectorsOrError: Result<IConnectorDTO[]>;
+
+      if (!req.query.buildingCodes) {
+        connectorsOrError = await this.connectorSvcInstance.getAllConnectors();
+      } else {
+        const parsed = buildingIdsSchema.safeParse(req.query);
     if (!parsed.success) return res.status(400).send(parsed.error);
     const { buildingCodes } = parsed.data;
 
-    try {
-      const connectorsOrError = (await this.connectorSvcInstance.getConnectorsBetweenBuildings(
+        connectorsOrError = await this.connectorSvcInstance.getConnectorsBetweenBuildings(
         buildingCodes[0],
         buildingCodes[1]
-      )) as Result<IConnectorDTO[]>;
+        );
+      }
 
       if (connectorsOrError.isFailure)
         return res.status(400).json({

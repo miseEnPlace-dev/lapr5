@@ -43,7 +43,7 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.connector.name) as IConnectorController;
 
-  route.get('', (req, res, next) => ctrl.getConnectorsBetweenBuildings(req, res, next));
+  route.get('', (req, res, next) => ctrl.getConnectors(req, res, next));
 
   route.post('', validate(connectorCreateSchema), (req, res, next) =>
     ctrl.createConnector(req, res, next)

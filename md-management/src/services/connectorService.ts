@@ -66,6 +66,17 @@ export default class ConnectorService implements IConnectorService {
     }
   }
 
+  public async getAllConnectors() {
+    try {
+      const connectors = await this.connectorRepo.findAll();
+      const connectorsDTO = connectors.map(connector => ConnectorMap.toDTO(connector));
+
+      return Result.ok<IConnectorDTO[]>(connectorsDTO);
+    } catch (e) {
+      throw e;
+    }
+    }
+
   public async getConnectorsBetweenBuildings(code1: string, code2: string) {
     try {
       const building1 = await this.buildingRepo.findByCode(code1);
