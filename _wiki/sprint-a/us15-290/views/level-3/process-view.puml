@@ -7,7 +7,7 @@ participant BREPO as ":BuildingRepo"
 participant MAP as ":ElevatorMap"
 participant DTO as ":elevatorDTO:IElevatorDTO"
 
-?o-> ROUTE : GET /elevators/:buildingCode
+?o-> SYS : GET buildings/:id/elevators
 activate ROUTE
 
 ROUTE -> CTRL : listElevator(buildingCode)

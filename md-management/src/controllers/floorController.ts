@@ -53,17 +53,8 @@ export default class FloorController implements IFloorController {
     }
   }
 
-  public async getBuildingFloors(req: Request, res: Response, next: NextFunction) {
-    if (req.query.building && req.query.hasElevator)
-      return this.getFloorsWithElevator(req, res, next);
-
-    return this.getBuildingWithFloors(req, res, next);
-  }
-
   public async getBuildingWithFloors(req: Request, res: Response, next: NextFunction) {
-    if (!req.query.building) return res.status(400).send();
-
-    const buildingCode = BuildingCode.create(req.query.building as string);
+    const buildingCode = BuildingCode.create(req.params.code as string);
 
     if (buildingCode.isFailure)
       return res.status(400).send({
@@ -88,8 +79,11 @@ export default class FloorController implements IFloorController {
   }
 
   public async getFloorsWithElevator(req: Request, res: Response, next: NextFunction) {
+    if (!req.query.hasElevator || !req.query.building) return res.status(400).send();
+    const query = { hasElevator: req.query.hasElevator, building: req.query.building };
+
     try {
-      const buildingCode = BuildingCode.create(req.query.building as string);
+      const buildingCode = BuildingCode.create(query.building as string);
 
       if (buildingCode.isFailure) return res.status(400).send();
 

@@ -4,7 +4,7 @@ autonumber
 participant SYS as "MD Management" <<system (C4)>>
 
 
-?o-> SYS : GET /elevators/:buildingCode
+?o-> SYS : GET buildings/:id/elevators
 activate SYS
 
 SYS -> SYS : listElevator(building)

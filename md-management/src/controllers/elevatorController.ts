@@ -17,7 +17,7 @@ export default class ElevatorController implements IElevatorController {
   public async getElevatorForBuilding(req: Request, res: Response, next: NextFunction) {
     try {
       const elevatorOrError = (await this.elevatorServiceInstance.getElevatorForBuilding(
-        req.query.building as string
+        req.params.building as string
       )) as Result<IElevatorDTO>;
 
       if (elevatorOrError.isFailure)
@@ -31,10 +31,12 @@ export default class ElevatorController implements IElevatorController {
   }
 
   public async createElevator(req: Request, res: Response, next: NextFunction) {
+    const buildingCode = req.params.building as string;
     try {
-      const elevatorOrError = (await this.elevatorServiceInstance.createElevator(
-        req.body as IElevatorDTO
-      )) as Result<IElevatorDTO>;
+      const elevatorOrError = (await this.elevatorServiceInstance.createElevator({
+        ...req.body,
+        buildingCode
+      } as IElevatorDTO)) as Result<IElevatorDTO>;
 
       if (elevatorOrError.isFailure)
         return res.status(400).send({ error: elevatorOrError.errorValue() });

@@ -1,25 +1,27 @@
 @startuml physical-view
 
-component "RobDroneGo System" <<component>> <<system (C4)>> {
-  node "Server 1: ?" as S1 {
-    component "Browser" as B <<component>> {
-      component "Visualization" as V <<component>> {
-      }
+node "localhost: ?" as LOCAL {
+  component "Browser" as B <<component>> {
+    component "UI" as UI <<component>> {
     }
   }
-
-  node "Server 2: ?" as S2 {
-    component "MDManagement" as MDM <<component>> { 
-    }
-  }
-  
-  node "Server 3: ?" as S3 {
-    component "Planning" as P <<component>>  { 
-    }
-  } 
 }
 
-S1 -- S2 : http/s
-S2 -- S3 : http/s
+node "Server 1: ?" as S1 {
+  component "MDManagement" as MDM <<component>> { 
+  }
+  component "Planning" as P <<component>>  { 
+  }
+}
+
+node "Server 2: ?" as S2 {
+  component "HTTP Server" as SERV <<component>> { 
+  }
+  folder "Visualization" as V {
+  }
+} 
+
+LOCAL -- S1 : http/s
+LOCAL -- S2 : http/s
 
 @enduml

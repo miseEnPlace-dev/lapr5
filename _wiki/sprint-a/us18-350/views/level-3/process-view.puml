@@ -1,46 +1,46 @@
 @startuml process-view
 autonumber
-participant ROUTE as ":BuildingRoute"
-participant CTRL as ":BuildingController"
-participant SRV as ":BuildingService"
-participant BUILD as ":building:Building"
-participant REPO as ":BuildingRepo"
-participant MAP as ":BuildingMap"
-participant PERS as "buildingPersistence:IBuildingPersistence"
-participant MODEL as ":Model<IBuildingPersistence & Document>"
-participant NBUILD as ":newBuilding:Building"
-participant DTO as ":buildingDTO:IBuildingDTO"
+participant ROUTE as ":DeviceModelRoute"
+participant CTRL as ":DeviceModelController"
+participant SRV as ":DeviceModelService"
+participant BUILD as ":deviceModel:DeviceModel"
+participant REPO as ":DeviceModelRepo"
+participant MAP as ":DeviceModelMap"
+participant PERS as "deviceModelPersistence:IDeviceModelPersistence"
+participant MODEL as ":Model<IDeviceModelPersistence & Document>"
+participant NBUILD as ":newDeviceModel:DeviceModel"
+participant DTO as ":deviceModelDTO:IDeviceModelDTO"
 
-?o-> ROUTE : POST /buildings
+?o-> SYS : POST /device-models
 activate ROUTE
 
-ROUTE -> CTRL : createBuilding(elevatorDTO)
+ROUTE -> CTRL : createDeviceModel(elevatorDTO)
 activate CTRL
-CTRL -> SRV : createBuilding(buildingDTO)
+CTRL -> SRV : createDeviceModel(deviceModelDTO)
 activate SRV
 SRV -> BUILD** : create()
-SRV -> REPO : save(building)
+SRV -> REPO : save(deviceModel)
 activate REPO
-REPO -> MAP : toPersitence(building)
+REPO -> MAP : toPersitence(deviceModel)
 activate MAP
 deactivate MAP
 REPO -> PERS** : create()
-REPO -> MODEL : create(buildingPersistence)
+REPO -> MODEL : create(deviceModelPersistence)
 activate MODEL
 deactivate MODEL
-REPO -> MAP : toDomain(buildingPersistence)
+REPO -> MAP : toDomain(deviceModelPersistence)
 activate MAP
 MAP -> NBUILD** : create()
 deactivate MAP
-REPO --> SRV : newBuilding
+REPO --> SRV : newDeviceModel
 deactivate REPO
-SRV -> MAP : toDto(newBuilding)
+SRV -> MAP : toDto(newDeviceModel)
 activate MAP
 MAP -> DTO** : create()
 deactivate MAP
-SRV --> CTRL : sucess(buildingDTO)
+SRV --> CTRL : sucess(deviceModelDTO)
 deactivate SRV
-CTRL --> ROUTE : sucess(buildingDTO)
+CTRL --> ROUTE : sucess(deviceModelDTO)
 deactivate CTRL
 <-- ROUTE : 201 Created
 deactivate ROUTE

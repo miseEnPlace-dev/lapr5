@@ -21,10 +21,12 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.elevator.name) as IElevatorController;
 
-  route.get('', (req, res, next) => ctrl.getElevatorForBuilding(req, res, next));
-  route.post('', validate(elevatorCreateSchema), (req, res, next) =>
+  route.get('/:building/elevators', (req, res, next) =>
+    ctrl.getElevatorForBuilding(req, res, next)
+  );
+  route.post('/:building/elevators', validate(elevatorCreateSchema), (req, res, next) =>
     ctrl.createElevator(req, res, next)
   );
 
-  app.use('/elevators', route);
+  app.use('/buildings', route);
 };

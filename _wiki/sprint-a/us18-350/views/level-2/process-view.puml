@@ -2,12 +2,11 @@
 autonumber
 participant SYS as "MD Management" <<system>>
 
-
-?o-> SYS : POST /buildings
+?o-> SYS : POST /device-models
 activate SYS
 
-SYS -> SYS : createBuilding(building)
-<-- SYS : 201 Created (building JSON)
+SYS -> SYS : createDeviceModel(deviceModel)
+<-- SYS : 201 Created (Device Model JSON)
 deactivate SYS
 
 @enduml

@@ -11,7 +11,7 @@ participant MAP as ":ElevatorMap"
 participant BUILD as "building:Building"
 participant DTO as ":elevatorDTO:IElevatorDTO"
 
-?o-> ROUTE : POST /elevators
+?o-> SYS : POST /buildings/:id/elevators
 activate ROUTE
 
 ROUTE -> CTRL : createElevator(elevatorDTO)

@@ -2,15 +2,19 @@
 
 ## Domain Model
 
+This diagram represents the domain model of the system. It can help the reader to have a grasp of the system's domain.
+
 ![Domain Model](./dm/assets/dm.svg)
 
 ## Client Clarifications
 
 You can check the client clarifications throughout the project in the following link: [Client Clarifications](./client_clarifications/readme.md)
 
-## Use Case Diagram
+## Architecture artifacts
 
-The use cases of each sprint are described in [this section](./views/readme.md).
+### [C4 Model Views](./views/readme.md)
+
+### [Mapping between Views](./views/mapping/readme.md)
 
 ## Definition of Ready
 
@@ -30,7 +34,6 @@ A User Story is considered **done** when it matches the following criteria:
 - The user story is documented considering the ARQSI requirements
 - The user story is reviewed by the team
 - The user story is accepted by the Product Owner
-
 
 ## Group Members
 

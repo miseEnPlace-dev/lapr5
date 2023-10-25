@@ -4,7 +4,7 @@ autonumber
 participant SYS as "MD Management" <<system (C4)>>
 
 
-?o-> SYS : POST /elevators
+?o-> SYS : POST /buildings/:id/elevators
 activate SYS
 
 SYS -> SYS : createElevator(elevator,building)

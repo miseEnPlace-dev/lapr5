@@ -1,0 +1,42 @@
+@startuml lv-pv
+
+node "localhost: ?" as LOCAL {
+  component "Browser" as B <<component>> {
+  }
+}
+
+node "Server 1: ?" as S1 {
+  component "MD Management" as IMDM <<component>> {
+  }
+
+  artifact "MD Management" as AMDM <<artifact>> {
+  }
+
+  component "Planning" as IP <<component>> {
+  }
+
+  artifact "Planning" as AP <<artifact>> {
+  }
+}
+
+node "Server 2: ?" as S2 {
+  component "HTTP Server" as SERV <<component>> { 
+  } 
+
+  package "Visualization" {
+    artifact "Visualization" as AV <<artifact>> {
+    }
+
+    component "Visualization" as IV <<component>> {
+    }
+  }
+} 
+
+LOCAL -- S1 : http/s
+LOCAL -- S2 : http/s
+
+AV ..> IV : <<manifest>>
+AP ..> IP : <<manifest>>
+AMDM ..> IMDM : <<manifest>>
+
+@enduml
