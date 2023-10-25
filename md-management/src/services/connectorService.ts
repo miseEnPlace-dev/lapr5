@@ -5,13 +5,13 @@ import config from '@/config.mjs';
 import { Result } from '@/core/logic/Result';
 import { IConnectorDTO } from '@/dto/IConnectorDTO';
 
-import IConnectorRepo from './IRepos/IConnectorRepo';
-import IConnectorService from './IServices/IConnectorService';
-import IFloorRepo from './IRepos/IFloorRepo';
 import { Connector } from '@/domain/connector/connector';
-import { ConnectorMap } from '@/mappers/ConnectorMap';
 import { ConnectorCode } from '@/domain/connector/connectorCode';
+import { ConnectorMap } from '@/mappers/ConnectorMap';
 import IBuildingRepo from './IRepos/IBuildingRepo';
+import IConnectorRepo from './IRepos/IConnectorRepo';
+import IFloorRepo from './IRepos/IFloorRepo';
+import IConnectorService from './IServices/IConnectorService';
 
 @Service()
 export default class ConnectorService implements IConnectorService {
@@ -73,8 +73,8 @@ export default class ConnectorService implements IConnectorService {
       if (!building1 || !building2)
         return Result.fail<IConnectorDTO[]>('One/both buildings do not exist');
 
-      const floorsBuilding1 = await this.floorRepo.findByBuildingId(building1.id);
-      const floorsBuilding2 = await this.floorRepo.findByBuildingId(building2.id);
+      const floorsBuilding1 = await this.floorRepo.findByBuildingCode(building1.id);
+      const floorsBuilding2 = await this.floorRepo.findByBuildingCode(building2.id);
 
       const ids1 = floorsBuilding1.map(floor => floor.id);
       const ids2 = floorsBuilding2.map(floor => floor.id);

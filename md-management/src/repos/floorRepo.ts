@@ -22,10 +22,8 @@ export default class FloorRepo implements IFloorRepo {
   public async exists(floor: Floor): Promise<boolean> {
     const idX = floor.id instanceof FloorCode ? (<FloorCode>floor.id).value : floor.id;
 
-    const query = { domainId: idX };
-    const roleDocument = await this.floorSchema.findOne(
-      query as FilterQuery<IRolePersistence & Document>
-    );
+    const query: FilterQuery<IRolePersistence & Document> = { domainId: idX };
+    const roleDocument = await this.floorSchema.findOne(query);
 
     return !!roleDocument;
   }
@@ -48,7 +46,7 @@ export default class FloorRepo implements IFloorRepo {
   }
 
   public async save(floor: Floor): Promise<Floor> {
-    const query = { domainId: floor.id } as FilterQuery<IFloorPersistence & Document>;
+    const query: FilterQuery<IFloorPersistence & Document> = { domainId: floor.id };
 
     const floorDocument = await this.floorSchema.findOne(query);
 
@@ -77,10 +75,8 @@ export default class FloorRepo implements IFloorRepo {
   }
 
   public async findByDomainId(domainId: UniqueEntityID | string): Promise<Floor | null> {
-    const query = { domainId };
-    const floorRecord = await this.floorSchema.findOne(
-      query as FilterQuery<IFloorPersistence & Document>
-    );
+    const query: FilterQuery<IFloorPersistence & Document> = { domainId };
+    const floorRecord = await this.floorSchema.findOne(query);
 
     if (floorRecord != null) return FloorMap.toDomain(floorRecord);
     return null;
@@ -100,19 +96,17 @@ export default class FloorRepo implements IFloorRepo {
   }
 
   public async findByCode(code: FloorCode | string): Promise<Floor | null> {
-    const query = { code };
-    const floorRecord = await this.floorSchema.findOne(
-      query as FilterQuery<IFloorPersistence & Document>
-    );
+    const query: FilterQuery<IFloorPersistence & Document> = { code };
+    const floorRecord = await this.floorSchema.findOne(query);
 
     if (floorRecord != null) return FloorMap.toDomain(floorRecord);
     return null;
   }
 
-  public async findByBuildingId(buildingId: UniqueEntityID): Promise<Floor[]> {
-    const query = {
-      buildingCode: buildingId
-    } as FilterQuery<IFloorPersistence & Document>;
+  public async findByBuildingCode(buildingCode: UniqueEntityID): Promise<Floor[]> {
+    const query: FilterQuery<IFloorPersistence & Document> = {
+      buildingCode
+    };
 
     const floorRecords = await this.floorSchema.find(query);
 
@@ -127,10 +121,11 @@ export default class FloorRepo implements IFloorRepo {
   }
 
   public async findByBuildingIdWithElevator(buildingId: UniqueEntityID): Promise<Floor[]> {
-    const query = { buildingId: buildingId, hasElevator: true };
-    const floorRecords = await this.floorSchema.find(
-      query as FilterQuery<IFloorPersistence & Document>
-    );
+    const query: FilterQuery<IFloorPersistence & Document> = {
+      buildingId: buildingId,
+      hasElevator: true
+    };
+    const floorRecords = await this.floorSchema.find(query);
 
     const floors: Floor[] = [];
 
