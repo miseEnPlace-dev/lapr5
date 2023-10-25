@@ -12,6 +12,7 @@ import { FloorMapper } from '@/mappers/FloorMapper';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import { Document, FilterQuery, Model } from 'mongoose';
 import { FloorMapMapper } from '@/mappers/FloorMapMapper';
+import { BuildingCode } from '@/domain/building/buildingCode';
 
 @Service()
 export default class FloorRepo implements IFloorRepo {
@@ -105,28 +106,11 @@ export default class FloorRepo implements IFloorRepo {
     return null;
   }
 
-  public async findByBuildingCode(buildingCode: UniqueEntityID): Promise<Floor[]> {
+  public async findByBuildingCode(code: BuildingCode): Promise<Floor[]> {
     const query: FilterQuery<IFloorPersistence & Document> = {
-      buildingCode
+      buildingCode: code.value
     };
 
-    const floorRecords = await this.floorSchema.find(query);
-
-    const floors: Floor[] = [];
-
-    for (const floorRecord of floorRecords) {
-      const floor = await FloorMapper.toDomain(floorRecord);
-      if (floor) floors.push(floor);
-    }
-
-    return floors;
-  }
-
-  public async findByBuildingIdWithElevator(buildingId: UniqueEntityID): Promise<Floor[]> {
-    const query: FilterQuery<IFloorPersistence & Document> = {
-      buildingId: buildingId,
-      hasElevator: true
-    };
     const floorRecords = await this.floorSchema.find(query);
 
     const floors: Floor[] = [];

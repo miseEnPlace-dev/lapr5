@@ -147,9 +147,7 @@ export default class FloorService implements IFloorService {
           'Elevator not found on this building. There are no floors served with elevator.'
         );
 
-      const getFloorsWithBuildingCode = await this.floorRepo.findByBuildingCode(building.id);
-
-      const floorDTOs = getFloorsWithBuildingCode.map(floor => FloorMapper.toDTO(floor));
+      const floorDTOs = building.elevator?.floors.map(floor => FloorMapper.toDTO(floor));
       return Result.ok<IFloorDTO[]>(floorDTOs);
     } catch (e) {
       throw e;
