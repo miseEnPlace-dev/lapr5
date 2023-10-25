@@ -64,10 +64,12 @@ export default class FloorRepo implements IFloorRepo {
         return domainFloor;
       }
 
-      const domainFloor = await FloorMap.toDomain(floorDocument);
-      if (!domainFloor) throw new Error('Floor not created');
+      floorDocument.code = floor.code?.value;
+      floorDocument.description = floor.description?.value;
+      floorDocument.dimensions = floor.dimensions;
+      await floorDocument.save();
 
-      return domainFloor;
+      return floor;
     } catch (err) {
       throw err;
     }

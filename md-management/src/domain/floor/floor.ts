@@ -27,12 +27,24 @@ export class Floor extends AggregateRoot<FloorProps> {
     return this.props.description;
   }
 
+  set description(value: FloorDescription | undefined) {
+    this.props.description = value;
+  }
+
   get dimensions(): FloorDimensions {
     return this.props.dimensions;
   }
 
+  set dimensions(value: FloorDimensions) {
+    this.props.dimensions = value;
+  }
+
   get building(): Building {
     return this.props.building;
+  }
+
+  set building(value: Building) {
+    this.props.building = value;
   }
 
   private constructor(props: FloorProps, id?: UniqueEntityID) {

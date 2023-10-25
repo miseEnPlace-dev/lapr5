@@ -22,9 +22,34 @@ export default class FloorService implements IFloorService {
     this.buildingRepo = Container.get(config.repos.building.name);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  updateFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {
-    throw new Error('Method not implemented.');
+  public async updateFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {
+    try {
+      const floor = await this.floorRepo.findByCode(floorDTO.code);
+      if (!floor) return Result.fail<IFloorDTO>('Floor not found');
+
+      const description = floorDTO.description
+        ? FloorDescription.create(floorDTO.description)
+        : undefined;
+
+      const dimensions = floorDTO.dimensions
+        ? FloorDimensions.create(
+            floorDTO.dimensions.width,
+            floorDTO.dimensions.height,
+            floor.building.maxDimensions.width,
+            floor.building.maxDimensions.height
+          )
+        : undefined;
+
+      if (description) floor.description = description.getValue();
+      if (dimensions) floor.dimensions = dimensions.getValue();
+
+      await this.floorRepo.save(floor);
+
+      const floorDTOResult = FloorMap.toDTO(floor) as IFloorDTO;
+      return Result.ok<IFloorDTO>(floorDTOResult);
+    } catch (e) {
+      throw e;
+    }
   }
 
   public async createFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {
