@@ -88,7 +88,7 @@ export default class ConnectorService implements IConnectorService {
     } catch (e) {
       throw e;
     }
-    }
+  }
 
   public async getConnectorsBetweenBuildings(code1: string, code2: string) {
     try {
@@ -108,6 +108,55 @@ export default class ConnectorService implements IConnectorService {
       const connectorsDTO = connectors.map(connector => ConnectorMap.toDTO(connector));
 
       return Result.ok<IConnectorDTO[]>(connectorsDTO);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async updateConnector(rawCode: string, dto: Partial<IConnectorDTO>) {
+    try {
+      const code = ConnectorCode.create(rawCode).getValue();
+      const connector = await this.connectorRepo.findByCode(code);
+      if (!connector) return Result.fail<IConnectorDTO>('Connector w/ given code does not exist');
+
+      if (!dto.floor1Code && !dto.floor2Code)
+        return Result.fail<IConnectorDTO>('Nothing to update');
+
+      const floorCode1 = dto.floor1Code
+        ? FloorCode.create(dto.floor1Code as string).getValue()
+        : undefined;
+      const floorCode2 = dto.floor2Code
+        ? FloorCode.create(dto.floor2Code as string).getValue()
+        : undefined;
+
+      const floor1 = floorCode1 ? await this.floorRepo.findByCode(floorCode1) : connector.floor1;
+      const floor2 = floorCode2 ? await this.floorRepo.findByCode(floorCode2) : connector.floor2;
+
+      if (!floor1 || !floor2) return Result.fail<IConnectorDTO>('One/both floors do not exist');
+      if (floor1.equals(floor2)) return Result.fail<IConnectorDTO>('Floors cannot be the same');
+      if (floor1.buildingCode.equals(floor2.buildingCode))
+        return Result.fail<IConnectorDTO>('Floors must be in different buildings');
+
+      const exists = await this.connectorRepo.findConnectorBetweenFloors(floor1.id, floor2.id);
+
+      if (exists)
+        return Result.fail<IConnectorDTO>('Connector between those floors already exists');
+
+      const connectorOrError = Connector.create(
+        {
+          code,
+          floor1,
+          floor2
+        },
+        connector.id
+      );
+
+      if (connectorOrError.isFailure)
+        return Result.fail<IConnectorDTO>(connectorOrError.errorValue());
+
+      const updated = await this.connectorRepo.save(connectorOrError.getValue());
+
+      return Result.ok<IConnectorDTO>(ConnectorMap.toDTO(updated));
     } catch (e) {
       throw e;
     }

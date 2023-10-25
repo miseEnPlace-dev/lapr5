@@ -22,10 +22,6 @@ const connectorCreateSchema = z.object({
 });
 
 const connectorUpdateSchema = z.object({
-  code: z
-    .string()
-    .min(1)
-    .max(5),
   floor1Code: z
     .string()
     .min(1)
@@ -49,7 +45,7 @@ export default (app: Router) => {
     ctrl.createConnector(req, res, next)
   );
 
-  route.patch('/:id', validate(connectorUpdateSchema), (req, res, next) =>
+  route.patch('/:code', validate(connectorUpdateSchema), (req, res, next) =>
     ctrl.updateConnector(req, res, next)
   );
 

@@ -9,7 +9,7 @@ import IConnectorService from '@/services/IServices/IConnectorService';
 import { IConnectorDTO } from '@/dto/IConnectorDTO';
 import IConnectorController from './IControllers/IConnectorController';
 
-const updateSchema = z.object({
+const buildingIdsSchema = z.object({
   buildingCodes: z
     .array(
       z
@@ -53,12 +53,12 @@ export default class ConnectorController implements IConnectorController {
         connectorsOrError = await this.connectorSvcInstance.getAllConnectors();
       } else {
         const parsed = buildingIdsSchema.safeParse(req.query);
-    if (!parsed.success) return res.status(400).send(parsed.error);
-    const { buildingCodes } = parsed.data;
+        if (!parsed.success) return res.status(400).send(parsed.error);
+        const { buildingCodes } = parsed.data;
 
         connectorsOrError = await this.connectorSvcInstance.getConnectorsBetweenBuildings(
-        buildingCodes[0],
-        buildingCodes[1]
+          buildingCodes[0],
+          buildingCodes[1]
         );
       }
 
@@ -74,6 +74,24 @@ export default class ConnectorController implements IConnectorController {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public async updateConnector(req: Request, res: Response, next: NextFunction) {}
+  public async updateConnector(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { code } = req.params;
+
+      const connectorOrError = (await this.connectorSvcInstance.updateConnector(
+        code,
+        req.body as Partial<IConnectorDTO>
+      )) as Result<IConnectorDTO>;
+
+      if (connectorOrError.isFailure)
+        return res.status(400).json({
+          errors: connectorOrError.errorValue()
+        });
+
+      const connectorDTO = connectorOrError.getValue();
+      return res.json(connectorDTO).status(200);
+    } catch (e) {
+      return next(e);
+    }
+  }
 }

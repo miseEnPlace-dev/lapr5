@@ -8,6 +8,7 @@ import IConnectorRepo from '@/services/IRepos/IConnectorRepo';
 import { IConnectorPersistence } from '@/dataschema/IConnectorPersistence';
 import { Connector } from '@/domain/connector/connector';
 import { ConnectorMap } from '@/mappers/ConnectorMap';
+import { ConnectorCode } from '@/domain/connector/connectorCode';
 
 @Service()
 export default class ConnectorRepo implements IConnectorRepo {
@@ -30,23 +31,25 @@ export default class ConnectorRepo implements IConnectorRepo {
   public async save(connector: Connector): Promise<Connector> {
     const query = { domainId: connector.id } as FilterQuery<IConnectorPersistence & Document>;
 
-    const connectorDocument = await this.connectorSchema.findOne(query);
+    const document = await this.connectorSchema.findOne(query);
 
     try {
-      if (!connectorDocument) {
-        const rawConnector = ConnectorMap.toPersistence(connector);
+      const raw = ConnectorMap.toPersistence(connector);
 
-        const connectorCreated = await this.connectorSchema.create(rawConnector);
-
-        const domainConnector = await ConnectorMap.toDomain(connectorCreated);
+      if (!document) {
+        const created = await this.connectorSchema.create(raw);
+        const domainConnector = await ConnectorMap.toDomain(created);
 
         if (!domainConnector) throw new Error('Connector not created');
         return domainConnector;
       }
 
-      const domainConnector = await ConnectorMap.toDomain(connectorDocument);
-      if (!domainConnector) throw new Error('Connector not created');
+      // there is a document, update it
+      document.set(raw);
+      await document.save();
 
+      const domainConnector = await ConnectorMap.toDomain(document);
+      if (!domainConnector) throw new Error('Connector not created');
       return domainConnector;
     } catch (err) {
       throw err;
@@ -58,6 +61,14 @@ export default class ConnectorRepo implements IConnectorRepo {
     const connectorRecord = await this.connectorSchema.findOne(
       query as FilterQuery<IConnectorPersistence & Document>
     );
+
+    if (connectorRecord != null) return ConnectorMap.toDomain(connectorRecord);
+    return null;
+  }
+
+  public async findByCode(code: ConnectorCode): Promise<Connector | null> {
+    const query: FilterQuery<IConnectorPersistence & Document> = { code: code.value };
+    const connectorRecord = await this.connectorSchema.findOne(query);
 
     if (connectorRecord != null) return ConnectorMap.toDomain(connectorRecord);
     return null;
