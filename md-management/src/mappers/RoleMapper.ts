@@ -5,7 +5,7 @@ import IRoleDTO from '../dto/IRoleDTO';
 
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 
-export class RoleMap extends Mapper<Role> {
+export class RoleMapper extends Mapper<Role> {
   public static toDTO(role: Role): IRoleDTO {
     return {
       id: role.id.toString(),

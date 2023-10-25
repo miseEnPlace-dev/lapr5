@@ -2,7 +2,7 @@ import Container, { Service } from 'typedi';
 
 import { Role } from '../domain/role/role';
 import { RoleId } from '../domain/role/roleId';
-import { RoleMap } from '../mappers/RoleMap';
+import { RoleMapper } from '../mappers/RoleMapper';
 import IRoleRepo from '../services/IRepos/IRoleRepo';
 
 import config from '@/config.mjs';
@@ -34,11 +34,11 @@ export default class RoleRepo implements IRoleRepo {
 
     try {
       if (roleDocument === null) {
-        const rawRole = RoleMap.toPersistence(role);
+        const rawRole = RoleMapper.toPersistence(role);
 
         const roleCreated = await this.roleSchema.create(rawRole);
 
-        const roleDomain = RoleMap.toDomain(roleCreated);
+        const roleDomain = RoleMapper.toDomain(roleCreated);
         if (!roleDomain) throw new Error('Role not created');
         return roleDomain;
       } else {
@@ -59,7 +59,7 @@ export default class RoleRepo implements IRoleRepo {
     );
 
     if (roleRecord != null) {
-      return RoleMap.toDomain(roleRecord);
+      return RoleMapper.toDomain(roleRecord);
     } else return null;
   }
 }

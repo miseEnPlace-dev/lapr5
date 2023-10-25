@@ -4,7 +4,7 @@ import { BuildingDescription } from '@/domain/building/buildingDescription';
 import { BuildingMaxDimensions } from '@/domain/building/buildingMaxDimensions';
 import { BuildingName } from '@/domain/building/buildingName';
 import { IBuildingDTO } from '@/dto/IBuildingDTO';
-import { BuildingMap } from '@/mappers/BuildingMap';
+import { BuildingMapper } from '@/mappers/BuildingMapper';
 import Container, { Service } from 'typedi';
 import { Result } from '../core/logic/Result';
 import { Building } from '../domain/building/building';
@@ -46,7 +46,7 @@ export default class BuildingService implements IBuildingService {
 
       await this.buildingRepo.save(buildingResult);
 
-      const buildingDTOResult = BuildingMap.toDTO(buildingResult) as IBuildingDTO;
+      const buildingDTOResult = BuildingMapper.toDTO(buildingResult) as IBuildingDTO;
       return Result.ok<IBuildingDTO>(buildingDTOResult);
     } catch (e) {
       throw e;
@@ -79,7 +79,7 @@ export default class BuildingService implements IBuildingService {
 
       await this.buildingRepo.save(building);
 
-      const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
+      const buildingDTOResult = BuildingMapper.toDTO(building) as IBuildingDTO;
       return Result.ok<IBuildingDTO>(buildingDTOResult);
     } catch (e) {
       throw e;
@@ -98,7 +98,7 @@ export default class BuildingService implements IBuildingService {
         if (!building) throw new Error('Building not found');
         buildings.push(building);
       }
-      const buildingsDTO = buildings.map(b => BuildingMap.toDTO(b) as IBuildingDTO);
+      const buildingsDTO = buildings.map(b => BuildingMapper.toDTO(b) as IBuildingDTO);
       return Result.ok<IBuildingDTO[]>(buildingsDTO);
     } catch (e) {
       throw e;
@@ -108,7 +108,7 @@ export default class BuildingService implements IBuildingService {
   public async getBuildings(): Promise<Result<IBuildingDTO[]>> {
     try {
       const buildings = await this.buildingRepo.findAll();
-      const buildingDTOs = buildings.map(b => BuildingMap.toDTO(b) as IBuildingDTO);
+      const buildingDTOs = buildings.map(b => BuildingMapper.toDTO(b) as IBuildingDTO);
       return Result.ok<IBuildingDTO[]>(buildingDTOs);
     } catch (e) {
       throw e;

@@ -2,7 +2,7 @@ import config from '@/config.mjs';
 import { IRoomPersistence } from '@/dataschema/IRoomPersistence';
 import { FloorCode } from '@/domain/floor/floorCode';
 import { Room } from '@/domain/room/room';
-import { RoomMap } from '@/mappers/RoomMap';
+import { RoomMapper } from '@/mappers/RoomMapper';
 import IRoomRepo from '@/services/IRepos/IRoomRepo';
 import { Document, FilterQuery, Model } from 'mongoose';
 import Container, { Service } from 'typedi';
@@ -21,16 +21,16 @@ export default class RoomRepo implements IRoomRepo {
 
     try {
       if (!roomDocument) {
-        const rawRoom = RoomMap.toPersistence(room);
+        const rawRoom = RoomMapper.toPersistence(room);
 
         const roomCreated = await this.roomSchema.create(rawRoom);
 
-        const roomDomain = await RoomMap.toDomain(roomCreated);
+        const roomDomain = await RoomMapper.toDomain(roomCreated);
 
         if (!roomDomain) throw new Error('Room not created');
         return roomDomain;
       }
-      const domainRoom = await RoomMap.toDomain(roomDocument);
+      const domainRoom = await RoomMapper.toDomain(roomDocument);
       if (!domainRoom) throw new Error('Room not created');
 
       return domainRoom;

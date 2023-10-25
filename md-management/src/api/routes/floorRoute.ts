@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { z } from 'zod';
+import multer from 'multer';
 import { Container } from 'typedi';
 
 import IFloorController from '@/controllers/IControllers/IFloorController';
@@ -42,6 +43,9 @@ export default (app: Router) => {
 
   route.get('', (req, res, next) => ctrl.getBuildingFloors(req, res, next));
   route.post('', validate(floorCreateSchema), (req, res, next) => ctrl.createFloor(req, res, next));
+  route.patch('/:code', multer().single('file'), (req, res, next) =>
+    ctrl.uploadMap(req, res, next)
+  );
   route.put('/:code', validate(floorUpdateSchema), (req, res, next) =>
     ctrl.updateFloor(req, res, next)
   );

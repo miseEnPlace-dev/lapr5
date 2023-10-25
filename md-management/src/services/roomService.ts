@@ -10,7 +10,7 @@ import { RoomName } from '@/domain/room/roomName';
 import { RoomDescription } from '@/domain/room/roomDescription';
 import { Room } from '@/domain/room/room';
 import { RoomDimensions } from '@/domain/room/roomDimensions';
-import { RoomMap } from '@/mappers/RoomMap';
+import { RoomMapper } from '@/mappers/RoomMapper';
 import { FloorCode } from '@/domain/floor/floorCode';
 
 @Service()
@@ -70,7 +70,7 @@ export default class RoomService implements IRoomService {
 
         await this.roomRepo.save(roomResult);
 
-        const roomDTOResult = RoomMap.toDTO(roomResult) as IRoomDTO;
+        const roomDTOResult = RoomMapper.toDTO(roomResult) as IRoomDTO;
         return Result.ok<IRoomDTO>(roomDTOResult);
       }
 

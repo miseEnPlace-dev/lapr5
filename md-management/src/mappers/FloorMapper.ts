@@ -9,7 +9,7 @@ import { FloorDimensions } from '@/domain/floor/floorDimensions';
 import { IFloorDTO } from '@/dto/IFloorDTO';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 
-export class FloorMap extends Mapper<Floor> {
+export class FloorMapper extends Mapper<Floor> {
   public static toDTO(floor: Floor): IFloorDTO {
     return {
       code: floor.code.value,

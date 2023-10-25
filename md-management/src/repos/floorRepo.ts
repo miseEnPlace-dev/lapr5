@@ -8,7 +8,7 @@ import { FloorCode } from '@/domain/floor/floorCode';
 
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { IRolePersistence } from '@/dataschema/IRolePersistence';
-import { FloorMap } from '@/mappers/FloorMap';
+import { FloorMapper } from '@/mappers/FloorMapper';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import { Document, FilterQuery, Model } from 'mongoose';
 
@@ -52,11 +52,11 @@ export default class FloorRepo implements IFloorRepo {
 
     try {
       if (!floorDocument) {
-        const rawFloor = FloorMap.toPersistence(floor);
+        const rawFloor = FloorMapper.toPersistence(floor);
 
         const floorCreated = await this.floorSchema.create(rawFloor);
 
-        const domainFloor = await FloorMap.toDomain(floorCreated);
+        const domainFloor = await FloorMapper.toDomain(floorCreated);
 
         if (!domainFloor) throw new Error('Floor not created');
         return domainFloor;
@@ -78,7 +78,7 @@ export default class FloorRepo implements IFloorRepo {
     const query: FilterQuery<IFloorPersistence & Document> = { domainId };
     const floorRecord = await this.floorSchema.findOne(query);
 
-    if (floorRecord != null) return FloorMap.toDomain(floorRecord);
+    if (floorRecord != null) return FloorMapper.toDomain(floorRecord);
     return null;
   }
 
@@ -88,7 +88,7 @@ export default class FloorRepo implements IFloorRepo {
     const floors: Floor[] = [];
 
     for (const floorRecord of floorRecords) {
-      const floor = await FloorMap.toDomain(floorRecord);
+      const floor = await FloorMapper.toDomain(floorRecord);
       if (floor) floors.push(floor);
     }
 
@@ -99,7 +99,7 @@ export default class FloorRepo implements IFloorRepo {
     const query: FilterQuery<IFloorPersistence & Document> = { code };
     const floorRecord = await this.floorSchema.findOne(query);
 
-    if (floorRecord != null) return FloorMap.toDomain(floorRecord);
+    if (floorRecord != null) return FloorMapper.toDomain(floorRecord);
     return null;
   }
 
@@ -113,7 +113,7 @@ export default class FloorRepo implements IFloorRepo {
     const floors: Floor[] = [];
 
     for (const floorRecord of floorRecords) {
-      const floor = await FloorMap.toDomain(floorRecord);
+      const floor = await FloorMapper.toDomain(floorRecord);
       if (floor) floors.push(floor);
     }
 

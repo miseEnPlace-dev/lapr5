@@ -8,6 +8,7 @@ import { BuildingCode } from '@/domain/building/buildingCode';
 import { IFloorDTO } from '@/dto/IFloorDTO';
 import IFloorService from '@/services/IServices/IFloorService';
 import IFloorController from './IControllers/IFloorController';
+import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
 
 @Service()
 export default class FloorController implements IFloorController {
@@ -100,6 +101,25 @@ export default class FloorController implements IFloorController {
 
       const floorsDTO = floorsOrError.getValue();
       return res.status(200).json(floorsDTO);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  public async uploadMap(req: Request, res: Response, next: NextFunction) {
+    try {
+      if (!req.file) return res.status(401).send();
+      const map = JSON.parse(req.file.buffer.toString());
+      const newMap = map.maze as IFloorMapDTO;
+      const floorOrError = (await this.floorServiceInstance.uploadMap(
+        req.params.code,
+        newMap
+      )) as Result<IFloorDTO>;
+
+      if (floorOrError.isFailure) return res.status(400).send();
+
+      const floorDTO = floorOrError.getValue();
+      return res.status(200).json(floorDTO);
     } catch (e) {
       return next(e);
     }

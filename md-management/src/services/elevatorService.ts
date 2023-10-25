@@ -5,7 +5,7 @@ import { ElevatorDescription } from '@/domain/elevator/elevatorDescription';
 import { ElevatorSerialNumber } from '@/domain/elevator/elevatorSerialNumber';
 import { Floor } from '@/domain/floor/floor';
 import { IElevatorDTO } from '@/dto/IElevatorDTO';
-import { ElevatorMap } from '@/mappers/ElevatorMap';
+import { ElevatorMapper } from '@/mappers/ElevatorMapper';
 import Container, { Service } from 'typedi';
 import { Result } from '../core/logic/Result';
 import { Elevator } from '../domain/elevator/elevator';
@@ -30,7 +30,7 @@ export default class ElevatorService implements IElevatorService {
       const elevator = building.elevator;
       if (!elevator) return Result.fail<IElevatorDTO>('Elevator not found');
 
-      const elevatorDTO = ElevatorMap.toDTO(elevator) as IElevatorDTO;
+      const elevatorDTO = ElevatorMapper.toDTO(elevator) as IElevatorDTO;
       return Result.ok<IElevatorDTO>(elevatorDTO);
     } catch (e) {
       throw e;
@@ -80,7 +80,7 @@ export default class ElevatorService implements IElevatorService {
       try {
         await this.buildingRepo.save(building);
 
-        const elevatorDTOResult = ElevatorMap.toDTO(elevatorResult) as IElevatorDTO;
+        const elevatorDTOResult = ElevatorMapper.toDTO(elevatorResult) as IElevatorDTO;
         return Result.ok<IElevatorDTO>(elevatorDTOResult);
       } catch (e) {
         throw e;

@@ -12,7 +12,7 @@ import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import Container from 'typedi';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 
-export class ElevatorMap extends Mapper<Elevator> {
+export class ElevatorMapper extends Mapper<Elevator> {
   public static toDTO(elevator: Elevator): Omit<IElevatorDTO, 'buildingCode'> {
     return {
       code: elevator.code.value,
