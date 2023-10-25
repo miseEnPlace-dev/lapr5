@@ -6,12 +6,14 @@ import { Building } from '../building/building';
 import { FloorCode } from './floorCode';
 import { FloorDescription } from './floorDescription';
 import { FloorDimensions } from './floorDimensions';
+import { FloorMap } from './floorMap';
 
 interface FloorProps {
   code: FloorCode;
   building: Building;
   description?: FloorDescription;
   dimensions: FloorDimensions;
+  map?: FloorMap;
 }
 
 export class Floor extends AggregateRoot<FloorProps> {
@@ -33,6 +35,16 @@ export class Floor extends AggregateRoot<FloorProps> {
 
   get building(): Building {
     return this.props.building;
+  }
+
+  get map(): FloorMap | undefined {
+    return this.props.map;
+  }
+
+  set map(map: FloorMap) {
+    if (map.size.depth != this.dimensions.height || map.size.width != this.dimensions.width)
+      throw new Error('Map size does not match floor dimensions');
+    this.props.map = map;
   }
 
   private constructor(props: FloorProps, id?: UniqueEntityID) {
