@@ -1,5 +1,6 @@
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { Repo } from '@/core/infra/Repo';
+import { BuildingCode } from '@/domain/building/buildingCode';
 import { Floor } from '@/domain/floor/floor';
 import { FloorCode } from '@/domain/floor/floorCode';
 
@@ -9,5 +10,5 @@ export default interface IFloorRepo extends Repo<Floor> {
   findByCode(floorCode: FloorCode | string): Promise<Floor | null>;
   findBuildingCodesWithMinMaxFloors(min: number, max: number): Promise<string[]>;
   findAll(): Promise<Floor[]>;
-  findByBuildingCode(buildingId: UniqueEntityID | string): Promise<Floor[]>;
+  findByBuildingCode(code: BuildingCode): Promise<Floor[]>;
 }
