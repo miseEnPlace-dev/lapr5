@@ -7,7 +7,7 @@ import { FloorCode } from '@/domain/floor/floorCode';
 export default interface IFloorRepo extends Repo<Floor> {
   save(floor: Floor): Promise<Floor>;
   findByDomainId(floorId: UniqueEntityID | string): Promise<Floor | null>;
-  findByCode(floorCode: FloorCode | string): Promise<Floor | null>;
+  findByCode(floorCode: FloorCode): Promise<Floor | null>;
   findBuildingCodesWithMinMaxFloors(min: number, max: number): Promise<string[]>;
   findAll(): Promise<Floor[]>;
   findByBuildingCode(code: BuildingCode): Promise<Floor[]>;

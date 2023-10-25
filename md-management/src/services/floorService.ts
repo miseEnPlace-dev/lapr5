@@ -27,7 +27,8 @@ export default class FloorService implements IFloorService {
 
   public async updateFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {
     try {
-      const floor = await this.floorRepo.findByCode(floorDTO.code);
+      const code = FloorCode.create(floorDTO.code).getValue();
+      const floor = await this.floorRepo.findByCode(code);
       if (!floor) return Result.fail<IFloorDTO>('Floor not found');
 
       const building = await this.buildingRepo.findByCode(floor.buildingCode.value);
@@ -128,7 +129,7 @@ export default class FloorService implements IFloorService {
       const building = await this.buildingRepo.findByCode(buildingCode.value);
       if (!building) return Result.fail<IFloorDTO[]>('Building not found');
 
-      const floors = await this.floorRepo.findByBuildingCode(buildingCode.value);
+      const floors = await this.floorRepo.findByBuildingCode(buildingCode);
       const floorDTOs = floors.map(floor => FloorMapper.toDTO(floor) as IFloorDTO);
       return Result.ok<IFloorDTO[]>(floorDTOs);
     } catch (e) {
@@ -156,7 +157,8 @@ export default class FloorService implements IFloorService {
 
   public async uploadMap(floorCode: string, map: IFloorMapDTO): Promise<Result<IFloorMapDTO>> {
     try {
-      const floor = await this.floorRepo.findByCode(floorCode);
+      const code = FloorCode.create(floorCode).getValue();
+      const floor = await this.floorRepo.findByCode(code);
       if (!floor) return Result.fail<IFloorMapDTO>('Floor not found');
 
       const mapOrError = FloorMap.create({

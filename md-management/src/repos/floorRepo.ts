@@ -98,8 +98,8 @@ export default class FloorRepo implements IFloorRepo {
     return floors;
   }
 
-  public async findByCode(code: FloorCode | string): Promise<Floor | null> {
-    const query: FilterQuery<IFloorPersistence & Document> = { code };
+  public async findByCode(code: FloorCode): Promise<Floor | null> {
+    const query: FilterQuery<IFloorPersistence & Document> = { code: code.value };
     const floorRecord = await this.floorSchema.findOne(query);
 
     if (floorRecord != null) return FloorMapper.toDomain(floorRecord);

@@ -12,6 +12,7 @@ import IBuildingRepo from './IRepos/IBuildingRepo';
 import IConnectorRepo from './IRepos/IConnectorRepo';
 import IFloorRepo from './IRepos/IFloorRepo';
 import IConnectorService from './IServices/IConnectorService';
+import { FloorCode } from '@/domain/floor/floorCode';
 
 @Service()
 export default class ConnectorService implements IConnectorService {
@@ -27,8 +28,10 @@ export default class ConnectorService implements IConnectorService {
 
   public async checkConnectorExists(connectorDTO: IConnectorDTO): Promise<Result<boolean>> {
     try {
-      const floor1 = await this.floorRepo.findByCode(connectorDTO.floor1Code);
-      const floor2 = await this.floorRepo.findByCode(connectorDTO.floor2Code);
+      const code1 = ConnectorCode.create(connectorDTO.floor1Code).getValue();
+      const code2 = ConnectorCode.create(connectorDTO.floor2Code).getValue();
+      const floor1 = await this.floorRepo.findByCode(code1);
+      const floor2 = await this.floorRepo.findByCode(code2);
       if (!floor1 || !floor2) return Result.fail<boolean>('One/both floors do not exist');
 
       const connector = await this.connectorRepo.findConnectorBetweenFloors(floor1.id, floor2.id);
@@ -42,8 +45,10 @@ export default class ConnectorService implements IConnectorService {
   public async createConnector(connectorDTO: IConnectorDTO): Promise<Result<IConnectorDTO>> {
     try {
       const code = ConnectorCode.create(connectorDTO.code).getValue();
-      const floor1 = await this.floorRepo.findByCode(connectorDTO.floor1Code);
-      const floor2 = await this.floorRepo.findByCode(connectorDTO.floor2Code);
+      const floorCode1 = FloorCode.create(connectorDTO.floor1Code).getValue();
+      const floorCode2 = FloorCode.create(connectorDTO.floor2Code).getValue();
+      const floor1 = await this.floorRepo.findByCode(floorCode1);
+      const floor2 = await this.floorRepo.findByCode(floorCode2);
       if (!floor1 || !floor2) return Result.fail<IConnectorDTO>('One/both floors do not exist');
 
       const connectorOrError = Connector.create({

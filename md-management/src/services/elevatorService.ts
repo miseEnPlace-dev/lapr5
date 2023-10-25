@@ -12,6 +12,7 @@ import { Elevator } from '../domain/elevator/elevator';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import IFloorRepo from './IRepos/IFloorRepo';
 import IElevatorService from './IServices/IElevatorService';
+import { FloorCode } from '@/domain/floor/floorCode';
 
 @Service()
 export default class ElevatorService implements IElevatorService {
@@ -45,7 +46,8 @@ export default class ElevatorService implements IElevatorService {
       const floors: Floor[] = [];
 
       for (const floorId of elevatorDTO.floorCodes) {
-        const floor = await this.floorRepo.findByCode(floorId);
+        const code = FloorCode.create(floorId).getValue();
+        const floor = await this.floorRepo.findByCode(code);
         if (!floor) return Result.fail<IElevatorDTO>('Floor not found');
         //if (floor.buildingCode !== building.code) return Result.fail<IElevatorDTO>('Floor not found in building');
         floors.push(floor);

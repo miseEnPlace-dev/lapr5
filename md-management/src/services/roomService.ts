@@ -32,7 +32,8 @@ export default class RoomService implements IRoomService {
         ? RoomDescription.create(roomDTO.description)
         : undefined;
 
-      const floor = await this.floorRepo.findByCode(roomDTO.floorCode);
+      const code = FloorCode.create(roomDTO.floorCode).getValue();
+      const floor = await this.floorRepo.findByCode(code);
       if (!floor) return Result.fail<IRoomDTO>('Floor does not exist');
 
       if (
@@ -82,7 +83,7 @@ export default class RoomService implements IRoomService {
 
   public async getAvailableAreaInFloor(floorCode: FloorCode): Promise<Result<number>> {
     try {
-      const floor = await this.floorRepo.findByCode(floorCode.value);
+      const floor = await this.floorRepo.findByCode(floorCode);
 
       if (!floor) return Result.fail<number>('Floor does not exist');
 
