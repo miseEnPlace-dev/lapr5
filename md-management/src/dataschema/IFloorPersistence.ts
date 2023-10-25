@@ -1,3 +1,5 @@
+import { IFloorMapPersistence } from './IFloorMapPersistence';
+
 export interface IFloorPersistence {
   domainId: string;
   code: string;
@@ -6,5 +8,6 @@ export interface IFloorPersistence {
     width: number;
     height: number;
   };
+  map?: IFloorMapPersistence;
   building: string;
 }
