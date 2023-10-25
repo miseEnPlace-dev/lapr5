@@ -15,11 +15,11 @@ interface ElevatorBrandingProps {
 
 export class ElevatorBranding extends ValueObject<ElevatorBrandingProps> {
   get brand(): string {
-    return this.props.dimensions.brand;
+    return this.props.branding.brand;
   }
 
   get model(): string {
-    return this.props.dimensions.model;
+    return this.props.branding.model;
   }
 
   private constructor(props: ElevatorBrandingProps) {

@@ -64,6 +64,26 @@ export default async ({ expressApp }: { expressApp: Express }) => {
     schema: config.schemas.building.schema
   };
 
+  const connectorController = {
+    name: config.controllers.connector.name,
+    path: config.controllers.connector.path
+  };
+
+  const connectorRepo = {
+    name: config.repos.connector.name,
+    path: config.repos.connector.path
+  };
+
+  const connectorService = {
+    name: config.services.connector.name,
+    path: config.services.connector.path
+  };
+
+  const connectorSchema = {
+    name: config.schemas.connector.name,
+    schema: config.schemas.connector.schema
+  };
+
   const floorSchema = {
     name: config.schemas.floor.name,
     schema: config.schemas.floor.schema
@@ -115,16 +135,24 @@ export default async ({ expressApp }: { expressApp: Express }) => {
   };
 
   dependencyInjectorLoader({
-    schemas: [userSchema, roleSchema, buildingSchema, floorSchema, roomSchema],
+    schemas: [userSchema, roleSchema, buildingSchema, floorSchema, roomSchema, connectorSchema],
     controllers: [
       roleController,
       buildingController,
       floorController,
       elevatorController,
-      roomController
+      roomController,
+      connectorController
     ],
-    repos: [roleRepo, userRepo, buildingRepo, floorRepo, roomRepo],
-    services: [roleService, buildingService, floorService, elevatorService, roomService]
+    repos: [roleRepo, userRepo, buildingRepo, floorRepo, roomRepo, connectorRepo],
+    services: [
+      roleService,
+      buildingService,
+      floorService,
+      elevatorService,
+      roomService,
+      connectorService
+    ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');
 

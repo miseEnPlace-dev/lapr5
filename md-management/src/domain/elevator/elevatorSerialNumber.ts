@@ -1,5 +1,5 @@
-import { ValueObject } from '@/core/domain/ValueObject';
-import { Result } from '@/core/logic/Result';
+import { ValueObject } from '../../core/domain/ValueObject';
+import { Result } from '../../core/logic/Result';
 
 interface ElevatorSerialNumberProps {
   [key: string]: string;
@@ -13,7 +13,7 @@ export class ElevatorSerialNumber extends ValueObject<ElevatorSerialNumberProps>
 
   public static create(value: string): Result<ElevatorSerialNumber> {
     if (value.length > 50)
-      return Result.fail<ElevatorSerialNumber>('Elevator identifier must be 5 characters or less');
+      return Result.fail<ElevatorSerialNumber>('Elevator identifier must be 50 characters or less');
 
     return Result.ok<ElevatorSerialNumber>(new ElevatorSerialNumber({ value }));
   }

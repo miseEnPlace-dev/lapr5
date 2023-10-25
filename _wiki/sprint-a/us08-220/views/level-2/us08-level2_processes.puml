@@ -3,12 +3,12 @@ autonumber
 
 participant SYS as "MD Management" <<system (C4)>>
 
-?o-> SYS : GET /buildings/{id}/floors?filter=passages
+?o-> SYS : GET /floors?buildingCode={buildingCode}&filter=connectors
 activate SYS
 
-SYS -> SYS : listFloorsWithPassages(building)
+SYS -> SYS : listFloorsWithConnectors(building)
 
-<-- SYS : 200 OK
+<-- SYS : 200 OK {list of floors as JSON}
 deactivate SYS
 
 @enduml

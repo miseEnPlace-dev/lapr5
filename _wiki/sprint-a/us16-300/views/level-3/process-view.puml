@@ -9,19 +9,18 @@ participant REPO as ":FloorRepo"
 participant MAP as ":FloorMap"
 participant DTO as ":FloorDTO:IFloorDTO"
 
-?o-> ROUTE : GET /floors/:buildingCode
+?o-> ROUTE : GET /floors
 activate ROUTE
 
 ROUTE -> CTRL : getFloorsWithElevator(request)
 activate CTRL
 CTRL -> SRV : getFloorsWithElevator(buildingCode)
 activate SRV
-SRV -> REPOBUILDING : findByDomainId(buildingCode)
+SRV -> REPOBUILDING : findByCode(buildingCode)
 activate REPOBUILDING
 REPOBUILDING --> SRV : building
 deactivate REPOBUILDING
-SRV -> FLOOR** : create()
-SRV -> REPO : save(floor)
+SRV -> REPO : findByBuildingId(building.id)
 activate REPO
 REPO -> MAP : toDtoList(floors)
 activate MAP

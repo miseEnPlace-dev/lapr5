@@ -16,7 +16,7 @@ export class ElevatorMapper extends Mapper<Elevator> {
   public static toDTO(elevator: Elevator): Omit<IElevatorDTO, 'buildingCode'> {
     return {
       code: elevator.code.value,
-      floorCodes: elevator.floors.map(floor => floor.code.value.toString()),
+      floorCodes: elevator.floors.map(floor => floor.code.value),
       brand: elevator.brand,
       model: elevator.model,
       serialNumber: elevator.serialNumber?.value,
@@ -40,7 +40,7 @@ export class ElevatorMapper extends Mapper<Elevator> {
 
     const domainFloors = [];
     for (const floor of elevator.floors) {
-      const domainFloor = await floorRepo.findByCode(floor);
+      const domainFloor = await floorRepo.findByDomainId(floor);
       domainFloor && domainFloors.push(domainFloor);
     }
 
@@ -52,7 +52,7 @@ export class ElevatorMapper extends Mapper<Elevator> {
         description,
         floors: domainFloors
       },
-      new UniqueEntityID(elevator.domainId)
+      new UniqueEntityID(elevator.code)
     );
 
     elevatorOrError.isFailure && console.log(elevatorOrError.error);
@@ -63,7 +63,6 @@ export class ElevatorMapper extends Mapper<Elevator> {
   public static toPersistence(elevator: Elevator): IElevatorPersistence {
     const floors = elevator.floors.map(floor => floor.id.toString());
     return {
-      domainId: elevator.id.toString(),
       code: elevator.code.value,
       floors,
       brand: elevator.brand,

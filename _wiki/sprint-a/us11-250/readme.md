@@ -18,9 +18,9 @@
 
 ## 1.2. Client Clarifications
 
-> [**Question**: ...](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=...)
+> [**Question**: Relativamente à US250 o que é que pretende que seja possivel editar numa passagem entre edificios?](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25164)
 >
-> **Answer**: "..."
+> **Answer**: "(...) deve ser possível corrigir todos os dados da passagem."
 
 ## 2. Analysis
 

@@ -1,0 +1,17 @@
+@startuml process-view
+autonumber
+
+actor FM as "Fleet Manager"
+participant SYS as "RobDroneGo System" <<system (C4)>>
+
+activate FM
+
+FM -> SYS : asks to create a building with code,name,description,max dimensions
+activate SYS
+
+FM <-- SYS : returns confirmation message
+deactivate SYS
+
+deactivate FM
+
+@enduml

@@ -125,7 +125,11 @@ Elevator *-- "0..1" ElevatorDescription
 
 package "<<aggregate>> Connector" {
   entity Connector <<entity>> <<root>> { }
+
+  class ConnectorCode <<(V,#FF8B40) value object>> {}
 }
+
+Connector "1" *-- "1" ConnectorCode
 
 Building "1" *-- "0..1" BuildingName
 Building "1" *-- "1" BuildingCode

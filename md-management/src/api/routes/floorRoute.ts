@@ -23,6 +23,19 @@ const floorCreateSchema = z.object({
   })
 });
 
+const floorUpdateSchema = z.object({
+  description: z
+    .string()
+    .max(255)
+    .optional(),
+  dimensions: z
+    .object({
+      width: z.number().min(1),
+      height: z.number().min(1)
+    })
+    .optional()
+});
+
 export default (app: Router) => {
   const route = Router();
 
@@ -33,6 +46,9 @@ export default (app: Router) => {
   route.post('', validate(floorCreateSchema), (req, res, next) => ctrl.createFloor(req, res, next));
   route.patch('/:code', multer().single('file'), (req, res, next) =>
     ctrl.uploadMap(req, res, next)
+  );
+  route.put('/:code', validate(floorUpdateSchema), (req, res, next) =>
+    ctrl.updateFloor(req, res, next)
   );
 
   app.use('/floors', route);

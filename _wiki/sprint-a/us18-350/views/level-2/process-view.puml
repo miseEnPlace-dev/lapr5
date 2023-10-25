@@ -1,0 +1,13 @@
+@startuml process-view
+autonumber
+participant SYS as "MD Management" <<system>>
+
+
+?o-> SYS : POST /buildings
+activate SYS
+
+SYS -> SYS : createBuilding(building)
+<-- SYS : 201 Created (building JSON)
+deactivate SYS
+
+@enduml

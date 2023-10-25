@@ -1,0 +1,14 @@
+@startuml us12-level2_processes
+autonumber
+
+participant SYS as "MD Management" <<system (C4)>>
+
+?o-> SYS : GET /connectors?building1Code={building1Code}&building2Code={building2Code}
+activate SYS
+
+SYS -> SYS : listConnectorsBetweenBuildings(building1Code, building2Code)
+
+<-- SYS : 200 OK {list of connectors as JSON}
+deactivate SYS
+
+@enduml

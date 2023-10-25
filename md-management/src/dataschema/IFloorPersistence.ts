@@ -10,4 +10,5 @@ export interface IFloorPersistence {
   };
   map?: IFloorMapPersistence;
   building: string;
+  buildingCode: string;
 }
