@@ -11,4 +11,5 @@ export default interface IConnectorRepo extends Repo<Connector> {
     floor1Id: UniqueEntityID,
     floor2Id: UniqueEntityID
   ): Promise<Connector | null>;
+  findConnectorsBetweenFloors(ids1: UniqueEntityID[], ids2: UniqueEntityID[]): Promise<Connector[]>;
 }

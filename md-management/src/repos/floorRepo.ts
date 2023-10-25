@@ -66,7 +66,8 @@ export default class FloorRepo implements IFloorRepo {
 
       floorDocument.code = floor.code?.value;
       floorDocument.description = floor.description?.value;
-      floorDocument.dimensions = floor.dimensions;
+      floorDocument.dimensions.width = floor.dimensions?.width;
+      floorDocument.dimensions.height = floor.dimensions?.height;
       await floorDocument.save();
 
       return floor;

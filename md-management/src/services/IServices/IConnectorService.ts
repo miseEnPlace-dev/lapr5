@@ -4,4 +4,5 @@ import { Result } from '@/core/logic/Result';
 export default interface IConnectorService {
   createConnector(connectorDTO: IConnectorDTO): Promise<Result<IConnectorDTO>>;
   checkConnectorExists(connectorDTO: IConnectorDTO): Promise<Result<boolean>>;
+  getConnectorsBetweenBuildings(code1: string, code2: string): Promise<Result<IConnectorDTO[]>>;
 }

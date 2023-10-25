@@ -10,11 +10,11 @@
 
 ## 1. Requirements
 
-> ### "As a Campus Manager, I want to list buildings with min & max floors."
+> "As a Campus Manager, I want to list buildings with min & max floors."
 
 ## 1.1. Client Specifications
 
-N/A
+No client specifications were provided regarding this user story.
 
 ---
 
