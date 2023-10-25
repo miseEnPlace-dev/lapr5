@@ -9,6 +9,5 @@ export interface IFloorPersistence {
     height: number;
   };
   map?: IFloorMapPersistence;
-  building: string;
   buildingCode: string;
 }

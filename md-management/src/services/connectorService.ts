@@ -73,8 +73,8 @@ export default class ConnectorService implements IConnectorService {
       if (!building1 || !building2)
         return Result.fail<IConnectorDTO[]>('One/both buildings do not exist');
 
-      const floorsBuilding1 = await this.floorRepo.findByBuildingCode(building1.id);
-      const floorsBuilding2 = await this.floorRepo.findByBuildingCode(building2.id);
+      const floorsBuilding1 = await this.floorRepo.findByBuildingCode(building1.code);
+      const floorsBuilding2 = await this.floorRepo.findByBuildingCode(building2.code);
 
       const ids1 = floorsBuilding1.map(floor => floor.id);
       const ids2 = floorsBuilding2.map(floor => floor.id);

@@ -11,6 +11,8 @@ import { IRolePersistence } from '@/dataschema/IRolePersistence';
 import { FloorMapper } from '@/mappers/FloorMapper';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import { Document, FilterQuery, Model } from 'mongoose';
+import { FloorMapMapper } from '@/mappers/FloorMapMapper';
+import { BuildingCode } from '@/domain/building/buildingCode';
 
 @Service()
 export default class FloorRepo implements IFloorRepo {
@@ -66,6 +68,7 @@ export default class FloorRepo implements IFloorRepo {
       floorDocument.description = floor.description?.value;
       floorDocument.dimensions.width = floor.dimensions?.width;
       floorDocument.dimensions.height = floor.dimensions?.height;
+      if (floor.map) floorDocument.map = FloorMapMapper.toPersistence(floor.map);
       await floorDocument.save();
 
       return floor;
@@ -103,9 +106,9 @@ export default class FloorRepo implements IFloorRepo {
     return null;
   }
 
-  public async findByBuildingCode(buildingCode: UniqueEntityID): Promise<Floor[]> {
+  public async findByBuildingCode(code: BuildingCode): Promise<Floor[]> {
     const query: FilterQuery<IFloorPersistence & Document> = {
-      buildingCode
+      buildingCode: code.value
     };
 
     const floorRecords = await this.floorSchema.find(query);

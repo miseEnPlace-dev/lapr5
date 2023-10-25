@@ -18,6 +18,19 @@ const FloorSchema = new mongoose.Schema(
       width: Number,
       height: Number
     },
+    map: {
+      domainId: {
+        type: String
+      },
+      size: {
+        width: Number,
+        depth: Number
+      },
+      map: [[Number]],
+      exits: [[Number]],
+      elevators: [[Number]],
+      exitLocation: [Number]
+    },
 
     buildingCode: {
       type: String
