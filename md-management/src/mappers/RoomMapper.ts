@@ -11,7 +11,7 @@ import { RoomDescription } from '@/domain/room/roomDescription';
 import { RoomDimensions } from '@/domain/room/roomDimensions';
 import Container from 'typedi';
 
-export class RoomMap extends Mapper<Room> {
+export class RoomMapper extends Mapper<Room> {
   public static toDTO(room: Room): IRoomDTO {
     return {
       name: room.name.value,

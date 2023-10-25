@@ -14,7 +14,7 @@ import { IUserPersistence } from '@/dataschema/IUserPersistence';
 import { PhoneNumber } from '@/domain/user/phoneNumber';
 import RoleRepo from '../repos/roleRepo';
 
-export class UserMap extends Mapper<User> {
+export class UserMapper extends Mapper<User> {
   public static toDTO(user: User): IUserDTO {
     return {
       //id: user.id.toString(),

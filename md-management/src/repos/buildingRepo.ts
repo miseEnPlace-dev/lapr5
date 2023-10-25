@@ -5,8 +5,8 @@ import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { IBuildingPersistence } from '@/dataschema/IBuildingPersistence';
 import { Building } from '@/domain/building/building';
 import { BuildingCode } from '@/domain/building/buildingCode';
-import { BuildingMap } from '@/mappers/BuildingMap';
-import { ElevatorMap } from '@/mappers/ElevatorMap';
+import { BuildingMapper } from '@/mappers/BuildingMapper';
+import { ElevatorMapper } from '@/mappers/ElevatorMapper';
 import IBuildingRepo from '@/services/IRepos/IBuildingRepo';
 import { Document, FilterQuery, Model } from 'mongoose';
 import { IRolePersistence } from '../dataschema/IRolePersistence';
@@ -35,7 +35,7 @@ export default class BuildingRepo implements IBuildingRepo {
     const buildings: Building[] = [];
 
     for (const b of buildingRecords) {
-      const building = await BuildingMap.toDomain(b);
+      const building = await BuildingMapper.toDomain(b);
       if (building) buildings.push(building);
     }
 
@@ -49,11 +49,11 @@ export default class BuildingRepo implements IBuildingRepo {
 
     try {
       if (!buildingDocument) {
-        const rawBuilding = BuildingMap.toPersistence(building);
+        const rawBuilding = BuildingMapper.toPersistence(building);
 
         const buildingCreated = await this.buildingSchema.create(rawBuilding);
 
-        const domainBuilding = await BuildingMap.toDomain(buildingCreated);
+        const domainBuilding = await BuildingMapper.toDomain(buildingCreated);
 
         if (!domainBuilding) throw new Error('Building not created');
         return domainBuilding;
@@ -63,7 +63,7 @@ export default class BuildingRepo implements IBuildingRepo {
       buildingDocument.code = building.code?.value;
       buildingDocument.description = building.description?.value;
       if (building.elevator)
-        buildingDocument.elevator = ElevatorMap.toPersistence(building.elevator);
+        buildingDocument.elevator = ElevatorMapper.toPersistence(building.elevator);
       await buildingDocument.save();
 
       return building;
@@ -77,7 +77,7 @@ export default class BuildingRepo implements IBuildingRepo {
 
     const buildingRecord = await this.buildingSchema.findOne(query);
 
-    if (buildingRecord) return BuildingMap.toDomain(buildingRecord);
+    if (buildingRecord) return BuildingMapper.toDomain(buildingRecord);
     return null;
   }
 
@@ -86,7 +86,7 @@ export default class BuildingRepo implements IBuildingRepo {
 
     const buildingRecord = await this.buildingSchema.findOne(query);
 
-    if (buildingRecord) return BuildingMap.toDomain(buildingRecord);
+    if (buildingRecord) return BuildingMapper.toDomain(buildingRecord);
     return null;
   }
 }

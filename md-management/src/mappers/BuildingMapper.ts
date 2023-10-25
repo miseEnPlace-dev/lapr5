@@ -8,9 +8,9 @@ import { BuildingMaxDimensions } from '@/domain/building/buildingMaxDimensions';
 import { BuildingName } from '@/domain/building/buildingName';
 import { IBuildingDTO } from '@/dto/IBuildingDTO';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
-import { ElevatorMap } from './ElevatorMap';
+import { ElevatorMapper } from './ElevatorMapper';
 
-export class BuildingMap extends Mapper<Building> {
+export class BuildingMapper extends Mapper<Building> {
   public static toDTO(building: Building): IBuildingDTO {
     return {
       code: building.code.value,
@@ -35,7 +35,7 @@ export class BuildingMap extends Mapper<Building> {
       ? BuildingDescription.create(building.description).getValue()
       : undefined;
     const elevator = building.elevator
-      ? (await ElevatorMap.toDomain(building.elevator)) ?? undefined
+      ? (await ElevatorMapper.toDomain(building.elevator)) ?? undefined
       : undefined;
 
     const buildingOrError = Building.create(
@@ -55,7 +55,9 @@ export class BuildingMap extends Mapper<Building> {
   }
 
   public static toPersistence(building: Building): IBuildingPersistence {
-    const elevator = building.elevator ? ElevatorMap.toPersistence(building.elevator) : undefined;
+    const elevator = building.elevator
+      ? ElevatorMapper.toPersistence(building.elevator)
+      : undefined;
     return {
       domainId: building.id.toString(),
       code: building.code.value,

@@ -7,7 +7,7 @@ import config from '@/config.mjs';
 import IUserRepo from '../services/IRepos/IUserRepo';
 
 import { IUserDTO } from '../dto/IUserDTO';
-import { UserMap } from '../mappers/UserMap';
+import { UserMapper } from '../mappers/UserMapper';
 
 export async function getMe(req: Request, res: Response) {
   // NB: a arquitetura ONION não está a ser seguida aqui
@@ -19,6 +19,6 @@ export async function getMe(req: Request, res: Response) {
   const user = await userRepo.findById(req.headers.token.id);
   if (!user) return res.json(new Error('Utilizador não registado')).status(401);
 
-  const userDTO = UserMap.toDTO(user) as IUserDTO;
+  const userDTO = UserMapper.toDTO(user) as IUserDTO;
   return res.json(userDTO).status(200);
 }

@@ -7,7 +7,7 @@ import config from '@/config.mjs';
 import { User } from '../domain/user/user';
 import { UserEmail } from '../domain/user/userEmail';
 import { UserId } from '../domain/user/userId';
-import { UserMap } from '../mappers/UserMap';
+import { UserMapper } from '../mappers/UserMapper';
 import IUserRepo from '../services/IRepos/IUserRepo';
 
 @Service()
@@ -34,11 +34,11 @@ export default class UserRepo implements IUserRepo {
 
     try {
       if (userDocument === null) {
-        const rawUser = UserMap.toPersistence(user);
+        const rawUser = UserMapper.toPersistence(user);
 
         const userCreated = await this.userSchema.create(rawUser);
 
-        return UserMap.toDomain(userCreated);
+        return UserMapper.toDomain(userCreated);
       } else {
         userDocument.firstName = user.firstName;
         userDocument.lastName = user.lastName;
@@ -56,7 +56,7 @@ export default class UserRepo implements IUserRepo {
     const userRecord = await this.userSchema.findOne(query);
 
     if (userRecord != null) {
-      return UserMap.toDomain(userRecord);
+      return UserMapper.toDomain(userRecord);
     } else return null;
   }
 
@@ -67,7 +67,7 @@ export default class UserRepo implements IUserRepo {
     const userRecord = await this.userSchema.findOne(query);
 
     if (userRecord != null) {
-      return UserMap.toDomain(userRecord);
+      return UserMapper.toDomain(userRecord);
     } else return null;
   }
 }

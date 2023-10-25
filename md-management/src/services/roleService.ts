@@ -3,7 +3,7 @@ import config from '@/config.mjs';
 import { Result } from '../core/logic/Result';
 import { Role } from '../domain/role/role';
 import IRoleDTO from '../dto/IRoleDTO';
-import { RoleMap } from '../mappers/RoleMap';
+import { RoleMapper } from '../mappers/RoleMapper';
 import IRoleRepo from './IRepos/IRoleRepo';
 import IRoleService from './IServices/IRoleService';
 
@@ -20,7 +20,7 @@ export default class RoleService implements IRoleService {
 
       if (role === null) return Result.fail<IRoleDTO>('Role not found');
 
-      const roleDTOResult = RoleMap.toDTO(role) as IRoleDTO;
+      const roleDTOResult = RoleMapper.toDTO(role) as IRoleDTO;
       return Result.ok<IRoleDTO>(roleDTOResult);
     } catch (e) {
       throw e;
@@ -37,7 +37,7 @@ export default class RoleService implements IRoleService {
 
       await this.roleRepo.save(roleResult);
 
-      const roleDTOResult = RoleMap.toDTO(roleResult) as IRoleDTO;
+      const roleDTOResult = RoleMapper.toDTO(roleResult) as IRoleDTO;
       return Result.ok<IRoleDTO>(roleDTOResult);
     } catch (e) {
       throw e;
@@ -53,7 +53,7 @@ export default class RoleService implements IRoleService {
       role.name = roleDTO.name;
       await this.roleRepo.save(role);
 
-      const roleDTOResult = RoleMap.toDTO(role) as IRoleDTO;
+      const roleDTOResult = RoleMapper.toDTO(role) as IRoleDTO;
       return Result.ok<IRoleDTO>(roleDTOResult);
     } catch (e) {
       throw e;

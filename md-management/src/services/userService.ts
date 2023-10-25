@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import config from '@/config.mjs';
 
 import { IUserDTO } from '../dto/IUserDTO';
-import { UserMap } from '../mappers/UserMap';
+import { UserMapper } from '../mappers/UserMapper';
 import IUserService from './IServices/IUserService';
 
 import IRoleRepo from './IRepos/IRoleRepo';
@@ -97,7 +97,7 @@ export default class UserService implements IUserService {
       //this.eventDispatcher.dispatch(events.user.signUp, { user: userResult });
 
       await this.userRepo.save(userResult);
-      const userDTOResult = UserMap.toDTO(userResult) as IUserDTO;
+      const userDTOResult = UserMapper.toDTO(userResult) as IUserDTO;
       return Result.ok<{ userDTO: IUserDTO; token: string }>({
         userDTO: userDTOResult,
         token: token
@@ -125,7 +125,7 @@ export default class UserService implements IUserService {
     if (validPassword) {
       const token = this.generateToken(user) as string;
 
-      const userDTO = UserMap.toDTO(user) as IUserDTO;
+      const userDTO = UserMapper.toDTO(user) as IUserDTO;
       return Result.ok<{ userDTO: IUserDTO; token: string }>({ userDTO: userDTO, token: token });
     } else {
       throw new Error('Invalid Password');
