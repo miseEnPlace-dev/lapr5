@@ -40,14 +40,18 @@ export default class FloorService implements IFloorService {
       const building = await this.buildingRepo.findByCode(floorDTO.buildingCode);
       if (!building) return Result.fail<IFloorDTO>('Building does not exist');
 
-      if (!floorDTO.dimensions || !floorDTO.dimensions.width || !floorDTO.dimensions.height)
+      if (
+        !floorDTO.dimensions ||
+        !floorDTO.dimensions.width ||
+        !floorDTO.dimensions.height ||
+        floorDTO.dimensions.width > building.maxDimensions.width ||
+        floorDTO.dimensions.height > building.maxDimensions.height
+      )
         return Result.fail<IFloorDTO>('Floor dimensions are invalid');
 
       const dimensions = FloorDimensions.create(
         floorDTO.dimensions.width,
-        floorDTO.dimensions.height,
-        building.maxDimensions.width,
-        building.maxDimensions.height
+        floorDTO.dimensions.height
       );
 
       if (dimensions.isFailure) return Result.fail<IFloorDTO>(dimensions.error);

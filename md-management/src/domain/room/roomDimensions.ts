@@ -26,23 +26,12 @@ export class RoomDimensions extends ValueObject<RoomDimensionsProps> {
     super(props);
   }
 
-  public static create(
-    width: number,
-    height: number,
-    maxWidth: number,
-    maxHeight: number
-  ): Result<RoomDimensions> {
+  public static create(width: number, height: number): Result<RoomDimensions> {
     const widthGuardResult = Guard.isPositiveNumber(width, 'width');
     if (!widthGuardResult.succeeded) return Result.fail<RoomDimensions>(widthGuardResult.message);
 
     const heightGuardResult = Guard.isPositiveNumber(height, 'height');
     if (!heightGuardResult.succeeded) return Result.fail<RoomDimensions>(heightGuardResult.message);
-
-    if (width > maxWidth)
-      return Result.fail<RoomDimensions>('Floor width is bigger than the building width');
-
-    if (height > maxHeight)
-      return Result.fail<RoomDimensions>('Floor height is bigger than the building height');
 
     return Result.ok<RoomDimensions>(new RoomDimensions({ dimensions: { width, height } }));
   }

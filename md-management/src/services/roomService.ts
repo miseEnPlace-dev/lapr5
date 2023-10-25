@@ -34,15 +34,16 @@ export default class RoomService implements IRoomService {
       const floor = await this.floorRepo.findByCode(roomDTO.floorCode);
       if (!floor) return Result.fail<IRoomDTO>('Floor does not exist');
 
-      if (!roomDTO.dimensions || !roomDTO.dimensions.width || !roomDTO.dimensions.height)
+      if (
+        !roomDTO.dimensions ||
+        !roomDTO.dimensions.width ||
+        !roomDTO.dimensions.height ||
+        roomDTO.dimensions.width > floor.building.maxDimensions.width ||
+        roomDTO.dimensions.height > floor.building.maxDimensions.height
+      )
         return Result.fail<IRoomDTO>('Room dimensions are invalid');
 
-      const dimensions = RoomDimensions.create(
-        roomDTO.dimensions.width,
-        roomDTO.dimensions.height,
-        floor.building.maxDimensions.width,
-        floor.building.maxDimensions.height
-      );
+      const dimensions = RoomDimensions.create(roomDTO.dimensions.width, roomDTO.dimensions.height);
 
       if (dimensions.isFailure) return Result.fail<IRoomDTO>(dimensions.error);
 
