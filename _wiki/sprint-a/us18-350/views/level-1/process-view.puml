@@ -6,7 +6,7 @@ participant SYS as "RobDroneGo System" <<system (C4)>>
 
 activate FM
 
-FM -> SYS : asks to create a new 
+FM -> SYS : asks to create a new robot type with a given name & task type
 activate SYS
 
 FM <-- SYS : returns confirmation message
