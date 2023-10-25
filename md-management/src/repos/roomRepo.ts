@@ -1,5 +1,6 @@
 import config from '@/config.mjs';
 import { IRoomPersistence } from '@/dataschema/IRoomPersistence';
+import { FloorCode } from '@/domain/floor/floorCode';
 import { Room } from '@/domain/room/room';
 import { RoomMap } from '@/mappers/RoomMap';
 import IRoomRepo from '@/services/IRepos/IRoomRepo';
@@ -44,5 +45,22 @@ export default class RoomRepo implements IRoomRepo {
     const roomDocument = await this.roomSchema.findOne(query);
 
     return !!roomDocument === true;
+  }
+
+  public async findAllRoomsInFloorByCode(floorCode: FloorCode): Promise<Room[] | null> {
+    const query = { floorCode } as FilterQuery<IRoomPersistence & Document>;
+
+    const roomRecords = await this.roomSchema.find(
+      query as FilterQuery<IRoomPersistence & Document>
+    );
+
+    const rooms: Room[] = [];
+
+    for (const roomRecord of roomRecords) {
+      const room = await RoomMap.toDomain(roomRecord);
+      if (room) rooms.push(room);
+    }
+
+    return rooms;
   }
 }

@@ -33,12 +33,7 @@ export class FloorMap extends Mapper<Floor> {
     const building = await repo.findByDomainId(floor.building);
     if (!building) throw new Error('Building not found');
 
-    const floorDimensionsOrError = FloorDimensions.create(
-      width,
-      height,
-      building.maxDimensions.width,
-      building.maxDimensions.height
-    );
+    const floorDimensionsOrError = FloorDimensions.create(width, height);
 
     const description = floor.description
       ? FloorDescription.create(floor.description).getValue()
