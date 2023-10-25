@@ -11,6 +11,7 @@ import { IRolePersistence } from '@/dataschema/IRolePersistence';
 import { FloorMapper } from '@/mappers/FloorMapper';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import { Document, FilterQuery, Model } from 'mongoose';
+import { FloorMapMapper } from '@/mappers/FloorMapMapper';
 
 @Service()
 export default class FloorRepo implements IFloorRepo {
@@ -66,6 +67,7 @@ export default class FloorRepo implements IFloorRepo {
       floorDocument.description = floor.description?.value;
       floorDocument.dimensions.width = floor.dimensions?.width;
       floorDocument.dimensions.height = floor.dimensions?.height;
+      if (floor.map) floorDocument.map = FloorMapMapper.toPersistence(floor.map);
       await floorDocument.save();
 
       return floor;

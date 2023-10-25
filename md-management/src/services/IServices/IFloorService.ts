@@ -12,7 +12,7 @@ export default interface IFloorService {
 
   updateFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>>;
 
-  uploadMap(floorCode: string, map: IFloorMapDTO): Promise<Result<IFloorDTO>>;
+  uploadMap(floorCode: string, map: IFloorMapDTO): Promise<Result<IFloorMapDTO>>;
 
   //  getBuilding(BuildingId: string): Promise<Result<IBuildingDTO>>;
 }

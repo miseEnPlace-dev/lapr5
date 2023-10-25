@@ -6,7 +6,7 @@ import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
 import { IFloorMapPersistence } from '@/dataschema/IFloorMapPersistence';
 
 export class FloorMapMapper extends Mapper<FloorMap> {
-  public static toDTO(floorMap: FloorMap): Omit<IFloorMapDTO, 'floorCode'> {
+  public static toDTO(floorMap: FloorMap): IFloorMapDTO {
     return {
       size: {
         width: floorMap.size.width,

@@ -14,6 +14,7 @@ import IFloorService from '@/services/IServices/IFloorService';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
 import { FloorMap } from '@/domain/floor/floorMap';
+import { FloorMapMapper } from '@/mappers/FloorMapMapper';
 
 @Service()
 export default class FloorService implements IFloorService {
@@ -155,10 +156,10 @@ export default class FloorService implements IFloorService {
     }
   }
 
-  public async uploadMap(floorCode: string, map: IFloorMapDTO): Promise<Result<IFloorDTO>> {
+  public async uploadMap(floorCode: string, map: IFloorMapDTO): Promise<Result<IFloorMapDTO>> {
     try {
       const floor = await this.floorRepo.findByCode(floorCode);
-      if (!floor) return Result.fail<IFloorDTO>('Floor not found');
+      if (!floor) return Result.fail<IFloorMapDTO>('Floor not found');
 
       const mapOrError = FloorMap.create({
         size: {
@@ -170,14 +171,15 @@ export default class FloorService implements IFloorService {
         exitLocation: map.exitLocation,
         map: map.map
       });
-      if (mapOrError.isFailure) return Result.fail<IFloorDTO>(mapOrError.error as string);
+      if (mapOrError.isFailure) return Result.fail<IFloorMapDTO>(mapOrError.error as string);
 
       floor.map = mapOrError.getValue();
 
       await this.floorRepo.save(floor);
-      const floorDTO = FloorMapper.toDTO(floor) as IFloorDTO;
 
-      return Result.ok<IFloorDTO>(floorDTO);
+      const floorMapDTO = FloorMapMapper.toDTO(floor.map) as IFloorMapDTO;
+
+      return Result.ok<IFloorMapDTO>(floorMapDTO);
     } catch (e) {
       throw e;
     }

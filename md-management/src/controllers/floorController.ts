@@ -107,7 +107,7 @@ export default class FloorController implements IFloorController {
       const floorOrError = (await this.floorServiceInstance.uploadMap(
         req.params.code,
         newMap
-      )) as Result<IFloorDTO>;
+      )) as Result<IFloorMapDTO>;
 
       if (floorOrError.isFailure) return res.status(400).send();
 

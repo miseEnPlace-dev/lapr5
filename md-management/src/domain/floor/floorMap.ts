@@ -29,7 +29,7 @@ export class FloorMap extends Entity<FloorMapProps> {
     return this.props.elevators;
   }
   get exitLocation(): number[] {
-    return this.exitLocation;
+    return this.props.exitLocation;
   }
 
   get id(): UniqueEntityID {
