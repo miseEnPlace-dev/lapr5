@@ -19,7 +19,7 @@ const FloorSchema = new mongoose.Schema(
       height: Number
     },
 
-    building: {
+    buildingCode: {
       type: String
     }
   },

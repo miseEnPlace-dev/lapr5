@@ -27,7 +27,7 @@ export default class FloorService implements IFloorService {
       const floor = await this.floorRepo.findByCode(floorDTO.code);
       if (!floor) return Result.fail<IFloorDTO>('Floor not found');
 
-      const building = await this.buildingRepo.findByCode(floor.building.code.value);
+      const building = await this.buildingRepo.findByCode(floor.buildingCode.value);
       if (!building) return Result.fail<IFloorDTO>('Building does not exist');
 
       if (
@@ -72,6 +72,8 @@ export default class FloorService implements IFloorService {
       const building = await this.buildingRepo.findByCode(floorDTO.buildingCode);
       if (!building) return Result.fail<IFloorDTO>('Building does not exist');
 
+      const buildingCode = BuildingCode.create(floorDTO.buildingCode).getValue();
+
       if (
         !floorDTO.dimensions ||
         !floorDTO.dimensions.width ||
@@ -92,7 +94,7 @@ export default class FloorService implements IFloorService {
         code: code.getValue(),
         description: description ? description.getValue() : undefined,
         dimensions: dimensions.getValue(),
-        building
+        buildingCode
       });
 
       if (floorOrError.isFailure) return Result.fail<IFloorDTO>(floorOrError.error as string);

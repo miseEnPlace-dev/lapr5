@@ -111,7 +111,7 @@ export default class FloorRepo implements IFloorRepo {
 
   public async findByBuildingId(buildingId: UniqueEntityID): Promise<Floor[]> {
     const query = {
-      building: buildingId
+      buildingCode: buildingId
     } as FilterQuery<IFloorPersistence & Document>;
 
     const floorRecords = await this.floorSchema.find(query);

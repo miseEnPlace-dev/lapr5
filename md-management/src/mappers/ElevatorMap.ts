@@ -40,7 +40,7 @@ export class ElevatorMap extends Mapper<Elevator> {
 
     const domainFloors = [];
     for (const floor of elevator.floors) {
-      const domainFloor = await floorRepo.findByCode(floor);
+      const domainFloor = await floorRepo.findByDomainId(floor);
       domainFloor && domainFloors.push(domainFloor);
     }
 

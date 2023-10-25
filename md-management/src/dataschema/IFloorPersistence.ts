@@ -6,5 +6,5 @@ export interface IFloorPersistence {
     width: number;
     height: number;
   };
-  building: string;
+  buildingCode: string;
 }
