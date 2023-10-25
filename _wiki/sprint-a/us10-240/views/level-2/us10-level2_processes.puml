@@ -1,0 +1,14 @@
+@startuml us10-level2_processes
+autonumber
+
+participant SYS as "MD Management" <<system (C4)>>
+
+?o-> SYS : POST /connectors
+activate SYS
+
+SYS -> SYS : createConnector(connector)
+
+<-- SYS : 201 Created {connector as JSON}
+deactivate SYS
+
+@enduml
