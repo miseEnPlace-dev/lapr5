@@ -10,16 +10,20 @@ import { Connector } from '@/domain/connector/connector';
 import { IConnectorDTO } from '@/dto/IConnectorDTO';
 import { IConnectorPersistence } from '@/dataschema/IConnectorPersistence';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
+import { ConnectorCode } from '@/domain/connector/connectorCode';
 
 export class ConnectorMap extends Mapper<Floor> {
   public static toDTO(c: Connector): IConnectorDTO {
     return {
+      code: c.code.value,
       floor1Code: c.floor1.code.value,
       floor2Code: c.floor2.code.value
     };
   }
 
   public static async toDomain(connector: IConnectorPersistence): Promise<Connector | null> {
+    const code = ConnectorCode.create(connector.code).getValue();
+
     const repo = Container.get<IFloorRepo>(config.repos.floor.name);
 
     const floor1 = await repo.findByDomainId(connector.floor1);
@@ -28,6 +32,7 @@ export class ConnectorMap extends Mapper<Floor> {
 
     const connectorOrError = Connector.create(
       {
+        code,
         floor1,
         floor2
       },
@@ -42,6 +47,7 @@ export class ConnectorMap extends Mapper<Floor> {
   public static toPersistence(connector: Connector): IConnectorPersistence {
     return {
       domainId: connector.id.toString(),
+      code: connector.code.value,
       floor1: connector.floor1.id.toString(),
       floor2: connector.floor2.id.toString()
     };

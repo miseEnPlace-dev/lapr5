@@ -8,13 +8,16 @@ const ConnectorSchema = new mongoose.Schema(
       type: String,
       unique: true
     },
+    code: {
+      type: String,
+      required: true,
+      unique: true
+    },
     floor1: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Floor'
+      type: String
     },
     floor2: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Floor'
+      type: String
     }
   },
   { timestamps: true }

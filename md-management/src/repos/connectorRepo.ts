@@ -8,13 +8,12 @@ import IConnectorRepo from '@/services/IRepos/IConnectorRepo';
 import { IConnectorPersistence } from '@/dataschema/IConnectorPersistence';
 import { Connector } from '@/domain/connector/connector';
 import { ConnectorMap } from '@/mappers/ConnectorMap';
-import { FloorCode } from '@/domain/floor/floorCode';
 
 @Service()
 export default class ConnectorRepo implements IConnectorRepo {
   private connectorSchema: Model<IConnectorPersistence & Document>;
   constructor() {
-    this.connectorSchema = Container.get(config.schemas.floor.name);
+    this.connectorSchema = Container.get(config.schemas.connector.name);
   }
 
   public async exists(connector: Connector): Promise<boolean> {
@@ -77,7 +76,7 @@ export default class ConnectorRepo implements IConnectorRepo {
     return connectors;
   }
 
-  public async findByFloorId(floorId: FloorCode): Promise<Connector[]> {
+  public async findByFloorId(floorId: UniqueEntityID): Promise<Connector[]> {
     const query = { $or: [{ floor1: floorId }, { floor2: floorId }] };
     const connectorRecords = await this.connectorSchema.find(
       query as FilterQuery<IConnectorPersistence & Document>
@@ -91,5 +90,24 @@ export default class ConnectorRepo implements IConnectorRepo {
     }
 
     return connectors;
+  }
+
+  public async findConnectorBetweenFloors(
+    floor1Id: UniqueEntityID,
+    floor2Id: UniqueEntityID
+  ): Promise<Connector | null> {
+    const query = {
+      $or: [
+        { floor1: floor1Id, floor2: floor2Id },
+        { floor1: floor2Id, floor2: floor1Id }
+      ]
+    };
+
+    const connectorRecord = await this.connectorSchema.findOne(
+      query as FilterQuery<IConnectorPersistence & Document>
+    );
+
+    if (connectorRecord != null) return ConnectorMap.toDomain(connectorRecord);
+    return null;
   }
 }
