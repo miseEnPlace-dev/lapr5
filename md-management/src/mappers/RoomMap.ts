@@ -33,12 +33,7 @@ export class RoomMap extends Mapper<Room> {
     const floor = await repoFloor.findByDomainId(room.floor);
     if (!floor) throw new Error('Floor not found');
 
-    const roomDimensionsOrError = RoomDimensions.create(
-      width,
-      height,
-      floor.building.maxDimensions.width,
-      floor.building.maxDimensions.height
-    );
+    const roomDimensionsOrError = RoomDimensions.create(width, height);
 
     const description = room.description
       ? RoomDescription.create(room.description).getValue()
