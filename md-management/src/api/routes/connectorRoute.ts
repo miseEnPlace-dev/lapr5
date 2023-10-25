@@ -43,15 +43,15 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.connector.name) as IConnectorController;
 
-  // route.get('', (req, res, next) => ctrl.getConnectorsBetweenBuildings(req, res, next));
+  route.get('', (req, res, next) => ctrl.getConnectorsBetweenBuildings(req, res, next));
 
   route.post('', validate(connectorCreateSchema), (req, res, next) =>
     ctrl.createConnector(req, res, next)
   );
 
-  // route.patch('', validate(connectorUpdateSchema), (req, res, next) =>
-  //   ctrl.updateConnector(req, res, next)
-  // );
+  route.patch('/:id', validate(connectorUpdateSchema), (req, res, next) =>
+    ctrl.updateConnector(req, res, next)
+  );
 
   app.use('/connectors', route);
 };

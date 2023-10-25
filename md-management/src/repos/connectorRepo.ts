@@ -110,4 +110,29 @@ export default class ConnectorRepo implements IConnectorRepo {
     if (connectorRecord != null) return ConnectorMap.toDomain(connectorRecord);
     return null;
   }
+
+  public async findConnectorsBetweenFloors(
+    ids1: UniqueEntityID[],
+    ids2: UniqueEntityID[]
+  ): Promise<Connector[]> {
+    const query: FilterQuery<IConnectorPersistence & Document> = {
+      $or: [
+        { floor1: { $in: ids1 }, floor2: { $in: ids2 } },
+        { floor1: { $in: ids2 }, floor2: { $in: ids1 } }
+      ]
+    };
+
+    const records = await this.connectorSchema.find(
+      query as FilterQuery<IConnectorPersistence & Document>
+    );
+
+    const connectors: Connector[] = [];
+
+    for (const record of records) {
+      const c = await ConnectorMap.toDomain(record);
+      if (c) connectors.push(c);
+    }
+
+    return connectors;
+  }
 }

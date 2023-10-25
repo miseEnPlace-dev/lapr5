@@ -27,7 +27,7 @@ export class ConnectorMap extends Mapper<Floor> {
     const repo = Container.get<IFloorRepo>(config.repos.floor.name);
 
     const floor1 = await repo.findByDomainId(connector.floor1);
-    const floor2 = await repo.findByDomainId(connector.floor1);
+    const floor2 = await repo.findByDomainId(connector.floor2);
     if (!floor1 || !floor2) throw new Error('One/both of the floors was not found');
 
     const connectorOrError = Connector.create(
