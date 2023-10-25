@@ -57,7 +57,7 @@ export default class RoomRepo implements IRoomRepo {
     const rooms: Room[] = [];
 
     for (const roomRecord of roomRecords) {
-      const room = await RoomMap.toDomain(roomRecord);
+      const room = await RoomMapper.toDomain(roomRecord);
       if (room) rooms.push(room);
     }
 
