@@ -4,12 +4,21 @@ import { IConnectorPersistence } from '@/dataschema/IConnectorPersistence';
 
 const ConnectorSchema = new mongoose.Schema(
   {
-    floors: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Floor'
-      }
-    ]
+    domainId: {
+      type: String,
+      unique: true
+    },
+    code: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    floor1: {
+      type: String
+    },
+    floor2: {
+      type: String
+    }
   },
   { timestamps: true }
 );

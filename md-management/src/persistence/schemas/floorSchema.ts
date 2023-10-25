@@ -21,13 +21,7 @@ const FloorSchema = new mongoose.Schema(
 
     building: {
       type: String
-    },
-
-    connectors: [
-      {
-        type: String
-      }
-    ]
+    }
   },
   { timestamps: true }
 );

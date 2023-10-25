@@ -1,0 +1,14 @@
+@startuml us11-level2_processes
+autonumber
+
+participant SYS as "MD Management" <<system (C4)>>
+
+?o-> SYS : PATCH /connectors
+activate SYS
+
+SYS -> SYS : editConnector(connector)
+
+<-- SYS : 200 OK {connector as JSON}
+deactivate SYS
+
+@enduml

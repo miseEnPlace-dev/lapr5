@@ -41,7 +41,7 @@ export default (app: Router) => {
   const ctrl = Container.get(config.controllers.floor.name) as IFloorController;
 
   route.get('', (req, res, next) => ctrl.getBuildingFloors(req, res, next));
-  route.get('/:buildingCode', (req, res, next) => ctrl.getFloorsWithElevator(req, res, next));
+  route.get('', (req, res, next) => ctrl.getFloorsWithElevator(req, res, next));
   route.post('', validate(floorCreateSchema), (req, res, next) => ctrl.createFloor(req, res, next));
   route.put('/:code', validate(floorUpdateSchema), (req, res, next) =>
     ctrl.updateFloor(req, res, next)

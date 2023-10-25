@@ -64,6 +64,26 @@ export default async ({ expressApp }: { expressApp: Express }) => {
     schema: config.schemas.building.schema
   };
 
+  const connectorController = {
+    name: config.controllers.connector.name,
+    path: config.controllers.connector.path
+  };
+
+  const connectorRepo = {
+    name: config.repos.connector.name,
+    path: config.repos.connector.path
+  };
+
+  const connectorService = {
+    name: config.services.connector.name,
+    path: config.services.connector.path
+  };
+
+  const connectorSchema = {
+    name: config.schemas.connector.name,
+    schema: config.schemas.connector.schema
+  };
+
   const floorSchema = {
     name: config.schemas.floor.name,
     schema: config.schemas.floor.schema
@@ -94,11 +114,45 @@ export default async ({ expressApp }: { expressApp: Express }) => {
     path: config.controllers.elevator.path
   };
 
+  const roomController = {
+    name: config.controllers.room.name,
+    path: config.controllers.room.path
+  };
+
+  const roomService = {
+    name: config.services.room.name,
+    path: config.services.room.path
+  };
+
+  const roomRepo = {
+    name: config.repos.room.name,
+    path: config.repos.room.path
+  };
+
+  const roomSchema = {
+    name: config.schemas.room.name,
+    schema: config.schemas.room.schema
+  };
+
   dependencyInjectorLoader({
-    schemas: [userSchema, roleSchema, buildingSchema, floorSchema],
-    controllers: [roleController, buildingController, floorController, elevatorController],
-    repos: [roleRepo, userRepo, buildingRepo, floorRepo],
-    services: [roleService, buildingService, floorService, elevatorService]
+    schemas: [userSchema, roleSchema, buildingSchema, floorSchema, roomSchema, connectorSchema],
+    controllers: [
+      roleController,
+      buildingController,
+      floorController,
+      elevatorController,
+      roomController,
+      connectorController
+    ],
+    repos: [roleRepo, userRepo, buildingRepo, floorRepo, roomRepo, connectorRepo],
+    services: [
+      roleService,
+      buildingService,
+      floorService,
+      elevatorService,
+      roomService,
+      connectorService
+    ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');
 

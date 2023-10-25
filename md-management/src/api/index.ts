@@ -1,8 +1,10 @@
 import { Router } from 'express';
 import building from './routes/buildingRoute';
+import connector from './routes/connectorRoute';
 import elevator from './routes/elevatorRoute';
 import floor from './routes/floorRoute';
 import role from './routes/roleRoute';
+import room from './routes/roomRoute';
 import { default as auth, default as user } from './routes/userRoute';
 
 export default () => {
@@ -12,8 +14,10 @@ export default () => {
   user(app);
   role(app);
   building(app);
+  connector(app);
   floor(app);
   elevator(app);
+  room(app);
 
   return app;
 };

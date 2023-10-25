@@ -1,4 +1,6 @@
 export interface IConnectorPersistence {
-  _id: string;
   domainId: string;
+  code: string;
+  floor1: string;
+  floor2: string;
 }

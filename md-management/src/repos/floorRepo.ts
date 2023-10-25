@@ -8,7 +8,6 @@ import { FloorCode } from '@/domain/floor/floorCode';
 
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { IRolePersistence } from '@/dataschema/IRolePersistence';
-import { BuildingCode } from '@/domain/building/buildingCode';
 import { FloorMap } from '@/mappers/FloorMap';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import { Document, FilterQuery, Model } from 'mongoose';

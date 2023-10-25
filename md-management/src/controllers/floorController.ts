@@ -43,10 +43,7 @@ export default class FloorController implements IFloorController {
         req.body as IFloorDTO
       )) as Result<IFloorDTO>;
 
-      if (floorOrError.isFailure)
-        return res.status(400).send({
-          message: floorOrError.errorValue()
-        });
+      if (floorOrError.isFailure) return res.status(400).json({ error: floorOrError.errorValue() });
 
       const floorDTO = floorOrError.getValue();
       return res.status(200).json(floorDTO);
@@ -84,17 +81,13 @@ export default class FloorController implements IFloorController {
 
   public async getFloorsWithElevator(req: Request, res: Response, next: NextFunction) {
     try {
-      const buildingCode = BuildingCode.create(req.params.buildingCode);
-
-      console.log('buildingCode', buildingCode.getValue());
+      const buildingCode = BuildingCode.create(req.query.building as string);
 
       if (buildingCode.isFailure) return res.status(400).send();
 
       const floorsOrError = (await this.floorServiceInstance.getFloorsWithElevator(
         buildingCode.getValue()
       )) as Result<IFloorDTO[]>;
-
-      console.log('floorsOrError', floorsOrError.getValue());
 
       if (floorsOrError.isFailure) return res.status(400).send();
 

@@ -8,6 +8,7 @@ import { BuildingMaxDimensions } from '@/domain/building/buildingMaxDimensions';
 import { BuildingName } from '@/domain/building/buildingName';
 import { IBuildingDTO } from '@/dto/IBuildingDTO';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
+import { ElevatorMap } from './ElevatorMap';
 
 export class BuildingMap extends Mapper<Building> {
   public static toDTO(building: Building): IBuildingDTO {
@@ -23,7 +24,7 @@ export class BuildingMap extends Mapper<Building> {
     };
   }
 
-  public static toDomain(building: IBuildingPersistence): Building | null {
+  public static async toDomain(building: IBuildingPersistence): Promise<Building | null> {
     const code = BuildingCode.create(building.code).getValue();
     const maxDimensions = BuildingMaxDimensions.create(
       building.maxDimensions.width,
@@ -33,16 +34,19 @@ export class BuildingMap extends Mapper<Building> {
     const description = building.description
       ? BuildingDescription.create(building.description).getValue()
       : undefined;
+    const elevator = building.elevator
+      ? (await ElevatorMap.toDomain(building.elevator)) ?? undefined
+      : undefined;
 
     const buildingOrError = Building.create(
       {
         code,
         maxDimensions,
         name,
-        elevator: building.elevator,
+        elevator,
         description
       },
-      new UniqueEntityID(building._id)
+      new UniqueEntityID(building.domainId)
     );
 
     buildingOrError.isFailure && console.log(buildingOrError.error);
@@ -50,13 +54,14 @@ export class BuildingMap extends Mapper<Building> {
     return buildingOrError.isSuccess ? buildingOrError.getValue() : null;
   }
 
-  public static toPersistence(building: Building) {
+  public static toPersistence(building: Building): IBuildingPersistence {
+    const elevator = building.elevator ? ElevatorMap.toPersistence(building.elevator) : undefined;
     return {
-      domainId: building.id.toValue(),
+      domainId: building.id.toString(),
       code: building.code.value,
       name: building.name?.value,
       description: building.description?.value,
-      elevator: building.elevator,
+      elevator,
       maxDimensions: {
         width: building.maxDimensions.width,
         height: building.maxDimensions.height

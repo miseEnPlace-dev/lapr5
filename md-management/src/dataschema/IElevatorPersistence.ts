@@ -1,5 +1,4 @@
 export interface IElevatorPersistence {
-  domainId: string;
   code: number;
   floors: string[];
   brand?: string;

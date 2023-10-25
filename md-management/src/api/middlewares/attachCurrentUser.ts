@@ -5,6 +5,7 @@ import winston from 'winston';
 import config from '@/config.mjs';
 
 import IUserRepo from '../../services/IRepos/IUserRepo';
+import { NextFunction, Request, Response } from 'express';
 
 /**
  * Attach user to req.user
@@ -12,7 +13,7 @@ import IUserRepo from '../../services/IRepos/IUserRepo';
  * @param {*} res  Express res Object
  * @param {*} next  Express next Function
  */
-const attachCurrentUser = async (req, res, next) => {
+const attachCurrentUser = async (req: Request, res: Response, next: NextFunction) => {
   const Logger = Container.get('logger') as winston.Logger;
   try {
     const userRepo = Container.get(config.repos.user.name) as IUserRepo;

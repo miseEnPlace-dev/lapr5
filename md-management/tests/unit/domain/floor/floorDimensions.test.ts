@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { FloorDimensions } from '../../../../src/domain/floor/floorDimensions';
 
-describe('BUildingMaxDimensions', () => {
+describe('FloorDimensions', () => {
   it('should not allow create dimensions with negative values', () => {
     const result = FloorDimensions.create(-1, -1, 1, 1);
 
