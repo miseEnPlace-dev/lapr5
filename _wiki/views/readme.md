@@ -18,6 +18,8 @@ This views can be used as a foundation to understand the system from a global pe
 
 ### Physical View
 
+For now, there are no specific constraints on the physical view. Bare in mind that this is just one possible implementation. This representation will likely change in the future.
+
 ![Level 2 Physical View](level-2/assets/physical-view.svg)
 
 ### Implementation View

@@ -1,35 +1,19 @@
 @startuml implementation-view
 
-interface "Admin UI" as AUI
-interface "Campus Manager UI" as CUI
-interface "Fleet Manager UI" as FUI
-interface "Task Manager UI" as TUI
-interface "User UI" as UUI
-
-component "RobDroneGo System" <<component>> <<system (C4)>> {
-  portin " " as P1
-
+package "RobDroneGo System" {
   
-  component "Visualization" as V <<component>> <<system (C4)>> {
+  folder "Visualization" as V {
   }
 
-  component "MD Management" as MDM <<component>> <<system (C4)>> {
+  folder "MD Management" as MDM {
   }
 
-  component "Planning" as P <<component>> <<system (C4)>> {
+  folder "Planning" as P {
   }
 }
 
 
-' V -- MDM
-MDM ..> V
+MDM <.. V
 P <.. MDM
-' P -- V
-
-AUI -- P1
-CUI -- P1
-FUI -- P1
-TUI -- P1
-UUI -- P1
 
 @enduml
