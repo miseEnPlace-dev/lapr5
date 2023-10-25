@@ -3,10 +3,10 @@ import { z } from 'zod';
 
 import { Container } from 'typedi';
 
-import IBuildingController from '@/controllers/IControllers/IBuildingController';
 import config from '@/config.mjs';
-import { validate } from '../middlewares/validate';
+import IBuildingController from '@/controllers/IControllers/IBuildingController';
 import IFloorController from '@/controllers/IControllers/IFloorController';
+import { validate } from '../middlewares/validate';
 
 const buildingCreateSchema = z.object({
   code: z
