@@ -50,6 +50,14 @@ export default class ConnectorService implements IConnectorService {
       const floor1 = await this.floorRepo.findByCode(floorCode1);
       const floor2 = await this.floorRepo.findByCode(floorCode2);
       if (!floor1 || !floor2) return Result.fail<IConnectorDTO>('One/both floors do not exist');
+      if (floor1.equals(floor2)) return Result.fail<IConnectorDTO>('Floors cannot be the same');
+      if (floor1.buildingCode.equals(floor2.buildingCode))
+        return Result.fail<IConnectorDTO>('Floors must be in different buildings');
+
+      const exists = await this.connectorRepo.findConnectorBetweenFloors(floor1.id, floor2.id);
+
+      if (exists)
+        return Result.fail<IConnectorDTO>('Connector between those floors already exists');
 
       const connectorOrError = Connector.create({
         code,

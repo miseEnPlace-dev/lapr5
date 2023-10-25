@@ -29,20 +29,6 @@ export default class ConnectorController implements IConnectorController {
 
   public async createConnector(req: Request, res: Response, next: NextFunction) {
     try {
-      const existsOrError = (await this.connectorSvcInstance.checkConnectorExists(
-        req.body as IConnectorDTO
-      )) as Result<boolean>;
-
-      if (existsOrError.isFailure)
-        return res.status(400).json({
-          errors: existsOrError.errorValue()
-        });
-
-      if (existsOrError.getValue())
-        return res.status(400).json({
-          errors: 'Connector between those floors already exists'
-        });
-
       const connectorOrError = (await this.connectorSvcInstance.createConnector(
         req.body as IConnectorDTO
       )) as Result<IConnectorDTO>;
