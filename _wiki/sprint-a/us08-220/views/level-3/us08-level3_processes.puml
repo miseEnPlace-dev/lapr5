@@ -18,18 +18,18 @@ activate ROUTE
     CTRL -> SVC : listFloorsWithConnectors(buildingCode)
     activate SVC
 
-      SVC -> REPO : findAllByBuildingCodeWithConnectors(buildingCode)
+      SVC -> REPO : findByBuildingCodeWithConnectors(buildingCode)
       activate REPO
 
-      REPO --> SVC : List<Floor>
+      REPO --> SVC : Floor[]
       deactivate REPO
 
       loop for each floor
 
-        SVC -> FMAP : mapToDTOs(List<Floor>)
+        SVC -> FMAP : mapToDTOs(Floor[])
         activate FMAP
 
-          FMAP -> DTO : mapToDTO(Floor)
+          FMAP -> DTO : create()
           activate DTO
 
           DTO --> FMAP : FloorDTO
