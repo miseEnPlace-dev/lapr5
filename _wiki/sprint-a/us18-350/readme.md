@@ -42,6 +42,16 @@ de momento apenas existem dois tipos de tarefas conhecidas que o sistema deve su
 
 "o número de série é único para cada robot da mesma marca"
 
+## [Question 19](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25101)
+
+> Poderia explicar as diferenças entre estas duas user stories, US350 e US360?
+
+### Answer
+
+"o requisito 360 permite definir que tipos de robots existem. por exemplo "Tipo A: Robot marca X modelo Y com capacidade de executar tarefas de vigilância" e "Tipo B: Robot marca W modelo Z com capacidade de executar tarefas de vigilância e pickeup&delivery"
+
+o requisito 370 permite indicar que robots existem e de que tipo cada um é, por exemplo "Robot 'ABC32' do tipo A", "Robot 'Brian2' do tipo A" e "Robot 'Stew' do tipo B""
+
 ## [Question 22](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25171)
 
 > Relativamente à US350 foi referido numa resposta anterior "o requisito 350 permite definir que tipos de robots existem. por exemplo "Tipo A: Robot marca X modelo Y com capacidade de executar tarefas de vigilância"

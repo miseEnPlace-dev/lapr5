@@ -49,8 +49,6 @@ package "<<aggregate>> Device" {
     - isAvailable
   }
 
-  class Image <<(V,#FF8B40) value object>> {}
-  class SensorReading <<(V,#FF8B40) value object>> {}
   class SerialNumber <<(V,#FF8B40) value object>> {}
   class Nickname <<(V,#FF8B40) value object>> {}
 }
@@ -62,8 +60,6 @@ DeviceModel "1" *-- "1" DeviceName
 Device "1" --> "1" DeviceModel : is for
 
 Device "1" *-- "1" SerialNumber
-Device "1" *-- "*" Image
-Device "1" *-- "*" SensorReading
 Device "1" *-- "1" Nickname
 
 DeviceModel <|--- Robot

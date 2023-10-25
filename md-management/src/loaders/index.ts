@@ -134,24 +134,54 @@ export default async ({ expressApp }: { expressApp: Express }) => {
     schema: config.schemas.room.schema
   };
 
+  const deviceModelController = {
+    name: config.controllers.deviceModel.name,
+    path: config.controllers.deviceModel.path
+  };
+
+  const deviceModelService = {
+    name: config.services.deviceModel.name,
+    path: config.services.deviceModel.path
+  };
+
+  const deviceModelRepo = {
+    name: config.repos.deviceModel.name,
+    path: config.repos.deviceModel.path
+  };
+
+  const deviceModelSchema = {
+    name: config.schemas.deviceModel.name,
+    schema: config.schemas.deviceModel.schema
+  };
+
   dependencyInjectorLoader({
-    schemas: [userSchema, roleSchema, buildingSchema, floorSchema, roomSchema, connectorSchema],
+    schemas: [
+      userSchema,
+      roleSchema,
+      buildingSchema,
+      floorSchema,
+      roomSchema,
+      connectorSchema,
+      deviceModelSchema
+    ],
     controllers: [
       roleController,
       buildingController,
       floorController,
       elevatorController,
       roomController,
-      connectorController
+      connectorController,
+      deviceModelController
     ],
-    repos: [roleRepo, userRepo, buildingRepo, floorRepo, roomRepo, connectorRepo],
+    repos: [roleRepo, userRepo, buildingRepo, floorRepo, roomRepo, connectorRepo, deviceModelRepo],
     services: [
       roleService,
       buildingService,
       floorService,
       elevatorService,
       roomService,
-      connectorService
+      connectorService,
+      deviceModelService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');

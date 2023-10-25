@@ -61,6 +61,10 @@ export default {
     connector: {
       name: 'connectorSchema',
       schema: '../persistence/schemas/connectorSchema'
+    },
+    deviceModel: {
+      name: 'deviceModel',
+      schema: '../persistence/schemas/deviceModelSchema'
     }
   },
 
@@ -88,6 +92,10 @@ export default {
     connector: {
       name: 'ConnectorController',
       path: '../controllers/connectorController'
+    },
+    deviceModel: {
+      name: 'DeviceModelController',
+      path: '../controllers/deviceModelController'
     }
   },
 
@@ -115,6 +123,10 @@ export default {
     connector: {
       name: 'ConnectorRepo',
       path: '../repos/connectorRepo'
+    },
+    deviceModel: {
+      name: 'DeviceModelRepo',
+      path: '../repos/deviceModelRepo'
     }
   },
 
@@ -142,6 +154,10 @@ export default {
     connector: {
       name: 'ConnectorService',
       path: '../services/connectorService'
+    },
+    deviceModel: {
+      name: 'DeviceModelService',
+      path: '../services/deviceModelService'
     }
   }
 };

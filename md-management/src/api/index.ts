@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import building from './routes/buildingRoute';
 import connector from './routes/connectorRoute';
+import deviceModel from './routes/deviceModelRoute';
 import elevator from './routes/elevatorRoute';
 import floor from './routes/floorRoute';
 import role from './routes/roleRoute';
@@ -18,6 +19,7 @@ export default () => {
   floor(app);
   elevator(app);
   room(app);
+  deviceModel(app);
 
   return app;
 };
