@@ -10,5 +10,4 @@ export default interface IFloorRepo extends Repo<Floor> {
   findBuildingCodesWithMinMaxFloors(min: number, max: number): Promise<string[]>;
   findAll(): Promise<Floor[]>;
   findByBuildingCode(buildingId: UniqueEntityID | string): Promise<Floor[]>;
-  findByBuildingIdWithElevator(buildingId: UniqueEntityID | string): Promise<Floor[]>;
 }

@@ -119,21 +119,4 @@ export default class FloorRepo implements IFloorRepo {
 
     return floors;
   }
-
-  public async findByBuildingIdWithElevator(buildingId: UniqueEntityID): Promise<Floor[]> {
-    const query: FilterQuery<IFloorPersistence & Document> = {
-      buildingId: buildingId,
-      hasElevator: true
-    };
-    const floorRecords = await this.floorSchema.find(query);
-
-    const floors: Floor[] = [];
-
-    for (const floorRecord of floorRecords) {
-      const floor = await FloorMap.toDomain(floorRecord);
-      if (floor) floors.push(floor);
-    }
-
-    return floors;
-  }
 }
