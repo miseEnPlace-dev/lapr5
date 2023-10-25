@@ -22,6 +22,19 @@ const floorCreateSchema = z.object({
   })
 });
 
+const floorUpdateSchema = z.object({
+  description: z
+    .string()
+    .max(255)
+    .optional(),
+  dimensions: z
+    .object({
+      width: z.number().min(1),
+      height: z.number().min(1)
+    })
+    .optional()
+});
+
 export default (app: Router) => {
   const route = Router();
 
@@ -30,6 +43,9 @@ export default (app: Router) => {
   route.get('', (req, res, next) => ctrl.getBuildingFloors(req, res, next));
   route.get('/:buildingCode', (req, res, next) => ctrl.getFloorsWithElevator(req, res, next));
   route.post('', validate(floorCreateSchema), (req, res, next) => ctrl.createFloor(req, res, next));
+  route.put('/:code', validate(floorUpdateSchema), (req, res, next) =>
+    ctrl.updateFloor(req, res, next)
+  );
 
   app.use('/floors', route);
 };
