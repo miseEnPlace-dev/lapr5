@@ -34,7 +34,7 @@ export default class ConnectorService implements IConnectorService {
       const floor2 = await this.floorRepo.findByCode(code2);
       if (!floor1 || !floor2) return Result.fail<boolean>('One/both floors do not exist');
 
-      const connector = await this.connectorRepo.findConnectorBetweenFloors(floor1.id, floor2.id);
+      const connector = await this.connectorRepo.findBetweenFloors(floor1.id, floor2.id);
 
       return Result.ok<boolean>(!!connector);
     } catch (e) {
@@ -54,7 +54,7 @@ export default class ConnectorService implements IConnectorService {
       if (floor1.buildingCode.equals(floor2.buildingCode))
         return Result.fail<IConnectorDTO>('Floors must be in different buildings');
 
-      const exists = await this.connectorRepo.findConnectorBetweenFloors(floor1.id, floor2.id);
+      const exists = await this.connectorRepo.findBetweenFloors(floor1.id, floor2.id);
 
       if (exists)
         return Result.fail<IConnectorDTO>('Connector between those floors already exists');
@@ -92,8 +92,10 @@ export default class ConnectorService implements IConnectorService {
 
   public async getConnectorsBetweenBuildings(code1: string, code2: string) {
     try {
-      const building1 = await this.buildingRepo.findByCode(code1);
-      const building2 = await this.buildingRepo.findByCode(code2);
+      const buildingCode1 = ConnectorCode.create(code1).getValue();
+      const buildingCode2 = ConnectorCode.create(code2).getValue();
+      const building1 = await this.buildingRepo.findByCode(buildingCode1);
+      const building2 = await this.buildingRepo.findByCode(buildingCode2);
       if (!building1 || !building2)
         return Result.fail<IConnectorDTO[]>('One/both buildings do not exist');
 
@@ -103,7 +105,7 @@ export default class ConnectorService implements IConnectorService {
       const ids1 = floorsBuilding1.map(floor => floor.id);
       const ids2 = floorsBuilding2.map(floor => floor.id);
 
-      const connectors = await this.connectorRepo.findConnectorsBetweenFloors(ids1, ids2);
+      const connectors = await this.connectorRepo.findBetweenMultipleFloors(ids1, ids2);
 
       const connectorsDTO = connectors.map(connector => ConnectorMap.toDTO(connector));
 
@@ -137,7 +139,7 @@ export default class ConnectorService implements IConnectorService {
       if (floor1.buildingCode.equals(floor2.buildingCode))
         return Result.fail<IConnectorDTO>('Floors must be in different buildings');
 
-      const exists = await this.connectorRepo.findConnectorBetweenFloors(floor1.id, floor2.id);
+      const exists = await this.connectorRepo.findBetweenFloors(floor1.id, floor2.id);
 
       if (exists)
         return Result.fail<IConnectorDTO>('Connector between those floors already exists');

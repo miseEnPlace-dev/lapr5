@@ -13,6 +13,7 @@ import { Elevator } from '../domain/elevator/elevator';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import IFloorRepo from './IRepos/IFloorRepo';
 import IElevatorService from './IServices/IElevatorService';
+import { BuildingCode } from '@/domain/building/buildingCode';
 
 @Service()
 export default class ElevatorService implements IElevatorService {
@@ -25,7 +26,8 @@ export default class ElevatorService implements IElevatorService {
 
   public async getElevatorForBuilding(buildingCode: string): Promise<Result<IElevatorDTO>> {
     try {
-      const building = await this.buildingRepo.findByCode(buildingCode);
+      const code = BuildingCode.create(buildingCode).getValue();
+      const building = await this.buildingRepo.findByCode(code);
       if (!building) return Result.fail<IElevatorDTO>('Building not found');
 
       const elevator = building.elevator;
@@ -40,7 +42,8 @@ export default class ElevatorService implements IElevatorService {
 
   public async createElevator(elevatorDTO: IElevatorDTO): Promise<Result<IElevatorDTO>> {
     try {
-      const building = await this.buildingRepo.findByCode(elevatorDTO.buildingCode);
+      const buildingCode = BuildingCode.create(elevatorDTO.buildingCode).getValue();
+      const building = await this.buildingRepo.findByCode(buildingCode);
       if (!building) return Result.fail<IElevatorDTO>('Building not found');
 
       if (building.elevator) return Result.fail<IElevatorDTO>('Elevator already exists');
@@ -99,7 +102,8 @@ export default class ElevatorService implements IElevatorService {
     try {
       if (!elevatorDTO.buildingCode) return Result.fail<IElevatorDTO>('Elevator code not provided');
 
-      const building = await this.buildingRepo.findByCode(elevatorDTO.buildingCode);
+      const buildingCode = BuildingCode.create(elevatorDTO.buildingCode).getValue();
+      const building = await this.buildingRepo.findByCode(buildingCode);
       if (!building) return Result.fail<IElevatorDTO>('Building not found');
 
       if (!building.elevator) return Result.fail<IElevatorDTO>('Elevator not found');

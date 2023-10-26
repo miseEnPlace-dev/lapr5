@@ -103,7 +103,7 @@ export default class ConnectorRepo implements IConnectorRepo {
     return connectors;
   }
 
-  public async findConnectorBetweenFloors(
+  public async findBetweenFloors(
     floor1Id: UniqueEntityID,
     floor2Id: UniqueEntityID
   ): Promise<Connector | null> {
@@ -122,7 +122,7 @@ export default class ConnectorRepo implements IConnectorRepo {
     return null;
   }
 
-  public async findConnectorsBetweenFloors(
+  public async findBetweenMultipleFloors(
     ids1: UniqueEntityID[],
     ids2: UniqueEntityID[]
   ): Promise<Connector[]> {
@@ -131,6 +131,25 @@ export default class ConnectorRepo implements IConnectorRepo {
         { floor1: { $in: ids1 }, floor2: { $in: ids2 } },
         { floor1: { $in: ids2 }, floor2: { $in: ids1 } }
       ]
+    };
+
+    const records = await this.connectorSchema.find(
+      query as FilterQuery<IConnectorPersistence & Document>
+    );
+
+    const connectors: Connector[] = [];
+
+    for (const record of records) {
+      const c = await ConnectorMap.toDomain(record);
+      if (c) connectors.push(c);
+    }
+
+    return connectors;
+  }
+
+  public async findOfFloors(ids: UniqueEntityID[]): Promise<Connector[]> {
+    const query: FilterQuery<IConnectorPersistence & Document> = {
+      $or: [{ floor1: { $in: ids } }, { floor2: { $in: ids } }]
     };
 
     const records = await this.connectorSchema.find(

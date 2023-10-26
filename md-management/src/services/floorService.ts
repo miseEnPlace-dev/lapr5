@@ -15,14 +15,18 @@ import IBuildingRepo from './IRepos/IBuildingRepo';
 import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
 import { FloorMap } from '@/domain/floor/floorMap';
 import { FloorMapMapper } from '@/mappers/FloorMapMapper';
+import IConnectorRepo from './IRepos/IConnectorRepo';
 
 @Service()
 export default class FloorService implements IFloorService {
   private floorRepo: IFloorRepo;
   private buildingRepo: IBuildingRepo;
+  private connectorRepo: IConnectorRepo;
+
   constructor() {
     this.floorRepo = Container.get(config.repos.floor.name);
     this.buildingRepo = Container.get(config.repos.building.name);
+    this.connectorRepo = Container.get(config.repos.connector.name);
   }
 
   public async updateFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {
@@ -115,22 +119,50 @@ export default class FloorService implements IFloorService {
   }
 
   public async getBuildingFloors(
-    buildingCode: string
-    // filter: string
+    buildingCode: string,
+    filterStr: string | undefined
   ): Promise<Result<IFloorDTO[]>> {
     try {
       const code = BuildingCode.create(buildingCode).getValue();
       const building = await this.buildingRepo.findByCode(code);
       if (!building) return Result.fail<IFloorDTO[]>('Building not found');
 
+      const filters = filterStr ? filterStr.split(',') : undefined;
+
       const floors = await this.floorRepo.findByBuildingCode(code);
-      const floorDTOs = floors.map(floor => FloorMapper.toDTO(floor) as IFloorDTO);
-      return Result.ok<IFloorDTO[]>(floorDTOs);
+      let result = floors.map(floor => FloorMapper.toDTO(floor) as IFloorDTO);
+
+      if (filters && filters.includes('elevator')) {
+        const elevator = building.elevator;
+        if (!elevator)
+          return Result.fail<IFloorDTO[]>(
+            'Elevator not found on this building. There are no floors served with elevator.'
+          );
+
+        result = result.filter(floor =>
+          elevator.floors.map(f => f.code.value).includes(floor.code)
+        );
+      }
+
+      if (filters && filters.includes('connectors')) {
+        // find connectors where its floor1Id or floor2Id is in the list of floors
+        const connectors = await this.connectorRepo.findOfFloors(floors.map(f => f.id));
+        result = result.filter(floor => {
+          const floorId = floors.find(f => f.code.value === floor.code)?.id;
+          const floorConnectors = connectors.filter(
+            c => c.floor1.id.equals(floorId) || c.floor2.id.equals(floorId)
+          );
+          return floorConnectors.length > 0;
+        });
+      }
+
+      return Result.ok<IFloorDTO[]>(result);
     } catch (e) {
       throw e;
     }
   }
 
+  // TODO remove
   public async getFloorsWithElevator(buildingCode: string): Promise<Result<IFloorDTO[]>> {
     try {
       const code = BuildingCode.create(buildingCode).getValue();
