@@ -47,4 +47,22 @@ export default class ElevatorController implements IElevatorController {
       return next(e);
     }
   }
+
+  public async editElevator(req: Request, res: Response, next: NextFunction) {
+    const buildingCode = req.params.building as string;
+    try {
+      const elevatorOrError = (await this.elevatorServiceInstance.editElevator({
+        ...req.body,
+        buildingCode
+      } as IElevatorDTO)) as Result<IElevatorDTO>;
+
+      if (elevatorOrError.isFailure)
+        return res.status(400).send({ error: elevatorOrError.errorValue() });
+
+      const roleDTO = elevatorOrError.getValue();
+      return res.json(roleDTO).status(201);
+    } catch (e) {
+      return next(e);
+    }
+  }
 }

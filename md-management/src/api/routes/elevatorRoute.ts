@@ -16,6 +16,18 @@ const elevatorCreateSchema = z.object({
   description: z.string().optional()
 });
 
+const elevatorUpdateSchema = z.object({
+  code: z
+    .number()
+    .min(1)
+    .optional(),
+  floorCodes: z.array(z.string()).optional(),
+  brand: z.string().optional(),
+  model: z.string().optional(),
+  serialNumber: z.string().optional(),
+  description: z.string().optional()
+});
+
 export default (app: Router) => {
   const route = Router();
 
@@ -26,6 +38,9 @@ export default (app: Router) => {
   );
   route.post('/:building/elevators', validate(elevatorCreateSchema), (req, res, next) =>
     ctrl.createElevator(req, res, next)
+  );
+  route.put('/:building/elevators', validate(elevatorUpdateSchema), (req, res, next) =>
+    ctrl.editElevator(req, res, next)
   );
 
   app.use('/buildings', route);

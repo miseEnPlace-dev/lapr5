@@ -6,7 +6,7 @@ participant SYS as "RobDroneGo System" <<system (C4)>>
 
 activate CM
 
-CM -> SYS : asks to edit an elevator (brand,serial number,description) for a given building
+CM -> SYS : asks to edit an elevator (code,brand,serial number,description) for a given building
 activate SYS
 CM <-- SYS : returns confirmation message
 deactivate SYS
