@@ -11,12 +11,12 @@ participant MAP as ":ElevatorMap"
 participant BUILD as "building:Building"
 participant DTO as ":elevatorDTO:IElevatorDTO"
 
-?o-> SYS : POST /buildings/:id/elevators
+?o-> ROUTE : PUT /buildings/:id/elevators
 activate ROUTE
 
-ROUTE -> CTRL : createElevator(elevatorDTO,buildingCode)
+ROUTE -> CTRL : editElevator(elevatorDTO,buildingCode)
 activate CTRL
-CTRL -> SRV : createElevator(elevatorDTO)
+CTRL -> SRV : editElevator(elevatorDTO)
 activate SRV
 SRV -> BREPO : findByDomainId(elevatorDTO.buildingCode)
 activate BREPO
@@ -34,7 +34,7 @@ loop for each floorId in elevatorDTO.floorIds
   activate FLIST
   deactivate FLIST
 end
-SRV -> ELEV** : create()
+SRV -> ELEV** : create(id)
 SRV -> BUILD : building.elevator=newElevator
 activate BUILD
 deactivate BUILD

@@ -1,0 +1,14 @@
+@startuml process-view
+autonumber
+
+participant SYS as "MD Management" <<system (C4)>>
+
+
+?o-> SYS : PUT /buildings/:id/elevators
+activate SYS
+
+SYS -> SYS : editElevator(elevator,id)
+<-- SYS : 200 OK (newElevator JSON)
+deactivate SYS
+
+@enduml
