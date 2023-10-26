@@ -199,13 +199,15 @@ export default class FloorService implements IFloorService {
       const mapMatrix = FloorMapMatrix.create(map.map);
       if (mapMatrix.isFailure) return Result.fail<IFloorMapDTO>(mapMatrix.error as string);
 
-      const exits = FloorMapExits.create(map.exits);
+      const exits = FloorMapExits.create(map.exits.map(exit => ({ x: exit[0], y: exit[1] })));
       if (exits.isFailure) return Result.fail<IFloorMapDTO>(exits.error as string);
 
-      const exitLocation = FloorMapExitLocation.create(map.exitLocation.x, map.exitLocation.y);
+      const exitLocation = FloorMapExitLocation.create(map.exitLocation[0], map.exitLocation[1]);
       if (exitLocation.isFailure) return Result.fail<IFloorMapDTO>(exitLocation.error as string);
 
-      const elevators = FloorMapElevators.create(map.elevators);
+      const elevators = FloorMapElevators.create(
+        map.elevators.map(elevator => ({ x: elevator[0], y: elevator[1] }))
+      );
       if (elevators.isFailure) return Result.fail<IFloorMapDTO>(elevators.error as string);
 
       const mapOrError = FloorMap.create({

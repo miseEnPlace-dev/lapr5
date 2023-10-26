@@ -18,9 +18,11 @@ export class FloorMapMapper extends Mapper<FloorMap> {
         depth: floorMap.size.depth
       },
       map: floorMap.map.matrix,
-      exits: floorMap.exits.exits,
-      elevators: floorMap.elevators.elevators,
-      exitLocation: floorMap.exitLocation
+      exits: floorMap.exits.exits.map(exit => [exit.x, exit.y] as [number, number]),
+      elevators: floorMap.elevators.elevators.map(
+        elevator => [elevator.x, elevator.y] as [number, number]
+      ),
+      exitLocation: [floorMap.exitLocation.x, floorMap.exitLocation.y] as [number, number]
     };
   }
 
@@ -58,7 +60,10 @@ export class FloorMapMapper extends Mapper<FloorMap> {
       map: floorMap.map.matrix,
       exits: floorMap.exits.exits,
       elevators: floorMap.elevators.elevators,
-      exitLocation: floorMap.exitLocation
+      exitLocation: {
+        x: floorMap.exitLocation.x,
+        y: floorMap.exitLocation.y
+      }
     };
   }
 }

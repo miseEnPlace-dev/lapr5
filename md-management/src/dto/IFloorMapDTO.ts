@@ -4,16 +4,7 @@ export interface IFloorMapDTO {
     depth: number;
   };
   map: number[][];
-  exits: {
-    x: number;
-    y: number;
-  }[];
-  elevators: {
-    x: number;
-    y: number;
-  }[];
-  exitLocation: {
-    x: number;
-    y: number;
-  };
+  exits: number[][];
+  elevators: number[][];
+  exitLocation: number[];
 }

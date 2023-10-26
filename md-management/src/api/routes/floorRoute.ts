@@ -45,7 +45,7 @@ export default (app: Router) => {
   route.post('/:building/floors', validate(floorCreateSchema), (req, res, next) =>
     ctrl.createFloor(req, res, next)
   );
-  route.patch('/:building/floors/:code', multer().single('file'), (req, res, next) =>
+  route.patch('/floors/:code', multer().single('file'), (req, res, next) =>
     ctrl.uploadMap(req, res, next)
   );
   route.put('/:building/floors/:code', validate(floorUpdateSchema), (req, res, next) =>
