@@ -10,6 +10,7 @@ import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import { RoomDescription } from '@/domain/room/roomDescription';
 import { RoomDimensions } from '@/domain/room/roomDimensions';
 import Container from 'typedi';
+import { RoomCategory } from '@/domain/room/roomCategory';
 
 export class RoomMapper extends Mapper<Room> {
   public static toDTO(room: Room): IRoomDTO {
@@ -20,7 +21,8 @@ export class RoomMapper extends Mapper<Room> {
       dimensions: {
         width: room.dimensions.width,
         height: room.dimensions.height
-      }
+      },
+      category: room.category.value
     };
   }
 
@@ -39,12 +41,15 @@ export class RoomMapper extends Mapper<Room> {
       ? RoomDescription.create(room.description).getValue()
       : undefined;
 
+    const category = RoomCategory.create(room.category).getValue();
+
     const roomOrError = Room.create(
       {
         name,
         description,
         dimensions: roomDimensionsOrError.getValue(),
-        floor
+        floor,
+        category
       },
       new UniqueEntityID(room.domainId)
     );
@@ -63,7 +68,8 @@ export class RoomMapper extends Mapper<Room> {
         width: room.dimensions.width,
         height: room.dimensions.height
       },
-      floor: room.floor.id.toString()
+      floor: room.floor.id.toString(),
+      category: room.category.value
     };
   }
 }
