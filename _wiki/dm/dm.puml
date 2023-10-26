@@ -51,6 +51,7 @@ package "<<aggregate>> Device" {
 
   class SerialNumber <<(V,#FF8B40) value object>> {}
   class Nickname <<(V,#FF8B40) value object>> {}
+  class Description <<(V,#FF8B40) value object>> {}
 }
 
 DeviceModel "1" *-- "1" Brand
@@ -61,6 +62,7 @@ Device "1" --> "1" DeviceModel : is for
 
 Device "1" *-- "1" SerialNumber
 Device "1" *-- "1" Nickname
+Device "1" *-- "1" Description
 
 DeviceModel <|--- Robot
 DeviceModel <|-- Drone
