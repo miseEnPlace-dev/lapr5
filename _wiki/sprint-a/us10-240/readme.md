@@ -58,6 +58,6 @@ The views presented here are the ones that are relevant to this user story.
 
 ## 3. Demonstration
 
-`POST /passages`
+`POST /api/buildings/{buildingCode}/floors?filter=connectors`
 
 ![us10-240_demo]()

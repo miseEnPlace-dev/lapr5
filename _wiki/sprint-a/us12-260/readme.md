@@ -52,6 +52,6 @@ The views presented here are the ones that are relevant to this user story.
 
 ## 3. Demonstration
 
-`GET /passages`
+`GET /api/connectors?buildingCodes[]={buildingCode1}&buildingCodes[]={buildingCode2}`
 
 ![us12-260_demo]()
