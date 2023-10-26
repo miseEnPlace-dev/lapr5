@@ -6,7 +6,7 @@ import { BuildingCode } from '../building/buildingCode';
 import { FloorCode } from './floorCode';
 import { FloorDescription } from './floorDescription';
 import { FloorDimensions } from './floorDimensions';
-import { FloorMap } from './floorMap';
+import { FloorMap } from './floorMap/floorMap';
 
 interface FloorProps {
   code: FloorCode;

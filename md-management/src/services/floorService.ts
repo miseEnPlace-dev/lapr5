@@ -13,8 +13,13 @@ import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import IFloorService from '@/services/IServices/IFloorService';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
-import { FloorMap } from '@/domain/floor/floorMap';
+import { FloorMap } from '@/domain/floor/floorMap/floorMap';
 import { FloorMapMapper } from '@/mappers/FloorMapMapper';
+import { FloorMapSize } from '@/domain/floor/floorMap/floorMapSize';
+import { FloorMapExits } from '@/domain/floor/floorMap/floorMapExits';
+import { FloorMapExitLocation } from '@/domain/floor/floorMap/floorMapExitLocation';
+import { FloorMapElevators } from '@/domain/floor/floorMap/floorMapElevators';
+import { FloorMapMatrix } from '@/domain/floor/floorMap/floorMapMatrix';
 
 @Service()
 export default class FloorService implements IFloorService {
@@ -161,22 +166,33 @@ export default class FloorService implements IFloorService {
       const floor = await this.floorRepo.findByCode(code);
       if (!floor) return Result.fail<IFloorMapDTO>('Floor not found');
 
+      const size = FloorMapSize.create(map.size.width, map.size.depth);
+      if (size.isFailure) return Result.fail<IFloorMapDTO>(size.error as string);
+
+      const mapMatrix = FloorMapMatrix.create(map.map);
+      if (mapMatrix.isFailure) return Result.fail<IFloorMapDTO>(mapMatrix.error as string);
+
+      const exits = FloorMapExits.create(map.exits);
+      if (exits.isFailure) return Result.fail<IFloorMapDTO>(exits.error as string);
+
+      const exitLocation = FloorMapExitLocation.create(map.exitLocation.x, map.exitLocation.y);
+      if (exitLocation.isFailure) return Result.fail<IFloorMapDTO>(exitLocation.error as string);
+
+      const elevators = FloorMapElevators.create(map.elevators);
+      if (elevators.isFailure) return Result.fail<IFloorMapDTO>(elevators.error as string);
+
       const mapOrError = FloorMap.create({
-        size: {
-          width: map.size.width,
-          depth: map.size.depth
-        },
-        exits: map.exits,
-        elevators: map.elevators,
-        exitLocation: map.exitLocation,
-        map: map.map
+        size: size.getValue(),
+        map: mapMatrix.getValue(),
+        exits: exits.getValue(),
+        exitLocation: exitLocation.getValue(),
+        elevators: elevators.getValue()
       });
       if (mapOrError.isFailure) return Result.fail<IFloorMapDTO>(mapOrError.error as string);
 
       floor.map = mapOrError.getValue();
 
       await this.floorRepo.save(floor);
-
       const floorMapDTO = FloorMapMapper.toDTO(floor.map) as IFloorMapDTO;
 
       return Result.ok<IFloorMapDTO>(floorMapDTO);
