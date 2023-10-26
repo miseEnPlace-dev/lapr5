@@ -1,0 +1,13 @@
+@startuml process-view
+autonumber
+participant SYS as "MD Management" <<system (C4)>>
+
+
+?o-> SYS : PUT /{buildingCode}/floors/{floorCode}
+activate SYS
+
+SYS -> SYS : editFloor(floorDTO)
+<-- SYS : 200 OK (floor JSON)
+deactivate SYS
+
+@enduml
