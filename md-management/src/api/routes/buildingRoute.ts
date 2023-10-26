@@ -47,10 +47,8 @@ const buildingUpdateSchema = z.object({
 export default (app: Router) => {
   const route = Router();
   const ctrl = Container.get(config.controllers.building.name) as IBuildingController;
-  const floorCtrl = Container.get(config.controllers.floor.name) as IFloorController;
 
   route.get('', (req, res, next) => ctrl.getBuildings(req, res, next));
-  route.get('/:code/floors', (req, res, next) => floorCtrl.getBuildingWithFloors(req, res, next));
   route.post('', validate(buildingCreateSchema), (req, res, next) =>
     ctrl.createBuilding(req, res, next)
   );

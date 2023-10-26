@@ -6,13 +6,12 @@ import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
 export default interface IFloorService {
   createFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>>;
 
-  getBuildingFloors(buildingId: BuildingCode): Promise<Result<IFloorDTO[]>>;
-
-  getFloorsWithElevator(buildingCode: BuildingCode): Promise<Result<IFloorDTO[]>>;
+  getBuildingFloors(
+    buildingId: string // , filter: string
+  ): Promise<Result<IFloorDTO[]>>;
+  getFloorsWithElevator(buildingCode: string): Promise<Result<IFloorDTO[]>>;
 
   updateFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>>;
 
   uploadMap(floorCode: string, map: IFloorMapDTO): Promise<Result<IFloorMapDTO>>;
-
-  //  getBuilding(BuildingId: string): Promise<Result<IBuildingDTO>>;
 }

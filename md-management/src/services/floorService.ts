@@ -31,7 +31,8 @@ export default class FloorService implements IFloorService {
       const floor = await this.floorRepo.findByCode(code);
       if (!floor) return Result.fail<IFloorDTO>('Floor not found');
 
-      const building = await this.buildingRepo.findByCode(floor.buildingCode.value);
+      const buildingCode = BuildingCode.create(floorDTO.buildingCode).getValue();
+      const building = await this.buildingRepo.findByCode(buildingCode);
       if (!building) return Result.fail<IFloorDTO>('Building does not exist');
 
       if (
@@ -73,10 +74,9 @@ export default class FloorService implements IFloorService {
         ? FloorDescription.create(floorDTO.description)
         : undefined;
 
-      const building = await this.buildingRepo.findByCode(floorDTO.buildingCode);
-      if (!building) return Result.fail<IFloorDTO>('Building does not exist');
-
       const buildingCode = BuildingCode.create(floorDTO.buildingCode).getValue();
+      const building = await this.buildingRepo.findByCode(buildingCode);
+      if (!building) return Result.fail<IFloorDTO>('Building does not exist');
 
       if (
         !floorDTO.dimensions ||
@@ -114,22 +114,16 @@ export default class FloorService implements IFloorService {
     }
   }
 
-  public async getAllFloors(): Promise<Result<IFloorDTO[]>> {
+  public async getBuildingFloors(
+    buildingCode: string
+    // filter: string
+  ): Promise<Result<IFloorDTO[]>> {
     try {
-      const floors = await this.floorRepo.findAll();
-      const floorDTOs = floors.map(floor => FloorMapper.toDTO(floor));
-      return Result.ok<IFloorDTO[]>(floorDTOs);
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  public async getBuildingFloors(buildingCode: BuildingCode): Promise<Result<IFloorDTO[]>> {
-    try {
-      const building = await this.buildingRepo.findByCode(buildingCode.value);
+      const code = BuildingCode.create(buildingCode).getValue();
+      const building = await this.buildingRepo.findByCode(code);
       if (!building) return Result.fail<IFloorDTO[]>('Building not found');
 
-      const floors = await this.floorRepo.findByBuildingCode(buildingCode);
+      const floors = await this.floorRepo.findByBuildingCode(code);
       const floorDTOs = floors.map(floor => FloorMapper.toDTO(floor) as IFloorDTO);
       return Result.ok<IFloorDTO[]>(floorDTOs);
     } catch (e) {
@@ -137,9 +131,10 @@ export default class FloorService implements IFloorService {
     }
   }
 
-  public async getFloorsWithElevator(buildingCode: BuildingCode): Promise<Result<IFloorDTO[]>> {
+  public async getFloorsWithElevator(buildingCode: string): Promise<Result<IFloorDTO[]>> {
     try {
-      const building = await this.buildingRepo.findByCode(buildingCode.value);
+      const code = BuildingCode.create(buildingCode).getValue();
+      const building = await this.buildingRepo.findByCode(code);
       if (!building) return Result.fail<IFloorDTO[]>('Building not found');
 
       const elevator = building.elevator;
