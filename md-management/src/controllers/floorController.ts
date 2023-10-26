@@ -8,6 +8,7 @@ import { IFloorDTO } from '@/dto/IFloorDTO';
 import IFloorService from '@/services/IServices/IFloorService';
 import IFloorController from './IControllers/IFloorController';
 import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
+import { z } from 'zod';
 
 @Service()
 export default class FloorController implements IFloorController {
@@ -58,32 +59,20 @@ export default class FloorController implements IFloorController {
   public async getFloors(req: Request, res: Response, next: NextFunction) {
     try {
       const buildingCode = req.params.building;
+
+      const filterSchema = z.object({ filter: z.string().optional() });
+      const filter = filterSchema.safeParse(req.query);
+      if (!filter.success) return res.status(400).json({ errors: filter.error });
+
       const floorsOrError = (await this.floorServiceInstance.getBuildingFloors(
-        buildingCode
+        buildingCode,
+        filter.data.filter
       )) as Result<IFloorDTO[]>;
 
       if (floorsOrError.isFailure)
         return res.status(400).send({
           message: floorsOrError.errorValue()
         });
-
-      const floorsDTO = floorsOrError.getValue();
-      return res.status(200).json(floorsDTO);
-    } catch (e) {
-      return next(e);
-    }
-  }
-
-  public async getFloorsWithElevator(req: Request, res: Response, next: NextFunction) {
-    if (!req.query.hasElevator || !req.query.building) return res.status(400).send();
-    const query = { hasElevator: req.query.hasElevator, building: req.params.building };
-
-    try {
-      const floorsOrError = (await this.floorServiceInstance.getFloorsWithElevator(
-        query.building as string
-      )) as Result<IFloorDTO[]>;
-
-      if (floorsOrError.isFailure) return res.status(400).send();
 
       const floorsDTO = floorsOrError.getValue();
       return res.status(200).json(floorsDTO);
