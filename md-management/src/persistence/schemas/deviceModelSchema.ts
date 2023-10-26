@@ -10,6 +10,7 @@ const DeviceModel = new mongoose.Schema(
 
     code: {
       type: String,
+      unique: true,
       index: true
     },
 
