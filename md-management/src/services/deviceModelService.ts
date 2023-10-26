@@ -22,9 +22,7 @@ export default class DeviceModelService implements IDeviceModelService {
     this.deviceModelRepo = Container.get(config.repos.deviceModel.name);
   }
 
-  public async createDeviceModel(
-    deviceModelDTO: IDeviceModelDTO
-  ): Promise<Result<IDeviceModelDTO>> {
+  public async createDevice(deviceModelDTO: IDeviceModelDTO): Promise<Result<IDeviceModelDTO>> {
     try {
       const code = DeviceModelCode.create(deviceModelDTO.code).getValue();
       const brand = DeviceModelBrand.create(deviceModelDTO.brand).getValue();

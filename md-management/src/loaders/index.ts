@@ -154,6 +154,26 @@ export default async ({ expressApp }: { expressApp: Express }) => {
     schema: config.schemas.deviceModel.schema
   };
 
+  const deviceSchema = {
+    name: config.schemas.device.name,
+    schema: config.schemas.device.schema
+  };
+
+  const deviceService = {
+    name: config.services.device.name,
+    path: config.services.device.path
+  };
+
+  const deviceRepo = {
+    name: config.repos.device.name,
+    path: config.repos.device.path
+  };
+
+  const deviceController = {
+    name: config.controllers.device.name,
+    path: config.controllers.device.path
+  };
+
   dependencyInjectorLoader({
     schemas: [
       userSchema,
@@ -162,7 +182,8 @@ export default async ({ expressApp }: { expressApp: Express }) => {
       floorSchema,
       roomSchema,
       connectorSchema,
-      deviceModelSchema
+      deviceModelSchema,
+      deviceSchema
     ],
     controllers: [
       roleController,
@@ -171,9 +192,19 @@ export default async ({ expressApp }: { expressApp: Express }) => {
       elevatorController,
       roomController,
       connectorController,
-      deviceModelController
+      deviceModelController,
+      deviceController
     ],
-    repos: [roleRepo, userRepo, buildingRepo, floorRepo, roomRepo, connectorRepo, deviceModelRepo],
+    repos: [
+      roleRepo,
+      userRepo,
+      buildingRepo,
+      floorRepo,
+      roomRepo,
+      connectorRepo,
+      deviceModelRepo,
+      deviceRepo
+    ],
     services: [
       roleService,
       buildingService,
@@ -181,7 +212,8 @@ export default async ({ expressApp }: { expressApp: Express }) => {
       elevatorService,
       roomService,
       connectorService,
-      deviceModelService
+      deviceModelService,
+      deviceService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');

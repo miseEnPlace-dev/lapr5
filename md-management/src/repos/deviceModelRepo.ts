@@ -9,12 +9,22 @@ import { DeviceModelCode } from '@/domain/device-model/deviceModelCode';
 import { DeviceModelMapper } from '@/mappers/DeviceModelMapper';
 import IDeviceModelRepo from '@/services/IRepos/IDeviceModelRepo';
 import { Document, FilterQuery, Model } from 'mongoose';
+import { DeviceModelName } from '@/domain/device-model/deviceModelName';
 
 @Service()
 export default class DeviceModelRepo implements IDeviceModelRepo {
   private deviceModelSchema: Model<IDeviceModelPersistence & Document>;
   constructor() {
     this.deviceModelSchema = Container.get(config.schemas.deviceModel.name);
+  }
+
+  public async findByName(name: DeviceModelName | string): Promise<DeviceModel | null> {
+    const query: FilterQuery<IDeviceModelPersistence & Document> = { name };
+
+    const deviceModelRecord = await this.deviceModelSchema.findOne(query);
+
+    if (deviceModelRecord) return DeviceModelMapper.toDomain(deviceModelRecord);
+    return null;
   }
 
   public async exists(deviceModel: DeviceModel): Promise<boolean> {
