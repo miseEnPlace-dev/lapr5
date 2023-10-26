@@ -7,4 +7,5 @@ export interface IRoomPersistence {
     height: number;
   };
   floor: string;
+  category: string;
 }

@@ -9,9 +9,7 @@ export default interface IConnectorRepo extends Repo<Connector> {
   findByCode(code: ConnectorCode): Promise<Connector | null>;
   findAll(): Promise<Connector[]>;
   findByFloorId(floorId: UniqueEntityID): Promise<Connector[]>;
-  findConnectorBetweenFloors(
-    floor1Id: UniqueEntityID,
-    floor2Id: UniqueEntityID
-  ): Promise<Connector | null>;
-  findConnectorsBetweenFloors(ids1: UniqueEntityID[], ids2: UniqueEntityID[]): Promise<Connector[]>;
+  findBetweenFloors(floor1Id: UniqueEntityID, floor2Id: UniqueEntityID): Promise<Connector | null>;
+  findBetweenMultipleFloors(ids1: UniqueEntityID[], ids2: UniqueEntityID[]): Promise<Connector[]>;
+  findOfFloors(ids: UniqueEntityID[]): Promise<Connector[]>;
 }

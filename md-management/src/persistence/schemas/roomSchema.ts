@@ -21,6 +21,10 @@ const RoomSchema = new mongoose.Schema(
 
     floor: {
       type: String
+    },
+
+    category: {
+      type: String
     }
   },
   { timestamps: true }

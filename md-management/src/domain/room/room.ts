@@ -3,6 +3,7 @@ import { UniqueEntityID } from '../../core/domain/UniqueEntityID';
 import { Guard } from '../../core/logic/Guard';
 import { Result } from '../../core/logic/Result';
 import { Floor } from '../floor/floor';
+import { RoomCategory } from './roomCategory';
 import { RoomDescription } from './roomDescription';
 import { RoomDimensions } from './roomDimensions';
 import { RoomName } from './roomName';
@@ -12,6 +13,7 @@ interface RoomProps {
   description?: RoomDescription;
   dimensions: RoomDimensions;
   floor: Floor;
+  category: RoomCategory;
 }
 
 export class Room extends AggregateRoot<RoomProps> {
@@ -35,6 +37,10 @@ export class Room extends AggregateRoot<RoomProps> {
     return this.props.floor;
   }
 
+  get category(): RoomCategory {
+    return this.props.category;
+  }
+
   private constructor(props: RoomProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -43,7 +49,8 @@ export class Room extends AggregateRoot<RoomProps> {
     const guardedProps = [
       { argument: props.name, argumentName: 'name' },
       { argument: props.dimensions, argumentName: 'dimensions' },
-      { argument: props.floor, argumentName: 'floor' }
+      { argument: props.floor, argumentName: 'floor' },
+      { argument: props.category, argumentName: 'category' }
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);

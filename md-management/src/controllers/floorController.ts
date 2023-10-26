@@ -4,11 +4,11 @@ import Container, { Service } from 'typedi';
 import config from '@/config.mjs';
 
 import { Result } from '@/core/logic/Result';
-import { BuildingCode } from '@/domain/building/buildingCode';
 import { IFloorDTO } from '@/dto/IFloorDTO';
 import IFloorService from '@/services/IServices/IFloorService';
 import IFloorController from './IControllers/IFloorController';
 import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
+import { z } from 'zod';
 
 @Service()
 export default class FloorController implements IFloorController {
@@ -20,9 +20,11 @@ export default class FloorController implements IFloorController {
 
   public async createFloor(req: Request, res: Response, next: NextFunction) {
     try {
-      const floorOrError = (await this.floorServiceInstance.createFloor(
-        req.body as IFloorDTO
-      )) as Result<IFloorDTO>;
+      const buildingCode = req.params.building;
+      const floorOrError = (await this.floorServiceInstance.createFloor({
+        ...req.body,
+        buildingCode
+      } as IFloorDTO)) as Result<IFloorDTO>;
 
       if (floorOrError.isFailure)
         return next({
@@ -39,10 +41,11 @@ export default class FloorController implements IFloorController {
 
   public async updateFloor(req: Request, res: Response, next: NextFunction) {
     try {
-      req.body.code = req.params.code;
-      const floorOrError = (await this.floorServiceInstance.updateFloor(
-        req.body as IFloorDTO
-      )) as Result<IFloorDTO>;
+      const buildingCode = req.params.building;
+      const floorOrError = (await this.floorServiceInstance.updateFloor({
+        ...req.body,
+        buildingCode
+      } as IFloorDTO)) as Result<IFloorDTO>;
 
       if (floorOrError.isFailure) return res.status(400).json({ error: floorOrError.errorValue() });
 
@@ -53,45 +56,23 @@ export default class FloorController implements IFloorController {
     }
   }
 
-  public async getBuildingWithFloors(req: Request, res: Response, next: NextFunction) {
-    const buildingCode = BuildingCode.create(req.params.code as string);
-
-    if (buildingCode.isFailure)
-      return res.status(400).send({
-        message: 'Invalid buildingId query parameter'
-      });
-
+  public async getFloors(req: Request, res: Response, next: NextFunction) {
     try {
+      const buildingCode = req.params.building;
+
+      const filterSchema = z.object({ filter: z.string().optional() });
+      const filter = filterSchema.safeParse(req.query);
+      if (!filter.success) return res.status(400).json({ errors: filter.error });
+
       const floorsOrError = (await this.floorServiceInstance.getBuildingFloors(
-        buildingCode.getValue()
+        buildingCode,
+        filter.data.filter
       )) as Result<IFloorDTO[]>;
 
       if (floorsOrError.isFailure)
         return res.status(400).send({
           message: floorsOrError.errorValue()
         });
-
-      const floorsDTO = floorsOrError.getValue();
-      return res.status(200).json(floorsDTO);
-    } catch (e) {
-      return next(e);
-    }
-  }
-
-  public async getFloorsWithElevator(req: Request, res: Response, next: NextFunction) {
-    if (!req.query.hasElevator || !req.query.building) return res.status(400).send();
-    const query = { hasElevator: req.query.hasElevator, building: req.query.building };
-
-    try {
-      const buildingCode = BuildingCode.create(query.building as string);
-
-      if (buildingCode.isFailure) return res.status(400).send();
-
-      const floorsOrError = (await this.floorServiceInstance.getFloorsWithElevator(
-        buildingCode.getValue()
-      )) as Result<IFloorDTO[]>;
-
-      if (floorsOrError.isFailure) return res.status(400).send();
 
       const floorsDTO = floorsOrError.getValue();
       return res.status(200).json(floorsDTO);

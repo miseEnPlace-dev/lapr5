@@ -12,11 +12,7 @@
 
 **"As a Campus Manager, I want to list connectors between 2 buildings."**
 
-## 1.1. Client Specifications
-
-...
-
-## 1.2. Client Clarifications
+## 1.1. Client Clarifications
 
 > [**Question**: (...) haverão múltiplas passagens entre 2 edifícios? (...) esta listagem necessita de uma questão ao utilizador para listar passagens entre todos os edifícios ou entre 2?](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25007)
 >
@@ -56,6 +52,6 @@ The views presented here are the ones that are relevant to this user story.
 
 ## 3. Demonstration
 
-`GET /passages`
+`GET /api/connectors?buildingCodes[]={buildingCode1}&buildingCodes[]={buildingCode2}`
 
 ![us12-260_demo]()
