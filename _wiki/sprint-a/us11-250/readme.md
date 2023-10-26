@@ -12,11 +12,7 @@
 
 **"As a Campus Manager, I want to edit a connector between buildings."**
 
-## 1.1. Client Specifications
-
-...
-
-## 1.2. Client Clarifications
+## 1.1. Client Clarifications
 
 > [**Question**: Relativamente à US250 o que é que pretende que seja possivel editar numa passagem entre edificios?](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25164)
 >
