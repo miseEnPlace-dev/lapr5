@@ -1,9 +1,14 @@
 import { Mapper } from '../core/infra/Mapper';
 
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
-import { FloorMap } from '@/domain/floor/floorMap';
+import { FloorMap } from '@/domain/floor/floorMap/floorMap';
 import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
 import { IFloorMapPersistence } from '@/dataschema/IFloorMapPersistence';
+import { FloorMapSize } from '@/domain/floor/floorMap/floorMapSize';
+import { FloorMapElevators } from '@/domain/floor/floorMap/floorMapElevators';
+import { FloorMapExitLocation } from '@/domain/floor/floorMap/floorMapExitLocation';
+import { FloorMapExits } from '@/domain/floor/floorMap/floorMapExits';
+import { FloorMapMatrix } from '@/domain/floor/floorMap/floorMapMatrix';
 
 export class FloorMapMapper extends Mapper<FloorMap> {
   public static toDTO(floorMap: FloorMap): IFloorMapDTO {
@@ -12,25 +17,31 @@ export class FloorMapMapper extends Mapper<FloorMap> {
         width: floorMap.size.width,
         depth: floorMap.size.depth
       },
-      map: floorMap.map,
-      exits: floorMap.exits,
-      elevators: floorMap.elevators,
-      exitLocation: floorMap.exitLocation
+      map: floorMap.map.matrix,
+      exits: floorMap.exits.exits.map(exit => [exit.x, exit.y] as [number, number]),
+      elevators: floorMap.elevators.elevators.map(
+        elevator => [elevator.x, elevator.y] as [number, number]
+      ),
+      exitLocation: [floorMap.exitLocation.x, floorMap.exitLocation.y] as [number, number]
     };
   }
 
   public static async toDomain(floorMap: IFloorMapPersistence): Promise<FloorMap | null> {
+    const size = FloorMapSize.create(floorMap.size.width, floorMap.size.depth).getValue();
+
+    const mapMatrix = FloorMapMatrix.create(floorMap.map).getValue();
+
+    const exits = FloorMapExits.create(floorMap.exits).getValue();
+
+    const exitLocation = FloorMapExitLocation.create(
+      floorMap.exitLocation.x,
+      floorMap.exitLocation.y
+    ).getValue();
+
+    const elevators = FloorMapElevators.create(floorMap.elevators).getValue();
+
     const floorMapOrError = FloorMap.create(
-      {
-        size: {
-          width: floorMap.size.width,
-          depth: floorMap.size.depth
-        },
-        map: floorMap.map,
-        exits: floorMap.exits,
-        elevators: floorMap.elevators,
-        exitLocation: floorMap.exitLocation
-      },
+      { size: size, map: mapMatrix, exits, exitLocation, elevators },
       new UniqueEntityID(floorMap.domainId)
     );
 
@@ -46,10 +57,13 @@ export class FloorMapMapper extends Mapper<FloorMap> {
         width: floorMap.size.width,
         depth: floorMap.size.depth
       },
-      map: floorMap.map,
-      exits: floorMap.exits,
-      elevators: floorMap.elevators,
-      exitLocation: floorMap.exitLocation
+      map: floorMap.map.matrix,
+      exits: floorMap.exits.exits,
+      elevators: floorMap.elevators.elevators,
+      exitLocation: {
+        x: floorMap.exitLocation.x,
+        y: floorMap.exitLocation.y
+      }
     };
   }
 }

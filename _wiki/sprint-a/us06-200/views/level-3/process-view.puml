@@ -1,0 +1,33 @@
+@startuml process-view
+autonumber
+participant route as ":FloorRoute"
+participant controller as ":FloorController"
+participant service as ":FloorService"
+participant building_repo as ":BuildingRepo"
+participant floor as ":floor:Floor"
+participant floor_repo as ":FloorRepo"
+participant map as ":FloorMap"
+participant PERS as "FloorPersistence:IFloorPersistence"
+participant MODEL as ":Model<IFloorPersistence & Document>"
+participant NBUILD as ":newFloor:Floor"
+participant DTO as ":FloorDTO:IFloorDTO"
+
+?o-> route : POST /{buildingCode}/floors/{floorCode}
+activate route
+route -> controller : updateFloor(buildingCode, floorCode, floorDTO)
+activate controller
+controller -> service : updateFloor(buildingCode, floorCode, floorDTO)
+activate service
+service -> floor_repo : findByCode(floorCode)
+activate floor_repo
+deactivate floor_repo
+service -> service : updateFloor(floor, floorDTO)
+activate service
+deactivate service
+service -> floor_repo : save(floor)
+activate floor_repo
+deactivate floor_repo
+
+
+
+@enduml

@@ -95,4 +95,16 @@ export class Guard {
       return { succeeded: true };
     }
   }
+
+  public static is2DArray(array: unknown, argumentName: string): IGuardResult {
+    if (!Array.isArray(array)) {
+      return { succeeded: false, message: `${argumentName} is not an array.` };
+    }
+
+    if (!array.every(Array.isArray)) {
+      return { succeeded: false, message: `${argumentName} is not a 2D array.` };
+    }
+
+    return { succeeded: true };
+  }
 }

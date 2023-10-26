@@ -41,14 +41,16 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.floor.name) as IFloorController;
 
-  route.get('', (req, res, next) => ctrl.getFloorsWithElevator(req, res, next));
-  route.post('', validate(floorCreateSchema), (req, res, next) => ctrl.createFloor(req, res, next));
-  route.patch('/:code', multer().single('file'), (req, res, next) =>
+  route.get('/:building/floors', (req, res, next) => ctrl.getFloors(req, res, next));
+  route.post('/:building/floors', validate(floorCreateSchema), (req, res, next) =>
+    ctrl.createFloor(req, res, next)
+  );
+  route.patch('/floors/:code', multer().single('file'), (req, res, next) =>
     ctrl.uploadMap(req, res, next)
   );
-  route.put('/:code', validate(floorUpdateSchema), (req, res, next) =>
+  route.put('/:building/floors/:code', validate(floorUpdateSchema), (req, res, next) =>
     ctrl.updateFloor(req, res, next)
   );
 
-  app.use('/floors', route);
+  app.use('/buildings', route);
 };
