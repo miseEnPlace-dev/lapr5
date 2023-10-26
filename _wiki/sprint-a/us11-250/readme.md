@@ -22,6 +22,12 @@
 >
 > **Answer**: "(...) deve ser possível corrigir todos os dados da passagem."
 
+---
+
+> [**Question**: Em relação às User Stories de edição, temos já uma ideia das informações que são opcionais, mas queremos ter a certeza daquilo que é editável ou não. Posto isto, poderia indicar que informações pretende editar nas US160, US200, US250 e US280?](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25168)
+>
+> **Answer**: "(...) Requisito 250 - editar passagem - todas as informações (...)"
+
 ## 2. Analysis
 
 ### 2.1. Views
