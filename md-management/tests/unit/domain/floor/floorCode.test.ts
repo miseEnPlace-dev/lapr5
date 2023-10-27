@@ -11,14 +11,12 @@ describe('FloorCode', () => {
   it('should create new code with 5 characters', () => {
     const result = FloorCode.create('1234a');
     expect(result.isSuccess).toBe(true);
-    console.log(result.getValue());
     expect(result.getValue().value).toBe('1234a');
   });
 
   it('should allow spaces', () => {
     const result = FloorCode.create('12 a');
     expect(result.isSuccess).toBe(true);
-    console.log(result.getValue());
     expect(result.getValue().value).toBe('12 a');
   });
 
