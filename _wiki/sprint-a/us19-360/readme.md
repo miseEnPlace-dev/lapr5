@@ -12,7 +12,7 @@
 
 > "As a Fleet Manager, I want to add a new robot with a given type, name, etc."
 
-## 1.1. Client Specifications
+## 1.1. Client Clarifications
 
 ## [Question](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25265)
 
@@ -21,9 +21,10 @@
 ### Answer
 
 "
+
 - código identificativo, obrigatório, alfanumerico, max 30 caracteres, único no sistema
 
-- nickname, obrigatório, obrigatório, alfanumerico, max 30 caracteres, único no sistema 
+- nickname, obrigatório, obrigatório, alfanumerico, max 30 caracteres, único no sistema
 
 - tipo de robot, obrigatório
 
