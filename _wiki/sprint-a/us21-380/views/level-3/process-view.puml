@@ -1,0 +1,35 @@
+@startuml process-view
+autonumber
+participant ROUTE as ":DeviceModelRoute"
+participant CTRL as ":DeviceModelController"
+participant SRV as ":DeviceModelService"
+participant BUILD as ":deviceModel:DeviceModel"
+participant REPO as ":DeviceModelRepo"
+participant MAP as ":DeviceModelMap"
+participant DTO as ":deviceModelDTO:IDeviceModelDTO"
+
+?o-> ROUTE : GET /device-models
+activate ROUTE
+
+ROUTE -> CTRL : getRobots()
+activate CTRL
+CTRL -> SRV : getRobots()
+activate SRV
+SRV-> REPO : findAll()
+activate REPO
+REPO -> SRV : findAll()
+deactivate REPO
+  loop foreach deviceModel
+    SRV -> MAP : toDto(robot)
+    activate MAP
+    MAP -> DTO** : create()
+    deactivate MAP
+  end
+SRV --> CTRL : sucess(robotsDTO)
+deactivate SRV
+CTRL --> ROUTE : sucess(robotsDTO)
+deactivate CTRL
+<-- ROUTE : 200 OK
+deactivate ROUTE
+
+@enduml

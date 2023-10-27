@@ -11,7 +11,7 @@ participant MODEL as ":Model<IDeviceModelPersistence & Document>"
 participant NBUILD as ":newDeviceModel:DeviceModel"
 participant DTO as ":deviceModelDTO:IDeviceModelDTO"
 
-?o-> SYS : POST /device-models
+?o-> ROUTE : POST /device-models
 activate ROUTE
 
 ROUTE -> CTRL : createDeviceModel(elevatorDTO)

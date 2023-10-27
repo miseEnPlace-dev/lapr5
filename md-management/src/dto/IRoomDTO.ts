@@ -6,4 +6,5 @@ export interface IRoomDTO {
     width: number;
     height: number;
   };
+  category: string;
 }

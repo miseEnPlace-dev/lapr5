@@ -3,10 +3,10 @@ autonumber
 participant SYS as "MD Management" <<system (C4)>>
 
 
-?o-> SYS : POST /floors
+?o-> SYS : POST /{buildingCode}/floors
 activate SYS
 
-SYS -> SYS : createFloor(floor)
+SYS -> SYS : createFloor(floorDTO)
 <-- SYS : 201 Created (floor JSON)
 deactivate SYS
 

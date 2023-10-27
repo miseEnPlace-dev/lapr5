@@ -20,7 +20,7 @@ export default class DeviceModelController implements IDeviceModelController {
 
   public async createDeviceModel(req: Request, res: Response, next: NextFunction) {
     try {
-      const deviceModelOrError = (await this.deviceModelServiceInstance.createDeviceModel(
+      const deviceModelOrError = (await this.deviceModelServiceInstance.createDevice(
         req.body as IDeviceModelDTO
       )) as Result<IDeviceModelDTO>;
 

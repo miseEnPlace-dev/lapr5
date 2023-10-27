@@ -12,7 +12,7 @@ participant MODEL as ":Model<IFloorPersistence & Document>"
 participant NBUILD as ":newFloor:Floor"
 participant DTO as ":FloorDTO:IFloorDTO"
 
-?o-> ROUTE : POST /floors
+?o-> ROUTE : POST /{buildingCode}/floors
 activate ROUTE
 
 ROUTE -> CTRL : createFloor(request)
@@ -28,8 +28,8 @@ SRV -> REPO : save(floor)
 activate REPO
 REPO -> MAP : toPersitence(floor)
 activate MAP
+MAP -> PERS** : create()
 deactivate MAP
-REPO -> PERS** : create()
 REPO -> MODEL : create(floorPersistence)
 activate MODEL
 deactivate MODEL

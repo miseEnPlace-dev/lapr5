@@ -5,7 +5,7 @@ export interface IFloorMapPersistence {
     depth: number;
   };
   map: number[][];
-  exits: number[][];
-  elevators: number[][];
-  exitLocation: number[];
+  exits: { x: number; y: number }[];
+  elevators: { x: number; y: number }[];
+  exitLocation: { x: number; y: number };
 }

@@ -12,6 +12,7 @@ import { Room } from '@/domain/room/room';
 import { RoomDimensions } from '@/domain/room/roomDimensions';
 import { RoomMapper } from '@/mappers/RoomMapper';
 import { FloorCode } from '@/domain/floor/floorCode';
+import { RoomCategory } from '@/domain/room/roomCategory';
 
 @Service()
 export default class RoomService implements IRoomService {
@@ -58,11 +59,16 @@ export default class RoomService implements IRoomService {
 
         if (dimensions.isFailure) return Result.fail<IRoomDTO>(dimensions.error);
 
+        const category = RoomCategory.create(roomDTO.category);
+
+        if (category.isFailure) return Result.fail<IRoomDTO>(category.error as string);
+
         const roomOrError = Room.create({
           name: name.getValue(),
           description: description?.getValue(),
           dimensions: dimensions.getValue(),
-          floor
+          floor,
+          category: category.getValue()
         });
 
         if (roomOrError.isFailure) return Result.fail<IRoomDTO>(roomOrError.error as string);
