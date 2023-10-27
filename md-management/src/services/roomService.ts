@@ -1,6 +1,5 @@
-import Container, { Service } from 'typedi';
+import { Service } from '@freshgum/typedi';
 
-import config from '@/config.mjs';
 import { Result } from '@/core/logic/Result';
 import { FloorCode } from '@/domain/floor/floorCode';
 import { Room } from '@/domain/room/room';
@@ -10,20 +9,15 @@ import { RoomDimensions } from '@/domain/room/roomDimensions';
 import { RoomName } from '@/domain/room/roomName';
 import { IRoomDTO } from '@/dto/IRoomDTO';
 import { RoomMapper } from '@/mappers/RoomMapper';
+import FloorRepo from '@/repos/floorRepo';
+import RoomRepo from '@/repos/roomRepo';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import IRoomRepo from './IRepos/IRoomRepo';
 import IRoomService from './IServices/IRoomService';
 
-@Service()
+@Service([RoomRepo, FloorRepo])
 export default class RoomService implements IRoomService {
-  private roomRepo: IRoomRepo;
-  private floorRepo: IFloorRepo;
-  constructor(floorRepo?: IFloorRepo, roomRepo?: IRoomRepo) {
-    if (floorRepo) this.floorRepo = floorRepo;
-    else this.floorRepo = Container.get(config.repos.floor.name);
-    if (roomRepo) this.roomRepo = roomRepo;
-    else this.roomRepo = Container.get(config.repos.room.name);
-  }
+  constructor(private floorRepo: IFloorRepo, private roomRepo: IRoomRepo) {}
 
   public async createRoom(roomDTO: IRoomDTO): Promise<Result<IRoomDTO>> {
     try {

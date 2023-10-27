@@ -1,6 +1,4 @@
-import Container, { Service } from 'typedi';
-
-import config from '@/config.mjs';
+import { Service } from '@freshgum/typedi';
 
 import { IFloorPersistence } from '@/dataschema/IFloorPersistence';
 import { Floor } from '@/domain/floor/floor';
@@ -11,28 +9,25 @@ import { IRolePersistence } from '@/dataschema/IRolePersistence';
 import { BuildingCode } from '@/domain/building/buildingCode';
 import { FloorMapMapper } from '@/mappers/FloorMapMapper';
 import { FloorMapper } from '@/mappers/FloorMapper';
+import floorSchema from '@/persistence/schemas/floorSchema';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
-import { Document, FilterQuery, Model } from 'mongoose';
+import { Document, FilterQuery } from 'mongoose';
 
-@Service()
+@Service([])
 export default class FloorRepo implements IFloorRepo {
-  private floorSchema: Model<IFloorPersistence & Document>;
-  constructor(floorSchema?: Model<IFloorPersistence & Document>) {
-    if (floorSchema) this.floorSchema = floorSchema;
-    else this.floorSchema = Container.get(config.schemas.floor.name);
-  }
+  constructor() {}
 
   public async exists(floor: Floor): Promise<boolean> {
     const idX = floor.id instanceof FloorCode ? (<FloorCode>floor.id).value : floor.id;
 
     const query: FilterQuery<IRolePersistence & Document> = { domainId: idX };
-    const roleDocument = await this.floorSchema.findOne(query);
+    const roleDocument = await floorSchema.findOne(query);
 
     return !!roleDocument;
   }
 
   public async findBuildingCodesWithMinMaxFloors(min: number, max: number): Promise<string[]> {
-    const floors = await this.floorSchema.aggregate([
+    const floors = await floorSchema.aggregate([
       {
         $group: {
           _id: '$building',
@@ -51,13 +46,13 @@ export default class FloorRepo implements IFloorRepo {
   public async save(floor: Floor): Promise<Floor> {
     const query: FilterQuery<IFloorPersistence & Document> = { domainId: floor.id };
 
-    const floorDocument = await this.floorSchema.findOne(query);
+    const floorDocument = await floorSchema.findOne(query);
 
     try {
       if (!floorDocument) {
         const rawFloor = FloorMapper.toPersistence(floor);
 
-        const floorCreated = await this.floorSchema.create(rawFloor);
+        const floorCreated = await floorSchema.create(rawFloor);
 
         const domainFloor = await FloorMapper.toDomain(floorCreated);
 
@@ -80,14 +75,14 @@ export default class FloorRepo implements IFloorRepo {
 
   public async findByDomainId(domainId: UniqueEntityID | string): Promise<Floor | null> {
     const query: FilterQuery<IFloorPersistence & Document> = { domainId };
-    const floorRecord = await this.floorSchema.findOne(query);
+    const floorRecord = await floorSchema.findOne(query);
 
     if (floorRecord != null) return FloorMapper.toDomain(floorRecord);
     return null;
   }
 
   public async findAll(): Promise<Floor[]> {
-    const floorRecords = await this.floorSchema.find();
+    const floorRecords = await floorSchema.find();
 
     const floors: Floor[] = [];
 
@@ -101,7 +96,7 @@ export default class FloorRepo implements IFloorRepo {
 
   public async findByCode(code: FloorCode): Promise<Floor | null> {
     const query: FilterQuery<IFloorPersistence & Document> = { code: code.value };
-    const floorRecord = await this.floorSchema.findOne(query);
+    const floorRecord = await floorSchema.findOne(query);
 
     if (floorRecord != null) return FloorMapper.toDomain(floorRecord);
     return null;
@@ -112,7 +107,7 @@ export default class FloorRepo implements IFloorRepo {
       buildingCode: code.value
     };
 
-    const floorRecords = await this.floorSchema.find(query);
+    const floorRecords = await floorSchema.find(query);
 
     const floors: Floor[] = [];
 

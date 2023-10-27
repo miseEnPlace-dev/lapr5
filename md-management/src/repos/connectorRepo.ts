@@ -1,28 +1,23 @@
-import Container, { Service } from 'typedi';
-
-import config from '@/config.mjs';
+import { Service } from '@freshgum/typedi';
 
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { IConnectorPersistence } from '@/dataschema/IConnectorPersistence';
 import { Connector } from '@/domain/connector/connector';
 import { ConnectorCode } from '@/domain/connector/connectorCode';
 import { ConnectorMap } from '@/mappers/ConnectorMap';
+import connectorSchema from '@/persistence/schemas/connectorSchema';
 import IConnectorRepo from '@/services/IRepos/IConnectorRepo';
-import { Document, FilterQuery, Model } from 'mongoose';
+import { Document, FilterQuery } from 'mongoose';
 
-@Service()
+@Service([])
 export default class ConnectorRepo implements IConnectorRepo {
-  private connectorSchema: Model<IConnectorPersistence & Document>;
-  constructor(connectorSchema?: Model<IConnectorPersistence & Document>) {
-    if (connectorSchema) this.connectorSchema = connectorSchema;
-    else this.connectorSchema = Container.get(config.schemas.connector.name);
-  }
+  constructor() {}
 
   public async exists(connector: Connector): Promise<boolean> {
     const idX = connector.id;
 
     const query = { domainId: idX };
-    const connectorDocument = await this.connectorSchema.findOne(
+    const connectorDocument = await connectorSchema.findOne(
       query as FilterQuery<IConnectorPersistence & Document>
     );
 
@@ -32,13 +27,13 @@ export default class ConnectorRepo implements IConnectorRepo {
   public async save(connector: Connector): Promise<Connector> {
     const query = { domainId: connector.id } as FilterQuery<IConnectorPersistence & Document>;
 
-    const document = await this.connectorSchema.findOne(query);
+    const document = await connectorSchema.findOne(query);
 
     try {
       const raw = ConnectorMap.toPersistence(connector);
 
       if (!document) {
-        const created = await this.connectorSchema.create(raw);
+        const created = await connectorSchema.create(raw);
         const domainConnector = await ConnectorMap.toDomain(created);
 
         if (!domainConnector) throw new Error('Connector not created');
@@ -59,7 +54,7 @@ export default class ConnectorRepo implements IConnectorRepo {
 
   public async findByDomainId(domainId: UniqueEntityID | string): Promise<Connector | null> {
     const query = { domainId };
-    const connectorRecord = await this.connectorSchema.findOne(
+    const connectorRecord = await connectorSchema.findOne(
       query as FilterQuery<IConnectorPersistence & Document>
     );
 
@@ -69,14 +64,14 @@ export default class ConnectorRepo implements IConnectorRepo {
 
   public async findByCode(code: ConnectorCode): Promise<Connector | null> {
     const query: FilterQuery<IConnectorPersistence & Document> = { code: code.value };
-    const connectorRecord = await this.connectorSchema.findOne(query);
+    const connectorRecord = await connectorSchema.findOne(query);
 
     if (connectorRecord != null) return ConnectorMap.toDomain(connectorRecord);
     return null;
   }
 
   public async findAll(): Promise<Connector[]> {
-    const records = await this.connectorSchema.find();
+    const records = await connectorSchema.find();
 
     const connectors: Connector[] = [];
 
@@ -90,7 +85,7 @@ export default class ConnectorRepo implements IConnectorRepo {
 
   public async findByFloorId(floorId: UniqueEntityID): Promise<Connector[]> {
     const query = { $or: [{ floor1: floorId }, { floor2: floorId }] };
-    const connectorRecords = await this.connectorSchema.find(
+    const connectorRecords = await connectorSchema.find(
       query as FilterQuery<IConnectorPersistence & Document>
     );
 
@@ -115,7 +110,7 @@ export default class ConnectorRepo implements IConnectorRepo {
       ]
     };
 
-    const connectorRecord = await this.connectorSchema.findOne(
+    const connectorRecord = await connectorSchema.findOne(
       query as FilterQuery<IConnectorPersistence & Document>
     );
 
@@ -134,7 +129,7 @@ export default class ConnectorRepo implements IConnectorRepo {
       ]
     };
 
-    const records = await this.connectorSchema.find(
+    const records = await connectorSchema.find(
       query as FilterQuery<IConnectorPersistence & Document>
     );
 
@@ -153,7 +148,7 @@ export default class ConnectorRepo implements IConnectorRepo {
       $or: [{ floor1: { $in: ids } }, { floor2: { $in: ids } }]
     };
 
-    const records = await this.connectorSchema.find(
+    const records = await connectorSchema.find(
       query as FilterQuery<IConnectorPersistence & Document>
     );
 

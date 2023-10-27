@@ -1,27 +1,21 @@
-import config from '@/config.mjs';
 import { BuildingCode } from '@/domain/building/buildingCode';
 import { BuildingDescription } from '@/domain/building/buildingDescription';
 import { BuildingMaxDimensions } from '@/domain/building/buildingMaxDimensions';
 import { BuildingName } from '@/domain/building/buildingName';
 import { IBuildingDTO } from '@/dto/IBuildingDTO';
 import { BuildingMapper } from '@/mappers/BuildingMapper';
-import Container, { Service } from 'typedi';
+import BuildingRepo from '@/repos/buildingRepo';
+import FloorRepo from '@/repos/floorRepo';
+import { Service } from '@freshgum/typedi';
 import { Result } from '../core/logic/Result';
 import { Building } from '../domain/building/building';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import IFloorRepo from './IRepos/IFloorRepo';
 import IBuildingService from './IServices/IBuildingService';
 
-@Service()
+@Service([BuildingRepo, FloorRepo])
 export default class BuildingService implements IBuildingService {
-  private buildingRepo: IBuildingRepo;
-  private floorRepo: IFloorRepo;
-  constructor(buildingRepo?: IBuildingRepo, floorRepo?: IFloorRepo) {
-    if (buildingRepo) this.buildingRepo = buildingRepo;
-    else this.buildingRepo = Container.get(config.repos.building.name);
-    if (floorRepo) this.floorRepo = floorRepo;
-    else this.floorRepo = Container.get(config.repos.floor.name);
-  }
+  constructor(private buildingRepo: IBuildingRepo, private floorRepo: IFloorRepo) {}
 
   public async createBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>> {
     try {

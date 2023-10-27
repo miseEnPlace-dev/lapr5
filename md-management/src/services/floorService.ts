@@ -1,6 +1,5 @@
-import Container, { Service } from 'typedi';
+import { Service } from '@freshgum/typedi';
 
-import config from '@/config.mjs';
 import { Result } from '@/core/logic/Result';
 import { BuildingCode } from '@/domain/building/buildingCode';
 import { Floor } from '@/domain/floor/floor';
@@ -17,25 +16,21 @@ import { IFloorDTO } from '@/dto/IFloorDTO';
 import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
 import { FloorMapMapper } from '@/mappers/FloorMapMapper';
 import { FloorMapper } from '@/mappers/FloorMapper';
+import BuildingRepo from '@/repos/buildingRepo';
+import ConnectorRepo from '@/repos/connectorRepo';
+import FloorRepo from '@/repos/floorRepo';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import IFloorService from '@/services/IServices/IFloorService';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import IConnectorRepo from './IRepos/IConnectorRepo';
 
-@Service()
+@Service([FloorRepo, BuildingRepo, ConnectorRepo])
 export default class FloorService implements IFloorService {
-  private floorRepo: IFloorRepo;
-  private buildingRepo: IBuildingRepo;
-  private connectorRepo: IConnectorRepo;
-
-  constructor(floorRepo: IFloorRepo, buildingRepo: IBuildingRepo, connectorRepo: IConnectorRepo) {
-    if (floorRepo) this.floorRepo = floorRepo;
-    else this.floorRepo = Container.get(config.repos.floor.name);
-    if (buildingRepo) this.buildingRepo = buildingRepo;
-    else this.buildingRepo = Container.get(config.repos.building.name);
-    if (connectorRepo) this.connectorRepo = connectorRepo;
-    else this.connectorRepo = Container.get(config.repos.connector.name);
-  }
+  constructor(
+    private floorRepo: IFloorRepo,
+    private buildingRepo: IBuildingRepo,
+    private connectorRepo: IConnectorRepo
+  ) {}
 
   public async updateFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {
     try {

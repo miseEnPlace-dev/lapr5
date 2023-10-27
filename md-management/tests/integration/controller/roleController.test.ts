@@ -6,7 +6,6 @@ import { beforeEach, describe, it } from 'vitest';
 import RoleController from '../../../src/controllers/roleController';
 import { Result } from '../../../src/core/logic/Result';
 import IRoleDTO from '../../../src/dto/IRoleDTO';
-import roleSchema from '../../../src/persistence/schemas/roleSchema';
 import RoleRepo from '../../../src/repos/roleRepo';
 import IRoleRepo from '../../../src/services/IRepos/IRoleRepo';
 import IRoleService from '../../../src/services/IServices/IRoleService';
@@ -25,7 +24,7 @@ describe('role controller', () => {
     };
     const next: Partial<NextFunction> = () => {};
 
-    const roleRepo: IRoleRepo = new RoleRepo(roleSchema);
+    const roleRepo: IRoleRepo = new RoleRepo();
     const roleServiceInstance: IRoleService = new RoleService(roleRepo);
     stub(roleServiceInstance, 'createRole').returns(
       new Promise(resolve => {

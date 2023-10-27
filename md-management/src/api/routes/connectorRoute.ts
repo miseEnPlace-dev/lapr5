@@ -1,10 +1,9 @@
+import { Container } from '@freshgum/typedi';
 import { Router } from 'express';
-import { Container } from 'typedi';
 import { z } from 'zod';
 
-import config from '@/config.mjs';
-import IConnectorController from '@/controllers/IControllers/IConnectorController';
 import { validate } from '@/api/middlewares/validate';
+import ConnectorController from '@/controllers/connectorController';
 
 const connectorCreateSchema = z.object({
   code: z
@@ -37,7 +36,7 @@ const connectorUpdateSchema = z.object({
 export default (app: Router) => {
   const route = Router();
 
-  const ctrl = Container.get(config.controllers.connector.name) as IConnectorController;
+  const ctrl = Container.get(ConnectorController);
 
   route.get('', (req, res, next) => ctrl.getConnectors(req, res, next));
 

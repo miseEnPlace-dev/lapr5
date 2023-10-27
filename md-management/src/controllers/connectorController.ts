@@ -1,12 +1,11 @@
+import { Service } from '@freshgum/typedi';
 import { NextFunction, Request, Response } from 'express';
-import Container, { Service } from 'typedi';
 import { z } from 'zod';
-
-import config from '@/config.mjs';
 
 import { Result } from '@/core/logic/Result';
 import { IConnectorDTO } from '@/dto/IConnectorDTO';
 import IConnectorService from '@/services/IServices/IConnectorService';
+import ConnectorService from '@/services/connectorService';
 import IConnectorController from './IControllers/IConnectorController';
 
 const buildingIdsSchema = z.object({
@@ -20,14 +19,9 @@ const buildingIdsSchema = z.object({
     .length(2)
 });
 
-@Service()
+@Service([ConnectorService])
 export default class ConnectorController implements IConnectorController {
-  private connectorSvcInstance: IConnectorService;
-  constructor(connectorSvcInstance?: IConnectorService) {
-    if (connectorSvcInstance) this.connectorSvcInstance = connectorSvcInstance;
-    else
-      this.connectorSvcInstance = Container.get<IConnectorService>(config.services.connector.name);
-  }
+  constructor(private connectorSvcInstance: IConnectorService) {}
 
   public async createConnector(req: Request, res: Response, next: NextFunction) {
     try {

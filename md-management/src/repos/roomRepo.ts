@@ -1,31 +1,27 @@
-import config from '@/config.mjs';
 import { IRoomPersistence } from '@/dataschema/IRoomPersistence';
 import { FloorCode } from '@/domain/floor/floorCode';
 import { Room } from '@/domain/room/room';
 import { RoomName } from '@/domain/room/roomName';
 import { RoomMapper } from '@/mappers/RoomMapper';
+import roomSchema from '@/persistence/schemas/roomSchema';
 import IRoomRepo from '@/services/IRepos/IRoomRepo';
+import { Service } from '@freshgum/typedi';
 import { Document, FilterQuery, Model } from 'mongoose';
-import Container, { Service } from 'typedi';
 
-@Service()
+@Service([])
 export default class RoomRepo implements IRoomRepo {
-  private roomSchema: Model<IRoomPersistence & Document>;
-  constructor(roomSchema?: Model<IRoomPersistence & Document>) {
-    if (roomSchema) this.roomSchema = roomSchema;
-    else this.roomSchema = Container.get(config.schemas.room.name);
-  }
+  constructor(private roomSchema: Model<IRoomPersistence & Document>) {}
 
   public async save(room: Room): Promise<Room> {
     const query = { domainId: room.id } as FilterQuery<IRoomPersistence & Document>;
 
-    const roomDocument = await this.roomSchema.findOne(query);
+    const roomDocument = await roomSchema.findOne(query);
 
     try {
       if (!roomDocument) {
         const rawRoom = RoomMapper.toPersistence(room);
 
-        const roomCreated = await this.roomSchema.create(rawRoom);
+        const roomCreated = await roomSchema.create(rawRoom);
 
         const roomDomain = await RoomMapper.toDomain(roomCreated);
 
@@ -44,7 +40,7 @@ export default class RoomRepo implements IRoomRepo {
   public async exists(room: Room): Promise<boolean> {
     const query = { domainId: room.id } as FilterQuery<IRoomPersistence & Document>;
 
-    const roomDocument = await this.roomSchema.findOne(query);
+    const roomDocument = await roomSchema.findOne(query);
 
     return !!roomDocument === true;
   }
@@ -52,9 +48,7 @@ export default class RoomRepo implements IRoomRepo {
   public async findAllRoomsInFloorByCode(floorCode: FloorCode): Promise<Room[] | null> {
     const query = { floorCode } as FilterQuery<IRoomPersistence & Document>;
 
-    const roomRecords = await this.roomSchema.find(
-      query as FilterQuery<IRoomPersistence & Document>
-    );
+    const roomRecords = await roomSchema.find(query as FilterQuery<IRoomPersistence & Document>);
 
     const rooms: Room[] = [];
 
@@ -69,7 +63,7 @@ export default class RoomRepo implements IRoomRepo {
   public async findByName(name: RoomName): Promise<Room | null> {
     const query: FilterQuery<IRoomPersistence & Document> = { name: name.value };
 
-    const roomRecord = await this.roomSchema.findOne(query);
+    const roomRecord = await roomSchema.findOne(query);
 
     if (roomRecord) return RoomMapper.toDomain(roomRecord);
     return null;

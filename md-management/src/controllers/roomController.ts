@@ -1,21 +1,15 @@
+import { Service } from '@freshgum/typedi';
 import { NextFunction, Request, Response } from 'express';
-import Container, { Service } from 'typedi';
-
-import config from '@/config.mjs';
 
 import { Result } from '@/core/logic/Result';
 import { IRoomDTO } from '@/dto/IRoomDTO';
 import IRoomService from '@/services/IServices/IRoomService';
+import RoomService from '@/services/roomService';
 import IRoomController from './IControllers/IRoomController';
 
-@Service()
+@Service([RoomService])
 export default class RoomController implements IRoomController {
-  private roomServiceInstance: IRoomService;
-
-  constructor(roomServiceInstance?: IRoomService) {
-    if (roomServiceInstance) this.roomServiceInstance = roomServiceInstance;
-    else this.roomServiceInstance = Container.get(config.services.room.name) as IRoomService;
-  }
+  constructor(private roomServiceInstance: IRoomService) {}
 
   public async createRoom(req: Request, res: Response, next: NextFunction) {
     try {

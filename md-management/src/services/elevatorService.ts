@@ -1,4 +1,3 @@
-import config from '@/config.mjs';
 import { BuildingCode } from '@/domain/building/buildingCode';
 import { ElevatorBranding } from '@/domain/elevator/elevatorBranding';
 import { ElevatorCode } from '@/domain/elevator/elevatorCode';
@@ -8,23 +7,18 @@ import { Floor } from '@/domain/floor/floor';
 import { FloorCode } from '@/domain/floor/floorCode';
 import { IElevatorDTO } from '@/dto/IElevatorDTO';
 import { ElevatorMapper } from '@/mappers/ElevatorMapper';
-import Container, { Service } from 'typedi';
+import BuildingRepo from '@/repos/buildingRepo';
+import FloorRepo from '@/repos/floorRepo';
+import { Service } from '@freshgum/typedi';
 import { Result } from '../core/logic/Result';
 import { Elevator } from '../domain/elevator/elevator';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import IFloorRepo from './IRepos/IFloorRepo';
 import IElevatorService from './IServices/IElevatorService';
 
-@Service()
+@Service([BuildingRepo, FloorRepo])
 export default class ElevatorService implements IElevatorService {
-  private buildingRepo: IBuildingRepo;
-  private floorRepo: IFloorRepo;
-  constructor(buildingRepo?: IBuildingRepo, floorRepo?: IFloorRepo) {
-    if (buildingRepo) this.buildingRepo = buildingRepo;
-    else this.buildingRepo = Container.get(config.repos.building.name);
-    if (floorRepo) this.floorRepo = floorRepo;
-    else this.floorRepo = Container.get(config.repos.floor.name);
-  }
+  constructor(private buildingRepo: IBuildingRepo, private floorRepo: IFloorRepo) {}
 
   public async getElevatorForBuilding(buildingCode: string): Promise<Result<IElevatorDTO>> {
     try {

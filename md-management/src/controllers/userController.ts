@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { Container } from 'typedi';
+import { Container } from '@freshgum/typedi';
 
 import config from '@/config.mjs';
 
