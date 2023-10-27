@@ -1,0 +1,12 @@
+@startuml process-view
+autonumber
+participant SYS as "MD Management" <<system>>
+
+?o-> SYS : POST /devices
+activate SYS
+
+SYS -> SYS : createDevice(deviceDto)
+<-- SYS : 201 Created (Device JSON)
+deactivate SYS
+
+@enduml
