@@ -17,7 +17,7 @@ CTRL -> SRV : getBuildingsWithMinMaxFloors(min, max)
 activate SRV
 SRV -> REPO : findBuildingsWithMinMaxFloors(min, max)
 activate REPO
-REPO -> SRV : buildings
+REPO --> SRV : buildings
 deactivate REPO
 loop foreach building
     SRV -> MAP : toDto(building)
@@ -25,9 +25,9 @@ loop foreach building
     MAP -> DTO** : create()
     deactivate MAP
 end
-SRV --> CTRL : sucess(buildingsDTO)
+SRV --> CTRL : success(buildingsDTO)
 deactivate SRV
-CTRL --> ROUTE : sucess(buildingsDTO)
+CTRL --> ROUTE : success(buildingsDTO)
 deactivate CTRL
 <-- ROUTE : 200 OK
 deactivate ROUTE
