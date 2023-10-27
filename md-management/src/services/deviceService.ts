@@ -62,4 +62,35 @@ export default class DeviceService implements IDeviceService {
       throw e;
     }
   }
+
+  public async inhibitDevice(code: string): Promise<Result<IDeviceDTO>> {
+    try {
+      const deviceCode = DeviceCode.create(code).getValue();
+      const device = await this.deviceRepo.findByCode(deviceCode);
+      if (!device) return Result.fail<IDeviceDTO>('Device not found');
+
+      if (!device.isAvailable) return Result.fail<IDeviceDTO>('Device already inhibited');
+
+      const deviceOrError = Device.create(
+        {
+          code: device.code,
+          nickname: device.nickname,
+          serialNumber: device.serialNumber,
+          description: device.description,
+          modelCode: device.modelCode,
+          isAvailable: false
+        },
+        device.id
+      );
+
+      if (deviceOrError.isFailure) return Result.fail<IDeviceDTO>(deviceOrError.errorValue());
+
+      const result = deviceOrError.getValue();
+      await this.deviceRepo.save(result);
+      const deviceDTOResult = DeviceMapper.toDTO(result) as IDeviceDTO;
+      return Result.ok<IDeviceDTO>(deviceDTOResult);
+    } catch (e) {
+      throw e;
+    }
+  }
 }

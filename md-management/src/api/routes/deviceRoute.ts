@@ -40,5 +40,7 @@ export default (app: Router) => {
     ctrl.createDevice(req, res, next)
   );
 
+  route.patch('/:code', (req, res, next) => ctrl.inhibitDevice(req, res, next));
+
   app.use('/devices', route);
 };

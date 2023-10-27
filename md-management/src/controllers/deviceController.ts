@@ -28,4 +28,21 @@ export default class DeviceController implements IDeviceController {
       return next(e);
     }
   }
+
+  public async inhibitDevice(req: Request, res: Response, next: NextFunction) {
+    try {
+      const deviceOrError = (await this.deviceServiceInstance.inhibitDevice(
+        req.params.code
+      )) as Result<IDeviceDTO>;
+
+      if (deviceOrError.isFailure)
+        return res.status(400).json({
+          errors: deviceOrError.errorValue()
+        });
+
+      return res.json(deviceOrError.getValue()).status(200);
+    } catch (e) {
+      return next(e);
+    }
+  }
 }

@@ -8,6 +8,7 @@ import IDeviceRepo from '@/services/IRepos/IDeviceRepo';
 import { Document, FilterQuery, Model } from 'mongoose';
 import { Device } from '@/domain/device/device';
 import { DeviceMapper } from '@/mappers/DeviceMapper';
+import { DeviceCode } from '@/domain/device/deviceCode';
 
 @Service()
 export default class DeviceRepo implements IDeviceRepo {
@@ -73,5 +74,15 @@ export default class DeviceRepo implements IDeviceRepo {
     }
 
     return devices;
+  }
+
+  public async findByCode(code: DeviceCode) {
+    const query = { code: code.value };
+    const deviceRecord = await this.deviceSchema.findOne(
+      query as FilterQuery<IDevicePersistence & Document>
+    );
+
+    if (deviceRecord != null) return DeviceMapper.toDomain(deviceRecord);
+    return null;
   }
 }

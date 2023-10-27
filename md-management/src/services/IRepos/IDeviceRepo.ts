@@ -7,4 +7,5 @@ export default interface IDeviceRepo extends Repo<Device> {
   save(device: Device): Promise<Device>;
   findByDomainId(domainId: UniqueEntityID | string): Promise<Device | null>;
   findAll(): Promise<Device[]>;
+  findByCode(code: DeviceCode): Promise<Device | null>;
 }
