@@ -1,19 +1,15 @@
-import Container, { Service } from 'typedi';
-import config from '../config.mjs';
+import { Service } from '@freshgum/typedi';
 import { Result } from '../core/logic/Result';
 import { Role } from '../domain/role/role';
 import IRoleDTO from '../dto/IRoleDTO';
 import { RoleMapper } from '../mappers/RoleMapper';
+import RoleRepo from '../repos/roleRepo';
 import IRoleRepo from './IRepos/IRoleRepo';
 import IRoleService from './IServices/IRoleService';
 
-@Service()
+@Service([RoleRepo])
 export default class RoleService implements IRoleService {
-  private roleRepo: IRoleRepo;
-  constructor(roleRepo?: IRoleRepo) {
-    if (roleRepo) this.roleRepo = roleRepo;
-    else this.roleRepo = Container.get(config.repos.role.name);
-  }
+  constructor(private roleRepo: IRoleRepo) {}
 
   public async getRole(roleId: string): Promise<Result<IRoleDTO>> {
     try {

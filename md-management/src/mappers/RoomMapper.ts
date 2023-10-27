@@ -1,16 +1,16 @@
 import { Mapper } from '../core/infra/Mapper';
 
-import config from '@/config.mjs';
-import { UniqueEntityID } from '../core/domain/UniqueEntityID';
-import { IRoomDTO } from '@/dto/IRoomDTO';
-import { Room } from '@/domain/room/room';
 import { IRoomPersistence } from '@/dataschema/IRoomPersistence';
-import { RoomName } from '@/domain/room/roomName';
-import IFloorRepo from '@/services/IRepos/IFloorRepo';
+import { Room } from '@/domain/room/room';
+import { RoomCategory } from '@/domain/room/roomCategory';
 import { RoomDescription } from '@/domain/room/roomDescription';
 import { RoomDimensions } from '@/domain/room/roomDimensions';
-import Container from 'typedi';
-import { RoomCategory } from '@/domain/room/roomCategory';
+import { RoomName } from '@/domain/room/roomName';
+import { IRoomDTO } from '@/dto/IRoomDTO';
+import FloorRepo from '@/repos/floorRepo';
+import IFloorRepo from '@/services/IRepos/IFloorRepo';
+import Container from '@freshgum/typedi';
+import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 
 export class RoomMapper extends Mapper<Room> {
   public static toDTO(room: Room): IRoomDTO {
@@ -20,7 +20,7 @@ export class RoomMapper extends Mapper<Room> {
       description: room.description?.value,
       dimensions: {
         width: room.dimensions.width,
-        height: room.dimensions.height
+        length: room.dimensions.length
       },
       category: room.category.value
     };
@@ -28,14 +28,14 @@ export class RoomMapper extends Mapper<Room> {
 
   public static async toDomain(room: IRoomPersistence): Promise<Room | null> {
     const name = RoomName.create(room.name).getValue();
-    const { width, height } = room.dimensions;
+    const { width, length } = room.dimensions;
 
-    const repoFloor = Container.get<IFloorRepo>(config.repos.floor.name);
+    const repoFloor = Container.get<IFloorRepo>(FloorRepo);
 
     const floor = await repoFloor.findByDomainId(room.floor);
     if (!floor) throw new Error('Floor not found');
 
-    const roomDimensionsOrError = RoomDimensions.create(width, height);
+    const roomDimensionsOrError = RoomDimensions.create(width, length);
 
     const description = room.description
       ? RoomDescription.create(room.description).getValue()
@@ -66,7 +66,7 @@ export class RoomMapper extends Mapper<Room> {
       description: room.description?.value,
       dimensions: {
         width: room.dimensions.width,
-        height: room.dimensions.height
+        length: room.dimensions.length
       },
       floor: room.floor.id.toString(),
       category: room.category.value

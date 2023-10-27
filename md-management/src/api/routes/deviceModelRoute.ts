@@ -1,11 +1,10 @@
+import { Container } from '@freshgum/typedi';
 import { Router } from 'express';
-import { Container } from 'typedi';
 import { z } from 'zod';
 
 import { validate } from '@/api/middlewares/validate';
 
-import config from '@/config.mjs';
-import IDeviceModelController from '@/controllers/IControllers/IDeviceModelController';
+import DeviceModelController from '@/controllers/deviceModelController';
 
 const deviceModelCreateSchema = z.object({
   code: z
@@ -27,7 +26,7 @@ const deviceModelCreateSchema = z.object({
 export default (app: Router) => {
   const route = Router();
 
-  const ctrl = Container.get(config.controllers.deviceModel.name) as IDeviceModelController;
+  const ctrl = Container.get(DeviceModelController);
 
   route.post('', validate(deviceModelCreateSchema), (req, res, next) =>
     ctrl.createDeviceModel(req, res, next)

@@ -109,7 +109,7 @@ package "<<aggregate>> Building" {
   class BuildingDescription <<(V,#FF8B40) value object>> {}
   class MaxDimensions <<(V,#FF8B40) value object>> {
     - width
-    - height
+    - length
   }
 }
 

@@ -5,6 +5,6 @@ export interface IBuildingDTO {
   elevatorFloors?: string[];
   maxDimensions: {
     width: number;
-    height: number;
+    length: number;
   };
 }

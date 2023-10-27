@@ -49,7 +49,7 @@ const FloorSchema = new mongoose.Schema(
 
     dimensions: {
       width: Number,
-      height: Number
+      length: Number
     },
     map: FloorMapSchema,
 

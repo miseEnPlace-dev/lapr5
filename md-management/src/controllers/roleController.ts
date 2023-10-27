@@ -1,5 +1,4 @@
-import Container, { Service } from 'typedi';
-import config from '../config.mjs';
+import { Service } from '@freshgum/typedi';
 
 import IRoleDTO from '../dto/IRoleDTO';
 import IRoleController from './IControllers/IRoleController';
@@ -7,14 +6,11 @@ import IRoleController from './IControllers/IRoleController';
 import { NextFunction, Request, Response } from 'express';
 import { Result } from '../core/logic/Result';
 import IRoleService from '../services/IServices/IRoleService';
+import RoleService from '../services/roleService';
 
-@Service()
+@Service([RoleService])
 export default class RoleController implements IRoleController {
-  private roleServiceInstance: IRoleService;
-  constructor(roleServiceInstance?: IRoleService) {
-    if (roleServiceInstance) this.roleServiceInstance = roleServiceInstance;
-    else this.roleServiceInstance = Container.get(config.services.role.name) as IRoleService;
-  }
+  constructor(private roleServiceInstance: IRoleService) {}
 
   public async createRole(req: Request, res: Response, next: NextFunction) {
     try {

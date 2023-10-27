@@ -1,11 +1,9 @@
 import { Router } from 'express';
 import { z } from 'zod';
 
-import { Container } from 'typedi';
+import { Container } from '@freshgum/typedi';
 
-import config from '@/config.mjs';
-import IBuildingController from '@/controllers/IControllers/IBuildingController';
-import IFloorController from '@/controllers/IControllers/IFloorController';
+import BuildingController from '@/controllers/buildingController';
 import { validate } from '../middlewares/validate';
 
 const buildingCreateSchema = z.object({
@@ -23,7 +21,7 @@ const buildingCreateSchema = z.object({
     .optional(),
   maxDimensions: z.object({
     width: z.number().min(1),
-    height: z.number().min(1)
+    length: z.number().min(1)
   })
 });
 
@@ -39,14 +37,14 @@ const buildingUpdateSchema = z.object({
   maxDimensions: z
     .object({
       width: z.number().min(1),
-      height: z.number().min(1)
+      length: z.number().min(1)
     })
     .optional()
 });
 
 export default (app: Router) => {
   const route = Router();
-  const ctrl = Container.get(config.controllers.building.name) as IBuildingController;
+  const ctrl = Container.get(BuildingController);
 
   route.get('', (req, res, next) => ctrl.getBuildings(req, res, next));
   route.post('', validate(buildingCreateSchema), (req, res, next) =>

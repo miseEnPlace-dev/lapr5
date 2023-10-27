@@ -1,28 +1,19 @@
-import Container, { Service } from 'typedi';
+import { Service } from '@freshgum/typedi';
 
-import { Document, Model } from 'mongoose';
-import { IUserPersistence } from '../dataschema/IUserPersistence';
-
-import config from '@/config.mjs';
+import userSchema from '@/persistence/schemas/userSchema';
 import { User } from '../domain/user/user';
 import { UserEmail } from '../domain/user/userEmail';
 import { UserId } from '../domain/user/userId';
 import { UserMapper } from '../mappers/UserMapper';
 import IUserRepo from '../services/IRepos/IUserRepo';
 
-@Service()
+@Service([])
 export default class UserRepo implements IUserRepo {
-  private userSchema: Model<IUserPersistence & Document>;
+  constructor() {}
 
-  constructor() {
-    this.userSchema = Container.get(config.schemas.user.name);
-  }
-
-  public async exists(userId: UserId | string): Promise<boolean> {
-    const idX = userId instanceof UserId ? (<UserId>userId).id.toValue() : userId;
-
-    const query = { domainId: idX };
-    const userDocument = await this.userSchema.findOne(query);
+  public async exists(user: User): Promise<boolean> {
+    const query = { domainId: user.id };
+    const userDocument = await userSchema.findOne(query);
 
     return !!userDocument === true;
   }
@@ -30,13 +21,13 @@ export default class UserRepo implements IUserRepo {
   public async save(user: User): Promise<User> {
     const query = { domainId: user.id.toString() };
 
-    const userDocument = await this.userSchema.findOne(query);
+    const userDocument = await userSchema.findOne(query);
 
     try {
       if (userDocument === null) {
         const rawUser = UserMapper.toPersistence(user);
 
-        const userCreated = await this.userSchema.create(rawUser);
+        const userCreated = await userSchema.create(rawUser);
 
         return UserMapper.toDomain(userCreated);
       } else {
@@ -53,7 +44,7 @@ export default class UserRepo implements IUserRepo {
 
   public async findByEmail(email: UserEmail | string): Promise<User | null> {
     const query = { email: email.toString() };
-    const userRecord = await this.userSchema.findOne(query);
+    const userRecord = await userSchema.findOne(query);
 
     if (userRecord != null) {
       return UserMapper.toDomain(userRecord);
@@ -64,7 +55,7 @@ export default class UserRepo implements IUserRepo {
     const idX = userId instanceof UserId ? (<UserId>userId).id.toValue() : userId;
 
     const query = { domainId: idX };
-    const userRecord = await this.userSchema.findOne(query);
+    const userRecord = await userSchema.findOne(query);
 
     if (userRecord != null) {
       return UserMapper.toDomain(userRecord);

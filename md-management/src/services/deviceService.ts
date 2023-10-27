@@ -1,30 +1,24 @@
-import Container, { Service } from 'typedi';
-
-import config from '@/config.mjs';
+import { Service } from '@freshgum/typedi';
 
 import { Result } from '@/core/logic/Result';
 import { IDeviceDTO } from '@/dto/IDeviceDTO';
 
-import IDeviceRepo from './IRepos/IDeviceRepo';
-import IDeviceService from './IServices/IDeviceService';
+import { DeviceModelCode } from '@/domain/device-model/deviceModelCode';
+import { Device } from '@/domain/device/device';
+import { DeviceCode } from '@/domain/device/deviceCode';
+import { DeviceDescription } from '@/domain/device/deviceDescription';
 import { DeviceNickname } from '@/domain/device/deviceNickname';
 import { DeviceSerialNumber } from '@/domain/device/deviceSerialNumber';
-import { DeviceDescription } from '@/domain/device/deviceDescription';
-import IDeviceModelRepo from './IRepos/IDeviceModelRepo';
-import { Device } from '@/domain/device/device';
 import { DeviceMapper } from '@/mappers/DeviceMapper';
-import { DeviceModelCode } from '@/domain/device-model/deviceModelCode';
-import { DeviceCode } from '@/domain/device/deviceCode';
+import DeviceModelRepo from '@/repos/deviceModelRepo';
+import DeviceRepo from '@/repos/deviceRepo';
+import IDeviceModelRepo from './IRepos/IDeviceModelRepo';
+import IDeviceRepo from './IRepos/IDeviceRepo';
+import IDeviceService from './IServices/IDeviceService';
 
-@Service()
+@Service([DeviceRepo, DeviceModelRepo])
 export default class DeviceService implements IDeviceService {
-  private deviceRepo: IDeviceRepo;
-  private deviceModelRepo: IDeviceModelRepo;
-
-  constructor() {
-    this.deviceRepo = Container.get(config.repos.device.name);
-    this.deviceModelRepo = Container.get(config.repos.deviceModel.name);
-  }
+  constructor(private deviceRepo: IDeviceRepo, private deviceModelRepo: IDeviceModelRepo) {}
 
   public async createDevice(deviceDTO: IDeviceDTO): Promise<Result<IDeviceDTO>> {
     try {

@@ -1,16 +1,15 @@
-import Container from 'typedi';
+import Container from '@freshgum/typedi';
 
-import config from '@/config.mjs';
-
-import { Mapper } from '@/core/infra/Mapper';
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
+import { Mapper } from '@/core/infra/Mapper';
 
-import { Floor } from '@/domain/floor/floor';
-import { Connector } from '@/domain/connector/connector';
-import { IConnectorDTO } from '@/dto/IConnectorDTO';
 import { IConnectorPersistence } from '@/dataschema/IConnectorPersistence';
-import IFloorRepo from '@/services/IRepos/IFloorRepo';
+import { Connector } from '@/domain/connector/connector';
 import { ConnectorCode } from '@/domain/connector/connectorCode';
+import { Floor } from '@/domain/floor/floor';
+import { IConnectorDTO } from '@/dto/IConnectorDTO';
+import FloorRepo from '@/repos/floorRepo';
+import IFloorRepo from '@/services/IRepos/IFloorRepo';
 
 export class ConnectorMap extends Mapper<Floor> {
   public static toDTO(c: Connector): IConnectorDTO {
@@ -24,7 +23,7 @@ export class ConnectorMap extends Mapper<Floor> {
   public static async toDomain(connector: IConnectorPersistence): Promise<Connector | null> {
     const code = ConnectorCode.create(connector.code).getValue();
 
-    const repo = Container.get<IFloorRepo>(config.repos.floor.name);
+    const repo = Container.get<IFloorRepo>(FloorRepo);
 
     const floor1 = await repo.findByDomainId(connector.floor1);
     const floor2 = await repo.findByDomainId(connector.floor2);

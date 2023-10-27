@@ -1,30 +1,27 @@
-import Container, { Service } from 'typedi';
-
-import config from '@/config.mjs';
+import { Service } from '@freshgum/typedi';
 
 import { Result } from '@/core/logic/Result';
 import { IConnectorDTO } from '@/dto/IConnectorDTO';
 
 import { Connector } from '@/domain/connector/connector';
 import { ConnectorCode } from '@/domain/connector/connectorCode';
+import { FloorCode } from '@/domain/floor/floorCode';
 import { ConnectorMap } from '@/mappers/ConnectorMap';
+import BuildingRepo from '@/repos/buildingRepo';
+import ConnectorRepo from '@/repos/connectorRepo';
+import FloorRepo from '@/repos/floorRepo';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import IConnectorRepo from './IRepos/IConnectorRepo';
 import IFloorRepo from './IRepos/IFloorRepo';
 import IConnectorService from './IServices/IConnectorService';
-import { FloorCode } from '@/domain/floor/floorCode';
 
-@Service()
+@Service([ConnectorRepo, FloorRepo, BuildingRepo])
 export default class ConnectorService implements IConnectorService {
-  private connectorRepo: IConnectorRepo;
-  private floorRepo: IFloorRepo;
-  private buildingRepo: IBuildingRepo;
-
-  constructor() {
-    this.connectorRepo = Container.get(config.repos.connector.name);
-    this.floorRepo = Container.get(config.repos.floor.name);
-    this.buildingRepo = Container.get(config.repos.building.name);
-  }
+  constructor(
+    private connectorRepo: IConnectorRepo,
+    private floorRepo: IFloorRepo,
+    private buildingRepo: IBuildingRepo
+  ) {}
 
   public async checkConnectorExists(connectorDTO: IConnectorDTO): Promise<Result<boolean>> {
     try {

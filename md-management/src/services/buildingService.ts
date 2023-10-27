@@ -1,25 +1,21 @@
-import config from '@/config.mjs';
 import { BuildingCode } from '@/domain/building/buildingCode';
 import { BuildingDescription } from '@/domain/building/buildingDescription';
 import { BuildingMaxDimensions } from '@/domain/building/buildingMaxDimensions';
 import { BuildingName } from '@/domain/building/buildingName';
 import { IBuildingDTO } from '@/dto/IBuildingDTO';
 import { BuildingMapper } from '@/mappers/BuildingMapper';
-import Container, { Service } from 'typedi';
+import BuildingRepo from '@/repos/buildingRepo';
+import FloorRepo from '@/repos/floorRepo';
+import { Service } from '@freshgum/typedi';
 import { Result } from '../core/logic/Result';
 import { Building } from '../domain/building/building';
 import IBuildingRepo from './IRepos/IBuildingRepo';
-import IBuildingService from './IServices/IBuildingService';
 import IFloorRepo from './IRepos/IFloorRepo';
+import IBuildingService from './IServices/IBuildingService';
 
-@Service()
+@Service([BuildingRepo, FloorRepo])
 export default class BuildingService implements IBuildingService {
-  private buildingRepo: IBuildingRepo;
-  private floorRepo: IFloorRepo;
-  constructor() {
-    this.buildingRepo = Container.get(config.repos.building.name);
-    this.floorRepo = Container.get(config.repos.floor.name);
-  }
+  constructor(private buildingRepo: IBuildingRepo, private floorRepo: IFloorRepo) {}
 
   public async createBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>> {
     try {
@@ -30,7 +26,7 @@ export default class BuildingService implements IBuildingService {
         : undefined;
       const maxDimensions = BuildingMaxDimensions.create(
         buildingDTO.maxDimensions.width,
-        buildingDTO.maxDimensions.height
+        buildingDTO.maxDimensions.length
       ).getValue();
 
       const buildingOrError = Building.create({
@@ -43,6 +39,9 @@ export default class BuildingService implements IBuildingService {
       if (buildingOrError.isFailure) return Result.fail<IBuildingDTO>(buildingOrError.errorValue());
 
       const buildingResult = buildingOrError.getValue();
+
+      if (await this.buildingRepo.findByCode(buildingResult.code))
+        return Result.fail<IBuildingDTO>('Building already exists');
 
       await this.buildingRepo.save(buildingResult);
 
@@ -58,7 +57,10 @@ export default class BuildingService implements IBuildingService {
     code: string
   ): Promise<Result<IBuildingDTO>> {
     try {
-      const building = await this.buildingRepo.findByCode(code);
+      const buildingCode = BuildingCode.create(code);
+      if (buildingCode.isFailure) return Result.fail<IBuildingDTO>('Building not found');
+
+      const building = await this.buildingRepo.findByCode(buildingCode.getValue());
       if (!building) return Result.fail<IBuildingDTO>('Building not found');
 
       if (buildingDTO.name)
@@ -74,7 +76,7 @@ export default class BuildingService implements IBuildingService {
       if (buildingDTO.maxDimensions)
         building.maxDimensions = BuildingMaxDimensions.create(
           buildingDTO.maxDimensions.width,
-          buildingDTO.maxDimensions.height
+          buildingDTO.maxDimensions.length
         ).getValue();
 
       await this.buildingRepo.save(building);
