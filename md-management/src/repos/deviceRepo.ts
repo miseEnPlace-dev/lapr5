@@ -44,7 +44,11 @@ export default class DeviceRepo implements IDeviceRepo {
         return domainDevice;
       }
 
-      // TODO - Update device
+      deviceDocument.nickname = raw.nickname;
+      deviceDocument.modelCode = raw.modelCode;
+      deviceDocument.description = raw.description;
+      deviceDocument.serialNumber = raw.serialNumber;
+      deviceDocument.isAvailable = raw.isAvailable;
 
       await deviceDocument.save();
       return device;
@@ -74,5 +78,15 @@ export default class DeviceRepo implements IDeviceRepo {
     }
 
     return devices;
+  }
+
+  public async findByCode(code: string): Promise<Device | null> {
+    const query = { code };
+    const deviceModelRecord = await this.deviceSchema.findOne(
+      query as FilterQuery<IDevicePersistence & Document>
+    );
+
+    if (deviceModelRecord != null) return DeviceMapper.toDomain(deviceModelRecord);
+    return null;
   }
 }
