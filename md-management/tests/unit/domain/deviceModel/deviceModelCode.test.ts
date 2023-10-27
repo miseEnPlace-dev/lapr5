@@ -23,7 +23,7 @@ describe('DeviceCode', () => {
   });
 
   it('should not allow special characters', () => {
-    const deviceCode = DeviceModelCode.create('12a!');
-    expect(deviceCode.isFailure).toBe(true);
+    const deviceModelCode = DeviceModelCode.create('12a!');
+    expect(deviceModelCode.isFailure).toBe(true);
   });
 });
