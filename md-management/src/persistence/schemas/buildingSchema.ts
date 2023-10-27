@@ -49,7 +49,7 @@ const BuildingSchema = new mongoose.Schema(
 
     maxDimensions: {
       width: Number,
-      height: Number
+      length: Number
     },
 
     elevator: {

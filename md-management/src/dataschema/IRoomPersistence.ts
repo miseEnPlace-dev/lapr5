@@ -4,7 +4,7 @@ export interface IRoomPersistence {
   description?: string;
   dimensions: {
     width: number;
-    height: number;
+    length: number;
   };
   floor: string;
   category: string;

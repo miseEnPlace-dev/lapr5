@@ -1,0 +1,13 @@
+@startuml process-view
+autonumber
+participant SYS as "MD Management" <<system (C4)>>
+
+
+?o-> SYS : GET /buildings/{buildingCode}/floors
+activate SYS
+
+SYS -> SYS : getAllFloorsOfBuilding(buildingCode)
+<-- SYS : 200 OK (floors JSON)
+deactivate SYS
+
+@enduml

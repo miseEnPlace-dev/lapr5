@@ -1,9 +1,9 @@
-import Container, { Service } from 'typedi';
+import { Service } from '@freshgum/typedi';
 
+import config from '@/config.mjs';
 import argon2 from 'argon2';
 import { randomBytes } from 'crypto';
 import jwt from 'jsonwebtoken';
-import config from '@/config.mjs';
 
 import { IUserDTO } from '../dto/IUserDTO';
 import { UserMapper } from '../mappers/UserMapper';
@@ -19,17 +19,13 @@ import { UserPassword } from '../domain/user/userPassword';
 import { Role } from '../domain/role/role';
 
 import { PhoneNumber } from '@/domain/user/phoneNumber';
+import RoleRepo from '@/repos/roleRepo';
+import UserRepo from '@/repos/userRepo';
 import { Result } from '../core/logic/Result';
 
-@Service()
+@Service([UserRepo, RoleRepo])
 export default class UserService implements IUserService {
-  private userRepo: IUserRepo;
-  private roleRepo: IRoleRepo;
-
-  constructor() {
-    this.userRepo = Container.get(config.repos.user.name);
-    this.roleRepo = Container.get(config.repos.role.name);
-  }
+  constructor(private userRepo: IUserRepo, private roleRepo: IRoleRepo) {}
 
   public async SignUp(userDTO: IUserDTO): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
     try {

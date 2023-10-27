@@ -1,29 +1,26 @@
-import Container, { Service } from 'typedi';
+import { Service } from '@freshgum/typedi';
 
-import config from '@/config.mjs';
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { IBuildingPersistence } from '@/dataschema/IBuildingPersistence';
 import { Building } from '@/domain/building/building';
 import { BuildingCode } from '@/domain/building/buildingCode';
 import { BuildingMapper } from '@/mappers/BuildingMapper';
 import { ElevatorMapper } from '@/mappers/ElevatorMapper';
+import buildingSchema from '@/persistence/schemas/buildingSchema';
 import IBuildingRepo from '@/services/IRepos/IBuildingRepo';
-import { Document, FilterQuery, Model } from 'mongoose';
+import { Document, FilterQuery } from 'mongoose';
 import { IRolePersistence } from '../dataschema/IRolePersistence';
 
-@Service()
+@Service([])
 export default class BuildingRepo implements IBuildingRepo {
-  private buildingSchema: Model<IBuildingPersistence & Document>;
-  constructor() {
-    this.buildingSchema = Container.get(config.schemas.building.name);
-  }
+  constructor() {}
 
   public async exists(building: Building): Promise<boolean> {
     const idX =
       building.id instanceof BuildingCode ? (<BuildingCode>building.id).value : building.id;
 
     const query = { domainId: idX };
-    const roleDocument = await this.buildingSchema.findOne(
+    const roleDocument = await buildingSchema.findOne(
       query as FilterQuery<IRolePersistence & Document>
     );
 
@@ -31,7 +28,7 @@ export default class BuildingRepo implements IBuildingRepo {
   }
 
   public async findAll(): Promise<Building[]> {
-    const buildingRecords = await this.buildingSchema.find();
+    const buildingRecords = await buildingSchema.find();
     const buildings: Building[] = [];
 
     for (const b of buildingRecords) {
@@ -45,13 +42,13 @@ export default class BuildingRepo implements IBuildingRepo {
   public async save(building: Building): Promise<Building> {
     const query = { domainId: building.id } as FilterQuery<IBuildingPersistence & Document>;
 
-    const buildingDocument = await this.buildingSchema.findOne(query);
+    const buildingDocument = await buildingSchema.findOne(query);
 
     try {
       if (!buildingDocument) {
         const rawBuilding = BuildingMapper.toPersistence(building);
 
-        const buildingCreated = await this.buildingSchema.create(rawBuilding);
+        const buildingCreated = await buildingSchema.create(rawBuilding);
 
         const domainBuilding = await BuildingMapper.toDomain(buildingCreated);
 
@@ -75,7 +72,7 @@ export default class BuildingRepo implements IBuildingRepo {
   public async findByDomainId(domainId: UniqueEntityID | string): Promise<Building | null> {
     const query: FilterQuery<IBuildingPersistence & Document> = { domainId };
 
-    const buildingRecord = await this.buildingSchema.findOne(query);
+    const buildingRecord = await buildingSchema.findOne(query);
 
     if (buildingRecord) return BuildingMapper.toDomain(buildingRecord);
     return null;
@@ -84,7 +81,7 @@ export default class BuildingRepo implements IBuildingRepo {
   public async findByCode(code: BuildingCode): Promise<Building | null> {
     const query: FilterQuery<IBuildingPersistence & Document> = { code: code.value };
 
-    const buildingRecord = await this.buildingSchema.findOne(query);
+    const buildingRecord = await buildingSchema.findOne(query);
 
     if (buildingRecord) return BuildingMapper.toDomain(buildingRecord);
     return null;

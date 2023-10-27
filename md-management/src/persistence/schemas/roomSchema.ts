@@ -16,7 +16,7 @@ const RoomSchema = new mongoose.Schema(
 
     dimensions: {
       width: Number,
-      height: Number
+      length: Number
     },
 
     floor: {

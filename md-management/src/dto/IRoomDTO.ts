@@ -4,7 +4,7 @@ export interface IRoomDTO {
   floorCode: string;
   dimensions: {
     width: number;
-    height: number;
+    length: number;
   };
   category: string;
 }

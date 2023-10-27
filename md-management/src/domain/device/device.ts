@@ -1,13 +1,15 @@
 import { Guard } from '@/core/logic/Guard';
+import { Result } from '@/core/logic/Result';
 import { AggregateRoot } from '../../core/domain/AggregateRoot';
 import { UniqueEntityID } from '../../core/domain/UniqueEntityID';
+import { DeviceCode } from './deviceCode';
 import { DeviceDescription } from './deviceDescription';
 import { DeviceNickname } from './deviceNickname';
 import { DeviceSerialNumber } from './deviceSerialNumber';
-import { Result } from '@/core/logic/Result';
 import { DeviceModel } from '../device-model/device-model';
 
 interface DeviceProps {
+  code: DeviceCode;
   nickname: DeviceNickname;
   description?: DeviceDescription;
   serialNumber: DeviceSerialNumber;
@@ -18,6 +20,10 @@ interface DeviceProps {
 export class Device extends AggregateRoot<DeviceProps> {
   get id(): UniqueEntityID {
     return this._id;
+  }
+
+  get code(): DeviceCode {
+    return this.props.nickname;
   }
 
   get nickname(): DeviceNickname {
@@ -40,16 +46,26 @@ export class Device extends AggregateRoot<DeviceProps> {
     return this.props.isAvailable;
   }
 
+  set isAvailable(value: boolean) {
+    this.isAvailable = value;
+  }
+
+  public inhibit() {
+    this.isAvailable = false;
+  }
+
   constructor(props: DeviceProps, id?: UniqueEntityID) {
     super(props, id);
   }
 
   public static create(props: DeviceProps, id?: UniqueEntityID): Result<Device> {
     const guardedProps = [
+      { argument: props.code, argumentName: 'code' },
       { argument: props.nickname, argumentName: 'nickname' },
       { argument: props.serialNumber, argumentName: 'serialNumber' },
       { argument: props.model, argumentName: 'model' },
-      { argument: props.isAvailable, argumentName: 'isAvailable' }
+      { argument: props.isAvailable, argumentName: 'isAvailable' },
+      { argument: props.code, argumentName: 'code' }
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);

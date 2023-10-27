@@ -1,10 +1,9 @@
 import { Router } from 'express';
 import { z } from 'zod';
 
-import { Container } from 'typedi';
+import { Container } from '@freshgum/typedi';
 
-import config from '@/config.mjs';
-import IElevatorController from '@/controllers/IControllers/IElevatorController';
+import ElevatorController from '@/controllers/elevatorController';
 import { validate } from '../middlewares/validate';
 
 const elevatorCreateSchema = z.object({
@@ -31,7 +30,7 @@ const elevatorUpdateSchema = z.object({
 export default (app: Router) => {
   const route = Router();
 
-  const ctrl = Container.get(config.controllers.elevator.name) as IElevatorController;
+  const ctrl = Container.get(ElevatorController);
 
   route.get('/:building/elevators', (req, res, next) =>
     ctrl.getElevatorForBuilding(req, res, next)

@@ -1,18 +1,15 @@
-import config from '@/config.mjs';
-import Container, { Service } from 'typedi';
+import { Service } from '@freshgum/typedi';
 
 import { IElevatorDTO } from '@/dto/IElevatorDTO';
 import IElevatorService from '@/services/IServices/IElevatorService';
+import ElevatorService from '@/services/elevatorService';
 import { NextFunction, Request, Response } from 'express';
 import { Result } from '../core/logic/Result';
 import IElevatorController from './IControllers/IElevatorController';
 
-@Service()
+@Service([ElevatorService])
 export default class ElevatorController implements IElevatorController {
-  private elevatorServiceInstance: IElevatorService;
-  constructor() {
-    this.elevatorServiceInstance = Container.get(config.services.elevator.name) as IElevatorService;
-  }
+  constructor(private elevatorServiceInstance: IElevatorService) {}
 
   public async getElevatorForBuilding(req: Request, res: Response, next: NextFunction) {
     try {

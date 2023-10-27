@@ -1,13 +1,16 @@
+import { Container } from '@freshgum/typedi';
 import { Router } from 'express';
-import { Container } from 'typedi';
 import { z } from 'zod';
 
 import { validate } from '@/api/middlewares/validate';
 
-import config from '@/config.mjs';
-import IDeviceController from '@/controllers/IControllers/IDeviceController';
+import DeviceController from '@/controllers/deviceController';
 
 const deviceCreateSchema = z.object({
+  code: z
+    .string()
+    .min(1)
+    .max(30),
   nickname: z
     .string()
     .min(1)
@@ -30,11 +33,14 @@ const deviceCreateSchema = z.object({
 export default (app: Router) => {
   const route = Router();
 
-  const ctrl = Container.get(config.controllers.device.name) as IDeviceController;
+  const ctrl = Container.get(DeviceController);
 
   route.post('', validate(deviceCreateSchema), (req, res, next) =>
     ctrl.createDevice(req, res, next)
   );
+  route.patch('/:code', (req, res, next) => ctrl.inhibitDevice(req, res, next));
+
+  route.patch('/:code', (req, res, next) => ctrl.inhibitDevice(req, res, next));
 
   route.get('/robots', (req, res, next) => ctrl.getDevicesRobots(req, res, next));
 

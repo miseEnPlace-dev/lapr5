@@ -8,6 +8,6 @@ export interface IBuildingPersistence {
   elevator?: IElevatorPersistence;
   maxDimensions: {
     width: number;
-    height: number;
+    length: number;
   };
 }

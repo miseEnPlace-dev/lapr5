@@ -9,11 +9,13 @@ import { DeviceSerialNumber } from '@/domain/device/deviceSerialNumber';
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import Container from 'typedi';
 import DeviceModelRepo from '@/repos/deviceModelRepo';
+import { DeviceModelCode } from '@/domain/device-model/deviceModelCode';
 
 export class DeviceMapper extends Mapper<Device> {
   public static toDTO(device: Device): IDeviceDTO {
     return {
       nickname: device.nickname.value,
+      code: device.code.value,
       description: device.description?.value,
       serialNumber: device.serialNumber.value,
       modelCode: device.model.code.value,
@@ -27,6 +29,7 @@ export class DeviceMapper extends Mapper<Device> {
       ? DeviceDescription.create(device.description).getValue()
       : undefined;
     const serialNumber = DeviceSerialNumber.create(device.serialNumber).getValue();
+    const code = DeviceModelCode.create(device.modelCode).getValue();
 
     const repo = Container.get(DeviceModelRepo);
 
@@ -37,6 +40,7 @@ export class DeviceMapper extends Mapper<Device> {
     const deviceOrError = Device.create(
       {
         nickname,
+        code,
         description,
         serialNumber,
         model,
@@ -53,6 +57,7 @@ export class DeviceMapper extends Mapper<Device> {
   public static toPersistence(device: Device): IDevicePersistence {
     return {
       domainId: device.id.toString(),
+      code: device.code.value,
       nickname: device.nickname.value,
       description: device.description?.value,
       serialNumber: device.serialNumber.value,

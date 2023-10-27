@@ -1,11 +1,10 @@
+import { Container } from '@freshgum/typedi';
 import { Router } from 'express';
 import { z } from 'zod';
-import { Container } from 'typedi';
 
-import IRoomController from '@/controllers/IControllers/IRoomController';
 import { validate } from '@/api/middlewares/validate';
 
-import config from '@/config.mjs';
+import RoomController from '@/controllers/roomController';
 
 const roomCreateSchema = z.object({
   name: z
@@ -16,18 +15,21 @@ const roomCreateSchema = z.object({
     .string()
     .max(255)
     .optional(),
+  category: z.enum(['OFFICE', 'LAB', 'CLASSROOM', 'MEETING_ROOM']),
   dimensions: z.object({
     width: z.number().min(1),
-    height: z.number().min(1)
+    length: z.number().min(1)
   })
 });
 
 export default (app: Router) => {
   const route = Router();
 
-  const ctrl = Container.get(config.controllers.room.name) as IRoomController;
+  const ctrl = Container.get(RoomController);
 
-  route.post('', validate(roomCreateSchema), (req, res, next) => ctrl.createRoom(req, res, next));
+  route.post('/:building/floors/:floor/rooms', validate(roomCreateSchema), (req, res, next) =>
+    ctrl.createRoom(req, res, next)
+  );
 
-  app.use('/rooms', route);
+  app.use('/buildings', route);
 };

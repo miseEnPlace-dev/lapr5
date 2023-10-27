@@ -1,18 +1,15 @@
-import config from '@/config.mjs';
-import Container, { Service } from 'typedi';
+import { Service } from '@freshgum/typedi';
 
 import { IBuildingDTO } from '@/dto/IBuildingDTO';
 import IBuildingService from '@/services/IServices/IBuildingService';
+import BuildingService from '@/services/buildingService';
 import { NextFunction, Request, Response } from 'express';
 import { Result } from '../core/logic/Result';
 import IBuildingController from './IControllers/IBuildingController';
 
-@Service()
+@Service([BuildingService])
 export default class BuildingController implements IBuildingController {
-  private buildingServiceInstance: IBuildingService;
-  constructor() {
-    this.buildingServiceInstance = Container.get(config.services.building.name) as IBuildingService;
-  }
+  constructor(private buildingServiceInstance: IBuildingService) {}
 
   public async createBuilding(req: Request, res: Response, next: NextFunction) {
     try {
@@ -20,7 +17,8 @@ export default class BuildingController implements IBuildingController {
         req.body as IBuildingDTO
       )) as Result<IBuildingDTO>;
 
-      if (buildingOrError.isFailure) return res.status(400).send();
+      if (buildingOrError.isFailure)
+        return res.status(400).json({ error: buildingOrError.errorValue() });
 
       const buildingDTO = buildingOrError.getValue();
       return res.json(buildingDTO).status(201);

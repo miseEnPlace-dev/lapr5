@@ -1,38 +1,36 @@
-import Container, { Service } from 'typedi';
+import { Service } from '@freshgum/typedi';
 
-import config from '@/config.mjs';
 import { Result } from '@/core/logic/Result';
 import { BuildingCode } from '@/domain/building/buildingCode';
 import { Floor } from '@/domain/floor/floor';
 import { FloorCode } from '@/domain/floor/floorCode';
 import { FloorDescription } from '@/domain/floor/floorDescription';
 import { FloorDimensions } from '@/domain/floor/floorDimensions';
+import { FloorMap } from '@/domain/floor/floorMap/floorMap';
+import { FloorMapElevators } from '@/domain/floor/floorMap/floorMapElevators';
+import { FloorMapExitLocation } from '@/domain/floor/floorMap/floorMapExitLocation';
+import { FloorMapExits } from '@/domain/floor/floorMap/floorMapExits';
+import { FloorMapMatrix } from '@/domain/floor/floorMap/floorMapMatrix';
+import { FloorMapSize } from '@/domain/floor/floorMap/floorMapSize';
 import { IFloorDTO } from '@/dto/IFloorDTO';
+import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
+import { FloorMapMapper } from '@/mappers/FloorMapMapper';
 import { FloorMapper } from '@/mappers/FloorMapper';
+import BuildingRepo from '@/repos/buildingRepo';
+import ConnectorRepo from '@/repos/connectorRepo';
+import FloorRepo from '@/repos/floorRepo';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import IFloorService from '@/services/IServices/IFloorService';
 import IBuildingRepo from './IRepos/IBuildingRepo';
-import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
-import { FloorMap } from '@/domain/floor/floorMap/floorMap';
-import { FloorMapMapper } from '@/mappers/FloorMapMapper';
-import { FloorMapSize } from '@/domain/floor/floorMap/floorMapSize';
-import { FloorMapExits } from '@/domain/floor/floorMap/floorMapExits';
-import { FloorMapExitLocation } from '@/domain/floor/floorMap/floorMapExitLocation';
-import { FloorMapElevators } from '@/domain/floor/floorMap/floorMapElevators';
-import { FloorMapMatrix } from '@/domain/floor/floorMap/floorMapMatrix';
 import IConnectorRepo from './IRepos/IConnectorRepo';
 
-@Service()
+@Service([FloorRepo, BuildingRepo, ConnectorRepo])
 export default class FloorService implements IFloorService {
-  private floorRepo: IFloorRepo;
-  private buildingRepo: IBuildingRepo;
-  private connectorRepo: IConnectorRepo;
-
-  constructor() {
-    this.floorRepo = Container.get(config.repos.floor.name);
-    this.buildingRepo = Container.get(config.repos.building.name);
-    this.connectorRepo = Container.get(config.repos.connector.name);
-  }
+  constructor(
+    private floorRepo: IFloorRepo,
+    private buildingRepo: IBuildingRepo,
+    private connectorRepo: IConnectorRepo
+  ) {}
 
   public async updateFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {
     try {
@@ -45,11 +43,9 @@ export default class FloorService implements IFloorService {
       if (!building) return Result.fail<IFloorDTO>('Building does not exist');
 
       if (
-        !floorDTO.dimensions ||
-        !floorDTO.dimensions.width ||
-        !floorDTO.dimensions.height ||
-        floorDTO.dimensions.width > building.maxDimensions.width ||
-        floorDTO.dimensions.height > building.maxDimensions.height
+        floorDTO.dimensions &&
+        (floorDTO.dimensions.width > building.maxDimensions.width ||
+          floorDTO.dimensions.length > building.maxDimensions.length)
       )
         return Result.fail<IFloorDTO>('Floor dimensions are invalid');
 
@@ -58,7 +54,7 @@ export default class FloorService implements IFloorService {
         : undefined;
 
       const dimensions = floorDTO.dimensions
-        ? FloorDimensions.create(floorDTO.dimensions.width, floorDTO.dimensions.height)
+        ? FloorDimensions.create(floorDTO.dimensions.width, floorDTO.dimensions.length)
         : undefined;
 
       if (description) floor.description = description.getValue();
@@ -90,15 +86,15 @@ export default class FloorService implements IFloorService {
       if (
         !floorDTO.dimensions ||
         !floorDTO.dimensions.width ||
-        !floorDTO.dimensions.height ||
+        !floorDTO.dimensions.length ||
         floorDTO.dimensions.width > building.maxDimensions.width ||
-        floorDTO.dimensions.height > building.maxDimensions.height
+        floorDTO.dimensions.length > building.maxDimensions.length
       )
         return Result.fail<IFloorDTO>('Floor dimensions are invalid');
 
       const dimensions = FloorDimensions.create(
         floorDTO.dimensions.width,
-        floorDTO.dimensions.height
+        floorDTO.dimensions.length
       );
 
       if (dimensions.isFailure) return Result.fail<IFloorDTO>(dimensions.error);
@@ -113,6 +109,9 @@ export default class FloorService implements IFloorService {
       if (floorOrError.isFailure) return Result.fail<IFloorDTO>(floorOrError.error as string);
 
       const floorResult = floorOrError.getValue();
+
+      if (await this.floorRepo.findByCode(floorResult.code))
+        return Result.fail<IFloorDTO>('Floor already exists');
 
       await this.floorRepo.save(floorResult);
 

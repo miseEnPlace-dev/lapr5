@@ -1,4 +1,4 @@
-import { Container } from 'typedi';
+import { Container } from '@freshgum/typedi';
 
 import { Mapper } from '../core/infra/Mapper';
 
@@ -12,6 +12,7 @@ import { UserPassword } from '../domain/user/userPassword';
 
 import { IUserPersistence } from '@/dataschema/IUserPersistence';
 import { PhoneNumber } from '@/domain/user/phoneNumber';
+import IRoleRepo from '@/services/IRepos/IRoleRepo';
 import RoleRepo from '../repos/roleRepo';
 
 export class UserMapper extends Mapper<User> {
@@ -30,7 +31,7 @@ export class UserMapper extends Mapper<User> {
     const userEmailOrError = UserEmail.create(raw.email);
     const userPasswordOrError = UserPassword.create({ value: raw.password, hashed: true });
     const phoneNumberOrError = PhoneNumber.create(raw.phoneNumber);
-    const repo = Container.get(RoleRepo);
+    const repo = Container.get<IRoleRepo>(RoleRepo);
     const role = await repo.findByDomainId(raw.role);
     if (!role) throw new Error('Role not found');
 
