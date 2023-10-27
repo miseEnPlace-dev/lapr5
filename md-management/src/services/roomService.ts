@@ -40,9 +40,9 @@ export default class RoomService implements IRoomService {
       if (
         !roomDTO.dimensions ||
         !roomDTO.dimensions.width ||
-        !roomDTO.dimensions.height ||
+        !roomDTO.dimensions.length ||
         roomDTO.dimensions.width > floor.dimensions.width ||
-        roomDTO.dimensions.height > floor.dimensions.height
+        roomDTO.dimensions.length > floor.dimensions.length
       )
         return Result.fail<IRoomDTO>(
           'Room dimensions are invalid or there is no space in current floor'
@@ -50,11 +50,11 @@ export default class RoomService implements IRoomService {
 
       if (
         (await this.getAvailableAreaInFloor(floor.props.code)).getValue() >=
-        roomDTO.dimensions.width * roomDTO.dimensions.height
+        roomDTO.dimensions.width * roomDTO.dimensions.length
       ) {
         const dimensions = RoomDimensions.create(
           roomDTO.dimensions.width,
-          roomDTO.dimensions.height
+          roomDTO.dimensions.length
         );
 
         if (dimensions.isFailure) return Result.fail<IRoomDTO>(dimensions.error);
@@ -74,6 +74,9 @@ export default class RoomService implements IRoomService {
         if (roomOrError.isFailure) return Result.fail<IRoomDTO>(roomOrError.error as string);
 
         const roomResult = roomOrError.getValue();
+
+        if (await this.roomRepo.findByName(roomResult.name))
+          return Result.fail<IRoomDTO>('Room already exists');
 
         await this.roomRepo.save(roomResult);
 
@@ -95,13 +98,13 @@ export default class RoomService implements IRoomService {
 
       const rooms = await this.roomRepo.findAllRoomsInFloorByCode(floor.props.code);
 
-      if (!rooms) return Result.ok<number>(floor.dimensions.width * floor.dimensions.height);
+      if (!rooms) return Result.ok<number>(floor.dimensions.width * floor.dimensions.length);
 
       const occupiedArea = rooms.reduce((acc, room) => {
-        return acc + room.dimensions.width * room.dimensions.height;
+        return acc + room.dimensions.width * room.dimensions.length;
       }, 0);
 
-      return Result.ok<number>(floor.dimensions.width * floor.dimensions.height - occupiedArea);
+      return Result.ok<number>(floor.dimensions.width * floor.dimensions.length - occupiedArea);
     } catch (e) {
       throw e;
     }

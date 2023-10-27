@@ -2,6 +2,7 @@ import config from '@/config.mjs';
 import { IRoomPersistence } from '@/dataschema/IRoomPersistence';
 import { FloorCode } from '@/domain/floor/floorCode';
 import { Room } from '@/domain/room/room';
+import { RoomName } from '@/domain/room/roomName';
 import { RoomMapper } from '@/mappers/RoomMapper';
 import IRoomRepo from '@/services/IRepos/IRoomRepo';
 import { Document, FilterQuery, Model } from 'mongoose';
@@ -62,5 +63,14 @@ export default class RoomRepo implements IRoomRepo {
     }
 
     return rooms;
+  }
+
+  public async findByName(name: RoomName): Promise<Room | null> {
+    const query: FilterQuery<IRoomPersistence & Document> = { name: name.value };
+
+    const roomRecord = await this.roomSchema.findOne(query);
+
+    if (roomRecord) return RoomMapper.toDomain(roomRecord);
+    return null;
   }
 }

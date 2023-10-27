@@ -16,9 +16,10 @@ const roomCreateSchema = z.object({
     .string()
     .max(255)
     .optional(),
+  category: z.enum(['OFFICE', 'LAB', 'CLASSROOM', 'MEETING_ROOM']),
   dimensions: z.object({
     width: z.number().min(1),
-    height: z.number().min(1)
+    length: z.number().min(1)
   })
 });
 
@@ -27,7 +28,9 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.room.name) as IRoomController;
 
-  route.post('', validate(roomCreateSchema), (req, res, next) => ctrl.createRoom(req, res, next));
+  route.post('/:building/floors/:floor/rooms', validate(roomCreateSchema), (req, res, next) =>
+    ctrl.createRoom(req, res, next)
+  );
 
-  app.use('/rooms', route);
+  app.use('/buildings', route);
 };
