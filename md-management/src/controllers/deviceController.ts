@@ -28,4 +28,19 @@ export default class DeviceController implements IDeviceController {
       return next(e);
     }
   }
+
+  public async getDevicesRobots(req: Request, res: Response, next: NextFunction) {
+    try {
+      const devicesOrError = (await this.deviceServiceInstance.getDevicesRobots()) as Result<
+        IDeviceDTO[]
+      >;
+
+      if (devicesOrError.isFailure) return res.status(400).send();
+
+      const devicesDTO = devicesOrError.getValue();
+      return res.json(devicesDTO).status(200);
+    } catch (e) {
+      return next(e);
+    }
+  }
 }

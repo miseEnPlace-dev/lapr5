@@ -3,4 +3,5 @@ import { Repo } from '../../core/infra/Repo';
 
 export default interface IDeviceRepo extends Repo<Device> {
   save(device: Device): Promise<Device>;
+  findRobots(): Promise<Device[]>;
 }

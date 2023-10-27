@@ -5,13 +5,13 @@ import { DeviceDescription } from './deviceDescription';
 import { DeviceNickname } from './deviceNickname';
 import { DeviceSerialNumber } from './deviceSerialNumber';
 import { Result } from '@/core/logic/Result';
-import { DeviceModelCode } from '../device-model/deviceModelCode';
+import { DeviceModel } from '../device-model/device-model';
 
 interface DeviceProps {
   nickname: DeviceNickname;
   description?: DeviceDescription;
   serialNumber: DeviceSerialNumber;
-  modelCode: DeviceModelCode;
+  model: DeviceModel;
   isAvailable?: boolean;
 }
 
@@ -32,8 +32,8 @@ export class Device extends AggregateRoot<DeviceProps> {
     return this.props.serialNumber;
   }
 
-  get modelCode(): DeviceModelCode {
-    return this.props.modelCode;
+  get model(): DeviceModel {
+    return this.props.model;
   }
 
   get isAvailable(): boolean | undefined {
@@ -48,7 +48,7 @@ export class Device extends AggregateRoot<DeviceProps> {
     const guardedProps = [
       { argument: props.nickname, argumentName: 'nickname' },
       { argument: props.serialNumber, argumentName: 'serialNumber' },
-      { argument: props.modelCode, argumentName: 'modelCode' },
+      { argument: props.model, argumentName: 'model' },
       { argument: props.isAvailable, argumentName: 'isAvailable' }
     ];
 

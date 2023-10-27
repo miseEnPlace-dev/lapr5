@@ -7,7 +7,8 @@ import { DeviceNickname } from '@/domain/device/deviceNickname';
 import { DeviceDescription } from '@/domain/device/deviceDescription';
 import { DeviceSerialNumber } from '@/domain/device/deviceSerialNumber';
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
-import { DeviceModelCode } from '@/domain/device-model/deviceModelCode';
+import Container from 'typedi';
+import DeviceModelRepo from '@/repos/deviceModelRepo';
 
 export class DeviceMapper extends Mapper<Device> {
   public static toDTO(device: Device): IDeviceDTO {
@@ -15,7 +16,7 @@ export class DeviceMapper extends Mapper<Device> {
       nickname: device.nickname.value,
       description: device.description?.value,
       serialNumber: device.serialNumber.value,
-      modelCode: device.modelCode.value,
+      modelCode: device.model.code.value,
       isAvailable: device.isAvailable ? device.isAvailable : true
     };
   }
@@ -27,16 +28,18 @@ export class DeviceMapper extends Mapper<Device> {
       : undefined;
     const serialNumber = DeviceSerialNumber.create(device.serialNumber).getValue();
 
-    const modelCode = DeviceModelCode.create(device.modelCode).getValue();
+    const repo = Container.get(DeviceModelRepo);
 
-    if (!modelCode) throw new Error('Device model not found');
+    const model = await repo.findByCode(device.modelCode);
+
+    if (!model) throw new Error('Model not found');
 
     const deviceOrError = Device.create(
       {
         nickname,
         description,
         serialNumber,
-        modelCode,
+        model,
         isAvailable: device.isAvailable
       },
       new UniqueEntityID(device.domainId)
@@ -53,7 +56,7 @@ export class DeviceMapper extends Mapper<Device> {
       nickname: device.nickname.value,
       description: device.description?.value,
       serialNumber: device.serialNumber.value,
-      modelCode: device.modelCode.value,
+      modelCode: device.model.code.value,
       isAvailable: device.isAvailable ? device.isAvailable : true
     };
   }
