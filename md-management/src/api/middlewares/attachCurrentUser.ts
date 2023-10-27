@@ -1,11 +1,11 @@
-import { Container } from 'typedi';
+import { Container } from '@freshgum/typedi';
 
 import winston from 'winston';
 
 import config from '@/config.mjs';
 
-import IUserRepo from '../../services/IRepos/IUserRepo';
 import { NextFunction, Request, Response } from 'express';
+import IUserRepo from '../../services/IRepos/IUserRepo';
 
 /**
  * Attach user to req.user

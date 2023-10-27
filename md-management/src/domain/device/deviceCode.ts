@@ -5,7 +5,6 @@ interface DeviceCodeProps {
   [key: string]: string;
   value: string;
 }
-
 export class DeviceCode extends ValueObject<DeviceCodeProps> {
   get value(): string {
     return this.props.value;

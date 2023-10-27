@@ -20,7 +20,7 @@ describe('RoomDimensions', () => {
     expect(result.isFailure).toBe(true);
   });
 
-  it('should not allow create dimensions with negative height', () => {
+  it('should not allow create dimensions with negative length', () => {
     const result = RoomDimensions.create(1, -1);
 
     expect(result.isFailure).toBe(true);
@@ -32,7 +32,7 @@ describe('RoomDimensions', () => {
     expect(result.isFailure).toBe(true);
   });
 
-  it('should not allow create dimensions with zero height', () => {
+  it('should not allow create dimensions with zero length', () => {
     const result = RoomDimensions.create(1, 0);
 
     expect(result.isFailure).toBe(true);
@@ -42,6 +42,6 @@ describe('RoomDimensions', () => {
     const result = RoomDimensions.create(1, 1);
     expect(result.isSuccess).toBe(true);
     expect(result.getValue().width).toBe(1);
-    expect(result.getValue().height).toBe(1);
+    expect(result.getValue().length).toBe(1);
   });
 });

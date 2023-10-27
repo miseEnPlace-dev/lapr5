@@ -1,27 +1,23 @@
-import Container, { Service } from 'typedi';
+import { Service } from '@freshgum/typedi';
 
 import { Role } from '../domain/role/role';
 import { RoleId } from '../domain/role/roleId';
 import { RoleMapper } from '../mappers/RoleMapper';
 import IRoleRepo from '../services/IRepos/IRoleRepo';
 
-import { Document, FilterQuery, Model } from 'mongoose';
-import config from '../config.mjs';
+import { Document, FilterQuery } from 'mongoose';
 import { IRolePersistence } from '../dataschema/IRolePersistence';
+import roleSchema from '../persistence/schemas/roleSchema';
 
-@Service()
+@Service([])
 export default class RoleRepo implements IRoleRepo {
-  private roleSchema: Model<IRolePersistence & Document>;
-  constructor(roleSchema?: Model<IRolePersistence & Document>) {
-    if (roleSchema) this.roleSchema = roleSchema;
-    else this.roleSchema = Container.get(config.schemas.role.name);
-  }
+  constructor() {}
 
   public async exists(role: Role): Promise<boolean> {
     const idX = role.id instanceof RoleId ? (<RoleId>role.id).toValue() : role.id;
 
     const query = { domainId: idX };
-    const roleDocument = await this.roleSchema.findOne(
+    const roleDocument = await roleSchema.findOne(
       query as FilterQuery<IRolePersistence & Document>
     );
 
@@ -31,13 +27,13 @@ export default class RoleRepo implements IRoleRepo {
   public async save(role: Role): Promise<Role> {
     const query = { domainId: role.id.toString() };
 
-    const roleDocument = await this.roleSchema.findOne(query);
+    const roleDocument = await roleSchema.findOne(query);
 
     try {
       if (roleDocument === null) {
         const rawRole = RoleMapper.toPersistence(role);
 
-        const roleCreated = await this.roleSchema.create(rawRole);
+        const roleCreated = await roleSchema.create(rawRole);
 
         const roleDomain = RoleMapper.toDomain(roleCreated);
         if (!roleDomain) throw new Error('Role not created');
@@ -55,9 +51,7 @@ export default class RoleRepo implements IRoleRepo {
 
   public async findByDomainId(roleId: RoleId | string): Promise<Role | null> {
     const query = { domainId: roleId };
-    const roleRecord = await this.roleSchema.findOne(
-      query as FilterQuery<IRolePersistence & Document>
-    );
+    const roleRecord = await roleSchema.findOne(query as FilterQuery<IRolePersistence & Document>);
 
     if (roleRecord != null) {
       return RoleMapper.toDomain(roleRecord);

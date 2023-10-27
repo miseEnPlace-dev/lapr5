@@ -1,15 +1,14 @@
 import { Router } from 'express';
 import { z } from 'zod';
 
-import { Container } from 'typedi';
-import IRoleController from '../../controllers/IControllers/IRoleController';
+import { Container } from '@freshgum/typedi';
 
-import config from '@/config.mjs';
+import RoleController from '@/controllers/roleController';
 
 export default (app: Router) => {
   const route = Router();
 
-  const ctrl = Container.get(config.controllers.role.name) as IRoleController;
+  const ctrl = Container.get(RoleController);
 
   route.post(
     '',

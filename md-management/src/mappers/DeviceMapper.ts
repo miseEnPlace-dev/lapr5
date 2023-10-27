@@ -13,6 +13,7 @@ export class DeviceMapper extends Mapper<Device> {
   public static toDTO(device: Device): IDeviceDTO {
     return {
       nickname: device.nickname.value,
+      code: device.code.value,
       description: device.description?.value,
       serialNumber: device.serialNumber.value,
       modelCode: device.modelCode.value,
@@ -26,6 +27,7 @@ export class DeviceMapper extends Mapper<Device> {
       ? DeviceDescription.create(device.description).getValue()
       : undefined;
     const serialNumber = DeviceSerialNumber.create(device.serialNumber).getValue();
+    const code = DeviceModelCode.create(device.modelCode).getValue();
 
     const modelCode = DeviceModelCode.create(device.modelCode).getValue();
 
@@ -34,6 +36,7 @@ export class DeviceMapper extends Mapper<Device> {
     const deviceOrError = Device.create(
       {
         nickname,
+        code,
         description,
         serialNumber,
         modelCode,
@@ -50,6 +53,7 @@ export class DeviceMapper extends Mapper<Device> {
   public static toPersistence(device: Device): IDevicePersistence {
     return {
       domainId: device.id.toString(),
+      code: device.code.value,
       nickname: device.nickname.value,
       description: device.description?.value,
       serialNumber: device.serialNumber.value,

@@ -1,6 +1,4 @@
-import Container, { Service } from 'typedi';
-
-import config from '@/config.mjs';
+import { Service } from '@freshgum/typedi';
 
 import { Result } from '@/core/logic/Result';
 import { IDeviceModelDTO } from '@/dto/IDeviceModelDTO';
@@ -11,16 +9,13 @@ import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
 import { DeviceModelName } from '@/domain/deviceModel/deviceModelName';
 import { Task } from '@/domain/shared/task';
 import { DeviceModelMapper } from '@/mappers/DeviceModelMapper';
+import DeviceModelRepo from '@/repos/deviceModelRepo';
 import IDeviceModelRepo from './IRepos/IDeviceModelRepo';
 import IDeviceModelService from './IServices/IDeviceModelService';
 
-@Service()
+@Service([DeviceModelRepo])
 export default class DeviceModelService implements IDeviceModelService {
-  private deviceModelRepo: IDeviceModelRepo;
-
-  constructor() {
-    this.deviceModelRepo = Container.get(config.repos.deviceModel.name);
-  }
+  constructor(private deviceModelRepo: IDeviceModelRepo) {}
 
   public async createDevice(deviceModelDTO: IDeviceModelDTO): Promise<Result<IDeviceModelDTO>> {
     try {

@@ -1,5 +1,5 @@
-import winston from 'winston';
 import config from '@/config.mjs';
+import winston from 'winston';
 
 const transports = [];
 if (process.env.NODE_ENV !== 'development') {

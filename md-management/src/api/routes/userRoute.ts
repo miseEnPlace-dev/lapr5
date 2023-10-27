@@ -1,5 +1,5 @@
+import { Container } from '@freshgum/typedi';
 import { NextFunction, Request, Response, Router } from 'express';
-import { Container } from 'typedi';
 
 import { z } from 'zod';
 import { IUserDTO } from '../../dto/IUserDTO';
@@ -41,17 +41,11 @@ export default (app: Router) => {
       return schema.parse(request.body);
     },
     async (req: Request, res: Response, next: NextFunction) => {
-      const logger = Container.get('logger') as winston.Logger;
-      logger.debug('Calling Sign-Up endpoint with body: %o', req.body);
-
       try {
         const authServiceInstance = Container.get(AuthService);
         const userOrError = await authServiceInstance.SignUp(req.body as IUserDTO);
 
-        if (userOrError.isFailure) {
-          logger.debug(userOrError.errorValue());
-          return res.status(401).send(userOrError.errorValue());
-        }
+        if (userOrError.isFailure) return res.status(401).send(userOrError.errorValue());
 
         const { userDTO, token } = userOrError.getValue();
 
@@ -79,8 +73,6 @@ export default (app: Router) => {
       return schema.parse(request.body);
     },
     async (req: Request, res: Response, next: NextFunction) => {
-      const logger = Container.get('logger') as winston.Logger;
-      logger.debug('Calling Sign-In endpoint with body: %o', req.body);
       try {
         const { email, password } = req.body;
         const authServiceInstance = Container.get(AuthService);
@@ -91,7 +83,6 @@ export default (app: Router) => {
         const { userDTO, token } = result.getValue();
         return res.json({ userDTO, token }).status(200);
       } catch (e) {
-        logger.error('🔥 error: %o', e);
         return next(e);
       }
     }

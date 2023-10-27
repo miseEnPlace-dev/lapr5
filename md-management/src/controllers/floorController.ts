@@ -1,23 +1,17 @@
+import { Service } from '@freshgum/typedi';
 import { NextFunction, Request, Response } from 'express';
-import Container, { Service } from 'typedi';
-
-import config from '@/config.mjs';
 
 import { Result } from '@/core/logic/Result';
 import { IFloorDTO } from '@/dto/IFloorDTO';
 import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
 import IFloorService from '@/services/IServices/IFloorService';
+import FloorService from '@/services/floorService';
 import { z } from 'zod';
 import IFloorController from './IControllers/IFloorController';
 
-@Service()
+@Service([FloorService])
 export default class FloorController implements IFloorController {
-  private floorServiceInstance: IFloorService;
-
-  constructor(floorServiceInstance?: IFloorService) {
-    if (floorServiceInstance) this.floorServiceInstance = floorServiceInstance;
-    else this.floorServiceInstance = Container.get(config.services.floor.name) as IFloorService;
-  }
+  constructor(private floorServiceInstance: IFloorService) {}
 
   public async createFloor(req: Request, res: Response, next: NextFunction) {
     try {

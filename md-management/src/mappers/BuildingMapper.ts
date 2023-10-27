@@ -19,7 +19,7 @@ export class BuildingMapper extends Mapper<Building> {
       elevatorFloors: building.elevator?.floors.map(f => f.id.toString()),
       maxDimensions: {
         width: building.maxDimensions.width,
-        height: building.maxDimensions.height
+        length: building.maxDimensions.length
       }
     };
   }
@@ -28,7 +28,7 @@ export class BuildingMapper extends Mapper<Building> {
     const code = BuildingCode.create(building.code).getValue();
     const maxDimensions = BuildingMaxDimensions.create(
       building.maxDimensions.width,
-      building.maxDimensions.height
+      building.maxDimensions.length
     ).getValue();
     const name = building.name ? BuildingName.create(building.name).getValue() : undefined;
     const description = building.description
@@ -66,7 +66,7 @@ export class BuildingMapper extends Mapper<Building> {
       elevator,
       maxDimensions: {
         width: building.maxDimensions.width,
-        height: building.maxDimensions.height
+        length: building.maxDimensions.length
       }
     };
   }

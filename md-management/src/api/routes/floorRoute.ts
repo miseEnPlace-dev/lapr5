@@ -1,12 +1,11 @@
+import { Container } from '@freshgum/typedi';
 import { Router } from 'express';
-import { z } from 'zod';
 import multer from 'multer';
-import { Container } from 'typedi';
+import { z } from 'zod';
 
-import IFloorController from '@/controllers/IControllers/IFloorController';
 import { validate } from '@/api/middlewares/validate';
 
-import config from '@/config.mjs';
+import FloorController from '@/controllers/floorController';
 
 const floorCreateSchema = z.object({
   code: z
@@ -19,7 +18,7 @@ const floorCreateSchema = z.object({
     .optional(),
   dimensions: z.object({
     width: z.number().min(1),
-    height: z.number().min(1)
+    length: z.number().min(1)
   })
 });
 
@@ -31,7 +30,7 @@ const floorUpdateSchema = z.object({
   dimensions: z
     .object({
       width: z.number().min(1),
-      height: z.number().min(1)
+      length: z.number().min(1)
     })
     .optional()
 });
@@ -39,7 +38,7 @@ const floorUpdateSchema = z.object({
 export default (app: Router) => {
   const route = Router();
 
-  const ctrl = Container.get(config.controllers.floor.name) as IFloorController;
+  const ctrl = Container.get(FloorController);
 
   route.get('/:building/floors', (req, res, next) => ctrl.getFloors(req, res, next));
   route.post('/:building/floors', validate(floorCreateSchema), (req, res, next) =>

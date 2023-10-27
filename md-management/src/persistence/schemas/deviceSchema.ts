@@ -8,6 +8,11 @@ const Device = new mongoose.Schema(
       unique: true
     },
 
+    code: {
+      type: String,
+      unique: true
+    },
+
     nickname: {
       type: String,
       unique: true

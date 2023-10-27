@@ -1,22 +1,15 @@
-import config from '@/config.mjs';
-import Container, { Service } from 'typedi';
+import { Service } from '@freshgum/typedi';
 
 import { IDeviceModelDTO } from '@/dto/IDeviceModelDTO';
 import IDeviceModelService from '@/services/IServices/IDeviceModelService';
+import DeviceModelService from '@/services/deviceModelService';
 import { NextFunction, Request, Response } from 'express';
 import { Result } from '../core/logic/Result';
 import IDeviceModelController from './IControllers/IDeviceModelController';
 
-@Service()
+@Service([DeviceModelService])
 export default class DeviceModelController implements IDeviceModelController {
-  private deviceModelServiceInstance: IDeviceModelService;
-  constructor(deviceModelServiceInstance?: IDeviceModelService) {
-    if (deviceModelServiceInstance) this.deviceModelServiceInstance = deviceModelServiceInstance;
-    else
-      this.deviceModelServiceInstance = Container.get<IDeviceModelService>(
-        config.services.deviceModel.name
-      );
-  }
+  constructor(private deviceModelServiceInstance: IDeviceModelService) {}
 
   public async createDeviceModel(req: Request, res: Response, next: NextFunction) {
     try {
