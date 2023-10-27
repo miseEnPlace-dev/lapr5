@@ -45,11 +45,9 @@ export default class FloorService implements IFloorService {
       if (!building) return Result.fail<IFloorDTO>('Building does not exist');
 
       if (
-        !floorDTO.dimensions ||
-        !floorDTO.dimensions.width ||
-        !floorDTO.dimensions.height ||
-        floorDTO.dimensions.width > building.maxDimensions.width ||
-        floorDTO.dimensions.height > building.maxDimensions.height
+        floorDTO.dimensions &&
+        (floorDTO.dimensions.width > building.maxDimensions.width ||
+          floorDTO.dimensions.height > building.maxDimensions.height)
       )
         return Result.fail<IFloorDTO>('Floor dimensions are invalid');
 
