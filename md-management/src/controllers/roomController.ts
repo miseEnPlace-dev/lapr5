@@ -4,16 +4,17 @@ import Container, { Service } from 'typedi';
 import config from '@/config.mjs';
 
 import { Result } from '@/core/logic/Result';
-import IRoomController from './IControllers/IRoomController';
-import IRoomService from '@/services/IServices/IRoomService';
 import { IRoomDTO } from '@/dto/IRoomDTO';
+import IRoomService from '@/services/IServices/IRoomService';
+import IRoomController from './IControllers/IRoomController';
 
 @Service()
 export default class RoomController implements IRoomController {
   private roomServiceInstance: IRoomService;
 
-  constructor() {
-    this.roomServiceInstance = Container.get(config.services.room.name) as IRoomService;
+  constructor(roomServiceInstance?: IRoomService) {
+    if (roomServiceInstance) this.roomServiceInstance = roomServiceInstance;
+    else this.roomServiceInstance = Container.get(config.services.room.name) as IRoomService;
   }
 
   public async createRoom(req: Request, res: Response, next: NextFunction) {

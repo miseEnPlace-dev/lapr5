@@ -10,8 +10,10 @@ import IElevatorController from './IControllers/IElevatorController';
 @Service()
 export default class ElevatorController implements IElevatorController {
   private elevatorServiceInstance: IElevatorService;
-  constructor() {
-    this.elevatorServiceInstance = Container.get(config.services.elevator.name) as IElevatorService;
+  constructor(elevatorServiceInstance?: IElevatorService) {
+    if (elevatorServiceInstance) this.elevatorServiceInstance = elevatorServiceInstance;
+    else
+      this.elevatorServiceInstance = Container.get<IElevatorService>(config.services.elevator.name);
   }
 
   public async getElevatorForBuilding(req: Request, res: Response, next: NextFunction) {

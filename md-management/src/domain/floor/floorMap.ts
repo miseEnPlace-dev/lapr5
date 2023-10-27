@@ -55,9 +55,8 @@ export class FloorMap extends Entity<FloorMapProps> {
   }
 
   private static validateSize(size: { width: number; depth: number }): boolean {
-    if (size.width < 0 || size.depth < 0) {
-      return false;
-    }
+    if (size.width < 0 || size.depth < 0) return false;
+
     return true;
   }
 

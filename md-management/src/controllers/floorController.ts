@@ -6,16 +6,17 @@ import config from '@/config.mjs';
 import { Result } from '@/core/logic/Result';
 import { BuildingCode } from '@/domain/building/buildingCode';
 import { IFloorDTO } from '@/dto/IFloorDTO';
+import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
 import IFloorService from '@/services/IServices/IFloorService';
 import IFloorController from './IControllers/IFloorController';
-import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
 
 @Service()
 export default class FloorController implements IFloorController {
   private floorServiceInstance: IFloorService;
 
-  constructor() {
-    this.floorServiceInstance = Container.get(config.services.floor.name) as IFloorService;
+  constructor(floorServiceInstance?: IFloorService) {
+    if (floorServiceInstance) this.floorServiceInstance = floorServiceInstance;
+    else this.floorServiceInstance = Container.get(config.services.floor.name) as IFloorService;
   }
 
   public async createFloor(req: Request, res: Response, next: NextFunction) {
@@ -57,7 +58,7 @@ export default class FloorController implements IFloorController {
     const buildingCode = BuildingCode.create(req.params.code as string);
 
     if (buildingCode.isFailure)
-      return res.status(400).send({
+      return res.status(400).json({
         message: 'Invalid buildingId query parameter'
       });
 
@@ -67,7 +68,7 @@ export default class FloorController implements IFloorController {
       )) as Result<IFloorDTO[]>;
 
       if (floorsOrError.isFailure)
-        return res.status(400).send({
+        return res.status(400).json({
           message: floorsOrError.errorValue()
         });
 

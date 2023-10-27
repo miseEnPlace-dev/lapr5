@@ -5,8 +5,8 @@ import { z } from 'zod';
 import config from '@/config.mjs';
 
 import { Result } from '@/core/logic/Result';
-import IConnectorService from '@/services/IServices/IConnectorService';
 import { IConnectorDTO } from '@/dto/IConnectorDTO';
+import IConnectorService from '@/services/IServices/IConnectorService';
 import IConnectorController from './IControllers/IConnectorController';
 
 const buildingIdsSchema = z.object({
@@ -23,8 +23,10 @@ const buildingIdsSchema = z.object({
 @Service()
 export default class ConnectorController implements IConnectorController {
   private connectorSvcInstance: IConnectorService;
-  constructor() {
-    this.connectorSvcInstance = Container.get(config.services.connector.name) as IConnectorService;
+  constructor(connectorSvcInstance?: IConnectorService) {
+    if (connectorSvcInstance) this.connectorSvcInstance = connectorSvcInstance;
+    else
+      this.connectorSvcInstance = Container.get<IConnectorService>(config.services.connector.name);
   }
 
   public async createConnector(req: Request, res: Response, next: NextFunction) {
