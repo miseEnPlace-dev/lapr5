@@ -14,6 +14,7 @@ import IDeviceModelRepo from './IRepos/IDeviceModelRepo';
 import { Device } from '@/domain/device/device';
 import { DeviceMapper } from '@/mappers/DeviceMapper';
 import { DeviceModelCode } from '@/domain/device-model/deviceModelCode';
+import { DeviceCode } from '@/domain/device/deviceCode';
 
 @Service()
 export default class DeviceService implements IDeviceService {
@@ -27,6 +28,7 @@ export default class DeviceService implements IDeviceService {
 
   public async createDevice(deviceDTO: IDeviceDTO): Promise<Result<IDeviceDTO>> {
     try {
+      const code = DeviceCode.create(deviceDTO.code).getValue();
       const nickname = DeviceNickname.create(deviceDTO.nickname).getValue();
       const serialNumber = DeviceSerialNumber.create(deviceDTO.serialNumber).getValue();
       const description = deviceDTO.description
@@ -39,6 +41,7 @@ export default class DeviceService implements IDeviceService {
       if (!model) return Result.fail<IDeviceDTO>('Model not found');
 
       const deviceOrError = Device.create({
+        code,
         nickname,
         serialNumber,
         description,

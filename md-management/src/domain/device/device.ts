@@ -6,8 +6,10 @@ import { DeviceNickname } from './deviceNickname';
 import { DeviceSerialNumber } from './deviceSerialNumber';
 import { Result } from '@/core/logic/Result';
 import { DeviceModelCode } from '../device-model/deviceModelCode';
+import { DeviceCode } from './deviceCode';
 
 interface DeviceProps {
+  code: DeviceCode;
   nickname: DeviceNickname;
   description?: DeviceDescription;
   serialNumber: DeviceSerialNumber;
@@ -18,6 +20,10 @@ interface DeviceProps {
 export class Device extends AggregateRoot<DeviceProps> {
   get id(): UniqueEntityID {
     return this._id;
+  }
+
+  get code(): DeviceCode {
+    return this.props.nickname;
   }
 
   get nickname(): DeviceNickname {
@@ -46,6 +52,7 @@ export class Device extends AggregateRoot<DeviceProps> {
 
   public static create(props: DeviceProps, id?: UniqueEntityID): Result<Device> {
     const guardedProps = [
+      { argument: props.code, argumentName: 'code' },
       { argument: props.nickname, argumentName: 'nickname' },
       { argument: props.serialNumber, argumentName: 'serialNumber' },
       { argument: props.modelCode, argumentName: 'modelCode' },

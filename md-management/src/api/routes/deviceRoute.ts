@@ -8,6 +8,10 @@ import config from '@/config.mjs';
 import IDeviceController from '@/controllers/IControllers/IDeviceController';
 
 const deviceCreateSchema = z.object({
+  code: z
+    .string()
+    .min(1)
+    .max(30),
   nickname: z
     .string()
     .min(1)
