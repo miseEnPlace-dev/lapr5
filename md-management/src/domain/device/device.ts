@@ -6,8 +6,10 @@ import { DeviceNickname } from './deviceNickname';
 import { DeviceSerialNumber } from './deviceSerialNumber';
 import { Result } from '@/core/logic/Result';
 import { DeviceModelCode } from '../device-model/deviceModelCode';
+import { DeviceCode } from './deviceCode';
 
 interface DeviceProps {
+  code: DeviceCode;
   nickname: DeviceNickname;
   description?: DeviceDescription;
   serialNumber: DeviceSerialNumber;
@@ -18,6 +20,10 @@ interface DeviceProps {
 export class Device extends AggregateRoot<DeviceProps> {
   get id(): UniqueEntityID {
     return this._id;
+  }
+
+  get code(): DeviceCode {
+    return this.props.code;
   }
 
   get nickname(): DeviceNickname {
@@ -40,6 +46,14 @@ export class Device extends AggregateRoot<DeviceProps> {
     return this.props.isAvailable;
   }
 
+  set isAvailable(value: boolean) {
+    this.isAvailable = value;
+  }
+
+  public inhibit() {
+    this.isAvailable = false;
+  }
+
   constructor(props: DeviceProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -49,7 +63,8 @@ export class Device extends AggregateRoot<DeviceProps> {
       { argument: props.nickname, argumentName: 'nickname' },
       { argument: props.serialNumber, argumentName: 'serialNumber' },
       { argument: props.modelCode, argumentName: 'modelCode' },
-      { argument: props.isAvailable, argumentName: 'isAvailable' }
+      { argument: props.isAvailable, argumentName: 'isAvailable' },
+      { argument: props.code, argumentName: 'code' }
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
