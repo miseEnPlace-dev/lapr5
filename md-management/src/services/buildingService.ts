@@ -63,7 +63,10 @@ export default class BuildingService implements IBuildingService {
     code: string
   ): Promise<Result<IBuildingDTO>> {
     try {
-      const building = await this.buildingRepo.findByCode(code);
+      const buildingCode = BuildingCode.create(code);
+      if (buildingCode.isFailure) return Result.fail<IBuildingDTO>('Building not found');
+
+      const building = await this.buildingRepo.findByCode(buildingCode.getValue());
       if (!building) return Result.fail<IBuildingDTO>('Building not found');
 
       if (buildingDTO.name)
