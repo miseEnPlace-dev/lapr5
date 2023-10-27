@@ -7,6 +7,8 @@ import { DeviceNickname } from '@/domain/device/deviceNickname';
 import { DeviceDescription } from '@/domain/device/deviceDescription';
 import { DeviceSerialNumber } from '@/domain/device/deviceSerialNumber';
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
+import Container from '@freshgum/typedi';
+import DeviceModelRepo from '@/repos/deviceModelRepo';
 import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
 
 export class DeviceMapper extends Mapper<Device> {
@@ -16,7 +18,7 @@ export class DeviceMapper extends Mapper<Device> {
       code: device.code.value,
       description: device.description?.value,
       serialNumber: device.serialNumber.value,
-      modelCode: device.modelCode.value,
+      modelCode: device.model.code.value,
       isAvailable: device.isAvailable ? device.isAvailable : true
     };
   }
@@ -29,9 +31,11 @@ export class DeviceMapper extends Mapper<Device> {
     const serialNumber = DeviceSerialNumber.create(device.serialNumber).getValue();
     const code = DeviceModelCode.create(device.modelCode).getValue();
 
-    const modelCode = DeviceModelCode.create(device.modelCode).getValue();
+    const repo = Container.get(DeviceModelRepo);
 
-    if (!modelCode) throw new Error('Device model not found');
+    const model = await repo.findByCode(device.modelCode);
+
+    if (!model) throw new Error('Model not found');
 
     const deviceOrError = Device.create(
       {
@@ -39,7 +43,7 @@ export class DeviceMapper extends Mapper<Device> {
         code,
         description,
         serialNumber,
-        modelCode,
+        model,
         isAvailable: device.isAvailable
       },
       new UniqueEntityID(device.domainId)
@@ -57,7 +61,7 @@ export class DeviceMapper extends Mapper<Device> {
       nickname: device.nickname.value,
       description: device.description?.value,
       serialNumber: device.serialNumber.value,
-      modelCode: device.modelCode.value,
+      modelCode: device.model.code.value,
       isAvailable: device.isAvailable ? device.isAvailable : true
     };
   }

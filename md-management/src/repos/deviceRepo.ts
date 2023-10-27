@@ -11,7 +11,22 @@ import { Document, FilterQuery } from 'mongoose';
 
 @Service([])
 export default class DeviceRepo implements IDeviceRepo {
-  constructor() {}
+  constructor() { }
+
+  public async findRobots(): Promise<Device[]> {
+    const deviceRecords = await deviceSchema.find({}).populate({
+      path: 'modelCode',
+      match: { type: 'robot' }
+    });
+
+    const devices: Device[] = [];
+    for (const deviceRecord of deviceRecords) {
+      const device = await DeviceMapper.toDomain(deviceRecord);
+      if (device) devices.push(device);
+    }
+
+    return devices;
+  }
 
   public async exists(device: Device): Promise<boolean> {
     const idX = device.id;

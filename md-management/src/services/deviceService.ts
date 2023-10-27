@@ -30,7 +30,7 @@ export default class DeviceService implements IDeviceService {
         : undefined;
 
       const modelCode = DeviceModelCode.create(deviceDTO.modelCode).getValue();
-      const model = await this.deviceModelRepo.findByCode(modelCode);
+      const model = await this.deviceModelRepo.findByCode(modelCode.value);
 
       if (!model) return Result.fail<IDeviceDTO>('Model not found');
 
@@ -39,7 +39,7 @@ export default class DeviceService implements IDeviceService {
         nickname,
         serialNumber,
         description,
-        modelCode,
+        model,
         isAvailable: true
       });
 
@@ -57,6 +57,15 @@ export default class DeviceService implements IDeviceService {
     }
   }
 
+<<<<<<< HEAD
+  public async getDevicesRobots(): Promise<Result<IDeviceDTO[]>> {
+    try {
+      const devices = await this.deviceRepo.findRobots();
+
+      const devicesDTOs = devices.map(device => DeviceMapper.toDTO(device) as IDeviceDTO);
+
+      return Result.ok<IDeviceDTO[]>(devicesDTOs);
+=======
   public async inhibitDevice(code: string): Promise<Result<IDeviceDTO>> {
     try {
       const deviceCode = DeviceCode.create(code).getValue();
@@ -83,6 +92,7 @@ export default class DeviceService implements IDeviceService {
       await this.deviceRepo.save(result);
       const deviceDTOResult = DeviceMapper.toDTO(result) as IDeviceDTO;
       return Result.ok<IDeviceDTO>(deviceDTOResult);
+>>>>>>> eb8a7be095d2c601412ca85af066ff7ab1ea5cf0
     } catch (e) {
       throw e;
     }
