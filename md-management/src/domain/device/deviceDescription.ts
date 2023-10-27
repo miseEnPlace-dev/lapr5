@@ -16,7 +16,7 @@ export class DeviceDescription extends ValueObject<DeviceDescriptionProps> {
   }
 
   public static create(description: string): Result<DeviceDescription> {
-    if (description.length > 255)
+    if (description.length > 250)
       return Result.fail<DeviceDescription>('Device description must be 255 characters or less');
     return Result.ok<DeviceDescription>(new DeviceDescription({ value: description }));
   }
