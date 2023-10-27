@@ -14,8 +14,9 @@ import IUserRepo from '../services/IRepos/IUserRepo';
 export default class UserRepo implements IUserRepo {
   private userSchema: Model<IUserPersistence & Document>;
 
-  constructor() {
-    this.userSchema = Container.get(config.schemas.user.name);
+  constructor(userSchema?: Model<IUserPersistence & Document>) {
+    if (userSchema) this.userSchema = userSchema;
+    else this.userSchema = Container.get(config.schemas.user.name);
   }
 
   public async exists(userId: UserId | string): Promise<boolean> {

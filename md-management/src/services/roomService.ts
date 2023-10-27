@@ -2,25 +2,27 @@ import Container, { Service } from 'typedi';
 
 import config from '@/config.mjs';
 import { Result } from '@/core/logic/Result';
-import IFloorRepo from '@/services/IRepos/IFloorRepo';
-import IRoomService from './IServices/IRoomService';
-import IRoomRepo from './IRepos/IRoomRepo';
-import { IRoomDTO } from '@/dto/IRoomDTO';
-import { RoomName } from '@/domain/room/roomName';
-import { RoomDescription } from '@/domain/room/roomDescription';
-import { Room } from '@/domain/room/room';
-import { RoomDimensions } from '@/domain/room/roomDimensions';
-import { RoomMapper } from '@/mappers/RoomMapper';
 import { FloorCode } from '@/domain/floor/floorCode';
+import { Room } from '@/domain/room/room';
 import { RoomCategory } from '@/domain/room/roomCategory';
+import { RoomDescription } from '@/domain/room/roomDescription';
+import { RoomDimensions } from '@/domain/room/roomDimensions';
+import { RoomName } from '@/domain/room/roomName';
+import { IRoomDTO } from '@/dto/IRoomDTO';
+import { RoomMapper } from '@/mappers/RoomMapper';
+import IFloorRepo from '@/services/IRepos/IFloorRepo';
+import IRoomRepo from './IRepos/IRoomRepo';
+import IRoomService from './IServices/IRoomService';
 
 @Service()
 export default class RoomService implements IRoomService {
   private roomRepo: IRoomRepo;
   private floorRepo: IFloorRepo;
-  constructor() {
-    this.floorRepo = Container.get(config.repos.floor.name);
-    this.roomRepo = Container.get(config.repos.room.name);
+  constructor(floorRepo?: IFloorRepo, roomRepo?: IRoomRepo) {
+    if (floorRepo) this.floorRepo = floorRepo;
+    else this.floorRepo = Container.get(config.repos.floor.name);
+    if (roomRepo) this.roomRepo = roomRepo;
+    else this.roomRepo = Container.get(config.repos.room.name);
   }
 
   public async createRoom(roomDTO: IRoomDTO): Promise<Result<IRoomDTO>> {

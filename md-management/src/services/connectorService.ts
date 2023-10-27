@@ -7,12 +7,12 @@ import { IConnectorDTO } from '@/dto/IConnectorDTO';
 
 import { Connector } from '@/domain/connector/connector';
 import { ConnectorCode } from '@/domain/connector/connectorCode';
+import { FloorCode } from '@/domain/floor/floorCode';
 import { ConnectorMap } from '@/mappers/ConnectorMap';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import IConnectorRepo from './IRepos/IConnectorRepo';
 import IFloorRepo from './IRepos/IFloorRepo';
 import IConnectorService from './IServices/IConnectorService';
-import { FloorCode } from '@/domain/floor/floorCode';
 
 @Service()
 export default class ConnectorService implements IConnectorService {
@@ -20,10 +20,17 @@ export default class ConnectorService implements IConnectorService {
   private floorRepo: IFloorRepo;
   private buildingRepo: IBuildingRepo;
 
-  constructor() {
-    this.connectorRepo = Container.get(config.repos.connector.name);
-    this.floorRepo = Container.get(config.repos.floor.name);
-    this.buildingRepo = Container.get(config.repos.building.name);
+  constructor(
+    connectorRepo?: IConnectorRepo,
+    floorRepo?: IFloorRepo,
+    buildingRepo?: IBuildingRepo
+  ) {
+    if (connectorRepo) this.connectorRepo = connectorRepo;
+    else this.connectorRepo = Container.get(config.repos.connector.name);
+    if (floorRepo) this.floorRepo = floorRepo;
+    else this.floorRepo = Container.get(config.repos.floor.name);
+    if (buildingRepo) this.buildingRepo = buildingRepo;
+    else this.buildingRepo = Container.get(config.repos.building.name);
   }
 
   public async checkConnectorExists(connectorDTO: IConnectorDTO): Promise<Result<boolean>> {

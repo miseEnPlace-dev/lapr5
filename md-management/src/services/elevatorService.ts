@@ -1,4 +1,5 @@
 import config from '@/config.mjs';
+import { BuildingCode } from '@/domain/building/buildingCode';
 import { ElevatorBranding } from '@/domain/elevator/elevatorBranding';
 import { ElevatorCode } from '@/domain/elevator/elevatorCode';
 import { ElevatorDescription } from '@/domain/elevator/elevatorDescription';
@@ -13,15 +14,16 @@ import { Elevator } from '../domain/elevator/elevator';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import IFloorRepo from './IRepos/IFloorRepo';
 import IElevatorService from './IServices/IElevatorService';
-import { BuildingCode } from '@/domain/building/buildingCode';
 
 @Service()
 export default class ElevatorService implements IElevatorService {
   private buildingRepo: IBuildingRepo;
   private floorRepo: IFloorRepo;
-  constructor() {
-    this.buildingRepo = Container.get(config.repos.building.name);
-    this.floorRepo = Container.get(config.repos.floor.name);
+  constructor(buildingRepo?: IBuildingRepo, floorRepo?: IFloorRepo) {
+    if (buildingRepo) this.buildingRepo = buildingRepo;
+    else this.buildingRepo = Container.get(config.repos.building.name);
+    if (floorRepo) this.floorRepo = floorRepo;
+    else this.floorRepo = Container.get(config.repos.floor.name);
   }
 
   public async getElevatorForBuilding(buildingCode: string): Promise<Result<IElevatorDTO>> {

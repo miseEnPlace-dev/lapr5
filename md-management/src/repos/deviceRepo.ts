@@ -4,16 +4,17 @@ import config from '@/config.mjs';
 
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { IDevicePersistence } from '@/dataschema/IDevicePersistence';
-import IDeviceRepo from '@/services/IRepos/IDeviceRepo';
-import { Document, FilterQuery, Model } from 'mongoose';
 import { Device } from '@/domain/device/device';
 import { DeviceMapper } from '@/mappers/DeviceMapper';
+import IDeviceRepo from '@/services/IRepos/IDeviceRepo';
+import { Document, FilterQuery, Model } from 'mongoose';
 
 @Service()
 export default class DeviceRepo implements IDeviceRepo {
   private deviceSchema: Model<IDevicePersistence & Document>;
-  constructor() {
-    this.deviceSchema = Container.get(config.schemas.device.name);
+  constructor(deviceSchema?: Model<IDevicePersistence & Document>) {
+    if (deviceSchema) this.deviceSchema = deviceSchema;
+    else this.deviceSchema = Container.get(config.schemas.device.name);
   }
 
   public async exists(device: Device): Promise<boolean> {
