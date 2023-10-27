@@ -7,19 +7,19 @@ import { Floor } from '@/domain/floor/floor';
 import { FloorCode } from '@/domain/floor/floorCode';
 import { FloorDescription } from '@/domain/floor/floorDescription';
 import { FloorDimensions } from '@/domain/floor/floorDimensions';
+import { FloorMap } from '@/domain/floor/floorMap/floorMap';
+import { FloorMapElevators } from '@/domain/floor/floorMap/floorMapElevators';
+import { FloorMapExitLocation } from '@/domain/floor/floorMap/floorMapExitLocation';
+import { FloorMapExits } from '@/domain/floor/floorMap/floorMapExits';
+import { FloorMapMatrix } from '@/domain/floor/floorMap/floorMapMatrix';
+import { FloorMapSize } from '@/domain/floor/floorMap/floorMapSize';
 import { IFloorDTO } from '@/dto/IFloorDTO';
+import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
+import { FloorMapMapper } from '@/mappers/FloorMapMapper';
 import { FloorMapper } from '@/mappers/FloorMapper';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import IFloorService from '@/services/IServices/IFloorService';
 import IBuildingRepo from './IRepos/IBuildingRepo';
-import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
-import { FloorMap } from '@/domain/floor/floorMap/floorMap';
-import { FloorMapMapper } from '@/mappers/FloorMapMapper';
-import { FloorMapSize } from '@/domain/floor/floorMap/floorMapSize';
-import { FloorMapExits } from '@/domain/floor/floorMap/floorMapExits';
-import { FloorMapExitLocation } from '@/domain/floor/floorMap/floorMapExitLocation';
-import { FloorMapElevators } from '@/domain/floor/floorMap/floorMapElevators';
-import { FloorMapMatrix } from '@/domain/floor/floorMap/floorMapMatrix';
 import IConnectorRepo from './IRepos/IConnectorRepo';
 
 @Service()
@@ -28,10 +28,13 @@ export default class FloorService implements IFloorService {
   private buildingRepo: IBuildingRepo;
   private connectorRepo: IConnectorRepo;
 
-  constructor() {
-    this.floorRepo = Container.get(config.repos.floor.name);
-    this.buildingRepo = Container.get(config.repos.building.name);
-    this.connectorRepo = Container.get(config.repos.connector.name);
+  constructor(floorRepo: IFloorRepo, buildingRepo: IBuildingRepo, connectorRepo: IConnectorRepo) {
+    if (floorRepo) this.floorRepo = floorRepo;
+    else this.floorRepo = Container.get(config.repos.floor.name);
+    if (buildingRepo) this.buildingRepo = buildingRepo;
+    else this.buildingRepo = Container.get(config.repos.building.name);
+    if (connectorRepo) this.connectorRepo = connectorRepo;
+    else this.connectorRepo = Container.get(config.repos.connector.name);
   }
 
   public async updateFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {

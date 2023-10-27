@@ -10,10 +10,12 @@ import IDeviceModelController from './IControllers/IDeviceModelController';
 @Service()
 export default class DeviceModelController implements IDeviceModelController {
   private deviceModelServiceInstance: IDeviceModelService;
-  constructor() {
-    this.deviceModelServiceInstance = Container.get(
-      config.services.deviceModel.name
-    ) as IDeviceModelService;
+  constructor(deviceModelServiceInstance?: IDeviceModelService) {
+    if (deviceModelServiceInstance) this.deviceModelServiceInstance = deviceModelServiceInstance;
+    else
+      this.deviceModelServiceInstance = Container.get<IDeviceModelService>(
+        config.services.deviceModel.name
+      );
   }
 
   public async createDeviceModel(req: Request, res: Response, next: NextFunction) {

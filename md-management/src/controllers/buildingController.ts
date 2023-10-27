@@ -10,8 +10,10 @@ import IBuildingController from './IControllers/IBuildingController';
 @Service()
 export default class BuildingController implements IBuildingController {
   private buildingServiceInstance: IBuildingService;
-  constructor() {
-    this.buildingServiceInstance = Container.get(config.services.building.name) as IBuildingService;
+  constructor(buildingServiceInstance?: IBuildingService) {
+    if (buildingServiceInstance) this.buildingServiceInstance = buildingServiceInstance;
+    else
+      this.buildingServiceInstance = Container.get<IBuildingService>(config.services.building.name);
   }
 
   public async createBuilding(req: Request, res: Response, next: NextFunction) {

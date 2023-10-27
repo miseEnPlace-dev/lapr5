@@ -5,15 +5,16 @@ import { RoleId } from '../domain/role/roleId';
 import { RoleMapper } from '../mappers/RoleMapper';
 import IRoleRepo from '../services/IRepos/IRoleRepo';
 
-import config from '@/config.mjs';
 import { Document, FilterQuery, Model } from 'mongoose';
+import config from '../config.mjs';
 import { IRolePersistence } from '../dataschema/IRolePersistence';
 
 @Service()
 export default class RoleRepo implements IRoleRepo {
   private roleSchema: Model<IRolePersistence & Document>;
-  constructor() {
-    this.roleSchema = Container.get(config.schemas.role.name);
+  constructor(roleSchema?: Model<IRolePersistence & Document>) {
+    if (roleSchema) this.roleSchema = roleSchema;
+    else this.roleSchema = Container.get(config.schemas.role.name);
   }
 
   public async exists(role: Role): Promise<boolean> {

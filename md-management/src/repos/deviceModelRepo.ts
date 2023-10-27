@@ -6,16 +6,17 @@ import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { IDeviceModelPersistence } from '@/dataschema/IDeviceModelPersistence';
 import { DeviceModel } from '@/domain/device-model/device-model';
 import { DeviceModelCode } from '@/domain/device-model/deviceModelCode';
+import { DeviceModelName } from '@/domain/device-model/deviceModelName';
 import { DeviceModelMapper } from '@/mappers/DeviceModelMapper';
 import IDeviceModelRepo from '@/services/IRepos/IDeviceModelRepo';
 import { Document, FilterQuery, Model } from 'mongoose';
-import { DeviceModelName } from '@/domain/device-model/deviceModelName';
 
 @Service()
 export default class DeviceModelRepo implements IDeviceModelRepo {
   private deviceModelSchema: Model<IDeviceModelPersistence & Document>;
-  constructor() {
-    this.deviceModelSchema = Container.get(config.schemas.deviceModel.name);
+  constructor(deviceModelSchema?: Model<IDeviceModelPersistence & Document>) {
+    if (deviceModelSchema) this.deviceModelSchema = deviceModelSchema;
+    else this.deviceModelSchema = Container.get(config.schemas.deviceModel.name);
   }
 
   public async findByName(name: DeviceModelName | string): Promise<DeviceModel | null> {

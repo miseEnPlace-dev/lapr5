@@ -11,8 +11,9 @@ import Container, { Service } from 'typedi';
 @Service()
 export default class RoomRepo implements IRoomRepo {
   private roomSchema: Model<IRoomPersistence & Document>;
-  constructor() {
-    this.roomSchema = Container.get(config.schemas.room.name);
+  constructor(roomSchema?: Model<IRoomPersistence & Document>) {
+    if (roomSchema) this.roomSchema = roomSchema;
+    else this.roomSchema = Container.get(config.schemas.room.name);
   }
 
   public async save(room: Room): Promise<Room> {

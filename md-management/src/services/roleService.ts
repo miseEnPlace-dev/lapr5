@@ -1,5 +1,5 @@
 import Container, { Service } from 'typedi';
-import config from '@/config.mjs';
+import config from '../config.mjs';
 import { Result } from '../core/logic/Result';
 import { Role } from '../domain/role/role';
 import IRoleDTO from '../dto/IRoleDTO';
@@ -10,8 +10,9 @@ import IRoleService from './IServices/IRoleService';
 @Service()
 export default class RoleService implements IRoleService {
   private roleRepo: IRoleRepo;
-  constructor() {
-    this.roleRepo = Container.get(config.repos.role.name);
+  constructor(roleRepo?: IRoleRepo) {
+    if (roleRepo) this.roleRepo = roleRepo;
+    else this.roleRepo = Container.get(config.repos.role.name);
   }
 
   public async getRole(roleId: string): Promise<Result<IRoleDTO>> {

@@ -18,8 +18,9 @@ import IDeviceModelService from './IServices/IDeviceModelService';
 export default class DeviceModelService implements IDeviceModelService {
   private deviceModelRepo: IDeviceModelRepo;
 
-  constructor() {
-    this.deviceModelRepo = Container.get(config.repos.deviceModel.name);
+  constructor(deviceModelRepo?: IDeviceModelRepo) {
+    if (deviceModelRepo) this.deviceModelRepo = deviceModelRepo;
+    else this.deviceModelRepo = Container.get(config.repos.deviceModel.name);
   }
 
   public async createDevice(deviceModelDTO: IDeviceModelDTO): Promise<Result<IDeviceModelDTO>> {

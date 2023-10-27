@@ -9,16 +9,18 @@ import Container, { Service } from 'typedi';
 import { Result } from '../core/logic/Result';
 import { Building } from '../domain/building/building';
 import IBuildingRepo from './IRepos/IBuildingRepo';
-import IBuildingService from './IServices/IBuildingService';
 import IFloorRepo from './IRepos/IFloorRepo';
+import IBuildingService from './IServices/IBuildingService';
 
 @Service()
 export default class BuildingService implements IBuildingService {
   private buildingRepo: IBuildingRepo;
   private floorRepo: IFloorRepo;
-  constructor() {
-    this.buildingRepo = Container.get(config.repos.building.name);
-    this.floorRepo = Container.get(config.repos.floor.name);
+  constructor(buildingRepo?: IBuildingRepo, floorRepo?: IFloorRepo) {
+    if (buildingRepo) this.buildingRepo = buildingRepo;
+    else this.buildingRepo = Container.get(config.repos.building.name);
+    if (floorRepo) this.floorRepo = floorRepo;
+    else this.floorRepo = Container.get(config.repos.floor.name);
   }
 
   public async createBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>> {

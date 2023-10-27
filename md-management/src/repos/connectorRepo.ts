@@ -3,18 +3,19 @@ import Container, { Service } from 'typedi';
 import config from '@/config.mjs';
 
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
-import { Document, FilterQuery, Model } from 'mongoose';
-import IConnectorRepo from '@/services/IRepos/IConnectorRepo';
 import { IConnectorPersistence } from '@/dataschema/IConnectorPersistence';
 import { Connector } from '@/domain/connector/connector';
-import { ConnectorMap } from '@/mappers/ConnectorMap';
 import { ConnectorCode } from '@/domain/connector/connectorCode';
+import { ConnectorMap } from '@/mappers/ConnectorMap';
+import IConnectorRepo from '@/services/IRepos/IConnectorRepo';
+import { Document, FilterQuery, Model } from 'mongoose';
 
 @Service()
 export default class ConnectorRepo implements IConnectorRepo {
   private connectorSchema: Model<IConnectorPersistence & Document>;
-  constructor() {
-    this.connectorSchema = Container.get(config.schemas.connector.name);
+  constructor(connectorSchema?: Model<IConnectorPersistence & Document>) {
+    if (connectorSchema) this.connectorSchema = connectorSchema;
+    else this.connectorSchema = Container.get(config.schemas.connector.name);
   }
 
   public async exists(connector: Connector): Promise<boolean> {

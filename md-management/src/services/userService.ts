@@ -1,9 +1,9 @@
 import Container, { Service } from 'typedi';
 
+import config from '@/config.mjs';
 import argon2 from 'argon2';
 import { randomBytes } from 'crypto';
 import jwt from 'jsonwebtoken';
-import config from '@/config.mjs';
 
 import { IUserDTO } from '../dto/IUserDTO';
 import { UserMapper } from '../mappers/UserMapper';
@@ -26,9 +26,11 @@ export default class UserService implements IUserService {
   private userRepo: IUserRepo;
   private roleRepo: IRoleRepo;
 
-  constructor() {
-    this.userRepo = Container.get(config.repos.user.name);
-    this.roleRepo = Container.get(config.repos.role.name);
+  constructor(userRepo?: IUserRepo, roleRepo?: IRoleRepo) {
+    if (userRepo) this.userRepo = userRepo;
+    else this.userRepo = Container.get(config.repos.user.name);
+    if (roleRepo) this.roleRepo = roleRepo;
+    else this.roleRepo = Container.get(config.repos.role.name);
   }
 
   public async SignUp(userDTO: IUserDTO): Promise<Result<{ userDTO: IUserDTO; token: string }>> {

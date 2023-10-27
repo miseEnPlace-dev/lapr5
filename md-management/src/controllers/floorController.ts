@@ -5,17 +5,18 @@ import config from '@/config.mjs';
 
 import { Result } from '@/core/logic/Result';
 import { IFloorDTO } from '@/dto/IFloorDTO';
-import IFloorService from '@/services/IServices/IFloorService';
-import IFloorController from './IControllers/IFloorController';
 import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
+import IFloorService from '@/services/IServices/IFloorService';
 import { z } from 'zod';
+import IFloorController from './IControllers/IFloorController';
 
 @Service()
 export default class FloorController implements IFloorController {
   private floorServiceInstance: IFloorService;
 
-  constructor() {
-    this.floorServiceInstance = Container.get(config.services.floor.name) as IFloorService;
+  constructor(floorServiceInstance?: IFloorService) {
+    if (floorServiceInstance) this.floorServiceInstance = floorServiceInstance;
+    else this.floorServiceInstance = Container.get(config.services.floor.name) as IFloorService;
   }
 
   public async createFloor(req: Request, res: Response, next: NextFunction) {
@@ -72,7 +73,7 @@ export default class FloorController implements IFloorController {
       )) as Result<IFloorDTO[]>;
 
       if (floorsOrError.isFailure)
-        return res.status(400).send({
+        return res.status(400).json({
           message: floorsOrError.errorValue()
         });
 

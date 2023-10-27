@@ -14,8 +14,9 @@ import { IRolePersistence } from '../dataschema/IRolePersistence';
 @Service()
 export default class BuildingRepo implements IBuildingRepo {
   private buildingSchema: Model<IBuildingPersistence & Document>;
-  constructor() {
-    this.buildingSchema = Container.get(config.schemas.building.name);
+  constructor(buildingSchema?: Model<IBuildingPersistence & Document>) {
+    if (buildingSchema) this.buildingSchema = buildingSchema;
+    else this.buildingSchema = Container.get(config.schemas.building.name);
   }
 
   public async exists(building: Building): Promise<boolean> {
