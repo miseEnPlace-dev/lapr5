@@ -1,10 +1,10 @@
 import { Mapper } from '../core/infra/Mapper';
 
 import { IDeviceModelPersistence } from '@/dataschema/IDeviceModelPersistence';
-import { DeviceModel } from '@/domain/device-model/device-model';
-import { DeviceModelBrand } from '@/domain/device-model/deviceModelBrand';
-import { DeviceModelCode } from '@/domain/device-model/deviceModelCode';
-import { DeviceModelName } from '@/domain/device-model/deviceModelName';
+import { DeviceModel } from '@/domain/deviceModel/device-model';
+import { DeviceModelBrand } from '@/domain/deviceModel/deviceModelBrand';
+import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
+import { DeviceModelName } from '@/domain/deviceModel/deviceModelName';
 import { Task } from '@/domain/shared/task';
 import { IDeviceModelDTO } from '@/dto/IDeviceModelDTO';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';

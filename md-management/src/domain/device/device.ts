@@ -5,7 +5,7 @@ import { DeviceDescription } from './deviceDescription';
 import { DeviceNickname } from './deviceNickname';
 import { DeviceSerialNumber } from './deviceSerialNumber';
 import { Result } from '@/core/logic/Result';
-import { DeviceModelCode } from '../device-model/deviceModelCode';
+import { DeviceModelCode } from '../deviceModel/deviceModelCode';
 import { DeviceCode } from './deviceCode';
 
 interface DeviceProps {

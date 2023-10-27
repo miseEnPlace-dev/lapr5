@@ -13,7 +13,7 @@ import { DeviceDescription } from '@/domain/device/deviceDescription';
 import IDeviceModelRepo from './IRepos/IDeviceModelRepo';
 import { Device } from '@/domain/device/device';
 import { DeviceMapper } from '@/mappers/DeviceMapper';
-import { DeviceModelCode } from '@/domain/device-model/deviceModelCode';
+import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
 import { DeviceCode } from '@/domain/device/deviceCode';
 
 @Service()

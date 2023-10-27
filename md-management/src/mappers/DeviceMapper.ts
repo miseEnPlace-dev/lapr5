@@ -7,7 +7,7 @@ import { DeviceNickname } from '@/domain/device/deviceNickname';
 import { DeviceDescription } from '@/domain/device/deviceDescription';
 import { DeviceSerialNumber } from '@/domain/device/deviceSerialNumber';
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
-import { DeviceModelCode } from '@/domain/device-model/deviceModelCode';
+import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
 
 export class DeviceMapper extends Mapper<Device> {
   public static toDTO(device: Device): IDeviceDTO {

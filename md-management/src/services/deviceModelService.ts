@@ -5,10 +5,10 @@ import config from '@/config.mjs';
 import { Result } from '@/core/logic/Result';
 import { IDeviceModelDTO } from '@/dto/IDeviceModelDTO';
 
-import { DeviceModel } from '@/domain/device-model/device-model';
-import { DeviceModelBrand } from '@/domain/device-model/deviceModelBrand';
-import { DeviceModelCode } from '@/domain/device-model/deviceModelCode';
-import { DeviceModelName } from '@/domain/device-model/deviceModelName';
+import { DeviceModel } from '@/domain/deviceModel/device-model';
+import { DeviceModelBrand } from '@/domain/deviceModel/deviceModelBrand';
+import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
+import { DeviceModelName } from '@/domain/deviceModel/deviceModelName';
 import { Task } from '@/domain/shared/task';
 import { DeviceModelMapper } from '@/mappers/DeviceModelMapper';
 import IDeviceModelRepo from './IRepos/IDeviceModelRepo';

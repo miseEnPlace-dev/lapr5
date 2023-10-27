@@ -1,7 +1,7 @@
-import { DeviceModel } from '@/domain/device-model/device-model';
+import { DeviceModel } from '@/domain/deviceModel/device-model';
 import { Repo } from '../../core/infra/Repo';
-import { DeviceModelName } from '@/domain/device-model/deviceModelName';
-import { DeviceModelCode } from '@/domain/device-model/deviceModelCode';
+import { DeviceModelName } from '@/domain/deviceModel/deviceModelName';
+import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
 
 export default interface IDeviceModelRepo extends Repo<DeviceModel> {
   save(deviceModel: DeviceModel): Promise<DeviceModel>;

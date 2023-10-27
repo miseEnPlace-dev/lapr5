@@ -4,12 +4,12 @@ import config from '@/config.mjs';
 
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { IDeviceModelPersistence } from '@/dataschema/IDeviceModelPersistence';
-import { DeviceModel } from '@/domain/device-model/device-model';
-import { DeviceModelCode } from '@/domain/device-model/deviceModelCode';
+import { DeviceModel } from '@/domain/deviceModel/device-model';
+import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
 import { DeviceModelMapper } from '@/mappers/DeviceModelMapper';
 import IDeviceModelRepo from '@/services/IRepos/IDeviceModelRepo';
 import { Document, FilterQuery, Model } from 'mongoose';
-import { DeviceModelName } from '@/domain/device-model/deviceModelName';
+import { DeviceModelName } from '@/domain/deviceModel/deviceModelName';
 
 @Service()
 export default class DeviceModelRepo implements IDeviceModelRepo {
