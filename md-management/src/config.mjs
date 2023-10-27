@@ -65,6 +65,10 @@ export default {
     deviceModel: {
       name: 'deviceModel',
       schema: '../persistence/schemas/deviceModelSchema'
+    },
+    device: {
+      name: 'device',
+      schema: '../persistence/schemas/deviceSchema'
     }
   },
 
@@ -96,6 +100,10 @@ export default {
     deviceModel: {
       name: 'DeviceModelController',
       path: '../controllers/deviceModelController'
+    },
+    device: {
+      name: 'DeviceController',
+      path: '../controllers/deviceController'
     }
   },
 
@@ -127,6 +135,10 @@ export default {
     deviceModel: {
       name: 'DeviceModelRepo',
       path: '../repos/deviceModelRepo'
+    },
+    device: {
+      name: 'DeviceRepo',
+      path: '../repos/deviceRepo'
     }
   },
 
@@ -158,6 +170,10 @@ export default {
     deviceModel: {
       name: 'DeviceModelService',
       path: '../services/deviceModelService'
+    },
+    device: {
+      name: 'DeviceService',
+      path: '../services/deviceService'
     }
   }
 };
