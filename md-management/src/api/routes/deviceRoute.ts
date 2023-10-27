@@ -6,6 +6,7 @@ import { validate } from '@/api/middlewares/validate';
 
 import config from '@/config.mjs';
 import IDeviceController from '@/controllers/IControllers/IDeviceController';
+import { nextTick } from 'process';
 
 const deviceCreateSchema = z.object({
   nickname: z
@@ -35,6 +36,7 @@ export default (app: Router) => {
   route.post('', validate(deviceCreateSchema), (req, res, next) =>
     ctrl.createDevice(req, res, next)
   );
+  route.patch('/:code', (req, res, next) => ctrl.inhibitDevice(req, res, next));
 
   app.use('/devices', route);
 };
