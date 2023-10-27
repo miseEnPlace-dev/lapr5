@@ -18,6 +18,8 @@ export class DeviceNickname extends ValueObject<DeviceNicknameProps> {
   public static create(nickname: string): Result<DeviceNickname> {
     if (nickname.length > 50)
       return Result.fail<DeviceNickname>('Device nickname must be 50 characters or less');
+    if (!/^[a-zA-Z0-9\t\s]+$/.test(nickname))
+      return Result.fail<DeviceNickname>('Device nickname must be alphanumeric');
     return Result.ok<DeviceNickname>(new DeviceNickname({ value: nickname }));
   }
 }

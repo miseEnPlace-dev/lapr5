@@ -18,6 +18,8 @@ export class DeviceDescription extends ValueObject<DeviceDescriptionProps> {
   public static create(description: string): Result<DeviceDescription> {
     if (description.length > 250)
       return Result.fail<DeviceDescription>('Device description must be 255 characters or less');
+    if (!/^[a-zA-Z0-9\t\s]+$/.test(description))
+      return Result.fail<DeviceDescription>('Device description must be alphanumeric');
     return Result.ok<DeviceDescription>(new DeviceDescription({ value: description }));
   }
 }
