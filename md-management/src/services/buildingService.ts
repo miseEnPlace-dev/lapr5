@@ -30,7 +30,7 @@ export default class BuildingService implements IBuildingService {
         : undefined;
       const maxDimensions = BuildingMaxDimensions.create(
         buildingDTO.maxDimensions.width,
-        buildingDTO.maxDimensions.height
+        buildingDTO.maxDimensions.length
       ).getValue();
 
       const buildingOrError = Building.create({
@@ -43,6 +43,9 @@ export default class BuildingService implements IBuildingService {
       if (buildingOrError.isFailure) return Result.fail<IBuildingDTO>(buildingOrError.errorValue());
 
       const buildingResult = buildingOrError.getValue();
+
+      if (await this.buildingRepo.findByCode(buildingResult.code))
+        return Result.fail<IBuildingDTO>('Building already exists');
 
       await this.buildingRepo.save(buildingResult);
 
@@ -74,7 +77,7 @@ export default class BuildingService implements IBuildingService {
       if (buildingDTO.maxDimensions)
         building.maxDimensions = BuildingMaxDimensions.create(
           buildingDTO.maxDimensions.width,
-          buildingDTO.maxDimensions.height
+          buildingDTO.maxDimensions.length
         ).getValue();
 
       await this.buildingRepo.save(building);

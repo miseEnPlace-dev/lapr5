@@ -6,7 +6,7 @@ export interface IFloorPersistence {
   description?: string;
   dimensions: {
     width: number;
-    height: number;
+    length: number;
   };
   map?: IFloorMapPersistence;
   buildingCode: string;

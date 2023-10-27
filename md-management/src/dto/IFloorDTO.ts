@@ -4,6 +4,6 @@ export interface IFloorDTO {
   description?: string;
   dimensions: {
     width: number;
-    height: number;
+    length: number;
   };
 }

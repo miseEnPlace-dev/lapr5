@@ -23,7 +23,7 @@ const buildingCreateSchema = z.object({
     .optional(),
   maxDimensions: z.object({
     width: z.number().min(1),
-    height: z.number().min(1)
+    length: z.number().min(1)
   })
 });
 
@@ -39,7 +39,7 @@ const buildingUpdateSchema = z.object({
   maxDimensions: z
     .object({
       width: z.number().min(1),
-      height: z.number().min(1)
+      length: z.number().min(1)
     })
     .optional()
 });

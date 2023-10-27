@@ -19,7 +19,7 @@ const floorCreateSchema = z.object({
     .optional(),
   dimensions: z.object({
     width: z.number().min(1),
-    height: z.number().min(1)
+    length: z.number().min(1)
   })
 });
 
@@ -31,7 +31,7 @@ const floorUpdateSchema = z.object({
   dimensions: z
     .object({
       width: z.number().min(1),
-      height: z.number().min(1)
+      length: z.number().min(1)
     })
     .optional()
 });

@@ -17,17 +17,17 @@ export class FloorMapper extends Mapper<Floor> {
       description: floor.description?.value,
       dimensions: {
         width: floor.dimensions.width,
-        height: floor.dimensions.height
+        length: floor.dimensions.length
       }
     };
   }
 
   public static async toDomain(floor: IFloorPersistence): Promise<Floor | null> {
     const code = FloorCode.create(floor.code).getValue();
-    const { width, height } = floor.dimensions;
+    const { width, length } = floor.dimensions;
 
     const buildingCode = BuildingCode.create(floor.buildingCode).getValue();
-    const floorDimensionsOrError = FloorDimensions.create(width, height);
+    const floorDimensionsOrError = FloorDimensions.create(width, length);
 
     const description = floor.description
       ? FloorDescription.create(floor.description).getValue()
@@ -56,7 +56,7 @@ export class FloorMapper extends Mapper<Floor> {
       description: floor.description?.value,
       dimensions: {
         width: floor.dimensions.width,
-        height: floor.dimensions.height
+        length: floor.dimensions.length
       }
     };
   }

@@ -47,7 +47,7 @@ export default class FloorService implements IFloorService {
       if (
         floorDTO.dimensions &&
         (floorDTO.dimensions.width > building.maxDimensions.width ||
-          floorDTO.dimensions.height > building.maxDimensions.height)
+          floorDTO.dimensions.length > building.maxDimensions.length)
       )
         return Result.fail<IFloorDTO>('Floor dimensions are invalid');
 
@@ -56,7 +56,7 @@ export default class FloorService implements IFloorService {
         : undefined;
 
       const dimensions = floorDTO.dimensions
-        ? FloorDimensions.create(floorDTO.dimensions.width, floorDTO.dimensions.height)
+        ? FloorDimensions.create(floorDTO.dimensions.width, floorDTO.dimensions.length)
         : undefined;
 
       if (description) floor.description = description.getValue();
@@ -88,15 +88,15 @@ export default class FloorService implements IFloorService {
       if (
         !floorDTO.dimensions ||
         !floorDTO.dimensions.width ||
-        !floorDTO.dimensions.height ||
+        !floorDTO.dimensions.length ||
         floorDTO.dimensions.width > building.maxDimensions.width ||
-        floorDTO.dimensions.height > building.maxDimensions.height
+        floorDTO.dimensions.length > building.maxDimensions.length
       )
         return Result.fail<IFloorDTO>('Floor dimensions are invalid');
 
       const dimensions = FloorDimensions.create(
         floorDTO.dimensions.width,
-        floorDTO.dimensions.height
+        floorDTO.dimensions.length
       );
 
       if (dimensions.isFailure) return Result.fail<IFloorDTO>(dimensions.error);
@@ -111,6 +111,9 @@ export default class FloorService implements IFloorService {
       if (floorOrError.isFailure) return Result.fail<IFloorDTO>(floorOrError.error as string);
 
       const floorResult = floorOrError.getValue();
+
+      if (await this.floorRepo.findByCode(floorResult.code))
+        return Result.fail<IFloorDTO>('Floor already exists');
 
       await this.floorRepo.save(floorResult);
 

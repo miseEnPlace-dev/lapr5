@@ -67,7 +67,7 @@ export default class FloorRepo implements IFloorRepo {
       floorDocument.code = floor.code?.value;
       floorDocument.description = floor.description?.value;
       floorDocument.dimensions.width = floor.dimensions?.width;
-      floorDocument.dimensions.height = floor.dimensions?.height;
+      floorDocument.dimensions.length = floor.dimensions?.length;
       if (floor.map) floorDocument.map = FloorMapMapper.toPersistence(floor.map);
       await floorDocument.save();
 
