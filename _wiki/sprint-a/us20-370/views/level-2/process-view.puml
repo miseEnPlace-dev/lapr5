@@ -1,0 +1,12 @@
+@startuml process-view
+autonumber
+participant SYS as "MD Management" <<system>>
+
+?o-> SYS : PATCH /devices
+activate SYS
+
+SYS -> SYS : inhibitDevice(deviceDto)
+<-- SYS : 200 OK (Device JSON)
+deactivate SYS
+
+@enduml
