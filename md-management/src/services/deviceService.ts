@@ -35,6 +35,8 @@ export default class DeviceService implements IDeviceService {
         ? DeviceDescription.create(deviceDTO.description).getValue()
         : undefined;
 
+      const code = DeviceModelCode.create(deviceDTO.modelCode).getValue();
+
       const modelCode = DeviceModelCode.create(deviceDTO.modelCode).getValue();
       const model = await this.deviceModelRepo.findByCode(modelCode);
 
@@ -42,6 +44,7 @@ export default class DeviceService implements IDeviceService {
 
       const deviceOrError = Device.create({
         nickname,
+        code,
         serialNumber,
         description,
         modelCode,
@@ -55,6 +58,24 @@ export default class DeviceService implements IDeviceService {
       await this.deviceRepo.save(deviceResult);
 
       const deviceDTOResult = DeviceMapper.toDTO(deviceResult) as IDeviceDTO;
+
+      return Result.ok<IDeviceDTO>(deviceDTOResult);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async inhibitDevice(code: string): Promise<Result<IDeviceDTO>> {
+    try {
+      const device = await this.deviceRepo.findByCode(code);
+
+      if (!device) return Result.fail<IDeviceDTO>('Device not found');
+
+      device.inhibit();
+
+      await this.deviceRepo.save(device);
+
+      const deviceDTOResult = DeviceMapper.toDTO(device) as IDeviceDTO;
 
       return Result.ok<IDeviceDTO>(deviceDTOResult);
     } catch (e) {
