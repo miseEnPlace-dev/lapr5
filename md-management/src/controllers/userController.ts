@@ -1,25 +1,23 @@
 import { Service } from '@freshgum/typedi';
 
-import IUserRepo from '../services/IRepos/IUserRepo';
-
-import UserRepo from '@/repos/userRepo';
+import IUserService from '@/services/IServices/IUserService';
+import UserService from '@/services/userService';
 import { Request, Response } from 'express';
-import { IUserDTO } from '../dto/IUserDTO';
-import { UserMapper } from '../mappers/UserMapper';
 
-@Service([UserRepo])
+@Service([UserService])
 export default class UserController {
-  constructor(private userRepo: IUserRepo) {}
+  constructor(private userService: IUserService) {}
 
   public async getMe(req: Request, res: Response) {
     // NB: a arquitetura ONION não está a ser seguida aqui
 
     if (!req.headers.token) return res.json(new Error('Token inexistente ou inválido')).status(401);
 
-    const user = await this.userRepo.findById(req.headers.token.id);
-    if (!user) return res.json(new Error('Utilizador não registado')).status(401);
+    const [id] = req.headers.token;
+    const userOrError = await this.userService.getUserById(id);
 
-    const userDTO = UserMapper.toDTO(user) as IUserDTO;
-    return res.json(userDTO).status(200);
+    if (userOrError.isFailure) return res.json(userOrError).status(400);
+
+    return res.json(userOrError.getValue()).status(200);
   }
 }

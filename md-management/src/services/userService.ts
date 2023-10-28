@@ -162,6 +162,14 @@ export default class UserService implements IUserService {
     );
   }
 
+  async getUserById(userId: string): Promise<Result<IUserDTO>> {
+    const user = await this.userRepo.findById(userId);
+    if (!user) return Result.fail<IUserDTO>('User not found');
+
+    const userDTO = UserMapper.toDTO(user) as IUserDTO;
+    return Result.ok<IUserDTO>(userDTO);
+  }
+
   private async getRole(roleId: string): Promise<Result<Role>> {
     const role = await this.roleRepo.findByDomainId(roleId);
     const found = !!role;
