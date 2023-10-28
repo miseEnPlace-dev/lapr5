@@ -5,13 +5,13 @@ import { z } from 'zod';
 import { IUserDTO } from '../../dto/IUserDTO';
 import AuthService from '../../services/userService';
 
+import UserController from '@/controllers/userController';
 import winston from 'winston';
 import middlewares from '../middlewares';
 
-import * as UserController from '../../controllers/userController';
-
 export default (app: Router) => {
   const route = Router();
+  const userController = Container.get(UserController);
 
   route.post(
     '/signup',
@@ -99,6 +99,7 @@ export default (app: Router) => {
    */
   route.post('/logout', middlewares.isAuth, (req: Request, res: Response, next: NextFunction) => {
     const logger = Container.get('logger') as winston.Logger;
+
     logger.debug('Calling Sign-Out endpoint with body: %o', req.body);
     try {
       //@TODO AuthService.Logout(req.user) do some clever stuff
@@ -111,5 +112,7 @@ export default (app: Router) => {
 
   app.use('/users', route);
 
-  route.get('/me', middlewares.isAuth, middlewares.attachCurrentUser, UserController.getMe);
+  route.get('/me', middlewares.isAuth, middlewares.attachCurrentUser, (req, res) =>
+    userController.getMe(req, res)
+  );
 };
