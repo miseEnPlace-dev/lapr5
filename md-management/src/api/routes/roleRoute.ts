@@ -1,14 +1,13 @@
 import { Router } from 'express';
 import { z } from 'zod';
 
-import { Container } from '@freshgum/typedi';
-
-import RoleController from '@/controllers/roleController';
+import IRoleController from '@/controllers/IControllers/IRoleController';
+import { TYPES, container } from '@/loaders/inversify';
 
 export default (app: Router) => {
   const route = Router();
 
-  const ctrl = Container.get(RoleController);
+  const ctrl = container.get<IRoleController>(TYPES.roleController);
 
   route.post(
     '',

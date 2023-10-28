@@ -1,5 +1,3 @@
-import { Service } from '@freshgum/typedi';
-
 import { IFloorPersistence } from '@/dataschema/IFloorPersistence';
 import { Floor } from '@/domain/floor/floor';
 import { FloorCode } from '@/domain/floor/floorCode';
@@ -11,9 +9,10 @@ import { FloorMapMapper } from '@/mappers/FloorMapMapper';
 import { FloorMapper } from '@/mappers/FloorMapper';
 import floorSchema from '@/persistence/schemas/floorSchema';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
+import { injectable } from 'inversify';
 import { Document, FilterQuery } from 'mongoose';
 
-@Service([])
+@injectable()
 export default class FloorRepo implements IFloorRepo {
   constructor() {}
 

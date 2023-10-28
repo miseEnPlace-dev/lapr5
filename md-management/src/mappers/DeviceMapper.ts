@@ -1,15 +1,15 @@
 import { Mapper } from '../core/infra/Mapper';
 
-import { IDeviceDTO } from '@/dto/IDeviceDTO';
+import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { IDevicePersistence } from '@/dataschema/IDevicePersistence';
 import { Device } from '@/domain/device/device';
-import { DeviceNickname } from '@/domain/device/deviceNickname';
 import { DeviceDescription } from '@/domain/device/deviceDescription';
+import { DeviceNickname } from '@/domain/device/deviceNickname';
 import { DeviceSerialNumber } from '@/domain/device/deviceSerialNumber';
-import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
-import Container from '@freshgum/typedi';
-import DeviceModelRepo from '@/repos/deviceModelRepo';
 import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
+import { IDeviceDTO } from '@/dto/IDeviceDTO';
+import { TYPES, container } from '@/loaders/inversify';
+import IDeviceModelRepo from '@/services/IRepos/IDeviceModelRepo';
 
 export class DeviceMapper extends Mapper<Device> {
   public static toDTO(device: Device): IDeviceDTO {
@@ -31,7 +31,7 @@ export class DeviceMapper extends Mapper<Device> {
     const serialNumber = DeviceSerialNumber.create(device.serialNumber).getValue();
     const code = DeviceModelCode.create(device.modelCode).getValue();
 
-    const repo = Container.get(DeviceModelRepo);
+    const repo = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
 
     const model = await repo.findByCode(device.modelCode);
 

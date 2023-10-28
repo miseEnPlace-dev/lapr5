@@ -1,15 +1,16 @@
-import { Service } from '@freshgum/typedi';
-
-import { IElevatorDTO } from '@/dto/IElevatorDTO';
-import IElevatorService from '@/services/IServices/IElevatorService';
-import ElevatorService from '@/services/elevatorService';
 import { NextFunction, Request, Response } from 'express';
-import { Result } from '../core/logic/Result';
+import { inject, injectable } from 'inversify';
+
+import { TYPES } from '@/loaders/inversify';
+import IElevatorService from '@/services/IServices/IElevatorService';
 import IElevatorController from './IControllers/IElevatorController';
 
-@Service([ElevatorService])
+import { IElevatorDTO } from '@/dto/IElevatorDTO';
+import { Result } from '../core/logic/Result';
+
+@injectable()
 export default class ElevatorController implements IElevatorController {
-  constructor(private elevatorServiceInstance: IElevatorService) {}
+  constructor(@inject(TYPES.elevatorService) private elevatorServiceInstance: IElevatorService) {}
 
   public async getElevatorForBuilding(req: Request, res: Response, next: NextFunction) {
     try {

@@ -1,5 +1,3 @@
-import { Service } from '@freshgum/typedi';
-
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { IDevicePersistence } from '@/dataschema/IDevicePersistence';
 import { Device } from '@/domain/device/device';
@@ -7,11 +5,12 @@ import { DeviceCode } from '@/domain/device/deviceCode';
 import { DeviceMapper } from '@/mappers/DeviceMapper';
 import deviceSchema from '@/persistence/schemas/deviceSchema';
 import IDeviceRepo from '@/services/IRepos/IDeviceRepo';
+import { injectable } from 'inversify';
 import { Document, FilterQuery } from 'mongoose';
 
-@Service([])
+@injectable()
 export default class DeviceRepo implements IDeviceRepo {
-  constructor() { }
+  constructor() {}
 
   public async findRobots(): Promise<Device[]> {
     const deviceRecords = await deviceSchema.find({}).populate({

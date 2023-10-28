@@ -1,7 +1,7 @@
 import { Mapper } from '../core/infra/Mapper';
 
 import { IDeviceModelPersistence } from '@/dataschema/IDeviceModelPersistence';
-import { DeviceModel } from '@/domain/deviceModel/device-model';
+import { DeviceModel } from '@/domain/deviceModel/deviceModel';
 import { DeviceModelBrand } from '@/domain/deviceModel/deviceModelBrand';
 import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
 import { DeviceModelName } from '@/domain/deviceModel/deviceModelName';

@@ -1,17 +1,18 @@
-import { Service } from '@freshgum/typedi';
 import { NextFunction, Request, Response } from 'express';
+import { inject, injectable } from 'inversify';
+import { z } from 'zod';
+
+import { TYPES } from '@/loaders/inversify';
+import IFloorService from '@/services/IServices/IFloorService';
+import IFloorController from './IControllers/IFloorController';
 
 import { Result } from '@/core/logic/Result';
 import { IFloorDTO } from '@/dto/IFloorDTO';
 import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
-import IFloorService from '@/services/IServices/IFloorService';
-import FloorService from '@/services/floorService';
-import { z } from 'zod';
-import IFloorController from './IControllers/IFloorController';
 
-@Service([FloorService])
+@injectable()
 export default class FloorController implements IFloorController {
-  constructor(private floorServiceInstance: IFloorService) {}
+  constructor(@inject(TYPES.floorService) private floorServiceInstance: IFloorService) {}
 
   public async createFloor(req: Request, res: Response, next: NextFunction) {
     try {

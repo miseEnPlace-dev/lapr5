@@ -1,5 +1,3 @@
-import { Service } from '@freshgum/typedi';
-
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { IBuildingPersistence } from '@/dataschema/IBuildingPersistence';
 import { Building } from '@/domain/building/building';
@@ -8,10 +6,11 @@ import { BuildingMapper } from '@/mappers/BuildingMapper';
 import { ElevatorMapper } from '@/mappers/ElevatorMapper';
 import buildingSchema from '@/persistence/schemas/buildingSchema';
 import IBuildingRepo from '@/services/IRepos/IBuildingRepo';
+import { injectable } from 'inversify';
 import { Document, FilterQuery } from 'mongoose';
 import { IRolePersistence } from '../dataschema/IRolePersistence';
 
-@Service([])
+@injectable()
 export default class BuildingRepo implements IBuildingRepo {
   constructor() {}
 

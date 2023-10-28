@@ -1,12 +1,13 @@
-import { Service } from '@freshgum/typedi';
 import { NextFunction, Request, Response } from 'express';
+import { inject, injectable } from 'inversify';
 import { z } from 'zod';
+
+import IConnectorService from '@/services/IServices/IConnectorService';
+import IConnectorController from './IControllers/IConnectorController';
 
 import { Result } from '@/core/logic/Result';
 import { IConnectorDTO } from '@/dto/IConnectorDTO';
-import IConnectorService from '@/services/IServices/IConnectorService';
-import ConnectorService from '@/services/connectorService';
-import IConnectorController from './IControllers/IConnectorController';
+import { TYPES } from '@/loaders/inversify';
 
 const buildingIdsSchema = z.object({
   buildingCodes: z
@@ -19,9 +20,9 @@ const buildingIdsSchema = z.object({
     .length(2)
 });
 
-@Service([ConnectorService])
+@injectable()
 export default class ConnectorController implements IConnectorController {
-  constructor(private connectorSvcInstance: IConnectorService) {}
+  constructor(@inject(TYPES.connectorService) private connectorSvcInstance: IConnectorService) {}
 
   public async createConnector(req: Request, res: Response, next: NextFunction) {
     try {

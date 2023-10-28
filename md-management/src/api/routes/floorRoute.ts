@@ -1,11 +1,11 @@
-import { Container } from '@freshgum/typedi';
 import { Router } from 'express';
 import multer from 'multer';
 import { z } from 'zod';
 
 import { validate } from '@/api/middlewares/validate';
 
-import FloorController from '@/controllers/floorController';
+import IFloorController from '@/controllers/IControllers/IFloorController';
+import { TYPES, container } from '@/loaders/inversify';
 
 const floorCreateSchema = z.object({
   code: z
@@ -38,7 +38,7 @@ const floorUpdateSchema = z.object({
 export default (app: Router) => {
   const route = Router();
 
-  const ctrl = Container.get(FloorController);
+  const ctrl = container.get<IFloorController>(TYPES.floorController);
 
   route.get('/:building/floors', (req, res, next) => ctrl.getFloors(req, res, next));
   route.post('/:building/floors', validate(floorCreateSchema), (req, res, next) =>

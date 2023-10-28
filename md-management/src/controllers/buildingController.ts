@@ -1,15 +1,17 @@
-import { Service } from '@freshgum/typedi';
-
-import { IBuildingDTO } from '@/dto/IBuildingDTO';
-import IBuildingService from '@/services/IServices/IBuildingService';
-import BuildingService from '@/services/buildingService';
 import { NextFunction, Request, Response } from 'express';
-import { Result } from '../core/logic/Result';
+import { inject, injectable } from 'inversify';
+
+import { TYPES } from '@/loaders/inversify';
+
+import IBuildingService from '@/services/IServices/IBuildingService';
 import IBuildingController from './IControllers/IBuildingController';
 
-@Service([BuildingService])
+import { IBuildingDTO } from '@/dto/IBuildingDTO';
+import { Result } from '../core/logic/Result';
+
+@injectable()
 export default class BuildingController implements IBuildingController {
-  constructor(private buildingServiceInstance: IBuildingService) {}
+  constructor(@inject(TYPES.buildingService) private buildingServiceInstance: IBuildingService) {}
 
   public async createBuilding(req: Request, res: Response, next: NextFunction) {
     try {

@@ -1,9 +1,8 @@
 import { Router } from 'express';
 import { z } from 'zod';
 
-import { Container } from '@freshgum/typedi';
-
-import BuildingController from '@/controllers/buildingController';
+import IBuildingController from '@/controllers/IControllers/IBuildingController';
+import { TYPES, container } from '@/loaders/inversify';
 import { validate } from '../middlewares/validate';
 
 const buildingCreateSchema = z.object({
@@ -44,7 +43,7 @@ const buildingUpdateSchema = z.object({
 
 export default (app: Router) => {
   const route = Router();
-  const ctrl = Container.get(BuildingController);
+  const ctrl = container.get<IBuildingController>(TYPES.buildingController);
 
   route.get('', (req, res, next) => ctrl.getBuildings(req, res, next));
   route.post('', validate(buildingCreateSchema), (req, res, next) =>

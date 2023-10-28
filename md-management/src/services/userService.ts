@@ -1,5 +1,3 @@
-import { Service } from '@freshgum/typedi';
-
 import config from '@/config.mjs';
 import argon2 from 'argon2';
 import { randomBytes } from 'crypto';
@@ -19,13 +17,16 @@ import { UserPassword } from '../domain/user/userPassword';
 import { Role } from '../domain/role/role';
 
 import { PhoneNumber } from '@/domain/user/phoneNumber';
-import RoleRepo from '@/repos/roleRepo';
-import UserRepo from '@/repos/userRepo';
+import { TYPES } from '@/loaders/inversify';
+import { inject, injectable } from 'inversify';
 import { Result } from '../core/logic/Result';
 
-@Service([UserRepo, RoleRepo])
+@injectable()
 export default class UserService implements IUserService {
-  constructor(private userRepo: IUserRepo, private roleRepo: IRoleRepo) {}
+  constructor(
+    @inject(TYPES.userRepo) private userRepo: IUserRepo,
+    @inject(TYPES.roleRepo) private roleRepo: IRoleRepo
+  ) {}
 
   public async SignUp(userDTO: IUserDTO): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
     try {

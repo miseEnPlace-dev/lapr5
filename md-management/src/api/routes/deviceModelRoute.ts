@@ -1,10 +1,10 @@
-import { Container } from '@freshgum/typedi';
 import { Router } from 'express';
 import { z } from 'zod';
 
 import { validate } from '@/api/middlewares/validate';
 
-import DeviceModelController from '@/controllers/deviceModelController';
+import IDeviceModelController from '@/controllers/IControllers/IDeviceModelController';
+import { TYPES, container } from '@/loaders/inversify';
 
 const deviceModelCreateSchema = z.object({
   code: z
@@ -26,7 +26,7 @@ const deviceModelCreateSchema = z.object({
 export default (app: Router) => {
   const route = Router();
 
-  const ctrl = Container.get(DeviceModelController);
+  const ctrl = container.get<IDeviceModelController>(TYPES.deviceModelController);
 
   route.post('', validate(deviceModelCreateSchema), (req, res, next) =>
     ctrl.createDeviceModel(req, res, next)

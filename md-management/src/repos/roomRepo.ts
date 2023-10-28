@@ -5,12 +5,12 @@ import { RoomName } from '@/domain/room/roomName';
 import { RoomMapper } from '@/mappers/RoomMapper';
 import roomSchema from '@/persistence/schemas/roomSchema';
 import IRoomRepo from '@/services/IRepos/IRoomRepo';
-import { Service } from '@freshgum/typedi';
-import { Document, FilterQuery, Model } from 'mongoose';
+import { injectable } from 'inversify';
+import { Document, FilterQuery } from 'mongoose';
 
-@Service([])
+@injectable()
 export default class RoomRepo implements IRoomRepo {
-  constructor(private roomSchema: Model<IRoomPersistence & Document>) {}
+  constructor() {}
 
   public async save(room: Room): Promise<Room> {
     const query = { domainId: room.id } as FilterQuery<IRoomPersistence & Document>;

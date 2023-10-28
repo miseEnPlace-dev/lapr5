@@ -1,9 +1,6 @@
-import { Container } from '@freshgum/typedi';
-
 import winston from 'winston';
 
-import config from '@/config.mjs';
-
+import { TYPES, container } from '@/loaders/inversify';
 import { NextFunction, Request, Response } from 'express';
 import IUserRepo from '../../services/IRepos/IUserRepo';
 
@@ -14,9 +11,9 @@ import IUserRepo from '../../services/IRepos/IUserRepo';
  * @param {*} next  Express next Function
  */
 const attachCurrentUser = async (req: Request, res: Response, next: NextFunction) => {
-  const Logger = Container.get('logger') as winston.Logger;
+  const Logger = container.get('logger') as winston.Logger;
   try {
-    const userRepo = Container.get(config.repos.user.name) as IUserRepo;
+    const userRepo = container.get<IUserRepo>(TYPES.userRepo);
 
     if (!req.token || req.token == undefined) next(new Error('Token inexistente ou inválido '));
 

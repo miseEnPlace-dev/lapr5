@@ -1,15 +1,14 @@
-import { Service } from '@freshgum/typedi';
-
 import { Role } from '../domain/role/role';
 import { RoleId } from '../domain/role/roleId';
 import { RoleMapper } from '../mappers/RoleMapper';
 import IRoleRepo from '../services/IRepos/IRoleRepo';
 
+import { injectable } from 'inversify';
 import { Document, FilterQuery } from 'mongoose';
 import { IRolePersistence } from '../dataschema/IRolePersistence';
 import roleSchema from '../persistence/schemas/roleSchema';
 
-@Service([])
+@injectable()
 export default class RoleRepo implements IRoleRepo {
   constructor() {}
 

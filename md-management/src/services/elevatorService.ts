@@ -6,19 +6,21 @@ import { ElevatorSerialNumber } from '@/domain/elevator/elevatorSerialNumber';
 import { Floor } from '@/domain/floor/floor';
 import { FloorCode } from '@/domain/floor/floorCode';
 import { IElevatorDTO } from '@/dto/IElevatorDTO';
+import { TYPES } from '@/loaders/inversify';
 import { ElevatorMapper } from '@/mappers/ElevatorMapper';
-import BuildingRepo from '@/repos/buildingRepo';
-import FloorRepo from '@/repos/floorRepo';
-import { Service } from '@freshgum/typedi';
+import { inject, injectable } from 'inversify';
 import { Result } from '../core/logic/Result';
 import { Elevator } from '../domain/elevator/elevator';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import IFloorRepo from './IRepos/IFloorRepo';
 import IElevatorService from './IServices/IElevatorService';
 
-@Service([BuildingRepo, FloorRepo])
+@injectable()
 export default class ElevatorService implements IElevatorService {
-  constructor(private buildingRepo: IBuildingRepo, private floorRepo: IFloorRepo) {}
+  constructor(
+    @inject(TYPES.buildingRepo) private buildingRepo: IBuildingRepo,
+    @inject(TYPES.floorRepo) private floorRepo: IFloorRepo
+  ) {}
 
   public async getElevatorForBuilding(buildingCode: string): Promise<Result<IElevatorDTO>> {
     try {

@@ -2,7 +2,7 @@ import sinon, { SinonSpy, assert, match, spy, stub } from 'sinon';
 
 import { NextFunction, Request, Response } from 'express';
 
-import { Container } from '@freshgum/typedi';
+import container from '@/loaders/inversify';
 import { beforeEach, describe, it } from 'vitest';
 import RoleController from '../../../src/controllers/roleController';
 import { Result } from '../../../src/core/logic/Result';
@@ -12,7 +12,7 @@ import RoleService from '../../../src/services/roleService';
 
 describe('role controller', () => {
   beforeEach(() => {
-    Container.reset();
+    container.restore();
     sinon.restore();
   });
 
@@ -26,7 +26,7 @@ describe('role controller', () => {
     };
     const next: Partial<NextFunction> = () => {};
 
-    const roleServiceInstance: IRoleService = Container.get(RoleService);
+    const roleServiceInstance: IRoleService = container.get(RoleService);
     stub(roleServiceInstance, 'createRole').returns(
       new Promise(resolve => {
         resolve(

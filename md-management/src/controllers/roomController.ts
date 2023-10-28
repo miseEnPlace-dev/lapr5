@@ -1,15 +1,16 @@
-import { Service } from '@freshgum/typedi';
 import { NextFunction, Request, Response } from 'express';
+import { inject, injectable } from 'inversify';
+
+import { TYPES } from '@/loaders/inversify';
+import IRoomService from '@/services/IServices/IRoomService';
+import IRoomController from './IControllers/IRoomController';
 
 import { Result } from '@/core/logic/Result';
 import { IRoomDTO } from '@/dto/IRoomDTO';
-import IRoomService from '@/services/IServices/IRoomService';
-import RoomService from '@/services/roomService';
-import IRoomController from './IControllers/IRoomController';
 
-@Service([RoomService])
+@injectable()
 export default class RoomController implements IRoomController {
-  constructor(private roomServiceInstance: IRoomService) {}
+  constructor(@inject(TYPES.roomService) private roomServiceInstance: IRoomService) {}
 
   public async createRoom(req: Request, res: Response, next: NextFunction) {
     try {

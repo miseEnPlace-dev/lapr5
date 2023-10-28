@@ -1,21 +1,20 @@
-import { Service } from '@freshgum/typedi';
-
 import { Result } from '@/core/logic/Result';
 import { IDeviceModelDTO } from '@/dto/IDeviceModelDTO';
 
-import { DeviceModel } from '@/domain/deviceModel/device-model';
+import { DeviceModel } from '@/domain/deviceModel/deviceModel';
 import { DeviceModelBrand } from '@/domain/deviceModel/deviceModelBrand';
 import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
 import { DeviceModelName } from '@/domain/deviceModel/deviceModelName';
 import { Task } from '@/domain/shared/task';
+import { TYPES } from '@/loaders/inversify';
 import { DeviceModelMapper } from '@/mappers/DeviceModelMapper';
-import DeviceModelRepo from '@/repos/deviceModelRepo';
+import { inject, injectable } from 'inversify';
 import IDeviceModelRepo from './IRepos/IDeviceModelRepo';
 import IDeviceModelService from './IServices/IDeviceModelService';
 
-@Service([DeviceModelRepo])
+@injectable()
 export default class DeviceModelService implements IDeviceModelService {
-  constructor(private deviceModelRepo: IDeviceModelRepo) {}
+  constructor(@inject(TYPES.deviceModelRepo) private deviceModelRepo: IDeviceModelRepo) {}
 
   public async createDevice(deviceModelDTO: IDeviceModelDTO): Promise<Result<IDeviceModelDTO>> {
     try {

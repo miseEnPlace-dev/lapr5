@@ -1,5 +1,3 @@
-import { Service } from '@freshgum/typedi';
-
 import { Result } from '@/core/logic/Result';
 import { BuildingCode } from '@/domain/building/buildingCode';
 import { Floor } from '@/domain/floor/floor';
@@ -14,22 +12,21 @@ import { FloorMapMatrix } from '@/domain/floor/floorMap/floorMapMatrix';
 import { FloorMapSize } from '@/domain/floor/floorMap/floorMapSize';
 import { IFloorDTO } from '@/dto/IFloorDTO';
 import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
+import { TYPES } from '@/loaders/inversify';
 import { FloorMapMapper } from '@/mappers/FloorMapMapper';
 import { FloorMapper } from '@/mappers/FloorMapper';
-import BuildingRepo from '@/repos/buildingRepo';
-import ConnectorRepo from '@/repos/connectorRepo';
-import FloorRepo from '@/repos/floorRepo';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import IFloorService from '@/services/IServices/IFloorService';
+import { inject, injectable } from 'inversify';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import IConnectorRepo from './IRepos/IConnectorRepo';
 
-@Service([FloorRepo, BuildingRepo, ConnectorRepo])
+@injectable()
 export default class FloorService implements IFloorService {
   constructor(
-    private floorRepo: IFloorRepo,
-    private buildingRepo: IBuildingRepo,
-    private connectorRepo: IConnectorRepo
+    @inject(TYPES.floorRepo) private floorRepo: IFloorRepo,
+    @inject(TYPES.buildingRepo) private buildingRepo: IBuildingRepo,
+    @inject(TYPES.connectorRepo) private connectorRepo: IConnectorRepo
   ) {}
 
   public async updateFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {

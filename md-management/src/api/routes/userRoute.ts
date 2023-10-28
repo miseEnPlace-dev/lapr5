@@ -1,17 +1,17 @@
-import { Container } from '@freshgum/typedi';
 import { NextFunction, Request, Response, Router } from 'express';
 
 import { z } from 'zod';
 import { IUserDTO } from '../../dto/IUserDTO';
-import AuthService from '../../services/userService';
 
-import UserController from '@/controllers/userController';
-import winston from 'winston';
+import IUserController from '@/controllers/IControllers/IUserController';
+import { TYPES, container } from '@/loaders/inversify';
+import IUserService from '@/services/IServices/IUserService';
+import { Logger } from 'winston';
 import middlewares from '../middlewares';
 
 export default (app: Router) => {
   const route = Router();
-  const userController = Container.get(UserController);
+  const userController = container.get<IUserController>(TYPES.userController);
 
   route.post(
     '/signup',
@@ -42,7 +42,7 @@ export default (app: Router) => {
     },
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const authServiceInstance = Container.get(AuthService);
+        const authServiceInstance = container.get<IUserService>(TYPES.userService);
         const userOrError = await authServiceInstance.SignUp(req.body as IUserDTO);
 
         if (userOrError.isFailure) return res.status(401).send(userOrError.errorValue());
@@ -75,7 +75,7 @@ export default (app: Router) => {
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { email, password } = req.body;
-        const authServiceInstance = Container.get(AuthService);
+        const authServiceInstance = container.get<IUserService>(TYPES.userService);
         const result = await authServiceInstance.SignIn(email, password);
 
         if (result.isFailure) return res.json().status(403);
@@ -98,7 +98,7 @@ export default (app: Router) => {
    * It's really annoying to develop that but if you had to, please use Redis as your data store
    */
   route.post('/logout', middlewares.isAuth, (req: Request, res: Response, next: NextFunction) => {
-    const logger = Container.get('logger') as winston.Logger;
+    const logger = container.get<Logger>(TYPES.logger);
 
     logger.debug('Calling Sign-Out endpoint with body: %o', req.body);
     try {

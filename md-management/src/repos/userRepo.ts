@@ -1,13 +1,12 @@
-import { Service } from '@freshgum/typedi';
-
 import userSchema from '@/persistence/schemas/userSchema';
+import { injectable } from 'inversify';
 import { User } from '../domain/user/user';
 import { UserEmail } from '../domain/user/userEmail';
 import { UserId } from '../domain/user/userId';
 import { UserMapper } from '../mappers/UserMapper';
 import IUserRepo from '../services/IRepos/IUserRepo';
 
-@Service([])
+@injectable()
 export default class UserRepo implements IUserRepo {
   constructor() {}
 

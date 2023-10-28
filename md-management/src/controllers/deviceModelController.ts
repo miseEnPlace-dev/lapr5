@@ -1,15 +1,18 @@
-import { Service } from '@freshgum/typedi';
-
-import { IDeviceModelDTO } from '@/dto/IDeviceModelDTO';
-import IDeviceModelService from '@/services/IServices/IDeviceModelService';
-import DeviceModelService from '@/services/deviceModelService';
 import { NextFunction, Request, Response } from 'express';
-import { Result } from '../core/logic/Result';
+import { inject, injectable } from 'inversify';
+
+import { TYPES } from '@/loaders/inversify';
+import IDeviceModelService from '@/services/IServices/IDeviceModelService';
 import IDeviceModelController from './IControllers/IDeviceModelController';
 
-@Service([DeviceModelService])
+import { IDeviceModelDTO } from '@/dto/IDeviceModelDTO';
+import { Result } from '../core/logic/Result';
+
+@injectable()
 export default class DeviceModelController implements IDeviceModelController {
-  constructor(private deviceModelServiceInstance: IDeviceModelService) {}
+  constructor(
+    @inject(TYPES.deviceModelService) private deviceModelServiceInstance: IDeviceModelService
+  ) {}
 
   public async createDeviceModel(req: Request, res: Response, next: NextFunction) {
     try {

@@ -1,9 +1,9 @@
-import { Container } from '@freshgum/typedi';
 import { Router } from 'express';
 import { z } from 'zod';
 
 import { validate } from '@/api/middlewares/validate';
-import ConnectorController from '@/controllers/connectorController';
+import IConnectorController from '@/controllers/IControllers/IConnectorController';
+import { TYPES, container } from '@/loaders/inversify';
 
 const connectorCreateSchema = z.object({
   code: z
@@ -36,7 +36,7 @@ const connectorUpdateSchema = z.object({
 export default (app: Router) => {
   const route = Router();
 
-  const ctrl = Container.get(ConnectorController);
+  const ctrl = container.get<IConnectorController>(TYPES.connectorController);
 
   route.get('', (req, res, next) => ctrl.getConnectors(req, res, next));
 

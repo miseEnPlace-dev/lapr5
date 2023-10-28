@@ -1,5 +1,3 @@
-import { Service } from '@freshgum/typedi';
-
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { IConnectorPersistence } from '@/dataschema/IConnectorPersistence';
 import { Connector } from '@/domain/connector/connector';
@@ -7,9 +5,10 @@ import { ConnectorCode } from '@/domain/connector/connectorCode';
 import { ConnectorMap } from '@/mappers/ConnectorMap';
 import connectorSchema from '@/persistence/schemas/connectorSchema';
 import IConnectorRepo from '@/services/IRepos/IConnectorRepo';
+import { injectable } from 'inversify';
 import { Document, FilterQuery } from 'mongoose';
 
-@Service([])
+@injectable()
 export default class ConnectorRepo implements IConnectorRepo {
   constructor() {}
 

@@ -1,10 +1,10 @@
-import { Container } from '@freshgum/typedi';
 import { Router } from 'express';
 import { z } from 'zod';
 
 import { validate } from '@/api/middlewares/validate';
 
-import RoomController from '@/controllers/roomController';
+import IRoomController from '@/controllers/IControllers/IRoomController';
+import { TYPES, container } from '@/loaders/inversify';
 
 const roomCreateSchema = z.object({
   name: z
@@ -25,7 +25,7 @@ const roomCreateSchema = z.object({
 export default (app: Router) => {
   const route = Router();
 
-  const ctrl = Container.get(RoomController);
+  const ctrl = container.get<IRoomController>(TYPES.roomController);
 
   route.post('/:building/floors/:floor/rooms', validate(roomCreateSchema), (req, res, next) =>
     ctrl.createRoom(req, res, next)

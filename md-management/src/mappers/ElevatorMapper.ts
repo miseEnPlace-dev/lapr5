@@ -7,9 +7,8 @@ import { ElevatorCode } from '@/domain/elevator/elevatorCode';
 import { ElevatorDescription } from '@/domain/elevator/elevatorDescription';
 import { ElevatorSerialNumber } from '@/domain/elevator/elevatorSerialNumber';
 import { IElevatorDTO } from '@/dto/IElevatorDTO';
-import FloorRepo from '@/repos/floorRepo';
+import { TYPES, container } from '@/loaders/inversify';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
-import Container from '@freshgum/typedi';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 
 export class ElevatorMapper extends Mapper<Elevator> {
@@ -25,7 +24,7 @@ export class ElevatorMapper extends Mapper<Elevator> {
   }
 
   public static async toDomain(elevator: IElevatorPersistence): Promise<Elevator | null> {
-    const floorRepo = Container.get<IFloorRepo>(FloorRepo);
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
     const code = ElevatorCode.create(elevator.code).getValue();
     const branding =
       elevator.brand && elevator.model

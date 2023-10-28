@@ -7,9 +7,8 @@ import { RoomDescription } from '@/domain/room/roomDescription';
 import { RoomDimensions } from '@/domain/room/roomDimensions';
 import { RoomName } from '@/domain/room/roomName';
 import { IRoomDTO } from '@/dto/IRoomDTO';
-import FloorRepo from '@/repos/floorRepo';
+import { TYPES, container } from '@/loaders/inversify';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
-import Container from '@freshgum/typedi';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 
 export class RoomMapper extends Mapper<Room> {
@@ -30,7 +29,7 @@ export class RoomMapper extends Mapper<Room> {
     const name = RoomName.create(room.name).getValue();
     const { width, length } = room.dimensions;
 
-    const repoFloor = Container.get<IFloorRepo>(FloorRepo);
+    const repoFloor = container.get<IFloorRepo>(TYPES.floorRepo);
 
     const floor = await repoFloor.findByDomainId(room.floor);
     if (!floor) throw new Error('Floor not found');

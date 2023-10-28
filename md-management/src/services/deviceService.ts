@@ -1,24 +1,25 @@
-import { Service } from '@freshgum/typedi';
-
 import { Result } from '@/core/logic/Result';
 import { IDeviceDTO } from '@/dto/IDeviceDTO';
 
-import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
 import { Device } from '@/domain/device/device';
 import { DeviceCode } from '@/domain/device/deviceCode';
 import { DeviceDescription } from '@/domain/device/deviceDescription';
 import { DeviceNickname } from '@/domain/device/deviceNickname';
 import { DeviceSerialNumber } from '@/domain/device/deviceSerialNumber';
+import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
+import { TYPES } from '@/loaders/inversify';
 import { DeviceMapper } from '@/mappers/DeviceMapper';
-import DeviceModelRepo from '@/repos/deviceModelRepo';
-import DeviceRepo from '@/repos/deviceRepo';
+import { inject, injectable } from 'inversify';
 import IDeviceModelRepo from './IRepos/IDeviceModelRepo';
 import IDeviceRepo from './IRepos/IDeviceRepo';
 import IDeviceService from './IServices/IDeviceService';
 
-@Service([DeviceRepo, DeviceModelRepo])
+@injectable()
 export default class DeviceService implements IDeviceService {
-  constructor(private deviceRepo: IDeviceRepo, private deviceModelRepo: IDeviceModelRepo) {}
+  constructor(
+    @inject(TYPES.deviceRepo) private deviceRepo: IDeviceRepo,
+    @inject(TYPES.deviceModelRepo) private deviceModelRepo: IDeviceModelRepo
+  ) {}
 
   public async createDevice(deviceDTO: IDeviceDTO): Promise<Result<IDeviceDTO>> {
     try {
@@ -57,7 +58,6 @@ export default class DeviceService implements IDeviceService {
     }
   }
 
-<<<<<<< HEAD
   public async getDevicesRobots(): Promise<Result<IDeviceDTO[]>> {
     try {
       const devices = await this.deviceRepo.findRobots();
@@ -65,7 +65,11 @@ export default class DeviceService implements IDeviceService {
       const devicesDTOs = devices.map(device => DeviceMapper.toDTO(device) as IDeviceDTO);
 
       return Result.ok<IDeviceDTO[]>(devicesDTOs);
-=======
+    } catch (e) {
+      throw e;
+    }
+  }
+
   public async inhibitDevice(code: string): Promise<Result<IDeviceDTO>> {
     try {
       const deviceCode = DeviceCode.create(code).getValue();
@@ -80,7 +84,7 @@ export default class DeviceService implements IDeviceService {
           nickname: device.nickname,
           serialNumber: device.serialNumber,
           description: device.description,
-          modelCode: device.modelCode,
+          model: device.model,
           isAvailable: false
         },
         device.id
@@ -92,7 +96,6 @@ export default class DeviceService implements IDeviceService {
       await this.deviceRepo.save(result);
       const deviceDTOResult = DeviceMapper.toDTO(result) as IDeviceDTO;
       return Result.ok<IDeviceDTO>(deviceDTOResult);
->>>>>>> eb8a7be095d2c601412ca85af066ff7ab1ea5cf0
     } catch (e) {
       throw e;
     }

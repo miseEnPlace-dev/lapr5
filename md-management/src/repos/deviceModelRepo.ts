@@ -1,18 +1,17 @@
-import { Service } from '@freshgum/typedi';
-
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { IDeviceModelPersistence } from '@/dataschema/IDeviceModelPersistence';
 import { DeviceModel } from '@/domain/deviceModel/deviceModel';
 import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
-import { DeviceModelMapper } from '@/mappers/DeviceModelMapper';
-import IDeviceModelRepo from '@/services/IRepos/IDeviceModelRepo';
-import { Document, FilterQuery } from 'mongoose';
 import { DeviceModelName } from '@/domain/deviceModel/deviceModelName';
+import { DeviceModelMapper } from '@/mappers/DeviceModelMapper';
 import deviceModelSchema from '@/persistence/schemas/deviceModelSchema';
+import IDeviceModelRepo from '@/services/IRepos/IDeviceModelRepo';
+import { injectable } from 'inversify';
+import { Document, FilterQuery } from 'mongoose';
 
-@Service([])
+@injectable()
 export default class DeviceModelRepo implements IDeviceModelRepo {
-  constructor() { }
+  constructor() {}
 
   public async findByName(name: DeviceModelName | string): Promise<DeviceModel | null> {
     const query: FilterQuery<IDeviceModelPersistence & Document> = { name };

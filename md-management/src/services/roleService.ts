@@ -1,15 +1,15 @@
-import { Service } from '@freshgum/typedi';
+import { TYPES } from '@/loaders/inversify';
+import { inject, injectable } from 'inversify';
 import { Result } from '../core/logic/Result';
 import { Role } from '../domain/role/role';
 import IRoleDTO from '../dto/IRoleDTO';
 import { RoleMapper } from '../mappers/RoleMapper';
-import RoleRepo from '../repos/roleRepo';
 import IRoleRepo from './IRepos/IRoleRepo';
 import IRoleService from './IServices/IRoleService';
 
-@Service([RoleRepo])
+@injectable()
 export default class RoleService implements IRoleService {
-  constructor(private roleRepo: IRoleRepo) {}
+  constructor(@inject(TYPES.roleRepo) private roleRepo: IRoleRepo) {}
 
   public async getRole(roleId: string): Promise<Result<IRoleDTO>> {
     try {

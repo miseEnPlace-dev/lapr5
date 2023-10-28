@@ -1,26 +1,22 @@
-import { Service } from '@freshgum/typedi';
-
 import { Result } from '@/core/logic/Result';
-import { IConnectorDTO } from '@/dto/IConnectorDTO';
-
 import { Connector } from '@/domain/connector/connector';
 import { ConnectorCode } from '@/domain/connector/connectorCode';
 import { FloorCode } from '@/domain/floor/floorCode';
+import { IConnectorDTO } from '@/dto/IConnectorDTO';
+import { TYPES } from '@/loaders/inversify';
 import { ConnectorMap } from '@/mappers/ConnectorMap';
-import BuildingRepo from '@/repos/buildingRepo';
-import ConnectorRepo from '@/repos/connectorRepo';
-import FloorRepo from '@/repos/floorRepo';
+import { inject, injectable } from 'inversify';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import IConnectorRepo from './IRepos/IConnectorRepo';
 import IFloorRepo from './IRepos/IFloorRepo';
 import IConnectorService from './IServices/IConnectorService';
 
-@Service([ConnectorRepo, FloorRepo, BuildingRepo])
+@injectable()
 export default class ConnectorService implements IConnectorService {
   constructor(
-    private connectorRepo: IConnectorRepo,
-    private floorRepo: IFloorRepo,
-    private buildingRepo: IBuildingRepo
+    @inject(TYPES.connectorRepo) private connectorRepo: IConnectorRepo,
+    @inject(TYPES.floorRepo) private floorRepo: IFloorRepo,
+    @inject(TYPES.buildingRepo) private buildingRepo: IBuildingRepo
   ) {}
 
   public async checkConnectorExists(connectorDTO: IConnectorDTO): Promise<Result<boolean>> {

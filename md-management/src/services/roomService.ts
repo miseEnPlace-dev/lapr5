@@ -1,5 +1,3 @@
-import { Service } from '@freshgum/typedi';
-
 import { Result } from '@/core/logic/Result';
 import { FloorCode } from '@/domain/floor/floorCode';
 import { Room } from '@/domain/room/room';
@@ -8,16 +6,19 @@ import { RoomDescription } from '@/domain/room/roomDescription';
 import { RoomDimensions } from '@/domain/room/roomDimensions';
 import { RoomName } from '@/domain/room/roomName';
 import { IRoomDTO } from '@/dto/IRoomDTO';
+import { TYPES } from '@/loaders/inversify';
 import { RoomMapper } from '@/mappers/RoomMapper';
-import FloorRepo from '@/repos/floorRepo';
-import RoomRepo from '@/repos/roomRepo';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
+import { inject, injectable } from 'inversify';
 import IRoomRepo from './IRepos/IRoomRepo';
 import IRoomService from './IServices/IRoomService';
 
-@Service([RoomRepo, FloorRepo])
+@injectable()
 export default class RoomService implements IRoomService {
-  constructor(private floorRepo: IFloorRepo, private roomRepo: IRoomRepo) {}
+  constructor(
+    @inject(TYPES.floorRepo) private floorRepo: IFloorRepo,
+    @inject(TYPES.roomRepo) private roomRepo: IRoomRepo
+  ) {}
 
   public async createRoom(roomDTO: IRoomDTO): Promise<Result<IRoomDTO>> {
     try {

@@ -1,12 +1,13 @@
-import { Service } from '@freshgum/typedi';
-
-import IUserService from '@/services/IServices/IUserService';
-import UserService from '@/services/userService';
 import { Request, Response } from 'express';
+import { inject, injectable } from 'inversify';
 
-@Service([UserService])
-export default class UserController {
-  constructor(private userService: IUserService) {}
+import { TYPES } from '@/loaders/inversify';
+import IUserService from '@/services/IServices/IUserService';
+import IUserController from './IControllers/IUserController';
+
+@injectable()
+export default class UserController implements IUserController {
+  constructor(@inject(TYPES.userService) private userService: IUserService) {}
 
   public async getMe(req: Request, res: Response) {
     // NB: a arquitetura ONION não está a ser seguida aqui

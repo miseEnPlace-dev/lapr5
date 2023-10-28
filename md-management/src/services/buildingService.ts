@@ -1,21 +1,26 @@
+import { TYPES } from '@/loaders/inversify';
+import { inject, injectable } from 'inversify';
+
 import { BuildingCode } from '@/domain/building/buildingCode';
 import { BuildingDescription } from '@/domain/building/buildingDescription';
 import { BuildingMaxDimensions } from '@/domain/building/buildingMaxDimensions';
 import { BuildingName } from '@/domain/building/buildingName';
-import { IBuildingDTO } from '@/dto/IBuildingDTO';
-import { BuildingMapper } from '@/mappers/BuildingMapper';
-import BuildingRepo from '@/repos/buildingRepo';
-import FloorRepo from '@/repos/floorRepo';
-import { Service } from '@freshgum/typedi';
-import { Result } from '../core/logic/Result';
 import { Building } from '../domain/building/building';
+
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import IFloorRepo from './IRepos/IFloorRepo';
 import IBuildingService from './IServices/IBuildingService';
 
-@Service([BuildingRepo, FloorRepo])
+import { IBuildingDTO } from '@/dto/IBuildingDTO';
+import { BuildingMapper } from '@/mappers/BuildingMapper';
+import { Result } from '../core/logic/Result';
+
+@injectable()
 export default class BuildingService implements IBuildingService {
-  constructor(private buildingRepo: IBuildingRepo, private floorRepo: IFloorRepo) {}
+  constructor(
+    @inject(TYPES.buildingRepo) private buildingRepo: IBuildingRepo,
+    @inject(TYPES.floorRepo) private floorRepo: IFloorRepo
+  ) {}
 
   public async createBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>> {
     try {

@@ -1,5 +1,3 @@
-import Container from '@freshgum/typedi';
-
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { Mapper } from '@/core/infra/Mapper';
 
@@ -8,7 +6,7 @@ import { Connector } from '@/domain/connector/connector';
 import { ConnectorCode } from '@/domain/connector/connectorCode';
 import { Floor } from '@/domain/floor/floor';
 import { IConnectorDTO } from '@/dto/IConnectorDTO';
-import FloorRepo from '@/repos/floorRepo';
+import { TYPES, container } from '@/loaders/inversify';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 
 export class ConnectorMap extends Mapper<Floor> {
@@ -23,7 +21,7 @@ export class ConnectorMap extends Mapper<Floor> {
   public static async toDomain(connector: IConnectorPersistence): Promise<Connector | null> {
     const code = ConnectorCode.create(connector.code).getValue();
 
-    const repo = Container.get<IFloorRepo>(FloorRepo);
+    const repo = container.get<IFloorRepo>(TYPES.floorRepo);
 
     const floor1 = await repo.findByDomainId(connector.floor1);
     const floor2 = await repo.findByDomainId(connector.floor2);
