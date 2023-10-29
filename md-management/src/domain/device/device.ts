@@ -23,7 +23,7 @@ export class Device extends AggregateRoot<DeviceProps> {
   }
 
   get code(): DeviceCode {
-    return this.props.nickname;
+    return this.props.code;
   }
 
   get nickname(): DeviceNickname {
@@ -64,8 +64,7 @@ export class Device extends AggregateRoot<DeviceProps> {
       { argument: props.nickname, argumentName: 'nickname' },
       { argument: props.serialNumber, argumentName: 'serialNumber' },
       { argument: props.model, argumentName: 'model' },
-      { argument: props.isAvailable, argumentName: 'isAvailable' },
-      { argument: props.code, argumentName: 'code' }
+      { argument: props.isAvailable, argumentName: 'isAvailable' }
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);

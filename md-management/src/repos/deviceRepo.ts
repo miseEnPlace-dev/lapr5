@@ -54,6 +54,7 @@ export default class DeviceRepo implements IDeviceRepo {
         return domainDevice;
       }
 
+      deviceDocument.code = raw.code;
       deviceDocument.nickname = raw.nickname;
       deviceDocument.modelCode = raw.modelCode;
       deviceDocument.description = raw.description;
