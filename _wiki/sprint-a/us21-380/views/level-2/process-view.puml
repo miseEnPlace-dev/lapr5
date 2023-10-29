@@ -2,7 +2,7 @@
 autonumber
 participant SYS as "MD Management" <<system>>
 
-?o-> SYS : GET /device-models
+?o-> SYS : GET /devices/robots
 activate SYS
 
 SYS -> SYS : getRobots()

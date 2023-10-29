@@ -55,4 +55,3 @@ The views presented here are the ones that are relevant to this user story.
 ##### Processes
 
 ![Level 3 Processes View](views/level-3/assets/process-view.svg)
-../us18-350/views/level-2 ../us18-350/views/level-3
