@@ -7,21 +7,32 @@ import deviceSchema from '@/persistence/schemas/deviceSchema';
 import IDeviceRepo from '@/services/IRepos/IDeviceRepo';
 import { injectable } from 'inversify';
 import { Document, FilterQuery } from 'mongoose';
+import { Task } from '@/domain/shared/task';
 
 @injectable()
 export default class DeviceRepo implements IDeviceRepo {
   constructor() {}
 
-  public async findRobots(): Promise<Device[]> {
+  public async findRobots(value: string | undefined): Promise<Device[]> {
     const deviceRecords = await deviceSchema.find({}).populate({
       path: 'modelCode',
       match: { type: 'robot' }
     });
 
     const devices: Device[] = [];
-    for (const deviceRecord of deviceRecords) {
-      const device = await DeviceMapper.toDomain(deviceRecord);
-      if (device) devices.push(device);
+    if (!value) {
+      for (const deviceRecord of deviceRecords) {
+        const device = await DeviceMapper.toDomain(deviceRecord);
+        if (device) devices.push(device);
+      }
+    } else {
+      const task = Task.create(value).getValue();
+      for (const deviceRecord of deviceRecords) {
+        const device = await DeviceMapper.toDomain(deviceRecord);
+        if (device && device.model.capabilities.map(c => c.props.value).includes(task.value)) {
+          devices.push(device);
+        }
+      }
     }
 
     return devices;

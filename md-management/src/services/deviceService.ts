@@ -58,13 +58,30 @@ export default class DeviceService implements IDeviceService {
     }
   }
 
-  public async getDevicesRobots(): Promise<Result<IDeviceDTO[]>> {
+  public async getDevicesRobots(
+    filterStr: string | undefined,
+    value: string | undefined
+  ): Promise<Result<IDeviceDTO[]>> {
     try {
-      const devices = await this.deviceRepo.findRobots();
+      const filters = filterStr ? filterStr : '';
 
-      const devicesDTOs = devices.map(device => DeviceMapper.toDTO(device) as IDeviceDTO);
+      let result: IDeviceDTO[] = [];
 
-      return Result.ok<IDeviceDTO[]>(devicesDTOs);
+      if (filters && filters.includes('task')) {
+        const devices = await this.deviceRepo.findRobots(value);
+
+        result = devices.map(device => {
+          const deviceDTO = DeviceMapper.toDTO(device) as IDeviceDTO;
+          return deviceDTO;
+        });
+      } else {
+        const devices = await this.deviceRepo.findRobots(undefined);
+        result = devices.map(device => {
+          const deviceDTO = DeviceMapper.toDTO(device) as IDeviceDTO;
+          return deviceDTO;
+        });
+      }
+      return Result.ok<IDeviceDTO[]>(result);
     } catch (e) {
       throw e;
     }
