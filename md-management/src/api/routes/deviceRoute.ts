@@ -40,8 +40,6 @@ export default (app: Router) => {
   );
   route.patch('/:code', (req, res, next) => ctrl.inhibitDevice(req, res, next));
 
-  route.patch('/:code', (req, res, next) => ctrl.inhibitDevice(req, res, next));
-
   route.get('/robots', (req, res, next) => ctrl.getDevicesRobots(req, res, next));
 
   app.use('/devices', route);
