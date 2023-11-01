@@ -4,10 +4,10 @@ autonumber
 participant SYS as "MD Management" <<system (C4)>>
 
 
-?o-> SYS : GET /devices/:taskId
+?o-> SYS : GET /devices/robots/:taskId
 activate SYS
 
-SYS -> SYS : listRobots(taskId)
+SYS -> SYS : getRobots(taskId)
 <-- SYS : 200 OK (list robots JSON)
 deactivate SYS
 

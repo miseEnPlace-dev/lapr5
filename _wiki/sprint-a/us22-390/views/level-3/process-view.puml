@@ -3,27 +3,30 @@ autonumber
 participant ROUTE as ":DeviceRoute"
 participant CTRL as ":DeviceController"
 participant SRV as ":DeviceService"
-participant DREPO as ":DevicesRepo"
+participant BUILD as ":device:Device"
+participant REPO as ":DeviceRepo"
 participant MAP as ":DeviceMap"
-participant DTO as ":DeviceDTO:IDeviceDTO"
+participant DTO as ":deviceDTO:IDeviceDTO"
 
-?o-> ROUTE : GET /devices/:taskId
+?o-> ROUTE : GET /devices/robots/:taskId
 activate ROUTE
 
-ROUTE -> CTRL : listRobots(taskId)
+ROUTE -> CTRL : getDevicesRobots()
 activate CTRL
-CTRL -> SRV : listRobots(taskId)
+CTRL -> SRV : getDevicesRobots()
 activate SRV
-SRV -> DREPO : robot=findByTaskId(taskId)
-activate DREPO
-deactivate DREPO
-SRV -> MAP : toDto(robot.elevator)
-activate MAP
-MAP -> DTO** : create()
-deactivate MAP
-SRV --> CTRL : sucess(robotDTO)
+SRV-> REPO : findRobots()
+activate REPO
+deactivate REPO
+  loop foreach device
+    SRV -> MAP : toDto()
+    activate MAP
+    MAP -> DTO** : create()
+    deactivate MAP
+  end
+SRV --> CTRL : sucess(devicesDTO)
 deactivate SRV
-CTRL --> ROUTE : sucess(robotDTO)
+CTRL --> ROUTE : sucess(devicesDTO)
 deactivate CTRL
 <-- ROUTE : 200 OK
 deactivate ROUTE
