@@ -1,4 +1,4 @@
-import { TYPES } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import { inject, injectable } from 'inversify';
 import { Result } from '../core/logic/Result';
 import { Role } from '../domain/role/role';

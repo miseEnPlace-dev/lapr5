@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 
-import { TYPES } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import IUserService from '@/services/IServices/IUserService';
 import IUserController from './IControllers/IUserController';
 

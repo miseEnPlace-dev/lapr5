@@ -7,7 +7,8 @@ import { ElevatorCode } from '@/domain/elevator/elevatorCode';
 import { ElevatorDescription } from '@/domain/elevator/elevatorDescription';
 import { ElevatorSerialNumber } from '@/domain/elevator/elevatorSerialNumber';
 import { IElevatorDTO } from '@/dto/IElevatorDTO';
-import { TYPES, container } from '@/loaders/inversify';
+import { container } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 

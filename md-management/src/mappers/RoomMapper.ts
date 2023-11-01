@@ -7,7 +7,8 @@ import { RoomDescription } from '@/domain/room/roomDescription';
 import { RoomDimensions } from '@/domain/room/roomDimensions';
 import { RoomName } from '@/domain/room/roomName';
 import { IRoomDTO } from '@/dto/IRoomDTO';
-import { TYPES, container } from '@/loaders/inversify';
+import { container } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 

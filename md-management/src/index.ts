@@ -7,7 +7,7 @@ import express from 'express';
 import loaders from './loaders';
 import Logger from './loaders/logger';
 
-async function startServer() {
+(async function startServer() {
   const app = express();
 
   await loaders({ expressApp: app });
@@ -26,6 +26,4 @@ async function startServer() {
       Logger.error(err);
       process.exit(1);
     });
-}
-
-startServer();
+})();

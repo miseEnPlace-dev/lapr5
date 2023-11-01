@@ -1,13 +1,15 @@
 import { NextFunction, Request, Response, Router } from 'express';
 
+import { Logger } from 'winston';
 import { z } from 'zod';
-import { IUserDTO } from '../../dto/IUserDTO';
+
+import { container } from '@/loaders/inversify';
+import middlewares from '../middlewares';
 
 import IUserController from '@/controllers/IControllers/IUserController';
-import { TYPES, container } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import IUserService from '@/services/IServices/IUserService';
-import { Logger } from 'winston';
-import middlewares from '../middlewares';
+import { IUserDTO } from '../../dto/IUserDTO';
 
 export default (app: Router) => {
   const route = Router();

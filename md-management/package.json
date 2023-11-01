@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Master Data Management",
   "main": "src/index.ts",
+  "_moduleAliases": {
+    "@": "src"
+  },
   "scripts": {
     "clean": "rm -rf dist/",
     "build": "npm run clean && tsup-node src/index.ts",

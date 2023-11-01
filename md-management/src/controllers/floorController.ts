@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import { z } from 'zod';
 
-import { TYPES } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import IFloorService from '@/services/IServices/IFloorService';
 import IFloorController from './IControllers/IFloorController';
 

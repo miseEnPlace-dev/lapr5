@@ -2,7 +2,8 @@ import { Router } from 'express';
 import { z } from 'zod';
 
 import IRoleController from '@/controllers/IControllers/IRoleController';
-import { TYPES, container } from '@/loaders/inversify';
+import { container } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 
 export default (app: Router) => {
   const route = Router();

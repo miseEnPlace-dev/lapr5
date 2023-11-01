@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 
-import { TYPES } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import IRoomService from '@/services/IServices/IRoomService';
 import IRoomController from './IControllers/IRoomController';
 

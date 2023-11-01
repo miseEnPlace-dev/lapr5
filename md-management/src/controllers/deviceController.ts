@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 
-import { TYPES } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import IDeviceService from '@/services/IServices/IDeviceService';
 import IDeviceController from './IControllers/IDeviceController';
 
 import { IDeviceDTO } from '@/dto/IDeviceDTO';
-import { Result } from '../core/logic/Result';
 import { z } from 'zod';
+import { Result } from '../core/logic/Result';
 
 @injectable()
 export default class DeviceController implements IDeviceController {

@@ -17,7 +17,7 @@ import { UserPassword } from '../domain/user/userPassword';
 import { Role } from '../domain/role/role';
 
 import { PhoneNumber } from '@/domain/user/phoneNumber';
-import { TYPES } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import { inject, injectable } from 'inversify';
 import { Result } from '../core/logic/Result';
 

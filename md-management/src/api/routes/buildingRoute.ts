@@ -2,7 +2,8 @@ import { Router } from 'express';
 import { z } from 'zod';
 
 import IBuildingController from '@/controllers/IControllers/IBuildingController';
-import { TYPES, container } from '@/loaders/inversify';
+import { container } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import { validate } from '../middlewares/validate';
 
 const buildingCreateSchema = z.object({

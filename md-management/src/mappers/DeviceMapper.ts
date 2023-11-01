@@ -8,7 +8,8 @@ import { DeviceDescription } from '@/domain/device/deviceDescription';
 import { DeviceNickname } from '@/domain/device/deviceNickname';
 import { DeviceSerialNumber } from '@/domain/device/deviceSerialNumber';
 import { IDeviceDTO } from '@/dto/IDeviceDTO';
-import { TYPES, container } from '@/loaders/inversify';
+import { container } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import IDeviceModelRepo from '@/services/IRepos/IDeviceModelRepo';
 
 export class DeviceMapper extends Mapper<Device> {

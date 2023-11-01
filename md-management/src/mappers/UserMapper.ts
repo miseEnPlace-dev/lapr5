@@ -10,7 +10,8 @@ import { UserPassword } from '../domain/user/userPassword';
 
 import { IUserPersistence } from '@/dataschema/IUserPersistence';
 import { PhoneNumber } from '@/domain/user/phoneNumber';
-import { TYPES, container } from '@/loaders/inversify';
+import { container } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import IRoleRepo from '@/services/IRepos/IRoleRepo';
 
 export class UserMapper extends Mapper<User> {

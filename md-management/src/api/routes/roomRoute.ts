@@ -4,7 +4,8 @@ import { z } from 'zod';
 import { validate } from '@/api/middlewares/validate';
 
 import IRoomController from '@/controllers/IControllers/IRoomController';
-import { TYPES, container } from '@/loaders/inversify';
+import { container } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 
 const roomCreateSchema = z.object({
   name: z

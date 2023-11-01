@@ -1,6 +1,7 @@
 import winston from 'winston';
 
-import { TYPES, container } from '@/loaders/inversify';
+import { container } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import { NextFunction, Request, Response } from 'express';
 import IUserRepo from '../../services/IRepos/IUserRepo';
 

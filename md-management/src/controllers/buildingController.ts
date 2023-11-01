@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 
-import { TYPES } from '@/loaders/inversify';
+import { TYPES } from '../loaders/inversify/types';
 
 import IBuildingService from '@/services/IServices/IBuildingService';
 import IBuildingController from './IControllers/IBuildingController';
 
+import { Result } from '@/core/logic/Result';
 import { IBuildingDTO } from '@/dto/IBuildingDTO';
-import { Result } from '../core/logic/Result';
 
 @injectable()
 export default class BuildingController implements IBuildingController {

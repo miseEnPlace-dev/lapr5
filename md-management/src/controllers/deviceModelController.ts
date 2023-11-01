@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 
-import { TYPES } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import IDeviceModelService from '@/services/IServices/IDeviceModelService';
 import IDeviceModelController from './IControllers/IDeviceModelController';
 

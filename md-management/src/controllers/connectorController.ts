@@ -7,7 +7,7 @@ import IConnectorController from './IControllers/IConnectorController';
 
 import { Result } from '@/core/logic/Result';
 import { IConnectorDTO } from '@/dto/IConnectorDTO';
-import { TYPES } from '@/loaders/inversify';
+import { TYPES } from '../loaders/inversify/types';
 
 const buildingIdsSchema = z.object({
   buildingCodes: z

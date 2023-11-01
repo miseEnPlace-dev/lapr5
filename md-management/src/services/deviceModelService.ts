@@ -6,7 +6,7 @@ import { DeviceModelBrand } from '@/domain/deviceModel/deviceModelBrand';
 import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
 import { DeviceModelName } from '@/domain/deviceModel/deviceModelName';
 import { Task } from '@/domain/shared/task';
-import { TYPES } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import { DeviceModelMapper } from '@/mappers/DeviceModelMapper';
 import { inject, injectable } from 'inversify';
 import IDeviceModelRepo from './IRepos/IDeviceModelRepo';

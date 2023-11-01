@@ -1,13 +1,12 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./",
     "typeRoots": ["./node_modules/@types", "./src/types"],
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
     "pretty": true,
     "sourceMap": true,
     "outDir": "dist" /* Specify an output folder for all emitted files. */,
-    "rootDir": "src" /* Specify the root folder within your source files. */,
     "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
     "checkJs": true /* Enable error reporting in type-checked JavaScript files. */,
     "noEmit": true,
@@ -17,17 +16,17 @@
     "noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "target": "es5",
-    "lib": ["es6"],
-    "types": ["reflect-metadata"],
-    "module": "commonjs",
+    "lib": ["es6", "DOM", "ES2015.Iterable"],
+    "types": ["node", "reflect-metadata"],
+    "module": "CommonJS",
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "incremental": true, // Enable incremental compilation
     "paths": {
-      "@/*": ["src/*"],
-      "@tests/*": ["tests/*"]
+      "@/*": ["src/*"]
     }
   },
-  "exclude": ["node_modules", "dist"],
-  "include": ["src/**/*", "tests/**/*.test.ts"]
+  "exclude": ["node_modules", "dist", "tests/**/*.test.ts"],
+  "include": ["src/**/*", "tests"]
 }

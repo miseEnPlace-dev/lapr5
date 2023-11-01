@@ -12,7 +12,7 @@ import { FloorMapMatrix } from '@/domain/floor/floorMap/floorMapMatrix';
 import { FloorMapSize } from '@/domain/floor/floorMap/floorMapSize';
 import { IFloorDTO } from '@/dto/IFloorDTO';
 import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
-import { TYPES } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import { FloorMapMapper } from '@/mappers/FloorMapMapper';
 import { FloorMapper } from '@/mappers/FloorMapper';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';

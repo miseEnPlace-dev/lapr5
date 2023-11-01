@@ -6,7 +6,7 @@ import { ElevatorSerialNumber } from '@/domain/elevator/elevatorSerialNumber';
 import { Floor } from '@/domain/floor/floor';
 import { FloorCode } from '@/domain/floor/floorCode';
 import { IElevatorDTO } from '@/dto/IElevatorDTO';
-import { TYPES } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import { ElevatorMapper } from '@/mappers/ElevatorMapper';
 import { inject, injectable } from 'inversify';
 import { Result } from '../core/logic/Result';

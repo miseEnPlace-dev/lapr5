@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
 
-import TYPES from './types';
+import { TYPES } from './types';
 
 import IBuildingController from '@/controllers/IControllers/IBuildingController';
 import IConnectorController from '@/controllers/IControllers/IConnectorController';
@@ -112,4 +112,4 @@ container.bind(TYPES.connectorSchema).to(ConnectorSchema);
 
 container.bind<Logger>(TYPES.logger).toConstantValue(LoggerInstance);
 
-export { TYPES, container };
+export { container };

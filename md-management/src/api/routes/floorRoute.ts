@@ -5,7 +5,8 @@ import { z } from 'zod';
 import { validate } from '@/api/middlewares/validate';
 
 import IFloorController from '@/controllers/IControllers/IFloorController';
-import { TYPES, container } from '@/loaders/inversify';
+import { container } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 
 const floorCreateSchema = z.object({
   code: z

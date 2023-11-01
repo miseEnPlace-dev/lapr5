@@ -7,7 +7,7 @@ import { DeviceDescription } from '@/domain/device/deviceDescription';
 import { DeviceNickname } from '@/domain/device/deviceNickname';
 import { DeviceSerialNumber } from '@/domain/device/deviceSerialNumber';
 import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
-import { TYPES } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import { DeviceMapper } from '@/mappers/DeviceMapper';
 import { inject, injectable } from 'inversify';
 import IDeviceModelRepo from './IRepos/IDeviceModelRepo';

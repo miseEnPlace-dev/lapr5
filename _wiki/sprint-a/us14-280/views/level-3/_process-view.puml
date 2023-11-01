@@ -1,4 +1,4 @@
-@startuml process-view
+@startuml _process-view
 autonumber
 participant ROUTE as ":ElevatorRoute"
 participant CTRL as ":ElevatorController"

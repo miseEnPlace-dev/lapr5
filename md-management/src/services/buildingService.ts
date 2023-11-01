@@ -1,4 +1,4 @@
-import { TYPES } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import { inject, injectable } from 'inversify';
 
 import { BuildingCode } from '@/domain/building/buildingCode';

@@ -1,18 +1,19 @@
+import 'reflect-metadata'; // We need this in order to use @Decorators
+
 import sinon, { SinonSpy, assert, match, spy, stub } from 'sinon';
 
 import { NextFunction, Request, Response } from 'express';
 
-import container from '@/loaders/inversify';
 import { beforeEach, describe, it } from 'vitest';
 import RoleController from '../../../src/controllers/roleController';
 import { Result } from '../../../src/core/logic/Result';
 import IRoleDTO from '../../../src/dto/IRoleDTO';
+import { container } from '../../../src/loaders/inversify/';
+import { TYPES } from '../../../src/loaders/inversify/types';
 import IRoleService from '../../../src/services/IServices/IRoleService';
-import RoleService from '../../../src/services/roleService';
 
 describe('role controller', () => {
   beforeEach(() => {
-    container.restore();
     sinon.restore();
   });
 
@@ -26,7 +27,7 @@ describe('role controller', () => {
     };
     const next: Partial<NextFunction> = () => {};
 
-    const roleServiceInstance: IRoleService = container.get(RoleService);
+    const roleServiceInstance = container.get<IRoleService>(TYPES.roleService);
     stub(roleServiceInstance, 'createRole').returns(
       new Promise(resolve => {
         resolve(

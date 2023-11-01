@@ -6,7 +6,8 @@ import { Connector } from '@/domain/connector/connector';
 import { ConnectorCode } from '@/domain/connector/connectorCode';
 import { Floor } from '@/domain/floor/floor';
 import { IConnectorDTO } from '@/dto/IConnectorDTO';
-import { TYPES, container } from '@/loaders/inversify';
+import { container } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 
 export class ConnectorMap extends Mapper<Floor> {

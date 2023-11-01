@@ -4,7 +4,8 @@ import { z } from 'zod';
 import { validate } from '@/api/middlewares/validate';
 
 import IDeviceController from '@/controllers/IControllers/IDeviceController';
-import { TYPES, container } from '@/loaders/inversify';
+import { container } from '@/loaders/inversify';
+import { TYPES } from '@/loaders/inversify/types';
 
 const deviceCreateSchema = z.object({
   code: z
