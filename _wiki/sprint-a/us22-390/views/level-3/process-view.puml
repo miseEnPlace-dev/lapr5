@@ -3,7 +3,7 @@ autonumber
 participant BE as "BE"
 participant DB as "DB"
 
-?o-> BE : GET /devices/robots/:taskId
+?o-> BE : GET  /devices/robots?filter=task&value=taskType
 activate BE
 
 BE -> DB : get devices that are robots by taskId

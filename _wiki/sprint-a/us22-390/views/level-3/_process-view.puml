@@ -3,19 +3,18 @@ autonumber
 participant ROUTE as ":DeviceRoute"
 participant CTRL as ":DeviceController"
 participant SRV as ":DeviceService"
-participant BUILD as ":device:Device"
 participant REPO as ":DeviceRepo"
 participant MAP as ":DeviceMap"
 participant DTO as ":deviceDTO:IDeviceDTO"
 
-?o-> ROUTE : GET /devices/robots/:taskId
+?o-> ROUTE : GET /devices/robots?filter=task&value=taskType
 activate ROUTE
 
-ROUTE -> CTRL : getDevicesRobots()
+ROUTE -> CTRL : getDevicesRobots(request)
 activate CTRL
-CTRL -> SRV : getDevicesRobots()
+CTRL -> SRV : getDevicesRobots(filter, value)
 activate SRV
-SRV-> REPO : findRobots()
+SRV-> REPO : findRobots(value)
 activate REPO
 deactivate REPO
   loop foreach device
