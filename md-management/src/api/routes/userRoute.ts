@@ -80,10 +80,10 @@ export default (app: Router) => {
         const authServiceInstance = container.get<IUserService>(TYPES.userService);
         const result = await authServiceInstance.SignIn(email, password);
 
-        if (result.isFailure) return res.json().status(403);
+        if (result.isFailure) return res.status(403).json({ message: result.errorValue() });
 
         const { userDTO, token } = result.getValue();
-        return res.json({ userDTO, token }).status(200);
+        return res.status(200).json({ userDTO, token });
       } catch (e) {
         return next(e);
       }

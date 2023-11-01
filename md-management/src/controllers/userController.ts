@@ -12,13 +12,13 @@ export default class UserController implements IUserController {
   public async getMe(req: Request, res: Response) {
     // NB: a arquitetura ONION não está a ser seguida aqui
 
-    if (!req.headers.token) return res.json(new Error('Token inexistente ou inválido')).status(401);
+    if (!req.headers.token) return res.status(401).json(new Error('Token inexistente ou inválido'));
 
     const [id] = req.headers.token;
     const userOrError = await this.userService.getUserById(id);
 
-    if (userOrError.isFailure) return res.json(userOrError).status(400);
+    if (userOrError.isFailure) return res.status(400).json(userOrError);
 
-    return res.json(userOrError.getValue()).status(200);
+    return res.status(200).json(userOrError.getValue());
   }
 }

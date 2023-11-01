@@ -23,7 +23,7 @@ export default class DeviceModelController implements IDeviceModelController {
       if (deviceModelOrError.isFailure) return res.status(400).send();
 
       const deviceModelDTO = deviceModelOrError.getValue();
-      return res.json(deviceModelDTO).status(201);
+      return res.status(201).json(deviceModelDTO);
     } catch (e) {
       return next(e);
     }

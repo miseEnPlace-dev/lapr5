@@ -22,7 +22,7 @@ export default class ElevatorController implements IElevatorController {
         return res.status(400).send({ error: elevatorOrError.errorValue() });
 
       const roleDTO = elevatorOrError.getValue();
-      return res.json(roleDTO).status(200);
+      return res.status(200).json(roleDTO);
     } catch (e) {
       return next(e);
     }
@@ -40,7 +40,7 @@ export default class ElevatorController implements IElevatorController {
         return res.status(400).send({ error: elevatorOrError.errorValue() });
 
       const roleDTO = elevatorOrError.getValue();
-      return res.json(roleDTO).status(201);
+      return res.status(201).json(roleDTO);
     } catch (e) {
       return next(e);
     }
@@ -58,7 +58,7 @@ export default class ElevatorController implements IElevatorController {
         return res.status(400).send({ error: elevatorOrError.errorValue() });
 
       const roleDTO = elevatorOrError.getValue();
-      return res.json(roleDTO).status(201);
+      return res.status(201).json(roleDTO);
     } catch (e) {
       return next(e);
     }

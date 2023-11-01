@@ -36,7 +36,7 @@ export default class ConnectorController implements IConnectorController {
         });
 
       const connectorDTO = connectorOrError.getValue();
-      return res.json(connectorDTO).status(201);
+      return res.status(201).json(connectorDTO);
     } catch (e) {
       return next(e);
     }
@@ -86,7 +86,7 @@ export default class ConnectorController implements IConnectorController {
         });
 
       const connectorDTO = connectorOrError.getValue();
-      return res.json(connectorDTO).status(200);
+      return res.status(200).json(connectorDTO);
     } catch (e) {
       return next(e);
     }

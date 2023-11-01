@@ -22,7 +22,7 @@ export default class DeviceController implements IDeviceController {
       if (deviceOrError.isFailure) return res.status(400).send();
 
       const deviceDTO = deviceOrError.getValue();
-      return res.json(deviceDTO).status(201);
+      return res.status(201).json(deviceDTO);
     } catch (e) {
       return next(e);
     }
@@ -46,7 +46,7 @@ export default class DeviceController implements IDeviceController {
       if (devicesOrError.isFailure) return res.status(400).send();
 
       const devicesDTO = devicesOrError.getValue();
-      return res.json(devicesDTO).status(200);
+      return res.status(200).json(devicesDTO);
     } catch (e) {
       return next(e);
     }
@@ -61,7 +61,7 @@ export default class DeviceController implements IDeviceController {
       if (deviceOrError.isFailure) return res.status(400).send();
 
       const deviceDTO = deviceOrError.getValue();
-      return res.json(deviceDTO).status(200);
+      return res.status(200).json(deviceDTO);
     } catch (e) {
       return next(e);
     }

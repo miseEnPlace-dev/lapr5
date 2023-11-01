@@ -29,7 +29,7 @@ export default class RoomController implements IRoomController {
         });
 
       const floorDTO = roomOrError.getValue();
-      return res.json(floorDTO).status(201);
+      return res.status(201).json(floorDTO);
     } catch (e) {
       return next(e);
     }
