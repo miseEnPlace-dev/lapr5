@@ -38,6 +38,9 @@ export default class DeviceModelService implements IDeviceModelService {
 
       const deviceModelResult = deviceModelOrError.getValue();
 
+      const deviceModelExists = !!(await this.deviceModelRepo.findByCode(deviceModelResult.code));
+      if (deviceModelExists) return Result.fail<IDeviceModelDTO>('DeviceModel already exists');
+
       await this.deviceModelRepo.save(deviceModelResult);
 
       const deviceModelDTOResult = DeviceModelMapper.toDTO(deviceModelResult) as IDeviceModelDTO;

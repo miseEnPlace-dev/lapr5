@@ -72,8 +72,8 @@ export default class RoomService implements IRoomService {
 
         const roomResult = roomOrError.getValue();
 
-        if (await this.roomRepo.findByName(roomResult.name))
-          return Result.fail<IRoomDTO>('Room already exists');
+        const roomExists = !!(await this.roomRepo.findByName(roomResult.name));
+        if (roomExists) return Result.fail<IRoomDTO>('Room already exists');
 
         await this.roomRepo.save(roomResult);
 
