@@ -107,8 +107,8 @@ export default class FloorService implements IFloorService {
 
       const floorResult = floorOrError.getValue();
 
-      if (await this.floorRepo.findByCode(floorResult.code))
-        return Result.fail<IFloorDTO>('Floor already exists');
+      const floorExists = !!(await this.floorRepo.findByCode(floorResult.code));
+      if (floorExists) return Result.fail<IFloorDTO>('Floor already exists');
 
       await this.floorRepo.save(floorResult);
 
