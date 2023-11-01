@@ -16,7 +16,9 @@ import IDeviceModelService from './IServices/IDeviceModelService';
 export default class DeviceModelService implements IDeviceModelService {
   constructor(@inject(TYPES.deviceModelRepo) private deviceModelRepo: IDeviceModelRepo) {}
 
-  public async createDevice(deviceModelDTO: IDeviceModelDTO): Promise<Result<IDeviceModelDTO>> {
+  public async createDeviceModel(
+    deviceModelDTO: IDeviceModelDTO
+  ): Promise<Result<IDeviceModelDTO>> {
     try {
       const code = DeviceModelCode.create(deviceModelDTO.code).getValue();
       const brand = DeviceModelBrand.create(deviceModelDTO.brand).getValue();

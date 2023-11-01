@@ -16,11 +16,12 @@ export default class DeviceModelController implements IDeviceModelController {
 
   public async createDeviceModel(req: Request, res: Response, next: NextFunction) {
     try {
-      const deviceModelOrError = (await this.deviceModelServiceInstance.createDevice(
+      const deviceModelOrError = (await this.deviceModelServiceInstance.createDeviceModel(
         req.body as IDeviceModelDTO
       )) as Result<IDeviceModelDTO>;
 
-      if (deviceModelOrError.isFailure) return res.status(400).send();
+      if (deviceModelOrError.isFailure)
+        return res.status(400).json({ message: deviceModelOrError.errorValue() });
 
       const deviceModelDTO = deviceModelOrError.getValue();
       return res.status(201).json(deviceModelDTO);
