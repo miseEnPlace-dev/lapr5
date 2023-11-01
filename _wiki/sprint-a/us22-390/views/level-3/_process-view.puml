@@ -1,0 +1,34 @@
+@startuml _process-view
+autonumber
+participant ROUTE as ":DeviceRoute"
+participant CTRL as ":DeviceController"
+participant SRV as ":DeviceService"
+participant BUILD as ":device:Device"
+participant REPO as ":DeviceRepo"
+participant MAP as ":DeviceMap"
+participant DTO as ":deviceDTO:IDeviceDTO"
+
+?o-> ROUTE : GET /devices/robots/:taskId
+activate ROUTE
+
+ROUTE -> CTRL : getDevicesRobots()
+activate CTRL
+CTRL -> SRV : getDevicesRobots()
+activate SRV
+SRV-> REPO : findRobots()
+activate REPO
+deactivate REPO
+  loop foreach device
+    SRV -> MAP : toDto()
+    activate MAP
+    MAP -> DTO** : create()
+    deactivate MAP
+  end
+SRV --> CTRL : sucess(devicesDTO)
+deactivate SRV
+CTRL --> ROUTE : sucess(devicesDTO)
+deactivate CTRL
+<-- ROUTE : 200 OK
+deactivate ROUTE
+
+@enduml

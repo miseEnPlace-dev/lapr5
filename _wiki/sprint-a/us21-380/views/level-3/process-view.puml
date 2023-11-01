@@ -1,34 +1,18 @@
 @startuml process-view
 autonumber
-participant ROUTE as ":DeviceRoute"
-participant CTRL as ":DeviceController"
-participant SRV as ":DeviceService"
-participant BUILD as ":device:Device"
-participant REPO as ":DeviceRepo"
-participant MAP as ":DeviceMap"
-participant DTO as ":deviceDTO:IDeviceDTO"
+participant BE as "BE"
+participant DB as "DB"
 
-?o-> ROUTE : GET /devices/robots
-activate ROUTE
+?o-> BE : GET /devices/robots
+activate BE
 
-ROUTE -> CTRL : getDevicesRobots()
-activate CTRL
-CTRL -> SRV : getDevicesRobots()
-activate SRV
-SRV-> REPO : findRobots()
-activate REPO
-deactivate REPO
-  loop foreach device
-    SRV -> MAP : toDto()
-    activate MAP
-    MAP -> DTO** : create()
-    deactivate MAP
-  end
-SRV --> CTRL : sucess(devicesDTO)
-deactivate SRV
-CTRL --> ROUTE : sucess(devicesDTO)
-deactivate CTRL
-<-- ROUTE : 200 OK
-deactivate ROUTE
+BE -> DB : get devices that are robots
+activate DB
+
+DB --> BE : robots
+deactivate DB
+
+<-- BE : 200 OK
+deactivate BE
 
 @enduml

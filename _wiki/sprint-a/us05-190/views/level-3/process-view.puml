@@ -1,53 +1,18 @@
 @startuml process-view
 autonumber
-participant ROUTE as ":FloorRoute"
-participant CTRL as ":FloorController"
-participant SRV as ":FloorService"
-participant REPOBUILDING as ":BuildingRepo"
-participant FLOOR as ":floor:Floor"
-participant REPO as ":FloorRepo"
-participant MAP as ":FloorMap"
-participant PERS as "FloorPersistence:IFloorPersistence"
-participant MODEL as ":Model<IFloorPersistence & Document>"
-participant NBUILD as ":newFloor:Floor"
-participant DTO as ":FloorDTO:IFloorDTO"
+participant BE as "BE"
+participant DB as "DB"
 
-?o-> ROUTE : POST /{buildingCode}/floors
-activate ROUTE
+?o-> BE : POST /:buildingCode/floors
+activate BE
 
-ROUTE -> CTRL : createFloor(request)
-activate CTRL
-CTRL -> SRV : createFloor(floorDTO)
-activate SRV
-SRV -> REPOBUILDING : findByDomainId(buildingCode)
-activate REPOBUILDING
-REPOBUILDING --> SRV : building
-deactivate REPOBUILDING
-SRV -> FLOOR** : create()
-SRV -> REPO : save(floor)
-activate REPO
-REPO -> MAP : toPersitence(floor)
-activate MAP
-MAP -> PERS** : create()
-deactivate MAP
-REPO -> MODEL : create(floorPersistence)
-activate MODEL
-deactivate MODEL
-REPO -> MAP : toDomain(floorPersistence)
-activate MAP
-MAP -> NBUILD** : create()
-deactivate MAP
-REPO --> SRV : newFloor
-deactivate REPO
-SRV -> MAP : toDto(newFloor)
-activate MAP
-MAP -> DTO** : create()
-deactivate MAP
-SRV --> CTRL : sucess(floorDTO)
-deactivate SRV
-CTRL --> ROUTE : sucess(floorDTO)
-deactivate CTRL
-<-- ROUTE : 201 Created
-deactivate ROUTE
+BE -> DB : insert new floor
+activate DB
+
+DB -> BE : sucess
+deactivate DB
+
+<-- BE : 201 Created
+deactivate BE
 
 @enduml

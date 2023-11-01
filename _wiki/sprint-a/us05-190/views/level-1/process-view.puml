@@ -6,7 +6,7 @@ participant SYS as "RobDroneGo System" <<system (C4)>>
 
 activate CM
 
-CM -> SYS : asks to create a floor with code, buildingCode, name, description and dimensions
+CM -> SYS : asks to create a floor
 activate SYS
 
 CM <-- SYS : returns confirmation message

@@ -1,0 +1,22 @@
+@startuml process-view
+autonumber
+participant BE as "BE"
+participant DB as "DB"
+
+?o-> BE : POST /buildings/:building/floors/:floor/rooms
+activate BE
+
+BE -> DB : get floors from building id
+activate DB
+DB --> BE : floors
+deactivate DB
+
+BE -> DB: insert new room
+activate DB
+
+DB -> BE: sucess
+
+<-- BE : 201 CREATED
+deactivate BE
+
+@enduml
