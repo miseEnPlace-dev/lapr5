@@ -10,7 +10,7 @@
 
 ## 1. Requirements
 
-**"As a Campus Manager, I want to list floors with passages to other buildings."**
+> ### "As a Campus Manager, I want to list floors with passages to other buildings."
 
 ## 1.1. Client Specifications
 

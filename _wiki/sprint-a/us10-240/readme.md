@@ -10,7 +10,7 @@
 
 ## 1. Requirements
 
-**"As a Campus Manager, I want to create a connector between buildings."**
+> ### "As a Campus Manager, I want to create a connector between buildings."
 
 ## 1.1. Client Clarifications
 

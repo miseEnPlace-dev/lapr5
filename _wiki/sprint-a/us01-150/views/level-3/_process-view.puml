@@ -1,0 +1,48 @@
+@startuml _process-view
+autonumber
+participant ROUTE as ":BuildingRoute"
+participant CTRL as ":BuildingController"
+participant SRV as ":BuildingService"
+participant BUILD as ":building:Building"
+participant REPO as ":BuildingRepo"
+participant MAP as ":BuildingMap"
+participant PERS as "buildingPersistence:IBuildingPersistence"
+participant MODEL as ":Model<IBuildingPersistence & Document>"
+participant NBUILD as ":newBuilding:Building"
+participant DTO as ":buildingDTO:IBuildingDTO"
+
+?o-> ROUTE : POST /buildings
+activate ROUTE
+
+ROUTE -> CTRL : createBuilding(elevatorDTO)
+activate CTRL
+CTRL -> SRV : createBuilding(buildingDTO)
+activate SRV
+SRV -> BUILD** : create()
+SRV -> REPO : save(building)
+activate REPO
+REPO -> MAP : toPersitence(building)
+activate MAP
+deactivate MAP
+REPO -> PERS** : create()
+REPO -> MODEL : create(buildingPersistence)
+activate MODEL
+deactivate MODEL
+REPO -> MAP : toDomain(buildingPersistence)
+activate MAP
+MAP -> NBUILD** : create()
+deactivate MAP
+REPO --> SRV : newBuilding
+deactivate REPO
+SRV -> MAP : toDto(newBuilding)
+activate MAP
+MAP -> DTO** : create()
+deactivate MAP
+SRV --> CTRL : sucess(buildingDTO)
+deactivate SRV
+CTRL --> ROUTE : sucess(buildingDTO)
+deactivate CTRL
+<-- ROUTE : 201 Created
+deactivate ROUTE
+
+@enduml

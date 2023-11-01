@@ -1,31 +1,21 @@
 @startuml process-view
 autonumber
-participant ROUTE as ":ElevatorRoute"
-participant CTRL as ":ElevatorController"
-participant SRV as ":ElevatorService"
-participant BREPO as ":BuildingRepo"
-participant MAP as ":ElevatorMap"
-participant DTO as ":elevatorDTO:IElevatorDTO"
+participant BE as "BE"
+participant DB as "DB"
 
-?o-> SYS : GET buildings/:id/elevators
-activate ROUTE
+?o-> BE : GET buildings/:id/elevators
+activate BE
 
-ROUTE -> CTRL : listElevator(buildingCode)
-activate CTRL
-CTRL -> SRV : listElevator(buildingCode)
-activate SRV
-SRV -> BREPO : building=findByDomainId(buildingId)
-activate BREPO
-deactivate BREPO
-SRV -> MAP : toDto(buidling.elevator)
-activate MAP
-MAP -> DTO** : create()
-deactivate MAP
-SRV --> CTRL : sucess(elevatorDTO)
-deactivate SRV
-CTRL --> ROUTE : sucess(elevatorDTO)
-deactivate CTRL
-<-- ROUTE : 200 OK
-deactivate ROUTE
+BE -> DB : get building with id
+activate DB
+DB --> BE : building
+deactivate DB
+
+BE -> BE : get elevators from building
+activate BE
+deactivate BE
+
+<-- BE : 200 OK
+deactivate BE
 
 @enduml

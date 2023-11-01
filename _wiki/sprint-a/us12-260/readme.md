@@ -10,7 +10,7 @@
 
 ## 1. Requirements
 
-**"As a Campus Manager, I want to list connectors between 2 buildings."**
+> ### "As a Campus Manager, I want to list connectors between 2 buildings."
 
 ## 1.1. Client Clarifications
 

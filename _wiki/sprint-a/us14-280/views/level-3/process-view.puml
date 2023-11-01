@@ -1,55 +1,25 @@
 @startuml process-view
 autonumber
-participant ROUTE as ":ElevatorRoute"
-participant CTRL as ":ElevatorController"
-participant SRV as ":ElevatorService"
-participant ELEV as ":elevator:Elevator"
-participant FLIST as "floorList:Floor[]"
-participant BREPO as ":BuildingRepo"
-participant FREPO as ":FloorRepo"
-participant MAP as ":ElevatorMap"
-participant BUILD as "building:Building"
-participant DTO as ":elevatorDTO:IElevatorDTO"
+participant BE as "BE"
+participant DB as "DB"
 
-?o-> ROUTE : PUT /buildings/:id/elevators
-activate ROUTE
+?o-> BE : PUT /buildings/:id/elevators
+activate BE
 
-ROUTE -> CTRL : editElevator(elevatorDTO,buildingCode)
-activate CTRL
-CTRL -> SRV : editElevator(elevatorDTO)
-activate SRV
-SRV -> BREPO : findByDomainId(elevatorDTO.buildingCode)
-activate BREPO
-deactivate BREPO
-SRV -> FLIST** : create()
-note right of FLIST
-  we must check if the floorIds all 
-  belong to the same building
-end note
-loop for each floorId in elevatorDTO.floorIds
-  SRV -> FREPO : floor=findWithId(floorId)
-  activate FREPO
-  deactivate FREPO
-  SRV -> FLIST : add(floor)
-  activate FLIST
-  deactivate FLIST
-end
-SRV -> ELEV** : create(id)
-SRV -> BUILD : building.elevator=newElevator
-activate BUILD
-deactivate BUILD
-SRV -> BREPO : save(building)
-activate BREPO
-deactivate BREPO
-SRV -> MAP : toDto(elevator)
-activate MAP
-MAP -> DTO** : create()
-deactivate MAP
-SRV --> CTRL : sucess(elevatorDTO)
-deactivate SRV
-CTRL --> ROUTE : sucess(elevatorDTO)
-deactivate CTRL
-<-- ROUTE : 201 Created
-deactivate ROUTE
+BE -> DB : get building
+activate DB
+DB --> BE : building
+deactivate DB
+
+BE -> BE : edit elevator
+activate BE
+deactivate BE
+BE -> DB : update building with new elevator
+activate DB
+DB --> BE : building
+deactivate DB
+
+<-- BE : 201 Created
+deactivate BE
 
 @enduml

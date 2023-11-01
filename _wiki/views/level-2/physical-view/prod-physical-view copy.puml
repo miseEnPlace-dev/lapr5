@@ -1,4 +1,4 @@
-@startuml physical-view
+@startuml prod-physical-view
 
 node "localhost: ?" as LOCAL {
   component "Browser" as B <<component>> {
@@ -10,7 +10,15 @@ node "localhost: ?" as LOCAL {
 node "Server 1: ?" as S1 {
   component "MDManagement" as MDM <<component>> { 
   }
+}
+
+node "Server 4: ?" as S4 {
   component "Planning" as P <<component>>  { 
+  }
+}
+
+node "Server 3: ?" as S3 {
+  database "MongoDB" as DB <<database>> {
   }
 }
 
@@ -23,5 +31,7 @@ node "Server 2: ?" as S2 {
 
 LOCAL -- S1 : http/s
 LOCAL -- S2 : http/s
+S1 -- DB : tcp/27017
+S1 -- S4 : http/s
 
 @enduml

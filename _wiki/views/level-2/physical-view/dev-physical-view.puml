@@ -1,0 +1,27 @@
+@startuml dev-physical-view
+
+node "localhost: ?" as LOCAL {
+  component "Browser" as B <<component>> {
+    component "UI" as UI <<component>> {
+    }
+  }
+}
+
+node "Server 1: ?" as S1 {
+  component "MDManagement" as MDM <<component>> { 
+  }
+  component "Planning" as P <<component>>  { 
+  }
+  component "HTTP Server" as SERV <<component>> { 
+  }
+  folder "Visualization" as V {
+  }
+  node "Docker" <<container>> {
+    database "MongoDB" as DB <<database>> {
+    }
+  }
+}
+
+LOCAL -- S1 : http/s
+
+@enduml
