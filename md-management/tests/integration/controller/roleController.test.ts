@@ -23,8 +23,10 @@ describe('role controller', () => {
     req.body = body;
 
     const res: Partial<Response> = {
-      json: spy()
+      status: _ => <Response>{}
     };
+    stub(res, 'status').returns(res);
+    res.json = spy();
     const next: Partial<NextFunction> = () => {};
 
     const roleServiceInstance = container.get<IRoleService>(TYPES.roleService);
@@ -42,5 +44,32 @@ describe('role controller', () => {
 
     assert.calledOnce(<SinonSpy>res.json);
     assert.calledWith(<SinonSpy>res.json, match({ id: '123', name: req.body.name }));
+  });
+
+  it('createRole: returns json with id+name values', async () => {
+    const body = { name: 'role12' };
+    const req: Partial<Request> = {};
+    req.body = body;
+
+    const res: Partial<Response> = {
+      status: spy()
+    };
+    const next: Partial<NextFunction> = () => {};
+
+    const roleServiceInstance = container.get<IRoleService>(TYPES.roleService);
+    stub(roleServiceInstance, 'createRole').returns(
+      new Promise(resolve => {
+        resolve(
+          Result.ok<IRoleDTO>({ id: '123', name: body.name })
+        );
+      })
+    );
+
+    const ctrl = new RoleController(roleServiceInstance);
+
+    await ctrl.createRole(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.status);
+    assert.calledWith(<SinonSpy>res.status, 201);
   });
 });

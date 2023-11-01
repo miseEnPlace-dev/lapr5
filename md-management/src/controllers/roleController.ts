@@ -21,7 +21,7 @@ export default class RoleController implements IRoleController {
       if (roleOrError.isFailure) return res.status(402).send();
 
       const roleDTO = roleOrError.getValue();
-      return res.json(roleDTO).status(201);
+      return res.status(201).json(roleDTO);
     } catch (e) {
       return next(e);
     }
