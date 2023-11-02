@@ -4,10 +4,8 @@ import { z } from 'zod';
 import { validate } from '@/api/middlewares/validate';
 
 import IDeviceModelController from '@/controllers/IControllers/IDeviceModelController';
-import { defaultRoles } from '@/domain/role/defaultRoles';
 import { container } from '@/loaders/inversify';
 import { TYPES } from '@/loaders/inversify/types';
-import { isAuthenticated, isAuthorizedAs } from '../middlewares';
 
 const deviceModelCreateSchema = z.object({
   code: z
@@ -35,10 +33,5 @@ export default (app: Router) => {
     ctrl.createDeviceModel(req, res, next)
   );
 
-  app.use(
-    '/device-models',
-    isAuthenticated,
-    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.fleet.name),
-    route
-  );
+  app.use('/device-models', route);
 };

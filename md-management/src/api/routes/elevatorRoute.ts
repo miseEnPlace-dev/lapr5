@@ -2,10 +2,8 @@ import { Router } from 'express';
 import { z } from 'zod';
 
 import IElevatorController from '@/controllers/IControllers/IElevatorController';
-import { defaultRoles } from '@/domain/role/defaultRoles';
 import { container } from '@/loaders/inversify';
 import { TYPES } from '@/loaders/inversify/types';
-import { isAuthenticated, isAuthorizedAs } from '../middlewares';
 import { validate } from '../middlewares/validate';
 
 const elevatorCreateSchema = z.object({
@@ -44,10 +42,5 @@ export default (app: Router) => {
     ctrl.editElevator(req, res, next)
   );
 
-  app.use(
-    '/buildings',
-    isAuthenticated,
-    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.campus.name),
-    route
-  );
+  app.use('/buildings', route);
 };

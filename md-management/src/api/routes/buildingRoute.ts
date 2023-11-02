@@ -2,10 +2,9 @@ import { Router } from 'express';
 import { z } from 'zod';
 
 import IBuildingController from '@/controllers/IControllers/IBuildingController';
-import { defaultRoles } from '@/domain/role/defaultRoles';
 import { container } from '@/loaders/inversify';
 import { TYPES } from '@/loaders/inversify/types';
-import { isAuthenticated, isAuthorizedAs, validate } from '../middlewares';
+import { validate } from '../middlewares';
 
 const buildingCreateSchema = z.object({
   code: z
@@ -56,10 +55,5 @@ export default (app: Router) => {
     ctrl.updateBuilding(req, res, next)
   );
 
-  app.use(
-    '/buildings',
-    isAuthenticated,
-    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.campus.name),
-    route
-  );
+  app.use('/buildings', route);
 };
