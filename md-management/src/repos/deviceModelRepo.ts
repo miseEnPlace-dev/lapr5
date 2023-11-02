@@ -13,8 +13,8 @@ import { Document, FilterQuery } from 'mongoose';
 export default class DeviceModelRepo implements IDeviceModelRepo {
   constructor() {}
 
-  public async findByName(name: DeviceModelName | string): Promise<DeviceModel | null> {
-    const query: FilterQuery<IDeviceModelPersistence & Document> = { name };
+  public async findByName(name: DeviceModelName): Promise<DeviceModel | null> {
+    const query: FilterQuery<IDeviceModelPersistence & Document> = { name: name.value };
 
     const deviceModelRecord = await deviceModelSchema.findOne(query);
 
@@ -71,8 +71,8 @@ export default class DeviceModelRepo implements IDeviceModelRepo {
     return null;
   }
 
-  public async findByCode(code: DeviceModelCode | string): Promise<DeviceModel | null> {
-    const query: FilterQuery<IDeviceModelPersistence & Document> = { code: code };
+  public async findByCode(code: DeviceModelCode): Promise<DeviceModel | null> {
+    const query: FilterQuery<IDeviceModelPersistence & Document> = { code: code.value };
     const deviceModelRecord = await deviceModelSchema.findOne(query);
 
     if (deviceModelRecord != null) return DeviceModelMapper.toDomain(deviceModelRecord);

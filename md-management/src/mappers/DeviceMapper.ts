@@ -7,6 +7,7 @@ import { DeviceCode } from '@/domain/device/deviceCode';
 import { DeviceDescription } from '@/domain/device/deviceDescription';
 import { DeviceNickname } from '@/domain/device/deviceNickname';
 import { DeviceSerialNumber } from '@/domain/device/deviceSerialNumber';
+import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
 import { IDeviceDTO } from '@/dto/IDeviceDTO';
 import { container } from '@/loaders/inversify';
 import { TYPES } from '@/loaders/inversify/types';
@@ -34,7 +35,8 @@ export class DeviceMapper extends Mapper<Device> {
 
     const repo = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
 
-    const model = await repo.findByCode(device.modelCode);
+    const modelCode = DeviceModelCode.create(device.modelCode).getValue();
+    const model = await repo.findByCode(modelCode);
 
     if (!model) throw new Error('Model not found');
 

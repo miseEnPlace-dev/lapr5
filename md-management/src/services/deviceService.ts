@@ -31,7 +31,7 @@ export default class DeviceService implements IDeviceService {
         : undefined;
 
       const modelCode = DeviceModelCode.create(deviceDTO.modelCode).getValue();
-      const model = await this.deviceModelRepo.findByCode(modelCode.value);
+      const model = await this.deviceModelRepo.findByCode(modelCode);
 
       if (!model) return Result.fail<IDeviceDTO>('Model not found');
 
