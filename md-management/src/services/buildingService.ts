@@ -24,25 +24,28 @@ export default class BuildingService implements IBuildingService {
 
   public async createBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>> {
     try {
-      const code = BuildingCode.create(buildingDTO.code).getValue();
+      const codeOrError = BuildingCode.create(buildingDTO.code);
+      if (codeOrError.isFailure) return Result.fail<IBuildingDTO>(codeOrError.errorValue());
+
       const nameOrError = buildingDTO.name ? BuildingName.create(buildingDTO.name) : undefined;
+      if (nameOrError && nameOrError.isFailure)
+        return Result.fail<IBuildingDTO>(nameOrError.errorValue());
+
       const descriptionOrError = buildingDTO.description
         ? BuildingDescription.create(buildingDTO.description)
         : undefined;
+      if (descriptionOrError && descriptionOrError.isFailure)
+        return Result.fail<IBuildingDTO>(descriptionOrError.errorValue());
+
       const maxDimensionsOrError = BuildingMaxDimensions.create(
         buildingDTO.maxDimensions.width,
         buildingDTO.maxDimensions.length
       );
-
-      if (nameOrError && nameOrError.isFailure)
-        return Result.fail<IBuildingDTO>(nameOrError.errorValue());
-      if (descriptionOrError && descriptionOrError.isFailure)
-        return Result.fail<IBuildingDTO>(descriptionOrError.errorValue());
       if (maxDimensionsOrError.isFailure)
         return Result.fail<IBuildingDTO>(maxDimensionsOrError.errorValue());
 
       const buildingOrError = Building.create({
-        code,
+        code: codeOrError.getValue(),
         name: nameOrError ? nameOrError.getValue() : undefined,
         description: descriptionOrError ? descriptionOrError.getValue() : undefined,
         maxDimensions: maxDimensionsOrError.getValue()

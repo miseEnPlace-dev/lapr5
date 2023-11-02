@@ -29,15 +29,11 @@ describe('elevator controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const elevatorServiceInstance = container.get<IElevatorService>(TYPES.elevatorService);
-    stub(elevatorServiceInstance, 'createElevator').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IElevatorDTO>({
-            code: 1,
-            floorCodes: ['123'],
-            buildingCode: '123'
-          })
-        );
+    stub(elevatorServiceInstance, 'createElevator').resolves(
+      Result.ok<IElevatorDTO>({
+        code: 1,
+        floorCodes: ['123'],
+        buildingCode: '123'
       })
     );
 
@@ -63,15 +59,11 @@ describe('elevator controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const elevatorServiceInstance = container.get<IElevatorService>(TYPES.elevatorService);
-    stub(elevatorServiceInstance, 'createElevator').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IElevatorDTO>({
-            code: 1,
-            floorCodes: ['123'],
-            buildingCode: '123'
-          })
-        );
+    stub(elevatorServiceInstance, 'createElevator').resolves(
+      Result.ok<IElevatorDTO>({
+        code: 1,
+        floorCodes: ['123'],
+        buildingCode: '123'
       })
     );
 
@@ -102,10 +94,8 @@ describe('elevator controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const elevatorServiceInstance = container.get<IElevatorService>(TYPES.elevatorService);
-    stub(elevatorServiceInstance, 'createElevator').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IElevatorDTO>('Elevator already exists'));
-      })
+    stub(elevatorServiceInstance, 'createElevator').resolves(
+      Result.fail<IElevatorDTO>('Elevator already exists')
     );
 
     const ctrl = new ElevatorController(elevatorServiceInstance);
@@ -130,10 +120,8 @@ describe('elevator controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const elevatorServiceInstance = container.get<IElevatorService>(TYPES.elevatorService);
-    stub(elevatorServiceInstance, 'createElevator').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IElevatorDTO>('Error message'));
-      })
+    stub(elevatorServiceInstance, 'createElevator').resolves(
+      Result.fail<IElevatorDTO>('Error message')
     );
 
     const ctrl = new ElevatorController(elevatorServiceInstance);
@@ -174,15 +162,11 @@ describe('elevator controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const elevatorServiceInstance = container.get<IElevatorService>(TYPES.elevatorService);
-    stub(elevatorServiceInstance, 'editElevator').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IElevatorDTO>({
-            code: 1,
-            floorCodes: ['123'],
-            buildingCode: '123'
-          })
-        );
+    stub(elevatorServiceInstance, 'editElevator').resolves(
+      Result.ok<IElevatorDTO>({
+        code: 1,
+        floorCodes: ['123'],
+        buildingCode: '123'
       })
     );
 
@@ -208,15 +192,11 @@ describe('elevator controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const elevatorServiceInstance = container.get<IElevatorService>(TYPES.elevatorService);
-    stub(elevatorServiceInstance, 'editElevator').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IElevatorDTO>({
-            code: 1,
-            floorCodes: ['123'],
-            buildingCode: '123'
-          })
-        );
+    stub(elevatorServiceInstance, 'editElevator').resolves(
+      Result.ok<IElevatorDTO>({
+        code: 1,
+        floorCodes: ['123'],
+        buildingCode: '123'
       })
     );
 
@@ -247,10 +227,8 @@ describe('elevator controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const elevatorServiceInstance = container.get<IElevatorService>(TYPES.elevatorService);
-    stub(elevatorServiceInstance, 'editElevator').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IElevatorDTO>('Elevator already exists'));
-      })
+    stub(elevatorServiceInstance, 'editElevator').resolves(
+      Result.fail<IElevatorDTO>('Elevator already exists')
     );
 
     const ctrl = new ElevatorController(elevatorServiceInstance);
@@ -275,10 +253,8 @@ describe('elevator controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const elevatorServiceInstance = container.get<IElevatorService>(TYPES.elevatorService);
-    stub(elevatorServiceInstance, 'editElevator').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IElevatorDTO>('Error message'));
-      })
+    stub(elevatorServiceInstance, 'editElevator').resolves(
+      Result.fail<IElevatorDTO>('Error message')
     );
 
     const ctrl = new ElevatorController(elevatorServiceInstance);
@@ -317,15 +293,11 @@ describe('elevator controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const elevatorServiceInstance = container.get<IElevatorService>(TYPES.elevatorService);
-    stub(elevatorServiceInstance, 'getElevatorForBuilding').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IElevatorDTO>({
-            code: 1,
-            floorCodes: ['123'],
-            buildingCode: '123'
-          })
-        );
+    stub(elevatorServiceInstance, 'getElevatorForBuilding').resolves(
+      Result.ok<IElevatorDTO>({
+        code: 1,
+        floorCodes: ['123'],
+        buildingCode: '123'
       })
     );
 
@@ -349,15 +321,11 @@ describe('elevator controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const elevatorServiceInstance = container.get<IElevatorService>(TYPES.elevatorService);
-    stub(elevatorServiceInstance, 'getElevatorForBuilding').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IElevatorDTO>({
-            code: 1,
-            floorCodes: ['123'],
-            buildingCode: '123'
-          })
-        );
+    stub(elevatorServiceInstance, 'getElevatorForBuilding').resolves(
+      Result.ok<IElevatorDTO>({
+        code: 1,
+        floorCodes: ['123'],
+        buildingCode: '123'
       })
     );
 
@@ -386,10 +354,8 @@ describe('elevator controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const elevatorServiceInstance = container.get<IElevatorService>(TYPES.elevatorService);
-    stub(elevatorServiceInstance, 'getElevatorForBuilding').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IElevatorDTO>('Elevator already exists'));
-      })
+    stub(elevatorServiceInstance, 'getElevatorForBuilding').resolves(
+      Result.fail<IElevatorDTO>('Elevator already exists')
     );
 
     const ctrl = new ElevatorController(elevatorServiceInstance);
@@ -412,10 +378,8 @@ describe('elevator controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const elevatorServiceInstance = container.get<IElevatorService>(TYPES.elevatorService);
-    stub(elevatorServiceInstance, 'getElevatorForBuilding').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IElevatorDTO>('Error message'));
-      })
+    stub(elevatorServiceInstance, 'getElevatorForBuilding').resolves(
+      Result.fail<IElevatorDTO>('Error message')
     );
 
     const ctrl = new ElevatorController(elevatorServiceInstance);

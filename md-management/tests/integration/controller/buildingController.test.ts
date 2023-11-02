@@ -28,15 +28,11 @@ describe('building controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
-    stub(buildingServiceInstance, 'createBuilding').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IBuildingDTO>({
-            code: '123',
-            name: body.name,
-            maxDimensions: { width: 10, length: 10 }
-          })
-        );
+    stub(buildingServiceInstance, 'createBuilding').resolves(
+      Result.ok<IBuildingDTO>({
+        code: '123',
+        name: body.name,
+        maxDimensions: { width: 10, length: 10 }
       })
     );
 
@@ -61,15 +57,11 @@ describe('building controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
-    stub(buildingServiceInstance, 'createBuilding').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IBuildingDTO>({
-            code: '123',
-            name: body.name,
-            maxDimensions: { width: 10, length: 10 }
-          })
-        );
+    stub(buildingServiceInstance, 'createBuilding').resolves(
+      Result.ok<IBuildingDTO>({
+        code: '123',
+        name: body.name,
+        maxDimensions: { width: 10, length: 10 }
       })
     );
 
@@ -99,10 +91,8 @@ describe('building controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
-    stub(buildingServiceInstance, 'createBuilding').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IBuildingDTO>('Building already exists'));
-      })
+    stub(buildingServiceInstance, 'createBuilding').resolves(
+      Result.fail<IBuildingDTO>('Building already exists')
     );
 
     const ctrl = new BuildingController(buildingServiceInstance);
@@ -126,10 +116,8 @@ describe('building controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
-    stub(buildingServiceInstance, 'createBuilding').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IBuildingDTO>('Error message'));
-      })
+    stub(buildingServiceInstance, 'createBuilding').resolves(
+      Result.fail<IBuildingDTO>('Error message')
     );
 
     const ctrl = new BuildingController(buildingServiceInstance);
@@ -174,16 +162,12 @@ describe('building controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
-    stub(buildingServiceInstance, 'updateBuilding').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IBuildingDTO>({
-            code: params.code,
-            name: body.name,
-            description: body.description,
-            maxDimensions: body.maxDimensions
-          })
-        );
+    stub(buildingServiceInstance, 'updateBuilding').resolves(
+      Result.ok<IBuildingDTO>({
+        code: params.code,
+        name: body.name,
+        description: body.description,
+        maxDimensions: body.maxDimensions
       })
     );
 
@@ -214,16 +198,12 @@ describe('building controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
-    stub(buildingServiceInstance, 'updateBuilding').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IBuildingDTO>({
-            code: params.code,
-            name: body.name,
-            description: body.description,
-            maxDimensions: body.maxDimensions
-          })
-        );
+    stub(buildingServiceInstance, 'updateBuilding').resolves(
+      Result.ok<IBuildingDTO>({
+        code: params.code,
+        name: body.name,
+        description: body.description,
+        maxDimensions: body.maxDimensions
       })
     );
 
@@ -262,10 +242,8 @@ describe('building controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
-    stub(buildingServiceInstance, 'updateBuilding').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IBuildingDTO>('Building does not exist'));
-      })
+    stub(buildingServiceInstance, 'updateBuilding').resolves(
+      Result.fail<IBuildingDTO>('Building does not exist')
     );
 
     const ctrl = new BuildingController(buildingServiceInstance);
@@ -295,10 +273,8 @@ describe('building controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
-    stub(buildingServiceInstance, 'updateBuilding').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IBuildingDTO>('Error message'));
-      })
+    stub(buildingServiceInstance, 'updateBuilding').resolves(
+      Result.fail<IBuildingDTO>('Error message')
     );
 
     const ctrl = new BuildingController(buildingServiceInstance);
@@ -337,18 +313,14 @@ describe('building controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
-    stub(buildingServiceInstance, 'getBuildings').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IBuildingDTO[]>([
-            {
-              code: '1',
-              name: 'building',
-              maxDimensions: { width: 10, length: 10 }
-            }
-          ])
-        );
-      })
+    stub(buildingServiceInstance, 'getBuildings').resolves(
+      Result.ok<IBuildingDTO[]>([
+        {
+          code: '1',
+          name: 'building',
+          maxDimensions: { width: 10, length: 10 }
+        }
+      ])
     );
 
     const ctrl = new BuildingController(buildingServiceInstance);
@@ -372,18 +344,14 @@ describe('building controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
-    stub(buildingServiceInstance, 'getBuildings').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IBuildingDTO[]>([
-            {
-              code: '1',
-              name: 'building',
-              maxDimensions: { width: 10, length: 10 }
-            }
-          ])
-        );
-      })
+    stub(buildingServiceInstance, 'getBuildings').resolves(
+      Result.ok<IBuildingDTO[]>([
+        {
+          code: '1',
+          name: 'building',
+          maxDimensions: { width: 10, length: 10 }
+        }
+      ])
     );
 
     const ctrl = new BuildingController(buildingServiceInstance);
@@ -415,10 +383,8 @@ describe('building controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
-    stub(buildingServiceInstance, 'getBuildings').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IBuildingDTO[]>('Error message'));
-      })
+    stub(buildingServiceInstance, 'getBuildings').resolves(
+      Result.fail<IBuildingDTO[]>('Error message')
     );
 
     const ctrl = new BuildingController(buildingServiceInstance);
@@ -441,10 +407,8 @@ describe('building controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
-    stub(buildingServiceInstance, 'getBuildings').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IBuildingDTO[]>('Error message'));
-      })
+    stub(buildingServiceInstance, 'getBuildings').resolves(
+      Result.fail<IBuildingDTO[]>('Error message')
     );
 
     const ctrl = new BuildingController(buildingServiceInstance);
@@ -482,15 +446,11 @@ describe('building controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
-    stub(buildingServiceInstance, 'updateBuilding').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IBuildingDTO>({
-            code: params.code,
-            name: 'building',
-            maxDimensions: { width: 10, length: 10 }
-          })
-        );
+    stub(buildingServiceInstance, 'updateBuilding').resolves(
+      Result.ok<IBuildingDTO>({
+        code: params.code,
+        name: 'building',
+        maxDimensions: { width: 10, length: 10 }
       })
     );
 
@@ -515,15 +475,11 @@ describe('building controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
-    stub(buildingServiceInstance, 'updateBuilding').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IBuildingDTO>({
-            code: params.code,
-            name: 'building',
-            maxDimensions: { width: 10, length: 10 }
-          })
-        );
+    stub(buildingServiceInstance, 'updateBuilding').resolves(
+      Result.ok<IBuildingDTO>({
+        code: params.code,
+        name: 'building',
+        maxDimensions: { width: 10, length: 10 }
       })
     );
 
@@ -555,10 +511,8 @@ describe('building controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
-    stub(buildingServiceInstance, 'updateBuilding').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IBuildingDTO>('Building does not exist'));
-      })
+    stub(buildingServiceInstance, 'updateBuilding').resolves(
+      Result.fail<IBuildingDTO>('Building does not exist')
     );
 
     const ctrl = new BuildingController(buildingServiceInstance);
@@ -582,10 +536,8 @@ describe('building controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
-    stub(buildingServiceInstance, 'updateBuilding').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IBuildingDTO>('Error message'));
-      })
+    stub(buildingServiceInstance, 'updateBuilding').resolves(
+      Result.fail<IBuildingDTO>('Error message')
     );
 
     const ctrl = new BuildingController(buildingServiceInstance);

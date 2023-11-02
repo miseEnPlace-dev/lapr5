@@ -30,12 +30,8 @@ describe('role controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const roleServiceInstance = container.get<IRoleService>(TYPES.roleService);
-    stub(roleServiceInstance, 'createRole').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IRoleDTO>({ title: '123', name: body.name })
-        );
-      })
+    stub(roleServiceInstance, 'createRole').resolves(
+      Result.ok<IRoleDTO>({ title: '123', name: body.name })
     );
 
     const ctrl = new RoleController(roleServiceInstance);
@@ -57,12 +53,8 @@ describe('role controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const roleServiceInstance = container.get<IRoleService>(TYPES.roleService);
-    stub(roleServiceInstance, 'createRole').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IRoleDTO>({ title: '123', name: body.name })
-        );
-      })
+    stub(roleServiceInstance, 'createRole').resolves(
+      Result.ok<IRoleDTO>({ title: '123', name: body.name })
     );
 
     const ctrl = new RoleController(roleServiceInstance);
@@ -111,11 +103,7 @@ describe('role controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const roleServiceInstance = container.get<IRoleService>(TYPES.roleService);
-    stub(roleServiceInstance, 'createRole').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IRoleDTO>('error'));
-      })
-    );
+    stub(roleServiceInstance, 'createRole').resolves(Result.fail<IRoleDTO>('error'));
 
     const ctrl = new RoleController(roleServiceInstance);
 

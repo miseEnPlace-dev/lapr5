@@ -36,18 +36,14 @@ describe('device controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const deviceServiceInstance = container.get<IDeviceService>(TYPES.deviceService);
-    stub(deviceServiceInstance, 'createDevice').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IDeviceDTO>({
-            code: body.code,
-            nickname: body.nickname,
-            modelCode: body.modelCode,
-            description: body.description,
-            serialNumber: body.serialNumber,
-            isAvailable: true
-          })
-        );
+    stub(deviceServiceInstance, 'createDevice').resolves(
+      Result.ok<IDeviceDTO>({
+        code: body.code,
+        nickname: body.nickname,
+        modelCode: body.modelCode,
+        description: body.description,
+        serialNumber: body.serialNumber,
+        isAvailable: true
       })
     );
 
@@ -78,18 +74,14 @@ describe('device controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const deviceServiceInstance = container.get<IDeviceService>(TYPES.deviceService);
-    stub(deviceServiceInstance, 'createDevice').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IDeviceDTO>({
-            code: body.code,
-            nickname: body.nickname,
-            modelCode: body.modelCode,
-            description: body.description,
-            serialNumber: body.serialNumber,
-            isAvailable: true
-          })
-        );
+    stub(deviceServiceInstance, 'createDevice').resolves(
+      Result.ok<IDeviceDTO>({
+        code: body.code,
+        nickname: body.nickname,
+        modelCode: body.modelCode,
+        description: body.description,
+        serialNumber: body.serialNumber,
+        isAvailable: true
       })
     );
 
@@ -126,11 +118,7 @@ describe('device controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const deviceServiceInstance = container.get<IDeviceService>(TYPES.deviceService);
-    stub(deviceServiceInstance, 'createDevice').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IDeviceDTO>('error'));
-      })
-    );
+    stub(deviceServiceInstance, 'createDevice').resolves(Result.fail<IDeviceDTO>('error'));
 
     const ctrl = new DeviceController(deviceServiceInstance);
 
@@ -159,11 +147,7 @@ describe('device controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const deviceServiceInstance = container.get<IDeviceService>(TYPES.deviceService);
-    stub(deviceServiceInstance, 'createDevice').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IDeviceDTO>('Error message'));
-      })
-    );
+    stub(deviceServiceInstance, 'createDevice').resolves(Result.fail<IDeviceDTO>('Error message'));
 
     const ctrl = new DeviceController(deviceServiceInstance);
 

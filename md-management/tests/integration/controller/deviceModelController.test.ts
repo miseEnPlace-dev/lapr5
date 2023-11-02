@@ -34,17 +34,13 @@ describe('deviceModel controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const deviceModelServiceInstance = container.get<IDeviceModelService>(TYPES.deviceModelService);
-    stub(deviceModelServiceInstance, 'createDeviceModel').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IDeviceModelDTO>({
-            code: '1',
-            type: 'robot',
-            name: 'deviceModel12',
-            brand: 'brand',
-            capabilities: ['capability1']
-          })
-        );
+    stub(deviceModelServiceInstance, 'createDeviceModel').resolves(
+      Result.ok<IDeviceModelDTO>({
+        code: '1',
+        type: 'robot',
+        name: 'deviceModel12',
+        brand: 'brand',
+        capabilities: ['capability1']
       })
     );
 
@@ -75,17 +71,13 @@ describe('deviceModel controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const deviceModelServiceInstance = container.get<IDeviceModelService>(TYPES.deviceModelService);
-    stub(deviceModelServiceInstance, 'createDeviceModel').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IDeviceModelDTO>({
-            code: '1',
-            type: 'robot',
-            name: 'deviceModel12',
-            brand: 'brand',
-            capabilities: ['capability1']
-          })
-        );
+    stub(deviceModelServiceInstance, 'createDeviceModel').resolves(
+      Result.ok<IDeviceModelDTO>({
+        code: '1',
+        type: 'robot',
+        name: 'deviceModel12',
+        brand: 'brand',
+        capabilities: ['capability1']
       })
     );
 
@@ -123,10 +115,8 @@ describe('deviceModel controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const deviceModelServiceInstance = container.get<IDeviceModelService>(TYPES.deviceModelService);
-    stub(deviceModelServiceInstance, 'createDeviceModel').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IDeviceModelDTO>('DeviceModel already exists'));
-      })
+    stub(deviceModelServiceInstance, 'createDeviceModel').resolves(
+      Result.fail<IDeviceModelDTO>('DeviceModel already exists')
     );
 
     const ctrl = new DeviceModelController(deviceModelServiceInstance);
@@ -156,10 +146,8 @@ describe('deviceModel controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const deviceModelServiceInstance = container.get<IDeviceModelService>(TYPES.deviceModelService);
-    stub(deviceModelServiceInstance, 'createDeviceModel').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IDeviceModelDTO>('Error message'));
-      })
+    stub(deviceModelServiceInstance, 'createDeviceModel').resolves(
+      Result.fail<IDeviceModelDTO>('Error message')
     );
 
     const ctrl = new DeviceModelController(deviceModelServiceInstance);
