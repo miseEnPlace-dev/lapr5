@@ -1,65 +1,18 @@
 @startuml us10-level3_processes
 autonumber
+participant BE as "BE"
+participant DB as "DB"
 
-participant ROUTE as ":ConnectorRoute"
-participant CTRL as ":ConnectorController"
-participant SVC as ":ConnectorService"
-participant CMAP as ":ConnectorMap"
-participant E as ":Connector"
-participant FREPO as ":FloorRepository"
-participant REPO as ":ConnectorRepository"
-participant DTO as ":ConnectorDTO"
+?o-> BE : POST /connectors
+activate BE
 
-?o-> ROUTE : POST /connectors
-activate ROUTE
+BE -> DB : insert new connector
+activate DB
 
-  ROUTE -> CTRL : createConnector(connectorDTO)
-  activate CTRL
+DB -> BE : success
+deactivate DB
 
-    CTRL -> SVC : createConnector(connectorDTO)
-    activate SVC
-
-      SVC -> CMAP : mapToDomain(connectorDTO)
-      activate CMAP
-
-        CMAP -> FREPO : findByCode(floor1Code)
-        activate FREPO
-          CMAP <-- FREPO : floor1
-        deactivate FREPO
-
-        CMAP -> FREPO : findByCode(floor2Code)
-        activate FREPO
-          CMAP <-- FREPO : floor2
-        deactivate FREPO
-
-        CMAP -> E : create(floor1, floor2)
-        activate E
-        deactivate E
-
-        SVC <-- CMAP : Connector
-      deactivate CMAP
-
-      SVC -> REPO : save(connector)
-      activate REPO
-        SVC <-- REPO : Connector
-      deactivate REPO
-
-      SVC -> CMAP : mapToDTO(connector)
-      activate CMAP
-        CMAP -> DTO : create()
-        activate DTO
-        deactivate DTO
-
-        SVC <-- CMAP : ConnectorDTO
-      deactivate CMAP
-
-    CTRL <-- SVC : ConnectorDTO
-    deactivate SVC
-
-  ROUTE <-- CTRL : ConnectorDTO
-  deactivate CTRL
-  
-<-- ROUTE : 200 OK (ConnectorDTO as JSON)
-deactivate ROUTE
+<-- BE : 201 Created
+deactivate BE
 
 @enduml
