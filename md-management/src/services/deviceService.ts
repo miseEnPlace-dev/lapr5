@@ -19,7 +19,7 @@ export default class DeviceService implements IDeviceService {
   constructor(
     @inject(TYPES.deviceRepo) private deviceRepo: IDeviceRepo,
     @inject(TYPES.deviceModelRepo) private deviceModelRepo: IDeviceModelRepo
-  ) { }
+  ) {}
 
   public async createDevice(deviceDTO: IDeviceDTO): Promise<Result<IDeviceDTO>> {
     try {

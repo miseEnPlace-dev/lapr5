@@ -6,36 +6,87 @@ import { DeviceMapper } from '@/mappers/DeviceMapper';
 import deviceSchema from '@/persistence/schemas/deviceSchema';
 import IDeviceRepo from '@/services/IRepos/IDeviceRepo';
 import { injectable } from 'inversify';
-import { Document, FilterQuery } from 'mongoose';
-import { Task } from '@/domain/shared/task';
+import { Document, FilterQuery, PipelineStage } from 'mongoose';
 
 @injectable()
 export default class DeviceRepo implements IDeviceRepo {
   constructor() {}
 
-  public async findRobots(value: string | undefined): Promise<Device[]> {
+  public async findRobots(): Promise<Device[]> {
     const deviceRecords = await deviceSchema.find({}).populate({
       path: 'modelCode',
       match: { type: 'robot' }
     });
 
     const devices: Device[] = [];
-    if (!value) {
+    for (const deviceRecord of deviceRecords) {
+      const device = await DeviceMapper.toDomain(deviceRecord);
+      if (device) devices.push(device);
+    }
+
+    return devices;
+  }
+
+  public async findByTask(task: string): Promise<Device[] | null> {
+    const query: PipelineStage[] = [
+      {
+        $lookup: {
+          from: 'devicemodels',
+          localField: 'modelCode',
+          foreignField: 'code',
+          as: 'model'
+        }
+      },
+      {
+        $match: {
+          'model.capabilities': task
+        }
+      }
+    ];
+
+    const deviceRecords = await deviceSchema.aggregate(query);
+
+    if (deviceRecords != null) {
+      const devices: Device[] = [];
       for (const deviceRecord of deviceRecords) {
         const device = await DeviceMapper.toDomain(deviceRecord);
         if (device) devices.push(device);
       }
-    } else {
-      const task = Task.create(value).getValue();
-      for (const deviceRecord of deviceRecords) {
-        const device = await DeviceMapper.toDomain(deviceRecord);
-        if (device && device.model.capabilities.map(c => c.props.value).includes(task.value)) {
-          devices.push(device);
-        }
-      }
+      return devices;
     }
 
-    return devices;
+    return null;
+  }
+
+  public async findByName(name: string): Promise<Device[] | null> {
+    const query: PipelineStage[] = [
+      {
+        $lookup: {
+          from: 'devicemodels',
+          localField: 'modelCode',
+          foreignField: 'code',
+          as: 'model'
+        }
+      },
+      {
+        $match: {
+          'model.name': name
+        }
+      }
+    ];
+
+    const deviceRecords = await deviceSchema.aggregate(query);
+
+    if (deviceRecords != null) {
+      const devices: Device[] = [];
+      for (const deviceRecord of deviceRecords) {
+        const device = await DeviceMapper.toDomain(deviceRecord);
+        if (device) devices.push(device);
+      }
+      return devices;
+    }
+
+    return null;
   }
 
   public async exists(device: Device): Promise<boolean> {

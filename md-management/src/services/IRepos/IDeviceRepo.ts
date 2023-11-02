@@ -5,8 +5,10 @@ import { DeviceCode } from '@/domain/device/deviceCode';
 
 export default interface IDeviceRepo extends Repo<Device> {
   save(device: Device): Promise<Device>;
-  findRobots(task: string | undefined): Promise<Device[]>;
+  findRobots(): Promise<Device[]>;
   findByDomainId(domainId: UniqueEntityID | string): Promise<Device | null>;
   findAll(): Promise<Device[]>;
   findByCode(code: DeviceCode): Promise<Device | null>;
+  findByName(name: string): Promise<Device[] | null>;
+  findByTask(task: string): Promise<Device[] | null>;
 }
