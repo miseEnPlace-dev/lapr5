@@ -57,8 +57,9 @@ export class UserMapper extends Mapper<User> {
     return userOrError.isSuccess ? userOrError.getValue() : null;
   }
 
-  public static toPersistence(user: User): Partial<IUserPersistence> {
+  public static toPersistence(user: User): Omit<IUserPersistence, 'salt'> {
     return {
+      domainId: user.id.toString(),
       email: user.email.value,
       password: user.password.value,
       firstName: user.firstName,

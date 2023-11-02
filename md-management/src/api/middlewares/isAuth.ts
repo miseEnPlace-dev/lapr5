@@ -1,6 +1,7 @@
 // remove by JRT : import jwt from 'express-jwt';
-import { expressjwt as jwt } from 'express-jwt';
 import config from '@/config.mjs';
+import { Request } from 'express';
+import { expressjwt as jwt } from 'express-jwt';
 
 /**
  * We are assuming that the JWT will come in a header with the form
@@ -11,7 +12,7 @@ import config from '@/config.mjs';
  * GET https://my-bulletproof-api.com/stats?apiKey=${JWT}
  * Luckily this API follow _common sense_ ergo a _good design_ and don't allow that ugly stuff
  */
-const getTokenFromHeader = req => {
+const getTokenFromHeader = (req: Request) => {
   /**
    * @TODO Edge and Internet Explorer do some weird things with the headers
    * So I believe that this should handle more 'edge' cases ;)

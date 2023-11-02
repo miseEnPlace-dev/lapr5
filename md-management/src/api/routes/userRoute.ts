@@ -6,7 +6,7 @@ import { container } from '@/loaders/inversify';
 
 import IUserController from '@/controllers/IControllers/IUserController';
 import { TYPES } from '@/loaders/inversify/types';
-import attachCurrentUser from '../middlewares/attachCurrentUser';
+import attachCurrentSession from '../middlewares/attachCurrentSession';
 import isAuth from '../middlewares/isAuth';
 import { validate } from '../middlewares/validate';
 
@@ -67,5 +67,5 @@ export default (app: Router) => {
 
   app.use('/users', route);
 
-  route.get('/me', isAuth, attachCurrentUser, (req, res) => userController.getMe(req, res));
+  route.get('/me', isAuth, attachCurrentSession, (req, res) => userController.getMe(req, res));
 };

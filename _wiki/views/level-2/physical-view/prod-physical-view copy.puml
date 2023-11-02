@@ -31,7 +31,7 @@ node "Server 2: ?" as S2 {
 
 LOCAL -- S1 : http/s
 LOCAL -- S2 : http/s
-S1 -- DB : tcp/27017
+S1 -- DB : tcp
 S1 -- S4 : http/s
 
 @enduml
