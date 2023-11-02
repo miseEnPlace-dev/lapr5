@@ -49,7 +49,7 @@ SRV --> CTRL : sucess(elevatorDTO)
 deactivate SRV
 CTRL --> ROUTE : sucess(elevatorDTO)
 deactivate CTRL
-<-- ROUTE : 201 Created
+<-- ROUTE : 200 OK
 deactivate ROUTE
 
 @enduml
