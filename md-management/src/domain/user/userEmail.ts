@@ -20,6 +20,10 @@ export class UserEmail extends ValueObject<UserEmailProps> {
     const guardResult = Guard.againstNullOrUndefined(email, 'email');
     if (!guardResult.succeeded) return Result.fail<UserEmail>(guardResult.message);
 
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!regex.test(email)) return Result.fail<UserEmail>('Email format is invalid');
+
     return Result.ok<UserEmail>(new UserEmail({ value: email }));
   }
 }

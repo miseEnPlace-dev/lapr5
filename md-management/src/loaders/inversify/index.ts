@@ -63,6 +63,7 @@ import RoleService from '@/services/roleService';
 import RoomService from '@/services/roomService';
 import UserService from '@/services/userService';
 import { Logger } from 'winston';
+import Bootstrapper from '../bootstrap';
 import LoggerInstance from '../logger';
 
 const container = new Container();
@@ -109,6 +110,8 @@ container.bind<IConnectorController>(TYPES.connectorController).to(ConnectorCont
 container.bind<IConnectorService>(TYPES.connectorService).to(ConnectorService);
 container.bind<IConnectorRepo>(TYPES.connectorRepo).to(ConnectorRepo);
 container.bind(TYPES.connectorSchema).to(ConnectorSchema);
+
+container.bind(TYPES.bootstrapper).to(Bootstrapper);
 
 container.bind<Logger>(TYPES.logger).toConstantValue(LoggerInstance);
 

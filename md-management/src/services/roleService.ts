@@ -1,3 +1,6 @@
+import { RoleDescription } from '@/domain/role/roleDescription';
+import { RoleName } from '@/domain/role/roleName';
+import { RoleTitle } from '@/domain/role/roleTitle';
 import { TYPES } from '@/loaders/inversify/types';
 import { inject, injectable } from 'inversify';
 import { Result } from '../core/logic/Result';
@@ -11,9 +14,19 @@ import IRoleService from './IServices/IRoleService';
 export default class RoleService implements IRoleService {
   constructor(@inject(TYPES.roleRepo) private roleRepo: IRoleRepo) {}
 
-  public async getRole(roleId: string): Promise<Result<IRoleDTO>> {
+  public async exists(name: string): Promise<boolean> {
     try {
-      const role = await this.roleRepo.findByDomainId(roleId);
+      const role = await this.roleRepo.findByName(name);
+      return role !== null;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  }
+
+  public async getRole(name: string): Promise<Result<IRoleDTO>> {
+    try {
+      const role = await this.roleRepo.findByName(name);
 
       if (role === null) return Result.fail<IRoleDTO>('Role not found');
 
@@ -26,7 +39,17 @@ export default class RoleService implements IRoleService {
 
   public async createRole(roleDTO: IRoleDTO): Promise<Result<IRoleDTO>> {
     try {
-      const roleOrError = Role.create(roleDTO);
+      const name = RoleName.create(roleDTO.name).getValue();
+      const title = RoleTitle.create(roleDTO.title).getValue();
+      const description = roleDTO.description
+        ? RoleDescription.create(roleDTO.description).getValue()
+        : undefined;
+
+      const roleOrError = Role.create({
+        name,
+        title,
+        description
+      });
 
       if (roleOrError.isFailure) return Result.fail<IRoleDTO>(roleOrError.errorValue());
 
@@ -43,11 +66,13 @@ export default class RoleService implements IRoleService {
 
   public async updateRole(roleDTO: IRoleDTO): Promise<Result<IRoleDTO>> {
     try {
-      const role = await this.roleRepo.findByDomainId(roleDTO.id);
+      const role = await this.roleRepo.findByName(roleDTO.name);
 
       if (role === null) return Result.fail<IRoleDTO>('Role not found');
 
-      role.name = roleDTO.name;
+      const name = RoleName.create(roleDTO.name).getValue();
+      role.name = name;
+
       await this.roleRepo.save(role);
 
       const roleDTOResult = RoleMapper.toDTO(role) as IRoleDTO;
