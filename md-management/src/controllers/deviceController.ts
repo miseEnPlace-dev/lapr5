@@ -19,7 +19,8 @@ export default class DeviceController implements IDeviceController {
         req.body as IDeviceDTO
       )) as Result<IDeviceDTO>;
 
-      if (deviceOrError.isFailure) return res.status(400).send();
+      if (deviceOrError.isFailure)
+        return res.status(400).json({ message: deviceOrError.errorValue() });
 
       const deviceDTO = deviceOrError.getValue();
       return res.status(201).json(deviceDTO);
@@ -43,7 +44,8 @@ export default class DeviceController implements IDeviceController {
         value.data.value
       )) as Result<IDeviceDTO[]>;
 
-      if (devicesOrError.isFailure) return res.status(400).send();
+      if (devicesOrError.isFailure)
+        return res.status(400).json({ message: devicesOrError.errorValue() });
 
       const devicesDTO = devicesOrError.getValue();
       return res.status(200).json(devicesDTO);
@@ -58,7 +60,8 @@ export default class DeviceController implements IDeviceController {
         req.params.code
       )) as Result<IDeviceDTO>;
 
-      if (deviceOrError.isFailure) return res.status(400).send();
+      if (deviceOrError.isFailure)
+        return res.status(400).json({ message: deviceOrError.errorValue() });
 
       const deviceDTO = deviceOrError.getValue();
       return res.status(200).json(deviceDTO);

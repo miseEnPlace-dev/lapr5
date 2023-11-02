@@ -48,6 +48,9 @@ export default class DeviceService implements IDeviceService {
 
       const deviceResult = deviceOrError.getValue();
 
+      const deviceExists = !!(await this.deviceRepo.findByCode(deviceResult.code));
+      if (deviceExists) return Result.fail<IDeviceDTO>('Device already exists');
+
       await this.deviceRepo.save(deviceResult);
 
       const deviceDTOResult = DeviceMapper.toDTO(deviceResult) as IDeviceDTO;
