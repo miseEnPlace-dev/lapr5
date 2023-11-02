@@ -17,9 +17,9 @@ export class DeviceModelCode extends ValueObject<DeviceModelCodeProps> {
 
   public static create(code: string): Result<DeviceModelCode> {
     if (code.length > 25)
-      return Result.fail<DeviceModelCode>('Device code must be 25 characters or less');
+      return Result.fail<DeviceModelCode>('Device Model code must be 25 characters or less');
     if (!/^[a-zA-Z0-9\t\s]+$/.test(code))
-      return Result.fail<DeviceModelCode>('Device code must be alphanumeric');
+      return Result.fail<DeviceModelCode>('Device Model code must be alphanumeric');
 
     return Result.ok<DeviceModelCode>(new DeviceModelCode({ value: code }));
   }
