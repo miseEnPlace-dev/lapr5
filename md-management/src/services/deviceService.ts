@@ -19,7 +19,7 @@ export default class DeviceService implements IDeviceService {
   constructor(
     @inject(TYPES.deviceRepo) private deviceRepo: IDeviceRepo,
     @inject(TYPES.deviceModelRepo) private deviceModelRepo: IDeviceModelRepo
-  ) {}
+  ) { }
 
   public async createDevice(deviceDTO: IDeviceDTO): Promise<Result<IDeviceDTO>> {
     try {
@@ -70,15 +70,28 @@ export default class DeviceService implements IDeviceService {
 
       let result: IDeviceDTO[] = [];
 
-      if (filters && filters.includes('task')) {
-        const devices = await this.deviceRepo.findRobots(value);
+      if (filters) {
+        if (filters.includes('task')) {
+          if (value === undefined) return Result.fail<IDeviceDTO[]>('Value not provided');
+          const devices = await this.deviceRepo.findByTask(value);
 
-        result = devices.map(device => {
-          const deviceDTO = DeviceMapper.toDTO(device) as IDeviceDTO;
-          return deviceDTO;
-        });
+          if (!devices) return Result.fail<IDeviceDTO[]>('Devices not found');
+          result = devices.map(device => {
+            const deviceDTO = DeviceMapper.toDTO(device) as IDeviceDTO;
+            return deviceDTO;
+          });
+        } else if (filters.includes('name')) {
+          if (value === undefined) return Result.fail<IDeviceDTO[]>('Value not provided');
+          const devices = await this.deviceRepo.findByName(value);
+
+          if (!devices) return Result.fail<IDeviceDTO[]>('Devices not found');
+          result = devices.map(device => {
+            const deviceDTO = DeviceMapper.toDTO(device) as IDeviceDTO;
+            return deviceDTO;
+          });
+        }
       } else {
-        const devices = await this.deviceRepo.findRobots(undefined);
+        const devices = await this.deviceRepo.findRobots();
         result = devices.map(device => {
           const deviceDTO = DeviceMapper.toDTO(device) as IDeviceDTO;
           return deviceDTO;
