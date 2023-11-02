@@ -470,4 +470,147 @@ describe('building controller', () => {
     assert.calledOnce(<SinonSpy>next);
     assert.calledWith(<SinonSpy>next, match({ message: 'Error message' }));
   });
+
+  it('updateBuilding: returns status 200 code (ok)', async () => {
+    const params = { code: '1' };
+    const req: Partial<Request> = {};
+    req.params = params;
+
+    const res: Partial<Response> = {
+      status: spy()
+    };
+    const next: Partial<NextFunction> = () => {};
+
+    const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
+    stub(buildingServiceInstance, 'updateBuilding').returns(
+      new Promise(resolve => {
+        resolve(
+          Result.ok<IBuildingDTO>({
+            code: params.code,
+            name: 'building',
+            maxDimensions: { width: 10, length: 10 }
+          })
+        );
+      })
+    );
+
+    const ctrl = new BuildingController(buildingServiceInstance);
+
+    await ctrl.updateBuilding(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.status);
+    assert.calledWith(<SinonSpy>res.status, 200);
+  });
+
+  it('updateBuilding: returns json with updated building values', async () => {
+    const params = { code: '1' };
+    const req: Partial<Request> = {};
+    req.params = params;
+
+    const res: Partial<Response> = {
+      status: _ => <Response>{}
+    };
+    stub(res, 'status').returns(res);
+    res.json = spy();
+    const next: Partial<NextFunction> = () => {};
+
+    const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
+    stub(buildingServiceInstance, 'updateBuilding').returns(
+      new Promise(resolve => {
+        resolve(
+          Result.ok<IBuildingDTO>({
+            code: params.code,
+            name: 'building',
+            maxDimensions: { width: 10, length: 10 }
+          })
+        );
+      })
+    );
+
+    const ctrl = new BuildingController(buildingServiceInstance);
+
+    await ctrl.updateBuilding(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.json);
+    assert.calledWith(
+      <SinonSpy>res.json,
+      match({
+        code: params.code,
+        name: 'building',
+        maxDimensions: { width: 10, length: 10 }
+      })
+    );
+  });
+
+  it('updateBuilding: returns 400 when error occurs', async () => {
+    const params = { code: '1' };
+    const req: Partial<Request> = {};
+    req.params = params;
+
+    const res: Partial<Response> = {
+      status: _ => <Response>{}
+    };
+    stub(res, 'status').returns(res);
+    res.json = spy();
+    const next: Partial<NextFunction> = () => {};
+
+    const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
+    stub(buildingServiceInstance, 'updateBuilding').returns(
+      new Promise(resolve => {
+        resolve(Result.fail<IBuildingDTO>('Building does not exist'));
+      })
+    );
+
+    const ctrl = new BuildingController(buildingServiceInstance);
+
+    await ctrl.updateBuilding(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.status);
+    assert.calledWith(<SinonSpy>res.status, 400);
+  });
+
+  it('updateBuilding: returns json with service message error', async () => {
+    const params = { code: '1' };
+    const req: Partial<Request> = {};
+    req.params = params;
+
+    const res: Partial<Response> = {
+      status: _ => <Response>{}
+    };
+    stub(res, 'status').returns(res);
+    res.json = spy();
+    const next: Partial<NextFunction> = () => {};
+
+    const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
+    stub(buildingServiceInstance, 'updateBuilding').returns(
+      new Promise(resolve => {
+        resolve(Result.fail<IBuildingDTO>('Error message'));
+      })
+    );
+
+    const ctrl = new BuildingController(buildingServiceInstance);
+
+    await ctrl.updateBuilding(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.json);
+    assert.calledWith(<SinonSpy>res.json, match({ message: 'Error message' }));
+  });
+
+  it('updateBuilding: forwards error to next function when service throws error', async () => {
+    const req: Partial<Request> = {};
+    req.params = { code: '1' };
+
+    const res: Partial<Response> = {};
+    const next = spy();
+
+    const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
+    stub(buildingServiceInstance, 'updateBuilding').throws(new Error('Error message'));
+
+    const ctrl = new BuildingController(buildingServiceInstance);
+
+    await ctrl.updateBuilding(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>next);
+    assert.calledWith(<SinonSpy>next, match({ message: 'Error message' }));
+  });
 });
