@@ -1,4 +1,5 @@
 export default interface IRoleDTO {
-  id: string;
   name: string;
+  title: string;
+  description?: string;
 }

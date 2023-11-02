@@ -42,6 +42,8 @@ const TYPES = {
   connectorRepo: Symbol.for('ConnectorRepo'),
   connectorSchema: Symbol.for('ConnectorSchema'),
 
+  bootstrapper: Symbol.for('Bootstrapper'),
+
   logger: Symbol.for('Logger')
 };
 

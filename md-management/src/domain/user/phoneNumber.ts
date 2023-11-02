@@ -23,7 +23,7 @@ export class PhoneNumber extends ValueObject<PhoneNumberProps> {
     const regex = /^[9][1236]\d{7}$/;
 
     if (!guardResult.succeeded) return Result.fail<PhoneNumber>(guardResult.message);
-    if (!regex.test(phoneNumber)) return Result.fail<PhoneNumber>('Invalid phone number');
+    if (!regex.test(phoneNumber)) return Result.fail<PhoneNumber>('Invalid phone number format');
 
     return Result.ok<PhoneNumber>(new PhoneNumber({ value: phoneNumber }));
   }

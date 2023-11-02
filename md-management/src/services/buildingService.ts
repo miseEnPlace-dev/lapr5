@@ -25,20 +25,27 @@ export default class BuildingService implements IBuildingService {
   public async createBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>> {
     try {
       const code = BuildingCode.create(buildingDTO.code).getValue();
-      const name = buildingDTO.name ? BuildingName.create(buildingDTO.name).getValue() : undefined;
-      const description = buildingDTO.description
-        ? BuildingDescription.create(buildingDTO.description).getValue()
+      const nameOrError = buildingDTO.name ? BuildingName.create(buildingDTO.name) : undefined;
+      const descriptionOrError = buildingDTO.description
+        ? BuildingDescription.create(buildingDTO.description)
         : undefined;
-      const maxDimensions = BuildingMaxDimensions.create(
+      const maxDimensionsOrError = BuildingMaxDimensions.create(
         buildingDTO.maxDimensions.width,
         buildingDTO.maxDimensions.length
-      ).getValue();
+      );
+
+      if (nameOrError && nameOrError.isFailure)
+        return Result.fail<IBuildingDTO>(nameOrError.errorValue());
+      if (descriptionOrError && descriptionOrError.isFailure)
+        return Result.fail<IBuildingDTO>(descriptionOrError.errorValue());
+      if (maxDimensionsOrError.isFailure)
+        return Result.fail<IBuildingDTO>(maxDimensionsOrError.errorValue());
 
       const buildingOrError = Building.create({
         code,
-        name,
-        description,
-        maxDimensions
+        name: nameOrError ? nameOrError.getValue() : undefined,
+        description: descriptionOrError ? descriptionOrError.getValue() : undefined,
+        maxDimensions: maxDimensionsOrError.getValue()
       });
 
       if (buildingOrError.isFailure) return Result.fail<IBuildingDTO>(buildingOrError.errorValue());

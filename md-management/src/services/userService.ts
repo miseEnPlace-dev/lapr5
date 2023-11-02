@@ -28,16 +28,15 @@ export default class UserService implements IUserService {
     @inject(TYPES.roleRepo) private roleRepo: IRoleRepo
   ) {}
 
-  public async SignUp(userDTO: IUserDTO): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
+  public async signUp(userDTO: IUserDTO): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
     try {
       const userDocument = await this.userRepo.findByEmail(userDTO.email);
       const found = !!userDocument;
 
-      if (found) {
+      if (found)
         return Result.fail<{ userDTO: IUserDTO; token: string }>(
           'User already exists with email=' + userDTO.email
         );
-      }
 
       /**
        * Here you can call to your third-party malicious server and steal the user password before it's saved as a hash.
@@ -63,8 +62,13 @@ export default class UserService implements IUserService {
         value: hashedPassword,
         hashed: true
       }).getValue();
-      const email = UserEmail.create(userDTO.email).getValue();
-      const phoneNumber = PhoneNumber.create(userDTO.phoneNumber).getValue();
+      const emailOrError = UserEmail.create(userDTO.email);
+      if (emailOrError.isFailure)
+        return Result.fail<{ userDTO: IUserDTO; token: string }>(emailOrError.error);
+
+      const phoneNumberOrError = PhoneNumber.create(userDTO.phoneNumber);
+      if (phoneNumberOrError.isFailure)
+        return Result.fail<{ userDTO: IUserDTO; token: string }>(phoneNumberOrError.error);
 
       const roleOrError = await this.getRole(userDTO.role);
       if (roleOrError.isFailure)
@@ -75,15 +79,13 @@ export default class UserService implements IUserService {
       const userOrError = User.create({
         firstName: userDTO.firstName,
         lastName: userDTO.lastName,
-        phoneNumber,
-        email,
+        phoneNumber: phoneNumberOrError.getValue(),
+        email: emailOrError.getValue(),
         role,
         password
       });
 
-      if (userOrError.isFailure) {
-        throw Result.fail<IUserDTO>(userOrError.errorValue());
-      }
+      if (userOrError.isFailure) throw Result.fail<IUserDTO>(userOrError.errorValue());
 
       const userResult = userOrError.getValue();
 
@@ -94,7 +96,7 @@ export default class UserService implements IUserService {
       //this.eventDispatcher.dispatch(events.user.signUp, { user: userResult });
 
       await this.userRepo.save(userResult);
-      const userDTOResult = UserMapper.toDTO(userResult) as IUserDTO;
+      const userDTOResult = UserMapper.toDTO(userResult);
       return Result.ok<{ userDTO: IUserDTO; token: string }>({
         userDTO: userDTOResult,
         token: token
@@ -111,9 +113,7 @@ export default class UserService implements IUserService {
   ): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
     const user = await this.userRepo.findByEmail(email);
 
-    if (!user) {
-      throw new Error('User not registered');
-    }
+    if (!user) throw new Error('User not registered');
 
     /**
      * We use verify from argon2 to prevent 'timing based' attacks
@@ -124,9 +124,9 @@ export default class UserService implements IUserService {
 
       const userDTO = UserMapper.toDTO(user) as IUserDTO;
       return Result.ok<{ userDTO: IUserDTO; token: string }>({ userDTO: userDTO, token: token });
-    } else {
-      throw new Error('Invalid Password');
     }
+
+    throw new Error('Invalid Password');
   }
 
   private generateToken(user: User) {
@@ -148,7 +148,7 @@ export default class UserService implements IUserService {
     const email = user.email.value;
     const firstName = user.firstName;
     const lastName = user.lastName;
-    const role = user.role.id.toValue();
+    const role = user.role.name.value;
 
     return jwt.sign(
       {
@@ -171,14 +171,11 @@ export default class UserService implements IUserService {
     return Result.ok<IUserDTO>(userDTO);
   }
 
-  private async getRole(roleId: string): Promise<Result<Role>> {
-    const role = await this.roleRepo.findByDomainId(roleId);
+  private async getRole(name: string): Promise<Result<Role>> {
+    const role = await this.roleRepo.findByName(name);
     const found = !!role;
 
-    if (found) {
-      return Result.ok<Role>(role);
-    } else {
-      return Result.fail<Role>("Couldn't find role by id=" + roleId);
-    }
+    if (found) return Result.ok<Role>(role);
+    return Result.fail<Role>("Couldn't find role by name=" + name);
   }
 }
