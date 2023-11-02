@@ -169,4 +169,21 @@ describe('deviceModel controller', () => {
     assert.calledOnce(<SinonSpy>res.json);
     assert.calledWith(<SinonSpy>res.json, match({ message: 'Error message' }));
   });
+
+  it('createDeviceModel: forwards error to next function when service throws error', async () => {
+    const req: Partial<Request> = {};
+
+    const res: Partial<Response> = {};
+    const next = spy();
+
+    const deviceModelServiceInstance = container.get<IDeviceModelService>(TYPES.deviceModelService);
+    stub(deviceModelServiceInstance, 'createDeviceModel').throws(new Error('Error message'));
+
+    const ctrl = new DeviceModelController(deviceModelServiceInstance);
+
+    await ctrl.createDeviceModel(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>next);
+    assert.calledWith(<SinonSpy>next, match({ message: 'Error message' }));
+  });
 });

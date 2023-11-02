@@ -143,4 +143,22 @@ describe('elevator controller', () => {
     assert.calledOnce(<SinonSpy>res.json);
     assert.calledWith(<SinonSpy>res.json, match({ message: 'Error message' }));
   });
+
+  it('createElevator: forwards error to next function when service throws error', async () => {
+    const req: Partial<Request> = {};
+    req.params = { building: '123' };
+
+    const res: Partial<Response> = {};
+    const next = spy();
+
+    const elevatorServiceInstance = container.get<IElevatorService>(TYPES.elevatorService);
+    stub(elevatorServiceInstance, 'createElevator').throws(new Error('Error message'));
+
+    const ctrl = new ElevatorController(elevatorServiceInstance);
+
+    await ctrl.createElevator(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>next);
+    assert.calledWith(<SinonSpy>next, match({ message: 'Error message' }));
+  });
 });
