@@ -1,3 +1,4 @@
+import { defaultRoles } from '@/domain/role/defaultRoles';
 import IRoleService from '@/services/IServices/IRoleService';
 import { inject, injectable } from 'inversify';
 import { TYPES } from './inversify/types';
@@ -7,11 +8,13 @@ export default class Bootstrapper {
   constructor(@inject(TYPES.roleService) private roleService: IRoleService) {}
 
   public async bootstrap() {
-    this.loadRole({ name: 'fleet', title: 'Fleet Manager' });
-    this.loadRole({ name: 'campus', title: 'Campus Manager' });
-    this.loadRole({ name: 'task', title: 'Task Manager' });
-    this.loadRole({ name: 'user', title: 'User' });
-    this.loadRole({ name: 'admin', title: 'Admin' });
+    for (const role in defaultRoles) {
+      await this.loadRole({
+        name: defaultRoles[role].name,
+        title: defaultRoles[role].title,
+        description: defaultRoles[role].description
+      });
+    }
   }
 
   private async loadRole({

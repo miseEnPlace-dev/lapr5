@@ -2,9 +2,10 @@ import { Router } from 'express';
 import { z } from 'zod';
 
 import IBuildingController from '@/controllers/IControllers/IBuildingController';
+import { defaultRoles } from '@/domain/role/defaultRoles';
 import { container } from '@/loaders/inversify';
 import { TYPES } from '@/loaders/inversify/types';
-import { validate } from '../middlewares/validate';
+import { isAuthenticated, isAuthorizedAs, validate } from '../middlewares';
 
 const buildingCreateSchema = z.object({
   code: z
@@ -46,7 +47,12 @@ export default (app: Router) => {
   const route = Router();
   const ctrl = container.get<IBuildingController>(TYPES.buildingController);
 
-  route.get('', (req, res, next) => ctrl.getBuildings(req, res, next));
+  route.get(
+    '',
+    isAuthenticated,
+    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.campus.name),
+    (req, res, next) => ctrl.getBuildings(req, res, next)
+  );
   route.post('', validate(buildingCreateSchema), (req, res, next) =>
     ctrl.createBuilding(req, res, next)
   );

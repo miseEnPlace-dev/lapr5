@@ -6,11 +6,11 @@ import { ISessionDTO } from '@/dto/ISessionDTO';
 
 const attachCurrentSession = async (
   req: Request & { session: ISessionDTO },
-  _: Response,
+  res: Response,
   next: NextFunction
 ) => {
   const session = jwt.decode(req.headers.authorization?.split(' ')[1] as string) as ISessionDTO;
-  if (!session) throw new Error('User not found');
+  if (!session) return res.status(401).json({ message: 'Unauthorized' });
 
   req.session = session;
   next();

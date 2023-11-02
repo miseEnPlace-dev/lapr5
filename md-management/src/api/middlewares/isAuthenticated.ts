@@ -26,11 +26,11 @@ const getTokenFromHeader = (req: Request) => {
   return null;
 };
 
-const isAuth = jwt({
+const isAuthenticated = jwt({
   secret: config.jwtSecret, // The _secret_ to sign the JWTs
   requestProperty: 'token', // Use req.token to store the JWT
   getToken: getTokenFromHeader, // How to extract the JWT from the request
   algorithms: ['HS256'] // Added by JRT
 });
 
-export default isAuth;
+export default isAuthenticated;

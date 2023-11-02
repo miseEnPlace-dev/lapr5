@@ -6,9 +6,7 @@ import { container } from '@/loaders/inversify';
 
 import IUserController from '@/controllers/IControllers/IUserController';
 import { TYPES } from '@/loaders/inversify/types';
-import attachCurrentSession from '../middlewares/attachCurrentSession';
-import isAuth from '../middlewares/isAuth';
-import { validate } from '../middlewares/validate';
+import { attachCurrentSession, isAuthenticated, validate } from '../middlewares/';
 
 const signUpSchema = z.object({
   firstName: z
@@ -63,9 +61,13 @@ export default (app: Router) => {
    * emitted for the session and add it to a black list.
    * It's really annoying to develop that but if you had to, please use Redis as your data store
    */
-  route.post('/logout', isAuth, (req, res, next) => userController.signOut(req, res, next));
+  route.post('/logout', isAuthenticated, (req, res, next) =>
+    userController.signOut(req, res, next)
+  );
 
   app.use('/users', route);
 
-  route.get('/me', isAuth, attachCurrentSession, (req, res) => userController.getMe(req, res));
+  route.get('/me', isAuthenticated, attachCurrentSession, (req, res) =>
+    userController.getMe(req, res)
+  );
 };
