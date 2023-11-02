@@ -3,7 +3,7 @@ autonumber
 participant SYS as "MD Management" <<system (C4)>>
 
 
-?o-> SYS : GET /buildings/{buildingCode}/floors
+?o-> SYS : GET /buildings/:buildingCode/floors
 activate SYS
 
 SYS -> SYS : getAllFloorsOfBuilding(buildingCode)

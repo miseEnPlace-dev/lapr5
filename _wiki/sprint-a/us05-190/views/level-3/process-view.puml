@@ -9,7 +9,7 @@ activate BE
 BE -> DB : insert new floor
 activate DB
 
-DB -> BE : sucess
+DB -> BE : success
 deactivate DB
 
 <-- BE : 201 Created

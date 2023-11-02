@@ -1,0 +1,33 @@
+@startuml _process-view
+autonumber
+participant route as ":FloorRoute"
+participant controller as ":FloorController"
+participant service as ":FloorService"
+participant BUILD as ":building:Building"
+participant floor_repo as ":FloorRepo"
+participant map as ":FloorMap"
+participant floor_dto as ":floorDto:IFloorDto"
+
+?o-> route : GET /buildings/{buildingCode}/floors
+activate route
+route -> controller : getAllFloorsOfBuilding(buildingCode)
+activate controller
+controller -> service : getAllFloorsOfBuilding(buildingCode)
+activate service
+service -> floor_repo : findAllByBuildingCode(buildingCode)
+activate floor_repo
+floor_repo --> service : floors
+deactivate floor_repo
+loop foreach floor_wiki/sprint-a/us04-180/views
+    service -> map : toDto(floor)
+    activate map
+    map -> floor_dto** : create()
+    deactivate map
+end
+service --> controller : success(floorsDTO)
+deactivate service
+controller --> route : success(floorsDTO)
+deactivate controller
+<-- route : 200 OK (floorsDTO)
+
+@enduml
