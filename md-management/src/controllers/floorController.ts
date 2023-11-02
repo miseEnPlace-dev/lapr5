@@ -82,12 +82,10 @@ export default class FloorController implements IFloorController {
 
   public async uploadMap(req: Request, res: Response, next: NextFunction) {
     try {
-      if (!req.file) return res.status(401).send();
-      const map = JSON.parse(req.file.buffer.toString());
-      const newMap = map.maze as IFloorMapDTO;
+      const map = req.body.maze as IFloorMapDTO;
       const floorOrError = (await this.floorServiceInstance.uploadMap(
         req.params.code,
-        newMap
+        map
       )) as Result<IFloorMapDTO>;
 
       if (floorOrError.isFailure) return res.status(400).send();
