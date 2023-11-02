@@ -37,16 +37,12 @@ describe('room controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const roomServiceInstance = container.get<IRoomService>(TYPES.roomService);
-    stub(roomServiceInstance, 'createRoom').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IRoomDTO>({
-            name: body.name,
-            floorCode: body.floorCode,
-            category: body.category,
-            dimensions: body.dimensions
-          })
-        );
+    stub(roomServiceInstance, 'createRoom').resolves(
+      Result.ok<IRoomDTO>({
+        name: body.name,
+        floorCode: body.floorCode,
+        category: body.category,
+        dimensions: body.dimensions
       })
     );
 
@@ -78,16 +74,12 @@ describe('room controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const roomServiceInstance = container.get<IRoomService>(TYPES.roomService);
-    stub(roomServiceInstance, 'createRoom').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IRoomDTO>({
-            name: body.name,
-            floorCode: body.floorCode,
-            category: body.category,
-            dimensions: body.dimensions
-          })
-        );
+    stub(roomServiceInstance, 'createRoom').resolves(
+      Result.ok<IRoomDTO>({
+        name: body.name,
+        floorCode: body.floorCode,
+        category: body.category,
+        dimensions: body.dimensions
       })
     );
 
@@ -123,11 +115,7 @@ describe('room controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const roomServiceInstance = container.get<IRoomService>(TYPES.roomService);
-    stub(roomServiceInstance, 'createRoom').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IRoomDTO>('error'));
-      })
-    );
+    stub(roomServiceInstance, 'createRoom').resolves(Result.fail<IRoomDTO>('error'));
 
     const ctrl = new RoomController(roomServiceInstance);
 
@@ -157,11 +145,7 @@ describe('room controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const roomServiceInstance = container.get<IRoomService>(TYPES.roomService);
-    stub(roomServiceInstance, 'createRoom').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IRoomDTO>('Error message'));
-      })
-    );
+    stub(roomServiceInstance, 'createRoom').resolves(Result.fail<IRoomDTO>('Error message'));
 
     const ctrl = new RoomController(roomServiceInstance);
 
