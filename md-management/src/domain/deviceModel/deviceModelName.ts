@@ -17,7 +17,7 @@ export class DeviceModelName extends ValueObject<DeviceModelNameProps> {
 
   public static create(name: string): Result<DeviceModelName> {
     if (name.length > 100)
-      return Result.fail<DeviceModelName>('Device model name must be 100 characters or less');
+      return Result.fail<DeviceModelName>('Device Model name must be 100 characters or less');
     return Result.ok<DeviceModelName>(new DeviceModelName({ value: name }));
   }
 }

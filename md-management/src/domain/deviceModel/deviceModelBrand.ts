@@ -17,7 +17,7 @@ export class DeviceModelBrand extends ValueObject<DeviceModelBrandProps> {
 
   public static create(brand: string): Result<DeviceModelBrand> {
     if (brand.length > 50)
-      return Result.fail<DeviceModelBrand>('Device model brand must be 50 characters or less');
+      return Result.fail<DeviceModelBrand>('Device Model brand must be 50 characters or less');
     return Result.ok<DeviceModelBrand>(new DeviceModelBrand({ value: brand }));
   }
 }

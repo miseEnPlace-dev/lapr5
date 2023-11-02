@@ -20,19 +20,25 @@ export default class DeviceModelService implements IDeviceModelService {
     deviceModelDTO: IDeviceModelDTO
   ): Promise<Result<IDeviceModelDTO>> {
     try {
-      const code = DeviceModelCode.create(deviceModelDTO.code).getValue();
-      const brand = DeviceModelBrand.create(deviceModelDTO.brand).getValue();
-      const name = DeviceModelName.create(deviceModelDTO.name).getValue();
+      const codeOrError = DeviceModelCode.create(deviceModelDTO.code);
+      if (codeOrError.isFailure) return Result.fail<IDeviceModelDTO>(codeOrError.errorValue());
+
+      const brandOrError = DeviceModelBrand.create(deviceModelDTO.brand);
+      if (brandOrError.isFailure) return Result.fail<IDeviceModelDTO>(brandOrError.errorValue());
+
+      const nameOrError = DeviceModelName.create(deviceModelDTO.name);
+      if (nameOrError.isFailure) return Result.fail<IDeviceModelDTO>(nameOrError.errorValue());
+
       const capabilities = deviceModelDTO.capabilities.map(capability =>
         Task.create(capability).getValue()
       );
 
       const deviceModelOrError = DeviceModel.create({
-        code,
-        brand,
+        code: codeOrError.getValue(),
+        brand: brandOrError.getValue(),
         type: deviceModelDTO.type,
         capabilities,
-        name
+        name: nameOrError.getValue()
       });
 
       if (deviceModelOrError.isFailure)
@@ -41,7 +47,7 @@ export default class DeviceModelService implements IDeviceModelService {
       const deviceModelResult = deviceModelOrError.getValue();
 
       const deviceModelExists = !!(await this.deviceModelRepo.findByCode(deviceModelResult.code));
-      if (deviceModelExists) return Result.fail<IDeviceModelDTO>('DeviceModel already exists');
+      if (deviceModelExists) return Result.fail<IDeviceModelDTO>('Device Model already exists');
 
       await this.deviceModelRepo.save(deviceModelResult);
 
