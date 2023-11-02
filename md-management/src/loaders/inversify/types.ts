@@ -1,8 +1,8 @@
 const TYPES = {
-  buildingSchema: Symbol.for('BuildingSchema'),
-  buildingRepo: Symbol.for('BuildingRepo'),
-  buildingService: Symbol.for('BuildingService'),
   buildingController: Symbol.for('BuildingController'),
+  buildingService: Symbol.for('BuildingService'),
+  buildingRepo: Symbol.for('BuildingRepo'),
+  buildingSchema: Symbol.for('BuildingSchema'),
 
   floorController: Symbol.for('FloorController'),
   floorService: Symbol.for('FloorService'),

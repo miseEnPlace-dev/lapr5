@@ -139,4 +139,21 @@ describe('building controller', () => {
     assert.calledOnce(<SinonSpy>res.json);
     assert.calledWith(<SinonSpy>res.json, match({ message: 'Error message' }));
   });
+
+  it('createBuilding: forwards error to next function when service throws error', async () => {
+    const req: Partial<Request> = {};
+
+    const res: Partial<Response> = {};
+    const next = spy();
+
+    const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
+    stub(buildingServiceInstance, 'createBuilding').throws(new Error('Error message'));
+
+    const ctrl = new BuildingController(buildingServiceInstance);
+
+    await ctrl.createBuilding(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>next);
+    assert.calledWith(<SinonSpy>next, match({ message: 'Error message' }));
+  });
 });
