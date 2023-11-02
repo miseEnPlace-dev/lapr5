@@ -17,9 +17,9 @@ export default async ({ expressApp }: { expressApp: Express }) => {
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');
 
   await expressLoader({ app: expressApp });
+  Logger.info('✌️ Express loaded');
 
   const bootstrapper = container.get<Bootstrapper>(TYPES.bootstrapper);
   await bootstrapper.bootstrap();
-
-  Logger.info('✌️ Express loaded');
+  Logger.info('✌️ Bootstrapper loaded');
 };

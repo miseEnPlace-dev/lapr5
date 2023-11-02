@@ -154,6 +154,14 @@ export default class UserService implements IUserService {
     return Result.ok<IUserDTO>(userDTO);
   }
 
+  async findByEmail(email: string): Promise<Result<IUserDTO>> {
+    const user = await this.userRepo.findByEmail(email);
+    if (!user) return Result.fail<IUserDTO>('User not found');
+
+    const userDTO = UserMapper.toDTO(user) as IUserDTO;
+    return Result.ok<IUserDTO>(userDTO);
+  }
+
   private async getRole(name: string): Promise<Result<Role>> {
     const role = await this.roleRepo.findByName(name);
     const found = !!role;

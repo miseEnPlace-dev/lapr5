@@ -47,12 +47,7 @@ export default (app: Router) => {
   const route = Router();
   const ctrl = container.get<IBuildingController>(TYPES.buildingController);
 
-  route.get(
-    '',
-    isAuthenticated,
-    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.campus.name),
-    (req, res, next) => ctrl.getBuildings(req, res, next)
-  );
+  route.get('', (req, res, next) => ctrl.getBuildings(req, res, next));
   route.post('', validate(buildingCreateSchema), (req, res, next) =>
     ctrl.createBuilding(req, res, next)
   );
@@ -61,5 +56,10 @@ export default (app: Router) => {
     ctrl.updateBuilding(req, res, next)
   );
 
-  app.use('/buildings', route);
+  app.use(
+    '/buildings',
+    isAuthenticated,
+    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.campus.name),
+    route
+  );
 };

@@ -47,7 +47,8 @@ export default class UserRepo implements IUserRepo {
   }
 
   public async findByEmail(email: UserEmail | string): Promise<User | null> {
-    const query = { email: email.toString() };
+    const emailVal = email instanceof UserEmail ? (<UserEmail>email).value : email;
+    const query = { email: emailVal };
     const userRecord = await userSchema.findOne(query);
 
     if (userRecord !== null) return UserMapper.toDomain(userRecord);
