@@ -22,11 +22,7 @@ export default class RoomController implements IRoomController {
         floorCode
       } as IRoomDTO)) as Result<IRoomDTO>;
 
-      if (roomOrError.isFailure)
-        return next({
-          status: 400,
-          message: roomOrError.errorValue()
-        });
+      if (roomOrError.isFailure) return res.status(400).json({ message: roomOrError.errorValue() });
 
       const floorDTO = roomOrError.getValue();
       return res.status(201).json(floorDTO);
