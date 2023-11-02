@@ -68,16 +68,20 @@ export default class FloorService implements IFloorService {
 
   public async createFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {
     try {
-      const code = FloorCode.create(floorDTO.code);
+      const codeOrError = FloorCode.create(floorDTO.code);
+      if (codeOrError.isFailure) return Result.fail<IFloorDTO>(codeOrError.error as string);
 
-      if (code.isFailure) return Result.fail<IFloorDTO>(code.error as string);
-
-      const description = floorDTO.description
+      const descriptionOrError = floorDTO.description
         ? FloorDescription.create(floorDTO.description)
         : undefined;
+      if (descriptionOrError && descriptionOrError.isFailure)
+        return Result.fail<IFloorDTO>(descriptionOrError.error as string);
 
-      const buildingCode = BuildingCode.create(floorDTO.buildingCode).getValue();
-      const building = await this.buildingRepo.findByCode(buildingCode);
+      const buildingCodeOrError = BuildingCode.create(floorDTO.buildingCode);
+      if (buildingCodeOrError.isFailure)
+        return Result.fail<IFloorDTO>(buildingCodeOrError.error as string);
+
+      const building = await this.buildingRepo.findByCode(buildingCodeOrError.getValue());
       if (!building) return Result.fail<IFloorDTO>('Building does not exist');
 
       if (
@@ -89,18 +93,17 @@ export default class FloorService implements IFloorService {
       )
         return Result.fail<IFloorDTO>('Floor dimensions are invalid');
 
-      const dimensions = FloorDimensions.create(
+      const dimensionsOrError = FloorDimensions.create(
         floorDTO.dimensions.width,
         floorDTO.dimensions.length
       );
-
-      if (dimensions.isFailure) return Result.fail<IFloorDTO>(dimensions.error);
+      if (dimensionsOrError.isFailure) return Result.fail<IFloorDTO>(dimensionsOrError.error);
 
       const floorOrError = Floor.create({
-        code: code.getValue(),
-        description: description ? description.getValue() : undefined,
-        dimensions: dimensions.getValue(),
-        buildingCode
+        code: codeOrError.getValue(),
+        description: descriptionOrError ? descriptionOrError.getValue() : undefined,
+        dimensions: dimensionsOrError.getValue(),
+        buildingCode: buildingCodeOrError.getValue()
       });
 
       if (floorOrError.isFailure) return Result.fail<IFloorDTO>(floorOrError.error as string);

@@ -23,10 +23,7 @@ export default class FloorController implements IFloorController {
       } as IFloorDTO)) as Result<IFloorDTO>;
 
       if (floorOrError.isFailure)
-        return next({
-          status: 400,
-          message: floorOrError.errorValue()
-        });
+        return res.status(400).json({ message: floorOrError.errorValue() });
 
       const floorDTO = floorOrError.getValue();
       return res.status(201).json(floorDTO);
