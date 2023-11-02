@@ -61,7 +61,8 @@ export default class BuildingController implements IBuildingController {
         max
       )) as Result<IBuildingDTO[]>;
 
-      if (!buildingsOrError) return res.status(404).send();
+      if (buildingsOrError.isFailure)
+        return res.status(400).json({ message: buildingsOrError.errorValue() });
 
       return res.status(200).json(buildingsOrError.getValue());
     } catch (e) {
@@ -79,7 +80,8 @@ export default class BuildingController implements IBuildingController {
         IBuildingDTO[]
       >;
 
-      if (!buildingsOrError) return res.status(404).send();
+      if (buildingsOrError.isFailure)
+        return res.status(400).json({ message: buildingsOrError.errorValue() });
 
       return res.status(200).json(buildingsOrError.getValue());
     } catch (e) {

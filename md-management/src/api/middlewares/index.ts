@@ -1,9 +1,6 @@
-import attachCurrentUser from './attachCurrentUser';
-import isAuth from './isAuth';
+import attachCurrentSession from './attachCurrentSession';
+import isAuthenticated from './isAuthenticated';
+import isAuthorizedAs from './isAuthorizedAs';
 import { validate } from './validate';
 
-export default {
-  attachCurrentUser,
-  isAuth,
-  validate
-};
+export { attachCurrentSession, isAuthenticated, isAuthorizedAs, validate };

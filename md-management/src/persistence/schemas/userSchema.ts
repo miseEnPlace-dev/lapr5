@@ -1,5 +1,5 @@
-import { IUserPersistence } from '../../dataschema/IUserPersistence';
 import mongoose from 'mongoose';
+import { IUserPersistence } from '../../dataschema/IUserPersistence';
 
 const User = new mongoose.Schema(
   {
@@ -27,13 +27,18 @@ const User = new mongoose.Schema(
       index: true
     },
 
+    phoneNumber: {
+      type: String,
+      required: true,
+      index: true
+    },
+
     password: String,
 
     salt: String,
 
     role: {
-      type: String,
-      default: 'user'
+      type: String
     }
   },
   { timestamps: true }

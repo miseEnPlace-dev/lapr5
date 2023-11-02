@@ -17,22 +17,27 @@ import IRoleRepo from '@/services/IRepos/IRoleRepo';
 export class UserMapper extends Mapper<User> {
   public static toDTO(user: User): IUserDTO {
     return {
-      //id: user.id.toString(),
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email.value,
+      phoneNumber: user.phoneNumber.value,
       password: '',
-      role: user.role.id.toString()
-    } as IUserDTO;
+      role: user.role.name.value
+    };
   }
 
   public static async toDomain(raw: IUserPersistence): Promise<User | null> {
     const userEmailOrError = UserEmail.create(raw.email);
-    const userPasswordOrError = UserPassword.create({ value: raw.password, hashed: true });
-    const phoneNumberOrError = PhoneNumber.create(raw.phoneNumber);
+    if (userEmailOrError.isFailure) throw new Error(userEmailOrError.errorValue());
 
-    const repo = container.get<IRoleRepo>(TYPES.roleRepo);
-    const role = await repo.findByDomainId(raw.role);
+    const userPasswordOrError = UserPassword.create({ value: raw.password, hashed: true });
+    if (userPasswordOrError.isFailure) throw new Error(userPasswordOrError.errorValue());
+
+    const phoneNumberOrError = PhoneNumber.create(raw.phoneNumber);
+    if (phoneNumberOrError.isFailure) throw new Error(phoneNumberOrError.errorValue());
+
+    const roleRepo = container.get<IRoleRepo>(TYPES.roleRepo);
+    const role = await roleRepo.findByName(raw.role);
     if (!role) throw new Error('Role not found');
 
     const userOrError = User.create(
@@ -42,9 +47,9 @@ export class UserMapper extends Mapper<User> {
         email: userEmailOrError.getValue(),
         password: userPasswordOrError.getValue(),
         phoneNumber: phoneNumberOrError.getValue(),
-        role: role
+        role
       },
-      new UniqueEntityID(raw._id)
+      new UniqueEntityID(raw.domainId)
     );
 
     userOrError.isFailure ? console.log(userOrError.error) : '';
@@ -52,15 +57,15 @@ export class UserMapper extends Mapper<User> {
     return userOrError.isSuccess ? userOrError.getValue() : null;
   }
 
-  public static toPersistence(user: User) {
-    const a = {
+  public static toPersistence(user: User): Omit<IUserPersistence, 'salt'> {
+    return {
+      domainId: user.id.toString(),
       email: user.email.value,
       password: user.password.value,
       firstName: user.firstName,
       lastName: user.lastName,
-      role: user.role.id.toValue(),
+      role: user.role.name.value,
       phoneNumber: user.phoneNumber.value
     };
-    return a;
   }
 }

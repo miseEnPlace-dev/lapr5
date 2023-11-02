@@ -1,10 +1,11 @@
-import userSchema from '@/persistence/schemas/userSchema';
 import { injectable } from 'inversify';
-import { User } from '../domain/user/user';
-import { UserEmail } from '../domain/user/userEmail';
-import { UserId } from '../domain/user/userId';
-import { UserMapper } from '../mappers/UserMapper';
-import IUserRepo from '../services/IRepos/IUserRepo';
+
+import { User } from '@/domain/user/user';
+import { UserEmail } from '@/domain/user/userEmail';
+import { UserId } from '@/domain/user/userId';
+import { UserMapper } from '@/mappers/UserMapper';
+import userSchema from '@/persistence/schemas/userSchema';
+import IUserRepo from '@/services/IRepos/IUserRepo';
 
 @injectable()
 export default class UserRepo implements IUserRepo {
@@ -14,11 +15,11 @@ export default class UserRepo implements IUserRepo {
     const query = { domainId: user.id };
     const userDocument = await userSchema.findOne(query);
 
-    return !!userDocument === true;
+    return !!userDocument;
   }
 
   public async save(user: User): Promise<User> {
-    const query = { domainId: user.id.toString() };
+    const query = { domainId: user.id };
 
     const userDocument = await userSchema.findOne(query);
 
@@ -28,7 +29,11 @@ export default class UserRepo implements IUserRepo {
 
         const userCreated = await userSchema.create(rawUser);
 
-        return UserMapper.toDomain(userCreated);
+        const domainUser = await UserMapper.toDomain(userCreated);
+
+        if (!domainUser) throw new Error('User not created');
+
+        return domainUser;
       } else {
         userDocument.firstName = user.firstName;
         userDocument.lastName = user.lastName;
@@ -42,12 +47,13 @@ export default class UserRepo implements IUserRepo {
   }
 
   public async findByEmail(email: UserEmail | string): Promise<User | null> {
-    const query = { email: email.toString() };
+    const emailVal = email instanceof UserEmail ? (<UserEmail>email).value : email;
+    const query = { email: emailVal };
     const userRecord = await userSchema.findOne(query);
 
-    if (userRecord != null) {
-      return UserMapper.toDomain(userRecord);
-    } else return null;
+    if (userRecord !== null) return UserMapper.toDomain(userRecord);
+
+    return null;
   }
 
   public async findById(userId: UserId | string): Promise<User | null> {
@@ -56,8 +62,8 @@ export default class UserRepo implements IUserRepo {
     const query = { domainId: idX };
     const userRecord = await userSchema.findOne(query);
 
-    if (userRecord != null) {
-      return UserMapper.toDomain(userRecord);
-    } else return null;
+    if (userRecord !== null) return UserMapper.toDomain(userRecord);
+
+    return null;
   }
 }

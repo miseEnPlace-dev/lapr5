@@ -1,8 +1,8 @@
 import { Role } from '../domain/role/role';
-import { RoleId } from '../domain/role/roleId';
 import { RoleMapper } from '../mappers/RoleMapper';
 import IRoleRepo from '../services/IRepos/IRoleRepo';
 
+import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { injectable } from 'inversify';
 import { Document, FilterQuery } from 'mongoose';
 import { IRolePersistence } from '../dataschema/IRolePersistence';
@@ -13,7 +13,7 @@ export default class RoleRepo implements IRoleRepo {
   constructor() {}
 
   public async exists(role: Role): Promise<boolean> {
-    const idX = role.id instanceof RoleId ? (<RoleId>role.id).toValue() : role.id;
+    const idX = role.id instanceof UniqueEntityID ? (<UniqueEntityID>role.id).toValue() : role.id;
 
     const query = { domainId: idX };
     const roleDocument = await roleSchema.findOne(
@@ -24,7 +24,7 @@ export default class RoleRepo implements IRoleRepo {
   }
 
   public async save(role: Role): Promise<Role> {
-    const query = { domainId: role.id.toString() };
+    const query: FilterQuery<IRolePersistence & Document> = { domainId: role.id.toString() };
 
     const roleDocument = await roleSchema.findOne(query);
 
@@ -36,24 +36,36 @@ export default class RoleRepo implements IRoleRepo {
 
         const roleDomain = RoleMapper.toDomain(roleCreated);
         if (!roleDomain) throw new Error('Role not created');
-        return roleDomain;
-      } else {
-        roleDocument.name = role.name;
-        await roleDocument.save();
 
-        return role;
+        return roleDomain;
       }
+
+      roleDocument.name = role.name.value;
+      roleDocument.title = role.title.value;
+      roleDocument.description = role.description?.value;
+      await roleDocument.save();
+
+      return role;
     } catch (err) {
       throw err;
     }
   }
 
-  public async findByDomainId(roleId: RoleId | string): Promise<Role | null> {
-    const query = { domainId: roleId };
-    const roleRecord = await roleSchema.findOne(query as FilterQuery<IRolePersistence & Document>);
+  public async findByDomainId(roleId: UniqueEntityID | string): Promise<Role | null> {
+    const query: FilterQuery<IRolePersistence & Document> = { domainId: roleId };
+    const roleRecord = await roleSchema.findOne(query);
 
-    if (roleRecord != null) {
-      return RoleMapper.toDomain(roleRecord);
-    } else return null;
+    if (roleRecord !== null) return RoleMapper.toDomain(roleRecord);
+
+    return null;
+  }
+
+  public async findByName(name: string): Promise<Role | null> {
+    const query: FilterQuery<IRolePersistence & Document> = { name };
+    const roleRecord = await roleSchema.findOne(query);
+
+    if (roleRecord !== null) return RoleMapper.toDomain(roleRecord);
+
+    return null;
   }
 }

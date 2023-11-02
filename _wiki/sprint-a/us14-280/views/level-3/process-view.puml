@@ -19,7 +19,7 @@ activate DB
 DB --> BE : building
 deactivate DB
 
-<-- BE : 201 Created
+<-- BE : 200 OK
 deactivate BE
 
 @enduml

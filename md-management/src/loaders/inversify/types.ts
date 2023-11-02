@@ -1,8 +1,8 @@
 const TYPES = {
-  buildingSchema: Symbol.for('BuildingSchema'),
-  buildingRepo: Symbol.for('BuildingRepo'),
-  buildingService: Symbol.for('BuildingService'),
   buildingController: Symbol.for('BuildingController'),
+  buildingService: Symbol.for('BuildingService'),
+  buildingRepo: Symbol.for('BuildingRepo'),
+  buildingSchema: Symbol.for('BuildingSchema'),
 
   floorController: Symbol.for('FloorController'),
   floorService: Symbol.for('FloorService'),
@@ -41,6 +41,8 @@ const TYPES = {
   connectorService: Symbol.for('ConnectorService'),
   connectorRepo: Symbol.for('ConnectorRepo'),
   connectorSchema: Symbol.for('ConnectorSchema'),
+
+  bootstrapper: Symbol.for('Bootstrapper'),
 
   logger: Symbol.for('Logger')
 };

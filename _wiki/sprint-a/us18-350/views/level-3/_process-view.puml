@@ -1,0 +1,48 @@
+@startuml _process-view
+autonumber
+participant ROUTE as ":DeviceModelRoute"
+participant CTRL as ":DeviceModelController"
+participant SRV as ":DeviceModelService"
+participant BUILD as ":deviceModel:DeviceModel"
+participant REPO as ":DeviceModelRepo"
+participant MAP as ":DeviceModelMap"
+participant PERS as "deviceModelPersistence:IDeviceModelPersistence"
+participant MODEL as ":Model<IDeviceModelPersistence & Document>"
+participant NBUILD as ":newDeviceModel:DeviceModel"
+participant DTO as ":deviceModelDTO:IDeviceModelDTO"
+
+?o-> ROUTE : POST /device-models
+activate ROUTE
+
+ROUTE -> CTRL : createDeviceModel(elevatorDTO)
+activate CTRL
+CTRL -> SRV : createDeviceModel(deviceModelDTO)
+activate SRV
+SRV -> BUILD** : create()
+SRV -> REPO : save(deviceModel)
+activate REPO
+REPO -> MAP : toPersitence(deviceModel)
+activate MAP
+deactivate MAP
+REPO -> PERS** : create()
+REPO -> MODEL : create(deviceModelPersistence)
+activate MODEL
+deactivate MODEL
+REPO -> MAP : toDomain(deviceModelPersistence)
+activate MAP
+MAP -> NBUILD** : create()
+deactivate MAP
+REPO --> SRV : newDeviceModel
+deactivate REPO
+SRV -> MAP : toDto(newDeviceModel)
+activate MAP
+MAP -> DTO** : create()
+deactivate MAP
+SRV --> CTRL : sucess(deviceModelDTO)
+deactivate SRV
+CTRL --> ROUTE : sucess(deviceModelDTO)
+deactivate CTRL
+<-- ROUTE : 201 Created
+deactivate ROUTE
+
+@enduml

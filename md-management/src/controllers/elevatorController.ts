@@ -19,7 +19,7 @@ export default class ElevatorController implements IElevatorController {
       )) as Result<IElevatorDTO>;
 
       if (elevatorOrError.isFailure)
-        return res.status(400).send({ message: elevatorOrError.errorValue() });
+        return res.status(400).json({ message: elevatorOrError.errorValue() });
 
       const roleDTO = elevatorOrError.getValue();
       return res.status(200).json(roleDTO);
@@ -58,7 +58,7 @@ export default class ElevatorController implements IElevatorController {
         return res.status(400).json({ message: elevatorOrError.errorValue() });
 
       const roleDTO = elevatorOrError.getValue();
-      return res.status(201).json(roleDTO);
+      return res.status(200).json(roleDTO);
     } catch (e) {
       return next(e);
     }

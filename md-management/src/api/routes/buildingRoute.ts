@@ -4,7 +4,7 @@ import { z } from 'zod';
 import IBuildingController from '@/controllers/IControllers/IBuildingController';
 import { container } from '@/loaders/inversify';
 import { TYPES } from '@/loaders/inversify/types';
-import { validate } from '../middlewares/validate';
+import { validate } from '../middlewares';
 
 const buildingCreateSchema = z.object({
   code: z
