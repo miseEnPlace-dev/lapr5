@@ -1,32 +1,18 @@
 @startuml process-view
 autonumber
-participant route as ":DeviceRoute"
-participant controller as ":DeviceController"
-participant service as ":DeviceService"
-participant device as ":device:Device"
-participant device_repo as ":DeviceRepo"
-participant map as ":DeviceMap"
-participant dto as ":deviceDTO:IDeviceDTO"
+participant BE as "BE"
+participant DB as "DB"
 
-?o-> route : POST /devices
-activate route
-route -> controller : createDevice(deviceDTO)
-activate controller
-controller -> service : createDevice(deviceDTO)
-activate service
-service -> device** : createDevice(deviceDTO)
-service -> device_repo : save(device)
-activate device_repo
-deactivate device_repo
-service -> map : toDto(device)
-activate map
-map -> dto** : create()
-deactivate map
-service --> controller : device
-deactivate service
-controller --> route : device
-deactivate controller
-<-- route : 201 Created (device JSON)
-deactivate route
+?o-> BE : POST /devices
+activate BE
+
+BE -> DB : insert new device
+activate DB
+
+DB -> BE : success
+deactivate DB
+
+<-- BE : 201 Created
+deactivate BE
 
 @enduml
