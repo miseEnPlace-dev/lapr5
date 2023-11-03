@@ -14,7 +14,7 @@ This views can be used as a foundation to understand the system from a global pe
 
 ### Logical View
 
-![Level 2 Logical View](level-2/assets/logical-view.svg)
+![Level 2 Logical View](level-2/logic-view/assets/logical-view.svg)
 
 ### Physical View
 
@@ -26,7 +26,7 @@ In this environment, all the services are running on the same machine. This is t
 
 The database is running on a docker container. The `docker-compose.yml` file is located in the root of the project.
 
-![Dev Level 2 Physical View](level-2/assets/dev-physical-view.svg)
+![Dev Level 2 Physical View](level-2/physical-view/assets/dev-physical-view.svg)
 
 #### Production Environment
 
@@ -34,21 +34,21 @@ In this environment, the services are running on different machines, this way we
 
 Note that, as mentioned earlier, this is just one possible implementation and there are no specific constraints on the physical view for now.
 
-![Prod Level 2 Physical View](level-2/assets/prod-physical-view.svg)
+![Prod Level 2 Physical View](level-2/physical-view/assets/prod-physical-view.svg)
 
 ### Implementation View
 
-![Level 2 Implementation View](level-2/assets/implemantation-view.svg)
+![Level 2 Implementation View](level-2/implementation-view/assets/implementation-view.svg)
 
 ## Level 3
 
 ### Logical View
 
-![Level 3 Logical View](level-3/assets/logical-view.svg)
+![Level 3 Logical View](level-3/logical-view/assets/logical-view.svg)
 
 ### Implementation View
 
-![Level 3 Implementation View](level-3/assets/implemantation-view.svg)
+![Level 3 Implementation View](level-3/implementation-view/assets/implemantation-view.svg)
 
 ## Use Case Diagram
 
