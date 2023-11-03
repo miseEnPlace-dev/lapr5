@@ -22,23 +22,30 @@ export default class ElevatorService implements IElevatorService {
     @inject(TYPES.floorRepo) private floorRepo: IFloorRepo
   ) {}
 
-  public async getElevatorForBuilding(buildingCode: string): Promise<Result<IElevatorDTO>> {
+  public async getElevatorForBuilding(
+    buildingCode: string
+  ): Promise<Result<Omit<IElevatorDTO, 'buildingCode'>>> {
     try {
-      const code = BuildingCode.create(buildingCode).getValue();
+      const codeOrError = BuildingCode.create(buildingCode);
+      if (codeOrError.isFailure) return Result.fail<IElevatorDTO>(codeOrError.errorValue());
+
+      const code = codeOrError.getValue();
       const building = await this.buildingRepo.findByCode(code);
       if (!building) return Result.fail<IElevatorDTO>('Building not found');
 
       const elevator = building.elevator;
       if (!elevator) return Result.fail<IElevatorDTO>('Elevator not found');
 
-      const elevatorDTO = ElevatorMapper.toDTO(elevator) as IElevatorDTO;
-      return Result.ok<IElevatorDTO>(elevatorDTO);
+      const elevatorDTO = ElevatorMapper.toDTO(elevator);
+      return Result.ok<Omit<IElevatorDTO, 'buildingCode'>>(elevatorDTO);
     } catch (e) {
       throw e;
     }
   }
 
-  public async createElevator(elevatorDTO: IElevatorDTO): Promise<Result<IElevatorDTO>> {
+  public async createElevator(
+    elevatorDTO: IElevatorDTO
+  ): Promise<Result<Omit<IElevatorDTO, 'buildingCode'>>> {
     try {
       const buildingCode = BuildingCode.create(elevatorDTO.buildingCode).getValue();
       const building = await this.buildingRepo.findByCode(buildingCode);
@@ -86,8 +93,8 @@ export default class ElevatorService implements IElevatorService {
       try {
         await this.buildingRepo.save(building);
 
-        const elevatorDTOResult = ElevatorMapper.toDTO(elevatorResult) as IElevatorDTO;
-        return Result.ok<IElevatorDTO>(elevatorDTOResult);
+        const elevatorDTOResult = ElevatorMapper.toDTO(elevatorResult);
+        return Result.ok<Omit<IElevatorDTO, 'buildingCode'>>(elevatorDTOResult);
       } catch (e) {
         throw e;
       }
@@ -96,7 +103,9 @@ export default class ElevatorService implements IElevatorService {
     }
   }
 
-  public async editElevator(elevatorDTO: Partial<IElevatorDTO>): Promise<Result<IElevatorDTO>> {
+  public async editElevator(
+    elevatorDTO: Partial<IElevatorDTO>
+  ): Promise<Result<Omit<IElevatorDTO, 'buildingCode'>>> {
     try {
       if (!elevatorDTO.buildingCode) return Result.fail<IElevatorDTO>('Elevator code not provided');
 
@@ -153,8 +162,8 @@ export default class ElevatorService implements IElevatorService {
       try {
         await this.buildingRepo.save(building);
 
-        const elevatorDTOResult = ElevatorMapper.toDTO(elevatorResult) as IElevatorDTO;
-        return Result.ok<IElevatorDTO>(elevatorDTOResult);
+        const elevatorDTOResult = ElevatorMapper.toDTO(elevatorResult);
+        return Result.ok<Omit<IElevatorDTO, 'buildingCode'>>(elevatorDTOResult);
       } catch (e) {
         throw e;
       }

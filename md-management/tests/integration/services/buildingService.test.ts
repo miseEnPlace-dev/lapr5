@@ -298,6 +298,18 @@ describe('Building Service', () => {
     expect(result.getValue()).toEqual([expected]);
   });
 
+  it('getBuildingsWithMinMaxFloors: throw error if no building is found', async () => {
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+    stub(buildingRepo, 'findByDomainId').resolves(null);
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    stub(floorRepo, 'findBuildingCodesWithMinMaxFloors').resolves(['12345']);
+    const buildingService = new BuildingService(buildingRepo, floorRepo);
+
+    expect(() => buildingService.getBuildingsWithMinMaxFloors(1, 2)).rejects.toThrowError(
+      'Building not found'
+    );
+  });
+
   it('getBuildingsWithMinMaxFloors: should throw error if repo throws error', async () => {
     const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
     stub(buildingRepo, 'findByDomainId').throws(new Error('Error'));
