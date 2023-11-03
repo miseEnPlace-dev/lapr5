@@ -12,7 +12,7 @@ component "MD Management" as MDM <<component>> <<system (C4)>> {
   Interface "Data Model API" as DATA_API
 
 
-  folder "Frameworks & Drivers Layer" #80FFFF {
+  folder "Frameworks & Drivers Layer" as FDL #80FFFF {
     component "Routing" as ROUTE <<component>> {
     }
     component "Persistence" as PERSISTENCE <<component>> {
@@ -30,19 +30,19 @@ component "MD Management" as MDM <<component>> <<system (C4)>> {
   Interface "Model API" AS MODEL_API
   Interface "Persistence API" AS PERSISTENCE_API
 
-  folder "Interface Adapters Layer" #80FF80 {
+  folder "Interface Adapters Layer" as IAL #80FF80 {
     component "Controller" as CTRL <<component>> {
     }
     component "Repository" as REPO <<component>> {
     }
   }
 
-  folder "Application Business Rules" #FF8080 {
+  folder "Application Business Rules" as ABR #FF8080 {
     component "Application Service" as SRV <<component>> {
     }
   }
 
-  folder "Enterprise Business Rules" #FFC080 {
+  folder "Enterprise Business Rules" as EBR #FFC080 {
     component "Domain Model DDD" as MODEL <<component>> {
     }
   }
@@ -78,23 +78,23 @@ MODEL -up- MODEL_API
 
 component "MD Management" as MDM2 <<component>> <<system (C4)>> {
   folder Infrastructure as I2 {
-    package Persistence as PERS2
-    package Routes as ROUTE2
+    folder Persistence as PERS2
+    folder Routes as ROUTE2
   }
 
   folder "Interface Adapters" as IA2 {
-    package Controllers as CTRL2
-    package Repositories as REPO2
+    folder Controllers as CTRL2
+    folder Repositories as REPO2
   }
 
   folder "Application Services/Use Case Services" as UC2 {
-    package "App Services" as APP2
+    folder "App Services" as APP2
   }
 
   folder "Entities/Core/Domain" as E2 {
-    package "Aggregates" as AGG2
-    package "Value Objects" as VO2
-    package "Services" as SRV2
+    folder "Aggregates" as AGG2 
+    folder "Value Objects" as VO2
+    folder "Services" as SRV2
   }
 }
 
@@ -109,5 +109,10 @@ APP2 ..> SRV2
 I2 ..> IA2
 IA2 ..> UC2
 UC2 ..> E2
+
+I2 ..> FDL : <<manifest>>
+IA2 ..> IAL : <<manifest>>
+UC2 ..> ABR : <<manifest>>
+E2 ..> EBR : <<manifest>>
 
 @enduml
