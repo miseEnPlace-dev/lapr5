@@ -8,13 +8,12 @@ This diagram represents the domain model of the system. It can help the reader t
 
 ## Client Clarifications
 
-You can check the client clarifications throughout the project in the following link: [Client Clarifications](./client_clarifications/readme.md)
+You can check the client clarifications throughout the project [here](./client_clarifications/readme.md).
 
 ## Architecture artifacts
 
-### [C4 Model Views](./views/readme.md)
-
-### [Mapping between Views](./views/mapping/readme.md)
+- [C4 Model Views](./views/readme.md)
+- [Mapping between Views](./views/mapping/readme.md)
 
 ## Definition of Ready
 

@@ -10,7 +10,7 @@ This document contains the mapping between the views of the C4 model.
 
 ### Implementation View - Physical View
 
-![Implementation View - Physical View](./level-2/assets/lv-pv.svg)
+![Implementation View - Physical View](./level-2/assets/iv-pv.svg)
 
 ## Level 3
 
@@ -20,4 +20,4 @@ This document contains the mapping between the views of the C4 model.
 
 ### Implementation View - Physical View
 
-![Implementation View - Physical View](./level-3/assets/lv-pv.svg)
+![Implementation View - Physical View](./level-3/assets/iv-pv.svg)
