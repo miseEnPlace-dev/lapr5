@@ -1,4 +1,4 @@
-@startuml lv-pv
+@startuml iv-pv
 
 node "localhost: ?" as LOCAL {
   component "Browser" as B <<component>> {
