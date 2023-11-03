@@ -47,7 +47,11 @@ export default class ElevatorService implements IElevatorService {
     elevatorDTO: IElevatorDTO
   ): Promise<Result<Omit<IElevatorDTO, 'buildingCode'>>> {
     try {
-      const buildingCode = BuildingCode.create(elevatorDTO.buildingCode).getValue();
+      const buildingCodeOrError = BuildingCode.create(elevatorDTO.buildingCode);
+      if (buildingCodeOrError.isFailure)
+        return Result.fail<IElevatorDTO>(buildingCodeOrError.errorValue());
+      const buildingCode = buildingCodeOrError.getValue();
+
       const building = await this.buildingRepo.findByCode(buildingCode);
       if (!building) return Result.fail<IElevatorDTO>('Building not found');
 
@@ -56,25 +60,44 @@ export default class ElevatorService implements IElevatorService {
       const floors: Floor[] = [];
 
       for (const floorId of elevatorDTO.floorCodes) {
-        const code = FloorCode.create(floorId).getValue();
+        const floorCodeOrError = FloorCode.create(floorId);
+        if (floorCodeOrError.isFailure)
+          return Result.fail<IElevatorDTO>(floorCodeOrError.errorValue());
+        const code = floorCodeOrError.getValue();
+
         const floor = await this.floorRepo.findByCode(code);
         if (!floor) return Result.fail<IElevatorDTO>('Floor not found');
-        if (!floor.buildingCode.equals(building.code))
+        if (floor.buildingCode !== building.code)
           return Result.fail<IElevatorDTO>('Floor not found in building');
+
         floors.push(floor);
       }
 
-      const code = ElevatorCode.create(elevatorDTO.code).getValue();
-      const branding =
+      const codeOrError = ElevatorCode.create(elevatorDTO.code);
+      if (codeOrError.isFailure) return Result.fail<IElevatorDTO>(codeOrError.errorValue());
+      const code = codeOrError.getValue();
+
+      const brandingOrError =
         elevatorDTO.brand && elevatorDTO.model
-          ? ElevatorBranding.create(elevatorDTO.brand, elevatorDTO.model).getValue()
+          ? ElevatorBranding.create(elevatorDTO.brand, elevatorDTO.model)
           : undefined;
-      const serialNumber = elevatorDTO.serialNumber
-        ? ElevatorSerialNumber.create(elevatorDTO.serialNumber).getValue()
+      if (brandingOrError && brandingOrError.isFailure)
+        return Result.fail<IElevatorDTO>(brandingOrError.errorValue());
+      const branding = brandingOrError ? brandingOrError.getValue() : undefined;
+
+      const serialNumberOrError = elevatorDTO.serialNumber
+        ? ElevatorSerialNumber.create(elevatorDTO.serialNumber)
         : undefined;
-      const description = elevatorDTO.description
-        ? ElevatorDescription.create(elevatorDTO.description).getValue()
+      if (serialNumberOrError && serialNumberOrError.isFailure)
+        return Result.fail<IElevatorDTO>(serialNumberOrError.errorValue());
+      const serialNumber = serialNumberOrError ? serialNumberOrError.getValue() : undefined;
+
+      const descriptionOrError = elevatorDTO.description
+        ? ElevatorDescription.create(elevatorDTO.description)
         : undefined;
+      if (descriptionOrError && descriptionOrError.isFailure)
+        return Result.fail<IElevatorDTO>(descriptionOrError.errorValue());
+      const description = descriptionOrError ? descriptionOrError.getValue() : undefined;
 
       const elevatorOrError = Elevator.create({
         code,
@@ -90,14 +113,10 @@ export default class ElevatorService implements IElevatorService {
 
       building.elevator = elevatorResult;
 
-      try {
-        await this.buildingRepo.save(building);
+      await this.buildingRepo.save(building);
 
-        const elevatorDTOResult = ElevatorMapper.toDTO(elevatorResult);
-        return Result.ok<Omit<IElevatorDTO, 'buildingCode'>>(elevatorDTOResult);
-      } catch (e) {
-        throw e;
-      }
+      const elevatorDTOResult = ElevatorMapper.toDTO(elevatorResult);
+      return Result.ok<Omit<IElevatorDTO, 'buildingCode'>>(elevatorDTOResult);
     } catch (e) {
       throw e;
     }
@@ -109,7 +128,11 @@ export default class ElevatorService implements IElevatorService {
     try {
       if (!elevatorDTO.buildingCode) return Result.fail<IElevatorDTO>('Elevator code not provided');
 
-      const buildingCode = BuildingCode.create(elevatorDTO.buildingCode).getValue();
+      const buildingCodeOrError = BuildingCode.create(elevatorDTO.buildingCode);
+      if (buildingCodeOrError.isFailure)
+        return Result.fail<IElevatorDTO>(buildingCodeOrError.errorValue());
+      const buildingCode = buildingCodeOrError.getValue();
+
       const building = await this.buildingRepo.findByCode(buildingCode);
       if (!building) return Result.fail<IElevatorDTO>('Building not found');
 
@@ -118,32 +141,51 @@ export default class ElevatorService implements IElevatorService {
 
       if (elevatorDTO.floorCodes) {
         for (const floorId of elevatorDTO.floorCodes) {
-          const code = FloorCode.create(floorId).getValue();
+          const codeOrError = FloorCode.create(floorId);
+          if (codeOrError.isFailure) return Result.fail<IElevatorDTO>(codeOrError.errorValue());
+          const code = codeOrError.getValue();
+
           const floor = await this.floorRepo.findByCode(code);
           if (!floor) return Result.fail<IElevatorDTO>('Floor not found');
-          if (!floor.buildingCode.equals(building.code))
+          if (floor.buildingCode !== building.code)
             return Result.fail<IElevatorDTO>('Floor not found in building');
+
           floors.push(floor);
         }
-      } else {
-        for (const floor of building.elevator.floors) floors.push(floor);
-      }
+      } else for (const floor of building.elevator.floors) floors.push(floor);
 
-      const code = elevatorDTO.code
-        ? ElevatorCode.create(elevatorDTO.code).getValue()
+      const codeOrError = elevatorDTO.code
+        ? ElevatorCode.create(elevatorDTO.code)
         : building.elevator.code;
-      const branding =
+      if (codeOrError instanceof Result && codeOrError.isFailure)
+        return Result.fail<IElevatorDTO>(codeOrError.errorValue());
+      const code = codeOrError instanceof Result ? codeOrError.getValue() : codeOrError;
+
+      const brandingOrError =
         elevatorDTO.brand && elevatorDTO.model
-          ? ElevatorBranding.create(elevatorDTO.brand, elevatorDTO.model).getValue()
+          ? ElevatorBranding.create(elevatorDTO.brand, elevatorDTO.model)
           : building.elevator.brand && building.elevator.model
-          ? ElevatorBranding.create(building.elevator.brand, building.elevator.model).getValue()
+          ? ElevatorBranding.create(building.elevator?.brand, building.elevator?.model)
           : undefined;
-      const serialNumber = elevatorDTO.serialNumber
-        ? ElevatorSerialNumber.create(elevatorDTO.serialNumber).getValue()
+      if (brandingOrError instanceof Result && brandingOrError.isFailure)
+        return Result.fail<IElevatorDTO>(brandingOrError.errorValue());
+      const branding = brandingOrError instanceof Result ? brandingOrError.getValue() : undefined;
+
+      const serialNumberOrError = elevatorDTO.serialNumber
+        ? ElevatorSerialNumber.create(elevatorDTO.serialNumber)
         : building.elevator.serialNumber;
-      const description = elevatorDTO.description
-        ? ElevatorDescription.create(elevatorDTO.description).getValue()
+      if (serialNumberOrError instanceof Result && serialNumberOrError.isFailure)
+        return Result.fail<IElevatorDTO>(serialNumberOrError.errorValue());
+      const serialNumber =
+        serialNumberOrError instanceof Result ? serialNumberOrError.getValue() : undefined;
+
+      const descriptionOrError = elevatorDTO.description
+        ? ElevatorDescription.create(elevatorDTO.description)
         : building.elevator.description;
+      if (descriptionOrError instanceof Result && descriptionOrError.isFailure)
+        return Result.fail<IElevatorDTO>(descriptionOrError.errorValue());
+      const description =
+        descriptionOrError instanceof Result ? descriptionOrError.getValue() : undefined;
 
       const elevatorOrError = Elevator.create({
         code,
