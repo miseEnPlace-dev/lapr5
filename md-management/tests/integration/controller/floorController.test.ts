@@ -5,6 +5,7 @@ import sinon, { SinonSpy, assert, match, spy, stub } from 'sinon';
 import { NextFunction, Request, Response } from 'express';
 
 import { beforeEach, describe, it } from 'vitest';
+
 import FloorController from '../../../src/controllers/floorController';
 import { Result } from '../../../src/core/logic/Result';
 import { IFloorDTO } from '../../../src/dto/IFloorDTO';
@@ -12,15 +13,24 @@ import { container } from '../../../src/loaders/inversify';
 import { TYPES } from '../../../src/loaders/inversify/types';
 import IFloorService from '../../../src/services/IServices/IFloorService';
 
-describe('floor controller', () => {
+describe('floor Controller', () => {
   beforeEach(() => {
     sinon.restore();
   });
 
-  it('should return 201 (Created) when creating a new floor', async () => {
-    const body = { name: 'floor12', maxDimensions: { width: 10, length: 10 }, code: '123' };
+  it('createFloor: returns status 201 code (created)', async () => {
+    const body = {
+      code: '1',
+      buildingCode: '1',
+      dimensions: {
+        width: 100,
+        length: 100
+      }
+    };
+
     const req: Partial<Request> = {};
     req.body = body;
+    req.params = { buildingCode: body.buildingCode };
 
     const res: Partial<Response> = {
       status: spy()
@@ -28,30 +38,35 @@ describe('floor controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const floorServiceInstance = container.get<IFloorService>(TYPES.floorService);
-    stub(floorServiceInstance, 'createFloor').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IFloorDTO>({
-            code: '123',
-            name: body.name,
-            maxDimensions: { width: 10, length: 10 }
-          })
-        );
+    stub(floorServiceInstance, 'createFloor').resolves(
+      Result.ok<IFloorDTO>({
+        code: body.code,
+        buildingCode: body.buildingCode,
+        dimensions: body.dimensions
       })
     );
 
     const ctrl = new FloorController(floorServiceInstance);
 
-    await ctrl.createFloor(<Request>req, <Response>res, <NextFunction>next);
+    await ctrl.createFloor(req as Request, res as Response, next as NextFunction);
 
     assert.calledOnce(<SinonSpy>res.status);
     assert.calledWith(<SinonSpy>res.status, 201);
   });
 
-  it('createFloor: returns json with code+name+max-dimensions values', async () => {
-    const body = { name: 'floor12', maxDimensions: { width: 10, length: 10 }, code: '123' };
+  it('createFloor: returns json with code+buildingCode+dimensions values', async () => {
+    const body = {
+      code: '1',
+      buildingCode: '1',
+      dimensions: {
+        width: 100,
+        length: 100
+      }
+    };
+
     const req: Partial<Request> = {};
     req.body = body;
+    req.params = { buildingCode: body.buildingCode };
 
     const res: Partial<Response> = {
       status: _ => <Response>{}
@@ -61,15 +76,11 @@ describe('floor controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const floorServiceInstance = container.get<IFloorService>(TYPES.floorService);
-    stub(floorServiceInstance, 'createFloor').returns(
-      new Promise(resolve => {
-        resolve(
-          Result.ok<IFloorDTO>({
-            code: '123',
-            name: body.name,
-            maxDimensions: { width: 10, length: 10 }
-          })
-        );
+    stub(floorServiceInstance, 'createFloor').resolves(
+      Result.ok<IFloorDTO>({
+        code: body.code,
+        buildingCode: body.buildingCode,
+        dimensions: body.dimensions
       })
     );
 
@@ -78,20 +89,22 @@ describe('floor controller', () => {
     await ctrl.createFloor(<Request>req, <Response>res, <NextFunction>next);
 
     assert.calledOnce(<SinonSpy>res.json);
-    assert.calledWith(
-      <SinonSpy>res.json,
-      match({
-        code: '123',
-        name: body.name,
-        maxDimensions: { width: 10, length: 10 }
-      })
-    );
+    assert.calledWith(<SinonSpy>res.json, match(body));
   });
 
   it('createFloor: returns 400 when error occurs', async () => {
-    const body = { name: 'floor12', maxDimensions: { width: 10, length: 10 }, code: '123' };
+    const body = {
+      code: '1',
+      buildingCode: '1',
+      dimensions: {
+        width: 100,
+        length: 100
+      }
+    };
+
     const req: Partial<Request> = {};
     req.body = body;
+    req.params = { buildingCode: body.buildingCode };
 
     const res: Partial<Response> = {
       status: spy()
@@ -99,11 +112,7 @@ describe('floor controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const floorServiceInstance = container.get<IFloorService>(TYPES.floorService);
-    stub(floorServiceInstance, 'createFloor').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IFloorDTO>('Floor already exists'));
-      })
-    );
+    stub(floorServiceInstance, 'createFloor').resolves(Result.fail<IFloorDTO>('error'));
 
     const ctrl = new FloorController(floorServiceInstance);
 
@@ -114,9 +123,18 @@ describe('floor controller', () => {
   });
 
   it('createFloor: returns json with service message error', async () => {
-    const body = { name: 'floor12', maxDimensions: { width: 10, length: 10 }, code: '123' };
+    const body = {
+      code: '1',
+      buildingCode: '1',
+      dimensions: {
+        width: 100,
+        length: 100
+      }
+    };
+
     const req: Partial<Request> = {};
     req.body = body;
+    req.params = { buildingCode: body.buildingCode };
 
     const res: Partial<Response> = {
       status: _ => <Response>{}
@@ -126,34 +144,313 @@ describe('floor controller', () => {
     const next: Partial<NextFunction> = () => {};
 
     const floorServiceInstance = container.get<IFloorService>(TYPES.floorService);
-    stub(floorServiceInstance, 'createFloor').returns(
-      new Promise(resolve => {
-        resolve(Result.fail<IFloorDTO>('Error message'));
-      })
-    );
+    stub(floorServiceInstance, 'createFloor').resolves(Result.fail<IFloorDTO>('error'));
 
     const ctrl = new FloorController(floorServiceInstance);
 
     await ctrl.createFloor(<Request>req, <Response>res, <NextFunction>next);
 
     assert.calledOnce(<SinonSpy>res.json);
-    assert.calledWith(<SinonSpy>res.json, match({ message: 'Error message' }));
+    assert.calledWith(<SinonSpy>res.json, match({ message: 'error' }));
   });
 
-  it('createFloor: forwards error to next function when service throws error', async () => {
+  it('createFloor: calls next with error when exception occurs', async () => {
     const req: Partial<Request> = {};
+    req.params = { buildingCode: '1' };
 
     const res: Partial<Response> = {};
     const next = spy();
 
     const floorServiceInstance = container.get<IFloorService>(TYPES.floorService);
-    stub(floorServiceInstance, 'createFloor').throws(new Error('Error message'));
+    stub(floorServiceInstance, 'createFloor').throws(new Error('error'));
 
     const ctrl = new FloorController(floorServiceInstance);
 
     await ctrl.createFloor(<Request>req, <Response>res, <NextFunction>next);
 
     assert.calledOnce(<SinonSpy>next);
-    assert.calledWith(<SinonSpy>next, match({ message: 'Error message' }));
+    assert.calledWith(<SinonSpy>next, match({ message: 'error' }));
+  });
+
+  it('updateFloor: returns status 200 code (OK)', async () => {
+    const body = {
+      description: 'new description',
+      dimensions: {
+        width: 100,
+        length: 100
+      }
+    };
+    const req: Partial<Request> = {};
+    req.body = body;
+    req.params = { buildingCode: '1', code: '1' };
+
+    const res: Partial<Response> = {
+      status: spy()
+    };
+
+    const next: Partial<NextFunction> = () => {};
+
+    const floorServiceInstance = container.get<IFloorService>(TYPES.floorService);
+    stub(floorServiceInstance, 'updateFloor').resolves(
+      Result.ok<IFloorDTO>({
+        code: '1',
+        buildingCode: '1',
+        description: body.description,
+        dimensions: body.dimensions
+      })
+    );
+
+    const ctrl = new FloorController(floorServiceInstance);
+
+    await ctrl.updateFloor(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.status);
+    assert.calledWith(<SinonSpy>res.status, 200);
+  });
+
+  it('updateFloor: returns json with code+buildingCode+description+dimensions values', async () => {
+    const body = {
+      description: 'new description',
+      dimensions: {
+        width: 100,
+        length: 100
+      }
+    };
+    const req: Partial<Request> = {};
+    req.body = body;
+    req.params = { buildingCode: '1', code: '1' };
+
+    const res: Partial<Response> = {
+      status: _ => <Response>{}
+    };
+    stub(res, 'status').returns(res);
+    res.json = spy();
+    const next: Partial<NextFunction> = () => {};
+
+    const floorServiceInstance = container.get<IFloorService>(TYPES.floorService);
+    stub(floorServiceInstance, 'updateFloor').resolves(
+      Result.ok<IFloorDTO>({
+        code: '1',
+        buildingCode: '1',
+        description: body.description,
+        dimensions: body.dimensions
+      })
+    );
+
+    const ctrl = new FloorController(floorServiceInstance);
+
+    await ctrl.updateFloor(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.json);
+    assert.calledWith(<SinonSpy>res.json, match(body));
+  });
+
+  it('updateFloor: returns 400 when error occurs', async () => {
+    const body = {
+      description: 'new description',
+      dimensions: {
+        width: 100,
+        length: 100
+      }
+    };
+    const req: Partial<Request> = {};
+    req.body = body;
+    req.params = { buildingCode: '1', code: '1' };
+
+    const res: Partial<Response> = {
+      status: spy()
+    };
+    const next: Partial<NextFunction> = () => {};
+
+    const floorServiceInstance = container.get<IFloorService>(TYPES.floorService);
+    stub(floorServiceInstance, 'updateFloor').resolves(Result.fail<IFloorDTO>('error'));
+
+    const ctrl = new FloorController(floorServiceInstance);
+
+    await ctrl.updateFloor(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.status);
+    assert.calledWith(<SinonSpy>res.status, 400);
+  });
+
+  it('updateFloor: returns json with service message error', async () => {
+    const body = {
+      description: 'new description',
+      dimensions: {
+        width: 100,
+        length: 100
+      }
+    };
+    const req: Partial<Request> = {};
+    req.body = body;
+    req.params = { buildingCode: '1', code: '1' };
+
+    const res: Partial<Response> = {
+      status: _ => <Response>{}
+    };
+    stub(res, 'status').returns(res);
+    res.json = spy();
+    const next: Partial<NextFunction> = () => {};
+
+    const floorServiceInstance = container.get<IFloorService>(TYPES.floorService);
+    stub(floorServiceInstance, 'updateFloor').resolves(Result.fail<IFloorDTO>('error'));
+
+    const ctrl = new FloorController(floorServiceInstance);
+
+    await ctrl.updateFloor(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.json);
+    assert.calledWith(<SinonSpy>res.json, match({ message: 'error' }));
+  });
+
+  it('updateFloor: calls next with error when exception occurs', async () => {
+    const req: Partial<Request> = {};
+    req.params = { buildingCode: '1', code: '1' };
+
+    const res: Partial<Response> = {};
+    const next = spy();
+
+    const floorServiceInstance = container.get<IFloorService>(TYPES.floorService);
+    stub(floorServiceInstance, 'updateFloor').throws(new Error('error'));
+
+    const ctrl = new FloorController(floorServiceInstance);
+
+    await ctrl.updateFloor(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>next);
+    assert.calledWith(<SinonSpy>next, match({ message: 'error' }));
+  });
+
+  it('getFloors: returns status 200 code (OK)', async () => {
+    const req: Partial<Request> = {};
+    req.params = { buildingCode: '1' };
+    req.query = {};
+
+    const res: Partial<Response> = {
+      status: spy()
+    };
+
+    const next: Partial<NextFunction> = () => {};
+
+    const floorServiceInstance = container.get<IFloorService>(TYPES.floorService);
+    stub(floorServiceInstance, 'getBuildingFloors').resolves(
+      Result.ok<IFloorDTO[]>([
+        {
+          code: '1',
+          buildingCode: '1',
+          dimensions: {
+            width: 100,
+            length: 100
+          }
+        }
+      ])
+    );
+
+    const ctrl = new FloorController(floorServiceInstance);
+
+    await ctrl.getFloors(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.status);
+    assert.calledWith(<SinonSpy>res.status, 200);
+  });
+
+  it('getFloors: returns json with code+buildingCode+dimensions values', async () => {
+    const req: Partial<Request> = {};
+    req.params = { buildingCode: '1' };
+    req.query = {};
+
+    const res: Partial<Response> = {
+      status: _ => <Response>{}
+    };
+    stub(res, 'status').returns(res);
+    res.json = spy();
+    const next: Partial<NextFunction> = () => {};
+
+    const floorServiceInstance = container.get<IFloorService>(TYPES.floorService);
+    stub(floorServiceInstance, 'getBuildingFloors').resolves(
+      Result.ok<IFloorDTO[]>([
+        {
+          code: '1',
+          buildingCode: '1',
+          dimensions: {
+            width: 100,
+            length: 100
+          }
+        }
+      ])
+    );
+
+    const ctrl = new FloorController(floorServiceInstance);
+
+    await ctrl.getFloors(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.json);
+    assert.calledWith(
+      <SinonSpy>res.json,
+      match([{ code: '1', buildingCode: '1', dimensions: { width: 100, length: 100 } }])
+    );
+  });
+
+  it('getFloors: returns 400 when error occurs', async () => {
+    const req: Partial<Request> = {};
+    req.params = { buildingCode: '1' };
+    req.query = {};
+
+    const res: Partial<Response> = {
+      status: spy()
+    };
+    const next: Partial<NextFunction> = () => {};
+
+    const floorServiceInstance = container.get<IFloorService>(TYPES.floorService);
+    stub(floorServiceInstance, 'getBuildingFloors').resolves(Result.fail<IFloorDTO[]>('error'));
+
+    const ctrl = new FloorController(floorServiceInstance);
+
+    await ctrl.getFloors(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.status);
+    assert.calledWith(<SinonSpy>res.status, 400);
+  });
+
+  it('getFloors: returns json with service message error', async () => {
+    const req: Partial<Request> = {};
+    req.params = { buildingCode: '1' };
+    req.query = {};
+
+    const res: Partial<Response> = {
+      status: _ => <Response>{}
+    };
+    stub(res, 'status').returns(res);
+    res.json = spy();
+    const next: Partial<NextFunction> = () => {};
+
+    const floorServiceInstance = container.get<IFloorService>(TYPES.floorService);
+    stub(floorServiceInstance, 'getBuildingFloors').resolves(Result.fail<IFloorDTO[]>('error'));
+
+    const ctrl = new FloorController(floorServiceInstance);
+
+    await ctrl.getFloors(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.json);
+    assert.calledWith(<SinonSpy>res.json, match({ message: 'error' }));
+  });
+
+  it('getFloors: calls next with error when exception occurs', async () => {
+    const req: Partial<Request> = {};
+    req.params = { buildingCode: '1' };
+    req.query = {};
+
+    const res: Partial<Response> = {};
+    const next = spy();
+
+    const floorServiceInstance = container.get<IFloorService>(TYPES.floorService);
+    stub(floorServiceInstance, 'getBuildingFloors').throws(new Error('error'));
+
+    const ctrl = new FloorController(floorServiceInstance);
+
+    await ctrl.getFloors(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>next);
+    assert.calledWith(<SinonSpy>next, match({ message: 'error' }));
   });
 });
