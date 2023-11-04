@@ -17,12 +17,12 @@ export class UserEmail extends ValueObject<UserEmailProps> {
   }
 
   public static create(email: string): Result<UserEmail> {
-    const guardResult = Guard.againstNullOrUndefined(email, 'email');
+    const guardResult = Guard.againstNullOrUndefined(email, 'Email');
     if (!guardResult.succeeded) return Result.fail<UserEmail>(guardResult.message);
 
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!regex.test(email)) return Result.fail<UserEmail>('Email format is invalid');
+    if (!regex.test(email)) return Result.fail<UserEmail>('Invalid email format');
 
     return Result.ok<UserEmail>(new UserEmail({ value: email }));
   }
