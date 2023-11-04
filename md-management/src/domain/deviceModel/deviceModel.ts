@@ -57,8 +57,8 @@ export class DeviceModel extends AggregateRoot<DeviceModelProps> {
 
     if (!guardResult.succeeded) return Result.fail<DeviceModel>(guardResult.message);
 
-    const building = new DeviceModel({ ...props }, id);
+    const deviceModel = new DeviceModel({ ...props }, id);
 
-    return Result.ok<DeviceModel>(building);
+    return Result.ok<DeviceModel>(deviceModel);
   }
 }
