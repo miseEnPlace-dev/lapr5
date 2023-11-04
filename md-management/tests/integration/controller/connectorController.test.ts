@@ -196,5 +196,5 @@ describe('connector controller', () => {
 
     assert.calledOnce(<SinonSpy>res.json);
     assert.calledWith(<SinonSpy>res.json, match(connectorList));
-  }
+  });
 });
