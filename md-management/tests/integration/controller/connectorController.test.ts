@@ -197,4 +197,162 @@ describe('connector controller', () => {
     assert.calledOnce(<SinonSpy>res.json);
     assert.calledWith(<SinonSpy>res.json, match(connectorList));
   });
+
+  it('getConnectors: returns json with error message on failed result', async () => {
+    const req: Partial<Request> = { query: {} };
+
+    const res: Partial<Response> = {
+      status: () => <Response>{},
+      json: spy()
+    };
+
+    stub(res, 'status').returns(res);
+
+    const next: Partial<NextFunction> = () => {};
+
+    const connectorSvc = container.get<IConnectorService>(TYPES.connectorService);
+    stub(connectorSvc, 'getAllConnectors').resolves(Result.fail<IConnectorDTO[]>('error'));
+
+    const ctrl = new ConnectorController(connectorSvc);
+    await ctrl.getConnectors(req as Request, res as Response, next as NextFunction);
+
+    assert.calledOnce(<SinonSpy>res.json);
+    assert.calledWith(<SinonSpy>res.json, match({ errors: 'error' }));
+  });
+
+  it('getConnectors: forwards error to next when service throws error', async () => {
+    const req: Partial<Request> = { query: {} };
+    const res: Partial<Response> = {};
+    const next = spy();
+
+    const connectorSvc = container.get<IConnectorService>(TYPES.connectorService);
+    stub(connectorSvc, 'getAllConnectors').throws(new Error('error'));
+
+    const ctrl = new ConnectorController(connectorSvc);
+    await ctrl.getConnectors(req as Request, res as Response, next as NextFunction);
+
+    assert.calledOnce(<SinonSpy>next);
+    assert.calledWith(<SinonSpy>next, match({ message: 'error' }));
+  });
+
+  it('getConnectors: returns 400 code when query is invalid', async () => {
+    const req: Partial<Request> = { query: { buildingCodes: { something: 'not an array' } } };
+    const res: Partial<Response> = {
+      status: spy()
+    };
+    const next: Partial<NextFunction> = () => {};
+
+    const connectorSvc = container.get<IConnectorService>(TYPES.connectorService);
+
+    const ctrl = new ConnectorController(connectorSvc);
+    await ctrl.getConnectors(req as Request, res as Response, next as NextFunction);
+
+    assert.calledOnce(<SinonSpy>res.status);
+    assert.calledWith(<SinonSpy>res.status, 400);
+  });
+
+  it('updateConnector: returns json with updated connector dto', async () => {
+    const body = {
+      code: 'A3B3',
+      floor1Code: 'A3',
+      floor2Code: 'B3'
+    };
+    const req: Partial<Request> = { body, params: { code: 'A3B3' } };
+
+    const res: Partial<Response> = {
+      status: () => <Response>{},
+      json: spy()
+    };
+
+    stub(res, 'status').returns(res);
+
+    const next: Partial<NextFunction> = () => {};
+
+    const connectorSvc = container.get<IConnectorService>(TYPES.connectorService);
+    stub(connectorSvc, 'updateConnector').resolves(Result.ok<IConnectorDTO>(body as IConnectorDTO));
+
+    const ctrl = new ConnectorController(connectorSvc);
+    await ctrl.updateConnector(req as Request, res as Response, next as NextFunction);
+
+    assert.calledOnce(<SinonSpy>res.json);
+    assert.calledWith(<SinonSpy>res.json, match(body));
+  });
+  it('updateConnector: returns json with error message when service returns fail', async () => {
+    const body = {
+      code: 'A3B3',
+      floor1Code: 'A3',
+      floor2Code: 'B3'
+    };
+    const req: Partial<Request> = { body, params: { code: 'A3B3' } };
+
+    const res: Partial<Response> = {
+      status: () => <Response>{},
+      json: spy()
+    };
+
+    stub(res, 'status').returns(res);
+
+    const next: Partial<NextFunction> = () => {};
+
+    const connectorSvc = container.get<IConnectorService>(TYPES.connectorService);
+    stub(connectorSvc, 'updateConnector').resolves(Result.fail<IConnectorDTO>('error'));
+
+    const ctrl = new ConnectorController(connectorSvc);
+    await ctrl.updateConnector(req as Request, res as Response, next as NextFunction);
+
+    assert.calledOnce(<SinonSpy>res.json);
+    assert.calledWith(<SinonSpy>res.json, match({ errors: 'error' }));
+  });
+
+  it('updateConnector: forwards error to next when service throws error', async () => {
+    const body = { code: 'A3B3' };
+    const req: Partial<Request> = { body, params: { code: 'A3B3' } };
+    const res: Partial<Response> = {};
+    const next = spy();
+
+    const connectorSvc = container.get<IConnectorService>(TYPES.connectorService);
+    stub(connectorSvc, 'updateConnector').throws(new Error('error'));
+
+    const ctrl = new ConnectorController(connectorSvc);
+    await ctrl.updateConnector(req as Request, res as Response, next as NextFunction);
+
+    assert.calledOnce(<SinonSpy>next);
+    assert.calledWith(<SinonSpy>next, match({ message: 'error' }));
+  });
+
+  it('updateConnector: returns status code 200 (ok)', async () => {
+    const body = { code: 'A3B3' };
+    const req: Partial<Request> = { body, params: { code: 'A3B3' } };
+    const res: Partial<Response> = {
+      status: spy()
+    };
+    const next: Partial<NextFunction> = () => {};
+
+    const connectorSvc = container.get<IConnectorService>(TYPES.connectorService);
+    stub(connectorSvc, 'updateConnector').resolves(Result.ok<IConnectorDTO>(body as IConnectorDTO));
+
+    const ctrl = new ConnectorController(connectorSvc);
+    await ctrl.updateConnector(req as Request, res as Response, next as NextFunction);
+
+    assert.calledOnce(<SinonSpy>res.status);
+    assert.calledWith(<SinonSpy>res.status, 200);
+  });
+
+  it('updateConnector: returns status code 400 when error occurs', async () => {
+    const body = { code: 'A3B3' };
+    const req: Partial<Request> = { body, params: { code: 'A3B3' } };
+    const res: Partial<Response> = {
+      status: spy()
+    };
+    const next: Partial<NextFunction> = () => {};
+
+    const connectorSvc = container.get<IConnectorService>(TYPES.connectorService);
+    stub(connectorSvc, 'updateConnector').resolves(Result.fail<IConnectorDTO>('error'));
+
+    const ctrl = new ConnectorController(connectorSvc);
+    await ctrl.updateConnector(req as Request, res as Response, next as NextFunction);
+
+    assert.calledOnce(<SinonSpy>res.status);
+    assert.calledWith(<SinonSpy>res.status, 400);
+  });
 });
