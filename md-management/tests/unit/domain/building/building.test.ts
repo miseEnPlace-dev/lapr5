@@ -87,6 +87,20 @@ describe('Building', () => {
     expect(building.description.value).toBe('newDesc');
   });
 
+  it('should update the max dimensions', () => {
+    const building = Building.create({
+      name: BuildingName.create('name').getValue(),
+      code: BuildingCode.create('code').getValue(),
+      maxDimensions: BuildingMaxDimensions.create(10, 10).getValue(),
+      description: BuildingDescription.create('description').getValue()
+    }).getValue();
+
+    building.maxDimensions = BuildingMaxDimensions.create(20, 20).getValue();
+
+    expect(building.maxDimensions.length).toBe(20);
+    expect(building.maxDimensions.width).toBe(20);
+  });
+
   it('should update the elevator', () => {
     const building = Building.create({
       name: BuildingName.create('name').getValue(),
