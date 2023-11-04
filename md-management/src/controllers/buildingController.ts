@@ -72,9 +72,8 @@ export default class BuildingController implements IBuildingController {
 
   public async getBuildings(req: Request, res: Response, next: NextFunction) {
     try {
-      if (req.query.minFloors && req.query.maxFloors) {
+      if (req.query.minFloors && req.query.maxFloors)
         return this.getBuildingsWithMinMaxFloors(req, res, next);
-      }
 
       const buildingsOrError = (await this.buildingServiceInstance.getBuildings()) as Result<
         IBuildingDTO[]

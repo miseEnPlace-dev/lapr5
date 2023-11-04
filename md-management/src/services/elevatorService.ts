@@ -201,14 +201,10 @@ export default class ElevatorService implements IElevatorService {
 
       building.elevator = elevatorResult;
 
-      try {
-        await this.buildingRepo.save(building);
+      await this.buildingRepo.save(building);
 
-        const elevatorDTOResult = ElevatorMapper.toDTO(elevatorResult);
-        return Result.ok<Omit<IElevatorDTO, 'buildingCode'>>(elevatorDTOResult);
-      } catch (e) {
-        throw e;
-      }
+      const elevatorDTOResult = ElevatorMapper.toDTO(elevatorResult);
+      return Result.ok<Omit<IElevatorDTO, 'buildingCode'>>(elevatorDTOResult);
     } catch (e) {
       throw e;
     }

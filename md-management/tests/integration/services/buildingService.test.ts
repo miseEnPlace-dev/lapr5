@@ -330,4 +330,130 @@ describe('Building Service', () => {
     expect(result.isSuccess).toBe(true);
     expect(result.getValue()).toEqual([]);
   });
+
+  it('updateBuilding: should update building', async () => {
+    const building = {
+      code: BuildingCode.create('12345').getValue(),
+      name: BuildingName.create('Building 1').getValue(),
+      description: BuildingDescription.create('Description').getValue(),
+      maxDimensions: BuildingMaxDimensions.create(10, 10).getValue()
+    };
+
+    const dto = {
+      code: '12345',
+      name: 'Building 1',
+      description: 'Description',
+      maxDimensions: {
+        width: 10,
+        length: 10
+      }
+    };
+
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+    stub(buildingRepo, 'findByCode').resolves(building);
+    stub(buildingRepo, 'save').resolves(building);
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    const buildingService = new BuildingService(buildingRepo, floorRepo);
+    const result = await buildingService.updateBuilding(dto, '12345');
+
+    expect(result.isSuccess).toBe(true);
+    expect(result.getValue()).toEqual(dto);
+  });
+
+  it('updateBuilding: should fail if building not found', async () => {
+    const buildingDTO = {
+      code: '12345',
+      name: 'Building 1',
+      description: 'Description',
+      maxDimensions: {
+        width: 10,
+        length: 10
+      }
+    };
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+    stub(buildingRepo, 'findByCode').resolves(null);
+    stub(buildingRepo, 'save').resolves(buildingDTO);
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    const buildingService = new BuildingService(buildingRepo, floorRepo);
+
+    const res = await buildingService.updateBuilding(buildingDTO, '12345');
+
+    expect(res.isFailure).toBe(true);
+    expect(res.errorValue()).toBe('Building not found');
+  });
+
+  it('updateBuilding: should throw error if repo throws error', async () => {
+    const buildingDTO = {
+      code: '12345',
+      name: 'Building 1',
+      description: 'Description',
+      maxDimensions: {
+        width: 10,
+        length: 10
+      }
+    };
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+    stub(buildingRepo, 'findByCode').throws(new Error('Error'));
+    stub(buildingRepo, 'save').resolves(buildingDTO);
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    const buildingService = new BuildingService(buildingRepo, floorRepo);
+
+    expect(() => buildingService.updateBuilding(buildingDTO, '12345')).rejects.toThrowError(
+      'Error'
+    );
+  });
+
+  it('updateBuilding: should be able to edit wo/ description (optional)', async () => {
+    const building = {
+      code: BuildingCode.create('12345').getValue(),
+      name: BuildingName.create('Building 1').getValue(),
+      maxDimensions: BuildingMaxDimensions.create(10, 10).getValue()
+    };
+
+    const dto = {
+      code: '12345',
+      name: 'Building 1',
+      maxDimensions: {
+        width: 10,
+        length: 10
+      }
+    };
+
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+    stub(buildingRepo, 'findByCode').resolves(building);
+    stub(buildingRepo, 'save').resolves(building);
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    const buildingService = new BuildingService(buildingRepo, floorRepo);
+    const result = await buildingService.updateBuilding(dto, '12345');
+
+    expect(result.isSuccess).toBe(true);
+    expect(result.getValue()).toEqual(dto);
+  });
+
+  it('updateBuilding: should be able to edit wo/ name (optional)', async () => {
+    const building = {
+      code: BuildingCode.create('12345').getValue(),
+      description: BuildingDescription.create('Description').getValue(),
+      maxDimensions: BuildingMaxDimensions.create(10, 10).getValue()
+    };
+
+    const dto = {
+      code: '12345',
+      description: 'Description',
+      maxDimensions: {
+        width: 10,
+        length: 10
+      }
+    };
+
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+    stub(buildingRepo, 'findByCode').resolves(building);
+    stub(buildingRepo, 'save').resolves(building);
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    const buildingService = new BuildingService(buildingRepo, floorRepo);
+    const result = await buildingService.updateBuilding(dto, '12345');
+
+    expect(result.isSuccess).toBe(true);
+    expect(result.getValue()).toEqual(dto);
+  });
 });

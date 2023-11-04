@@ -565,4 +565,180 @@ describe('building controller', () => {
     assert.calledOnce(<SinonSpy>next);
     assert.calledWith(<SinonSpy>next, match({ message: 'Error message' }));
   });
+
+  it('getBuildingsWithMinMaxFloors: returns status 200 code (ok)', async () => {
+    const req: Partial<Request> = {};
+    req.query = { minFloors: '1', maxFloors: '10' };
+
+    const res: Partial<Response> = {
+      status: spy()
+    };
+    const next: Partial<NextFunction> = () => {};
+
+    const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
+    stub(buildingServiceInstance, 'getBuildingsWithMinMaxFloors').resolves(
+      Result.ok<IBuildingDTO[]>([
+        {
+          code: '1',
+          name: 'building',
+          maxDimensions: { width: 10, length: 10 }
+        }
+      ])
+    );
+
+    const ctrl = new BuildingController(buildingServiceInstance);
+
+    await ctrl.getBuildingsWithMinMaxFloors(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.status);
+    assert.calledWith(<SinonSpy>res.status, 200);
+  });
+
+  it('getBuildingsWithMinMaxFloors: returns json with buildings found', async () => {
+    const req: Partial<Request> = {};
+    req.query = { minFloors: '1', maxFloors: '10' };
+
+    const res: Partial<Response> = {
+      status: _ => <Response>{}
+    };
+    stub(res, 'status').returns(res);
+    res.json = spy();
+
+    const next: Partial<NextFunction> = () => {};
+
+    const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
+
+    stub(buildingServiceInstance, 'getBuildingsWithMinMaxFloors').resolves(
+      Result.ok<IBuildingDTO[]>([
+        {
+          code: '1',
+          name: 'building',
+          maxDimensions: { width: 10, length: 10 }
+        }
+      ])
+    );
+
+    const ctrl = new BuildingController(buildingServiceInstance);
+    await ctrl.getBuildingsWithMinMaxFloors(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.json);
+    assert.calledWith(
+      <SinonSpy>res.json,
+      match([
+        {
+          code: '1',
+          name: 'building',
+          maxDimensions: { width: 10, length: 10 }
+        }
+      ])
+    );
+  });
+
+  it('getBuildingsWithMinMaxFloors: return 400 when error occurs', async () => {
+    const req: Partial<Request> = {};
+    req.query = { minFloors: '1', maxFloors: '10' };
+
+    const res: Partial<Response> = {
+      status: _ => <Response>{}
+    };
+    stub(res, 'status').returns(res);
+    res.json = spy();
+
+    const next: Partial<NextFunction> = () => {};
+
+    const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
+
+    stub(buildingServiceInstance, 'getBuildingsWithMinMaxFloors').resolves(
+      Result.fail<IBuildingDTO[]>('Error message')
+    );
+
+    const ctrl = new BuildingController(buildingServiceInstance);
+    await ctrl.getBuildingsWithMinMaxFloors(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.status);
+    assert.calledWith(<SinonSpy>res.status, 400);
+  });
+
+  it('getBuildingsWithMinMaxFloors: returns json with service message error', async () => {
+    const req: Partial<Request> = {};
+    req.query = { minFloors: '1', maxFloors: '10' };
+
+    const res: Partial<Response> = {
+      status: _ => <Response>{}
+    };
+    stub(res, 'status').returns(res);
+    res.json = spy();
+
+    const next: Partial<NextFunction> = () => {};
+
+    const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
+
+    stub(buildingServiceInstance, 'getBuildingsWithMinMaxFloors').resolves(
+      Result.fail<IBuildingDTO[]>('Error message')
+    );
+
+    const ctrl = new BuildingController(buildingServiceInstance);
+    await ctrl.getBuildingsWithMinMaxFloors(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.json);
+    assert.calledWith(<SinonSpy>res.json, match({ message: 'Error message' }));
+  });
+
+  it('getBuildingsWithMinMaxFloors: forwards error to next function when service throws error', async () => {
+    const req: Partial<Request> = {};
+    req.query = { minFloors: '1', maxFloors: '10' };
+
+    const res: Partial<Response> = {};
+    const next = spy();
+
+    const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
+
+    stub(buildingServiceInstance, 'getBuildingsWithMinMaxFloors').throws(
+      new Error('Error message')
+    );
+
+    const ctrl = new BuildingController(buildingServiceInstance);
+    await ctrl.getBuildingsWithMinMaxFloors(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>next);
+    assert.calledWith(<SinonSpy>next, match({ message: 'Error message' }));
+  });
+
+  it('getBuildingsWithMinMaxFloors: returns 400 when minFloors > maxFloors', async () => {
+    const req: Partial<Request> = {};
+    req.query = { minFloors: '10', maxFloors: '1' };
+
+    const res: Partial<Response> = {
+      status: spy()
+    };
+    const next: Partial<NextFunction> = () => {};
+
+    const ctrl = new BuildingController(container.get<IBuildingService>(TYPES.buildingService));
+    await ctrl.getBuildingsWithMinMaxFloors(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.status);
+    assert.calledWith(<SinonSpy>res.status, 400);
+  });
+
+  it('getBuildingsWithMinMaxFloors: returns json with error message when minFloors > maxFloors', async () => {
+    const req: Partial<Request> = {};
+    req.query = { minFloors: '10', maxFloors: '1' };
+
+    const res: Partial<Response> = {
+      status: _ => <Response>{}
+    };
+    stub(res, 'status').returns(res);
+    res.send = spy();
+
+    const next: Partial<NextFunction> = () => {};
+
+    const ctrl = new BuildingController(container.get<IBuildingService>(TYPES.buildingService));
+    await ctrl.getBuildingsWithMinMaxFloors(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.send);
+    assert.calledWith(
+      <SinonSpy>res.send,
+      match({ message: 'minFloors must be less than maxFloors' })
+    );
+  });
 });
