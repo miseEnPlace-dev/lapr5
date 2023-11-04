@@ -288,7 +288,7 @@ describe('Building Service', () => {
     };
 
     const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
-    stub(buildingRepo, 'findByDomainId').resolves(building);
+    stub(buildingRepo, 'findByCode').resolves(building);
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
     stub(floorRepo, 'findBuildingCodesWithMinMaxFloors').resolves(['12345']);
     const buildingService = new BuildingService(buildingRepo, floorRepo);
@@ -300,7 +300,7 @@ describe('Building Service', () => {
 
   it('getBuildingsWithMinMaxFloors: throw error if no building is found', async () => {
     const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
-    stub(buildingRepo, 'findByDomainId').resolves(null);
+    stub(buildingRepo, 'findByCode').resolves(null);
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
     stub(floorRepo, 'findBuildingCodesWithMinMaxFloors').resolves(['12345']);
     const buildingService = new BuildingService(buildingRepo, floorRepo);
@@ -312,7 +312,7 @@ describe('Building Service', () => {
 
   it('getBuildingsWithMinMaxFloors: should throw error if repo throws error', async () => {
     const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
-    stub(buildingRepo, 'findByDomainId').throws(new Error('Error'));
+    stub(buildingRepo, 'findByCode').throws(new Error('Error'));
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
     stub(floorRepo, 'findBuildingCodesWithMinMaxFloors').resolves(['12345']);
     const buildingService = new BuildingService(buildingRepo, floorRepo);
