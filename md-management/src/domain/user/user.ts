@@ -60,11 +60,11 @@ export class User extends AggregateRoot<UserProps> {
 
   public static create(props: UserProps, id?: UniqueEntityID): Result<User> {
     const guardedProps = [
-      { argument: props.firstName, argumentName: 'firstName' },
-      { argument: props.lastName, argumentName: 'lastName' },
-      { argument: props.email, argumentName: 'email' },
-      { argument: props.role, argumentName: 'role' },
-      { argument: props.phoneNumber, argumentName: 'phoneNumber' }
+      { argument: props.firstName, argumentName: 'First Name' },
+      { argument: props.lastName, argumentName: 'Last Name' },
+      { argument: props.email, argumentName: 'Email' },
+      { argument: props.role, argumentName: 'Role' },
+      { argument: props.phoneNumber, argumentName: 'Phone Number' }
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);

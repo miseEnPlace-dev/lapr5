@@ -102,4 +102,20 @@ describe('Device Model Service', () => {
     expect(result.isFailure).toBe(true);
     expect(result.errorValue()).toBe('Device Model already exists');
   });
+
+  it('createDeviceModel: should throw error when repo throws error', async () => {
+    const deviceModelDTO = {
+      code: '12345',
+      name: 'DeviceModel 1',
+      brand: 'Brand 1',
+      capabilities: ['pick_delivery'],
+      type: 'drone'
+    };
+
+    const deviceModelRepo = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
+    stub(deviceModelRepo, 'save').throws(new Error('Error'));
+    stub(deviceModelRepo, 'findByCode').resolves(null);
+    const deviceModelService = new DeviceModelService(deviceModelRepo);
+    expect(deviceModelService.createDeviceModel(deviceModelDTO)).rejects.toThrow('Error');
+  });
 });

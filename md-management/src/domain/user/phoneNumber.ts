@@ -17,7 +17,7 @@ export class PhoneNumber extends ValueObject<PhoneNumberProps> {
   }
 
   public static create(phoneNumber: string): Result<PhoneNumber> {
-    const guardResult = Guard.againstNullOrUndefined(phoneNumber, 'phoneNumber');
+    const guardResult = Guard.againstNullOrUndefined(phoneNumber, 'Phone Number');
 
     // regex for portuguese phone numbers
     const regex = /^[9][1236]\d{7}$/;

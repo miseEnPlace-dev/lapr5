@@ -1,6 +1,8 @@
 import config from '@/config.mjs';
 import cors from 'cors';
 import express, { NextFunction, Request, Response, json } from 'express';
+import swaggerUi from 'swagger-ui-express';
+import swaggerFile from '../../api-doc.json';
 import routes from '../api';
 
 type RouteErr = {
@@ -20,6 +22,9 @@ export default ({ app }: { app: express.Application }) => {
   app.head('/status', (req, res) => {
     res.status(200).end();
   });
+
+  // we are using swagger to document our api
+  app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
   // Useful if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
   // It shows the real origin IP in the heroku or Cloudwatch logs

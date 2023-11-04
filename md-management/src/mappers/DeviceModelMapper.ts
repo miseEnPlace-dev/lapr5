@@ -36,7 +36,7 @@ export class DeviceModelMapper extends Mapper<DeviceModel> {
         name,
         type: deviceModel.type
       },
-      new UniqueEntityID(deviceModel.domainId)
+      UniqueEntityID.create(deviceModel.domainId)
     );
 
     deviceModelOrError.isFailure && console.log(deviceModelOrError.error);

@@ -13,7 +13,7 @@ export class ElevatorCode extends ValueObject<ElevatorCodeProps> {
   }
 
   public static create(code: number): Result<ElevatorCode> {
-    const guardResult = Guard.isPositiveNumber(code, 'code');
+    const guardResult = Guard.isPositiveNumber(code, 'Elevator code');
     if (!guardResult.succeeded) return Result.fail<ElevatorCode>(guardResult.message);
 
     return Result.ok<ElevatorCode>(new ElevatorCode({ code }));

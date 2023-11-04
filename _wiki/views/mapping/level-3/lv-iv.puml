@@ -1,7 +1,5 @@
 @startuml lv-iv
 
-top to bottom direction
-
 interface "MD API" as API
 
 component "MD Management" as MDM <<component>> <<system (C4)>> {
@@ -98,21 +96,21 @@ component "MD Management" as MDM2 <<component>> <<system (C4)>> {
   }
 }
 
-ROUTE2 ..> CTRL2
-REPO2 ..> PERS2
-CTRL2 ..> APP2
-REPO2 ..> APP2
-APP2 ..> AGG2
-APP2 ..> VO2
-APP2 ..> SRV2
+ROUTE2 .up.> CTRL2
+REPO2 .up.> PERS2
+CTRL2 .up.> APP2
+REPO2 .up.> APP2
+APP2 .up.> AGG2
+APP2 .up.> VO2
+APP2 .up.> SRV2
 
-I2 ..> IA2
-IA2 ..> UC2
-UC2 ..> E2
+I2 .up.> IA2
+IA2 .up.> UC2
+UC2 .up.> E2
 
-I2 ..> FDL : <<manifest>>
-IA2 ..> IAL : <<manifest>>
-UC2 ..> ABR : <<manifest>>
-E2 ..> EBR : <<manifest>>
+I2 .up.> FDL : <<manifest>>
+IA2 .up.> IAL : <<manifest>>
+UC2 .up.> ABR : <<manifest>>
+E2 .up.> EBR : <<manifest>>
 
 @enduml

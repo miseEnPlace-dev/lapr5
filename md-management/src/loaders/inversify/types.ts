@@ -44,6 +44,8 @@ const TYPES = {
 
   bootstrapper: Symbol.for('Bootstrapper'),
 
+  dbClient: Symbol.for('DbClient'),
+
   logger: Symbol.for('Logger')
 };
 
