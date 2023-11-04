@@ -1,7 +1,7 @@
 import path from 'path';
+import { defineConfig } from 'vitest/config';
 
-/** @type {import('vitest').UserConfig} */
-export default {
+export default defineConfig({
   plugins: [],
   test: {
     globals: true
@@ -11,4 +11,4 @@ export default {
       '@': path.resolve(__dirname, './src')
     }
   }
-};
+});
