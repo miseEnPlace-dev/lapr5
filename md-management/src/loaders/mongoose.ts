@@ -1,9 +1,22 @@
 import config from '@/config.mjs';
-import { Db } from 'mongodb';
 import mongoose from 'mongoose';
+import Logger from './logger';
 
-export default async (): Promise<Db> => {
-  mongoose.set('strictQuery', false);
-  const connection = await mongoose.connect(config.databaseURL);
-  return connection.connection.db;
-};
+export type DbClient = typeof mongoose;
+
+export default async function getDatabaseClient() {
+  return new Promise<DbClient>((resolve, reject) => {
+    mongoose.set('strictQuery', false);
+    mongoose.connect(config.databaseURL);
+    const db = mongoose.connection;
+
+    db.on('error', err => {
+      Logger.error(err);
+      reject(err);
+    });
+    db.once('open', () => {
+      Logger.info('✌️ DB loaded and connected!');
+      resolve(mongoose);
+    });
+  });
+}
