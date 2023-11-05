@@ -16,7 +16,7 @@
 
 ## [Question](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25168)
 
-> Em relação às User Stories de edição, temos já uma ideia das informações que são opcionais, mas queremos ter a certeza daquilo que é editável ou não. 
+> Em relação às User Stories de edição, temos já uma ideia das informações que são opcionais, mas queremos ter a certeza daquilo que é editável ou não.
 > Posto isto, poderia indicar que informações pretende editar na US200?
 
 ### Answer
@@ -54,4 +54,3 @@ The views presented here are the ones that are relevant to this user story.
 ##### Processes
 
 ![Level 3 Processes View](views/level-3/assets/process-view.svg)
-

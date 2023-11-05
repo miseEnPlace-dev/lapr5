@@ -1,0 +1,12 @@
+@startuml process-view
+autonumber
+participant SYS as "MD Management" <<system>>
+
+?o-> SYS : PATCH /buildings/:buildingCode/floors/:floorCode
+activate SYS
+
+SYS -> SYS : uploadMap(floorMap, buildingCode, floorCode)
+<-- SYS : 200 OK (FloorMap JSON)
+deactivate SYS
+
+@enduml

@@ -57,3 +57,35 @@
 ### Answer
 
 "sim, é necessário que essa informação já esteja presente no sistema. quanto ao formato do mapa, será fornecido um projeto exemplo em SGRAI para desenho de labirintos que podem utilizar como base para o módulo de visualização. poderão adaptar o código e o formato de mapa de acordo com o que acharem mais adequado aos requisitos e às vossas decisões de design."
+
+---
+
+## 2. Analysis
+
+### 2.1. Views
+
+All the global views are available in the [views](../../views/readme.md) document.
+
+The views presented here are the ones that are relevant to this user story.
+
+#### Level 1
+
+##### Processes
+
+![Level 1 Processes View](views/level-1/assets/process-view.svg)
+
+---
+
+#### Level 2
+
+##### Processes
+
+![Level 2 Processes View](views/level-2/assets/process-view.svg)
+
+---
+
+#### Level 3
+
+##### Processes
+
+![Level 3 Processes View](views/level-3/assets/process-view.svg)

@@ -5,7 +5,7 @@ participant SYS as "MD Management" <<system>>
 ?o-> SYS : PATCH /devices
 activate SYS
 
-SYS -> SYS : inhibitDevice(deviceDto)
+SYS -> SYS : inhibitDevice(deviceCode)
 <-- SYS : 200 OK (Device JSON)
 deactivate SYS
 

@@ -1,0 +1,13 @@
+@startuml process-view
+autonumber
+participant SYS as "MD Management" <<system (C4)>>
+
+
+?o-> SYS : PUT /buildings/
+activate SYS
+
+SYS -> SYS : updateBuilding(building, buildingCode)
+<-- SYS : 200 Ok (building JSON)
+deactivate SYS
+
+@enduml

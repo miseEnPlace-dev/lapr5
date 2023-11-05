@@ -47,11 +47,3 @@ The views presented here are the ones that are relevant to this user story.
 ##### Processes View
 
 ![Level 3 Processes View](views/level-3/assets/us12-level3_processes.svg)
-
-### 2.2. Tests
-
-## 3. Demonstration
-
-`GET /api/connectors?buildingCodes[]={buildingCode1}&buildingCodes[]={buildingCode2}`
-
-![us12-260_demo]()

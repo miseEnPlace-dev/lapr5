@@ -1,0 +1,25 @@
+@startuml process-view
+autonumber
+participant BE as "BE"
+participant DB as "DB"
+
+?o-> BE : PUT /buildings/
+activate BE
+
+BE -> DB : get building
+activate DB
+DB --> BE : building
+deactivate DB
+
+BE -> BE : edit building
+activate BE
+deactivate BE
+BE -> DB : update building
+activate DB
+DB --> BE : building
+deactivate DB
+
+<-- BE : 200 OK
+deactivate BE
+
+@enduml

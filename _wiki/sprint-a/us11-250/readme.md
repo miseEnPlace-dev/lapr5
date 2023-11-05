@@ -49,11 +49,3 @@ The views presented here are the ones that are relevant to this user story.
 ##### Processes View
 
 ![Level 3 Processes View](views/level-3/assets/us11-level3_processes.svg)
-
-### 2.2. Tests
-
-## 3. Demonstration
-
-`POST /passages`
-
-![us11-250_demo]()

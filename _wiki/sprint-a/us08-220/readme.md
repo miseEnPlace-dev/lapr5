@@ -51,11 +51,3 @@ The views presented here are the ones that are relevant to this user story.
 ##### Processes View
 
 ![Level 3 Processes View](views/level-3/assets/us08-level3_processes.svg)
-
-### 2.2. Tests
-
-## 3. Demonstration
-
-`GET /floors?buildingId={buildingId}&filter=passages`
-
-![us08-220_demo]()

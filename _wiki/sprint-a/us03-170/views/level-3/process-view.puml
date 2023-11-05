@@ -1,35 +1,17 @@
 @startuml process-view
 autonumber
-participant ROUTE as ":BuildingRoute"
-participant CTRL as ":BuildingController"
-participant SRV as ":BuildingService"
-participant BUILD as ":building:Building"
-participant REPO as ":BuildingRepo"
-participant MAP as ":BuildingMap"
-participant DTO as ":buildingDTO:IBuildingDTO"
+participant BE as "BE"
+participant DB as "DB"
 
-?o-> ROUTE : GET /buildings
-activate ROUTE
+?o-> BE : GET /buildings
+activate BE
 
-ROUTE -> CTRL : getBuildings()
-activate CTRL
-CTRL -> SRV : getBuildings()
-activate SRV
-SRV -> REPO : findAll()
-activate REPO
-REPO --> SRV : buildings
-deactivate REPO
-loop foreach building
-    SRV -> MAP : toDto(building)
-    activate MAP
-    MAP -> DTO** : create()
-    deactivate MAP
-end
-SRV --> CTRL : sucess(buildingsDTO)
-deactivate SRV
-CTRL --> ROUTE : sucess(buildingsDTO)
-deactivate CTRL
-<-- ROUTE : 200 OK
-deactivate ROUTE
+BE -> DB : get all buildings
+activate DB
+DB --> BE : buildings
+deactivate DB
+
+<-- BE : 200 OK
+deactivate BE
 
 @enduml

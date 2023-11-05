@@ -1,0 +1,25 @@
+@startuml process-view
+autonumber
+participant BE as "BE"
+participant DB as "DB"
+
+?o-> BE :  PATCH /buildings/:buildingCode/floors/:floorCode
+activate BE
+
+BE -> DB : get floor
+activate DB
+DB --> BE : floor
+deactivate DB
+
+BE -> BE : uploadMap to floor
+activate BE
+deactivate BE
+BE -> DB : update floor
+activate DB
+DB --> BE : floor
+deactivate DB
+
+<-- BE : 200 OK
+deactivate BE
+
+@enduml

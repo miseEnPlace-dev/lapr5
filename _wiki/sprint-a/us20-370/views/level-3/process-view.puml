@@ -1,36 +1,25 @@
 @startuml process-view
 autonumber
-participant route as ":DeviceRoute"
-participant controller as ":DeviceController"
-participant service as ":DeviceService"
-participant device_repo as ":DeviceRepo"
-participant device as ":device:Device"
-participant map as ":DeviceMap"
-participant dto as ":deviceDTO:IDeviceDTO"
+participant BE as "BE"
+participant DB as "DB"
 
-?o-> route : PATCH /devices
-activate route
-route -> controller : inhibitDevice(deviceCode)
-activate controller
-controller -> service : inhibitDevice(deviceCode)
-activate service
-service -> device_repo : findByCode(deviceCode)
-activate device_repo
-service <-- device_repo : device
-deactivate device_repo
-service -> device** : create(device, isAvailable=false)
-service -> device_repo : save(updatedDevice)
-activate device_repo
-deactivate device_repo
-service -> map : toDto(device)
-activate map
-map -> dto** : create()
-deactivate map
-service --> controller : deviceDto
-deactivate service
-controller --> route : deviceDto
-deactivate controller
-<-- route : 200 OK (device JSON)
-deactivate route
+?o-> BE :  PATCH /devices
+activate BE
+
+BE -> DB : get device
+activate DB
+DB --> BE : device
+deactivate DB
+
+BE -> BE : inhibit device
+activate BE
+deactivate BE
+BE -> DB : update device
+activate DB
+DB --> BE : floor
+deactivate DB
+
+<-- BE : 200 OK
+deactivate BE
 
 @enduml
