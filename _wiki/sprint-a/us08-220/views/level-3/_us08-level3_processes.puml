@@ -1,0 +1,52 @@
+@startuml us08-level3_processes
+autonumber
+
+participant ROUTE as ":FloorRoute"
+participant CTRL as ":FloorController"
+participant SVC as ":FloorService"
+participant E as ":Floor"
+participant REPO as ":FloorRepository"
+participant FMAP as ":FloorMap"
+participant DTO as ":FloorDTO"
+
+?o-> ROUTE : GET /floors?buildingCode={buildingCode}&filter=connectors
+activate ROUTE
+
+  ROUTE -> CTRL : listFloorsWithConnectors(buildingCode)
+  activate CTRL
+
+    CTRL -> SVC : listFloorsWithConnectors(buildingCode)
+    activate SVC
+
+      SVC -> REPO : findByBuildingCodeWithConnectors(buildingCode)
+      activate REPO
+
+      REPO --> SVC : Floor[]
+      deactivate REPO
+
+      loop for each floor
+
+        SVC -> FMAP : mapToDTOs(Floor[])
+        activate FMAP
+
+          FMAP -> DTO : create()
+          activate DTO
+
+          DTO --> FMAP : FloorDTO
+          deactivate DTO
+
+        FMAP --> SVC : FloorDTO[]
+        deactivate FMAP
+      
+      end
+
+    CTRL <-- SVC : FloorDTO[]
+    deactivate SVC
+
+  ROUTE <-- CTRL : FloorDTO[]
+  deactivate CTRL
+  
+<-- ROUTE : 200 OK (list of floors as JSON)
+deactivate ROUTE
+
+@enduml
