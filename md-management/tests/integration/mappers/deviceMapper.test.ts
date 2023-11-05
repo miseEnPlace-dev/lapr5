@@ -121,4 +121,24 @@ describe('Device Mapper', () => {
 
     expect(result).toEqual(device.getValue());
   });
+
+  it('should throw an error when device model is not found', async () => {
+    const floorRepoStub = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
+    stub(floorRepoStub, 'findByCode').resolves(null);
+    container.unbind(TYPES.deviceModelRepo);
+    container.bind<IDeviceModelRepo>(TYPES.deviceModelRepo).toConstantValue(floorRepoStub);
+
+    try {
+      await DeviceMapper.toDomain({
+        domainId: '1',
+        code: '1',
+        nickname: 'name',
+        modelCode: '1',
+        serialNumber: '1',
+        isAvailable: true
+      });
+    } catch (error) {
+      expect(error.message).toEqual('Model not found');
+    }
+  });
 });
