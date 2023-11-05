@@ -21,7 +21,7 @@ export class DeviceMapper extends Mapper<Device> {
       description: device.description?.value,
       serialNumber: device.serialNumber.value,
       modelCode: device.model.code.value,
-      isAvailable: device.isAvailable ? device.isAvailable : true
+      isAvailable: device.isAvailable !== undefined ? device.isAvailable : true
     };
   }
 
@@ -63,7 +63,7 @@ export class DeviceMapper extends Mapper<Device> {
       description: device.description?.value,
       serialNumber: device.serialNumber.value,
       modelCode: device.model.code.value,
-      isAvailable: device.isAvailable ? device.isAvailable : true
+      isAvailable: device.isAvailable !== undefined ? device.isAvailable : true
     };
   }
 }
