@@ -6,9 +6,11 @@ import { stub } from 'sinon';
 import { container } from '../../../src/loaders/inversify';
 import { TYPES } from '../../../src/loaders/inversify/types';
 
+import { BuildingCode } from '../../../src/domain/building/buildingCode';
 import { ElevatorCode } from '../../../src/domain/elevator/elevatorCode';
 import { ElevatorDescription } from '../../../src/domain/elevator/elevatorDescription';
 import { FloorCode } from '../../../src/domain/floor/floorCode';
+import { FloorDimensions } from '../../../src/domain/floor/floorDimensions';
 import IBuildingRepo from '../../../src/services/IRepos/IBuildingRepo';
 import IFloorRepo from '../../../src/services/IRepos/IFloorRepo';
 import ElevatorService from '../../../src/services/elevatorService';
@@ -205,7 +207,7 @@ describe('elevatorService', () => {
 
     stub(floorRepo, 'findByCode').resolves({
       code: FloorCode.create('1').getValue(),
-      buildingCode: '54321'
+      buildingCode: BuildingCode.create('54321').getValue()
     });
 
     const elevatorService = new ElevatorService(buildingRepo, floorRepo);
@@ -227,19 +229,19 @@ describe('elevatorService', () => {
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
 
     stub(buildingRepo, 'findByCode').resolves({
-      code: '12345',
+      code: BuildingCode.create('54321').getValue(),
       name: 'Building',
       elevator: null
     });
 
     stub(floorRepo, 'findByCode').resolves({
       code: FloorCode.create('1').getValue(),
-      buildingCode: '12345'
+      buildingCode: BuildingCode.create('54321').getValue()
     });
 
     const elevatorService = new ElevatorService(buildingRepo, floorRepo);
     const result = await elevatorService.createElevator({
-      buildingCode: '12345',
+      buildingCode: '54321',
       code: -1,
       description: 'Elevator',
       brand: 'Brand',
@@ -256,14 +258,14 @@ describe('elevatorService', () => {
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
 
     stub(buildingRepo, 'findByCode').resolves({
-      code: '12345',
+      code: BuildingCode.create('12345').getValue(),
       name: 'Building',
       elevator: null
     });
 
     stub(floorRepo, 'findByCode').resolves({
       code: FloorCode.create('1').getValue(),
-      buildingCode: '12345'
+      buildingCode: BuildingCode.create('12345').getValue()
     });
 
     const elevatorService = new ElevatorService(buildingRepo, floorRepo);
@@ -287,14 +289,14 @@ describe('elevatorService', () => {
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
 
     stub(buildingRepo, 'findByCode').resolves({
-      code: '12345',
+      code: BuildingCode.create('12345').getValue(),
       name: 'Building',
       elevator: null
     });
 
     stub(floorRepo, 'findByCode').resolves({
       code: FloorCode.create('1').getValue(),
-      buildingCode: '12345'
+      buildingCode: BuildingCode.create('12345').getValue()
     });
 
     const elevatorService = new ElevatorService(buildingRepo, floorRepo);
@@ -318,14 +320,14 @@ describe('elevatorService', () => {
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
 
     stub(buildingRepo, 'findByCode').resolves({
-      code: '12345',
+      code: BuildingCode.create('12345').getValue(),
       name: 'Building',
       elevator: null
     });
 
     stub(floorRepo, 'findByCode').resolves({
       code: FloorCode.create('1').getValue(),
-      buildingCode: '12345'
+      buildingCode: BuildingCode.create('12345').getValue()
     });
 
     const elevatorService = new ElevatorService(buildingRepo, floorRepo);
@@ -349,14 +351,14 @@ describe('elevatorService', () => {
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
 
     stub(buildingRepo, 'findByCode').resolves({
-      code: '12345',
+      code: BuildingCode.create('12345').getValue(),
       name: 'Building',
       elevator: null
     });
 
     stub(floorRepo, 'findByCode').resolves({
       code: FloorCode.create('1').getValue(),
-      buildingCode: '12345'
+      buildingCode: BuildingCode.create('12345').getValue()
     });
 
     const elevatorService = new ElevatorService(buildingRepo, floorRepo);
@@ -387,7 +389,7 @@ describe('elevatorService', () => {
 
     stub(floorRepo, 'findByCode').resolves({
       code: FloorCode.create('1').getValue(),
-      buildingCode: '12345'
+      buildingCode: BuildingCode.create('54321').getValue()
     });
 
     const elevatorService = new ElevatorService(buildingRepo, floorRepo);
@@ -404,19 +406,19 @@ describe('elevatorService', () => {
     expect(result.errorValue()).toBe('Floor code must be 5 characters or less');
   });
 
-  it('createElevator: should fail if one of the elevator floor codes is invalid', async () => {
+  it('createElevator: should fail if one of the elevator floor codes are invalid', async () => {
     const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
 
     stub(buildingRepo, 'findByCode').resolves({
-      code: '12345',
+      code: BuildingCode.create('12345').getValue(),
       name: 'Building',
       elevator: null
     });
 
     stub(floorRepo, 'findByCode').resolves({
       code: FloorCode.create('1').getValue(),
-      buildingCode: '12345'
+      buildingCode: BuildingCode.create('12345').getValue()
     });
 
     const elevatorService = new ElevatorService(buildingRepo, floorRepo);
@@ -466,7 +468,7 @@ describe('elevatorService', () => {
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
 
     const building = {
-      code: '12345',
+      code: BuildingCode.create('54321').getValue(),
       name: 'Building',
       elevator: null
     };
@@ -475,12 +477,12 @@ describe('elevatorService', () => {
 
     stub(floorRepo, 'findByCode').resolves({
       code: FloorCode.create('1').getValue(),
-      buildingCode: '54321'
+      buildingCode: BuildingCode.create('54321').getValue()
     });
 
     const elevatorService = new ElevatorService(buildingRepo, floorRepo);
     const result = await elevatorService.createElevator({
-      buildingCode: building.code,
+      buildingCode: '12345',
       code: 1,
       description: 'Elevator',
       brand: 'Brand',
@@ -496,7 +498,7 @@ describe('elevatorService', () => {
     const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
     const building = {
-      code: '12345',
+      code: BuildingCode.create('54321').getValue(),
       name: 'Building',
       elevator: null
     };
@@ -512,7 +514,9 @@ describe('elevatorService', () => {
         model: 'Model',
         floors: [
           {
-            code: FloorCode.create('1').getValue()
+            code: FloorCode.create('1').getValue(),
+            dimensions: FloorDimensions.create(1, 1).getValue(),
+            buildingCode: building.code
           }
         ]
       }
@@ -520,12 +524,12 @@ describe('elevatorService', () => {
 
     stub(floorRepo, 'findByCode').resolves({
       code: FloorCode.create('1').getValue(),
-      buildingCode: building.code
+      buildingCode: BuildingCode.create('54321').getValue()
     });
 
     const elevatorService = new ElevatorService(buildingRepo, floorRepo);
     const result = await elevatorService.createElevator({
-      buildingCode: building.code,
+      buildingCode: building.code.value,
       code: 1,
       description: 'Elevator',
       brand: 'Brand',
@@ -617,7 +621,7 @@ describe('elevatorService', () => {
     const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
     const building = {
-      code: '12345',
+      code: BuildingCode.create('54321').getValue(),
       name: 'Building',
       elevator: null
     };
@@ -646,7 +650,7 @@ describe('elevatorService', () => {
 
     const elevatorService = new ElevatorService(buildingRepo, floorRepo);
     const result = await elevatorService.createElevator({
-      buildingCode: building.code,
+      buildingCode: building.code.value,
       code: 1,
       description: 'Elevator',
       brand: 'Brand',
@@ -670,7 +674,7 @@ describe('elevatorService', () => {
     const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
     const building = {
-      code: '12345',
+      code: BuildingCode.create('54321').getValue(),
       name: 'Building',
       elevator: null
     };
@@ -698,7 +702,7 @@ describe('elevatorService', () => {
 
     const elevatorService = new ElevatorService(buildingRepo, floorRepo);
     const result = await elevatorService.createElevator({
-      buildingCode: building.code,
+      buildingCode: building.code.value,
       code: 1,
       brand: 'Brand',
       model: 'Model',
@@ -720,7 +724,7 @@ describe('elevatorService', () => {
     const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
     const building = {
-      code: '12345',
+      code: BuildingCode.create('54321').getValue(),
       name: 'Building',
       elevator: null
     };
@@ -747,7 +751,7 @@ describe('elevatorService', () => {
 
     const elevatorService = new ElevatorService(buildingRepo, floorRepo);
     const result = await elevatorService.createElevator({
-      buildingCode: building.code,
+      buildingCode: building.code.value,
       code: 1,
       description: 'Elevator',
       floorCodes: ['1'],
@@ -851,11 +855,11 @@ describe('elevatorService', () => {
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
     stub(floorRepo, 'findByCode').resolves({
       code: FloorCode.create('1').getValue(),
-      buildingCode: '12345'
+      buildingCode: BuildingCode.create('54321').getValue()
     });
 
     stub(buildingRepo, 'findByCode').resolves({
-      code: '12345',
+      code: BuildingCode.create('54321').getValue(),
       name: 'Building',
       elevator: {
         code: ElevatorCode.create(1).getValue(),
@@ -1137,7 +1141,7 @@ describe('elevatorService', () => {
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
 
     const building = {
-      code: '12345',
+      code: BuildingCode.create('54321').getValue(),
       name: 'Building',
       elevator: {
         code: ElevatorCode.create(1).getValue(),
@@ -1150,12 +1154,12 @@ describe('elevatorService', () => {
 
     stub(floorRepo, 'findByCode').resolves({
       code: FloorCode.create('1').getValue(),
-      buildingCode: '54321'
+      buildingCode: BuildingCode.create('12345').getValue()
     });
 
     const elevatorService = new ElevatorService(buildingRepo, floorRepo);
     const result = await elevatorService.editElevator({
-      buildingCode: building.code,
+      buildingCode: building.code.value,
       code: 1,
       description: 'Elevator',
       brand: 'Brand',
