@@ -215,10 +215,29 @@
         "tags": [
           "Connectors"
         ],
-        "description": "",
+        "summary": "Get connectors",
+        "description": "If no query parameters are provided, all connectors are returned. If building codes are provided, only connectors between the 2 buildings are returned.",
+        "parameters": [
+          {
+            "name": "buildingCodes",
+            "description": "Array of 2 building codes",
+            "in": "query",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "B1",
+              "B2"
+            ]
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "List of connectors"
+          },
+          "400": {
+            "description": "Invalid query parameters"
           }
         }
       },
@@ -226,10 +245,26 @@
         "tags": [
           "Connectors"
         ],
-        "description": "",
+        "summary": "Create a connector",
+        "description": "Create a connector between 2 floors",
+        "parameters": [
+          {
+            "name": "connector",
+            "description": "Connector object",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
         "responses": {
+          "200": {
+            "description": "The created connectors"
+          },
           "400": {
-            "description": "Bad Request"
+            "description": "Invalid input"
           }
         }
       }
@@ -239,18 +274,33 @@
         "tags": [
           "Connectors"
         ],
-        "description": "",
+        "summary": "Update a connector",
+        "description": "Update a connector given its code",
         "parameters": [
           {
             "name": "code",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Connector code"
+          },
+          {
+            "name": "connector",
+            "description": "Connector object",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "The updated connector"
+          },
           "400": {
-            "description": "Bad Request"
+            "description": "Invalid input"
           }
         }
       }
