@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 
-import { stub } from 'sinon';
+import sinon, { stub } from 'sinon';
 import { describe, expect, it } from 'vitest';
 
 import { container } from '../../../src/loaders/inversify';
@@ -74,6 +74,7 @@ describe('Connector Service', () => {
 
     const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
 
+    sinon.restore();
     const connectorRepo = container.get<IConnectorRepo>(TYPES.connectorRepo);
     stub(connectorRepo, 'findBetweenFloors').resolves(null);
     container.rebind(TYPES.connectorRepo).toConstantValue(connectorRepo);
@@ -152,6 +153,7 @@ describe('Connector Service', () => {
       buildingCode: BuildingCode.create('12345').getValue()
     }).getValue();
 
+    sinon.restore();
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
     stub(floorRepo, 'findByCode').resolves(floor);
     container.rebind(TYPES.floorRepo).toConstantValue(floorRepo);
@@ -184,6 +186,8 @@ describe('Connector Service', () => {
       buildingCode: BuildingCode.create('12345').getValue()
     }).getValue();
 
+    // restore
+    sinon.restore();
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
     stub(floorRepo, 'findByCode')
       .onFirstCall()
@@ -219,6 +223,7 @@ describe('Connector Service', () => {
       buildingCode: BuildingCode.create('12345').getValue()
     }).getValue();
 
+    sinon.restore();
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
     stub(floorRepo, 'findByCode')
       .onFirstCall()
@@ -264,6 +269,7 @@ describe('Connector Service', () => {
       floor2
     }).getValue();
 
+    sinon.restore();
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
     stub(floorRepo, 'findByCode')
       .onFirstCall()
