@@ -23,23 +23,33 @@ export default class DeviceService implements IDeviceService {
 
   public async createDevice(deviceDTO: IDeviceDTO): Promise<Result<IDeviceDTO>> {
     try {
-      const code = DeviceCode.create(deviceDTO.code).getValue();
-      const nickname = DeviceNickname.create(deviceDTO.nickname).getValue();
-      const serialNumber = DeviceSerialNumber.create(deviceDTO.serialNumber).getValue();
-      const description = deviceDTO.description
-        ? DeviceDescription.create(deviceDTO.description).getValue()
-        : undefined;
+      const codeOrError = DeviceCode.create(deviceDTO.code);
+      if (codeOrError.isFailure) return Result.fail<IDeviceDTO>(codeOrError.errorValue());
 
-      const modelCode = DeviceModelCode.create(deviceDTO.modelCode).getValue();
-      const model = await this.deviceModelRepo.findByCode(modelCode);
+      const nicknameOrError = DeviceNickname.create(deviceDTO.nickname);
+      if (nicknameOrError.isFailure) return Result.fail<IDeviceDTO>(nicknameOrError.errorValue());
+
+      const serialNumberOrError = DeviceSerialNumber.create(deviceDTO.serialNumber);
+      if (serialNumberOrError.isFailure)
+        return Result.fail<IDeviceDTO>(serialNumberOrError.errorValue());
+      const descriptionOrError = deviceDTO.description
+        ? DeviceDescription.create(deviceDTO.description)
+        : undefined;
+      if (descriptionOrError && descriptionOrError.isFailure)
+        return Result.fail<IDeviceDTO>(descriptionOrError.errorValue());
+
+      const modelCodeOrError = DeviceModelCode.create(deviceDTO.modelCode);
+      if (modelCodeOrError.isFailure) return Result.fail<IDeviceDTO>(modelCodeOrError.errorValue());
+
+      const model = await this.deviceModelRepo.findByCode(modelCodeOrError.getValue());
 
       if (!model) return Result.fail<IDeviceDTO>('Model not found');
 
       const deviceOrError = Device.create({
-        code,
-        nickname,
-        serialNumber,
-        description,
+        code: codeOrError.getValue(),
+        nickname: nicknameOrError.getValue(),
+        serialNumber: serialNumberOrError.getValue(),
+        description: descriptionOrError ? descriptionOrError.getValue() : undefined,
         model,
         isAvailable: true
       });
@@ -89,6 +99,8 @@ export default class DeviceService implements IDeviceService {
             const deviceDTO = DeviceMapper.toDTO(device) as IDeviceDTO;
             return deviceDTO;
           });
+        } else {
+          return Result.fail<IDeviceDTO[]>('Invalid filter.');
         }
       } else {
         const devices = await this.deviceRepo.findRobots();
