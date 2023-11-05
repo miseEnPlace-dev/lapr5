@@ -105,10 +105,10 @@ describe('Device Mapper', () => {
       UniqueEntityID.create('1')
     );
 
-    const floorRepoStub = container.get<IDeviceModelRepo>(TYPES.floorRepo);
+    const floorRepoStub = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
     stub(floorRepoStub, 'findByCode').resolves(deviceModel);
-    container.unbind(TYPES.floorRepo);
-    container.bind<IDeviceModelRepo>(TYPES.floorRepo).toConstantValue(floorRepoStub);
+    container.unbind(TYPES.deviceModelRepo);
+    container.bind<IDeviceModelRepo>(TYPES.deviceModelRepo).toConstantValue(floorRepoStub);
 
     const result = await DeviceMapper.toDomain({
       domainId: '1',
