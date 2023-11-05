@@ -5,12 +5,12 @@ import sinon, { SinonSpy, assert, match, spy, stub } from 'sinon';
 import { NextFunction, Request, Response } from 'express';
 
 import { beforeEach, describe, it } from 'vitest';
+import UserController from '../../../src/controllers/userController';
 import { Result } from '../../../src/core/logic/Result';
 import { IUserDTO } from '../../../src/dto/IUserDTO';
-import { container } from '../../../src/loaders/inversify/';
+import { container } from '../../../src/loaders/inversify';
 import { TYPES } from '../../../src/loaders/inversify/types';
 import IUserService from '../../../src/services/IServices/IUserService';
-import UserController from '../../../src/controllers/userController';
 
 describe('user controller', () => {
   beforeEach(() => {
