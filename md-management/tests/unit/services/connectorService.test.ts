@@ -19,6 +19,75 @@ import { FloorDimensions } from '../../../src/domain/floor/floorDimensions';
 import { BuildingCode } from '../../../src/domain/building/buildingCode';
 
 describe('Connector Service', () => {
+  it("checkConnectorExists: should return error when one/both floors don't exist", async () => {
+    const connectorDTO = {
+      code: '12345',
+      floor1Code: '12345',
+      floor2Code: '12345'
+    };
+
+    const floor1 = Floor.create({
+      code: FloorCode.create('34343').getValue(),
+      dimensions: FloorDimensions.create(10, 10).getValue(),
+      buildingCode: BuildingCode.create('34343').getValue()
+    }).getValue();
+
+    const floor2 = Floor.create({
+      code: FloorCode.create('21212').getValue(),
+      dimensions: FloorDimensions.create(10, 10).getValue(),
+      buildingCode: BuildingCode.create('12345').getValue()
+    }).getValue();
+
+    const connector = Connector.create({
+      code: ConnectorCode.create(connectorDTO.code).getValue(),
+      floor1,
+      floor2
+    }).getValue();
+
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+
+    const connectorRepo = container.get<IConnectorRepo>(TYPES.connectorRepo);
+    stub(connectorRepo, 'findBetweenFloors').resolves(connector);
+    container.rebind(TYPES.connectorRepo).toConstantValue(connectorRepo);
+
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    stub(floorRepo, 'findByCode').resolves(floor1);
+    container.rebind(TYPES.floorRepo).toConstantValue(floorRepo);
+
+    const connectorService = new ConnectorService(connectorRepo, floorRepo, buildingRepo);
+    const result = await connectorService.checkConnectorExists(connectorDTO);
+    expect(result.isFailure).toBe(false);
+    expect(result.getValue()).toBe(true);
+  });
+
+  it('checkConnectorExists: should return successfully', async () => {
+    const connectorDTO = {
+      floor1Code: '12345',
+      floor2Code: '12345'
+    };
+
+    const floor = Floor.create({
+      code: FloorCode.create('12345').getValue(),
+      dimensions: FloorDimensions.create(10, 10).getValue(),
+      buildingCode: BuildingCode.create('B1').getValue()
+    }).getValue();
+
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+
+    const connectorRepo = container.get<IConnectorRepo>(TYPES.connectorRepo);
+    stub(connectorRepo, 'findBetweenFloors').resolves(null);
+    container.rebind(TYPES.connectorRepo).toConstantValue(connectorRepo);
+
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    stub(floorRepo, 'findByCode').resolves(floor);
+    container.rebind(TYPES.floorRepo).toConstantValue(floorRepo);
+
+    const connectorService = new ConnectorService(connectorRepo, floorRepo, buildingRepo);
+    const result = await connectorService.checkConnectorExists(connectorDTO);
+    expect(result.isFailure).toBe(false);
+    expect(result.getValue()).toBe(false);
+  });
+
   it('createConnector: should return error when code is invalid', async () => {
     const invalidCode = Array(26)
       .fill('a')
