@@ -16,7 +16,7 @@ export class RoleDescription extends ValueObject<RoleDescriptionProps> {
   }
 
   public static create(description: string): Result<RoleDescription> {
-    const guardResult = Guard.againstNullOrUndefined(description, 'RoleDescription');
+    const guardResult = Guard.againstNullOrUndefined(description, 'Role Description');
 
     if (!guardResult.succeeded) return Result.fail<RoleDescription>(guardResult.message);
     if (!description.length)

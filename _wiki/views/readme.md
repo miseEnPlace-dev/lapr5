@@ -4,6 +4,8 @@ This document details all the global architectural views of the system.
 
 This views can be used as a foundation to understand the system from a global perspective.
 
+For the interaction between the components, refer to the [mapping](./mapping/readme.md) document.
+
 ## Level 1
 
 ### Logical View
