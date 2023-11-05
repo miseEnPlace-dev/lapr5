@@ -1,52 +1,23 @@
 @startuml us12-level3_processes
 autonumber
 
-participant ROUTE as ":ConnectorRoute"
-participant CTRL as ":ConnectorController"
-participant SVC as ":ConnectorService"
-participant E as ":Connector"
-participant REPO as ":ConnectorRepository"
-participant CMAP as ":ConnectorMap"
-participant DTO as ":ConnectorDTO"
+participant BE as "Backend"
+participant DB as "Database"
 
-?o-> ROUTE : GET /connectors?building1Code={building1Code}&building1Code={building1Code}
-activate ROUTE
+?o-> BE : GET /connectors?building1Code={building1Code}&building2Code={building2Code}
+activate BE
 
-  ROUTE -> CTRL : listConnectorsBetweenBuildings(building1Code, building2Code)
-  activate CTRL
+BE -> DB : get building floors
+activate DB
+DB --> BE : floors
+deactivate DB
 
-    CTRL -> SVC : listConnectorsBetweenBuildings(building1Code, building2Code)
-    activate SVC
+BE -> DB : get connectors between floors
+activate DB
+DB --> BE : connectors
+deactivate DB
 
-      SVC -> REPO : findByFloorOfBuildings(building1Code, building2Code)
-      activate REPO
-
-      REPO --> SVC : Connector[]
-      deactivate REPO
-
-      loop for each connector
-
-        SVC -> CMAP : mapToDTO(connector)
-        activate CMAP
-
-          CMAP -> DTO : create()
-          activate DTO
-
-          DTO --> CMAP : ConnectorDTO
-          deactivate DTO
-
-        CMAP --> SVC : ConnectorDTO[]
-        deactivate CMAP
-      
-      end
-
-    CTRL <-- SVC : ConnectorDTO[]
-    deactivate SVC
-
-  ROUTE <-- CTRL : FloorDTO[]
-  deactivate CTRL
-  
-<-- ROUTE : 200 OK (list of connectorss as JSON)
-deactivate ROUTE
+<-- BE : 200 OK
+deactivate BE
 
 @enduml
