@@ -29,9 +29,15 @@ export default (app: Router) => {
 
   const ctrl = container.get<IDeviceModelController>(TYPES.deviceModelController);
 
-  route.post('', validate(deviceModelCreateSchema), (req, res, next) =>
+  route.post('/device-models', validate(deviceModelCreateSchema), (req, res, next) =>
+    // #swagger.tags = ['Device Models']
+    // #swagger.summary = 'Create a device model'
+    // #swagger.description = 'Create a device model given the provided device model object.'
+    // #swagger.parameters['deviceModel'] = { description: 'Device model object', in: 'body', schema: { $ref: "#/definitions/DeviceModel" }, required: true }
+    // #swagger.responses[200] = { description: 'The created device model' }
+    // #swagger.responses[400] = { description: 'Invalid input' }
     ctrl.createDeviceModel(req, res, next)
   );
 
-  app.use('/device-models', route);
+  app.use(route);
 };

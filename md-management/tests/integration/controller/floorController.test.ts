@@ -455,6 +455,39 @@ describe('floor Controller', () => {
     assert.calledWith(<SinonSpy>next, match({ message: 'error' }));
   });
 
+  it('getFloors: returns status 400 code (Bad Request) when filter is invalid', async () => {
+    const req: Partial<Request> = {};
+    req.params = { buildingCode: '1' };
+    req.query = { filter: { something: 'not a string' } };
+
+    const res: Partial<Response> = {
+      status: spy()
+    };
+
+    const next: Partial<NextFunction> = () => {};
+
+    const floorServiceInstance = container.get<IFloorService>(TYPES.floorService);
+    stub(floorServiceInstance, 'getBuildingFloors').resolves(
+      Result.ok<IFloorDTO[]>([
+        {
+          code: '1',
+          buildingCode: '1',
+          dimensions: {
+            width: 100,
+            length: 100
+          }
+        }
+      ])
+    );
+
+    const ctrl = new FloorController(floorServiceInstance);
+
+    await ctrl.getFloors(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.status);
+    assert.calledWith(<SinonSpy>res.status, 400);
+  });
+
   it('uploadMap: returns status 200 code (OK)', async () => {
     const req: Partial<Request> = {};
     req.params = { code: '1' };

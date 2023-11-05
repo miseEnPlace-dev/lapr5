@@ -36,12 +36,21 @@ export default (app: Router) => {
 
   const ctrl = container.get<IDeviceController>(TYPES.deviceController);
 
-  route.post('', validate(deviceCreateSchema), (req, res, next) =>
+  route.post('/devices', validate(deviceCreateSchema), (req, res, next) =>
+    // #swagger.tags = ['Devices']
     ctrl.createDevice(req, res, next)
   );
-  route.patch('/:code', (req, res, next) => ctrl.inhibitDevice(req, res, next));
+  route.patch('/devices/:code', (req, res, next) =>
+    // #swagger.tags = ['Devices']
+    // #swagger.summary = 'Inhibit a device'
+    ctrl.inhibitDevice(req, res, next)
+  );
 
-  route.get('/', (req, res, next) => ctrl.getDevicesRobots(req, res, next));
+  route.get('/devices/robots', (req, res, next) =>
+    // #swagger.tags = ['Devices']
+    // #swagger.summary = 'Get all robots'
+    ctrl.getDevicesRobots(req, res, next)
+  );
 
-  app.use('/devices', route);
+  app.use(route);
 };

@@ -168,6 +168,10 @@ export default class FloorService implements IFloorService {
 
   public async uploadMap(floorCode: string, map: IFloorMapDTO): Promise<Result<IFloorMapDTO>> {
     try {
+      // check map is valid
+      if (!map.size || !map.map || !map.exits || !map.exitLocation || !map.elevators)
+        return Result.fail<IFloorMapDTO>('Map is invalid');
+
       const code = FloorCode.create(floorCode).getValue();
       const floor = await this.floorRepo.findByCode(code);
       if (!floor) return Result.fail<IFloorMapDTO>('Floor not found');

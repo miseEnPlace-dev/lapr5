@@ -67,7 +67,7 @@ export default class ElevatorService implements IElevatorService {
 
         const floor = await this.floorRepo.findByCode(code);
         if (!floor) return Result.fail<IElevatorDTO>('Floor not found');
-        if (floor.buildingCode.value !== building.code.value)
+        if (floor.buildingCode.value !== buildingCode.value)
           return Result.fail<IElevatorDTO>('Floor not found in building');
 
         floors.push(floor);

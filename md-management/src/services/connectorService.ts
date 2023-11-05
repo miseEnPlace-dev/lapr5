@@ -3,7 +3,7 @@ import { Connector } from '@/domain/connector/connector';
 import { ConnectorCode } from '@/domain/connector/connectorCode';
 import { FloorCode } from '@/domain/floor/floorCode';
 import { IConnectorDTO } from '@/dto/IConnectorDTO';
-import { ConnectorMap } from '@/mappers/ConnectorMap';
+import { ConnectorMapper } from '@/mappers/ConnectorMapper';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../loaders/inversify/types';
 import IBuildingRepo from './IRepos/IBuildingRepo';
@@ -65,7 +65,7 @@ export default class ConnectorService implements IConnectorService {
 
       await this.connectorRepo.save(connectorResult);
 
-      const connectorDTOResult = ConnectorMap.toDTO(connectorResult) as IConnectorDTO;
+      const connectorDTOResult = ConnectorMapper.toDTO(connectorResult) as IConnectorDTO;
       return Result.ok<IConnectorDTO>(connectorDTOResult);
     } catch (e) {
       throw e;
@@ -75,7 +75,7 @@ export default class ConnectorService implements IConnectorService {
   public async getAllConnectors() {
     try {
       const connectors = await this.connectorRepo.findAll();
-      const connectorsDTO = connectors.map(connector => ConnectorMap.toDTO(connector));
+      const connectorsDTO = connectors.map(connector => ConnectorMapper.toDTO(connector));
 
       return Result.ok<IConnectorDTO[]>(connectorsDTO);
     } catch (e) {
@@ -100,7 +100,7 @@ export default class ConnectorService implements IConnectorService {
 
       const connectors = await this.connectorRepo.findBetweenMultipleFloors(ids1, ids2);
 
-      const connectorsDTO = connectors.map(connector => ConnectorMap.toDTO(connector));
+      const connectorsDTO = connectors.map(connector => ConnectorMapper.toDTO(connector));
 
       return Result.ok<IConnectorDTO[]>(connectorsDTO);
     } catch (e) {
@@ -151,7 +151,7 @@ export default class ConnectorService implements IConnectorService {
 
       const updated = await this.connectorRepo.save(connectorOrError.getValue());
 
-      return Result.ok<IConnectorDTO>(ConnectorMap.toDTO(updated));
+      return Result.ok<IConnectorDTO>(ConnectorMapper.toDTO(updated));
     } catch (e) {
       throw e;
     }

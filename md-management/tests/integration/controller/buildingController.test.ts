@@ -741,4 +741,31 @@ describe('building controller', () => {
       match({ message: 'minFloors must be less than maxFloors' })
     );
   });
+
+  it('getBuildings: should call getBuildingsWithMinMaxFloors when query params are provided', async () => {
+    const req: Partial<Request> = {};
+    req.query = { minFloors: '1', maxFloors: '10' };
+
+    const res: Partial<Response> = {
+      status: spy()
+    };
+    const next: Partial<NextFunction> = () => {};
+
+    const buildingServiceInstance = container.get<IBuildingService>(TYPES.buildingService);
+    stub(buildingServiceInstance, 'getBuildingsWithMinMaxFloors').resolves(
+      Result.ok<IBuildingDTO[]>([
+        {
+          code: '1',
+          name: 'building',
+          maxDimensions: { width: 10, length: 10 }
+        }
+      ])
+    );
+    const ctrl = new BuildingController(buildingServiceInstance);
+    const getBuildingsWithMinMaxFloorsSpy = spy(ctrl, 'getBuildingsWithMinMaxFloors');
+
+    await ctrl.getBuildings(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(getBuildingsWithMinMaxFloorsSpy);
+  });
 });

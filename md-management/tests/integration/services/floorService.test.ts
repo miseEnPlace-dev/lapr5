@@ -12,6 +12,7 @@ import FloorService from '../../../src/services/floorService';
 import IConnectorRepo from '../../../src/services/IRepos/IConnectorRepo';
 import IBuildingRepo from '../../../src/services/IRepos/IBuildingRepo';
 import { FloorCode } from '../../../src/domain/floor/floorCode';
+import { UniqueEntityID } from '../../../src/core/domain/UniqueEntityID';
 import { FloorDescription } from '../../../src/domain/floor/floorDescription';
 import { FloorDimensions } from '../../../src/domain/floor/floorDimensions';
 import { BuildingCode } from '../../../src/domain/building/buildingCode';
@@ -170,6 +171,37 @@ describe('Floor Service', () => {
     expect(result.getValue()).toEqual(floorDTO);
   });
 
+  it('createFloor: should throw error if repo throws error', async () => {
+    const floorDTO = {
+      code: '12345',
+      description: 'Description',
+      buildingCode: '12345',
+      dimensions: {
+        width: 10,
+        length: 10
+      }
+    };
+
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    stub(floorRepo, 'save').throws(new Error('Error'));
+    stub(floorRepo, 'findByCode').resolves(null);
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+    stub(buildingRepo, 'findByCode').resolves({
+      code: '12345',
+      name: 'Building 1',
+      description: 'Description',
+      maxDimensions: {
+        width: 10,
+        length: 10
+      }
+    });
+
+    const connectorRepo = container.get<IConnectorRepo>(TYPES.connectorRepo);
+    const floorService = new FloorService(floorRepo, buildingRepo, connectorRepo);
+
+    expect(() => floorService.createFloor(floorDTO)).rejects.toThrowError('Error');
+  });
+
   it('updateFloor: should update floor', async () => {
     const floor = {
       code: FloorCode.create('12345').getValue(),
@@ -304,5 +336,318 @@ describe('Floor Service', () => {
     const floorService = new FloorService(floorRepo, buildingRepo, connectorRepo);
 
     expect(() => floorService.updateFloor(dto)).rejects.toThrowError('Error');
+  });
+
+  it('uploadMap: should return error when floor does not exist', async () => {
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    stub(floorRepo, 'findByCode').resolves(null);
+
+    const floorMap = {
+      size: {
+        width: 2,
+        depth: 2
+      },
+      map: [
+        [1, 1],
+        [1, 1]
+      ],
+      exits: [[1, 1]],
+      elevators: [[1, 1]],
+      exitLocation: [1, 1]
+    };
+
+    const connectorRepo = container.get<IConnectorRepo>(TYPES.connectorRepo);
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+    const floorService = new FloorService(floorRepo, buildingRepo, connectorRepo);
+    const result = await floorService.uploadMap('12345', floorMap);
+
+    expect(result.isFailure).toBe(true);
+    expect(result.errorValue()).toBe('Floor not found');
+  });
+
+  it('uploadMap: should return error when map is invalid', async () => {
+    const floor = {
+      code: FloorCode.create('12345').getValue(),
+      description: FloorDescription.create('Description').getValue(),
+      buildingCode: BuildingCode.create('12345').getValue(),
+      dimensions: FloorDimensions.create(10, 10).getValue()
+    };
+
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    stub(floorRepo, 'findByCode').resolves(floor);
+
+    const connectorRepo = container.get<IConnectorRepo>(TYPES.connectorRepo);
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+    const floorService = new FloorService(floorRepo, buildingRepo, connectorRepo);
+    const result = await floorService.uploadMap('12345', '');
+
+    expect(result.isFailure).toBe(true);
+    expect(result.errorValue()).toBe('Map is invalid');
+  });
+
+  it('uploadMap: throw error when repo throws error', async () => {
+    const floorMap = {
+      size: {
+        width: 2,
+        depth: 2
+      },
+      map: [
+        [1, 1],
+        [1, 1]
+      ],
+      exits: [[1, 1]],
+      elevators: [[1, 1]],
+      exitLocation: [1, 1]
+    };
+
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    stub(floorRepo, 'findByCode').throws(new Error('Error'));
+
+    const connectorRepo = container.get<IConnectorRepo>(TYPES.connectorRepo);
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+    const floorService = new FloorService(floorRepo, buildingRepo, connectorRepo);
+
+    expect(() => floorService.uploadMap('12345', floorMap)).rejects.toThrowError('Error');
+  });
+
+  it('uploadMap: should upload map', async () => {
+    const floorMap = {
+      size: {
+        width: 2,
+        depth: 2
+      },
+      map: [
+        [1, 1],
+        [1, 1]
+      ],
+      exits: [[1, 1]],
+      elevators: [[1, 1]],
+      exitLocation: [1, 1]
+    };
+
+    const floor = {
+      code: FloorCode.create('12345').getValue(),
+      description: FloorDescription.create('Description').getValue(),
+      buildingCode: BuildingCode.create('12345').getValue(),
+      dimensions: FloorDimensions.create(10, 10).getValue()
+    };
+
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    stub(floorRepo, 'findByCode').resolves(floor);
+    stub(floorRepo, 'save').resolves(floor);
+
+    const connectorRepo = container.get<IConnectorRepo>(TYPES.connectorRepo);
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+    const floorService = new FloorService(floorRepo, buildingRepo, connectorRepo);
+    const result = await floorService.uploadMap('12345', floorMap);
+
+    expect(result.isSuccess).toBe(true);
+    expect(result.getValue()).toEqual(floorMap);
+  });
+
+  it('getBuildingFloors: should return error when building does not exist', async () => {
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+    stub(buildingRepo, 'findByCode').resolves(null);
+
+    const connectorRepo = container.get<IConnectorRepo>(TYPES.connectorRepo);
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    const floorService = new FloorService(floorRepo, buildingRepo, connectorRepo);
+    const result = await floorService.getBuildingFloors('12345', '');
+
+    expect(result.isFailure).toBe(true);
+    expect(result.errorValue()).toBe('Building not found');
+  });
+
+  it('getBuildingFloors: should return building floors', async () => {
+    const building = {
+      code: BuildingCode.create('12345').getValue(),
+      name: 'Building 1',
+      description: 'Description',
+      maxDimensions: {
+        width: 10,
+        length: 10
+      }
+    };
+
+    const floor = {
+      code: FloorCode.create('12345').getValue(),
+      description: FloorDescription.create('Description').getValue(),
+      buildingCode: BuildingCode.create('12345').getValue(),
+      dimensions: FloorDimensions.create(10, 10).getValue()
+    };
+
+    const floorDto = {
+      code: '12345',
+      description: 'Description',
+      buildingCode: '12345',
+      dimensions: {
+        width: 10,
+        length: 10
+      }
+    };
+
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+    stub(buildingRepo, 'findByCode').resolves(building);
+
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    stub(floorRepo, 'findByBuildingCode').resolves([floor]);
+
+    const connectorRepo = container.get<IConnectorRepo>(TYPES.connectorRepo);
+    const floorService = new FloorService(floorRepo, buildingRepo, connectorRepo);
+    const result = await floorService.getBuildingFloors('12345', '');
+
+    expect(result.isSuccess).toBe(true);
+    expect(result.getValue()).toEqual([floorDto]);
+  });
+
+  it('getBuildingFloors: should work with a connectors filter', async () => {
+    const building = {
+      code: BuildingCode.create('12345').getValue(),
+      name: 'Building 1',
+      description: 'Description',
+      maxDimensions: {
+        width: 10,
+        length: 10
+      }
+    };
+
+    const floor = {
+      id: UniqueEntityID.create('1'),
+      code: FloorCode.create('12345').getValue(),
+      description: FloorDescription.create('Description').getValue(),
+      buildingCode: BuildingCode.create('12345').getValue(),
+      dimensions: FloorDimensions.create(10, 10).getValue()
+    };
+
+    const floorDto = {
+      code: '12345',
+      description: 'Description',
+      buildingCode: '12345',
+      dimensions: {
+        width: 10,
+        length: 10
+      }
+    };
+
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+    stub(buildingRepo, 'findByCode').resolves(building);
+
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    stub(floorRepo, 'findByBuildingCode').resolves([floor]);
+
+    const connector = {
+      code: '12345',
+      floor1: {
+        id: UniqueEntityID.create('1'),
+        code: '12345',
+        description: 'Description',
+        buildingCode: '12345',
+        dimensions: {
+          width: 10,
+          length: 10
+        }
+      },
+      floor2: {
+        id: UniqueEntityID.create('2'),
+        code: '123456',
+        description: 'Description',
+        buildingCode: '123456',
+        dimensions: {
+          width: 10,
+          length: 10
+        }
+      }
+    };
+    const connectorRepo = container.get<IConnectorRepo>(TYPES.connectorRepo);
+    stub(connectorRepo, 'findOfFloors').resolves([connector]);
+
+    const floorService = new FloorService(floorRepo, buildingRepo, connectorRepo);
+    const result = await floorService.getBuildingFloors('12345', 'connectors');
+
+    expect(result.isSuccess).toBe(true);
+    expect(result.getValue()).toEqual([floorDto]);
+  });
+
+  it('getBuildingFloors: should work with a elevator filter', async () => {
+    const floor = {
+      code: FloorCode.create('12345').getValue(),
+      description: FloorDescription.create('Description').getValue(),
+      buildingCode: BuildingCode.create('12345').getValue(),
+      dimensions: FloorDimensions.create(10, 10).getValue()
+    };
+
+    const building = {
+      code: BuildingCode.create('12345').getValue(),
+      name: 'Building 1',
+      description: 'Description',
+      maxDimensions: {
+        width: 10,
+        length: 10
+      },
+      elevator: { code: '12345', floors: [floor] }
+    };
+
+    const floorDto = {
+      code: '12345',
+      description: 'Description',
+      buildingCode: '12345',
+      dimensions: {
+        width: 10,
+        length: 10
+      }
+    };
+
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+    stub(buildingRepo, 'findByCode').resolves(building);
+
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    stub(floorRepo, 'findByBuildingCode').resolves([floor]);
+
+    const connectorRepo = container.get<IConnectorRepo>(TYPES.connectorRepo);
+
+    const floorService = new FloorService(floorRepo, buildingRepo, connectorRepo);
+    const result = await floorService.getBuildingFloors('12345', 'elevator');
+
+    expect(result.isSuccess).toBe(true);
+    expect(result.getValue()).toEqual([floorDto]);
+  });
+
+  it('getBuildingFloors: should fail if filter is elevator and building has no elevator', async () => {
+    const building = {
+      code: BuildingCode.create('12345').getValue(),
+      name: 'Building 1',
+      description: 'Description',
+      maxDimensions: {
+        width: 10,
+        length: 10
+      }
+    };
+
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+    stub(buildingRepo, 'findByCode').resolves(building);
+
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    stub(floorRepo, 'findByBuildingCode').resolves([]);
+
+    const connectorRepo = container.get<IConnectorRepo>(TYPES.connectorRepo);
+
+    const floorService = new FloorService(floorRepo, buildingRepo, connectorRepo);
+    const result = await floorService.getBuildingFloors('12345', 'elevator');
+
+    expect(result.isFailure).toBe(true);
+    expect(result.errorValue()).toBe(
+      'Elevator not found on this building. There are no floors served with elevator.'
+    );
+  });
+
+  it('getBuildingFloors: should throw error if repo throws error', async () => {
+    const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
+    stub(buildingRepo, 'findByCode').throws(new Error('Error'));
+
+    const connectorRepo = container.get<IConnectorRepo>(TYPES.connectorRepo);
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    const floorService = new FloorService(floorRepo, buildingRepo, connectorRepo);
+
+    expect(() => floorService.getBuildingFloors('12345', '')).rejects.toThrowError('Error');
   });
 });

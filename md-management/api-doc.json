@@ -6,17 +6,137 @@
     "version": "1.0.0"
   },
   "host": "localhost:4000",
-  "basePath": "/",
+  "basePath": "/api",
   "schemes": [
     "http"
   ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
-    "/{code}": {
+    "/buildings": {
+      "get": {
+        "tags": [
+          "Buildings"
+        ],
+        "summary": "Get buildings",
+        "description": "If no query parameters are provided, all buildings are returned. If building codes are provided, only buildings with no. of floors between the provided min & max query params are returned.",
+        "parameters": [
+          {
+            "name": "minFloors",
+            "description": "Minimum number of floors in the buildings",
+            "in": "query",
+            "type": "integer"
+          },
+          {
+            "name": "maxFloors",
+            "description": "Maximum number of floors in the buildings",
+            "in": "query",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of buildings"
+          },
+          "400": {
+            "description": "Error getting the buildings"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Buildings"
+        ],
+        "summary": "Create a building",
+        "description": "Create a building",
+        "parameters": [
+          {
+            "name": "building",
+            "description": "Building object",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Building"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The created building"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/buildings/{code}": {
       "put": {
-        "description": "",
+        "tags": [
+          "Buildings"
+        ],
+        "summary": "Update a building",
+        "description": "Update a building given its code",
         "parameters": [
           {
             "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Building code"
+          },
+          {
+            "name": "building",
+            "description": "Building object",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Building"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The updated building"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/buildings/{building}/floors": {
+      "get": {
+        "tags": [
+          "Floors"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "building",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Floors"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "building",
             "in": "path",
             "required": true,
             "type": "string"
@@ -27,8 +147,14 @@
             "description": "Bad Request"
           }
         }
-      },
+      }
+    },
+    "/buildings/floors/{code}": {
       "patch": {
+        "tags": [
+          "Floors"
+        ],
+        "summary": "Upload floor map",
         "description": "",
         "parameters": [
           {
@@ -39,17 +165,231 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Bad Request"
-          },
           "default": {
             "description": ""
           }
         }
       }
     },
-    "/{building}/floors/{floor}/rooms": {
+    "/buildings/{building}/floors/{code}": {
+      "put": {
+        "tags": [
+          "Floors"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "building",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/buildings/{building}/elevators": {
+      "get": {
+        "tags": [
+          "Elevators"
+        ],
+        "summary": "Get elevators for a building",
+        "description": "Get all the elevators in a building. For now, all buildings only have 1 elevator, so the response will be an array of 1 element.",
+        "parameters": [
+          {
+            "name": "building",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Building code"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of elevators"
+          },
+          "400": {
+            "description": "Error getting the elevators"
+          }
+        }
+      },
       "post": {
+        "tags": [
+          "Elevators"
+        ],
+        "summary": "Create an elevator",
+        "description": "Create an elevator for a given building",
+        "parameters": [
+          {
+            "name": "building",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Building code"
+          },
+          {
+            "name": "elevator",
+            "description": "Elevator object",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Elevator"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The created elevator"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Elevators"
+        ],
+        "summary": "Edit an elevator",
+        "description": "Edit an elevator for a given building",
+        "parameters": [
+          {
+            "name": "building",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Building code"
+          },
+          {
+            "name": "elevator",
+            "description": "Elevator object",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Elevator"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The edited elevator"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/connectors": {
+      "get": {
+        "tags": [
+          "Connectors"
+        ],
+        "summary": "Get connectors",
+        "description": "If no query parameters are provided, all connectors are returned. If building codes are provided, only connectors between the 2 buildings are returned.",
+        "parameters": [
+          {
+            "name": "buildingCodes",
+            "description": "Array of 2 building codes",
+            "in": "query",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "B1",
+              "B2"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of connectors"
+          },
+          "400": {
+            "description": "Invalid query parameters"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Connectors"
+        ],
+        "summary": "Create a connector",
+        "description": "Create a connector between 2 floors",
+        "parameters": [
+          {
+            "name": "connector",
+            "description": "Connector object",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The created connectors"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/connectors/{code}": {
+      "patch": {
+        "tags": [
+          "Connectors"
+        ],
+        "summary": "Update a connector",
+        "description": "Update a connector given its code",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Connector code"
+          },
+          {
+            "name": "connector",
+            "description": "Connector object",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The updated connector"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/buildings/{building}/floors/{floor}/rooms": {
+      "post": {
+        "tags": [
+          "Rooms"
+        ],
         "description": "",
         "parameters": [
           {
@@ -72,8 +412,39 @@
         }
       }
     },
-    "/signup": {
+    "/device-models": {
       "post": {
+        "tags": [
+          "Device Models"
+        ],
+        "summary": "Create a device model",
+        "description": "Create a device model given the provided device model object.",
+        "parameters": [
+          {
+            "name": "deviceModel",
+            "description": "Device model object",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/DeviceModel"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The created device model"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/devices": {
+      "post": {
+        "tags": [
+          "Devices"
+        ],
         "description": "",
         "responses": {
           "400": {
@@ -82,168 +453,261 @@
         }
       }
     },
-    "/login": {
-      "post": {
+    "/devices/{code}": {
+      "patch": {
+        "tags": [
+          "Devices"
+        ],
+        "summary": "Inhibit a device",
         "description": "",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
-          "400": {
-            "description": "Bad Request"
+          "default": {
+            "description": ""
           }
         }
       }
     },
-    "/logout": {
-      "post": {
+    "/devices/robots": {
+      "get": {
+        "tags": [
+          "Devices"
+        ],
+        "summary": "Get all robots",
         "description": "",
         "responses": {
           "default": {
             "description": ""
+          }
+        }
+      }
+    },
+    "/roles": {
+      "post": {
+        "tags": [
+          "Roles"
+        ],
+        "description": "",
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Roles"
+        ],
+        "description": "",
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/users/signup": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Sign up",
+        "description": "Sign up a new user",
+        "parameters": [
+          {
+            "name": "user",
+            "description": "User object",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The created user"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Sign in",
+        "description": "Sign in a user",
+        "parameters": [
+          {
+            "name": "user",
+            "description": "User login credentials",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The logged user"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/users/logout": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Sign out",
+        "description": "Sign out a user",
+        "responses": {
+          "200": {
+            "description": "The logged user"
+          },
+          "400": {
+            "description": "Invalid input"
           }
         }
       }
     },
     "/me": {
       "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/{building}/floors": {
-      "get": {
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get current logged user",
+        "description": "Get current logged user session details given a valid jwt token",
         "parameters": [
           {
-            "name": "building",
-            "in": "path",
+            "name": "Authorization",
+            "description": "JWT token",
+            "in": "header",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "building",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/floors/{code}": {
-      "patch": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "code",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/{building}/floors/{code}": {
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "building",
-            "in": "path",
-            "required": true,
-            "type": "string"
+          "200": {
+            "description": "The logged user"
           },
-          {
-            "name": "code",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
           "400": {
-            "description": "Bad Request"
+            "description": "Invalid input"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Building": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Building 1"
+        },
+        "description": {
+          "type": "string",
+          "example": "Building 1"
+        },
+        "maxDimensions": {
+          "type": "object",
+          "properties": {
+            "width": {
+              "type": "number",
+              "example": 100
+            },
+            "length": {
+              "type": "number",
+              "example": 100
+            }
           }
         }
       }
     },
-    "/{building}/elevators": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "building",
-            "in": "path",
-            "required": true,
+    "Elevator": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number",
+          "example": 12
+        },
+        "floorCodes": {
+          "type": "array",
+          "example": [
+            "1",
+            "2",
+            "3"
+          ],
+          "items": {
             "type": "string"
           }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "building",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      },
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "building",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
-          }
+        },
+        "brand": {
+          "type": "string",
+          "example": "Brand 1"
+        },
+        "model": {
+          "type": "string",
+          "example": "Model 1"
+        },
+        "serialNumber": {
+          "type": "string",
+          "example": "123456789"
+        },
+        "description": {
+          "type": "string",
+          "example": "Elevator 1"
         }
       }
     },
-    "/robots": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
+    "DeviceModel": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "example": "123"
+        },
+        "brand": {
+          "type": "string",
+          "example": "Brand 1"
+        },
+        "name": {
+          "type": "string",
+          "example": "Model 1"
+        },
+        "type": {
+          "type": "string",
+          "example": "robot"
+        },
+        "capabilities": {
+          "type": "array",
+          "example": [
+            "pick_delivery"
+          ],
+          "items": {
+            "type": "string"
           }
         }
       }
