@@ -34,14 +34,31 @@ export default (app: Router) => {
 
   route.get('/buildings/:building/elevators', (req, res, next) =>
     // #swagger.tags = ['Elevators']
+    // #swagger.summary = 'Get elevators for a building'
+    // #swagger.description = 'Get all the elevators in a building. For now, all buildings only have 1 elevator, so the response will be an array of 1 element.'
+    // #swagger.parameters['building'] = { description: 'Building code', in: 'path', required: true }
+    // #swagger.responses[200] = { description: 'List of elevators' }
+    // #swagger.responses[400] = { description: 'Error getting the elevators' }
     ctrl.getElevatorForBuilding(req, res, next)
   );
   route.post('/buildings/:building/elevators', validate(elevatorCreateSchema), (req, res, next) =>
     // #swagger.tags = ['Elevators']
+    // #swagger.summary = 'Create an elevator'
+    // #swagger.description = 'Create an elevator for a given building'
+    // #swagger.parameters['building'] = { description: 'Building code', in: 'path', required: true }
+    // #swagger.parameters['elevator'] = { description: 'Elevator object', in: 'body', schema: { $ref: "#/definitions/Elevator" }, required: true }
+    // #swagger.responses[200] = { description: 'The created elevator' }
+    // #swagger.responses[400] = { description: 'Invalid input' }
     ctrl.createElevator(req, res, next)
   );
   route.put('/buildings/:building/elevators', validate(elevatorUpdateSchema), (req, res, next) =>
     // #swagger.tags = ['Elevators']
+    // #swagger.summary = 'Edit an elevator'
+    // #swagger.description = 'Edit an elevator for a given building'
+    // #swagger.parameters['building'] = { description: 'Building code', in: 'path', required: true }
+    // #swagger.parameters['elevator'] = { description: 'Elevator object', in: 'body', schema: { $ref: "#/definitions/Elevator" }, required: true }
+    // #swagger.responses[200] = { description: 'The edited elevator' }
+    // #swagger.responses[400] = { description: 'Invalid input' }
     ctrl.editElevator(req, res, next)
   );
 

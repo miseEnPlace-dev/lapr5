@@ -46,11 +46,21 @@ export default (app: Router) => {
 
   route.post('/users/signup', validate(signUpSchema), (req, res, next) =>
     // #swagger.tags = ['Users']
+    // #swagger.summary = 'Sign up'
+    // #swagger.description = 'Sign up a new user'
+    // #swagger.parameters['user'] = { description: 'User object', in: 'body', required: true }
+    // #swagger.responses[200] = { description: 'The created user' }
+    // #swagger.responses[400] = { description: 'Invalid input' }
     userController.signUp(req, res, next)
   );
 
   route.post('/users/login', validate(signInSchema), (req, res, next) =>
     // #swagger.tags = ['Users']
+    // #swagger.summary = 'Sign in'
+    // #swagger.description = 'Sign in a user'
+    // #swagger.parameters['user'] = { description: 'User login credentials', in: 'body', required: true }
+    // #swagger.responses[200] = { description: 'The logged user' }
+    // #swagger.responses[400] = { description: 'Invalid input' }
     userController.signIn(req, res, next)
   );
 
@@ -65,6 +75,10 @@ export default (app: Router) => {
    */
   route.post('/users/logout', isAuthenticated, (req, res, next) =>
     // #swagger.tags = ['Users']
+    // #swagger.summary = 'Sign out'
+    // #swagger.description = 'Sign out a user'
+    // #swagger.responses[200] = { description: 'The logged user' }
+    // #swagger.responses[400] = { description: 'Invalid input' }
     userController.signOut(req, res, next)
   );
 
@@ -73,6 +87,10 @@ export default (app: Router) => {
   route.get('/me', isAuthenticated, attachCurrentSession, (req, res) =>
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Get current logged user'
+    // #swagger.description = 'Get current logged user session details given a valid jwt token'
+    // #swagger.parameters['Authorization'] = { description: 'JWT token', in: 'header', required: true }
+    // #swagger.responses[200] = { description: 'The logged user' }
+    // #swagger.responses[400] = { description: 'Invalid input' }
     userController.getMe(req, res)
   );
 };
