@@ -6,14 +6,14 @@ import { ConnectorCode } from '../../../src/domain/connector/connectorCode';
 import { ConnectorMapper } from '../../../src/mappers/ConnectorMapper';
 
 import { stub } from 'sinon';
-import { container } from '../../../src/loaders/inversify';
+import { UniqueEntityID } from '../../../src/core/domain/UniqueEntityID';
+import { BuildingCode } from '../../../src/domain/building/buildingCode';
 import { Floor } from '../../../src/domain/floor/floor';
 import { FloorCode } from '../../../src/domain/floor/floorCode';
-import { BuildingCode } from '../../../src/domain/building/buildingCode';
 import { FloorDimensions } from '../../../src/domain/floor/floorDimensions';
-import { UniqueEntityID } from '../../../src/core/domain/UniqueEntityID';
-import IFloorRepo from '../../../src/services/IRepos/IFloorRepo';
+import { container } from '../../../src/loaders/inversify';
 import { TYPES } from '../../../src/loaders/inversify/types';
+import IFloorRepo from '../../../src/services/IRepos/IFloorRepo';
 
 describe('Connector Mapper', () => {
   beforeEach(() => {
