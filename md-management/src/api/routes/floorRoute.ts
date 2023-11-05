@@ -48,7 +48,7 @@ export default (app: Router) => {
     // #swagger.tags = ['Floors']
     ctrl.createFloor(req, res, next)
   );
-  route.patch('/buildings/floors/:code', (req, res, next) =>
+  route.patch('/buildings/:building/floors/:code', (req, res, next) =>
     // #swagger.tags = ['Floors']
     // #swagger.summary = 'Upload floor map'
     ctrl.uploadMap(req, res, next)
