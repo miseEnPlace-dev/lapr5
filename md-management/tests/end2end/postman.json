@@ -1,0 +1,1755 @@
+{
+	"info": {
+		"_postman_id": "dc46330b-7b24-4981-b007-090543d9ac55",
+		"name": "LAPR5",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30790842"
+	},
+	"item": [
+		{
+			"name": "Create Building B",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 201\", () => {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('code')",
+							"    pm.expect(pm.response.json().code).to.eql('B')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a name property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('name')",
+							"    pm.expect(pm.response.json().name).to.eql('Edificio B')",
+							"})",
+							"pm.test(\"Ensure response has a maxDimensions property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('maxDimensions')",
+							"",
+							"    pm.expect(pm.response.json().maxDimensions.width).to.eql(20)",
+							"    pm.expect(pm.response.json().maxDimensions.length).to.eql(20)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"code\": \"B\",\n\t\"name\": \"Edificio B\",\n\t\"maxDimensions\": {\n\t\t\"width\": 20,\n\t\t\"length\": 20\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/buildings",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"buildings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Building G",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 201\", () => {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('code')",
+							"    pm.expect(pm.response.json().code).to.eql('G')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a name property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('name')",
+							"    pm.expect(pm.response.json().name).to.eql('Edificio G')",
+							"})",
+							"pm.test(\"Ensure response has a maxDimensions property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('maxDimensions')",
+							"",
+							"    pm.expect(pm.response.json().maxDimensions.width).to.eql(20)",
+							"    pm.expect(pm.response.json().maxDimensions.length).to.eql(20)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"code\": \"G\",\n\t\"name\": \"Edificio G\",\n\t\"maxDimensions\": {\n\t\t\"width\": 20,\n\t\t\"length\": 20\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/buildings",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"buildings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List All Buildings",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array\", () => {",
+							"    pm.expect(pm.response.json()).to.be.an(\"array\")",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array with two positions\", () => {",
+							"    pm.expect(pm.response.json().length).to.eql(2)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has returned a Building\", () => {",
+							"    pm.response.to.have.jsonBody(",
+							"        {",
+							"            \"code\": \"B\",",
+							"            \"name\": \"Edificio B\",",
+							"            \"maxDimensions\": {",
+							"                \"width\": 20,",
+							"                \"length\": 20        ",
+							"            }",
+							"        },",
+							"        {",
+							"            \"code\": \"G\",",
+							"            \"name\": \"Edificio G\",",
+							"            \"maxDimensions\": {",
+							"                \"width\": 20,",
+							"                \"length\": 20",
+							"            }",
+							"        }",
+							"    )",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/buildings",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"buildings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Floor B1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 201\", () => {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('code')",
+							"    pm.expect(pm.response.json().code).to.eql('B1')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a description property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('description')",
+							"    pm.expect(pm.response.json().description).to.eql('Piso 1 do Edificio B')",
+							"})",
+							"pm.test(\"Ensure response has a dimensions property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('dimensions')",
+							"",
+							"    pm.expect(pm.response.json().dimensions.width).to.eql(5)",
+							"    pm.expect(pm.response.json().dimensions.length).to.eql(5)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"code\": \"B1\",\n\t\"description\": \"Piso 1 do Edificio B\",\n\t\"dimensions\": {\n\t\t\"width\": 5,\n\t\t\"length\": 5\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/buildings/B/floors",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"buildings",
+						"B",
+						"floors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Floor B2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 201\", () => {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('code')",
+							"    pm.expect(pm.response.json().code).to.eql('B2')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a description property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('description')",
+							"    pm.expect(pm.response.json().description).to.eql('Piso 2 do Edificio B')",
+							"})",
+							"pm.test(\"Ensure response has a dimensions property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('dimensions')",
+							"",
+							"    pm.expect(pm.response.json().dimensions.width).to.eql(10)",
+							"    pm.expect(pm.response.json().dimensions.length).to.eql(10)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"code\": \"B2\",\n\t\"description\": \"Piso 2 do Edificio B\",\n\t\"dimensions\": {\n\t\t\"width\": 10,\n\t\t\"length\": 10\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/buildings/B/floors",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"buildings",
+						"B",
+						"floors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Floor G2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 201\", () => {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('code')",
+							"    pm.expect(pm.response.json().code).to.eql('G2')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a description property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('description')",
+							"    pm.expect(pm.response.json().description).to.eql('Piso 2 do Edificio G')",
+							"})",
+							"pm.test(\"Ensure response has a dimensions property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('dimensions')",
+							"",
+							"    pm.expect(pm.response.json().dimensions.width).to.eql(10)",
+							"    pm.expect(pm.response.json().dimensions.length).to.eql(10)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"code\": \"G2\",\n\t\"description\": \"Piso 2 do Edificio G\",\n\t\"dimensions\": {\n\t\t\"width\": 10,\n\t\t\"length\": 10\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/buildings/G/floors",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"buildings",
+						"G",
+						"floors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Buildings With Min Max Floors",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array\", () => {",
+							"    pm.expect(pm.response.json()).to.be.an(\"array\")",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array with one position\", () => {",
+							"    pm.expect(pm.response.json().length).to.eql(1)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has returned a Building\", () => {",
+							"    pm.response.to.have.jsonBody(",
+							"        {",
+							"        \"code\": \"B\",",
+							"        \"name\": \"Edificio B\",",
+							"        \"maxDimensions\": {",
+							"            \"width\": 20,",
+							"            \"length\": 20",
+							"        }",
+							"    }",
+							"    )",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/buildings?minFloors=2&maxFloors=3",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"buildings"
+					],
+					"query": [
+						{
+							"key": "minFloors",
+							"value": "2"
+						},
+						{
+							"key": "maxFloors",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Building",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('code')",
+							"    pm.expect(pm.response.json().code).to.eql('B')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a name property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('name')",
+							"    pm.expect(pm.response.json().name).to.eql('Edificio B')",
+							"})",
+							"pm.test(\"Ensure response has a maxDimensions property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('maxDimensions')",
+							"",
+							"    pm.expect(pm.response.json().maxDimensions.width).to.eql(100)",
+							"    pm.expect(pm.response.json().maxDimensions.length).to.eql(100)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"maxDimensions\": {\n\t\t\"width\": 100,\n\t\t\"length\": 100\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/buildings/B",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"buildings",
+						"B"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Floor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('code')",
+							"    pm.expect(pm.response.json().code).to.eql('B1')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a description property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('description')",
+							"    pm.expect(pm.response.json().description).to.eql('Piso 1 do Edificio B')",
+							"})",
+							"pm.test(\"Ensure response has a dimensions property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('dimensions')",
+							"",
+							"    pm.expect(pm.response.json().dimensions.width).to.eql(8)",
+							"    pm.expect(pm.response.json().dimensions.length).to.eql(7)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"dimensions\": {\n\t\t\"width\": 8,\n\t\t\"length\": 7\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/buildings/B/floors/B1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"buildings",
+						"B",
+						"floors",
+						"B1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Load Floor Map",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"maze\": {\n        \"size\": { \"width\": 8, \"depth\": 7 },\n        \"map\": [\n            [3, 2, 2, 2, 2, 3, 2, 2, 1],\n            [1, 0, 0, 0, 0, 1, 0, 0, 1],\n            [2, 2, 2, 0, 2, 2, 0, 2, 0],\n            [0, 0, 0, 0, 0, 0, 0, 0, 0],\n            [3, 2, 2, 2, 2, 2, 0, 0, 1],\n            [1, 0, 0, 0, 0, 0, 1, 0, 0],\n            [1, 0, 0, 0, 0, 0, 1, 0, 0],\n            [2, 2, 2, 2, 2, 2, 2, 2, 0]\n        ],\n        \"exits\": [\n            [2.0, -1.0],\n            [5.0, 8.0]\n        ],\n        \"elevators\": [\n            [2.0, 8.0]\n        ],\n        \"exitLocation\": [2.0, 8.0]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/buildings/B/floors/B1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"buildings",
+						"B",
+						"floors",
+						"B1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Floors in Building",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array\", () => {",
+							"    pm.expect(pm.response.json()).to.be.an(\"array\")",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array with two positions\", () => {",
+							"    pm.expect(pm.response.json().length).to.eql(2)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has returned Floors\", () => {",
+							"    pm.response.to.have.jsonBody(",
+							"        {",
+							"            \"code\": \"B1\",",
+							"            \"description\": \"Piso 1 do Edificio B\",",
+							"            \"dimensions\": {",
+							"                \"width\": 20,",
+							"                \"length\": 20",
+							"            }",
+							"        },",
+							"        {",
+							"        \"code\": \"B2\",",
+							"        \"buildingCode\": \"1\",",
+							"        \"description\": \"Piso 2 do Edificio B\",",
+							"        \"dimensions\": {",
+							"            \"width\": 10,",
+							"            \"length\": 10",
+							"        }",
+							"    }",
+							"    )",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/buildings/B/floors",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"buildings",
+						"B",
+						"floors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Elevator",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 201\", () => {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('code')",
+							"    pm.expect(pm.response.json().code).to.eql(1)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a brand property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('brand')",
+							"    pm.expect(pm.response.json().brand).to.eql('Schindler')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a model property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('model')",
+							"    pm.expect(pm.response.json().model).to.eql('C450F')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a floorCodes property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('floorCodes')",
+							"    pm.expect(pm.response.json().floorCodes.length).to.eql(1)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"code\": 1,\n    \"brand\": \"Schindler\",\n    \"model\": \"C450F\",\n\t\"floorCodes\": [\n\t\t\"B1\"\t\n\t]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/buildings/B/elevators",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"buildings",
+						"B",
+						"elevators"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Elevator",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('code')",
+							"    pm.expect(pm.response.json().code).to.eql('1')",
+							"})",
+							"",
+							"/*",
+							"pm.test(\"Ensure response has a brand property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('brand')",
+							"    pm.expect(pm.response.json().brand).to.eql('Schindler')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a model property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('model')",
+							"    pm.expect(pm.response.json().model).to.eql('A450P')",
+							"})",
+							"*/",
+							"pm.test(\"Ensure response has a floorCodes property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('floorCodes')",
+							"    pm.expect(pm.response.json().floorCodes.length).to.eql(1)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"model\": \"A450P\"\n}"
+				},
+				"url": {
+					"raw": "{{API_URL}}/buildings/B/elevators",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"buildings",
+						"B",
+						"elevators"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Elevators in Building",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has returned a Elevator\", () => {",
+							"    pm.response.to.have.jsonBody(",
+							"        {",
+							"            \"code\": \"1\",",
+							"            \"floorCodes\": [",
+							"                \"B1\"",
+							"            ]",
+							"        }",
+							"    )",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/buildings/B/elevators",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"buildings",
+						"B",
+						"elevators"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Floors of Building Served By Elevator",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array\", () => {",
+							"    pm.expect(pm.response.json()).to.be.an(\"array\")",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array with one position\", () => {",
+							"    pm.expect(pm.response.json().length).to.eql(1)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has returned Floors\", () => {",
+							"    pm.response.to.have.jsonBody(",
+							"        {",
+							"            \"code\": \"B1\",",
+							"            \"description\": \"Piso 1 do Edificio B\",",
+							"            \"dimensions\": {",
+							"                \"width\": 20,",
+							"                \"length\": 20",
+							"            }",
+							"        }",
+							"    )",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/buildings/B/floors?filter=elevator",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"buildings",
+						"B",
+						"floors"
+					],
+					"query": [
+						{
+							"key": "filter",
+							"value": "elevator"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Connector",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 201\", () => {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('code')",
+							"    pm.expect(pm.response.json().code).to.eql('C1')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a floor1Code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('floor1Code')",
+							"    pm.expect(pm.response.json().floor1Code).to.eql('B1')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a floor2Code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('floor2Code')",
+							"    pm.expect(pm.response.json().floor2Code).to.eql('G2')",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"code\": \"C1\",\n\t\"floor1Code\": \"B1\",\n    \"floor2Code\": \"G2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/connectors",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"connectors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Connector",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('code')",
+							"    pm.expect(pm.response.json().code).to.eql('C1')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a floor1Code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('floor1Code')",
+							"    pm.expect(pm.response.json().floor1Code).to.eql('B2')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a floor2Code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('floor2Code')",
+							"    pm.expect(pm.response.json().floor2Code).to.eql('G2')",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"floor1Code\": \"B2\",\n    \"floor2Code\": \"G2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/connectors/C1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"connectors",
+						"C1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Connectors Between Buildings",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array\", () => {",
+							"    pm.expect(pm.response.json()).to.be.an(\"array\")",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array with one positions\", () => {",
+							"    pm.expect(pm.response.json().length).to.eql(1)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has returned Connectors\", () => {",
+							"    pm.response.to.have.jsonBody({",
+							"    \"code\": \"C1\",",
+							"\t\"floor1Code\": \"B1\",",
+							"    \"floor2Code\": \"G2\"",
+							"}",
+							"    )",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/connectors?buildingCodes[]=B&buildingCodes[]=G",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"connectors"
+					],
+					"query": [
+						{
+							"key": "buildingCodes[]",
+							"value": "B"
+						},
+						{
+							"key": "buildingCodes[]",
+							"value": "G"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Floors of Building With Connectors",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array\", () => {",
+							"    pm.expect(pm.response.json()).to.be.an(\"array\")",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array with one positions\", () => {",
+							"    pm.expect(pm.response.json().length).to.eql(1)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has returned Floors\", () => {",
+							"    pm.response.to.have.jsonBody(",
+							"        {",
+							"        \"code\": \"B2\",",
+							"        \"buildingCode\": \"1\",",
+							"        \"description\": \"Piso 2 do Edificio B\",",
+							"        \"dimensions\": {",
+							"            \"width\": 10,",
+							"            \"length\": 10",
+							"        }",
+							"    }",
+							"    )",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/buildings/B/floors?filter=connectors",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"buildings",
+						"B",
+						"floors"
+					],
+					"query": [
+						{
+							"key": "filter",
+							"value": "connectors"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Room",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 201\", () => {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a name property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('name')",
+							"    pm.expect(pm.response.json().name).to.eql('B201')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a description property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('description')",
+							"    pm.expect(pm.response.json().description).to.eql('Sala de Aula B201')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a category property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('category')",
+							"    pm.expect(pm.response.json().category).to.eql('CLASSROOM')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a dimensions property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('dimensions')",
+							"",
+							"    pm.expect(pm.response.json().dimensions.width).to.eql(5)",
+							"    pm.expect(pm.response.json().dimensions.length).to.eql(5)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"B201\",\n    \"description\": \"Sala de Aula B201\",\n    \"category\": \"CLASSROOM\",\n    \"dimensions\": {\n\t\t\"width\": 5,\n\t\t\"length\": 5\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/buildings/B/floors/B1/rooms",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"buildings",
+						"B",
+						"floors",
+						"B1",
+						"rooms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Device Model PD",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 201\", () => {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a name property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('name')",
+							"    pm.expect(pm.response.json().name).to.eql('pick-delivery')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a brand property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('brand')",
+							"    pm.expect(pm.response.json().brand).to.eql('Ford')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a type property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('type')",
+							"    pm.expect(pm.response.json().type).to.eql('robot')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('code')",
+							"    pm.expect(pm.response.json().code).to.eql('PD')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a capabilities property and length equal to 1\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('capabilities')",
+							"    pm.expect(pm.response.json().capabilities.length).to.eql(1)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{     \n\t\"code\": \"PD\",     \n\t\"brand\": \"Ford\",     \n\t\"name\": \"pick-delivery\",     \n\t\"type\": \"robot\",     \n\t\"capabilities\": [\"pick_delivery\"] \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/device-models",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"device-models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Device Model SV",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 201\", () => {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a name property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('name')",
+							"    pm.expect(pm.response.json().name).to.eql('surveillance')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a brand property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('brand')",
+							"    pm.expect(pm.response.json().brand).to.eql('Ford')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a type property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('type')",
+							"    pm.expect(pm.response.json().type).to.eql('robot')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('code')",
+							"    pm.expect(pm.response.json().code).to.eql('SV')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a capabilities property and length equal to 1\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('capabilities')",
+							"    pm.expect(pm.response.json().capabilities.length).to.eql(1)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{     \n\t\"code\": \"SV\",     \n\t\"brand\": \"Ford\",     \n\t\"name\": \"surveillance\",     \n\t\"type\": \"robot\",     \n\t\"capabilities\": [\"surveillance\"] \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/device-models",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"device-models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Device ROBPD",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 201\", () => {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('code')",
+							"    pm.expect(pm.response.json().code).to.eql('ROBPD')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a nickname property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('nickname')",
+							"    pm.expect(pm.response.json().nickname).to.eql('Robby')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a modelCode property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('modelCode')",
+							"    pm.expect(pm.response.json().modelCode).to.eql('PD')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a serialNumber property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('serialNumber')",
+							"    pm.expect(pm.response.json().serialNumber).to.eql('SERROB1')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a description property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('description')",
+							"    pm.expect(pm.response.json().description).to.eql('Robot do Edificio B')",
+							"})",
+							"",
+							"pm.test(\"Ensure robot is available\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('isAvailable')",
+							"    pm.expect(pm.response.json().isAvailable).to.eql(true)",
+							"})",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"code\": \"ROBPD\",\n\t\"nickname\": \"Robby\",\n\t\"modelCode\": \"PD\",\n\t\"serialNumber\": \"SERROB1\",\n\t\"description\": \"Robot do Edificio B\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/devices",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"devices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Device ROBSV",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 201\", () => {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('code')",
+							"    pm.expect(pm.response.json().code).to.eql('ROBSV')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a nickname property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('nickname')",
+							"    pm.expect(pm.response.json().nickname).to.eql('Robby Femea')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a modelCode property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('modelCode')",
+							"    pm.expect(pm.response.json().modelCode).to.eql('SV')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a serialNumber property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('serialNumber')",
+							"    pm.expect(pm.response.json().serialNumber).to.eql('SERROB1F')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a description property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('description')",
+							"    pm.expect(pm.response.json().description).to.eql('Mulher do Robot do Edificio B')",
+							"})",
+							"",
+							"pm.test(\"Ensure robot is available\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('isAvailable')",
+							"    pm.expect(pm.response.json().isAvailable).to.eql(true)",
+							"})",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"code\": \"ROBSV\",\n\t\"nickname\": \"Robby Femea\",\n\t\"modelCode\": \"SV\",\n\t\"serialNumber\": \"SERROB1F\",\n\t\"description\": \"Mulher do Robot do Edificio B\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/devices",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"devices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List All Devices",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array\", () => {",
+							"    pm.expect(pm.response.json()).to.be.an(\"array\")",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array with two positions\", () => {",
+							"    pm.expect(pm.response.json().length).to.eql(2)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has returned a Device\", () => {",
+							"    pm.response.to.have.jsonBody(",
+							"        {",
+							"    \"code\": \"ROBSV\",",
+							"\t\"nickname\": \"Robby Femea\",",
+							"\t\"modelCode\": \"SV\",",
+							"\t\"serialNumber\": \"SERROB1F\",",
+							"\t\"description\": \"Mulher do Robot do Edificio B\"",
+							"}   ",
+							"    )",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/devices/robots",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"devices",
+						"robots"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Inhibit Device",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a code property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('code')",
+							"    pm.expect(pm.response.json().code).to.eql('ROBPD')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a nickname property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('nickname')",
+							"    pm.expect(pm.response.json().nickname).to.eql('Robby')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a modelCode property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('modelCode')",
+							"    pm.expect(pm.response.json().modelCode).to.eql('PD')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a serialNumber property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('serialNumber')",
+							"    pm.expect(pm.response.json().serialNumber).to.eql('SERROB1')",
+							"})",
+							"",
+							"pm.test(\"Ensure response has a description property\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('description')",
+							"    pm.expect(pm.response.json().description).to.eql('Robot do Edificio B')",
+							"})",
+							"",
+							"pm.test(\"Ensure robot is inhibit\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('isAvailable')",
+							"    pm.expect(pm.response.json().isAvailable).to.eql(false)",
+							"})",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/devices/ROBPD",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"devices",
+						"ROBPD"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Devices by Model Name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array\", () => {",
+							"    pm.expect(pm.response.json()).to.be.an(\"array\")",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array with one positions\", () => {",
+							"    pm.expect(pm.response.json().length).to.eql(1)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has returned a Device\", () => {",
+							"    pm.response.to.have.jsonBody(",
+							"        {",
+							"            \"code\": \"ROBSV\",",
+							"            \"nickname\": \"Robby Femea\",",
+							"            \"modelCode\": \"SV\",",
+							"            \"serialNumber\": \"SERROB1F\",",
+							"            \"description\": \"Mulher do Robot do Edificio B\"",
+							"        }",
+							"    )",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/devices/robots?filter=name&value=surveillance",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"devices",
+						"robots"
+					],
+					"query": [
+						{
+							"key": "filter",
+							"value": "name"
+						},
+						{
+							"key": "value",
+							"value": "surveillance"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Devices by Task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ensure response status code is 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array\", () => {",
+							"    pm.expect(pm.response.json()).to.be.an(\"array\")",
+							"})",
+							"",
+							"pm.test(\"Ensure response is an array with one positions\", () => {",
+							"    pm.expect(pm.response.json().length).to.eql(1)",
+							"})",
+							"",
+							"pm.test(\"Ensure response has returned a Device\", () => {",
+							"    pm.response.to.have.jsonBody(",
+							"        {",
+							"            \"code\": \"ROBPD\",",
+							"            \"nickname\": \"Robby\",",
+							"            \"description\": \"Robot do Edificio B\",",
+							"            \"serialNumber\": \"SERROB1\",",
+							"            \"modelCode\": \"PD\",",
+							"            \"isAvailable\": true",
+							"        }",
+							"    )",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/devices/robots?filter=task&value=pick_delivery",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"devices",
+						"robots"
+					],
+					"query": [
+						{
+							"key": "filter",
+							"value": "task"
+						},
+						{
+							"key": "value",
+							"value": "pick_delivery"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API_URL",
+			"value": "http://localhost:4000/api",
+			"type": "string"
+		}
+	]
+}
