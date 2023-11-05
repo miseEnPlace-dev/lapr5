@@ -37,11 +37,19 @@ export default class ConnectorService implements IConnectorService {
 
   public async createConnector(connectorDTO: IConnectorDTO): Promise<Result<IConnectorDTO>> {
     try {
-      const code = ConnectorCode.create(connectorDTO.code).getValue();
-      const floorCode1 = FloorCode.create(connectorDTO.floor1Code).getValue();
-      const floorCode2 = FloorCode.create(connectorDTO.floor2Code).getValue();
-      const floor1 = await this.floorRepo.findByCode(floorCode1);
-      const floor2 = await this.floorRepo.findByCode(floorCode2);
+      const codeOrError = ConnectorCode.create(connectorDTO.code);
+      if (codeOrError.isFailure) return Result.fail<IConnectorDTO>(codeOrError.errorValue());
+
+      const floorCode1OrError = FloorCode.create(connectorDTO.floor1Code);
+      if (floorCode1OrError.isFailure)
+        return Result.fail<IConnectorDTO>(floorCode1OrError.errorValue());
+
+      const floorCode2OrError = FloorCode.create(connectorDTO.floor2Code);
+      if (floorCode2OrError.isFailure)
+        return Result.fail<IConnectorDTO>(floorCode2OrError.errorValue());
+
+      const floor1 = await this.floorRepo.findByCode(floorCode1OrError.getValue());
+      const floor2 = await this.floorRepo.findByCode(floorCode2OrError.getValue());
       if (!floor1 || !floor2) return Result.fail<IConnectorDTO>('One/both floors do not exist');
       if (floor1.equals(floor2)) return Result.fail<IConnectorDTO>('Floors cannot be the same');
       if (floor1.buildingCode.equals(floor2.buildingCode))
@@ -53,7 +61,7 @@ export default class ConnectorService implements IConnectorService {
         return Result.fail<IConnectorDTO>('Connector between those floors already exists');
 
       const connectorOrError = Connector.create({
-        code,
+        code: codeOrError.getValue(),
         floor1,
         floor2
       });
