@@ -10,7 +10,7 @@ import { container } from '@/loaders/inversify';
 import { TYPES } from '@/loaders/inversify/types';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 
-export class ConnectorMap extends Mapper<Floor> {
+export class ConnectorMapper extends Mapper<Floor> {
   public static toDTO(c: Connector): IConnectorDTO {
     return {
       code: c.code.value,
