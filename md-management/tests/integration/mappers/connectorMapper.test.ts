@@ -120,8 +120,6 @@ describe('Connector Mapper', () => {
       UniqueEntityID.create('1')
     );
 
-    console.log(connector.getValue());
-
     const floorRepoStub = container.get<IFloorRepo>(TYPES.floorRepo);
     const floorRepoStubFindByDomainId = stub(floorRepoStub, 'findByDomainId');
     floorRepoStubFindByDomainId.onCall(0).resolves(floor1.getValue());
@@ -148,26 +146,6 @@ describe('Connector Mapper', () => {
       },
       UniqueEntityID.create('1')
     );
-
-    const floor2 = Floor.create(
-      {
-        code: FloorCode.create('f2').getValue(),
-        buildingCode: BuildingCode.create('b1').getValue(),
-        dimensions: FloorDimensions.create(1, 1).getValue()
-      },
-      UniqueEntityID.create('2')
-    );
-
-    const connector = Connector.create(
-      {
-        code: ConnectorCode.create('1').getValue(),
-        floor1: floor1.getValue(),
-        floor2: floor2.getValue()
-      },
-      UniqueEntityID.create('1')
-    );
-
-    console.log(connector.getValue());
 
     const floorRepoStub = container.get<IFloorRepo>(TYPES.floorRepo);
     const floorRepoStubFindByDomainId = stub(floorRepoStub, 'findByDomainId');
