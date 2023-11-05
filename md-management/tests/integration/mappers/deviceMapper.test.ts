@@ -105,10 +105,10 @@ describe('Device Mapper', () => {
       UniqueEntityID.create('1')
     );
 
-    const floorRepoStub = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
-    stub(floorRepoStub, 'findByCode').resolves(deviceModel);
+    const deviceModelStub = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
+    stub(deviceModelStub, 'findByCode').resolves(deviceModel);
     container.unbind(TYPES.deviceModelRepo);
-    container.bind<IDeviceModelRepo>(TYPES.deviceModelRepo).toConstantValue(floorRepoStub);
+    container.bind<IDeviceModelRepo>(TYPES.deviceModelRepo).toConstantValue(deviceModelStub);
 
     const result = await DeviceMapper.toDomain({
       domainId: '1',
@@ -123,10 +123,10 @@ describe('Device Mapper', () => {
   });
 
   it('should throw an error when device model is not found', async () => {
-    const floorRepoStub = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
-    stub(floorRepoStub, 'findByCode').resolves(null);
+    const deviceRepoStub = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
+    stub(deviceRepoStub, 'findByCode').resolves(null);
     container.unbind(TYPES.deviceModelRepo);
-    container.bind<IDeviceModelRepo>(TYPES.deviceModelRepo).toConstantValue(floorRepoStub);
+    container.bind<IDeviceModelRepo>(TYPES.deviceModelRepo).toConstantValue(deviceRepoStub);
 
     try {
       await DeviceMapper.toDomain({

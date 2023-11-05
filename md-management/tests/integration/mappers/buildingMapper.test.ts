@@ -20,7 +20,7 @@ describe('Building Mapper', () => {
     container.restore();
   });
 
-  it('should map an building to a dto', () => {
+  it('should map a building to a dto', () => {
     const buildingDTO = {
       code: '1',
       maxDimensions: {
@@ -43,7 +43,7 @@ describe('Building Mapper', () => {
     expect(result).toEqual(buildingDTO);
   });
 
-  it('should map an building to persistence', () => {
+  it('should map a building to persistence', () => {
     const building = Building.create(
       {
         code: BuildingCode.create('1').getValue(),
@@ -68,7 +68,7 @@ describe('Building Mapper', () => {
     });
   });
 
-  it('should map an building from persistence', async () => {
+  it('should map a building from persistence', async () => {
     const building = Building.create(
       {
         code: BuildingCode.create('1').getValue(),
