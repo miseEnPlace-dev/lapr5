@@ -52,8 +52,6 @@ export class DeviceMapper extends Mapper<Device> {
       new UniqueEntityID(device.domainId)
     );
 
-    deviceOrError.isFailure && console.log(deviceOrError.error);
-
     return deviceOrError.isSuccess ? deviceOrError.getValue() : null;
   }
 
