@@ -8,7 +8,33 @@ const doc = {
   host: 'localhost:4000',
   basePath: '/api',
   consumes: ['application/json'],
-  produces: ['application/json']
+  produces: ['application/json'],
+  definitions: {
+    Building: {
+      id: 1,
+      name: 'Building 1',
+      description: 'Building 1',
+      maxDimensions: {
+        width: 100,
+        length: 100
+      }
+    },
+    Elevator: {
+      code: 12,
+      floorCodes: ['1', '2', '3'],
+      brand: 'Brand 1',
+      model: 'Model 1',
+      serialNumber: '123456789',
+      description: 'Elevator 1'
+    },
+    DeviceModel: {
+      code: '123',
+      brand: 'Brand 1',
+      name: 'Model 1',
+      type: 'robot',
+      capabilities: ['pick_delivery']
+    }
+  }
 };
 
 const outputFile = './api-doc.json';
