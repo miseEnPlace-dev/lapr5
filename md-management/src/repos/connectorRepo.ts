@@ -2,7 +2,7 @@ import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { IConnectorPersistence } from '@/dataschema/IConnectorPersistence';
 import { Connector } from '@/domain/connector/connector';
 import { ConnectorCode } from '@/domain/connector/connectorCode';
-import { ConnectorMap } from '@/mappers/ConnectorMap';
+import { ConnectorMapper } from '@/mappers/ConnectorMapper';
 import connectorSchema from '@/persistence/schemas/connectorSchema';
 import IConnectorRepo from '@/services/IRepos/IConnectorRepo';
 import { injectable } from 'inversify';
@@ -29,11 +29,11 @@ export default class ConnectorRepo implements IConnectorRepo {
     const document = await connectorSchema.findOne(query);
 
     try {
-      const raw = ConnectorMap.toPersistence(connector);
+      const raw = ConnectorMapper.toPersistence(connector);
 
       if (!document) {
         const created = await connectorSchema.create(raw);
-        const domainConnector = await ConnectorMap.toDomain(created);
+        const domainConnector = await ConnectorMapper.toDomain(created);
 
         if (!domainConnector) throw new Error('Connector not created');
         return domainConnector;
@@ -43,7 +43,7 @@ export default class ConnectorRepo implements IConnectorRepo {
       document.set(raw);
       await document.save();
 
-      const domainConnector = await ConnectorMap.toDomain(document);
+      const domainConnector = await ConnectorMapper.toDomain(document);
       if (!domainConnector) throw new Error('Connector not created');
       return domainConnector;
     } catch (err) {
@@ -57,7 +57,7 @@ export default class ConnectorRepo implements IConnectorRepo {
       query as FilterQuery<IConnectorPersistence & Document>
     );
 
-    if (connectorRecord != null) return ConnectorMap.toDomain(connectorRecord);
+    if (connectorRecord != null) return ConnectorMapper.toDomain(connectorRecord);
     return null;
   }
 
@@ -65,7 +65,7 @@ export default class ConnectorRepo implements IConnectorRepo {
     const query: FilterQuery<IConnectorPersistence & Document> = { code: code.value };
     const connectorRecord = await connectorSchema.findOne(query);
 
-    if (connectorRecord != null) return ConnectorMap.toDomain(connectorRecord);
+    if (connectorRecord != null) return ConnectorMapper.toDomain(connectorRecord);
     return null;
   }
 
@@ -75,7 +75,7 @@ export default class ConnectorRepo implements IConnectorRepo {
     const connectors: Connector[] = [];
 
     for (const connectorRecord of records) {
-      const connector = await ConnectorMap.toDomain(connectorRecord);
+      const connector = await ConnectorMapper.toDomain(connectorRecord);
       if (connector) connectors.push(connector);
     }
 
@@ -91,7 +91,7 @@ export default class ConnectorRepo implements IConnectorRepo {
     const connectors: Connector[] = [];
 
     for (const cRecord of connectorRecords) {
-      const c = await ConnectorMap.toDomain(cRecord);
+      const c = await ConnectorMapper.toDomain(cRecord);
       if (c) connectors.push(c);
     }
 
@@ -113,7 +113,7 @@ export default class ConnectorRepo implements IConnectorRepo {
       query as FilterQuery<IConnectorPersistence & Document>
     );
 
-    if (connectorRecord != null) return ConnectorMap.toDomain(connectorRecord);
+    if (connectorRecord != null) return ConnectorMapper.toDomain(connectorRecord);
     return null;
   }
 
@@ -135,7 +135,7 @@ export default class ConnectorRepo implements IConnectorRepo {
     const connectors: Connector[] = [];
 
     for (const record of records) {
-      const c = await ConnectorMap.toDomain(record);
+      const c = await ConnectorMapper.toDomain(record);
       if (c) connectors.push(c);
     }
 
@@ -154,7 +154,7 @@ export default class ConnectorRepo implements IConnectorRepo {
     const connectors: Connector[] = [];
 
     for (const record of records) {
-      const c = await ConnectorMap.toDomain(record);
+      const c = await ConnectorMapper.toDomain(record);
       if (c) connectors.push(c);
     }
 

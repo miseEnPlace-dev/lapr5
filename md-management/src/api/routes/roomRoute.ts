@@ -28,9 +28,13 @@ export default (app: Router) => {
 
   const ctrl = container.get<IRoomController>(TYPES.roomController);
 
-  route.post('/:building/floors/:floor/rooms', validate(roomCreateSchema), (req, res, next) =>
-    ctrl.createRoom(req, res, next)
+  route.post(
+    '/buildings/:building/floors/:floor/rooms',
+    validate(roomCreateSchema),
+    (req, res, next) =>
+      // #swagger.tags = ['Rooms']
+      ctrl.createRoom(req, res, next)
   );
 
-  app.use('/buildings', route);
+  app.use(route);
 };

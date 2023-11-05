@@ -25,11 +25,14 @@ export default class FloorRepo implements IFloorRepo {
     return !!roleDocument;
   }
 
-  public async findBuildingCodesWithMinMaxFloors(min: number, max: number): Promise<string[]> {
+  public async findBuildingCodesWithMinMaxFloors(
+    min: number,
+    max: number
+  ): Promise<BuildingCode[]> {
     const floors = await floorSchema.aggregate([
       {
         $group: {
-          _id: '$building',
+          _id: '$buildingCode',
           count: { $sum: 1 }
         }
       },
@@ -39,7 +42,7 @@ export default class FloorRepo implements IFloorRepo {
         }
       }
     ]);
-    return floors.map(f => f._id);
+    return floors.map(f => BuildingCode.create(f._id).getValue());
   }
 
   public async save(floor: Floor): Promise<Floor> {

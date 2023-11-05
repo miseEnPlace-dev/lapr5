@@ -4,7 +4,10 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   plugins: [],
   test: {
-    globals: true
+    globals: true,
+    coverage: {
+      exclude: ['src/loaders/**', 'src/core/**', 'src/repos/**', 'src/config.mjs']
+    }
   },
   resolve: {
     alias: {

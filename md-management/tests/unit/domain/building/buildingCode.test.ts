@@ -24,4 +24,9 @@ describe('BuildingCode', () => {
     const buildingCode = BuildingCode.create('12a!');
     expect(buildingCode.isFailure).toBe(true);
   });
+
+  it('should allow only numbers', () => {
+    const buildingCode = BuildingCode.create('54321');
+    expect(buildingCode.isSuccess).toBe(true);
+  });
 });

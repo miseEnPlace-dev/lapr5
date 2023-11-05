@@ -26,4 +26,9 @@ describe('DeviceCode', () => {
     const deviceModelCode = DeviceModelCode.create('12a!');
     expect(deviceModelCode.isFailure).toBe(true);
   });
+
+  it('should not allow empty codes', () => {
+    const deviceModelCode = DeviceModelCode.create('');
+    expect(deviceModelCode.isFailure).toBe(true);
+  });
 });

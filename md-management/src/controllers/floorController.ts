@@ -85,7 +85,10 @@ export default class FloorController implements IFloorController {
         map
       )) as Result<IFloorMapDTO>;
 
-      if (floorOrError.isFailure) return res.status(400).send();
+      if (floorOrError.isFailure)
+        return res.status(400).json({
+          message: floorOrError.errorValue()
+        });
 
       const floorDTO = floorOrError.getValue();
       return res.status(200).json(floorDTO);

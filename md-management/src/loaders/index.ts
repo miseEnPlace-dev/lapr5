@@ -7,12 +7,7 @@ import Logger from './logger';
 import mongooseLoader from './mongoose';
 
 export default async ({ expressApp }: { expressApp: Express }) => {
-  try {
-    await mongooseLoader();
-    Logger.info('✌️ DB loaded and connected!');
-  } catch (err) {
-    Logger.error(err);
-  }
+  await mongooseLoader();
 
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');
 

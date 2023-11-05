@@ -111,7 +111,7 @@ export default class BuildingService implements IBuildingService {
       const buildingCodes = await this.floorRepo.findBuildingCodesWithMinMaxFloors(min, max);
       const buildings: Building[] = [];
       for (const buildingCode of buildingCodes) {
-        const building = await this.buildingRepo.findByDomainId(buildingCode);
+        const building = await this.buildingRepo.findByCode(buildingCode);
         if (!building) throw new Error('Building not found');
         buildings.push(building);
       }

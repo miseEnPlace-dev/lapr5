@@ -131,4 +131,96 @@ describe('role controller', () => {
     assert.calledOnce(<SinonSpy>next);
     assert.calledWith(<SinonSpy>next, match({ message: 'error' }));
   });
+
+  it('updateRole: returns json with id+title values', async () => {
+    const body = { name: 'role12' };
+    const req: Partial<Request> = {};
+    req.body = body;
+
+    const res: Partial<Response> = {
+      status: _ => <Response>{}
+    };
+    stub(res, 'status').returns(res);
+    res.json = spy();
+    const next: Partial<NextFunction> = () => {};
+
+    const roleServiceInstance = container.get<IRoleService>(TYPES.roleService);
+    stub(roleServiceInstance, 'updateRole').resolves(
+      Result.ok<IRoleDTO>({ title: '123', name: body.name })
+    );
+
+    const ctrl = new RoleController(roleServiceInstance);
+
+    await ctrl.updateRole(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.json);
+    assert.calledWith(<SinonSpy>res.json, match({ title: '123', name: req.body.name }));
+  });
+
+  it('updateRole: returns 400 when error occurs', async () => {
+    const body = { name: 'role12' };
+    const req: Partial<Request> = {};
+    req.body = body;
+
+    const res: Partial<Response> = {
+      status: spy()
+    };
+    const next: Partial<NextFunction> = () => {};
+
+    const roleServiceInstance = container.get<IRoleService>(TYPES.roleService);
+    stub(roleServiceInstance, 'updateRole').returns(
+      new Promise(resolve => {
+        resolve(Result.fail<IRoleDTO>('error'));
+      })
+    );
+
+    const ctrl = new RoleController(roleServiceInstance);
+
+    await ctrl.updateRole(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.status);
+    assert.calledWith(<SinonSpy>res.status, 400);
+  });
+
+  it('updateRole: returns json with error message when error occurs', async () => {
+    const body = { name: 'role12' };
+    const req: Partial<Request> = {};
+    req.body = body;
+
+    const res: Partial<Response> = {
+      status: _ => <Response>{}
+    };
+    stub(res, 'status').returns(res);
+    res.json = spy();
+    const next: Partial<NextFunction> = () => {};
+
+    const roleServiceInstance = container.get<IRoleService>(TYPES.roleService);
+    stub(roleServiceInstance, 'updateRole').resolves(Result.fail<IRoleDTO>('error'));
+
+    const ctrl = new RoleController(roleServiceInstance);
+
+    await ctrl.updateRole(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.json);
+    assert.calledWith(<SinonSpy>res.json, match({ message: 'error' }));
+  });
+
+  it('updateRole: calls next when service throws error', async () => {
+    const body = { name: 'role12' };
+    const req: Partial<Request> = {};
+    req.body = body;
+
+    const res = {};
+    const next: Partial<NextFunction> = spy();
+
+    const roleServiceInstance = container.get<IRoleService>(TYPES.roleService);
+    stub(roleServiceInstance, 'updateRole').throws(new Error('error'));
+
+    const ctrl = new RoleController(roleServiceInstance);
+
+    await ctrl.updateRole(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>next);
+    assert.calledWith(<SinonSpy>next, match({ message: 'error' }));
+  });
 });

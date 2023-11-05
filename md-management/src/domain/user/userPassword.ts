@@ -5,6 +5,7 @@ import { Result } from '../../core/logic/Result';
 import bcrypt from 'bcrypt';
 
 interface UserPasswordProps {
+  [key: string]: string | boolean | undefined;
   value: string;
   hashed?: boolean;
 }
@@ -16,7 +17,7 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
     return this.props.value;
   }
 
-  private constructor(props) {
+  private constructor(props: UserPasswordProps) {
     super(props);
   }
 
@@ -29,9 +30,9 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
     if (this.isAlreadyHashed()) {
       hashed = this.props.value;
       return this.bcryptCompare(plainTextPassword, hashed);
-    } else {
-      return this.props.value === plainTextPassword;
     }
+
+    return this.props.value === plainTextPassword;
   }
 
   private bcryptCompare(plainText: string, hashed: string): Promise<boolean> {
@@ -39,7 +40,7 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
   }
 
   public isAlreadyHashed(): boolean {
-    return this.props.hashed;
+    return !!this.props.hashed;
   }
 
   private hashPassword(password: string): Promise<string> {
@@ -48,11 +49,9 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
 
   public getHashedValue(): Promise<string> {
     return new Promise(resolve => {
-      if (this.isAlreadyHashed()) {
-        return resolve(this.props.value);
-      } else {
-        return resolve(this.hashPassword(this.props.value));
-      }
+      if (this.isAlreadyHashed()) return resolve(this.props.value);
+
+      return resolve(this.hashPassword(this.props.value));
     });
   }
 
@@ -61,25 +60,20 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
   }
 
   public static create(props: UserPasswordProps): Result<UserPassword> {
-    const propsResult = Guard.againstNullOrUndefined(props.value, 'password');
+    const propsResult = Guard.againstNullOrUndefined(props.value, 'Password');
 
-    if (!propsResult.succeeded) {
-      return Result.fail<UserPassword>(propsResult.message);
-    } else {
-      if (!props.hashed) {
-        if (!this.isAppropriateLength(props.value)) {
-          return Result.fail<UserPassword>(
-            "Password doesn't meet criteria [1 uppercase, 1 lowercase, one digit or symbol and 8 chars min]."
-          );
-        }
-      }
+    if (!propsResult.succeeded) return Result.fail<UserPassword>(propsResult.message);
 
-      return Result.ok<UserPassword>(
-        new UserPassword({
-          value: props.value,
-          hashed: !!props.hashed
-        })
+    if (!props.hashed && !this.isAppropriateLength(props.value))
+      return Result.fail<UserPassword>(
+        "Password doesn't meet criteria [1 uppercase, 1 lowercase, one digit or symbol and 8 chars min]."
       );
-    }
+
+    return Result.ok<UserPassword>(
+      new UserPassword({
+        value: props.value,
+        hashed: !!props.hashed
+      })
+    );
   }
 }
