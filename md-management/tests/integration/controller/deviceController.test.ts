@@ -567,4 +567,26 @@ describe('device controller', () => {
     assert.calledOnce(<SinonSpy>next);
     assert.calledWith(<SinonSpy>next, match.instanceOf(Error));
   });
+
+  it('getDevicesRobots with query: returns status 400 code (bad request) when query is invalid', async () => {
+    const req: Partial<Request> = {};
+    req.query = { filter: 'invalid' };
+
+    const res: Partial<Response> = {
+      status: spy()
+    };
+
+    const next: Partial<NextFunction> = () => {};
+
+    const deviceServiceInstance = container.get<IDeviceService>(TYPES.deviceService);
+
+    stub(deviceServiceInstance, 'getDevicesRobots').resolves(Result.fail<IDeviceDTO[]>('error'));
+
+    const ctrl = new DeviceController(deviceServiceInstance);
+
+    await ctrl.getDevicesRobots(<Request>req, <Response>res, <NextFunction>next);
+
+    assert.calledOnce(<SinonSpy>res.status);
+    assert.calledWith(<SinonSpy>res.status, 400);
+  });
 });
