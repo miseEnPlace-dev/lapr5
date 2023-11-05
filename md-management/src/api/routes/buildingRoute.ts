@@ -46,14 +46,19 @@ export default (app: Router) => {
   const route = Router();
   const ctrl = container.get<IBuildingController>(TYPES.buildingController);
 
-  route.get('', (req, res, next) => ctrl.getBuildings(req, res, next));
-  route.post('', validate(buildingCreateSchema), (req, res, next) =>
+  route.get('/buildings', (req, res, next) =>
+    // #swagger.tags = ['Buildings']
+    ctrl.getBuildings(req, res, next)
+  );
+  route.post('/buildings', validate(buildingCreateSchema), (req, res, next) =>
+    // #swagger.tags = ['Buildings']
     ctrl.createBuilding(req, res, next)
   );
 
-  route.put('/:code', validate(buildingUpdateSchema), (req, res, next) =>
+  route.put('/buildings/:code', validate(buildingUpdateSchema), (req, res, next) =>
+    // #swagger.tags = ['Buildings']
     ctrl.updateBuilding(req, res, next)
   );
 
-  app.use('/buildings', route);
+  app.use(route);
 };

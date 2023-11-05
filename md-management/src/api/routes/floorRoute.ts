@@ -40,14 +40,22 @@ export default (app: Router) => {
 
   const ctrl = container.get<IFloorController>(TYPES.floorController);
 
-  route.get('/:building/floors', (req, res, next) => ctrl.getFloors(req, res, next));
-  route.post('/:building/floors', validate(floorCreateSchema), (req, res, next) =>
+  route.get('/buildings/:building/floors', (req, res, next) =>
+    // #swagger.tags = ['Floors']
+    ctrl.getFloors(req, res, next)
+  );
+  route.post('/buildings/:building/floors', validate(floorCreateSchema), (req, res, next) =>
+    // #swagger.tags = ['Floors']
     ctrl.createFloor(req, res, next)
   );
-  route.patch('/floors/:code', (req, res, next) => ctrl.uploadMap(req, res, next));
-  route.put('/:building/floors/:code', validate(floorUpdateSchema), (req, res, next) =>
+  route.patch('/buildings/floors/:code', (req, res, next) =>
+    // #swagger.tags = ['Floors']
+    ctrl.uploadMap(req, res, next)
+  );
+  route.put('/buildings/:building/floors/:code', validate(floorUpdateSchema), (req, res, next) =>
+    // #swagger.tags = ['Floors']
     ctrl.updateFloor(req, res, next)
   );
 
-  app.use('/buildings', route);
+  app.use(route);
 };

@@ -17,8 +17,14 @@ export default (app: Router) => {
 
   const ctrl = container.get<IRoleController>(TYPES.roleController);
 
-  route.post('', validate(schema), (req, res, next) => ctrl.createRole(req, res, next));
-  route.put('', validate(schema), (req, res, next) => ctrl.updateRole(req, res, next));
+  route.post('/roles', validate(schema), (req, res, next) =>
+    // #swagger.tags = ['Roles']
+    ctrl.createRole(req, res, next)
+  );
+  route.put('/roles', validate(schema), (req, res, next) =>
+    // #swagger.tags = ['Roles']
+    ctrl.updateRole(req, res, next)
+  );
 
-  app.use('/roles', route);
+  app.use(route);
 };

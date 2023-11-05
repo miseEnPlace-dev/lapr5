@@ -39,15 +39,20 @@ export default (app: Router) => {
 
   const ctrl = container.get<IConnectorController>(TYPES.connectorController);
 
-  route.get('', (req, res, next) => ctrl.getConnectors(req, res, next));
+  route.get('/connectors', (req, res, next) =>
+    // #swagger.tags = ['Connectors']
+    ctrl.getConnectors(req, res, next)
+  );
 
-  route.post('', validate(connectorCreateSchema), (req, res, next) =>
+  route.post('/connectors', validate(connectorCreateSchema), (req, res, next) =>
+    // #swagger.tags = ['Connectors']
     ctrl.createConnector(req, res, next)
   );
 
-  route.patch('/:code', validate(connectorUpdateSchema), (req, res, next) =>
+  route.patch('/connectors/:code', validate(connectorUpdateSchema), (req, res, next) =>
+    // #swagger.tags = ['Connectors']
     ctrl.updateConnector(req, res, next)
   );
 
-  app.use('/connectors', route);
+  app.use(route);
 };

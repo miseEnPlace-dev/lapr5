@@ -6,17 +6,178 @@
     "version": "1.0.0"
   },
   "host": "localhost:4000",
-  "basePath": "/",
+  "basePath": "/api",
   "schemes": [
     "http"
   ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
-    "/{code}": {
+    "/buildings": {
+      "get": {
+        "tags": [
+          "Buildings"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Buildings"
+        ],
+        "description": "",
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/buildings/{code}": {
       "put": {
+        "tags": [
+          "Buildings"
+        ],
         "description": "",
         "parameters": [
           {
             "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/buildings/{building}/floors": {
+      "get": {
+        "tags": [
+          "Floors"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "building",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Floors"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "building",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/buildings/floors/{code}": {
+      "patch": {
+        "tags": [
+          "Floors"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/buildings/{building}/floors/{code}": {
+      "put": {
+        "tags": [
+          "Floors"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "building",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/buildings/{building}/elevators": {
+      "get": {
+        "tags": [
+          "Elevators"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "building",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Elevators"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "building",
             "in": "path",
             "required": true,
             "type": "string"
@@ -28,7 +189,55 @@
           }
         }
       },
+      "put": {
+        "tags": [
+          "Elevators"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "building",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/connectors": {
+      "get": {
+        "tags": [
+          "Connectors"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Connectors"
+        ],
+        "description": "",
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/connectors/{code}": {
       "patch": {
+        "tags": [
+          "Connectors"
+        ],
         "description": "",
         "parameters": [
           {
@@ -41,15 +250,15 @@
         "responses": {
           "400": {
             "description": "Bad Request"
-          },
-          "default": {
-            "description": ""
           }
         }
       }
     },
-    "/{building}/floors/{floor}/rooms": {
+    "/buildings/{building}/floors/{floor}/rooms": {
       "post": {
+        "tags": [
+          "Rooms"
+        ],
         "description": "",
         "parameters": [
           {
@@ -72,8 +281,11 @@
         }
       }
     },
-    "/signup": {
+    "/device-models": {
       "post": {
+        "tags": [
+          "Device Models"
+        ],
         "description": "",
         "responses": {
           "400": {
@@ -82,8 +294,11 @@
         }
       }
     },
-    "/login": {
+    "/devices": {
       "post": {
+        "tags": [
+          "Devices"
+        ],
         "description": "",
         "responses": {
           "400": {
@@ -92,8 +307,95 @@
         }
       }
     },
-    "/logout": {
+    "/devices/{code}": {
+      "patch": {
+        "tags": [
+          "Devices"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/devices/robots": {
+      "get": {
+        "tags": [
+          "Devices"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/roles": {
       "post": {
+        "tags": [
+          "Roles"
+        ],
+        "description": "",
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Roles"
+        ],
+        "description": "",
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/users/signup": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "",
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "",
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/users/logout": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "responses": {
           "default": {
@@ -104,142 +406,9 @@
     },
     "/me": {
       "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/{building}/floors": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "building",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
+        "tags": [
+          "Users"
         ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "building",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/floors/{code}": {
-      "patch": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "code",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/{building}/floors/{code}": {
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "building",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "code",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/{building}/elevators": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "building",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "building",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      },
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "building",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/robots": {
-      "get": {
         "description": "",
         "responses": {
           "default": {

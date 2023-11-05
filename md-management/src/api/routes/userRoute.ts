@@ -44,11 +44,13 @@ export default (app: Router) => {
   const route = Router();
   const userController = container.get<IUserController>(TYPES.userController);
 
-  route.post('/signup', validate(signUpSchema), (req, res, next) =>
+  route.post('/users/signup', validate(signUpSchema), (req, res, next) =>
+    // #swagger.tags = ['Users']
     userController.signUp(req, res, next)
   );
 
-  route.post('/login', validate(signInSchema), (req, res, next) =>
+  route.post('/users/login', validate(signInSchema), (req, res, next) =>
+    // #swagger.tags = ['Users']
     userController.signIn(req, res, next)
   );
 
@@ -61,13 +63,15 @@ export default (app: Router) => {
    * emitted for the session and add it to a black list.
    * It's really annoying to develop that but if you had to, please use Redis as your data store
    */
-  route.post('/logout', isAuthenticated, (req, res, next) =>
+  route.post('/users/logout', isAuthenticated, (req, res, next) =>
+    // #swagger.tags = ['Users']
     userController.signOut(req, res, next)
   );
 
-  app.use('/users', route);
+  app.use(route);
 
   route.get('/me', isAuthenticated, attachCurrentSession, (req, res) =>
+    // #swagger.tags = ['Users']
     userController.getMe(req, res)
   );
 };

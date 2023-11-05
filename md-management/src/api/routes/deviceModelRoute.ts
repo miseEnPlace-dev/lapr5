@@ -29,9 +29,10 @@ export default (app: Router) => {
 
   const ctrl = container.get<IDeviceModelController>(TYPES.deviceModelController);
 
-  route.post('', validate(deviceModelCreateSchema), (req, res, next) =>
+  route.post('/device-models', validate(deviceModelCreateSchema), (req, res, next) =>
+    // #swagger.tags = ['Device Models']
     ctrl.createDeviceModel(req, res, next)
   );
 
-  app.use('/device-models', route);
+  app.use(route);
 };

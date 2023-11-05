@@ -32,15 +32,18 @@ export default (app: Router) => {
 
   const ctrl = container.get<IElevatorController>(TYPES.elevatorController);
 
-  route.get('/:building/elevators', (req, res, next) =>
+  route.get('/buildings/:building/elevators', (req, res, next) =>
+    // #swagger.tags = ['Elevators']
     ctrl.getElevatorForBuilding(req, res, next)
   );
-  route.post('/:building/elevators', validate(elevatorCreateSchema), (req, res, next) =>
+  route.post('/buildings/:building/elevators', validate(elevatorCreateSchema), (req, res, next) =>
+    // #swagger.tags = ['Elevators']
     ctrl.createElevator(req, res, next)
   );
-  route.put('/:building/elevators', validate(elevatorUpdateSchema), (req, res, next) =>
+  route.put('/buildings/:building/elevators', validate(elevatorUpdateSchema), (req, res, next) =>
+    // #swagger.tags = ['Elevators']
     ctrl.editElevator(req, res, next)
   );
 
-  app.use('/buildings', route);
+  app.use(route);
 };
