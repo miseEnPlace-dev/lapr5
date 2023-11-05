@@ -50,6 +50,7 @@ export default (app: Router) => {
   );
   route.patch('/buildings/floors/:code', (req, res, next) =>
     // #swagger.tags = ['Floors']
+    // #swagger.summary = 'Upload floor map'
     ctrl.uploadMap(req, res, next)
   );
   route.put('/buildings/:building/floors/:code', validate(floorUpdateSchema), (req, res, next) =>

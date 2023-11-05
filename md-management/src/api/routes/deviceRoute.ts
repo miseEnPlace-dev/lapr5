@@ -42,11 +42,13 @@ export default (app: Router) => {
   );
   route.patch('/devices/:code', (req, res, next) =>
     // #swagger.tags = ['Devices']
+    // #swagger.summary = 'Inhibit a device'
     ctrl.inhibitDevice(req, res, next)
   );
 
   route.get('/devices/robots', (req, res, next) =>
     // #swagger.tags = ['Devices']
+    // #swagger.summary = 'Get all robots'
     ctrl.getDevicesRobots(req, res, next)
   );
 

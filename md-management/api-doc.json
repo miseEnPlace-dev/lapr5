@@ -107,6 +107,7 @@
         "tags": [
           "Floors"
         ],
+        "summary": "Upload floor map",
         "description": "",
         "parameters": [
           {
@@ -312,6 +313,7 @@
         "tags": [
           "Devices"
         ],
+        "summary": "Inhibit a device",
         "description": "",
         "parameters": [
           {
@@ -333,6 +335,7 @@
         "tags": [
           "Devices"
         ],
+        "summary": "Get all robots",
         "description": "",
         "responses": {
           "default": {
@@ -409,6 +412,7 @@
         "tags": [
           "Users"
         ],
+        "summary": "Get current logged user",
         "description": "",
         "responses": {
           "default": {

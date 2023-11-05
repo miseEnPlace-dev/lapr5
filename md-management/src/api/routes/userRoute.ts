@@ -72,6 +72,7 @@ export default (app: Router) => {
 
   route.get('/me', isAuthenticated, attachCurrentSession, (req, res) =>
     // #swagger.tags = ['Users']
+    // #swagger.summary = 'Get current logged user'
     userController.getMe(req, res)
   );
 };
