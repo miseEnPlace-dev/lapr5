@@ -1,0 +1,131 @@
+body {
+  margin: 0;
+}
+
+#container {
+  position: absolute;
+  left: 50vw;
+  top: 50vh;
+  z-index: 1;
+  font-family: Arial, sans-serif;
+}
+
+#views-panel {
+  position: absolute;
+  left: -50vmin;
+  top: -49vh;
+  width: 100vmin;
+  font-size: 1.5vmin;
+  color: white;
+}
+
+#mouse-help-panel {
+  display: none;
+  position: absolute;
+  left: -50vmin;
+  top: -8vmin;
+  width: 100vmin;
+  font-size: 1.3vmin;
+  color: white;
+}
+
+#keyboard-help-panel {
+  display: none;
+  position: absolute;
+  left: -50vmin;
+  top: -35.75vmin;
+  width: 100vmin;
+  font-size: 1.3vmin;
+  color: white;
+}
+
+#credits-panel {
+  display: none;
+  position: absolute;
+  left: -50vmin;
+  top: -8vmin;
+  width: 100vmin;
+  font-size: 1.3vmin;
+  color: white;
+}
+
+#subwindows-panel {
+  position: absolute;
+  left: -49.5vw;
+  bottom: -49vh;
+  font-size: 1.5vmin;
+  color: white;
+}
+
+table {
+  margin: auto;
+  border: 1px solid black;
+}
+
+table.views {
+  text-align: right;
+  background-color: #44444470;
+}
+
+table.mouse-help {
+  text-align: center;
+  width: 50vmin;
+  background-color: #44444450;
+}
+
+table.keyboard-help {
+  width: 50vmin;
+  background-color: #44444450;
+}
+
+table.credits {
+  width: 50vmin;
+  background-color: #44444450;
+}
+
+table.subwindows {
+  text-align: right;
+  background-color: #44444470;
+}
+
+th,
+td {
+  overflow: hidden;
+  border: 1px solid black;
+}
+
+a {
+  color: white;
+}
+
+#view,
+#projection {
+  width: 18ch;
+  font-size: 1.5vmin;
+}
+
+#horizontal,
+#vertical,
+#distance,
+#zoom {
+  width: 10ch;
+  font-size: 1.5vmin;
+}
+
+#reset,
+#reset-all {
+  width: 16ch;
+  font-size: 1.5vmin;
+}
+
+input:invalid {
+  background-color: pink;
+}
+
+.checkbox-red {
+  accent-color: red;
+}
+
+canvas {
+  display: block;
+}
