@@ -1,11 +1,10 @@
+import Button from "@mui/material/Button";
 import PageLayout from "../PageLayout";
 
 const HomePage: React.FC = () => {
   return (
     <PageLayout>
-      <div>
-        <span className="text-xl font-bold">Home</span>
-      </div>
+      <Button variant="contained">Hello world</Button>
     </PageLayout>
   );
 };
