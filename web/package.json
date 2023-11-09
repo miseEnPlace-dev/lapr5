@@ -10,11 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@fontsource/roboto": "^5.0.8",
-    "@mui/icons-material": "^5.14.16",
-    "@mui/material": "^5.14.17",
     "@react-three/fiber": "^8.15.10",
     "@types/three": "^0.158.2",
     "autoprefixer": "^10.4.16",

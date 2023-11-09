@@ -1,6 +1,6 @@
 import PageLayout from "../PageLayout";
 
-const HomePage: React.FC = () => {
+const LoginPage: React.FC = () => {
   return (
     <PageLayout>
       <div>jajaja</div>
@@ -8,4 +8,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default LoginPage;
