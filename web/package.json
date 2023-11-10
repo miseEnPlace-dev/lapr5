@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.0.15",
+    "@fontsource/rubik": "^5.0.17",
     "@react-three/fiber": "^8.15.10",
     "@types/three": "^0.158.2",
     "autoprefixer": "^10.4.16",
