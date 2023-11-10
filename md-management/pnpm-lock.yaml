@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   argon2:
     specifier: ^0.31.1
@@ -52,9 +56,6 @@ dependencies:
   multer:
     specifier: 1.4.5-lts.1
     version: 1.4.5-lts.1
-  reflect-metadata:
-    specifier: ^0.1.13
-    version: 0.1.13
   shallow-equal-object:
     specifier: ^1.1.1
     version: 1.1.1
@@ -138,6 +139,9 @@ devDependencies:
   prettier:
     specifier: ^1.19.1
     version: 1.19.1
+  reflect-metadata:
+    specifier: ^0.1.13
+    version: 0.1.13
   ts-node:
     specifier: ^10.9.1
     version: 10.9.1(@types/node@16.18.59)(typescript@4.9.5)
@@ -3870,7 +3874,7 @@ packages:
 
   /reflect-metadata@0.1.13:
     resolution: {integrity: sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==}
-    dev: false
+    dev: true
 
   /resolve-from@4.0.0:
     resolution: {integrity: sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==}
@@ -4685,7 +4689,3 @@ packages:
   /zod@3.22.4:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
     dev: false
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false

@@ -39,7 +39,6 @@
     "mongoose": "^6.12.2",
     "morgan": "^1.10.0",
     "multer": "1.4.5-lts.1",
-    "reflect-metadata": "^0.1.13",
     "shallow-equal-object": "^1.1.1",
     "sinon": "^17.0.0",
     "swagger-autogen": "^2.23.7",
@@ -69,6 +68,7 @@
     "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-prettier": "^3.4.1",
     "prettier": "^1.19.1",
+    "reflect-metadata": "^0.1.13",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   }
