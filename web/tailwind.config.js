@@ -2,7 +2,13 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ["Roboto", "Arial", "sans-serif"],
+        poppins: ["Poppins", "Arial", "sans-serif"],
+        archivo: ["Archivo", "Arial", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 };
