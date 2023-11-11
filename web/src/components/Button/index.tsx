@@ -1,6 +1,5 @@
 const backgrounds = {
-  submit:
-    "bg-green-500 hover:bg-green-700 disabled:hover:bg-green-500",
+  submit: "bg-green-500 hover:bg-green-700 disabled:hover:bg-green-500",
   cancel: "bg-red-500 hover:bg-red-700 disabled:hover:bg-red-500",
   reset: "bg-gray-500 hover:bg-gray-700 disabled:hover:bg-gray-500",
 };
@@ -22,8 +21,8 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button
-      className={`${backgrounds[type]} font-poppins text-lg text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline
-      disabled:opacity-50 disabled:cursor-not-allowed
+      className={`${backgrounds[type]} rounded px-6 py-2 font-poppins text-lg font-bold text-white focus:outline-none
+      disabled:cursor-not-allowed disabled:opacity-50
        ${className}`}
       disabled={disabled}
       onClick={onClick}

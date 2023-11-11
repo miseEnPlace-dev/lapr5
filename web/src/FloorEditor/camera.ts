@@ -109,25 +109,14 @@ export default class Camera {
       "YXZ"
     ); // Order: yaw, pitch and roll
     playerOrientation.x =
-      -playerOrientation.x +
-      THREE.MathUtils.degToRad(this.orientation.v);
-    playerOrientation.y += THREE.MathUtils.degToRad(
-      this.orientation.h - 180.0
-    );
+      -playerOrientation.x + THREE.MathUtils.degToRad(this.orientation.v);
+    playerOrientation.y += THREE.MathUtils.degToRad(this.orientation.h - 180.0);
     playerOrientation.z = -playerOrientation.z;
     this.perspective.setRotationFromEuler(playerOrientation);
     this.orthographic.setRotationFromEuler(playerOrientation);
 
-    this.perspective.position.set(
-      this.target.x,
-      this.target.y,
-      this.target.z
-    );
-    this.orthographic.position.set(
-      this.target.x,
-      this.target.y,
-      this.target.z
-    );
+    this.perspective.position.set(this.target.x, this.target.y, this.target.z);
+    this.orthographic.position.set(this.target.x, this.target.y, this.target.z);
     if (this.view == "first-person") {
       this.perspective.translateZ(-0.9 * this.playerRadius);
       this.orthographic.translateZ(-0.9 * this.playerRadius);
@@ -147,9 +136,8 @@ export default class Camera {
         2.0 *
         THREE.MathUtils.radToDeg(
           Math.atan(
-            Math.tan(
-              THREE.MathUtils.degToRad(this.initialFov / 2.0)
-            ) / this.aspectRatio
+            Math.tan(THREE.MathUtils.degToRad(this.initialFov / 2.0)) /
+              this.aspectRatio
           )
         );
       right = this.initialHalfSize;
@@ -294,9 +282,7 @@ export default class Camera {
   }
 
   dragViewport(mouse) {
-    const increment = mouse.currentPosition
-      .clone()
-      .sub(mouse.initialPosition);
+    const increment = mouse.currentPosition.clone().sub(mouse.initialPosition);
     this.viewport.x = THREE.MathUtils.clamp(
       this.previousViewport.x + increment.x,
       0,
@@ -317,9 +303,7 @@ export default class Camera {
   }
 
   resizeViewport(frame, mouse) {
-    const increment = mouse.currentPosition
-      .clone()
-      .sub(mouse.initialPosition);
+    const increment = mouse.currentPosition.clone().sub(mouse.initialPosition);
     switch (frame) {
       case "southwest":
         this.viewport.x = THREE.MathUtils.clamp(
@@ -523,11 +507,7 @@ export default class Camera {
   }
 
   setZoom(zoom) {
-    this.zoom = THREE.MathUtils.clamp(
-      zoom,
-      this.zoomMin,
-      this.zoomMax
-    );
+    this.zoom = THREE.MathUtils.clamp(zoom, this.zoomMin, this.zoomMax);
     this.perspective.zoom = this.zoom;
     this.perspective.updateProjectionMatrix();
     this.orthographic.zoom = this.zoom;

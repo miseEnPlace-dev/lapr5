@@ -44,9 +44,7 @@ export default class Audio {
     };
 
     const onError = function (url, error) {
-      console.error(
-        "Error loading resource '" + url + "' (" + error + ")."
-      );
+      console.error("Error loading resource '" + url + "' (" + error + ").");
     };
 
     this.loaded = function () {

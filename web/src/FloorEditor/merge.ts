@@ -4,15 +4,12 @@ export function merge(object, ...sources) {
   return _.mergeWith(
     object,
     ...sources,
-    (objValue, srcValue, key, object, source) => {
+    (objValue, srcValue, key, object, _) => {
       if (_.isArray(objValue)) {
         // Arrays must be concatenated
         return objValue.concat(srcValue);
       } else {
-        const descriptor = Object.getOwnPropertyDescriptor(
-          object,
-          key
-        );
+        const descriptor = Object.getOwnPropertyDescriptor(object, key);
         if (descriptor !== undefined && !descriptor.writable) {
           // It must be taken into account that there are properties in three.js (such as position and scale) that are read-only
           descriptor.value = srcValue;

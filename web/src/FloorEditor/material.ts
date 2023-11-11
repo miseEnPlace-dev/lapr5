@@ -1,4 +1,5 @@
 import * as THREE from "three";
+
 import { merge } from "./merge.ts";
 
 /*
@@ -61,9 +62,7 @@ export default class MultiTexturedMaterial extends THREE.MeshStandardMaterial {
     };
 
     this.onError = function (url, error) {
-      console.error(
-        "Error loading resource '" + url + "' (" + error + ")."
-      );
+      console.error("Error loading resource '" + url + "' (" + error + ").");
     };
 
     // Create a texture file loader

@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import swal from "sweetalert";
+
 import Button from "../../components/Button";
 import AuthContext from "../../context/AuthContext";
 import { useEmail } from "../../hooks/useEmail";
-
-import swal from "sweetalert";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -28,26 +28,26 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center">
-      <main className="flex flex-col items-center justify-center gap-y-24 px-6 md:px-24 w-5/6 lg:w-1/2 h-3/4 rounded-lg bg-slate-100">
+    <div className="flex h-screen items-center justify-center">
+      <main className="flex h-3/4 w-5/6 flex-col items-center justify-center gap-y-24 rounded-lg bg-slate-100 px-6 md:px-24 lg:w-1/2">
         <div className="flex flex-col gap-y-4">
-          <h1 className="text-3xl font-bold text-center">Login</h1>
+          <h1 className="text-center text-3xl font-bold">Login</h1>
           <img
-            className="w-1/2 mx-auto"
+            className="mx-auto w-1/2"
             src="/assets/logos/dark-reverse/svg/logo-no-background.svg"
             alt="Logo dark"
           />
         </div>
-        <form className="flex flex-col w-full gap-y-4">
+        <form className="flex w-full flex-col gap-y-4">
           <input
-            className="w-full px-4 py-2 rounded-lg bg-slate-200"
+            className="w-full rounded-lg bg-slate-200 px-4 py-2"
             placeholder="Email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
-            className="w-full px-4 py-2 rounded-lg bg-slate-200"
+            className="w-full rounded-lg bg-slate-200 px-4 py-2"
             placeholder="Password"
             type="password"
             value={password}
@@ -60,7 +60,7 @@ const LoginPage: React.FC = () => {
               handleLogin();
             }}
             disabled={!isEmailValid || !password}
-            className="w-full mt-4"
+            className="mt-4 w-full"
           >
             Login
           </Button>

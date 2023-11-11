@@ -1,9 +1,11 @@
 import * as THREE from "three";
-import { OBB } from "three/addons/math/OBB.js";
-import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
+
 import Ground from "./ground.ts";
 import { merge } from "./merge.ts";
 import Wall from "./wall.ts";
+
+import { OBB } from "three/addons/math/OBB.js";
+import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
 
 /*
  * parameters = {
@@ -31,10 +33,7 @@ export default class Maze extends THREE.Group {
         THREE.RepeatWrapping,
         THREE.MirroredRepeatWrapping,
       ];
-      const magnificationFilters = [
-        THREE.NearestFilter,
-        THREE.LinearFilter,
-      ];
+      const magnificationFilters = [THREE.NearestFilter, THREE.LinearFilter];
       const minificationFilters = [
         THREE.NearestFilter,
         THREE.NearestMipmapNearestFilter,
@@ -51,9 +50,7 @@ export default class Maze extends THREE.Group {
         depth: this.size.depth / 2.0,
       };
       this.map = description.maze.map;
-      this.exitLocation = this.cellToCartesian(
-        description.maze.exitLocation
-      );
+      this.exitLocation = this.cellToCartesian(description.maze.exitLocation);
 
       // Create the helpers
       this.helper = new THREE.Group();
@@ -71,20 +68,15 @@ export default class Maze extends THREE.Group {
           description.ground.segments.depth
         ),
         materialParameters: {
-          color: new THREE.Color(
-            parseInt(description.ground.primaryColor, 16)
-          ),
+          color: new THREE.Color(parseInt(description.ground.primaryColor, 16)),
           mapUrl: description.ground.maps.color.url,
           aoMapUrl: description.ground.maps.ao.url,
           aoMapIntensity: description.ground.maps.ao.intensity,
-          displacementMapUrl:
-            description.ground.maps.displacement.url,
-          displacementScale:
-            description.ground.maps.displacement.scale,
+          displacementMapUrl: description.ground.maps.displacement.url,
+          displacementScale: description.ground.maps.displacement.scale,
           displacementBias: description.ground.maps.displacement.bias,
           normalMapUrl: description.ground.maps.normal.url,
-          normalMapType:
-            normalMapTypes[description.ground.maps.normal.type],
+          normalMapType: normalMapTypes[description.ground.maps.normal.type],
           normalScale: new THREE.Vector2(
             description.ground.maps.normal.scale.x,
             description.ground.maps.normal.scale.y
@@ -99,10 +91,8 @@ export default class Maze extends THREE.Group {
             description.ground.repeat.u,
             description.ground.repeat.v
           ),
-          magFilter:
-            magnificationFilters[description.ground.magFilter],
-          minFilter:
-            minificationFilters[description.ground.minFilter],
+          magFilter: magnificationFilters[description.ground.magFilter],
+          minFilter: minificationFilters[description.ground.minFilter],
         },
         secondaryColor: new THREE.Color(
           parseInt(description.ground.secondaryColor, 16)
@@ -118,9 +108,7 @@ export default class Maze extends THREE.Group {
           description.wall.segments.height
         ),
         materialParameters: {
-          color: new THREE.Color(
-            parseInt(description.wall.primaryColor, 16)
-          ),
+          color: new THREE.Color(parseInt(description.wall.primaryColor, 16)),
           mapUrl: description.wall.maps.color.url,
           aoMapUrl: description.wall.maps.ao.url,
           aoMapIntensity: description.wall.maps.ao.intensity,
@@ -128,8 +116,7 @@ export default class Maze extends THREE.Group {
           displacementScale: description.wall.maps.displacement.scale,
           displacementBias: description.wall.maps.displacement.bias,
           normalMapUrl: description.wall.maps.normal.url,
-          normalMapType:
-            normalMapTypes[description.wall.maps.normal.type],
+          normalMapType: normalMapTypes[description.wall.maps.normal.type],
           normalScale: new THREE.Vector2(
             description.wall.maps.normal.scale.x,
             description.wall.maps.normal.scale.y
@@ -154,7 +141,7 @@ export default class Maze extends THREE.Group {
 
       // Build the maze
       let geometry;
-      let geometries = [];
+      const geometries = [];
       geometries[0] = [];
       geometries[1] = [];
       this.aabb = [];
@@ -195,10 +182,7 @@ export default class Maze extends THREE.Group {
               this.aabb[i][j][0].union(geometry.boundingBox);
             }
             this.helper.add(
-              new THREE.Box3Helper(
-                this.aabb[i][j][0],
-                this.helpersColor
-              )
+              new THREE.Box3Helper(this.aabb[i][j][0], this.helpersColor)
             );
           }
           if (this.map[i][j] == 1 || this.map[i][j] == 3) {
@@ -227,10 +211,7 @@ export default class Maze extends THREE.Group {
               this.aabb[i][j][1].union(geometry.boundingBox);
             }
             this.helper.add(
-              new THREE.Box3Helper(
-                this.aabb[i][j][1],
-                this.helpersColor
-              )
+              new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor)
             );
           }
         }
@@ -268,9 +249,7 @@ export default class Maze extends THREE.Group {
     };
 
     const onError = function (url, error) {
-      console.error(
-        "Error loading resource '" + url + "' (" + error + ")."
-      );
+      console.error("Error loading resource '" + url + "' (" + error + ").");
     };
 
     // The cache must be enabled; additional information available at https://threejs.org/docs/api/en/loaders/FileLoader.html
@@ -333,12 +312,10 @@ export default class Maze extends THREE.Group {
     ) {
       const x =
         position.x -
-        (this.cellToCartesian([row, column]).x +
-          delta.x * this.scale.x);
+        (this.cellToCartesian([row, column]).x + delta.x * this.scale.x);
       const z =
         position.z -
-        (this.cellToCartesian([row, column]).z +
-          delta.z * this.scale.z);
+        (this.cellToCartesian([row, column]).z + delta.z * this.scale.z);
       if (x * x + z * z < radius * radius) {
         console.log("Collision with " + name + ".");
         return true;
@@ -348,15 +325,7 @@ export default class Maze extends THREE.Group {
   }
 
   // Detect collision with walls (method: BC/AABB)
-  wallCollision(
-    indices,
-    offsets,
-    orientation,
-    position,
-    delta,
-    radius,
-    name
-  ) {
+  wallCollision(indices, offsets, orientation, position, delta, radius, name) {
     const row = indices[0] + offsets[0];
     const column = indices[1] + offsets[1];
     if (
@@ -367,8 +336,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.x -
-              (this.cellToCartesian([row, column]).x +
-                delta.x * this.scale.x)
+              (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
@@ -378,8 +346,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.z -
-              (this.cellToCartesian([row, column]).z +
-                delta.z * this.scale.z)
+              (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
@@ -531,34 +498,10 @@ export default class Maze extends THREE.Group {
       const obb = new OBB(position, halfSize);
       obb.applyMatrix4(new THREE.Matrix4().makeRotationY(direction));
       if (
-        this.wallAndCornerCollision(
-          indices,
-          [0, 0],
-          0,
-          obb,
-          "north wall"
-        ) || // Collision with north wall
-        this.wallAndCornerCollision(
-          indices,
-          [0, 0],
-          1,
-          obb,
-          "west wall"
-        ) || // Collision with west wall
-        this.wallAndCornerCollision(
-          indices,
-          [1, 0],
-          0,
-          obb,
-          "south wall"
-        ) || // Collision with south wall
-        this.wallAndCornerCollision(
-          indices,
-          [0, 1],
-          1,
-          obb,
-          "east wall"
-        ) || // Collision with east wall
+        this.wallAndCornerCollision(indices, [0, 0], 0, obb, "north wall") || // Collision with north wall
+        this.wallAndCornerCollision(indices, [0, 0], 1, obb, "west wall") || // Collision with west wall
+        this.wallAndCornerCollision(indices, [1, 0], 0, obb, "south wall") || // Collision with south wall
+        this.wallAndCornerCollision(indices, [0, 1], 1, obb, "east wall") || // Collision with east wall
         this.wallAndCornerCollision(
           indices,
           [1, 0],
@@ -627,8 +570,7 @@ export default class Maze extends THREE.Group {
 
   foundExit(position) {
     return (
-      Math.abs(position.x - this.exitLocation.x) <
-        0.5 * this.scale.x &&
+      Math.abs(position.x - this.exitLocation.x) < 0.5 * this.scale.x &&
       Math.abs(position.z - this.exitLocation.z) < 0.5 * this.scale.z
     );
   }

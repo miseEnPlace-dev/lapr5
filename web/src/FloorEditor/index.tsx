@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import * as THREE from "three";
+
 import "./index.css";
+
 import Orientation from "./orientation";
 import ThumbRaiser from "./thumb_raiser";
 
@@ -131,8 +133,7 @@ const FloorEditor: React.FC = () => {
             {
               // Miramar
               name: "Miramar",
-              texturePath:
-                "./cube_textures/red-eclipse-skyboxes/skyboxes/",
+              texturePath: "./cube_textures/red-eclipse-skyboxes/skyboxes/",
               texturePositiveXUrl: "miramar_ft.jpg",
               textureNegativeXUrl: "miramar_bk.jpg",
               texturePositiveYUrl: "miramar_up.jpg",
@@ -145,8 +146,7 @@ const FloorEditor: React.FC = () => {
             {
               // Flat sunset
               name: "Flat sunset",
-              texturePath:
-                "./cube_textures/red-eclipse-skyboxes/skyboxes/",
+              texturePath: "./cube_textures/red-eclipse-skyboxes/skyboxes/",
               texturePositiveXUrl: "sunsetflat_ft.jpg",
               textureNegativeXUrl: "sunsetflat_bk.jpg",
               texturePositiveYUrl: "sunsetflat_up.jpg",
@@ -201,8 +201,7 @@ const FloorEditor: React.FC = () => {
             {
               // Heaven
               name: "Heaven",
-              texturePath:
-                "./cube_textures/xonotic-skyboxes/skyboxes/heaven/",
+              texturePath: "./cube_textures/xonotic-skyboxes/skyboxes/heaven/",
               texturePositiveXUrl: "heaven_ft.jpg",
               textureNegativeXUrl: "heaven_bk.jpg",
               texturePositiveYUrl: "heaven_up.jpg",
@@ -355,11 +354,7 @@ const FloorEditor: React.FC = () => {
                   <input type="number" id="vertical" required />
                 </td>
                 <td>
-                  <input
-                    type="button"
-                    id="reset"
-                    value="Reset view"
-                  />
+                  <input type="button" id="reset" value="Reset view" />
                 </td>
               </tr>
               <tr>
@@ -379,11 +374,7 @@ const FloorEditor: React.FC = () => {
                   <input type="number" id="zoom" required />
                 </td>
                 <td>
-                  <input
-                    type="button"
-                    id="reset-all"
-                    value="Reset all views"
-                  />
+                  <input type="button" id="reset-all" value="Reset all views" />
                 </td>
               </tr>
             </tbody>

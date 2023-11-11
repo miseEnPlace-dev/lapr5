@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import FloorEditor from "./FloorEditor";
 import { AuthProvider } from "./context/AuthContext";
+import FloorEditor from "./FloorEditor";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
