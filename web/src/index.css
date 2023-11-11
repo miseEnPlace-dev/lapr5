@@ -6,6 +6,12 @@
 
 @layer base {
   :root {
+    --text: #000000;
+    --background: #e5fcff;
+    --primary: #d96f12;
+    --secondary: #d2eaef;
+    --accent: #00c3ff;
+    --accent-alternative: #068198;
   }
 
   body {

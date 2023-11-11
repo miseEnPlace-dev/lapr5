@@ -1,8 +1,14 @@
 import { createContext } from "react";
 import { useAuth } from "../hooks/useAuth";
 
-const AuthContext = createContext({
+const AuthContext = createContext<{
+  isAuthenticated: boolean;
+  role: string | null;
+  login: () => Promise<void>;
+  logout: () => Promise<void>;
+}>({
   isAuthenticated: false,
+  role: null,
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
 });
@@ -17,13 +23,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
   const auth = useAuth();
 
   return (
-    <AuthContext.Provider
-      value={{
-        isAuthenticated: auth.isAuthenticated,
-        login: auth.login,
-        logout: auth.logout,
-      }}
-    >
+    <AuthContext.Provider value={auth}>
       {children}
     </AuthContext.Provider>
   );

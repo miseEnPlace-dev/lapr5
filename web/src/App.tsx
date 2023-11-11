@@ -4,6 +4,7 @@ import FloorEditor from "./FloorEditor";
 import { AuthProvider } from "./context/AuthContext";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
+import NotFound from "./pages/NotFound";
 import { RequireAuth } from "./utils/RequireAuth";
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          <Route path="*" element={<NotFound />} />
           <Route
             path="/"
             element={
