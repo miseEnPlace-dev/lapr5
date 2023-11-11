@@ -1,6 +1,7 @@
 import config from '@/config.mjs';
 import cors from 'cors';
 import express, { NextFunction, Request, Response, json } from 'express';
+import morgan from 'morgan';
 import swaggerUi from 'swagger-ui-express';
 import swaggerFile from '../../api-doc.json';
 import routes from '../api';
@@ -22,6 +23,8 @@ export default ({ app }: { app: express.Application }) => {
   app.head('/status', (req, res) => {
     res.status(200).end();
   });
+
+  app.use(process.env.ENV === 'production' ? morgan('combined') : morgan('dev'));
 
   // we are using swagger to document our api
   app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));

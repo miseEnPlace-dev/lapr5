@@ -103,6 +103,9 @@ devDependencies:
   '@types/lodash':
     specifier: ^4.14.200
     version: 4.14.200
+  '@types/morgan':
+    specifier: ^1.9.9
+    version: 1.9.9
   '@types/multer':
     specifier: ^1.4.9
     version: 1.4.9
@@ -1626,6 +1629,12 @@ packages:
 
   /@types/mime@3.0.3:
     resolution: {integrity: sha512-i8MBln35l856k5iOhKk2XJ4SeAWg75mLIpZB4v6imOagKL6twsukBZGDMNhdOVk7yRFTMPpfILocMos59Q1otQ==}
+    dev: true
+
+  /@types/morgan@1.9.9:
+    resolution: {integrity: sha512-iRYSDKVaC6FkGSpEVVIvrRGw0DfJMiQzIn3qr2G5B3C//AWkulhXgaBd7tS9/J79GWSYMTHGs7PfI5b3Y8m+RQ==}
+    dependencies:
+      '@types/node': 16.18.59
     dev: true
 
   /@types/multer@1.4.9:
