@@ -4,6 +4,8 @@ import Button from "../../components/Button";
 import AuthContext from "../../context/AuthContext";
 import { useEmail } from "../../hooks/useEmail";
 
+import swal from "sweetalert";
+
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
@@ -13,14 +15,21 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    login().then(() => {
-      navigate(state?.path || "/");
-    });
+    login(email, password)
+      .then(() => {
+        navigate(state?.path || "/");
+      })
+      .catch((err) => {
+        console.log(err);
+        swal("Error", "Invalid email or password", "error");
+        setPassword("");
+        setEmail("");
+      });
   };
 
   return (
     <div className="h-screen flex items-center justify-center">
-      <main className="flex flex-col items-center justify-center gap-y-24 px-24 w-1/2 h-3/4 rounded-lg bg-slate-100">
+      <main className="flex flex-col items-center justify-center gap-y-24 px-6 md:px-24 w-5/6 lg:w-1/2 h-3/4 rounded-lg bg-slate-100">
         <div className="flex flex-col gap-y-4">
           <h1 className="text-3xl font-bold text-center">Login</h1>
           <img
@@ -46,7 +55,10 @@ const LoginPage: React.FC = () => {
           />
           <Button
             type="submit"
-            onClick={handleLogin}
+            onClick={(e) => {
+              e.preventDefault();
+              handleLogin();
+            }}
             disabled={!isEmailValid || !password}
             className="w-full mt-4"
           >

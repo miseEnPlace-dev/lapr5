@@ -8,7 +8,7 @@ const backgrounds = {
 interface ButtonProps {
   children: React.ReactNode;
   type: keyof typeof backgrounds;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
   disabled?: boolean;
 }

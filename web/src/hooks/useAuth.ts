@@ -1,29 +1,26 @@
 import { useState } from "react";
-import { API_URL } from "../service/api";
+import api from "../service/api";
 
 export function useAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [role, setRole] = useState<string | null>(null);
 
   const login = async (email: string, password: string) => {
-    console.log(API_URL + "/users/login");
-    const res = await fetch(API_URL + "/users/login", {
+    const res = await api("/users/login", {
       method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
+      data: {
         email,
         password,
-      }),
+      },
     });
 
-    console.log(res);
-    setIsAuthenticated(true);
-    // setRole(role);
-    // reject();
+    if (res.status === 200) {
+      setIsAuthenticated(true);
+      setRole(res.data.userDTO.role);
+      return Promise.resolve();
+    } else {
+      return Promise.reject(res.data.message);
+    }
   };
 
   const logout = () => {
