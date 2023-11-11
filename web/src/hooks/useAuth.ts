@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { localStorageConfig } from "../config/localStorageConfig";
 import api from "../service/api";
 
 export function useAuth() {
@@ -17,6 +18,7 @@ export function useAuth() {
     if (res.status === 200) {
       setIsAuthenticated(true);
       setRole(res.data.userDTO.role);
+      localStorage.setItem(localStorageConfig.token, res.data.token);
       return Promise.resolve();
     } else {
       return Promise.reject(res.data.message);
@@ -27,6 +29,7 @@ export function useAuth() {
     return new Promise<void>((res) => {
       setIsAuthenticated(false);
       setRole(null);
+      localStorage.removeItem(localStorageConfig.token);
       res();
     });
   };
