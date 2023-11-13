@@ -1,7 +1,9 @@
+import SideBar from "../../components/SideBar";
+
 const FleetHome: React.FC = () => {
   return (
     <div>
-      <span>FleetHome</span>
+      <SideBar />
     </div>
   );
 };

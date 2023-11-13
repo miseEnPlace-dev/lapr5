@@ -1,7 +1,9 @@
+import SideBar from "../../components/SideBar/index.tsx";
+
 const CampusHome: React.FC = () => {
   return (
     <div>
-      <span>CampusHome</span>
+      <SideBar />
     </div>
   );
 };

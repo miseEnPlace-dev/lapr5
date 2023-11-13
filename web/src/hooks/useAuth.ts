@@ -8,6 +8,7 @@ export function useAuth() {
     localStorage.getItem(localStorageConfig.token) ? true : false
   );
   const [role, setRole] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
 
   async function getSession(token: string) {
     const res = await api("/me", {
@@ -19,11 +20,13 @@ export function useAuth() {
     if (res.status === 200) {
       setIsAuthenticated(true);
       setRole(res.data.role);
+      setUsername(`${res.data.firstName} ${res.data.lastName}`);
       return;
     }
 
     setIsAuthenticated(false);
     setRole(null);
+    setUsername(null);
     localStorage.removeItem(localStorageConfig.token);
   }
 
@@ -46,6 +49,7 @@ export function useAuth() {
     if (res.status === 200) {
       setIsAuthenticated(true);
       setRole(res.data.userDTO.role);
+      setUsername(`${res.data.userDTO.firstName} ${res.data.userDTO.lastName}`);
       localStorage.setItem(localStorageConfig.token, res.data.token);
       return Promise.resolve();
     } else {
@@ -66,6 +70,7 @@ export function useAuth() {
     isAuthenticated,
     login,
     role,
+    username,
     logout,
   };
 }
