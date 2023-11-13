@@ -1,5 +1,5 @@
 const backgrounds = {
-  submit: "bg-green-500 hover:bg-green-700 disabled:hover:bg-green-500",
+  submit: "bg-primary hover:bg-primary-700 disabled:hover:bg-primary",
   cancel: "bg-red-500 hover:bg-red-700 disabled:hover:bg-red-500",
   reset: "bg-gray-500 hover:bg-gray-700 disabled:hover:bg-gray-500",
 };

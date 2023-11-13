@@ -8,10 +8,10 @@
   :root {
     --text: #000000;
     --background: #e5fcff;
-    --primary: #d96f12;
-    --secondary: #d2eaef;
-    --accent: #00c3ff;
-    --accent-alternative: #068198;
+    --primary: #284B62;
+    --secondary: #D0E7F6;
+    --accent: #278ED3;
+    --primary-700: #0a1e2c;
   }
 
   body {
