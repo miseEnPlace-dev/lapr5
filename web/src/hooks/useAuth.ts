@@ -4,23 +4,34 @@ import { localStorageConfig } from "../config/localStorageConfig";
 import api from "../service/api";
 
 export function useAuth() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem(localStorageConfig.token) ? true : false
+  );
   const [role, setRole] = useState<string | null>(null);
+
+  async function getSession(token: string) {
+    const res = await api("/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 200) {
+      setIsAuthenticated(true);
+      setRole(res.data.role);
+      return;
+    }
+
+    setIsAuthenticated(false);
+    setRole(null);
+    localStorage.removeItem(localStorageConfig.token);
+  }
 
   useEffect(() => {
     const token = localStorage.getItem(localStorageConfig.token);
     if (!token) return;
 
-    api("/users/me")
-      .then((res) => {
-        setIsAuthenticated(true);
-        setRole(res.data.role);
-      })
-      .catch(() => {
-        setIsAuthenticated(false);
-        setRole(null);
-        localStorage.removeItem(localStorageConfig.token);
-      });
+    getSession(token);
   }, []);
 
   const login = async (email: string, password: string) => {
