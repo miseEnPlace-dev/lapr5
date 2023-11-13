@@ -1,9 +1,9 @@
-import { Entity } from '@/core/domain/Entity';
 import { UniqueEntityID } from '../../core/domain/UniqueEntityID';
 import { Result } from '../../core/logic/Result';
 import { Floor } from '../floor/floor';
 import { ConnectorCode } from './connectorCode';
 import { Guard } from '@/core/logic/Guard';
+import { AggregateRoot } from '@/core/domain/AggregateRoot';
 
 interface ConnectorProps {
   code: ConnectorCode;
@@ -11,7 +11,7 @@ interface ConnectorProps {
   floor2: Floor;
 }
 
-export class Connector extends Entity<ConnectorProps> {
+export class Connector extends AggregateRoot<ConnectorProps> {
   get id(): UniqueEntityID {
     return this._id;
   }

@@ -39,7 +39,6 @@
     "mongoose": "^6.12.2",
     "morgan": "^1.10.0",
     "multer": "1.4.5-lts.1",
-    "reflect-metadata": "^0.1.13",
     "shallow-equal-object": "^1.1.1",
     "sinon": "^17.0.0",
     "swagger-autogen": "^2.23.7",
@@ -57,6 +56,7 @@
     "@types/express": "^4.17.20",
     "@types/jsonwebtoken": "^9.0.4",
     "@types/lodash": "^4.14.200",
+    "@types/morgan": "^1.9.9",
     "@types/multer": "^1.4.9",
     "@types/node": "^16.18.59",
     "@types/sinon": "^10.0.20",
@@ -69,6 +69,7 @@
     "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-prettier": "^3.4.1",
     "prettier": "^1.19.1",
+    "reflect-metadata": "^0.1.13",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   }

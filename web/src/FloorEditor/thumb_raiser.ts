@@ -14,7 +14,7 @@
 // User interaction
 
 import * as THREE from "three";
-import Stats from "three/addons/libs/stats.module.js";
+
 import Animations from "./animations.ts";
 import Audio from "./audio.ts";
 import Camera from "./camera.ts";
@@ -46,6 +46,8 @@ import { merge } from "./merge.ts";
 import Orientation from "./orientation.ts";
 import Player from "./player.ts";
 import UserInterface from "./user_interface.ts";
+
+import Stats from "three/addons/libs/stats.module.js";
 
 /*
  * generalParameters = {
@@ -384,11 +386,7 @@ export default class ThumbRaiser {
     topViewCameraParameters,
     miniMapCameraParameters
   ) {
-    this.generalParameters = merge(
-      {},
-      generalData,
-      generalParameters
-    );
+    this.generalParameters = merge({}, generalData, generalParameters);
     this.audioParameters = merge({}, audioData, audioParameters);
     this.cubeTexturesParameters = merge(
       {},
@@ -407,21 +405,9 @@ export default class ThumbRaiser {
       directionalLightData,
       directionalLightParameters
     );
-    this.spotLightParameters = merge(
-      {},
-      spotLightData,
-      spotLightParameters
-    );
-    this.flashLightParameters = merge(
-      {},
-      flashLightData,
-      flashLightParameters
-    );
-    this.shadowsParameters = merge(
-      {},
-      shadowsData,
-      shadowsParameters
-    );
+    this.spotLightParameters = merge({}, spotLightData, spotLightParameters);
+    this.flashLightParameters = merge({}, flashLightData, flashLightParameters);
+    this.shadowsParameters = merge({}, shadowsData, shadowsParameters);
     this.fogParameters = merge({}, fogData, fogParameters);
     this.collisionDetectionParameters = merge(
       {},
@@ -479,23 +465,14 @@ export default class ThumbRaiser {
     this.frame.add(square);
 
     // Create the camera corresponding to the 2D scenes
-    this.camera2D = new THREE.OrthographicCamera(
-      0.0,
-      1.0,
-      1.0,
-      0.0,
-      0.0,
-      1.0
-    );
+    this.camera2D = new THREE.OrthographicCamera(0.0, 1.0, 1.0, 0.0, 0.0, 1.0);
 
     // Create a 3D scene (the game itself)
     this.scene = new THREE.Scene();
 
     // Create the cube texture
     this.cubeTexture = new CubeTexture(
-      this.cubeTexturesParameters.skyboxes[
-        this.cubeTexturesParameters.selected
-      ]
+      this.cubeTexturesParameters.skyboxes[this.cubeTexturesParameters.selected]
     );
 
     // Create the maze
@@ -558,16 +535,11 @@ export default class ThumbRaiser {
     this.reset = document.getElementById("reset");
     this.resetAll = document.getElementById("reset-all");
     this.mouseHelpPanel = document.getElementById("mouse-help-panel");
-    this.keyboardHelpPanel = document.getElementById(
-      "keyboard-help-panel"
-    );
+    this.keyboardHelpPanel = document.getElementById("keyboard-help-panel");
     this.creditsPanel = document.getElementById("credits-panel");
     console.log(this.creditsPanel);
-    this.subwindowsPanel = document.getElementById(
-      "subwindows-panel"
-    );
-    this.realisticViewModeCheckBox =
-      document.getElementById("realistic");
+    this.subwindowsPanel = document.getElementById("subwindows-panel");
+    this.realisticViewModeCheckBox = document.getElementById("realistic");
     this.realisticViewModeCheckBox.checked = false;
     this.fixedViewCamera.checkBox = document.getElementById("fixed");
     this.fixedViewCamera.checkBox.checked = true;
@@ -662,10 +634,8 @@ export default class ThumbRaiser {
       "perspective",
       "orthographic",
     ].indexOf(this.activeViewCamera.projection);
-    this.horizontal.value =
-      this.activeViewCamera.orientation.h.toFixed(0);
-    this.vertical.value =
-      this.activeViewCamera.orientation.v.toFixed(0);
+    this.horizontal.value = this.activeViewCamera.orientation.h.toFixed(0);
+    this.vertical.value = this.activeViewCamera.orientation.v.toFixed(0);
     if (this.activeViewCamera.view == "first-person") {
       this.distance.value = "";
       this.distance.disabled = true;
@@ -740,19 +710,13 @@ export default class ThumbRaiser {
   getPointedFrame(mouse, camera) {
     const deltaX = camera.dragOrResizeThreshold * window.innerWidth;
     const deltaY = camera.dragOrResizeThreshold * window.innerHeight;
-    const west =
-      mouse.currentPosition.x - camera.viewport.x <= deltaX;
-    const south =
-      mouse.currentPosition.y - camera.viewport.y <= deltaY;
+    const west = mouse.currentPosition.x - camera.viewport.x <= deltaX;
+    const south = mouse.currentPosition.y - camera.viewport.y <= deltaY;
     const east =
-      camera.viewport.x +
-        camera.viewport.width -
-        mouse.currentPosition.x <=
+      camera.viewport.x + camera.viewport.width - mouse.currentPosition.x <=
       deltaX;
     const north =
-      camera.viewport.y +
-        camera.viewport.height -
-        mouse.currentPosition.y <=
+      camera.viewport.y + camera.viewport.height - mouse.currentPosition.y <=
       deltaY;
     if (west) {
       if (south) {
@@ -786,17 +750,13 @@ export default class ThumbRaiser {
     for (const camera of cameras) {
       if (
         mouse.currentPosition.x >= camera.viewport.x &&
-        mouse.currentPosition.x <
-          camera.viewport.x + camera.viewport.width &&
+        mouse.currentPosition.x < camera.viewport.x + camera.viewport.width &&
         mouse.currentPosition.y >= camera.viewport.y &&
-        mouse.currentPosition.y <
-          camera.viewport.y + camera.viewport.height
+        mouse.currentPosition.y < camera.viewport.y + camera.viewport.height
       ) {
         mouse.camera = camera;
         this.getPointedFrame(mouse, camera);
-        this.setCursor(
-          this.mouse.frame == "none" ? "drag" : this.mouse.frame
-        );
+        this.setCursor(this.mouse.frame == "none" ? "drag" : this.mouse.frame);
         return;
       }
     }
@@ -809,15 +769,9 @@ export default class ThumbRaiser {
   // Update the order by which the primary camera viewports will be selected and rendered and set the color of the corresponding checkboxes accordingly
   updateVisibleViewportCameras() {
     const newVisibleViewportCameras = [this.activeViewCamera];
-    this.activeViewCamera.checkBox.setAttribute(
-      "class",
-      "checkbox-red"
-    ); // Topmost viewport: in the subwindows panel set the corresponding checkbox color to red
+    this.activeViewCamera.checkBox.setAttribute("class", "checkbox-red"); // Topmost viewport: in the subwindows panel set the corresponding checkbox color to red
     this.visibleViewportCameras.forEach((camera) => {
-      if (
-        camera != this.activeViewCamera &&
-        camera.checkBox.checked
-      ) {
+      if (camera != this.activeViewCamera && camera.checkBox.checked) {
         newVisibleViewportCameras.push(camera);
         camera.checkBox.setAttribute("class", null); // Not the topmost viewport: in the subwindows panel set the corresponding checkbox color to its default
       }
@@ -830,28 +784,19 @@ export default class ThumbRaiser {
   // Set the active view camera
   setActiveViewCamera(camera) {
     if (this.activeViewCamera !== undefined) {
-      this.activeViewCamera.activeProjection.remove(
-        this.audio.listener
-      );
+      this.activeViewCamera.activeProjection.remove(this.audio.listener);
     }
     this.activeViewCamera = camera;
     this.activeViewCamera.activeProjection.add(this.audio.listener); // The audio listener is always a child of the active view camera
-    this.horizontal.min =
-      this.activeViewCamera.orientationMin.h.toFixed(0);
-    this.horizontal.max =
-      this.activeViewCamera.orientationMax.h.toFixed(0);
-    this.horizontal.step =
-      this.activeViewCamera.orientationStep.h.toFixed(0);
-    this.vertical.min =
-      this.activeViewCamera.orientationMin.v.toFixed(0);
-    this.vertical.max =
-      this.activeViewCamera.orientationMax.v.toFixed(0);
-    this.vertical.step =
-      this.activeViewCamera.orientationStep.v.toFixed(0);
+    this.horizontal.min = this.activeViewCamera.orientationMin.h.toFixed(0);
+    this.horizontal.max = this.activeViewCamera.orientationMax.h.toFixed(0);
+    this.horizontal.step = this.activeViewCamera.orientationStep.h.toFixed(0);
+    this.vertical.min = this.activeViewCamera.orientationMin.v.toFixed(0);
+    this.vertical.max = this.activeViewCamera.orientationMax.v.toFixed(0);
+    this.vertical.step = this.activeViewCamera.orientationStep.v.toFixed(0);
     this.distance.min = this.activeViewCamera.distanceMin.toFixed(1);
     this.distance.max = this.activeViewCamera.distanceMax.toFixed(1);
-    this.distance.step =
-      this.activeViewCamera.distanceStep.toFixed(1);
+    this.distance.step = this.activeViewCamera.distanceStep.toFixed(1);
     this.zoom.min = this.activeViewCamera.zoomMin.toFixed(1);
     this.zoom.max = this.activeViewCamera.zoomMax.toFixed(1);
     this.zoom.step = this.activeViewCamera.zoomStep.toFixed(1);
@@ -939,8 +884,7 @@ export default class ThumbRaiser {
 
   setCollisionDetectionMethod(method) {
     if (this.collisionDetectionParameters.method != method) {
-      const visible =
-        this.collisionDetectionParameters.boundingVolumes.visible;
+      const visible = this.collisionDetectionParameters.boundingVolumes.visible;
       if (visible) {
         this.setBoundingVolumesVisibility(false);
       }
@@ -1010,106 +954,56 @@ export default class ThumbRaiser {
       ) {
         event.preventDefault();
       }
-      if (
-        event.code == this.player.keyCodes.realisticViewMode &&
-        state
-      ) {
+      if (event.code == this.player.keyCodes.realisticViewMode && state) {
         // Stabilized view mode / realistic view mode
-        this.setRealisticViewMode(
-          !this.realisticViewModeCheckBox.checked
-        );
-      } else if (
-        event.code == this.player.keyCodes.fixedView &&
-        state
-      ) {
+        this.setRealisticViewMode(!this.realisticViewModeCheckBox.checked);
+      } else if (event.code == this.player.keyCodes.fixedView && state) {
         // Display / select / hide fixed view
         this.setViewportVisibility(this.fixedViewCamera);
-      } else if (
-        event.code == this.player.keyCodes.firstPersonView &&
-        state
-      ) {
+      } else if (event.code == this.player.keyCodes.firstPersonView && state) {
         // Display / select / hide first-person view
         this.setViewportVisibility(this.firstPersonViewCamera);
-      } else if (
-        event.code == this.player.keyCodes.thirdPersonView &&
-        state
-      ) {
+      } else if (event.code == this.player.keyCodes.thirdPersonView && state) {
         // Display / select / hide third-person view
         this.setViewportVisibility(this.thirdPersonViewCamera);
-      } else if (
-        event.code == this.player.keyCodes.topView &&
-        state
-      ) {
+      } else if (event.code == this.player.keyCodes.topView && state) {
         // Display / select / hide top view
         this.setViewportVisibility(this.topViewCamera);
-      } else if (
-        event.code == this.player.keyCodes.miniMap &&
-        state
-      ) {
+      } else if (event.code == this.player.keyCodes.miniMap && state) {
         // Display / hide mini-map
         this.miniMapCamera.checkBox.checked =
           !this.miniMapCamera.checkBox.checked;
-      } else if (
-        event.code == this.player.keyCodes.statistics &&
-        state
-      ) {
+      } else if (event.code == this.player.keyCodes.statistics && state) {
         // Display / hide statistics
-        this.setStatisticsVisibility(
-          !this.statistics.checkBox.checked
-        );
-      } else if (
-        event.code == this.player.keyCodes.userInterface &&
-        state
-      ) {
+        this.setStatisticsVisibility(!this.statistics.checkBox.checked);
+      } else if (event.code == this.player.keyCodes.userInterface && state) {
         // Display / hide user interface
-        this.setUserInterfaceVisibility(
-          !this.userInterface.checkBox.checked
-        );
+        this.setUserInterfaceVisibility(!this.userInterface.checkBox.checked);
       } else if (event.code == this.player.keyCodes.help && state) {
         // Display / hide help
         this.setHelpVisibility(!this.help.checkBox.checked);
-      } else if (
-        event.code == this.player.keyCodes.boundingVolumes &&
-        state
-      ) {
+      } else if (event.code == this.player.keyCodes.boundingVolumes && state) {
         // Display / hide bounding volumes
         this.collisionDetectionParameters.boundingVolumes.visible =
           !this.collisionDetectionParameters.boundingVolumes.visible;
         this.setBoundingVolumesVisibility(
           this.collisionDetectionParameters.boundingVolumes.visible
         );
-      } else if (
-        event.code == this.player.keyCodes.ambientLight &&
-        state
-      ) {
+      } else if (event.code == this.player.keyCodes.ambientLight && state) {
         // Turn on / off ambient light
         this.ambientLight.visible = !this.ambientLight.visible;
-      } else if (
-        event.code == this.player.keyCodes.directionalLight &&
-        state
-      ) {
+      } else if (event.code == this.player.keyCodes.directionalLight && state) {
         // Turn on / off directional light
-        this.directionalLight.visible =
-          !this.directionalLight.visible;
-      } else if (
-        event.code == this.player.keyCodes.spotLight &&
-        state
-      ) {
+        this.directionalLight.visible = !this.directionalLight.visible;
+      } else if (event.code == this.player.keyCodes.spotLight && state) {
         // Turn on / off spotlight
         this.spotLight.visible = !this.spotLight.visible;
-      } else if (
-        event.code == this.player.keyCodes.flashLight &&
-        state
-      ) {
+      } else if (event.code == this.player.keyCodes.flashLight && state) {
         // Turn on / off flashlight
         this.flashLight.visible = !this.flashLight.visible;
-      } else if (
-        event.code == this.player.keyCodes.shadows &&
-        state
-      ) {
+      } else if (event.code == this.player.keyCodes.shadows && state) {
         // Turn on / off shadows
-        this.shadowsParameters.enabled =
-          !this.shadowsParameters.enabled;
+        this.shadowsParameters.enabled = !this.shadowsParameters.enabled;
       } else if (event.code == this.player.keyCodes.fog && state) {
         // Turn on / off fog
         this.fog.enabled = !this.fog.enabled;
@@ -1188,11 +1082,7 @@ export default class ThumbRaiser {
   mouseMove(event) {
     if (event.target.id == "canvas") {
       document.activeElement.blur();
-      if (
-        event.buttons == 0 ||
-        event.buttons == 1 ||
-        event.buttons == 2
-      ) {
+      if (event.buttons == 0 || event.buttons == 1 || event.buttons == 2) {
         // Store current mouse position in window coordinates (mouse coordinate system: origin in the top-left corner; window coordinate system: origin in the bottom-left corner)
         this.mouse.currentPosition = new THREE.Vector2(
           event.clientX,
@@ -1216,32 +1106,25 @@ export default class ThumbRaiser {
                 this.mouse.camera.dragViewport(this.mouse);
               } else {
                 // Resizing the viewport
-                this.mouse.camera.resizeViewport(
-                  this.mouse.frame,
-                  this.mouse
-                );
+                this.mouse.camera.resizeViewport(this.mouse.frame, this.mouse);
               }
             } else {
               // Secondary button down
               if (this.mouse.camera != this.miniMapCamera) {
                 // Orbiting around a target
                 this.mouse.camera.updateOrientation(
-                  mouseIncrement.multiply(
-                    new THREE.Vector2(-0.5, 0.5)
-                  )
+                  mouseIncrement.multiply(new THREE.Vector2(-0.5, 0.5))
                 );
                 this.updateViewsPanel();
               } else {
                 // Panning the mini-map camera
                 const targetIncrement = new THREE.Vector3(
-                  ((mouseIncrement.x /
-                    this.miniMapCamera.viewport.width) *
+                  ((mouseIncrement.x / this.miniMapCamera.viewport.width) *
                     (this.miniMapCamera.orthographic.left -
                       this.miniMapCamera.orthographic.right)) /
                     this.miniMapCamera.orthographic.zoom,
                   0.0,
-                  ((mouseIncrement.y /
-                    this.miniMapCamera.viewport.height) *
+                  ((mouseIncrement.y / this.miniMapCamera.viewport.height) *
                     (this.miniMapCamera.orthographic.top -
                       this.miniMapCamera.orthographic.bottom)) /
                     this.miniMapCamera.orthographic.zoom
@@ -1333,17 +1216,11 @@ export default class ThumbRaiser {
         );
         break;
       case "projection":
-        this.activeViewCamera.activeProjection.remove(
-          this.audio.listener
-        );
+        this.activeViewCamera.activeProjection.remove(this.audio.listener);
         this.activeViewCamera.setActiveProjection(
-          ["perspective", "orthographic"][
-            this.projection.options.selectedIndex
-          ]
+          ["perspective", "orthographic"][this.projection.options.selectedIndex]
         );
-        this.activeViewCamera.activeProjection.add(
-          this.audio.listener
-        );
+        this.activeViewCamera.activeProjection.add(this.audio.listener);
         break;
       case "horizontal":
       case "vertical":
@@ -1354,10 +1231,7 @@ export default class ThumbRaiser {
             case "horizontal":
             case "vertical":
               this.activeViewCamera.setOrientation(
-                new Orientation(
-                  this.horizontal.value,
-                  this.vertical.value
-                )
+                new Orientation(this.horizontal.value, this.vertical.value)
               );
               break;
             case "distance":
@@ -1431,10 +1305,7 @@ export default class ThumbRaiser {
     this.miniMapCamera.checkBox.checked = false;
     // Reconfigure the third-person view camera and maximize its viewport
     this.thirdPersonViewCamera.setOrientation(
-      new Orientation(
-        -180.0,
-        this.thirdPersonViewCamera.initialOrientation.v
-      )
+      new Orientation(-180.0, this.thirdPersonViewCamera.initialOrientation.v)
     );
     this.thirdPersonViewCamera.setDistance(
       this.thirdPersonViewCamera.initialDistance
@@ -1448,8 +1319,7 @@ export default class ThumbRaiser {
     this.setActiveViewCamera(this.thirdPersonViewCamera);
     // Make bounding volumes invisible
     if (this.collisionDetectionParameters.boundingVolumes.visible) {
-      this.collisionDetectionParameters.boundingVolumes.visible =
-        false;
+      this.collisionDetectionParameters.boundingVolumes.visible = false;
       this.setBoundingVolumesVisibility(false);
     }
     // Set the final action
@@ -1462,11 +1332,7 @@ export default class ThumbRaiser {
 
   update() {
     if (!this.gameRunning) {
-      if (
-        this.audio.loaded() &&
-        this.maze.loaded &&
-        this.player.loaded
-      ) {
+      if (this.audio.loaded() && this.maze.loaded && this.player.loaded) {
         // If all resources have been loaded
         // Add positional audio sources to objects
         const types = [
@@ -1489,29 +1355,15 @@ export default class ThumbRaiser {
                 !Number.isNaN(position[2])
               ) {
                 this.scene.add(clip.source);
-                clip.source.position.set(
-                  position[0],
-                  position[1],
-                  position[2]
-                );
+                clip.source.position.set(position[0], position[1], position[2]);
               }
-            } else if (
-              position.length == 3 &&
-              position[0] == "maze"
-            ) {
+            } else if (position.length == 3 && position[0] == "maze") {
               // Positional audio object (maze specific position in cell coordinates)
               position = position.slice(1).map(Number);
-              if (
-                !Number.isNaN(position[0]) &&
-                !Number.isNaN(position[1])
-              ) {
+              if (!Number.isNaN(position[0]) && !Number.isNaN(position[1])) {
                 this.scene.add(clip.source);
                 position = this.maze.cellToCartesian(position);
-                clip.source.position.set(
-                  position.x,
-                  position.y,
-                  position.z
-                );
+                clip.source.position.set(position.x, position.y, position.z);
               }
             } else if (clip.position == "exit") {
               // Positional audio object (maze exit location)
@@ -1567,9 +1419,7 @@ export default class ThumbRaiser {
           this.player.radius;
 
         // Initialize the bounding volumes visibility
-        if (
-          this.collisionDetectionParameters.boundingVolumes.visible
-        ) {
+        if (this.collisionDetectionParameters.boundingVolumes.visible) {
           this.setBoundingVolumesVisibility(true);
         }
 
@@ -1577,14 +1427,11 @@ export default class ThumbRaiser {
         this.userInterface = new UserInterface(this);
 
         // Get and configure the user interface checkbox
-        this.userInterface.checkBox =
-          document.getElementById("user-interface");
+        this.userInterface.checkBox = document.getElementById("user-interface");
         this.userInterface.checkBox.checked = true;
 
         // Register the event handler to be called on window resize
-        window.addEventListener("resize", (event) =>
-          this.windowResize(event)
-        );
+        window.addEventListener("resize", (event) => this.windowResize(event));
 
         // Register the event handler to be called on key down
         document.addEventListener("keydown", (event) =>
@@ -1607,9 +1454,7 @@ export default class ThumbRaiser {
         );
 
         // Register the event handler to be called on mouse up
-        document.addEventListener("mouseup", (event) =>
-          this.mouseUp(event)
-        );
+        document.addEventListener("mouseup", (event) => this.mouseUp(event));
 
         // Register the event handler to be called on mouse wheel
         this.renderer.domElement.addEventListener("wheel", (event) =>
@@ -1640,9 +1485,8 @@ export default class ThumbRaiser {
         this.zoom.addEventListener("change", (event) =>
           this.elementChange(event)
         );
-        this.fixedViewCamera.checkBox.addEventListener(
-          "change",
-          (event) => this.elementChange(event)
+        this.fixedViewCamera.checkBox.addEventListener("change", (event) =>
+          this.elementChange(event)
         );
         this.firstPersonViewCamera.checkBox.addEventListener(
           "change",
@@ -1652,16 +1496,14 @@ export default class ThumbRaiser {
           "change",
           (event) => this.elementChange(event)
         );
-        this.topViewCamera.checkBox.addEventListener(
-          "change",
-          (event) => this.elementChange(event)
+        this.topViewCamera.checkBox.addEventListener("change", (event) =>
+          this.elementChange(event)
         );
         this.statistics.checkBox.addEventListener("change", (event) =>
           this.elementChange(event)
         );
-        this.userInterface.checkBox.addEventListener(
-          "change",
-          (event) => this.elementChange(event)
+        this.userInterface.checkBox.addEventListener("change", (event) =>
+          this.elementChange(event)
         );
         this.help.checkBox.addEventListener("change", (event) =>
           this.elementChange(event)
@@ -1766,11 +1608,7 @@ export default class ThumbRaiser {
                 this.player.shiftKey ? "Running" : "Walking",
                 0.2
               );
-              this.player.position.set(
-                position.x,
-                position.y,
-                position.z
-              );
+              this.player.position.set(position.x, position.y, position.z);
             } else {
               if (this.animations.idleTimeOut()) {
                 this.animations.resetIdleTime();
@@ -1783,13 +1621,12 @@ export default class ThumbRaiser {
             }
           }
 
-          this.player.rotation.y =
-            directionRad - this.player.defaultDirection;
+          this.player.rotation.y = directionRad - this.player.defaultDirection;
         }
       }
 
       // Update the flashlight, first-person view, third-person view and top view camera parameters (player orientation and target)
-      let orientation = new THREE.Quaternion();
+      const orientation = new THREE.Quaternion();
       this.player.getWorldQuaternion(orientation);
       let target = new THREE.Vector3(
         this.player.position.x,
@@ -1800,19 +1637,15 @@ export default class ThumbRaiser {
       this.topViewCamera.setTarget(target);
       this.thirdPersonViewCamera.playerOrientation = orientation;
       this.thirdPersonViewCamera.setTarget(target);
-      const directionRad = THREE.MathUtils.degToRad(
-        this.player.direction
-      );
+      const directionRad = THREE.MathUtils.degToRad(this.player.direction);
       if (!this.realisticViewModeCheckBox.checked) {
         this.firstPersonViewCamera.playerOrientation = orientation;
         this.firstPersonViewCamera.setTarget(target);
         this.flashLight.playerOrientation = orientation;
         target = new THREE.Vector3(
-          this.player.position.x +
-            this.player.radius * Math.sin(directionRad),
+          this.player.position.x + this.player.radius * Math.sin(directionRad),
           this.player.position.y + this.player.size.y,
-          this.player.position.z +
-            this.player.radius * Math.cos(directionRad)
+          this.player.position.z + this.player.radius * Math.cos(directionRad)
         );
         this.flashLight.setTarget(target);
       } else {
@@ -1838,11 +1671,7 @@ export default class ThumbRaiser {
       this.enableShadows(this.shadowsParameters.enabled);
       this.enableFog(this.fog.enabled);
       this.renderer.clearColor();
-      for (
-        let i = this.visibleViewportCameras.length - 1;
-        i >= 0;
-        i--
-      ) {
+      for (let i = this.visibleViewportCameras.length - 1; i >= 0; i--) {
         // Primary viewports must be rendered in reverse order: the topmost visible one will be rendered last
         const camera = this.visibleViewportCameras[i];
         if (this.fog.enabled) {
@@ -1884,10 +1713,7 @@ export default class ThumbRaiser {
         );
         this.renderer.render(this.background, this.camera2D); // Render the background
         this.renderer.clearDepth();
-        this.renderer.render(
-          this.scene,
-          this.miniMapCamera.activeProjection
-        ); // Render the scene
+        this.renderer.render(this.scene, this.miniMapCamera.activeProjection); // Render the scene
         this.frame.children[0].material.color.set(
           this.miniMapCamera.frameColor
         );

@@ -1,4 +1,5 @@
 import * as THREE from "three";
+
 import MultiTexturedMaterial from "./material.ts";
 import { merge } from "./merge.ts";
 
@@ -37,9 +38,7 @@ export default class Ground extends THREE.Mesh {
     merge(this, parameters);
 
     // Create the materials
-    const primaryMaterial = new MultiTexturedMaterial(
-      this.materialParameters
-    );
+    const primaryMaterial = new MultiTexturedMaterial(this.materialParameters);
     const secondaryMaterial = new THREE.MeshStandardMaterial({
       color: this.secondaryColor,
     });

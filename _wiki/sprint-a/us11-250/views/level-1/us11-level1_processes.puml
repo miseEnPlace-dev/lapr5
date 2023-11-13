@@ -15,7 +15,7 @@ deactivate SYS
 CM -> SYS : inserts the data
 activate SYS
 
-CM <- SYS : returns confirmation message
+CM <- SYS : success
 deactivate SYS
 
 deactivate CM

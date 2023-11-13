@@ -1,0 +1,27 @@
+import { createContext } from "react";
+
+import { useAuth } from "../hooks/useAuth";
+
+const AuthContext = createContext<{
+  isAuthenticated: boolean;
+  role: string | null;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+}>({
+  isAuthenticated: false,
+  role: null,
+  login: () => Promise.resolve(),
+  logout: () => Promise.resolve(),
+});
+
+interface AuthProviderProps {
+  children: React.ReactNode;
+}
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const auth = useAuth();
+
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+};
+
+export default AuthContext;

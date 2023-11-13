@@ -1,7 +1,9 @@
 import * as THREE from "three";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
 import CubeTexture from "./cubetexture.js";
 import Orientation from "./orientation.js";
+
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 export default class UserInterface extends GUI {
   constructor(thumbRaiser) {
@@ -15,9 +17,7 @@ export default class UserInterface extends GUI {
 
     const textureCallback = function (options, name) {
       thumbRaiser.cubeTexture = new CubeTexture(
-        thumbRaiser.cubeTexturesParameters.skyboxes[
-          options.indexOf(name)
-        ]
+        thumbRaiser.cubeTexturesParameters.skyboxes[options.indexOf(name)]
       );
       thumbRaiser.buildCreditsPanel();
     };
@@ -30,10 +30,7 @@ export default class UserInterface extends GUI {
     };
 
     const positionCallback = function (light, distance, orientation) {
-      const position = light.orientationToPosition(
-        distance,
-        orientation
-      );
+      const position = light.orientationToPosition(distance, orientation);
       light.position.set(position.x, position.y, position.z);
     };
 
@@ -47,8 +44,7 @@ export default class UserInterface extends GUI {
         thumbRaiser.thirdPersonViewCamera.initialFogDensity;
       thumbRaiser.topViewCamera.fogDensity =
         thumbRaiser.topViewCamera.initialFogDensity;
-      this.fogParameters.density =
-        thumbRaiser.activeViewCamera.fogDensity;
+      this.fogParameters.density = thumbRaiser.activeViewCamera.fogDensity;
     };
 
     const fontSize = "1.5vmin";
@@ -72,9 +68,7 @@ export default class UserInterface extends GUI {
         thumbRaiser.audio.volumeMax,
         thumbRaiser.audio.volumeStep
       )
-      .onChange((volume) =>
-        thumbRaiser.audio.listener.setMasterVolume(volume)
-      );
+      .onChange((volume) => thumbRaiser.audio.listener.setMasterVolume(volume));
     audioFolder.close();
 
     // Create the skyboxes folder and add cube textures
@@ -117,21 +111,14 @@ export default class UserInterface extends GUI {
     emotesFolder.close();
 
     // Create the expressions folder and add expressions
-    const expressionsFolder =
-      characterFolder.addFolder("Expressions");
+    const expressionsFolder = characterFolder.addFolder("Expressions");
     expressionsFolder.domElement.style.fontSize = fontSize;
     const expressions = Object.keys(
       thumbRaiser.player.face.morphTargetDictionary
     );
     for (let i = 0; i < expressions.length; i++) {
       expressionsFolder
-        .add(
-          thumbRaiser.player.face.morphTargetInfluences,
-          i,
-          0.0,
-          1.0,
-          0.01
-        )
+        .add(thumbRaiser.player.face.morphTargetInfluences, i, 0.0, 1.0, 0.01)
         .name(expressions[i]);
     }
     expressionsFolder.close();
@@ -143,19 +130,13 @@ export default class UserInterface extends GUI {
     lightsFolder.domElement.style.fontSize = fontSize;
 
     // Create the ambient light folder
-    const ambientLightFolder =
-      lightsFolder.addFolder("Ambient light");
+    const ambientLightFolder = lightsFolder.addFolder("Ambient light");
     ambientLightFolder.domElement.style.fontSize = fontSize;
     const ambientLightParameters = {
       color:
-        "#" +
-        new THREE.Color(
-          thumbRaiser.ambientLight.color
-        ).getHexString(),
+        "#" + new THREE.Color(thumbRaiser.ambientLight.color).getHexString(),
     };
-    ambientLightFolder
-      .add(thumbRaiser.ambientLight, "visible")
-      .listen();
+    ambientLightFolder.add(thumbRaiser.ambientLight, "visible").listen();
     ambientLightFolder
       .addColor(ambientLightParameters, "color")
       .onChange((color) => thumbRaiser.ambientLight.color.set(color));
@@ -169,25 +150,19 @@ export default class UserInterface extends GUI {
     ambientLightFolder.close();
 
     // Create the directional light folder
-    const directionalLightFolder = lightsFolder.addFolder(
-      "Directional light"
-    );
+    const directionalLightFolder = lightsFolder.addFolder("Directional light");
     directionalLightFolder.domElement.style.fontSize = fontSize;
     const directionalLightParameters = {
       color:
         "#" +
-        new THREE.Color(
-          thumbRaiser.directionalLight.color
-        ).getHexString(),
+        new THREE.Color(thumbRaiser.directionalLight.color).getHexString(),
     };
     directionalLightFolder
       .add(thumbRaiser.directionalLight, "visible")
       .listen();
     directionalLightFolder
       .addColor(directionalLightParameters, "color")
-      .onChange((color) =>
-        thumbRaiser.directionalLight.color.set(color)
-      );
+      .onChange((color) => thumbRaiser.directionalLight.color.set(color));
     directionalLightFolder.add(
       thumbRaiser.directionalLight,
       "intensity",
@@ -207,10 +182,7 @@ export default class UserInterface extends GUI {
         positionCallback(
           thumbRaiser.directionalLight,
           thumbRaiser.directionalLight.distance,
-          new Orientation(
-            h,
-            thumbRaiser.directionalLight.orientation.v
-          )
+          new Orientation(h, thumbRaiser.directionalLight.orientation.v)
         )
       );
     directionalLightFolder
@@ -225,10 +197,7 @@ export default class UserInterface extends GUI {
         positionCallback(
           thumbRaiser.directionalLight,
           thumbRaiser.directionalLight.distance,
-          new Orientation(
-            thumbRaiser.directionalLight.orientation.h,
-            v
-          )
+          new Orientation(thumbRaiser.directionalLight.orientation.h, v)
         )
       );
     directionalLightFolder.close();
@@ -237,9 +206,7 @@ export default class UserInterface extends GUI {
     const spotLightFolder = lightsFolder.addFolder("Spotlight");
     spotLightFolder.domElement.style.fontSize = fontSize;
     const spotLightParameters = {
-      color:
-        "#" +
-        new THREE.Color(thumbRaiser.spotLight.color).getHexString(),
+      color: "#" + new THREE.Color(thumbRaiser.spotLight.color).getHexString(),
       angle: THREE.MathUtils.radToDeg(thumbRaiser.spotLight.angle),
     };
     spotLightFolder.add(thumbRaiser.spotLight, "visible").listen();
@@ -270,8 +237,7 @@ export default class UserInterface extends GUI {
       )
       .onChange(
         (angle) =>
-          (thumbRaiser.spotLight.angle =
-            THREE.MathUtils.degToRad(angle))
+          (thumbRaiser.spotLight.angle = THREE.MathUtils.degToRad(angle))
       );
     spotLightFolder.add(
       thumbRaiser.spotLight,
@@ -307,9 +273,7 @@ export default class UserInterface extends GUI {
     const flashLightFolder = lightsFolder.addFolder("Flashlight");
     flashLightFolder.domElement.style.fontSize = fontSize;
     const flashLightParameters = {
-      color:
-        "#" +
-        new THREE.Color(thumbRaiser.flashLight.color).getHexString(),
+      color: "#" + new THREE.Color(thumbRaiser.flashLight.color).getHexString(),
       angle: THREE.MathUtils.radToDeg(thumbRaiser.flashLight.angle),
     };
     flashLightFolder.add(thumbRaiser.flashLight, "visible").listen();
@@ -340,8 +304,7 @@ export default class UserInterface extends GUI {
       )
       .onChange(
         (angle) =>
-          (thumbRaiser.flashLight.angle =
-            THREE.MathUtils.degToRad(angle))
+          (thumbRaiser.flashLight.angle = THREE.MathUtils.degToRad(angle))
       );
     flashLightFolder.add(
       thumbRaiser.flashLight,
@@ -387,17 +350,14 @@ export default class UserInterface extends GUI {
     // Create the shadows folder
     const shadowsFolder = this.addFolder("Shadows");
     shadowsFolder.domElement.style.fontSize = fontSize;
-    shadowsFolder
-      .add(thumbRaiser.shadowsParameters, "enabled")
-      .listen();
+    shadowsFolder.add(thumbRaiser.shadowsParameters, "enabled").listen();
     shadowsFolder.close();
 
     // Create the fog folder
     const fogFolder = this.addFolder("Fog");
     fogFolder.domElement.style.fontSize = fontSize;
     this.fogParameters = {
-      color:
-        "#" + new THREE.Color(thumbRaiser.fog.color).getHexString(),
+      color: "#" + new THREE.Color(thumbRaiser.fog.color).getHexString(),
       density: thumbRaiser.activeViewCamera.fogDensity,
     };
     fogFolder.add(thumbRaiser.fog, "enabled").listen();
@@ -413,16 +373,13 @@ export default class UserInterface extends GUI {
         thumbRaiser.fog.densityStep
       )
       .onChange(
-        (density) =>
-          (thumbRaiser.activeViewCamera.fogDensity = density)
+        (density) => (thumbRaiser.activeViewCamera.fogDensity = density)
       )
       .listen();
     fogFolder.close();
 
     // Create the collision detection folder
-    const collisionDetectionFolder = this.addFolder(
-      "Collision detection"
-    );
+    const collisionDetectionFolder = this.addFolder("Collision detection");
     collisionDetectionFolder.domElement.style.fontSize = fontSize;
     const collisionDetectionParameters = {
       method:
@@ -436,19 +393,12 @@ export default class UserInterface extends GUI {
       .options(collisionDetectionOptions)
       .onChange((name) =>
         thumbRaiser.setCollisionDetectionMethod(
-          ["bc-aabb", "obb-aabb"][
-            collisionDetectionOptions.indexOf(name)
-          ]
+          ["bc-aabb", "obb-aabb"][collisionDetectionOptions.indexOf(name)]
         )
       );
     collisionDetectionFolder
-      .add(
-        thumbRaiser.collisionDetectionParameters.boundingVolumes,
-        "visible"
-      )
-      .onChange((visible) =>
-        thumbRaiser.setBoundingVolumesVisibility(visible)
-      )
+      .add(thumbRaiser.collisionDetectionParameters.boundingVolumes, "visible")
+      .onChange((visible) => thumbRaiser.setBoundingVolumesVisibility(visible))
       .listen();
     collisionDetectionFolder.close();
 

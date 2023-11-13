@@ -1,0 +1,30 @@
+{
+  "root": true,
+  "env": { "browser": true, "es2020": true },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:prettier/recommended",
+    "plugin:tailwindcss/recommended"
+
+  ],
+  "ignorePatterns": ["dist", ".eslintrc.cjs"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["react-refresh",     "@typescript-eslint",
+    "prettier",
+    "eslint-plugin-import-helpers",
+    "eslint-plugin-tailwindcss"
+],
+  "rules": {
+    "react-refresh/only-export-components": [
+      "warn",
+      { "allowConstantExport": true }
+    ],
+    "prettier/prettier": "error",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-empty-function": "off",
+    "react-hooks/rules-of-hooks": "warn",
+    "tailwindcss/classnames-order": "error"
+  }
+}
