@@ -4,7 +4,7 @@ export function merge(object, ...sources) {
   return _.mergeWith(
     object,
     ...sources,
-    (objValue, srcValue, key, object, _) => {
+    (objValue, srcValue, key, object, _other) => {
       if (_.isArray(objValue)) {
         // Arrays must be concatenated
         return objValue.concat(srcValue);
