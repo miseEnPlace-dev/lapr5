@@ -31,7 +31,7 @@ const LoginPage: React.FC = () => {
     <div className="flex h-screen items-center justify-center">
       <main className="flex h-3/4 w-5/6 flex-col items-center justify-center gap-y-24 rounded-lg bg-slate-100 px-6 md:px-24 lg:w-1/2">
         <div className="flex flex-col gap-y-4">
-          <h1 className="text-center text-xl md:text-3xl font-bold">Welcome!</h1>
+          <h1 className="text-center text-xl md:text-3xl font-bold">Welcome to</h1>
           <img
             className="mx-auto w-1/2"
             src="/assets/logos/light/svg/logo-no-background.svg"
