@@ -5,11 +5,13 @@ import { useAuth } from "../hooks/useAuth";
 const AuthContext = createContext<{
   isAuthenticated: boolean;
   role: string | null;
+  username: string | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }>({
   isAuthenticated: false,
   role: null,
+  username: null,
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
 });

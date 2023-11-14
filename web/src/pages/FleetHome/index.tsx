@@ -1,7 +1,7 @@
 const FleetHome: React.FC = () => {
   return (
     <div>
-      <span>FleetHome</span>
+      <h1>Welcome</h1>
     </div>
   );
 };
