@@ -1,10 +1,16 @@
 import { createElement, useContext } from "react";
 
 import AuthContext from "../../context/AuthContext";
-import { useMenuOptions } from "../../hooks/useMenuOptions";
 
-const SideBar: React.FC = () => {
-  const { menuOptions } = useMenuOptions();
+interface SideBarProps {
+  activeOption: string;
+  menuOptions: {
+    label: string;
+    icon: string;
+    onClick: () => void;
+  }[];
+}
+const SideBar: React.FC<SideBarProps> = ({ menuOptions, activeOption }) => {
   const { role, username } = useContext(AuthContext);
   if (!role) return <></>;
 
@@ -12,7 +18,7 @@ const SideBar: React.FC = () => {
     role.charAt(0).toUpperCase() + role.slice(1) + " Manager";
 
   return (
-    <nav className="grid h-screen w-1/4 max-w-sm grid-rows-[1fr_4fr_1fr] bg-primary pt-8">
+    <nav className="grid h-screen w-1/4 max-w-sm grid-rows-[1fr_4fr_1fr] bg-primary pt-12">
       <img
         src="/assets/logos/light-reverse/png/logo-no-background.png"
         alt="Logo"
@@ -23,7 +29,9 @@ const SideBar: React.FC = () => {
         {menuOptions.map((option) => (
           <button
             onClick={option.onClick}
-            className="ml-12 flex h-16 items-center gap-x-4 text-white hover:text-secondary"
+            className={`ml-12 flex h-16 items-center gap-x-4 text-white hover:text-secondary ${
+              activeOption === option.label && "text-accent"
+            }`}
           >
             {createElement(option.icon)}
             {option.label}

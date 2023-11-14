@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react";
+import { useContext, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import AuthContext from "../context/AuthContext";
@@ -14,13 +14,14 @@ import {
 export const useMenuOptions = () => {
   const { role, logout } = useContext(AuthContext);
   const navigation = useNavigate();
+  const [activeOption, setActiveOption] = useState("Home");
 
   const menuOptions = useMemo(() => {
     const options = [
       {
         label: "Home",
         icon: HomeIcon,
-        onClick: () => navigation("/"),
+        onClick: () => setActiveOption("home"),
       },
     ];
 
@@ -28,17 +29,17 @@ export const useMenuOptions = () => {
       options.push({
         label: "Buildings",
         icon: BuildingIcon,
-        onClick: () => navigation("/buildings"),
+        onClick: () => setActiveOption("buildings"),
       });
       options.push({
         label: "Elevators",
         icon: ElevatorIcon,
-        onClick: () => navigation("/elevators"),
+        onClick: () => setActiveOption("elevators"),
       });
       options.push({
         label: "Rooms",
         icon: RoomIcon,
-        onClick: () => navigation("/rooms"),
+        onClick: () => setActiveOption("rooms"),
       });
     }
 
@@ -46,7 +47,7 @@ export const useMenuOptions = () => {
       options.push({
         label: "Device Models",
         icon: RobotIcon,
-        onClick: () => navigation("/device-models"),
+        onClick: () => setActiveOption("deviceModels"),
       });
     }
 
@@ -56,11 +57,12 @@ export const useMenuOptions = () => {
       onClick: () => {
         logout();
         navigation("/login");
+        setActiveOption("home");
       },
     });
 
     return options;
   }, [navigation, role, logout]);
 
-  return { menuOptions };
+  return { menuOptions, activeOption };
 };
