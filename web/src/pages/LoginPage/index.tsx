@@ -54,7 +54,6 @@ const LoginPage: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <Button
-            type="submit"
             onClick={(e) => {
               e.preventDefault();
               handleLogin();

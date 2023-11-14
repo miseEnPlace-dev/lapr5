@@ -19,10 +19,11 @@ export default class BuildingController implements IBuildingController {
         req.body as IBuildingDTO
       )) as Result<IBuildingDTO>;
 
-      if (buildingOrError.isFailure)
+      if (buildingOrError.isFailure) {
         return res.status(400).json({
           message: buildingOrError.errorValue()
         });
+      }
 
       const buildingDTO = buildingOrError.getValue();
       return res.status(201).json(buildingDTO);
@@ -38,8 +39,9 @@ export default class BuildingController implements IBuildingController {
         req.params.code
       )) as Result<IBuildingDTO>;
 
-      if (buildingOrError.isFailure)
+      if (buildingOrError.isFailure) {
         return res.status(400).json({ message: buildingOrError.errorValue() });
+      }
 
       const buildingDTO = buildingOrError.getValue();
       return res.status(200).json(buildingDTO);
@@ -53,18 +55,20 @@ export default class BuildingController implements IBuildingController {
       const min = Number(req.query.minFloors);
       const max = Number(req.query.maxFloors);
 
-      if (min > max)
+      if (min > max) {
         return res.status(400).send({
           message: 'minFloors must be less than maxFloors'
         });
+      }
 
       const buildingsOrError = (await this.buildingServiceInstance.getBuildingsWithMinMaxFloors(
         min,
         max
       )) as Result<IBuildingDTO[]>;
 
-      if (buildingsOrError.isFailure)
+      if (buildingsOrError.isFailure) {
         return res.status(400).json({ message: buildingsOrError.errorValue() });
+      }
 
       return res.status(200).json(buildingsOrError.getValue());
     } catch (e) {
@@ -74,17 +78,37 @@ export default class BuildingController implements IBuildingController {
 
   public async getBuildings(req: Request, res: Response, next: NextFunction) {
     try {
-      if (req.query.minFloors && req.query.maxFloors)
+      if (req.query.minFloors && req.query.maxFloors) {
         return this.getBuildingsWithMinMaxFloors(req, res, next);
+      }
 
       const buildingsOrError = (await this.buildingServiceInstance.getBuildings()) as Result<
         IBuildingDTO[]
       >;
 
-      if (buildingsOrError.isFailure)
+      if (buildingsOrError.isFailure) {
         return res.status(400).json({ message: buildingsOrError.errorValue() });
+      }
 
       return res.status(200).json(buildingsOrError.getValue());
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  public async getBuildingWithCode(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { code } = req.params;
+
+      const buildingOrError = (await this.buildingServiceInstance.getBuildingWithCode(
+        code
+      )) as Result<IBuildingDTO>;
+
+      if (buildingOrError.isFailure) {
+        return res.status(400).json({ message: buildingOrError.errorValue() });
+      }
+
+      return res.status(200).json(buildingOrError.getValue());
     } catch (e) {
       return next(e);
     }

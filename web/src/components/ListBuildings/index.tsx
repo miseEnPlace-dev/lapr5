@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Building } from "../../model/Building";
 import api from "../../service/api";
 
 const ListBuildings: React.FC = () => {
   const [buildings, setBuildings] = useState<Building[]>([]);
+  const navigate = useNavigate();
 
   async function fetchBuildings() {
     const res = await api.get("/buildings");
@@ -16,26 +18,30 @@ const ListBuildings: React.FC = () => {
   }, []);
 
   return (
-    <table className="table-auto border-collapse border">
-      <thead className="h-12 bg-secondary text-center text-lg font-bold text-black">
-        <td className="w-32">Code</td>
-        <td className="w-32">Name</td>
-        <td className="w-24">Width</td>
-        <td className="w-24">Length</td>
-        <td className="w-96">Description</td>
-      </thead>
-      <tbody className="h-12 text-center">
-        {buildings.map((building) => (
-          <tr>
-            <td className="h-12">{building.code}</td>
-            <td className="h-12">{building.name}</td>
-            <td className="h-12">{building.maxDimensions.width}</td>
-            <td className="h-12">{building.maxDimensions.length}</td>
-            <td className="h-12">{building.description}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className="mt-8 flex w-11/12 flex-col gap-y-6 text-left text-lg">
+      {buildings.map((building) => (
+        <button
+          onClick={() => navigate(`/buildings/${building.code}`)}
+          className="flex w-full gap-x-8 bg-slate-200 px-12 py-8"
+        >
+          <h2 className="text-center text-6xl font-bold">{building.code}</h2>
+          <div className="flex flex-col">
+            <h3 className="text-2xl font-bold">{building.name}</h3>
+            <span className="text-left text-sm text-slate-600">
+              {building.maxDimensions.width} x {building.maxDimensions.length}
+            </span>
+          </div>
+          {building.description && (
+            <div>
+              <h3 className="text-left text-lg font-bold text-slate-600">
+                Description
+              </h3>
+              <p>{building.description}</p>
+            </div>
+          )}
+        </button>
+      ))}
+    </div>
   );
 };
 

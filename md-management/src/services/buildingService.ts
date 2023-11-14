@@ -25,24 +25,29 @@ export default class BuildingService implements IBuildingService {
   public async createBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>> {
     try {
       const codeOrError = BuildingCode.create(buildingDTO.code);
-      if (codeOrError.isFailure) return Result.fail<IBuildingDTO>(codeOrError.errorValue());
+      if (codeOrError.isFailure) {
+        return Result.fail<IBuildingDTO>(codeOrError.errorValue());
+      }
 
       const nameOrError = buildingDTO.name ? BuildingName.create(buildingDTO.name) : undefined;
-      if (nameOrError && nameOrError.isFailure)
+      if (nameOrError && nameOrError.isFailure) {
         return Result.fail<IBuildingDTO>(nameOrError.errorValue());
+      }
 
       const descriptionOrError = buildingDTO.description
         ? BuildingDescription.create(buildingDTO.description)
         : undefined;
-      if (descriptionOrError && descriptionOrError.isFailure)
+      if (descriptionOrError && descriptionOrError.isFailure) {
         return Result.fail<IBuildingDTO>(descriptionOrError.errorValue());
+      }
 
       const maxDimensionsOrError = BuildingMaxDimensions.create(
         buildingDTO.maxDimensions.width,
         buildingDTO.maxDimensions.length
       );
-      if (maxDimensionsOrError.isFailure)
+      if (maxDimensionsOrError.isFailure) {
         return Result.fail<IBuildingDTO>(maxDimensionsOrError.errorValue());
+      }
 
       const buildingOrError = Building.create({
         code: codeOrError.getValue(),
@@ -51,12 +56,16 @@ export default class BuildingService implements IBuildingService {
         maxDimensions: maxDimensionsOrError.getValue()
       });
 
-      if (buildingOrError.isFailure) return Result.fail<IBuildingDTO>(buildingOrError.errorValue());
+      if (buildingOrError.isFailure) {
+        return Result.fail<IBuildingDTO>(buildingOrError.errorValue());
+      }
 
       const buildingResult = buildingOrError.getValue();
 
       const buildingExists = !!(await this.buildingRepo.findByCode(buildingResult.code));
-      if (buildingExists) return Result.fail<IBuildingDTO>('Building already exists');
+      if (buildingExists) {
+        return Result.fail<IBuildingDTO>('Building already exists');
+      }
 
       await this.buildingRepo.save(buildingResult);
 
@@ -73,26 +82,31 @@ export default class BuildingService implements IBuildingService {
   ): Promise<Result<IBuildingDTO>> {
     try {
       const buildingCode = BuildingCode.create(code);
-      if (buildingCode.isFailure) return Result.fail<IBuildingDTO>('Building not found');
+      if (buildingCode.isFailure) {
+        return Result.fail<IBuildingDTO>('Building not found');
+      }
 
       const building = await this.buildingRepo.findByCode(buildingCode.getValue());
       if (!building) return Result.fail<IBuildingDTO>('Building not found');
 
-      if (buildingDTO.name)
+      if (buildingDTO.name) {
         building.name = buildingDTO.name
           ? BuildingName.create(buildingDTO.name).getValue()
           : undefined;
+      }
 
-      if (buildingDTO.description)
+      if (buildingDTO.description) {
         building.description = buildingDTO.description
           ? BuildingDescription.create(buildingDTO.description).getValue()
           : undefined;
+      }
 
-      if (buildingDTO.maxDimensions)
+      if (buildingDTO.maxDimensions) {
         building.maxDimensions = BuildingMaxDimensions.create(
           buildingDTO.maxDimensions.width,
           buildingDTO.maxDimensions.length
         ).getValue();
+      }
 
       await this.buildingRepo.save(building);
 
@@ -127,6 +141,21 @@ export default class BuildingService implements IBuildingService {
       const buildings = await this.buildingRepo.findAll();
       const buildingDTOs = buildings.map(b => BuildingMapper.toDTO(b));
       return Result.ok<IBuildingDTO[]>(buildingDTOs);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async getBuildingWithCode(code: string): Promise<Result<IBuildingDTO>> {
+    try {
+      const buildingCode = BuildingCode.create(code);
+      if (buildingCode.isFailure) return Result.fail<IBuildingDTO>('Building not found');
+
+      const building = await this.buildingRepo.findByCode(buildingCode.getValue());
+      if (!building) return Result.fail<IBuildingDTO>('Building not found');
+
+      const buildingDTO = BuildingMapper.toDTO(building);
+      return Result.ok<IBuildingDTO>(buildingDTO);
     } catch (e) {
       throw e;
     }

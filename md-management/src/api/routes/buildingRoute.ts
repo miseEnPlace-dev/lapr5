@@ -1,10 +1,10 @@
-import { Router } from 'express';
-import { z } from 'zod';
+import { Router } from "express";
+import { z } from "zod";
 
-import IBuildingController from '@/controllers/IControllers/IBuildingController';
-import { container } from '@/loaders/inversify';
-import { TYPES } from '@/loaders/inversify/types';
-import { validate } from '../middlewares';
+import IBuildingController from "@/controllers/IControllers/IBuildingController";
+import { container } from "@/loaders/inversify";
+import { TYPES } from "@/loaders/inversify/types";
+import { validate } from "../middlewares";
 
 const buildingCreateSchema = z.object({
   code: z
@@ -21,8 +21,8 @@ const buildingCreateSchema = z.object({
     .optional(),
   maxDimensions: z.object({
     width: z.number().min(1),
-    length: z.number().min(1)
-  })
+    length: z.number().min(1),
+  }),
 });
 
 const buildingUpdateSchema = z.object({
@@ -37,16 +37,16 @@ const buildingUpdateSchema = z.object({
   maxDimensions: z
     .object({
       width: z.number().min(1),
-      length: z.number().min(1)
+      length: z.number().min(1),
     })
-    .optional()
+    .optional(),
 });
 
 export default (app: Router) => {
   const route = Router();
   const ctrl = container.get<IBuildingController>(TYPES.buildingController);
 
-  route.get('/buildings', (req, res, next) =>
+  route.get("/buildings", (req, res, next) =>
     // #swagger.tags = ['Buildings']
     // #swagger.summary = 'Get buildings'
     // #swagger.body
@@ -55,27 +55,37 @@ export default (app: Router) => {
     // #swagger.parameters['maxFloors'] = { description: 'Maximum number of floors in the buildings', in: 'query', type: 'integer' }
     // #swagger.responses[200] = { description: 'List of buildings' }
     // #swagger.responses[400] = { description: 'Error getting the buildings' }
-    ctrl.getBuildings(req, res, next)
-  );
-  route.post('/buildings', validate(buildingCreateSchema), (req, res, next) =>
+    ctrl.getBuildings(req, res, next));
+
+  route.get("/buildings/:code", (req, res, next) =>
+    // #swagger.tags = ['Buildings']
+    // #swagger.summary = 'Get building for given code'
+    // #swagger.parameters['code'] = { description: 'Building code', in: 'path', required: true, type: 'integer' }
+    // #swagger.responses[200] = { description: 'Building with this code' }
+    // #swagger.responses[400] = { description: 'Error getting the building' }
+    ctrl.getBuildingWithCode(req, res, next));
+
+  route.post("/buildings", validate(buildingCreateSchema), (req, res, next) =>
     // #swagger.tags = ['Buildings']
     // #swagger.summary = 'Create a building'
     // #swagger.description = 'Create a building'
     // #swagger.parameters['building'] = { description: 'Building object', in: 'body', schema: { $ref: "#/definitions/Building" }, required: true }
     // #swagger.responses[200] = { description: 'The created building' }
     // #swagger.responses[400] = { description: 'Invalid input' }
-    ctrl.createBuilding(req, res, next)
-  );
+    ctrl.createBuilding(req, res, next));
 
-  route.put('/buildings/:code', validate(buildingUpdateSchema), (req, res, next) =>
-    // #swagger.tags = ['Buildings']
-    // #swagger.summary = 'Update a building'
-    // #swagger.description = 'Update a building given its code'
-    // #swagger.parameters['code'] = { description: 'Building code', in: 'path', required: true, type: 'string' }
-    // #swagger.parameters['building'] = { description: 'Building object', in: 'body', schema: { $ref: "#/definitions/Building" }, required: true }
-    // #swagger.responses[200] = { description: 'The updated building' }
-    // #swagger.responses[400] = { description: 'Invalid input' }
-    ctrl.updateBuilding(req, res, next)
+  route.put(
+    "/buildings/:code",
+    validate(buildingUpdateSchema),
+    (req, res, next) =>
+      // #swagger.tags = ['Buildings']
+      // #swagger.summary = 'Update a building'
+      // #swagger.description = 'Update a building given its code'
+      // #swagger.parameters['code'] = { description: 'Building code', in: 'path', required: true, type: 'string' }
+      // #swagger.parameters['building'] = { description: 'Building object', in: 'body', schema: { $ref: "#/definitions/Building" }, required: true }
+      // #swagger.responses[200] = { description: 'The updated building' }
+      // #swagger.responses[400] = { description: 'Invalid input' }
+      ctrl.updateBuilding(req, res, next),
   );
 
   app.use(route);

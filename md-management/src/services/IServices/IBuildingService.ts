@@ -8,5 +8,6 @@ export default interface IBuildingService {
   getBuildingsWithMinMaxFloors(min: number, max: number): Promise<Result<IBuildingDTO[]>>;
 
   getBuildings(): Promise<Result<IBuildingDTO[]>>;
+  getBuildingWithCode(code: string): Promise<Result<IBuildingDTO>>;
   //  getBuilding(BuildingId: string): Promise<Result<IBuildingDTO>>;
 }
