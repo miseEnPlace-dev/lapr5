@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { AuthProvider } from "./context/AuthContext";
 import FloorEditor from "./FloorEditor";
+import BuildingPage from "./pages/BuildingPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
@@ -18,6 +19,14 @@ function App() {
             element={
               <RequireAuth>
                 <HomePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/buildings/:buildingCode"
+            element={
+              <RequireAuth>
+                <BuildingPage />
               </RequireAuth>
             }
           />
