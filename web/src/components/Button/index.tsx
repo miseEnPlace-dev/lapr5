@@ -15,13 +15,11 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({
   children,
-  type,
+  type = "default",
   onClick,
   disabled,
   className,
 }) => {
-  type = type || "default";
-
   return (
     <button
       className={`${backgrounds[type]} rounded px-6 py-2 font-poppins text-lg font-bold text-white focus:outline-none

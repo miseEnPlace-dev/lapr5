@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import Button from "../../components/Button";
+import Input from "../../components/Input";
 import Modal from "../../components/Modal";
 import { useBuildingPageModule } from "./module";
 
@@ -18,11 +19,7 @@ const BuildingPage: React.FC = () => {
 
       <div className="flex h-full w-full gap-x-8">
         <main className="h-full w-3/4 rounded-xl bg-slate-200 p-8">
-          <input
-            className="w-full rounded-lg bg-slate-300 px-4 py-2 placeholder:text-slate-600"
-            placeholder="Email"
-            type="email"
-          />
+          <Input className="w-full" placeholder="Email" type="email" />
         </main>
 
         <div className="flex h-full w-1/4 flex-col justify-between rounded-xl bg-slate-200 px-4 py-8">
