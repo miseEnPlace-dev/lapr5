@@ -23,6 +23,12 @@ dependencies:
   axios:
     specifier: ^1.6.1
     version: 1.6.1
+  inversify:
+    specifier: ^6.0.2
+    version: 6.0.2
+  inversify-react:
+    specifier: ^1.1.0
+    version: 1.1.0(inversify@6.0.2)(react@18.2.0)
   lodash:
     specifier: ^4.17.21
     version: 4.17.21
@@ -41,6 +47,9 @@ dependencies:
   react-router-dom:
     specifier: ^6.18.0
     version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
+  reflect-metadata:
+    specifier: ^0.1.13
+    version: 0.1.13
   sweetalert:
     specifier: ^2.1.2
     version: 2.1.2
@@ -2319,6 +2328,20 @@ packages:
       side-channel: 1.0.4
     dev: true
 
+  /inversify-react@1.1.0(inversify@6.0.2)(react@18.2.0):
+    resolution: {integrity: sha512-jXHcYhrFdlsdhmCVpedUc2yZT/HVA2OM/reUnIWuQdqkWKlGrNf6J+D1fA5t/vjnRsTU21egCqXFydHiZ2Fy7Q==}
+    peerDependencies:
+      inversify: ^5.0.5 || ^6.0.1
+      react: ^16.3.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      inversify: 6.0.2
+      react: 18.2.0
+    dev: false
+
+  /inversify@6.0.2:
+    resolution: {integrity: sha512-i9m8j/7YIv4mDuYXUAcrpKPSaju/CIly9AHK5jvCBeoiM/2KEsuCQTTP+rzSWWpLYWRukdXFSl6ZTk2/uumbiA==}
+    dev: false
+
   /is-array-buffer@3.0.2:
     resolution: {integrity: sha512-y+FyyR/w8vfIRq4eQcM1EYgSTnmHXPqaF+IgzgraytCFq5Xh8lllDVmAZolPJiZttZLeFSINPYMaEJ7/vWUa1w==}
     dependencies:
@@ -3180,6 +3203,10 @@ packages:
     engines: {node: '>=8.10.0'}
     dependencies:
       picomatch: 2.3.1
+
+  /reflect-metadata@0.1.13:
+    resolution: {integrity: sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==}
+    dev: false
 
   /reflect.getprototypeof@1.0.4:
     resolution: {integrity: sha512-ECkTw8TmJwW60lOTR+ZkODISW6RQ8+2CL3COqtiJKLd6MmB45hN51HprHFziKLGkAuTGQhBb91V8cy+KHlaCjw==}
