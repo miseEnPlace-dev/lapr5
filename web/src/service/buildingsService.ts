@@ -7,7 +7,7 @@ import api from "./api";
 import { IBuildingService } from "./IService/IBuildingService";
 
 @injectable()
-export class BuildingsService implements IBuildingService {
+export class BuildingService implements IBuildingService {
   public async getBuildings(): Promise<Building[]> {
     const response = await api("/buildings");
     const data = await response.data;

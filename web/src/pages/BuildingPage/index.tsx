@@ -1,8 +1,12 @@
+import { useState } from "react";
+
 import Button from "../../components/Button";
+import Modal from "../../components/Modal";
 import { useBuildingPageModule } from "./module";
 
 const BuildingPage: React.FC = () => {
   const { building } = useBuildingPageModule();
+  const [isElevatorModalVisible, setIsElevatorModalVisible] = useState(false);
 
   return (
     <div className="mx-auto flex h-screen min-h-screen w-11/12 flex-col gap-y-8 py-8">
@@ -24,7 +28,11 @@ const BuildingPage: React.FC = () => {
         <div className="flex h-full w-1/4 flex-col justify-between rounded-xl bg-slate-200 px-4 py-8">
           <div className="flex flex-col gap-y-2">
             <h2 className="mb-4 text-center text-3xl font-bold">Actions</h2>
-            <Button className="w-full" type="default">
+            <Button
+              onClick={() => setIsElevatorModalVisible((cur) => !cur)}
+              className="w-full"
+              type="default"
+            >
               Add Elevator
             </Button>
             <Button className="w-full" type="default">
@@ -40,6 +48,11 @@ const BuildingPage: React.FC = () => {
             </Button>
           </div>
         </div>
+        <Modal
+          setIsVisible={setIsElevatorModalVisible}
+          isVisible={isElevatorModalVisible}
+          title="Add Elevator"
+        />
       </div>
     </div>
   );
