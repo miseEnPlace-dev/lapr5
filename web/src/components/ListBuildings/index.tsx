@@ -8,7 +8,7 @@ const ListBuildings: React.FC = () => {
   const { buildings } = useListBuildingsModule();
 
   return (
-    <div className="mt-8 flex mr-12 flex-col gap-y-6 text-left text-lg">
+    <div className="mr-12 mt-8 flex flex-col gap-y-6 text-left text-lg">
       {buildings.map((building, i) => (
         <motion.button
           initial={{ opacity: 0, x: -100 }}
@@ -20,16 +20,13 @@ const ListBuildings: React.FC = () => {
         >
           <h2 className="text-6xl font-bold">{building.code}</h2>
           <div className="flex flex-col">
-            <h3 className="text-2xl text-left font-bold">{building.name}</h3>
+            <h3 className="text-left text-2xl font-bold">{building.name}</h3>
             <div className="text-left text-sm text-slate-600">
               {building.maxDimensions.length} x {building.maxDimensions.width}
               {building.description && (
-              <span>
-                &nbsp;&middot; {building.description}
-              </span> 
+                <span>&nbsp;&middot; {building.description}</span>
               )}
             </div>
-            
           </div>
         </motion.button>
       ))}

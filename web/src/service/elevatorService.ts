@@ -27,10 +27,11 @@ export class ElevatorService implements IElevatorService {
     buildingCode: string,
     elevator: Elevator
   ): Promise<Elevator> {
-    const response = await this.http.post<Elevator>(
-      `/buildings/${buildingCode}/elevators`,
-      elevator
-    );
+    const response = await this.http
+      .post<Elevator>(`/buildings/${buildingCode}/elevators`, elevator)
+      .catch((error) => {
+        throw error;
+      });
 
     if (response.status === 400) throw new Error("Something went wrong");
 
@@ -40,12 +41,13 @@ export class ElevatorService implements IElevatorService {
 
   async updateElevator(
     buildingCode: string,
-    elevator: Elevator
+    elevator: Partial<Elevator>
   ): Promise<Elevator> {
-    const response = await this.http.put<Elevator>(
-      `/buildings/${buildingCode}/elevators`,
-      elevator
-    );
+    const response = await this.http
+      .put<Elevator>(`/buildings/${buildingCode}/elevators`, elevator)
+      .catch(() => {
+        throw "Something went wrong";
+      });
 
     if (response.status === 400) throw new Error("Something went wrong");
 

@@ -23,12 +23,14 @@ const BuildingPage: React.FC = () => {
     descriptionInputRef,
     serialNumberInputRef,
   } = useBuildingPageModule();
+
   const navigate = useNavigate();
   const [isElevatorModalVisible, setIsElevatorModalVisible] = useState(false);
 
-  function handleSaveClick() {
+  async function handleSaveClick() {
     try {
-      handleSave();
+      await handleSave();
+
       swal("Success", "Elevator saved successfully", "success");
       setIsElevatorModalVisible(false);
     } catch (err: unknown) {
@@ -118,7 +120,7 @@ const BuildingPage: React.FC = () => {
               <Input
                 className="w-full"
                 placeholder="Code"
-                disabled
+                disabled={!!elevator}
                 defaultValue={elevator?.code}
               />
               <div className="flex items-center justify-between gap-x-8">
@@ -149,16 +151,25 @@ const BuildingPage: React.FC = () => {
               />
 
               <h2 className=" ml-1 mt-4 text-xl font-bold">Floors</h2>
-              <Selector
-                items={selectedFloors}
-                setItems={setSelectedFloors}
-                additionalText="Floor "
-              />
+              {selectedFloors.length > 0 ? (
+                <Selector
+                  items={selectedFloors}
+                  setItems={setSelectedFloors}
+                  additionalText="Floor "
+                />
+              ) : (
+                <div className="flex h-32 items-center justify-center">
+                  <p className="text-2xl font-bold text-slate-600">
+                    No floors in the building
+                  </p>
+                </div>
+              )}
             </div>
           </div>
           <Button
             onClick={handleSaveClick}
             type="confirm"
+            disabled={selectedFloors.length === 0}
             className="py-2 text-xl"
           >
             Save

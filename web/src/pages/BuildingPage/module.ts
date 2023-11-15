@@ -76,8 +76,7 @@ export const useBuildingPageModule = () => {
   }
 
   async function handleUpdate() {
-    if (!buildingCode || !codeInputRef.current || !elevator)
-      throw new Error("Invalid data");
+    if (!buildingCode || !elevator) throw new Error("Invalid data");
 
     const e: Elevator = {
       code: elevator.code,
@@ -94,8 +93,8 @@ export const useBuildingPageModule = () => {
   }
 
   async function handleSave() {
-    if (!elevator) return handleCreate();
-    handleUpdate();
+    if (!elevator) return await handleCreate();
+    await handleUpdate();
   }
 
   return {
