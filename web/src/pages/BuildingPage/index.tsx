@@ -8,7 +8,7 @@ const BuildingPage: React.FC = () => {
     <div className="mx-auto flex h-screen min-h-screen w-11/12 flex-col gap-y-8 py-8">
       <div className="w-full rounded-xl bg-slate-200 py-4">
         <h1 className="text-center text-4xl font-bold">
-          Edifício no. {building?.code} - {building?.name}
+          Building no. {building?.code} - {building?.name}
         </h1>
       </div>
 

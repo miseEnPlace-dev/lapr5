@@ -18,27 +18,25 @@ const ListBuildings: React.FC = () => {
   }, []);
 
   return (
-    <div className="mt-8 flex w-11/12 flex-col gap-y-6 text-left text-lg">
+    <div className="mt-8 flex flex-col gap-y-6 mr-12 text-left text-lg">
       {buildings.map((building) => (
         <button
           onClick={() => navigate(`/buildings/${building.code}`)}
-          className="flex w-full gap-x-8 bg-slate-200 px-12 py-8"
+          className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
         >
-          <h2 className="text-center text-6xl font-bold">{building.code}</h2>
+          <h2 className="text-6xl font-bold">{building.code}</h2>
           <div className="flex flex-col">
-            <h3 className="text-2xl font-bold">{building.name}</h3>
-            <span className="text-left text-sm text-slate-600">
-              {building.maxDimensions.width} x {building.maxDimensions.length}
-            </span>
-          </div>
-          {building.description && (
-            <div>
-              <h3 className="text-left text-lg font-bold text-slate-600">
-                Description
-              </h3>
-              <p>{building.description}</p>
+            <h3 className="text-2xl text-left font-bold">{building.name}</h3>
+            <div className="text-left text-sm text-slate-600">
+              {building.maxDimensions.length} x {building.maxDimensions.width}
+              {building.description && (
+              <span>
+                &nbsp;&middot; {building.description}
+              </span> 
+              )}
             </div>
-          )}
+            
+          </div>
         </button>
       ))}
     </div>
