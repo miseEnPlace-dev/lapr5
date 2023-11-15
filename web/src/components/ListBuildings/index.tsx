@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-import { useListBuildingsModule } from "./useListBuildingsModule";
+import { useListBuildingsModule } from "./module";
 
 const ListBuildings: React.FC = () => {
   const navigate = useNavigate();

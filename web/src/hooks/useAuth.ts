@@ -1,4 +1,9 @@
 import { useEffect, useState } from "react";
+import { useInjection } from "inversify-react";
+
+import { TYPES } from "@/inversify/types";
+import { Session } from "@/model/Session";
+import { HttpService } from "@/service/IService/HttpService";
 
 import { localStorageConfig } from "../config/localStorageConfig";
 import api from "../service/api";
@@ -9,33 +14,34 @@ export function useAuth() {
   );
   const [role, setRole] = useState<string | null>(null);
   const [username, setUsername] = useState<string | null>(null);
-
-  async function getSession(token: string) {
-    const res = await api("/me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (res.status === 200) {
-      setIsAuthenticated(true);
-      setRole(res.data.role);
-      setUsername(`${res.data.firstName} ${res.data.lastName}`);
-      return;
-    }
-
-    setIsAuthenticated(false);
-    setRole(null);
-    setUsername(null);
-    localStorage.removeItem(localStorageConfig.token);
-  }
+  const http = useInjection<HttpService>(TYPES.api);
 
   useEffect(() => {
+    async function getSession(token: string) {
+      const res = await http.get<Session>("/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.status === 200) {
+        setIsAuthenticated(true);
+        setRole(res.data.role);
+        setUsername(`${res.data.firstName} ${res.data.lastName}`);
+        return;
+      }
+
+      setIsAuthenticated(false);
+      setRole(null);
+      setUsername(null);
+      localStorage.removeItem(localStorageConfig.token);
+    }
+
     const token = localStorage.getItem(localStorageConfig.token);
     if (!token) return;
 
     getSession(token);
-  }, []);
+  }, [http]);
 
   const login = async (email: string, password: string) => {
     const res = await api("/users/login", {

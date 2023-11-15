@@ -5,15 +5,15 @@ import { inject, injectable } from "inversify";
 import { TYPES } from "../inversify/types";
 
 import { Floor } from "../model/Floor";
-import { IApi } from "./IService/IApi";
+import { HttpService } from "./IService/HttpService";
 import { IFloorService } from "./IService/IFloorService";
 
 @injectable()
 export class FloorService implements IFloorService {
-  constructor(@inject(TYPES.api) private api: IApi) {}
+  constructor(@inject(TYPES.api) private http: HttpService) {}
 
-  public async getBuildingFloors(buildingCode: string): Promise<Floor[]> {
-    const response = await this.api.get<Floor[]>(
+  async getBuildingFloors(buildingCode: string): Promise<Floor[]> {
+    const response = await this.http.get<Floor[]>(
       `/buildings/${buildingCode}/floors`
     );
 

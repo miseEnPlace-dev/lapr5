@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInjection } from "inversify-react";
 import { useParams } from "react-router-dom";
 
@@ -22,6 +22,16 @@ export const useBuildingPageModule = () => {
   const [elevator, setElevator] = useState<Elevator | null>(null);
   const [floors, setFloors] = useState<Floor[]>();
 
+  const codeInputRef = useRef<HTMLInputElement>(null);
+  const modelInputRef = useRef<HTMLInputElement>(null);
+  const brandInputRef = useRef<HTMLInputElement>(null);
+  const serialNumberInputRef = useRef<HTMLInputElement>(null);
+  const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
+
+  const [selectedFloors, setSelectedFloors] = useState<
+    { name: string; selected: boolean }[]
+  >([]);
+
   useEffect(() => {
     async function fetchData() {
       if (!buildingCode) return;
@@ -39,9 +49,65 @@ export const useBuildingPageModule = () => {
     fetchData();
   }, [buildingCode, buildingService, elevatorService, floorService]);
 
+  useEffect(() => {
+    setSelectedFloors(
+      floors?.map((floor) => ({
+        name: floor.code,
+        selected: elevator?.floorCodes.includes(floor.code) || false,
+      })) || []
+    );
+  }, [elevator?.floorCodes, floors]);
+
+  async function handleCreate() {
+    if (!buildingCode || !codeInputRef.current) throw new Error("Invalid data");
+
+    const e: Elevator = {
+      code: codeInputRef.current.value,
+      model: modelInputRef.current?.value,
+      brand: brandInputRef.current?.value,
+      serialNumber: serialNumberInputRef.current?.value,
+      description: descriptionInputRef.current?.value,
+      floorCodes: selectedFloors
+        .filter((floor) => floor.selected)
+        .map((floor) => floor.name),
+    };
+
+    await elevatorService.createElevator(buildingCode, e);
+  }
+
+  async function handleUpdate() {
+    if (!buildingCode || !codeInputRef.current || !elevator)
+      throw new Error("Invalid data");
+
+    const e: Elevator = {
+      code: elevator.code,
+      model: modelInputRef.current?.value,
+      brand: brandInputRef.current?.value,
+      serialNumber: serialNumberInputRef.current?.value,
+      description: descriptionInputRef.current?.value,
+      floorCodes: selectedFloors
+        .filter((floor) => floor.selected)
+        .map((floor) => floor.name),
+    };
+
+    await elevatorService.updateElevator(buildingCode, e);
+  }
+
+  async function handleSave() {
+    if (!elevator) return handleCreate();
+    handleUpdate();
+  }
+
   return {
     building,
     elevator,
-    floors,
+    selectedFloors,
+    setSelectedFloors,
+    handleSave,
+    codeInputRef,
+    modelInputRef,
+    brandInputRef,
+    serialNumberInputRef,
+    descriptionInputRef,
   };
 };

@@ -33,7 +33,7 @@ const Modal: React.FC<ModalProps> = ({
           initial={{ bottom: 0, x: "-50%", opacity: 0 }}
           animate={{ bottom: 150, x: "-50%", opacity: 1 }}
           transition={{ duration: 0.2 }}
-          className="absolute left-1/2 flex h-3/4 w-3/4 -translate-x-1/2 flex-col rounded-xl bg-slate-300 p-8"
+          className="absolute left-1/2 flex h-3/4 w-3/5 -translate-x-1/2 flex-col rounded-xl bg-slate-300 p-8"
         >
           <button
             onClick={() => setIsVisible(false)}
