@@ -17,6 +17,7 @@ export const useBuildingFloorsPageModule = () => {
 
   const [building, setBuilding] = useState<Building>();
   const [floors, setFloors] = useState<Floor[] | null>(null);
+  const [filter, setFilter] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -25,15 +26,18 @@ export const useBuildingFloorsPageModule = () => {
       const b = await buildingService.getBuildingWithCode(buildingCode);
       setBuilding(b);
 
-      const floors = await floorService.getBuildingFloors(buildingCode);
+      const floors = filter
+        ? await floorService.getBuildingFloorsWithConnectors(buildingCode)
+        : await floorService.getBuildingFloors(buildingCode);
       setFloors(floors);
     }
 
     fetchData();
-  }, [buildingCode, buildingService, floorService]);
+  }, [buildingCode, buildingService, floorService, filter]);
 
   return {
     building,
     floors,
+    setFilter,
   };
 };

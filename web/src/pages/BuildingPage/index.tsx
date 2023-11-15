@@ -45,8 +45,8 @@ const BuildingPage: React.FC = () => {
         <ArrowLeftIcon className="absolute left-4 top-4 h-8 w-8 text-slate-500" />
       </button>
       <div className="w-full rounded-xl bg-slate-200 py-4">
-        <h1 className="text-center text-2xl font-bold md:text-4xl">
-          Edifício no. {building?.code} - {building?.name}
+        <h1 className="text-center text-4xl font-bold">
+          Building no. {building?.code} - {building?.name}
         </h1>
       </div>
 
