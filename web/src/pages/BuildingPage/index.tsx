@@ -13,7 +13,9 @@ const BuildingPage: React.FC = () => {
   const { building, elevator, floors } = useBuildingPageModule();
   const navigate = useNavigate();
   const [isElevatorModalVisible, setIsElevatorModalVisible] = useState(false);
-  const [selectedFloors, setSelectedFloors] = useState<string[]>([]);
+  const [selectedFloors, setSelectedFloors] = useState<string[]>(
+    elevator?.floorCodes || []
+  );
 
   return (
     <div className="mx-auto flex h-screen min-h-screen w-11/12 flex-col gap-y-8 py-8">
@@ -69,8 +71,12 @@ const BuildingPage: React.FC = () => {
             >
               {elevator ? "Edit" : "Add"} Elevator
             </Button>
-            <Button className="w-full" type="default">
-              Add Floor
+            <Button
+              className="w-full"
+              type="default"
+              onClick={() => navigate("floors")}
+            >
+              Floors
             </Button>
           </div>
           <div className="flex flex-col gap-y-2">
@@ -96,15 +102,13 @@ const BuildingPage: React.FC = () => {
                 defaultValue={elevator?.code}
               />
               <Reorder.Group
-                values={floors}
-                onReorder={(values) => console.log(values)}
+                values={selectedFloors}
+                onReorder={(values) => setSelectedFloors(values)}
                 axis="y"
+                className="flex w-full flex-col gap-y-4 border border-slate-200"
               >
                 {floors?.map((floor) => (
-                  <Reorder.Item
-                    key={floor.code}
-                    className="flex flex-col gap-y-4"
-                  >
+                  <Reorder.Item key={floor.code} value={floor.code}>
                     {floor.code}
                   </Reorder.Item>
                 ))}

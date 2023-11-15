@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 // Thumb Raiser - JPP 2021, 2022, 2023
 // Audio
 // 3D modeling and importing

@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import FloorEditor from "./FloorEditor";
 import { container } from "./inversify";
+import FloorPage from "./pages/BuildingFloorsPage";
 import BuildingPage from "./pages/BuildingPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
@@ -32,6 +33,14 @@ function App() {
               element={
                 <RequireAuth>
                   <BuildingPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/buildings/:buildingCode/floors"
+              element={
+                <RequireAuth>
+                  <FloorPage />
                 </RequireAuth>
               }
             />
