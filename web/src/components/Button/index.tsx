@@ -1,6 +1,6 @@
 const backgrounds = {
   confirm: "bg-green-500 hover:bg-green-700 disabled:hover:bg-green-500",
-  default: "bg-primary hover:bg-primary-700 disabled:hover:bg-primary",
+  default: "bg-primary hover:bg-primary-500 disabled:hover:bg-primary",
   destroy: "bg-red-500 hover:bg-red-700 disabled:hover:bg-red-500",
   reset: "bg-gray-500 hover:bg-gray-700 disabled:hover:bg-gray-500",
 };

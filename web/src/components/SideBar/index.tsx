@@ -29,6 +29,7 @@ const SideBar: React.FC<SideBarProps> = ({ menuOptions, activeOption }) => {
         {menuOptions.map((option) => (
           <button
             onClick={option.onClick}
+            key={option.label}
             className={`ml-12 flex h-16 items-center gap-x-4 text-white hover:text-secondary ${
               activeOption === option.label && "text-accent"
             }`}
@@ -43,7 +44,7 @@ const SideBar: React.FC<SideBarProps> = ({ menuOptions, activeOption }) => {
         <img
           src="/assets/avatar.jpg"
           alt="Avatar"
-          className="h-16 w-16 rounded-full"
+          className="aspect-square h-1/3 max-h-[64px] max-w-[64px] rounded-full"
         />
         <div>
           <h1 className="text-2xl font-bold text-white">{username}</h1>

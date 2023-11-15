@@ -9,7 +9,8 @@ export default {
         primary: "var(--primary)",
         secondary: "var(--secondary)",
         accent: "var(--accent)",
-        "primary-700": "var(--primary-700)"
+        "primary-500": "var(--primary-500)",
+        "primary-700": "var(--primary-700)",
       },
       fontFamily: {
         sans: ["Roboto", "Arial", "sans-serif"],
