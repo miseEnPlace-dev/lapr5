@@ -67,8 +67,12 @@ const BuildingPage: React.FC = () => {
             >
               {elevator ? "Edit" : "Add"} Elevator
             </Button>
-            <Button className="w-full" type="default">
-              Add Floor
+            <Button
+              className="w-full"
+              type="default"
+              onClick={() => navigate("floors")}
+            >
+              Floors
             </Button>
           </div>
           <div className="flex flex-col gap-y-2">
