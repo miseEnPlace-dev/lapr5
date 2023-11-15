@@ -16,7 +16,7 @@ export const useBuildingFloorsPageModule = () => {
   const { buildingCode } = useParams();
 
   const [building, setBuilding] = useState<Building>();
-  const [floors, setFloors] = useState<Floor[]>([]);
+  const [floors, setFloors] = useState<Floor[] | null>(null);
 
   useEffect(() => {
     async function fetchData() {

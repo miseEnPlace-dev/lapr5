@@ -1,13 +1,12 @@
+import { Floor } from "@/model/Floor";
+
 import Alert from "../Alert";
-import { useListFloorsModule } from "./useListFloorsModule";
 
 interface ListFloorsProps {
-  buildingCode: string;
+  floors: Floor[] | null;
 }
 
-const ListFloors: React.FC<ListFloorsProps> = ({ buildingCode }) => {
-  const { floors } = useListFloorsModule(buildingCode);
-
+const ListFloors: React.FC<ListFloorsProps> = ({ floors }) => {
   if (!floors)
     return (
       <div>
