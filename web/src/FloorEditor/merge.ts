@@ -1,9 +1,12 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import _ from "lodash";
 
 export function merge(object, ...sources) {
   return _.mergeWith(
     object,
     ...sources,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     (objValue, srcValue, key, object, _other) => {
       if (_.isArray(objValue)) {
         // Arrays must be concatenated

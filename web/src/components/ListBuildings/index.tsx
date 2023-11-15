@@ -1,26 +1,20 @@
-import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-import { Building } from "../../model/Building";
-import api from "../../service/api";
+import { useListBuildingsModule } from "./useListBuildingsModule";
 
 const ListBuildings: React.FC = () => {
-  const [buildings, setBuildings] = useState<Building[]>([]);
   const navigate = useNavigate();
-
-  async function fetchBuildings() {
-    const res = await api.get("/buildings");
-    setBuildings(res.data);
-  }
-
-  useEffect(() => {
-    fetchBuildings();
-  }, []);
+  const { buildings } = useListBuildingsModule();
 
   return (
-    <div className="mt-8 flex flex-col gap-y-6 mr-12 text-left text-lg">
-      {buildings.map((building) => (
-        <button
+    <div className="mt-8 flex mr-12 flex-col gap-y-6 text-left text-lg">
+      {buildings.map((building, i) => (
+        <motion.button
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.2, delay: 0.1 * i }}
+          key={building.code}
           onClick={() => navigate(`/buildings/${building.code}`)}
           className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
         >
@@ -37,7 +31,7 @@ const ListBuildings: React.FC = () => {
             </div>
             
           </div>
-        </button>
+        </motion.button>
       ))}
     </div>
   );
