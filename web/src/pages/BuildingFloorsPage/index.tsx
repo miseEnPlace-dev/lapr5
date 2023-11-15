@@ -7,7 +7,7 @@ import { ArrowLeftIcon } from "../../styles/Icons";
 import { useBuildingFloorsPageModule } from "./module";
 
 const BuildingFloorsPage: React.FC = () => {
-  const { building, floors } = useBuildingFloorsPageModule();
+  const { building, floors, setFilter } = useBuildingFloorsPageModule();
   const navigate = useNavigate();
 
   return (
@@ -34,6 +34,13 @@ const BuildingFloorsPage: React.FC = () => {
             <h2 className="mb-4 text-center text-3xl font-bold">Actions</h2>
             <Button className="w-full" type="default">
               Add Floor
+            </Button>
+            <Button
+              className="w-full"
+              type="default"
+              onClick={() => setFilter((f) => !f)}
+            >
+              Filter Floors with Connectors
             </Button>
           </div>
           <div className="flex flex-col gap-y-2">

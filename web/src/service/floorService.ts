@@ -18,4 +18,14 @@ export class FloorService implements IFloorService {
     const data = response.data;
     return data;
   }
+
+  public async getBuildingFloorsWithConnectors(
+    buildingId: string
+  ): Promise<Floor[]> {
+    const response = await this.api.get<Floor[]>(
+      `/buildings/${buildingId}/floors?filter=connectors`
+    );
+    const data = response.data;
+    return data;
+  }
 }
