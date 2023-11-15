@@ -47,9 +47,9 @@ const SideBar: React.FC<SideBarProps> = ({ menuOptions, activeOption }) => {
           className="aspect-square h-1/3 max-h-[64px] max-w-[64px] rounded-full"
         />
         <div>
-          <h1 className="text-2xl font-bold text-white">{username}</h1>
+          <h1 className="text-xl font-bold text-white">{username}</h1>
           <p className="text-sm text-white">
-            {sanitizedRole} at <span className="font-bold">RobDroneGO</span>
+            {sanitizedRole}
           </p>
         </div>
       </div>

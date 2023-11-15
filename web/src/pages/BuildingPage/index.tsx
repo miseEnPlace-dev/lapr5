@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Reorder } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 import Button from "../../components/Button";
@@ -9,9 +10,12 @@ import { ArrowLeftIcon } from "../../styles/Icons";
 import { useBuildingPageModule } from "./module";
 
 const BuildingPage: React.FC = () => {
-  const { building, elevator } = useBuildingPageModule();
+  const { building, elevator, floors } = useBuildingPageModule();
   const navigate = useNavigate();
   const [isElevatorModalVisible, setIsElevatorModalVisible] = useState(false);
+  const [selectedFloors, setSelectedFloors] = useState<string[]>(
+    elevator?.floorCodes || []
+  );
 
   return (
     <div className="mx-auto flex h-screen min-h-screen w-11/12 flex-col gap-y-8 py-8">
@@ -23,7 +27,7 @@ const BuildingPage: React.FC = () => {
       </button>
       <div className="w-full rounded-xl bg-slate-200 py-4">
         <h1 className="text-center text-4xl font-bold">
-          Edifício no. {building?.code} - {building?.name}
+          Building no. {building?.code} - {building?.name}
         </h1>
       </div>
 
@@ -97,11 +101,18 @@ const BuildingPage: React.FC = () => {
                 placeholder="Name"
                 defaultValue={elevator?.code}
               />
-              <Input
-                className="w-full"
-                placeholder="Name"
-                defaultValue={elevator?.floorCodes.join(", ")}
-              />
+              <Reorder.Group
+                values={selectedFloors}
+                onReorder={(values) => setSelectedFloors(values)}
+                axis="y"
+                className="flex w-full flex-col gap-y-4 border border-slate-200"
+              >
+                {floors?.map((floor) => (
+                  <Reorder.Item key={floor.code} value={floor.code}>
+                    {floor.code}
+                  </Reorder.Item>
+                ))}
+              </Reorder.Group>
             </div>
           </div>
           <Button type="confirm" className="py-2 text-xl">
