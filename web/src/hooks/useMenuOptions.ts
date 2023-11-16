@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import AuthContext from "../context/AuthContext";
 import {
+  BridgeIcon,
   BuildingIcon,
   ElevatorIcon,
   HomeIcon,
@@ -40,6 +41,11 @@ export const useMenuOptions = () => {
         label: "Rooms",
         icon: RoomIcon,
         onClick: () => setActiveOption("rooms"),
+      });
+      options.push({
+        label: "Connectors",
+        icon: BridgeIcon,
+        onClick: () => setActiveOption("connectors"),
       });
     }
 
