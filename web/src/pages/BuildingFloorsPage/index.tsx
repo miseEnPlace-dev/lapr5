@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router-dom";
 
 import ListFloors from "@/components/ListFloors";
+import Selector from "@/components/Selector";
 
 import Button from "../../components/Button";
 import { ArrowLeftIcon } from "../../styles/Icons";
 import { useBuildingFloorsPageModule } from "./module";
 
 const BuildingFloorsPage: React.FC = () => {
-  const { building, floors, setFilter } = useBuildingFloorsPageModule();
+  const { building, floors, filters, setFilters } =
+    useBuildingFloorsPageModule();
   const navigate = useNavigate();
 
   return (
@@ -35,13 +37,13 @@ const BuildingFloorsPage: React.FC = () => {
             <Button className="w-full" type="default">
               Add Floor
             </Button>
-            <Button
-              className="w-full"
-              type="default"
-              onClick={() => setFilter((f) => !f)}
-            >
-              Filter Floors with Connectors
-            </Button>
+            <h2 className="my-4 text-center text-3xl font-bold">Filters</h2>
+            <Selector
+              items={filters}
+              setItems={setFilters}
+              additionalText="With "
+              activeClassName="bg-primary text-white"
+            />
           </div>
           <div className="flex flex-col gap-y-2">
             <Button className="w-full self-end" type="confirm">
