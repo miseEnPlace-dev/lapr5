@@ -48,9 +48,7 @@ const SideBar: React.FC<SideBarProps> = ({ menuOptions, activeOption }) => {
         />
         <div>
           <h1 className="text-xl font-bold text-white">{username}</h1>
-          <p className="text-sm text-white">
-            {sanitizedRole}
-          </p>
+          <p className="text-sm text-white">{sanitizedRole}</p>
         </div>
       </div>
     </nav>

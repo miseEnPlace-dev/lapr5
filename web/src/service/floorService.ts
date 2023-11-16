@@ -12,21 +12,15 @@ import { IFloorService } from "./IService/IFloorService";
 export class FloorService implements IFloorService {
   constructor(@inject(TYPES.api) private http: HttpService) {}
 
-  async getBuildingFloors(buildingCode: string): Promise<Floor[]> {
-    const response = await this.http.get<Floor[]>(
-      `/buildings/${buildingCode}/floors`
-    );
-
-    const data = response.data;
-    return data;
-  }
-
-  public async getBuildingFloorsWithConnectors(
-    buildingId: string
+  async getBuildingFloors(
+    buildingCode: string,
+    filters: string[]
   ): Promise<Floor[]> {
-    const response = await this.api.get<Floor[]>(
-      `/buildings/${buildingId}/floors?filter=connectors`
+    const filter = filters.length ? "?filter=" + filters.join(",") : "";
+    const response = await this.http.get<Floor[]>(
+      `/buildings/${buildingCode}/floors${filter}`
     );
+
     const data = response.data;
     return data;
   }
