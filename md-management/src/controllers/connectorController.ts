@@ -26,9 +26,9 @@ export default class ConnectorController implements IConnectorController {
 
   public async createConnector(req: Request, res: Response, next: NextFunction) {
     try {
-      const connectorOrError = (await this.connectorSvcInstance.createConnector(
+      const connectorOrError = await this.connectorSvcInstance.createConnector(
         req.body as IConnectorDTO
-      )) as Result<IConnectorDTO>;
+      );
 
       if (connectorOrError.isFailure)
         return res.status(400).json({

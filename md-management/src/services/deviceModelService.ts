@@ -57,4 +57,29 @@ export default class DeviceModelService implements IDeviceModelService {
       throw e;
     }
   }
+
+  public async getDeviceModels(): Promise<Result<IDeviceModelDTO[]>> {
+    try {
+      const deviceModels = await this.deviceModelRepo.findAll();
+      const deviceModelDTOs = deviceModels.map(b => DeviceModelMapper.toDTO(b));
+      return Result.ok<IDeviceModelDTO[]>(deviceModelDTOs);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async getDeviceModelWithCode(code: string): Promise<Result<IDeviceModelDTO>> {
+    try {
+      const deviceModelCode = DeviceModelCode.create(code);
+      if (deviceModelCode.isFailure) return Result.fail<IDeviceModelDTO>('Device Model not found');
+
+      const deviceModel = await this.deviceModelRepo.findByCode(deviceModelCode.getValue());
+      if (!deviceModel) return Result.fail<IDeviceModelDTO>('Device Model not found');
+
+      const deviceModelDTO = DeviceModelMapper.toDTO(deviceModel);
+      return Result.ok<IDeviceModelDTO>(deviceModelDTO);
+    } catch (e) {
+      throw e;
+    }
+  }
 }

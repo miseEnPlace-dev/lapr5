@@ -16,7 +16,7 @@ const HomePage: React.FC = () => {
     <div className="flex">
       <SideBar menuOptions={menuOptions} activeOption={activeOption} />
       {role === "campus" && <CampusHome activeOption={activeOption} />}
-      {role === "fleet" && <FleetHome />}
+      {role === "fleet" && <FleetHome activeOption={activeOption} />}
     </div>
   );
 };

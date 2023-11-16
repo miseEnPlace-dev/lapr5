@@ -29,9 +29,7 @@ export default class RoleController implements IRoleController {
 
   public async updateRole(req: Request, res: Response, next: NextFunction) {
     try {
-      const roleOrError = (await this.roleServiceInstance.updateRole(
-        req.body as IRoleDTO
-      )) as Result<IRoleDTO>;
+      const roleOrError = await this.roleServiceInstance.updateRole(req.body as IRoleDTO);
 
       if (roleOrError.isFailure) return res.status(400).json({ message: roleOrError.errorValue() });
 

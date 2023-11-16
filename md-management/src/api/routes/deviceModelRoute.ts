@@ -29,6 +29,24 @@ export default (app: Router) => {
 
   const ctrl = container.get<IDeviceModelController>(TYPES.deviceModelController);
 
+  route.get('/device-models', (req, res, next) =>
+    // #swagger.tags = ['DeviceModel']
+    // #swagger.summary = 'Get device-model'
+    // #swagger.body
+    // #swagger.responses[200] = { description: 'List of device-model' }
+    // #swagger.responses[400] = { description: 'Error getting the device-model' }
+    ctrl.getDeviceModels(req, res, next)
+  );
+
+  route.get('/device-models/:code', (req, res, next) =>
+    // #swagger.tags = ['DeviceModel']
+    // #swagger.summary = 'Get building for given code'
+    // #swagger.parameters['code'] = { description: 'Building code', in: 'path', required: true, type: 'integer' }
+    // #swagger.responses[200] = { description: 'Building with this code' }
+    // #swagger.responses[400] = { description: 'Error getting the building' }
+    ctrl.getDeviceModelWithCode(req, res, next)
+  );
+
   route.post('/device-models', validate(deviceModelCreateSchema), (req, res, next) =>
     // #swagger.tags = ['Device Models']
     // #swagger.summary = 'Create a device model'

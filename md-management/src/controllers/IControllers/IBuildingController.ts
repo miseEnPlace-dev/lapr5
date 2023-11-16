@@ -10,4 +10,5 @@ export default interface IBuildingController {
     next: NextFunction
   ): Promise<Response | void>;
   getBuildings(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
+  getBuildingWithCode(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
 }
