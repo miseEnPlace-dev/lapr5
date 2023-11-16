@@ -6,6 +6,7 @@ import swal from "sweetalert";
 import Button from "../Button";
 import Input from "../Input";
 import Modal from "../Modal";
+import Selector from "../Selector";
 import { useListDeviceModelModule } from "./module";
 
 const ListDeviceModels: React.FC = () => {
@@ -16,6 +17,8 @@ const ListDeviceModels: React.FC = () => {
     handleSave,
     nameInputRef,
     brandInputRef,
+    selectedCapabilities,
+    setSelectedCapabilities,
   } = useListDeviceModelModule();
 
   const [isBuildingModalVisible, setIsBuildingModalVisible] = useState(false);
@@ -90,6 +93,21 @@ const ListDeviceModels: React.FC = () => {
               className="w-full"
               placeholder="Brand"
               inputRef={brandInputRef}
+            />
+            <Input
+              className="w-full"
+              disabled
+              placeholder="Type"
+              defaultValue="Robot"
+            />
+            <Selector
+              items={selectedCapabilities}
+              title="Capabilities"
+              setItems={
+                setSelectedCapabilities as unknown as React.Dispatch<
+                  React.SetStateAction<{ name: string; selected: boolean }[]>
+                >
+              }
             />
           </div>
           <Button onClick={handleSaveClick} type="confirm">

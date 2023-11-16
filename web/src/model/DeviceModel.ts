@@ -3,5 +3,5 @@ export interface DeviceModel {
   brand?: string;
   name: string;
   type: "robot" | "drone";
-  capabilities: "pick_delivery" | "surveillance";
+  capabilities: ("pick_delivery" | "surveillance")[];
 }

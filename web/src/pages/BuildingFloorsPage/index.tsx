@@ -37,10 +37,10 @@ const BuildingFloorsPage: React.FC = () => {
             <Button className="w-full" type="default">
               Add Floor
             </Button>
-            <h2 className="my-4 text-center text-3xl font-bold">Filters</h2>
             <Selector
               items={filters}
               setItems={setFilters}
+              title="Filters"
               additionalText="With "
               activeClassName="bg-primary text-white"
             />

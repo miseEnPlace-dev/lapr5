@@ -28,7 +28,7 @@ export class DeviceModelService implements IDeviceModelService {
     const response = await this.http
       .post<DeviceModel>("/device-models", building)
       .catch((error) => {
-        throw error;
+        throw error.message;
       });
 
     if (response.status === 400) throw new Error("Something went wrong");

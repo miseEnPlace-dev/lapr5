@@ -53,7 +53,7 @@ export const useMenuOptions = () => {
       options.push({
         label: "Device Models",
         icon: RobotIcon,
-        onClick: () => setActiveOption("deviceModels"),
+        onClick: () => setActiveOption("device-models"),
       });
     }
 
