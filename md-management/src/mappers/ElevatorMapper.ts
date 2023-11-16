@@ -28,8 +28,8 @@ export class ElevatorMapper extends Mapper<Elevator> {
     const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
     const code = ElevatorCode.create(elevator.code).getValue();
     const branding =
-      elevator.brand && elevator.model
-        ? ElevatorBranding.create(elevator.brand, elevator.model).getValue()
+      elevator.branding?.brand && elevator.branding?.model
+        ? ElevatorBranding.create(elevator.branding.brand, elevator.branding.model).getValue()
         : undefined;
     const serialNumber = elevator.serialNumber
       ? ElevatorSerialNumber.create(elevator.serialNumber).getValue()
@@ -62,11 +62,14 @@ export class ElevatorMapper extends Mapper<Elevator> {
 
   public static toPersistence(elevator: Elevator): IElevatorPersistence {
     const floors = elevator.floors.map(floor => floor.id.toString());
+    const branding =
+      elevator.brand && elevator.model
+        ? { brand: elevator.brand, model: elevator.model }
+        : undefined;
     return {
       code: elevator.code.value,
       floors,
-      brand: elevator.brand,
-      model: elevator.model,
+      branding,
       serialNumber: elevator.serialNumber?.value,
       description: elevator.description?.value
     };

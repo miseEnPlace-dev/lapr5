@@ -78,12 +78,23 @@ export const useBuildingPageModule = () => {
   async function handleUpdate() {
     if (!buildingCode || !elevator) throw new Error("Invalid data");
 
-    const e: Elevator = {
-      code: elevator.code,
-      model: modelInputRef.current?.value,
-      brand: brandInputRef.current?.value,
-      serialNumber: serialNumberInputRef.current?.value,
-      description: descriptionInputRef.current?.value,
+    const e: Partial<Elevator> = {
+      model:
+        modelInputRef.current?.value === ""
+          ? undefined
+          : modelInputRef.current?.value,
+      brand:
+        brandInputRef.current?.value === ""
+          ? undefined
+          : brandInputRef.current?.value,
+      serialNumber:
+        serialNumberInputRef.current?.value === ""
+          ? undefined
+          : serialNumberInputRef.current?.value,
+      description:
+        descriptionInputRef.current?.value === ""
+          ? undefined
+          : descriptionInputRef.current?.value,
       floorCodes: selectedFloors
         .filter((floor) => floor.selected)
         .map((floor) => floor.name),
