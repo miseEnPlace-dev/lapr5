@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useInjection } from "inversify-react";
 import { useParams } from "react-router-dom";
 
@@ -32,22 +32,49 @@ export const useBuildingPageModule = () => {
     { name: string; selected: boolean }[]
   >([]);
 
+  const fetchBuilding = useCallback(
+    async (buildingCode: string) => {
+      const building = await buildingService.getBuildingWithCode(buildingCode);
+      setBuilding(building);
+    },
+    [buildingService]
+  );
+
+  const fetchElevator = useCallback(
+    async (buildingCode: string) => {
+      const elevator = await elevatorService.getBuildingElevator(buildingCode);
+      setElevator(elevator);
+    },
+    [elevatorService]
+  );
+
+  const fetchFloors = useCallback(
+    async (buildingCode: string) => {
+      const floors = await floorService.getBuildingFloors(buildingCode);
+      setFloors(floors);
+    },
+    [floorService]
+  );
+
   useEffect(() => {
     async function fetchData() {
       if (!buildingCode) return;
 
-      const building = await buildingService.getBuildingWithCode(buildingCode);
-      setBuilding(building);
-
-      const elevator = await elevatorService.getBuildingElevator(buildingCode);
-      setElevator(elevator);
-
-      const floors = await floorService.getBuildingFloors(buildingCode);
-      setFloors(floors);
+      fetchBuilding(buildingCode);
+      fetchElevator(buildingCode);
+      fetchFloors(buildingCode);
     }
 
     fetchData();
-  }, [buildingCode, buildingService, elevatorService, floorService]);
+  }, [
+    buildingCode,
+    buildingService,
+    elevatorService,
+    floorService,
+    fetchBuilding,
+    fetchElevator,
+    fetchFloors,
+  ]);
 
   useEffect(() => {
     setSelectedFloors(
@@ -106,6 +133,8 @@ export const useBuildingPageModule = () => {
   async function handleSave() {
     if (!elevator) return await handleCreate();
     await handleUpdate();
+
+    if (buildingCode) fetchElevator(buildingCode);
   }
 
   return {

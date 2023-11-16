@@ -23,4 +23,17 @@ export class BuildingService implements IBuildingService {
     const data = response.data;
     return data;
   }
+
+  async createBuilding(building: Building): Promise<Building> {
+    const response = await this.http
+      .post<Building>("/buildings", building)
+      .catch((error) => {
+        throw error;
+      });
+
+    if (response.status === 400) throw new Error("Something went wrong");
+
+    const data = response.data;
+    return data;
+  }
 }

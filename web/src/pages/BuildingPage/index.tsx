@@ -115,56 +115,54 @@ const BuildingPage: React.FC = () => {
           isVisible={isElevatorModalVisible}
           title={`${elevator ? "Edit" : "Add"} Elevator`}
         >
-          <div className="flex h-full flex-col justify-between">
-            <div className="flex flex-col gap-y-4">
+          <div className="flex h-full flex-col gap-y-4">
+            <Input
+              className="w-full"
+              placeholder="Code"
+              disabled={!!elevator}
+              defaultValue={elevator?.code}
+            />
+            <div className="flex flex-col items-center justify-between gap-x-8 md:flex-row">
               <Input
                 className="w-full"
-                placeholder="Code"
-                disabled={!!elevator}
-                defaultValue={elevator?.code}
+                placeholder="Model"
+                defaultValue={elevator?.model}
+                inputRef={modelInputRef}
               />
-              <div className="flex items-center justify-between gap-x-8">
-                <Input
-                  className="w-full"
-                  placeholder="Model"
-                  defaultValue={elevator?.model}
-                  inputRef={modelInputRef}
-                />
-                <Input
-                  className="w-full"
-                  placeholder="Brand"
-                  defaultValue={elevator?.brand}
-                  inputRef={brandInputRef}
-                />
-              </div>
               <Input
                 className="w-full"
-                placeholder="Serial Number"
-                defaultValue={elevator?.serialNumber}
-                inputRef={serialNumberInputRef}
+                placeholder="Brand"
+                defaultValue={elevator?.brand}
+                inputRef={brandInputRef}
               />
-              <TextArea
-                className="w-full"
-                placeholder="Description"
-                defaultValue={elevator?.description}
-                inputRef={descriptionInputRef}
-              />
-
-              <h2 className=" ml-1 mt-4 text-xl font-bold">Floors</h2>
-              {selectedFloors.length > 0 ? (
-                <Selector
-                  items={selectedFloors}
-                  setItems={setSelectedFloors}
-                  additionalText="Floor "
-                />
-              ) : (
-                <div className="flex h-32 items-center justify-center">
-                  <p className="text-2xl font-bold text-slate-600">
-                    No floors in the building
-                  </p>
-                </div>
-              )}
             </div>
+            <Input
+              className="w-full"
+              placeholder="Serial Number"
+              defaultValue={elevator?.serialNumber}
+              inputRef={serialNumberInputRef}
+            />
+            <TextArea
+              className="w-full"
+              placeholder="Description"
+              defaultValue={elevator?.description}
+              inputRef={descriptionInputRef}
+            />
+
+            <h2 className=" ml-1 mt-4 text-xl font-bold">Floors</h2>
+            {selectedFloors.length > 0 ? (
+              <Selector
+                items={selectedFloors}
+                setItems={setSelectedFloors}
+                additionalText="Floor "
+              />
+            ) : (
+              <div className="flex h-32 items-center justify-center">
+                <p className="text-2xl font-bold text-slate-600">
+                  No floors in the building
+                </p>
+              </div>
+            )}
           </div>
           <Button
             onClick={handleSaveClick}
