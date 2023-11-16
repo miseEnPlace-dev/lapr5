@@ -45,14 +45,6 @@ const BuildingFloorsPage: React.FC = () => {
               activeClassName="bg-primary text-white"
             />
           </div>
-          <div className="flex flex-col gap-y-2">
-            <Button className="w-full self-end" type="confirm">
-              Save
-            </Button>
-            <Button className="w-full self-end" disabled type="destroy">
-              Delete Building
-            </Button>
-          </div>
         </div>
       </div>
     </div>
