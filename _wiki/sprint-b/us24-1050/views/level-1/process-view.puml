@@ -1,0 +1,24 @@
+@startuml process-view
+autonumber
+
+actor CM as "Campus Manager"
+participant SYS as "RobDroneGo System" <<system (C4)>>
+
+activate CM
+
+CM -> SYS : asks to create a building
+activate SYS
+
+CM <-- SYS : asks for building data (code,name,description,max dimensions)
+deactivate SYS
+
+CM -> SYS : inputs required data
+activate SYS
+
+CM <-- SYS : returns confirmation message
+deactivate SYS
+
+
+deactivate CM
+
+@enduml
