@@ -59,6 +59,7 @@ const LoginPage: React.FC = () => {
               e.preventDefault();
               handleLogin();
             }}
+            name="login"
             disabled={!isEmailValid || !password}
             className="mt-4 w-full"
           >

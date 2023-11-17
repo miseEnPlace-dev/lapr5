@@ -110,7 +110,7 @@ const ListDeviceModels: React.FC = () => {
               }
             />
           </div>
-          <Button onClick={handleSaveClick} type="confirm">
+          <Button name="save" onClick={handleSaveClick} type="confirm">
             Save
           </Button>
         </div>

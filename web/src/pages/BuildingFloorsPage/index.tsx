@@ -63,6 +63,7 @@ const BuildingFloorsPage: React.FC = () => {
           <div className="flex flex-col gap-y-2">
             <h2 className="mb-4 text-center text-3xl font-bold">Actions</h2>
             <Button
+              name="add-floor"
               onClick={() => setIsFloorModalVisible((cur) => !cur)}
               className="w-full"
               type="default"
@@ -116,6 +117,7 @@ const BuildingFloorsPage: React.FC = () => {
                 />
               </div>
               <Button
+                name="save"
                 onClick={handleSaveClick}
                 type="confirm"
                 className="my-2 py-2 text-xl"

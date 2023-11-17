@@ -86,6 +86,7 @@ const BuildingPage: React.FC = () => {
           <div className="flex flex-col gap-y-2">
             <h2 className="mb-4 text-center text-3xl font-bold">Actions</h2>
             <Button
+              name={`${elevator ? "edit" : "add"}-elevator`}
               onClick={() => setIsElevatorModalVisible((cur) => !cur)}
               className="w-full"
               type="default"
@@ -93,6 +94,7 @@ const BuildingPage: React.FC = () => {
               {elevator ? "Edit" : "Add"} Elevator
             </Button>
             <Button
+              name="floors"
               className="w-full"
               type="default"
               onClick={() => navigate("floors")}
@@ -101,7 +103,7 @@ const BuildingPage: React.FC = () => {
             </Button>
           </div>
           <div className="flex flex-col gap-y-2">
-            <Button className="w-full self-end" type="confirm">
+            <Button name="save" className="w-full self-end" type="confirm">
               Save
             </Button>
             <Button className="w-full self-end" disabled type="destroy">
@@ -165,6 +167,7 @@ const BuildingPage: React.FC = () => {
             )}
           </div>
           <Button
+            name="save"
             onClick={handleSaveClick}
             type="confirm"
             disabled={selectedFloors.length === 0}

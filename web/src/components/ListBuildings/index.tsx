@@ -110,7 +110,7 @@ const ListBuildings: React.FC = () => {
               inputRef={descriptionInputRef}
             />
           </div>
-          <Button onClick={handleSaveClick} type="confirm">
+          <Button name="save" onClick={handleSaveClick} type="confirm">
             Save
           </Button>
         </div>

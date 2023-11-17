@@ -30,6 +30,7 @@ const SideBar: React.FC<SideBarProps> = ({ menuOptions, activeOption }) => {
           <button
             onClick={option.onClick}
             key={option.label}
+            name={option.label.toLowerCase()}
             className={`ml-12 flex h-16 items-center gap-x-4 text-white hover:text-secondary ${
               activeOption === option.label && "text-accent"
             }`}
