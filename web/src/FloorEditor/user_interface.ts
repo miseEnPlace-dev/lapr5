@@ -24,6 +24,13 @@ export default class UserInterface extends GUI {
       thumbRaiser.buildCreditsPanel();
     };
 
+    const mazeCallback = function (options, name) {
+      thumbRaiser.maze = new Maze(
+        thumbRaiser.mazeParameters.mazes[options.indexOf(name)]
+      );
+      thumbRaiser.buildCreditsPanel();
+    };
+
     const createEmoteCallback = function (animations, name) {
       callbacks[name] = function () {
         animations.fadeToAction(name, 0.2);
@@ -95,6 +102,24 @@ export default class UserInterface extends GUI {
       .options(cubeTexturesOptions)
       .onChange((name) => textureCallback(cubeTexturesOptions, name));
     skyboxesFolder.close();
+
+    // Create the mazes folder and add cube textures
+    const mazesFolder = this.addFolder("Mazes");
+    mazesFolder.domElement.style.fontSize = fontSize;
+    const mazeParameters = {
+      name: thumbRaiser.mazeParameters.mazes[
+        thumbRaiser.mazeParameters.selected
+      ].name,
+    };
+    const mazeOptions = [];
+    for (let i = 0; i < thumbRaiser.mazeParameters.mazes.length; i++) {
+      mazeOptions[i] = thumbRaiser.mazeParameters.mazes[i].name;
+    }
+    mazesFolder
+      .add(mazeParameters, "name")
+      .options(mazeOptions)
+      .onChange((name) => mazeCallback(mazeOptions, name));
+    mazesFolder.close();
 
     // Create the character folder
     const characterFolder = this.addFolder("Character");

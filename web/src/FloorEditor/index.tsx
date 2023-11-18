@@ -6,6 +6,12 @@ import "./index.css";
 import Orientation from "./orientation";
 import ThumbRaiser from "./thumb_raiser";
 
+const maps = [
+  "Loquitas_5x5.json",
+  "Loquitas_10x10.json",
+  "Loquitas_20x20.json",
+];
+
 const FloorEditor: React.FC = () => {
   useEffect(() => {
     let thumbRaiser: ThumbRaiser;
@@ -215,12 +221,27 @@ const FloorEditor: React.FC = () => {
           selected: 1,
         }, // Cube texture parameters
         {
-          url: "./mazes/ckarzx_20x20_displacement.json",
-          designCredits:
-            "Maze designed by <a href='https://www.123rf.com/profile_ckarzx' target='_blank' rel='noopener'>ckarzx</a>.",
-          texturesCredits:
-            "Maze textures downloaded from <a href='https://www.texturecan.com/' target='_blank' rel='noopener'>TextureCan</a>.",
-          helpersColor: new THREE.Color(0xff0077),
+          mazes: [
+            {
+              name: maps[0],
+              url: "./mazes/" + maps[0],
+              designCredits:
+                "Maze designed by <a href='https://www.123rf.com/profile_ckarzx' target='_blank' rel='noopener'>ckarzx</a>.",
+              texturesCredits:
+                "Maze textures downloaded from <a href='https://www.texturecan.com/' target='_blank' rel='noopener'>TextureCan</a>.",
+              helpersColor: new THREE.Color(0xff0077),
+            },
+            {
+              name: maps[1],
+              url: "./mazes/" + maps[1],
+              designCredits:
+                "Maze designed by <a href='https://www.123rf.com/profile_ckarzx' target='_blank' rel='noopener'>ckarzx</a>.",
+              texturesCredits:
+                "Maze textures downloaded from <a href='https://www.texturecan.com/' target='_blank' rel='noopener'>TextureCan</a>.",
+              helpersColor: new THREE.Color(0xff0077),
+            },
+          ],
+          selected: 0,
         }, // Maze parameters
         { helpersColor: new THREE.Color(0x0055ff) }, // Player parameters
         {
@@ -375,6 +396,24 @@ const FloorEditor: React.FC = () => {
                 </td>
                 <td>
                   <input type="button" id="reset-all" value="Reset all views" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="maps-panel">
+          <table className="views">
+            <tbody>
+              <tr>
+                <td>
+                  Map:
+                  <select id="maze">
+                    {maps.map((map, i) => (
+                      <option key={map} value={i}>
+                        {map}
+                      </option>
+                    ))}
+                  </select>
                 </td>
               </tr>
             </tbody>
