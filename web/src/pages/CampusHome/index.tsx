@@ -12,7 +12,6 @@ const CampusHome: React.FC<CampusHomeProps> = ({ activeOption }) => {
       <h1 className="text-4xl font-bold">Welcome</h1>
       {activeOption === "buildings" && <ListBuildings />}
       {activeOption === "connectors" && <ListConnectors />}
-      {activeOption === "rooms" && <ListConnectors />}
     </div>
   );
 };
