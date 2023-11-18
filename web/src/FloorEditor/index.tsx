@@ -7,9 +7,9 @@ import Orientation from "./orientation";
 import ThumbRaiser from "./thumb_raiser";
 
 const maps = [
+  "building-d-floor-1.json",
   "building-c-floor-1.json",
   "building-d-floor-2.json",
-  "building-d-floor-1.json",
   "Loquitas_5x5.json",
   "Loquitas_10x10.json",
   "Loquitas_20x20.json",
@@ -224,26 +224,15 @@ const FloorEditor: React.FC = () => {
           selected: 1,
         }, // Cube texture parameters
         {
-          mazes: [
-            {
-              name: maps[0],
-              url: "./mazes/" + maps[0],
-              designCredits:
-                "Maze designed by <a href='https://www.123rf.com/profile_ckarzx' target='_blank' rel='noopener'>ckarzx</a>.",
-              texturesCredits:
-                "Maze textures downloaded from <a href='https://www.texturecan.com/' target='_blank' rel='noopener'>TextureCan</a>.",
-              helpersColor: new THREE.Color(0xff0077),
-            },
-            {
-              name: maps[1],
-              url: "./mazes/" + maps[1],
-              designCredits:
-                "Maze designed by <a href='https://www.123rf.com/profile_ckarzx' target='_blank' rel='noopener'>ckarzx</a>.",
-              texturesCredits:
-                "Maze textures downloaded from <a href='https://www.texturecan.com/' target='_blank' rel='noopener'>TextureCan</a>.",
-              helpersColor: new THREE.Color(0xff0077),
-            },
-          ],
+          mazes: maps.map((map) => ({
+            name: map,
+            url: "./mazes/" + map,
+            designCredits:
+              "Maze designed by <a href='https://www.123rf.com/profile_ckarzx' target='_blank' rel='noopener'>ckarzx</a>.",
+            texturesCredits:
+              "Maze textures downloaded from <a href='https://www.texturecan.com/' target='_blank' rel='noopener'>TextureCan</a>.",
+            helpersColor: new THREE.Color(0xff0077),
+          })),
           selected: 0,
         }, // Maze parameters
         { helpersColor: new THREE.Color(0x0055ff) }, // Player parameters

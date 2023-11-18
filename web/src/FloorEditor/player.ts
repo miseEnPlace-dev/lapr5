@@ -5,7 +5,7 @@ import * as THREE from "three";
 import { BoxHelper, CylinderHelper } from "./helpers.js";
 import { merge } from "./merge.js";
 
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
 /*
  * parameters = {
