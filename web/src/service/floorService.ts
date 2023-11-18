@@ -10,7 +10,7 @@ import { IFloorService } from "./IService/IFloorService";
 
 @injectable()
 export class FloorService implements IFloorService {
-  constructor(@inject(TYPES.api) private http: HttpService) { }
+  constructor(@inject(TYPES.api) private http: HttpService) {}
 
   async createFloor(buildingId: string, floor: Floor): Promise<Floor> {
     const response = await this.http.post<Floor>(
@@ -33,9 +33,10 @@ export class FloorService implements IFloorService {
 
   async getBuildingFloors(
     buildingCode: string,
-    filters: string[]
+    filters?: string[]
   ): Promise<Floor[]> {
-    const filter = filters.length ? "?filter=" + filters.join(",") : "";
+    const filter =
+      filters && filters.length ? "?filter=" + filters.join(",") : "";
     const response = await this.http.get<Floor[]>(
       `/buildings/${buildingCode}/floors${filter}`
     );

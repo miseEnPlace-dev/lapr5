@@ -17,5 +17,6 @@ export interface HttpService {
   ): Promise<Response<T>>;
   post<T>(url: string, data: unknown): Promise<Response<T>>;
   put<T>(url: string, data: unknown): Promise<Response<T>>;
+  patch<T>(url: string, data: unknown): Promise<Response<T>>;
   delete<T>(url: string): Promise<Response<T>>;
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
@@ -18,9 +18,15 @@ const ListConnectors: React.FC = () => {
     floor1InputRef,
     floor2InputRef,
     handleSave,
+    filters,
+    setFilters,
   } = useListConnectorsModule();
 
   const [isConnectorModalVisible, setIsConnectorModalVisible] = useState(false);
+  const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
+
+  const building1FilterInputRef = useRef<HTMLInputElement>(null);
+  const building2FilterInputRef = useRef<HTMLInputElement>(null);
 
   async function handleSaveClick() {
     try {
@@ -36,10 +42,46 @@ const ListConnectors: React.FC = () => {
     }
   }
 
+  async function handleFilterClick() {
+    try {
+      if (
+        !building1FilterInputRef.current?.value ||
+        !building2FilterInputRef.current?.value
+      )
+        setFilters(null);
+      else
+        setFilters([
+          building1FilterInputRef.current.value,
+          building2FilterInputRef.current.value,
+        ]);
+
+      setIsFilterModalVisible(false);
+    } catch (err: unknown) {
+      if (err instanceof AxiosError && err.response)
+        swal("Error", err.response.data.errors as string, "error");
+
+      swal("Error", err as string, "error");
+    }
+  }
+
   const ANIMATION_DELAY = 0.1;
 
   return (
     <div className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left text-lg">
+      <motion.button
+        initial={{ opacity: 0, y: -100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.2,
+          delay: connectors.length * ANIMATION_DELAY,
+        }}
+        onClick={() => setIsFilterModalVisible(true)}
+        className="flex w-full items-center justify-center gap-x-10 bg-slate-400 py-4"
+      >
+        <div className="flex flex-col text-lg font-bold text-slate-600">
+          Filter between buildings
+        </div>
+      </motion.button>
       {connectors.map((c, i) => (
         <motion.button
           initial={{ opacity: 0, x: -100 }}
@@ -90,13 +132,41 @@ const ListConnectors: React.FC = () => {
               />
               <Input
                 className="w-full"
-                placeholder="Floor 1 Code"
+                placeholder="Floor 2 Code"
                 inputRef={floor2InputRef}
               />
             </div>
           </div>
           <Button name="save" onClick={handleSaveClick} type="confirm">
             Save
+          </Button>
+        </div>
+      </Modal>
+
+      <Modal
+        setIsVisible={setIsFilterModalVisible}
+        isVisible={isFilterModalVisible}
+        title="Filter between buildings"
+      >
+        <div className="flex h-full flex-col justify-between gap-y-4">
+          <div className="flex w-full flex-col gap-y-4">
+            <div className="flex w-full flex-col items-center gap-x-8 gap-y-4 md:flex-row">
+              <Input
+                className="w-full"
+                placeholder="Building 1 Code"
+                inputRef={building1FilterInputRef}
+                defaultValue={filters ? filters[0] : undefined}
+              />
+              <Input
+                className="w-full"
+                placeholder="Building 2 Code"
+                inputRef={building2FilterInputRef}
+                defaultValue={filters ? filters[1] : undefined}
+              />
+            </div>
+          </div>
+          <Button name="listfilter" onClick={handleFilterClick} type="confirm">
+            List
           </Button>
         </div>
       </Modal>

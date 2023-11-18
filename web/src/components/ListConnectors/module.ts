@@ -8,15 +8,23 @@ import { IConnectorService } from "@/service/IService/IConnectorService";
 export const useListConnectorsModule = () => {
   const connectorSvc = useInjection<IConnectorService>(TYPES.connectorService);
   const [connectors, setConnectors] = useState<Connector[]>([]);
+  const [filters, setFilters] = useState<string[] | null>(null);
 
   const codeInputRef = useRef<HTMLInputElement>(null);
   const floor1InputRef = useRef<HTMLInputElement>(null);
   const floor2InputRef = useRef<HTMLInputElement>(null);
 
   const fetchConnectors = useCallback(async () => {
-    const b = await connectorSvc.getConnectors();
-    setConnectors(b);
-  }, [connectorSvc]);
+    try {
+      let b: Connector[];
+      if (!filters) b = await connectorSvc.getConnectors();
+      else b = await connectorSvc.getConnectors(filters);
+
+      setConnectors(b);
+    } catch (e) {
+      setConnectors([]);
+    }
+  }, [connectorSvc, filters]);
 
   useEffect(() => {
     fetchConnectors();
@@ -44,6 +52,8 @@ export const useListConnectorsModule = () => {
     codeInputRef,
     floor1InputRef,
     floor2InputRef,
+    filters,
+    setFilters,
     handleSave,
   };
 };
