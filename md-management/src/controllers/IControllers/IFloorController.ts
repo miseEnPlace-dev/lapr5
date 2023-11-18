@@ -5,4 +5,9 @@ export default interface IFloorController {
   updateFloor(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
   uploadMap(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
   getFloors(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
+  getFloorWithBuildingCode(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void>;
 }

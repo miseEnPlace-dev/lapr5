@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import AuthContext from "../context/AuthContext";
 import {
+  BridgeIcon,
   BuildingIcon,
   ElevatorIcon,
   HomeIcon,
@@ -41,13 +42,18 @@ export const useMenuOptions = () => {
         icon: RoomIcon,
         onClick: () => setActiveOption("rooms"),
       });
+      options.push({
+        label: "Connectors",
+        icon: BridgeIcon,
+        onClick: () => setActiveOption("connectors"),
+      });
     }
 
     if (role === "fleet") {
       options.push({
         label: "Device Models",
         icon: RobotIcon,
-        onClick: () => setActiveOption("deviceModels"),
+        onClick: () => setActiveOption("device-models"),
       });
     }
 

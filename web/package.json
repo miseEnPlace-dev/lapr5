@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "@fontsource/inter": "^5.0.15",
@@ -30,6 +31,7 @@
     "three": "^0.158.0"
   },
   "devDependencies": {
+    "@cypress/vite-dev-server": "^5.0.6",
     "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
     "@types/lodash": "^4.14.201",
     "@types/react": "^18.2.15",
@@ -37,6 +39,7 @@
     "@typescript-eslint/eslint-plugin": "^6.9.1",
     "@typescript-eslint/parser": "^6.10.0",
     "@vitejs/plugin-react": "^4.0.3",
+    "cypress": "^13.5.1",
     "eslint": "^8.45.0",
     "eslint-config-next": "14.0.1",
     "eslint-config-prettier": "^9.0.0",

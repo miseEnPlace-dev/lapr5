@@ -57,6 +57,11 @@ export default class ElevatorService implements IElevatorService {
 
       if (building.elevator) return Result.fail<IElevatorDTO>('Elevator already exists');
 
+      if (elevatorDTO.brand && !elevatorDTO.model)
+        return Result.fail<IElevatorDTO>('Elevator model not provided');
+      if (!elevatorDTO.brand && elevatorDTO.model)
+        return Result.fail<IElevatorDTO>('Elevator brand not provided');
+
       const floors: Floor[] = [];
 
       for (const floorId of elevatorDTO.floorCodes) {
@@ -137,6 +142,11 @@ export default class ElevatorService implements IElevatorService {
       if (!building) return Result.fail<IElevatorDTO>('Building not found');
 
       if (!building.elevator) return Result.fail<IElevatorDTO>('Elevator not found');
+      if (elevatorDTO.brand && !elevatorDTO.model)
+        return Result.fail<IElevatorDTO>('Elevator model not provided');
+      if (!elevatorDTO.brand && elevatorDTO.model)
+        return Result.fail<IElevatorDTO>('Elevator brand not provided');
+
       const floors: Floor[] = [];
 
       if (elevatorDTO.floorCodes) {
@@ -165,7 +175,7 @@ export default class ElevatorService implements IElevatorService {
         elevatorDTO.brand && elevatorDTO.model
           ? ElevatorBranding.create(elevatorDTO.brand, elevatorDTO.model)
           : building.elevator.brand && building.elevator.model
-          ? ElevatorBranding.create(building.elevator?.brand, building.elevator?.model)
+          ? ElevatorBranding.create(building.elevator.brand, building.elevator.model)
           : undefined;
       if (brandingOrError instanceof Result && brandingOrError.isFailure)
         return Result.fail<IElevatorDTO>(brandingOrError.errorValue());
@@ -173,7 +183,9 @@ export default class ElevatorService implements IElevatorService {
 
       const serialNumberOrError = elevatorDTO.serialNumber
         ? ElevatorSerialNumber.create(elevatorDTO.serialNumber)
-        : building.elevator.serialNumber;
+        : building.elevator.serialNumber
+        ? ElevatorSerialNumber.create(building.elevator.serialNumber.value)
+        : undefined;
       if (serialNumberOrError instanceof Result && serialNumberOrError.isFailure)
         return Result.fail<IElevatorDTO>(serialNumberOrError.errorValue());
       const serialNumber =
@@ -181,7 +193,9 @@ export default class ElevatorService implements IElevatorService {
 
       const descriptionOrError = elevatorDTO.description
         ? ElevatorDescription.create(elevatorDTO.description)
-        : building.elevator.description;
+        : building.elevator.description
+        ? ElevatorDescription.create(building.elevator.description.value)
+        : undefined;
       if (descriptionOrError instanceof Result && descriptionOrError.isFailure)
         return Result.fail<IElevatorDTO>(descriptionOrError.errorValue());
       const description =

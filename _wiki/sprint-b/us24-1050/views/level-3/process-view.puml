@@ -1,0 +1,26 @@
+@startuml _process-view
+autonumber
+actor CM as "Campus Manager"
+
+participant ROUTE as ":Router"
+participant CTRL as ":Module"
+participant SRV as ":Service"
+participant BUILD as ":building:Building"
+
+CM -> ROUTE : asks to create a building
+activate ROUTE
+
+ROUTE -> CTRL : createBuilding(elevatorDTO)
+activate CTRL
+CTRL -> SRV : createBuilding(buildingDTO)
+activate SRV
+SRV -> BUILD** : create()
+SRV -> REPO : save(building)
+SRV --> CTRL : sucess(buildingDTO)
+deactivate SRV
+CTRL --> ROUTE : sucess(buildingDTO)
+deactivate CTRL
+ROUTE --> CM : returns confirmation message
+deactivate ROUTE
+
+@enduml

@@ -1,4 +1,5 @@
 import { AiOutlineRobot as RobotIcon } from "react-icons/ai";
+import { FaBridgeWater as BridgeIcon } from "react-icons/fa6";
 import {
   FiArrowLeft as ArrowLeftIcon,
   FiHome as HomeIcon,
@@ -17,6 +18,7 @@ import { BsFillBuildingFill as BuildingIcon } from "react-icons/bs";
 
 export {
   ArrowLeftIcon,
+  BridgeIcon,
   BuildingIcon,
   ElevatorIcon,
   ErrorIcon,

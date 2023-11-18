@@ -138,14 +138,11 @@ export default class FloorService implements IFloorService {
 
       if (filters && filters.includes('elevator')) {
         const elevator = building.elevator;
-        if (!elevator)
-          return Result.fail<IFloorDTO[]>(
-            'Elevator not found on this building. There are no floors served with elevator.'
+        if (!elevator) result = [];
+        else
+          result = result.filter(floor =>
+            elevator.floors.map(f => f.code.value).includes(floor.code)
           );
-
-        result = result.filter(floor =>
-          elevator.floors.map(f => f.code.value).includes(floor.code)
-        );
       }
 
       if (filters && filters.includes('connectors')) {
@@ -208,6 +205,19 @@ export default class FloorService implements IFloorService {
       const floorMapDTO = FloorMapMapper.toDTO(floor.map) as IFloorMapDTO;
 
       return Result.ok<IFloorMapDTO>(floorMapDTO);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async getFloorWithBuildingCode(floorCode: string): Promise<Result<IFloorDTO>> {
+    try {
+      const code = FloorCode.create(floorCode).getValue();
+      const floor = await this.floorRepo.findByCode(code);
+      if (!floor) return Result.fail<IFloorDTO>('Floor not found');
+
+      const floorDTO = FloorMapper.toDTO(floor) as IFloorDTO;
+      return Result.ok<IFloorDTO>(floorDTO);
     } catch (e) {
       throw e;
     }

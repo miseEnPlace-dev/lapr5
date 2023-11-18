@@ -100,9 +100,7 @@ export default class BuildingController implements IBuildingController {
     try {
       const { code } = req.params;
 
-      const buildingOrError = (await this.buildingServiceInstance.getBuildingWithCode(
-        code
-      )) as Result<IBuildingDTO>;
+      const buildingOrError = await this.buildingServiceInstance.getBuildingWithCode(code);
 
       if (buildingOrError.isFailure) {
         return res.status(400).json({ message: buildingOrError.errorValue() });

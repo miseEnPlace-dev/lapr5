@@ -30,6 +30,7 @@ const SideBar: React.FC<SideBarProps> = ({ menuOptions, activeOption }) => {
           <button
             onClick={option.onClick}
             key={option.label}
+            name={option.label.toLowerCase()}
             className={`ml-12 flex h-16 items-center gap-x-4 text-white hover:text-secondary ${
               activeOption === option.label && "text-accent"
             }`}
@@ -48,9 +49,7 @@ const SideBar: React.FC<SideBarProps> = ({ menuOptions, activeOption }) => {
         />
         <div>
           <h1 className="text-xl font-bold text-white">{username}</h1>
-          <p className="text-sm text-white">
-            {sanitizedRole}
-          </p>
+          <p className="text-sm text-white">{sanitizedRole}</p>
         </div>
       </div>
     </nav>

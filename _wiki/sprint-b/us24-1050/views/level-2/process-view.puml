@@ -1,0 +1,30 @@
+@startuml process-view
+autonumber
+
+actor CM as "Campus Manager"
+participant UI as "Visualization" <<system (C4)>>
+participant MDD as "MDD" <<system (C4)>>
+
+activate CM
+
+CM -> UI : asks to create a building
+activate UI
+
+CM <-- UI : asks for building data (code,name,description,max dimensions)
+deactivate UI
+
+CM -> UI : inputs required data
+activate UI
+
+UI -> MDD : POST /buildings
+activate MDD
+MDD --> UI : 201 (Created)
+deactivate MDD
+
+CM <-- UI : returns confirmation message
+deactivate UI
+
+
+deactivate CM
+
+@enduml

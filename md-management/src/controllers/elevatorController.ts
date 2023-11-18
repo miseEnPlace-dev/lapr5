@@ -31,10 +31,10 @@ export default class ElevatorController implements IElevatorController {
   public async createElevator(req: Request, res: Response, next: NextFunction) {
     const buildingCode = req.params.building as string;
     try {
-      const elevatorOrError = (await this.elevatorServiceInstance.createElevator({
+      const elevatorOrError = await this.elevatorServiceInstance.createElevator({
         ...req.body,
         buildingCode
-      } as IElevatorDTO)) as Result<IElevatorDTO>;
+      } as IElevatorDTO);
 
       if (elevatorOrError.isFailure)
         return res.status(400).json({ message: elevatorOrError.errorValue() });
