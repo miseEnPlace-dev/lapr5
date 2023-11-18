@@ -150,13 +150,116 @@ Duvido que tenha noção da gama completa, pelo que recomendo que para prova de 
 
 ### Answer
 
-N/A
+"Deve-se usar o método mais adequado para a funcionalidade implementada."
 
 ## [Question 10](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25892)
 
 ### US1110
 
 > No desenho da ui para a edição de um piso eu gostaria de saber se o cliente preferia selecionar o piso que pretende editar a partir de uma tabela com todos os edifícios criados na base de dados ou se preferia introduzir o numero do piso e o código do edifício a que o piso pertence para encontrar o piso que pretende editar e assim modificar os seus atributos.
+
+### Answer
+
+"deve ser possivel seleccionar (ex., dropdown, table) qual o edificio e posteriormente qual o piso que se pretende editar"
+
+## [Question 11](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25265)
+
+### US 360 Adicionar um novo robot à frota
+
+> Os atributos do robot têm algum tipo de formatação/restrição?
+
+### Answer
+
+"código identificativo, obrigatório, alfanumerico, max 30 caracteres, único no sistema
+
+nickname, obrigatório, obrigatório, alfanumerico, max 30 caracteres, único no sistema
+
+tipo de robot, obrigatório
+
+número de série, obrigatório, alfanumerico, max 50 caracteres, único para um dado tipo de robot
+
+descrição, opcional, alfanumerico, max. 250 caracteres
+
+ao criar um robot ele fica no estado ativo
+
+Aparentemente alguns de vocês entenderam o facto de um código ser único no sistema como "o sistema gera esse código único". Se o cliente não disse que o código era gerado pelo sistema não o devem assumir como tal. Tal como tudo devem esclarecer com o cliente os requisitos e não assumir.
+
+Por exemplo, neste caso de uso, todos os códigos são introduzidos pelo utilizador. nenhum dos códigos é gerado pelo sistema. ou seja. o utilizador irá introduzir:
+
+código identificativo, ex., "A01"
+
+nickname, ex., "Brian",
+
+tipo de robot, selecionando da lista de tipos de robots existentes
+
+número de série
+
+opcionalmente, também introduzirá a descrição
+
+Tenham cuidado se não fizeram este erro em relação a outros conceitos do sistema. validem sempre os vossos pressupostos com o cliente utilizando este forúm."
+
+## [Question 12](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25940)
+
+### Interface Gráfica
+
+> Na interface gráfica, por exemplo para a criação de um elevador, qual o workflow que vai mais de encontro com o esperado pelo cliente?
+> Workflow A:
+
+1. Aceder ao modulo de gestão de campus
+
+2. Aceder a um menu relativo a edifícios
+
+3. Escolher o edifício em que quer adicionar o elevador
+
+4. Inserir os dados & submeter
+
+> Workflow B:
+
+1. Aceder ao modulo de gestão de campus
+
+2. Aceder a um menu relativo a edifícios
+
+   Este menu contém uma listagem dos edifícios existentes no sistema
+
+3. Selecionar um dos edifícios
+
+   Ira carregar uma página com informações relativas ao edifício escolhido (em que se inclui os elevadores)
+
+4. Selecionar uma opção de adicionar elevador ao edifício
+
+5. Inserir os dados & submeter
+
+> Isto, tendo em conta que um gestor de campus poder querer adicionar um edifício e, de seguida criar elevadores---ou até pisos---nesse edifício.
+> Qual seria então o workflow mais ajustado as atividades do gestor de campus?
+
+### Answer
+
+"o workflow B é preferivel"
+
+## [Question 13](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25915)
+
+### Visualização 3D - Tamanho de uma célula
+
+> Que elemento das plantas fornecidas devemos utilizar como referência para uma célula. O elevador, seria considerado uma célula, por exemplo?
+
+### Answer
+
+"em relação aos elevadores não há problema se considerarem a dimensão de uma célula. os corredores e as passagesn devem ter 2 células de largura"
+
+## [Question 14](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25929)
+
+### Dimensões dos edifícios
+
+> Em relação às plantas fornecidas quais as dimensões dos edifícios a serem consideradas?
+
+### Answer
+
+"As dimensões dos edificos são as seguintes:
+
+edificio A e B: 22 x 10 células
+edificio C e D: 12 x 20 células
+
+notem que o formato de mapas que vos foi fornecido no código exemplo "adiciona" uma linha e uma coluna extra à grelha do mapa"
 
 ---
 
