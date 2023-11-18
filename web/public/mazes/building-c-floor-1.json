@@ -27,10 +27,10 @@
     "primaryColor": "0xffffff",
     "maps": {
       "color": {
-        "url": "./textures/ground_0003_2k_372HqZ/ground_0003_color_2k.jpg"
+        "url": "./textures/ground_luxury-vinyl-plank-light-bl/luxury-vinyl-plank_light_albedo.png"
       },
       "ao": {
-        "url": "./textures/ground_0003_2k_372HqZ/ground_0003_ao_2k.jpg",
+        "url": "./textures/ground_luxury-vinyl-plank-light-bl/luxury-vinyl-plank_light_ao.png",
         "intensity": 1.0
       },
       "displacement": {
@@ -39,7 +39,7 @@
         "bias": 0.0
       },
       "normal": {
-        "url": "./textures/ground_0003_2k_372HqZ/ground_0003_normal_opengl_2k.png",
+        "url": "./textures/ground_luxury-vinyl-plank-light-bl/luxury-vinyl-plank_light_normal-ogl.png",
         "type": 0,
         "scale": { "x": 2.0, "y": 2.0 }
       },
@@ -48,7 +48,7 @@
         "scale": 1.0
       },
       "roughness": {
-        "url": "./textures/ground_0003_2k_372HqZ/ground_0003_roughness_2k.jpg",
+        "url": "./textures/ground_luxury-vinyl-plank-light-bl/luxury-vinyl-plank_light_roughness.png",
         "rough": 1.0
       }
     },
@@ -64,11 +64,11 @@
     "primaryColor": "0xffffff",
     "maps": {
       "color": {
-        "url": "./textures/concrete_0007_2k_xtGY5J/concrete_0007_color_2k.jpg"
+        "url": "./textures/wall_fiber-textured-wall-bl/fiber-textured-wall1_albedo.png"
       },
       "ao": {
-        "url": "./textures/concrete_0007_2k_xtGY5J/concrete_0007_ao_2k.jpg",
-        "intensity": 1.0
+        "url": "./textures/wall_fiber-textured-wall-bl/fiber-textured-wall1_ao.png",
+        "intensity": 2.0
       },
       "displacement": {
         "url": "",
@@ -76,16 +76,16 @@
         "bias": 0.0
       },
       "normal": {
-        "url": "./textures/concrete_0007_2k_xtGY5J/concrete_0007_normal_opengl_2k.png",
+        "url": "./textures/wall_fiber-textured-wall-bl/fiber-textured-wall1_normal-ogl.png",
         "type": 0,
-        "scale": { "x": 2.0, "y": 2.0 }
+        "scale": { "x": 1.0, "y": 1.0 }
       },
       "bump": {
         "url": "",
         "scale": 1.0
       },
       "roughness": {
-        "url": "./textures/concrete_0007_2k_xtGY5J/concrete_0007_roughness_2k.jpg",
+        "url": "./textures/wall_fiber-textured-wall-bl/fiber-textured-wall1_roughness.png",
         "rough": 1.0
       }
     },
@@ -94,7 +94,7 @@
     "repeat": { "u": 2.0, "v": 1.0 },
     "magFilter": 1,
     "minFilter": 5,
-    "secondaryColor": "0x6b554b"
+    "secondaryColor": "0xffffff"
   },
   "player": {
     "initialPosition": [7.0, 6.0],
