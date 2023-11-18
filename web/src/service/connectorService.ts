@@ -12,8 +12,11 @@ import { IConnectorService } from "./IService/IConnectorService";
 export class ConnectorService implements IConnectorService {
   constructor(@inject(TYPES.api) private http: HttpService) {}
 
-  async getConnectors(): Promise<Connector[]> {
-    const response = await this.http.get<Connector[]>("/connectors");
+  async getConnectors(buildingCodes?: string[]): Promise<Connector[]> {
+    const filter = buildingCodes
+      ? `?buildingCodes[]=${buildingCodes[0]}&buildingCodes[]=${buildingCodes[1]}`
+      : "";
+    const response = await this.http.get<Connector[]>("/connectors" + filter);
     const data = response.data;
     return data;
   }
@@ -35,5 +38,16 @@ export class ConnectorService implements IConnectorService {
 
     const data = response.data;
     return data;
+  }
+
+  async updateConnector(connector: Connector): Promise<Connector> {
+    const res = await this.http
+      .patch<Connector>(`/connectors/${connector.code}`, connector)
+      .catch((e) => {
+        throw e;
+      });
+
+    if (res.status !== 200) throw new Error("Error updating connector.");
+    return res.data;
   }
 }

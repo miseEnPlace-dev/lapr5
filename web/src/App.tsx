@@ -8,6 +8,7 @@ import FloorEditor from "./FloorEditor";
 import { container } from "./inversify";
 import FloorPage from "./pages/BuildingFloorsPage";
 import BuildingPage from "./pages/BuildingPage";
+import ConnectorPage from "./pages/ConnectorPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
@@ -41,6 +42,14 @@ function App() {
               element={
                 <RequireAuth>
                   <FloorPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/connectors/:code"
+              element={
+                <RequireAuth>
+                  <ConnectorPage />
                 </RequireAuth>
               }
             />
