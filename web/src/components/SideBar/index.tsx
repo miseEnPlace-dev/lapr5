@@ -40,7 +40,7 @@ const SideBar: React.FC<SideBarProps> = ({ menuOptions, activeOption }) => {
         ))}
       </ul>
 
-      <div className="flex items-center justify-center gap-x-4">
+      <div className="flex items-center justify-start ml-12 gap-x-4">
         <img
           src="/assets/avatar.jpg"
           alt="Avatar"
