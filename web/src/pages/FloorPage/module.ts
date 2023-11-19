@@ -5,8 +5,6 @@ import { useParams } from "react-router-dom";
 import { TYPES } from "../../inversify/types";
 import { Room } from "@/model/Room";
 
-import { Building } from "../../model/Building";
-import { Elevator } from "../../model/Elevator";
 import { Floor } from "../../model/Floor";
 import { IBuildingService } from "../../service/IService/IBuildingService";
 import { IElevatorService } from "../../service/IService/IElevatorService";

@@ -2,11 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
-import Selector from "@/components/Selector";
-
 import Button from "../../components/Button";
 import Input from "../../components/Input";
-import Modal from "../../components/Modal";
 import TextArea from "../../components/TextArea";
 import { ArrowLeftIcon } from "../../styles/Icons";
 import { useBuildingPageModule } from "./module";

@@ -13,6 +13,7 @@ import FloorPage from "./pages/FloorPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
+import RoomPage from "./pages/RoomPage";
 import { RequireAuth } from "./utils/RequireAuth";
 
 function App() {
@@ -51,6 +52,14 @@ function App() {
               element={
                 <RequireAuth>
                   <FloorPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/buildings/:buildingCode/floors/:floorCode/rooms"
+              element={
+                <RequireAuth>
+                  <RoomPage />
                 </RequireAuth>
               }
             />
