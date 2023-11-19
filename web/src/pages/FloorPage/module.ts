@@ -23,6 +23,7 @@ export const useBuildingPageModule = () => {
   const lengthInputRef = useRef<HTMLInputElement>(null);
   const widthInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
+  const mapInputRef = useRef<HTMLInputElement>(null);
 
   const fetchFloor = useCallback(
     async (buildingCode: string, floorCode: string) => {
@@ -62,11 +63,32 @@ export const useBuildingPageModule = () => {
     // TODO
   }
 
+  async function handleUploadMap() {
+    if (!mapInputRef.current?.files?.[0] || !buildingCode || !floorCode) return;
+
+    const reader = new FileReader();
+    reader.readAsText(mapInputRef.current?.files?.[0] as Blob);
+
+    const result = await new Promise((resolve) => {
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+    });
+
+    const data = await floorService.uploadFloor(
+      buildingCode,
+      floorCode,
+      result as string
+    );
+  }
+
   return {
     floor,
     descriptionInputRef,
     lengthInputRef,
     widthInputRef,
+    mapInputRef,
     handleSaveFloor,
+    handleUploadMap,
   };
 };
