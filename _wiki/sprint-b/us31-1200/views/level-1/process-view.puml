@@ -6,7 +6,7 @@ participant SYS as "RobDroneGo System" <<system (C4)>>
 
 activate CM
 
-CM -> SYS : asks to list floors with connectors to other buildings
+CM -> SYS : wants to list floors with connectors to other buildings
 activate SYS
 
 CM <-- SYS : returns the list
