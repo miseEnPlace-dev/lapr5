@@ -561,6 +561,10 @@ const FloorEditor: React.FC = () => {
                 <td>Fog</td>
               </tr>
               <tr>
+                <td></td>
+                <td>Change Perspective</td>
+              </tr>
+              <tr>
                 <th colSpan={2} style={{ textAlign: "left" }}>
                   Move character
                 </th>
