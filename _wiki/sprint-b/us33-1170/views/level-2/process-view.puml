@@ -14,13 +14,13 @@ activate CM
 CM -> UI : wants to create a connector
 activate UI
 
-CM <-- UI : asks for the connector code, floor 1 & floor 2 codes
+CM <-- UI : asks for the connector code, floors 1 & 2 codes
 deactivate UI
 
 CM -> UI : inserts the data
 activate UI
 
-UI -> MD : POST /connectors
+UI -> MD : POST /connectors {data}
 activate MD
 
 alt a new connector is created
