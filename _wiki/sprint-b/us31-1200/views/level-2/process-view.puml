@@ -1,0 +1,40 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor CM as "Campus Manager"
+
+box "«system (C4)»\nRobDroneGo" <<center>>
+  participant UI as "Visualization" <<container (C4)>>
+  participant MD as "MD Management" <<container (C4)>>
+end box
+
+activate CM
+
+CM -> UI : asks to list floors with connectors to other buildings
+activate UI
+
+UI -> MD : GET /buildings/{code}/floors?filter=connectors
+activate MD
+
+  UI <-- MD : 200 OK
+  deactivate MD
+
+alt there are floors in the list
+  CM <-- UI : shows the floors list
+  ' deactivate UI
+
+else the list is empty
+
+  ' activate MD
+  ' UI <-- MD : 200 OK
+  ' deactivate MD
+  ' activate UI
+
+  CM <-- UI : shows error message "No floors found."
+  deactivate UI
+end
+
+deactivate CM
+
+@enduml

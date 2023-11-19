@@ -2,7 +2,7 @@
 
 interface "MD API" as API
 
-component "MD Management" as MDM <<component>> <<system (C4)>> {
+component "MD Management" as MDM <<component>> <<container (C4)>> {
   portin " " as P1
   portin "Persistence API" as P2
 
@@ -74,7 +74,7 @@ MODEL -up- MODEL_API
 
 ' ---------------------
 
-component "MD Management" as MDM2 <<component>> <<system (C4)>> {
+component "MD Management" as MDM2 <<component>> <<container (C4)>> {
   folder Infrastructure as I2 {
     folder Persistence as PERS2
     folder Routes as ROUTE2

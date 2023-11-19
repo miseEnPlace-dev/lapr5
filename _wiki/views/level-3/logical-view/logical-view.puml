@@ -4,7 +4,7 @@ top to bottom direction
 
 interface "MD API" as API
 
-component "MD Management" as MDM <<component>> <<system (C4)>> {
+component "MD Management" as MDM <<component>> <<container (C4)>> {
   portin " " as P1
   portin "Persistence API" as P2
 

@@ -50,7 +50,7 @@ Note that, as mentioned earlier, this is just one possible implementation and th
 
 ### Implementation View
 
-![Level 3 Implementation View](level-3/implementation-view/assets/implemantation-view.svg)
+![Level 3 Implementation View](level-3/implementation-view/assets/implementation-view.svg)
 
 ## Use Case Diagram
 
