@@ -15,7 +15,7 @@ end box
 
 activate CM
 
-CM -> C : wants to list floors with connectors to other buildings
+CM -> C : wants to create a new connector
 activate C
 
 CM <-- C : asks for the connector code, floors 1 & 2 codes
