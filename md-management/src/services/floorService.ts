@@ -222,4 +222,17 @@ export default class FloorService implements IFloorService {
       throw e;
     }
   }
+
+  public async getFloorWithCode(floorCode: string): Promise<Result<IFloorDTO>> {
+    try {
+      const code = FloorCode.create(floorCode).getValue();
+      const floor = await this.floorRepo.findByCode(code);
+      if (!floor) return Result.fail<IFloorDTO>('Floor not found');
+
+      const floorDTO = FloorMapper.toDTO(floor) as IFloorDTO;
+      return Result.ok<IFloorDTO>(floorDTO);
+    } catch (e) {
+      throw e;
+    }
+  }
 }
