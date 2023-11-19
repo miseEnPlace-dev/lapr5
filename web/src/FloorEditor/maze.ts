@@ -8,6 +8,7 @@ import Wall from "./wall.ts";
 
 import { OBB } from "three/addons/math/OBB.js";
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
+import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
 /*
  * parameters = {
@@ -161,7 +162,7 @@ export default class Maze extends THREE.Group {
            *       2       |    Yes     |     No
            *       3       |    Yes     |    Yes
            */
-          if (this.map[i][j] == 2 || this.map[i][j] == 3) {
+          if (this.map[i][j] === 2 || this.map[i][j] === 3) {
             this.aabb[i][j][0] = new THREE.Box3();
             for (let k = 0; k < 2; k++) {
               geometry = wall.geometries[k].clone();
@@ -172,6 +173,7 @@ export default class Maze extends THREE.Group {
                   i - this.halfSize.depth
                 )
               );
+
               geometry.computeBoundingBox();
               geometry.boundingBox.applyMatrix4(
                 new THREE.Matrix4().makeScale(
@@ -187,7 +189,7 @@ export default class Maze extends THREE.Group {
               new THREE.Box3Helper(this.aabb[i][j][0], this.helpersColor)
             );
           }
-          if (this.map[i][j] == 1 || this.map[i][j] == 3) {
+          if (this.map[i][j] === 1 || this.map[i][j] === 3) {
             this.aabb[i][j][1] = new THREE.Box3();
             for (let k = 0; k < 2; k++) {
               geometry = wall.geometries[k].clone();
@@ -201,6 +203,7 @@ export default class Maze extends THREE.Group {
                   i - this.halfSize.depth + 0.5
                 )
               );
+
               geometry.computeBoundingBox();
               geometry.boundingBox.applyMatrix4(
                 new THREE.Matrix4().makeScale(
@@ -214,6 +217,88 @@ export default class Maze extends THREE.Group {
             }
             this.helper.add(
               new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor)
+            );
+          }
+          if (this.map[i][j] === 4) {
+            // load a glTF resource
+            const loader = new GLTFLoader();
+            const half = this.halfSize;
+
+            loader.load(
+              // resource URL
+              "./models/gltf/elevator.glb",
+              // called when the resource is loaded
+              (gltf) => {
+                gltf.scene.scale.set(0.005, 0.005, 0.005);
+                gltf.scene.position.set(j - half.width, 1, i - half.depth);
+                gltf.scene.rotation.y = Math.PI / 2;
+                this.add(gltf.scene);
+              },
+              // called while loading is progressing
+              function (xhr) {
+                console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+              },
+              // called when loading has errors
+              function (error) {
+                console.log("An error happened", error);
+              }
+            );
+          }
+
+          if (this.map[i][j] === 5) {
+            this.aabb[i][j][0] = new THREE.Box3();
+            geometry = wall.geometries[0].clone();
+            geometry.applyMatrix4(
+              new THREE.Matrix4().makeRotationY(Math.PI / 2.0)
+            );
+            geometry.applyMatrix4(
+              new THREE.Matrix4().makeTranslation(
+                j - this.halfSize.width,
+                0.25,
+                i - this.halfSize.depth
+              )
+            );
+
+            geometry.computeBoundingBox();
+            geometry.boundingBox.applyMatrix4(
+              new THREE.Matrix4().makeScale(
+                this.scale.x,
+                this.scale.y,
+                this.scale.z
+              )
+            );
+            geometries[0].push(geometry);
+            this.aabb[i][j][0].union(geometry.boundingBox);
+            this.helper.add(
+              new THREE.Box3Helper(this.aabb[i][j][0], this.helpersColor)
+            );
+
+            // load a glTF resource
+            const loader = new GLTFLoader();
+            const half = this.halfSize;
+
+            loader.load(
+              // resource URL
+              "./models/gltf/mid-poly_wooden_door_with_animations.glb",
+              // called when the resource is loaded
+              (gltf) => {
+                gltf.scene.scale.set(0.5, 0.25, 0.5);
+                gltf.scene.position.set(
+                  j - half.width,
+                  0,
+                  i - half.depth + 0.7
+                );
+                gltf.scene.rotation.y = Math.PI / 2;
+                this.add(gltf.scene);
+              },
+              // called while loading is progressing
+              function (xhr) {
+                console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+              },
+              // called when loading has errors
+              function (error) {
+                console.log("An error happened", error);
+              }
             );
           }
         }

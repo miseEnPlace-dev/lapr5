@@ -7,8 +7,8 @@ import Orientation from "./orientation";
 import ThumbRaiser from "./thumb_raiser";
 
 const maps = [
-  "building-d-floor-1.json",
   "building-c-floor-1.json",
+  "building-d-floor-1.json",
   "building-d-floor-2.json",
   "Loquitas_5x5.json",
   "Loquitas_10x10.json",
