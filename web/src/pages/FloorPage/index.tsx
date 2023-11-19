@@ -1,12 +1,8 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
-import Selector from "@/components/Selector";
-
 import Button from "../../components/Button";
 import Input from "../../components/Input";
-import Modal from "../../components/Modal";
 import TextArea from "../../components/TextArea";
 import { ArrowLeftIcon } from "../../styles/Icons";
 import { useBuildingPageModule } from "./module";
@@ -17,17 +13,28 @@ const FloorPage: React.FC = () => {
     descriptionInputRef,
     lengthInputRef,
     widthInputRef,
+    mapInputRef,
     handleSaveFloor,
+    handleUploadMap,
   } = useBuildingPageModule();
 
   const navigate = useNavigate();
-  const [isElevatorModalVisible, setIsElevatorModalVisible] = useState(false);
 
   async function handleSaveFloorClick() {
     try {
       await handleSaveFloor();
 
       swal("Success", "Floor saved successfully", "success");
+    } catch (err: unknown) {
+      swal("Error", err as string, "error");
+    }
+  }
+
+  async function handleUploadMapClick() {
+    try {
+      await handleUploadMap();
+
+      swal("Success", "Map uploaded successfully", "success");
     } catch (err: unknown) {
       swal("Error", err as string, "error");
     }
@@ -78,6 +85,24 @@ const FloorPage: React.FC = () => {
         <div className="flex h-full w-full flex-col justify-between gap-y-12 rounded-xl bg-slate-200 px-4 py-8 md:w-1/4">
           <div className="flex flex-col gap-y-2">
             <h2 className="mb-4 text-center text-3xl font-bold">Actions</h2>
+            <Button
+              name="uploadMap"
+              className="w-full"
+              type="default"
+              onClick={() => {
+                mapInputRef.current?.click();
+              }}
+            >
+              Upload Map
+            </Button>
+            <input
+              id="inputCv"
+              onChange={handleUploadMapClick}
+              type="file"
+              accept=".json"
+              ref={mapInputRef}
+              className="hidden"
+            />
             <Button
               name="rooms"
               className="w-full"

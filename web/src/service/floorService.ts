@@ -3,6 +3,7 @@ import "reflect-metadata";
 import { inject, injectable } from "inversify";
 
 import { TYPES } from "../inversify/types";
+import { FloorMap } from "@/model/FloorMap";
 
 import { Floor } from "../model/Floor";
 import { HttpService } from "./IService/HttpService";
@@ -40,6 +41,24 @@ export class FloorService implements IFloorService {
     const response = await this.http.get<Floor[]>(
       `/buildings/${buildingCode}/floors${filter}`
     );
+
+    const data = response.data;
+    return data;
+  }
+
+  async uploadFloor(
+    buildingId: string,
+    floorCode: string,
+    map: string
+  ): Promise<any> {
+    const response = await this.http.patch<FloorMap>(
+      `/buildings/${buildingId}/floors/${floorCode}`,
+      JSON.parse(map)
+    );
+
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
 
     const data = response.data;
     return data;
