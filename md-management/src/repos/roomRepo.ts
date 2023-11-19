@@ -1,4 +1,5 @@
 import { IRoomPersistence } from '@/dataschema/IRoomPersistence';
+import { Floor } from '@/domain/floor/floor';
 import { FloorCode } from '@/domain/floor/floorCode';
 import { Room } from '@/domain/room/room';
 import { RoomName } from '@/domain/room/roomName';
@@ -37,6 +38,19 @@ export default class RoomRepo implements IRoomRepo {
     }
   }
 
+  public async findAll(): Promise<Room[]> {
+    const roomRecords = await roomSchema.find();
+
+    const rooms: Room[] = [];
+
+    for (const roomRecord of roomRecords) {
+      const room = await RoomMapper.toDomain(roomRecord);
+      if (room) rooms.push(room);
+    }
+
+    return rooms;
+  }
+
   public async exists(room: Room): Promise<boolean> {
     const query = { domainId: room.id } as FilterQuery<IRoomPersistence & Document>;
 
@@ -46,9 +60,26 @@ export default class RoomRepo implements IRoomRepo {
   }
 
   public async findAllRoomsInFloorByCode(floorCode: FloorCode): Promise<Room[] | null> {
-    const query = { floorCode } as FilterQuery<IRoomPersistence & Document>;
+    const query: FilterQuery<IRoomPersistence & Document> = { floorCode: floorCode.value };
 
-    const roomRecords = await roomSchema.find(query as FilterQuery<IRoomPersistence & Document>);
+    console.log(query);
+
+    const roomRecords = await roomSchema.find(query);
+
+    const rooms: Room[] = [];
+
+    for (const roomRecord of roomRecords) {
+      const room = await RoomMapper.toDomain(roomRecord);
+      if (room) rooms.push(room);
+    }
+
+    return rooms;
+  }
+
+  public async findAllRoomsByFloor(floor: Floor): Promise<Room[] | null> {
+    const query: FilterQuery<IRoomPersistence & Document> = { floorCode: floor.code.value };
+
+    const roomRecords = await roomSchema.find(query);
 
     const rooms: Room[] = [];
 

@@ -2,7 +2,7 @@ import { AggregateRoot } from '../../core/domain/AggregateRoot';
 import { UniqueEntityID } from '../../core/domain/UniqueEntityID';
 import { Guard } from '../../core/logic/Guard';
 import { Result } from '../../core/logic/Result';
-import { Floor } from '../floor/floor';
+import { FloorCode } from '../floor/floorCode';
 import { RoomCategory } from './roomCategory';
 import { RoomDescription } from './roomDescription';
 import { RoomDimensions } from './roomDimensions';
@@ -12,7 +12,7 @@ interface RoomProps {
   name: RoomName;
   description?: RoomDescription;
   dimensions: RoomDimensions;
-  floor: Floor;
+  floorCode: FloorCode;
   category: RoomCategory;
 }
 
@@ -33,8 +33,8 @@ export class Room extends AggregateRoot<RoomProps> {
     return this.props.dimensions;
   }
 
-  get floor(): Floor {
-    return this.props.floor;
+  get floorCode(): FloorCode {
+    return this.props.floorCode;
   }
 
   get category(): RoomCategory {
@@ -49,7 +49,7 @@ export class Room extends AggregateRoot<RoomProps> {
     const guardedProps = [
       { argument: props.name, argumentName: 'name' },
       { argument: props.dimensions, argumentName: 'dimensions' },
-      { argument: props.floor, argumentName: 'floor' },
+      { argument: props.floorCode, argumentName: 'floorCode' },
       { argument: props.category, argumentName: 'category' }
     ];
 
