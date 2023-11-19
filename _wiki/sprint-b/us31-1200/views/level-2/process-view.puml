@@ -11,7 +11,7 @@ end box
 
 activate CM
 
-CM -> UI : asks to list floors with connectors to other buildings
+CM -> UI : wants to list floors with connectors to other buildings
 activate UI
 
 UI -> MD : GET /buildings/{code}/floors?filter=connectors
