@@ -662,6 +662,30 @@ export default class ThumbRaiser {
   updateMaze(index: number) {
     this.scene.remove(this.maze);
     this.maze = new Maze(this.mazeParameters.mazes[index]);
+    // The cache must be enabled; additional information available at https://threejs.org/docs/api/en/loaders/FileLoader.html
+    THREE.Cache.enabled = true;
+
+    // Create a resource file loader
+    const loader = new THREE.FileLoader();
+
+    // Set the response type: the resource file will be parsed with JSON.parse()
+    loader.setResponseType("json");
+
+    // Load a maze description resource file
+    loader.load(
+      //Resource URL
+      this.mazeParameters.mazes[index].url,
+
+      // onLoad callback
+      (description) => {
+        // Set the player's position and direction
+        const cellPos = this.maze.cellToCartesian(
+          description.player.initialPosition
+        );
+        this.player.position.set(cellPos.x, cellPos.y, cellPos.z);
+        this.player.direction = description.player.initialDirection;
+      }
+    );
     this.scene.add(this.maze);
   }
 

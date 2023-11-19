@@ -229,8 +229,8 @@ export default class Maze extends THREE.Group {
               "./models/gltf/elevator.glb",
               // called when the resource is loaded
               (gltf) => {
-                gltf.scene.scale.set(0.005, 0.005, 0.005);
-                gltf.scene.position.set(j - half.width, 1, i - half.depth);
+                gltf.scene.scale.set(0.005, 0.0025, 0.005);
+                gltf.scene.position.set(j - half.width, 0.5, i - half.depth);
                 gltf.scene.rotation.y = Math.PI / 2;
                 this.add(gltf.scene);
               },
