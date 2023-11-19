@@ -100,6 +100,8 @@ peso([A,B|T],W):-ligacel(A,B,W1),peso([B|T],W2),W is W1+W2 ,!.
 
 dfs(Orig,Dest,Cam,W):-
 	dfs2(Orig,Dest,[Orig],Cam), peso(Cam,W).
+dfs(Orig,Dest,Cam):-
+	dfs2(Orig,Dest,[Orig],Cam).
 
 dfs2(Dest,Dest,LA,Cam):-
 	reverse(LA,Cam).
@@ -113,6 +115,7 @@ all_dfs(Orig,Dest,LCam):-findall(Cam,dfs(Orig,Dest,Cam,_),LCam).
 
 
 better_dfs(Orig,Dest,Cam):-all_dfs(Orig,Dest,LCam), shortlist(LCam,Cam,_).
+better_dfs(Orig,Dest,Cam,W):-all_dfs(Orig,Dest,LCam), shortlist(LCam,Cam,_), peso(Cam,W).
 
 
 shortlist([L],L,N):-!,length(L,N).
@@ -121,10 +124,12 @@ shortlist([L|LL],Lm,Nm):-shortlist(LL,Lm1,Nm1),
 			((NL<Nm1,!,Lm=L,Nm is NL);(Lm=Lm1,Nm is Nm1)).
 
 bfs(Orig,Dest,Cam,W):-bfs2(Dest,[[Orig]],Cam),peso(Cam,W).
+bfs(Orig,Dest,Cam):-bfs2(Dest,[[Orig]],Cam).
 
 all_bfs(Orig,Dest,LCam):-findall(Cam,bfs(Orig,Dest,Cam,_),LCam).
 
 better_bfs(Orig,Dest,Cam):-all_bfs(Orig,Dest,LCam), shortlist(LCam,Cam,_).
+better_bfs(Orig,Dest,Cam,W):-all_bfs(Orig,Dest,LCam), shortlist(LCam,Cam,_), peso(Cam,W).
 
 bfs2(Dest,[[Dest|T]|_],Cam):-
 	reverse([Dest|T],Cam).
@@ -136,3 +141,28 @@ bfs2(Dest,[LA|Outros],Cam):-
 		Novos),
 	append(Outros,Novos,Todos),
 	bfs2(Dest,Todos,Cam).
+
+
+aStar(Orig,Dest,Cam,Custo):-
+    aStar2(Dest,[(_,0,[Orig])],Cam,Custo), !.
+
+aStar2(Dest,[(_,Custo,[Dest|T])|_],Cam,Custo):-
+	reverse([Dest|T],Cam).
+
+aStar2(Dest,[(_,Ca,LA)|Outros],Cam,Custo):-
+	LA=[Act|_],
+	findall((CEX,CaX,[X|LA]),
+		(Dest\==Act,ligacel(Act,X,CustoX),\+ member(X,LA),
+		CaX is CustoX + Ca, estimativa(X,Dest,EstX),
+		CEX is CaX +EstX),Novos),
+	append(Outros,Novos,Todos),
+	sort(Todos,TodosOrd),
+	aStar2(Dest,TodosOrd,Cam,Custo).
+
+% substituir a chamada edge(Act,X,CustoX)
+% por (edge(Act,X,CustoX);edge(X,Act,CustoX))
+% se quiser ligacoes bidirecionais
+
+
+estimativa(cel(X1,Y1),cel(X2,Y2),Estimativa):-
+	Estimativa is sqrt((X1-X2)^2+(Y1-Y2)^2).
