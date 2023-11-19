@@ -5,7 +5,7 @@ skinparam DefaultTextAlignment<<center>> center
 actor CM as "Campus Manager"
 
 box "«container (C4)»\nVisualization" <<center>>
-  participant C as "FloorComponent" <<component>>
+  participant C as "ListFloorsComponent" <<component>>
   participant SVC as "FloorService" <<component>>
 end box
 
