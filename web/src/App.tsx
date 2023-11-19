@@ -73,7 +73,7 @@ function App() {
             />
             <Route path="/login" element={<LoginPage />} />
             <Route
-              path="/floor"
+              path="/floor-editor"
               element={
                 <RequireAuth>
                   <FloorEditor />
