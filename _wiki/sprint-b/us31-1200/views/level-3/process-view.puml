@@ -1,0 +1,42 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor CM as "Campus Manager"
+
+box "«container (C4)»\nVisualization" <<center>>
+  participant C as "FloorComponent" <<component>>
+  participant SVC as "FloorService" <<component>>
+end box
+
+box "«container (C4)»\n MD Management " <<center>>
+  participant ROUTE as "FloorRoute" <<component>>
+end box
+
+activate CM
+
+CM -> C : wants to list floors with connectors to other buildings
+activate C
+
+C -> SVC : getFloors(buildingCode,filter)
+activate SVC
+
+SVC -> ROUTE : GET /building/{code}/floors?filter=connectors
+activate ROUTE
+
+SVC <-- ROUTE : 200 OK
+deactivate ROUTE
+
+C <-- SVC : list of floors
+deactivate SVC
+
+alt there are floors with the specified filter
+  CM <-- C : shows the floors list
+else the list is empty
+  CM <-- C : shows error message "No floors found."
+  deactivate C
+end
+
+deactivate CM
+
+@enduml

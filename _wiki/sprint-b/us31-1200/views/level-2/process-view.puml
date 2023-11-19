@@ -17,7 +17,7 @@ activate UI
 UI -> MD : GET /buildings/{code}/floors?filter=connectors
 activate MD
 
-  MD --> UI : 200 OK
+  UI <-- MD : 200 OK
   deactivate MD
 
 alt there are floors in the list
@@ -27,7 +27,7 @@ alt there are floors in the list
 else the list is empty
 
   ' activate MD
-  ' MD --> UI : 200 OK
+  ' UI <-- MD : 200 OK
   ' deactivate MD
   ' activate UI
 
