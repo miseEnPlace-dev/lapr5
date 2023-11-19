@@ -226,10 +226,14 @@ export default class Maze extends THREE.Group {
 
             loader.load(
               // resource URL
-              "./models/gltf/elevator.glb",
+              description.elevator.url,
               // called when the resource is loaded
               (gltf) => {
-                gltf.scene.scale.set(0.005, 0.0025, 0.005);
+                gltf.scene.scale.set(
+                  description.elevator.scale.x,
+                  description.elevator.scale.y,
+                  description.elevator.scale.z
+                );
                 gltf.scene.position.set(j - half.width, 0.5, i - half.depth);
                 gltf.scene.rotation.y = Math.PI / 2;
                 this.add(gltf.scene);
@@ -247,28 +251,30 @@ export default class Maze extends THREE.Group {
 
           if (this.map[i][j] === 5) {
             this.aabb[i][j][0] = new THREE.Box3();
-            geometry = wall.geometries[0].clone();
-            geometry.applyMatrix4(
-              new THREE.Matrix4().makeRotationY(Math.PI / 2.0)
-            );
-            geometry.applyMatrix4(
-              new THREE.Matrix4().makeTranslation(
-                j - this.halfSize.width,
-                0.25,
-                i - this.halfSize.depth
-              )
-            );
+            for (let k = 0; k < 2; k++) {
+              geometry = wall.geometries[k].clone();
+              geometry.applyMatrix4(
+                new THREE.Matrix4().makeRotationY(Math.PI / 2.0)
+              );
+              geometry.applyMatrix4(
+                new THREE.Matrix4().makeTranslation(
+                  j - this.halfSize.width,
+                  0.25,
+                  i - this.halfSize.depth
+                )
+              );
 
-            geometry.computeBoundingBox();
-            geometry.boundingBox.applyMatrix4(
-              new THREE.Matrix4().makeScale(
-                this.scale.x,
-                this.scale.y,
-                this.scale.z
-              )
-            );
-            geometries[0].push(geometry);
-            this.aabb[i][j][0].union(geometry.boundingBox);
+              geometry.computeBoundingBox();
+              geometry.boundingBox.applyMatrix4(
+                new THREE.Matrix4().makeScale(
+                  this.scale.x,
+                  this.scale.y,
+                  this.scale.z
+                )
+              );
+              geometries[k].push(geometry);
+              this.aabb[i][j][0].union(geometry.boundingBox);
+            }
             this.helper.add(
               new THREE.Box3Helper(this.aabb[i][j][0], this.helpersColor)
             );
@@ -279,10 +285,14 @@ export default class Maze extends THREE.Group {
 
             loader.load(
               // resource URL
-              "./models/gltf/mid-poly_wooden_door_with_animations.glb",
+              description.door.url,
               // called when the resource is loaded
               (gltf) => {
-                gltf.scene.scale.set(0.5, 0.25, 0.5);
+                gltf.scene.scale.set(
+                  description.door.scale.x,
+                  description.door.scale.y,
+                  description.door.scale.z
+                );
                 gltf.scene.position.set(
                   j - half.width,
                   0,
@@ -416,10 +426,10 @@ export default class Maze extends THREE.Group {
     const row = indices[0] + offsets[0];
     const column = indices[1] + offsets[1];
     if (
-      this.map[row][column] == 2 - orientation ||
-      this.map[row][column] == 3
+      this.map[row][column] === 2 - orientation ||
+      this.map[row][column] === 3
     ) {
-      if (orientation != 0) {
+      if (orientation !== 0) {
         if (
           Math.abs(
             position.x -
@@ -441,6 +451,19 @@ export default class Maze extends THREE.Group {
         }
       }
     }
+
+    if (this.map[row][column] === 5) {
+      if (
+        Math.abs(
+          position.x -
+            (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
+        ) < radius
+      ) {
+        console.log("Collision with " + name + ".");
+        return true;
+      }
+    }
+
     return false;
   }
 

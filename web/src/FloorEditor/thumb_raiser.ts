@@ -390,6 +390,7 @@ export default class ThumbRaiser {
     topViewCameraParameters,
     miniMapCameraParameters
   ) {
+    this.currentCamera = -1;
     this.generalParameters = merge({}, generalData, generalParameters);
     this.audioParameters = merge({}, audioData, audioParameters);
     this.cubeTexturesParameters = merge(
@@ -1008,6 +1009,31 @@ export default class ThumbRaiser {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
+  togglePerspective() {
+    const cameras = [
+      this.fixedViewCamera,
+      this.firstPersonViewCamera,
+      this.thirdPersonViewCamera,
+      this.topViewCamera,
+    ];
+    this.currentCamera = (this.currentCamera + 1) % cameras.length;
+
+    cameras.forEach((camera) => {
+      camera.checkBox.checked = false;
+    });
+    cameras[this.currentCamera].setViewport(
+      new THREE.Vector4(0.0, 0.0, 1.0, 1.0)
+    );
+    // Make the viewport visible and set it as the topmost viewport
+    cameras[this.currentCamera].checkBox.checked = true;
+    this.setActiveViewCamera(cameras[this.currentCamera]);
+
+    this.miniMapCamera.setViewport(
+      new THREE.Vector4(1, 0, 0.3, 0.3),
+      cameras[this.currentCamera]
+    );
+  }
+
   keyChange(event, state) {
     if (document.activeElement == document.body) {
       // Prevent the "Space" and "Arrow" keys from scrolling the document's content
@@ -1029,6 +1055,11 @@ export default class ThumbRaiser {
       } else if (event.code === this.player.keyCodes.firstPersonView && state) {
         // Display / select / hide first-person view
         this.setViewportVisibility(this.firstPersonViewCamera);
+      } else if (
+        event.code === this.player.keyCodes.changePerspective &&
+        state
+      ) {
+        this.togglePerspective();
       } else if (event.code === this.player.keyCodes.thirdPersonView && state) {
         // Display / select / hide third-person view
         this.setViewportVisibility(this.thirdPersonViewCamera);

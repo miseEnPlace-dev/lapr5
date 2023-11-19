@@ -99,6 +99,7 @@ export const playerData = {
     wave: "KeyW",
     punch: "KeyP",
     thumbsUp: "KeyT",
+    changePerspective: "KeyV",
   },
 };
 
