@@ -1,0 +1,48 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor CM as "Campus Manager"
+
+box "«system (C4)»\nRobDroneGo" <<center>>
+  participant UI as "Visualization" <<container (C4)>>
+  participant MD as "MD Management" <<container (C4)>>
+end box
+
+activate CM
+
+CM -> UI : wants to list connectors between 2 buildings
+activate UI
+
+CM <-- UI : asks for the buildings 1 & 2 codes
+deactivate UI
+
+CM -> UI : inserts the data
+activate UI
+
+UI -> MD : GET /connectors?buildingCodes[]={code1}&buildingCodes[]={code2}
+activate MD
+
+alt there are connectors between those buildings
+  UI <-- MD : 200 OK
+  deactivate MD
+
+  CM <-- UI : shows the list
+else a building code does not exist
+  activate MD
+  UI <-- MD : 400 Bad Request
+  deactivate MD
+
+  CM <-- UI : shows error message "One/both buildings does not exist."
+else there are not connectors between those buildings
+  activate MD
+  UI <-- MD : 200 OK
+  deactivate MD
+
+  CM <-- UI : shows message "Could not find connectors."
+  deactivate UI
+end
+
+deactivate CM
+
+@enduml
