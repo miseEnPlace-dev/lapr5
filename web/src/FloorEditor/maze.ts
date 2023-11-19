@@ -249,7 +249,7 @@ export default class Maze extends THREE.Group {
             );
           }
 
-          if (this.map[i][j] === 5) {
+          if (this.map[i][j] === 11) {
             this.aabb[i][j][0] = new THREE.Box3();
             for (let k = 0; k < 2; k++) {
               geometry = wall.geometries[k].clone();
@@ -260,7 +260,7 @@ export default class Maze extends THREE.Group {
                 new THREE.Matrix4().makeTranslation(
                   j - this.halfSize.width,
                   0.25,
-                  i - this.halfSize.depth
+                  (i - this.halfSize.depth) * 2 + 1.5
                 )
               );
 
@@ -272,6 +272,7 @@ export default class Maze extends THREE.Group {
                   this.scale.z
                 )
               );
+              geometry.scale(1, 1, 0.5);
               geometries[k].push(geometry);
               this.aabb[i][j][0].union(geometry.boundingBox);
             }
@@ -296,7 +297,7 @@ export default class Maze extends THREE.Group {
                 gltf.scene.position.set(
                   j - half.width,
                   0,
-                  i - half.depth + 0.7
+                  i - half.depth + 0.25
                 );
                 gltf.scene.rotation.y = Math.PI / 2;
                 this.add(gltf.scene);
@@ -404,8 +405,8 @@ export default class Maze extends THREE.Group {
     const row = indices[0] + offsets[0];
     const column = indices[1] + offsets[1];
     if (
-      this.map[row][column] == 2 - orientation ||
-      this.map[row][column] == 3
+      this.map[row][column] === 2 - orientation ||
+      this.map[row][column] === 3
     ) {
       const x =
         position.x -
@@ -451,19 +452,19 @@ export default class Maze extends THREE.Group {
         }
       }
     }
-
-    if (this.map[row][column] === 5) {
-      if (
-        Math.abs(
-          position.x -
-            (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
-        ) < radius
-      ) {
-        console.log("Collision with " + name + ".");
-        return true;
+    if (this.map[row][column] === 11) {
+      if (orientation !== 0) {
+        if (
+          Math.abs(
+            position.x -
+              (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
+          ) < radius
+        ) {
+          console.log("Collision with " + name + ".");
+          return true;
+        }
       }
     }
-
     return false;
   }
 
@@ -472,8 +473,9 @@ export default class Maze extends THREE.Group {
     const row = indices[0] + offsets[0];
     const column = indices[1] + offsets[1];
     if (
-      this.map[row][column] == 2 - orientation ||
-      this.map[row][column] == 3
+      this.map[row][column] === 2 - orientation ||
+      this.map[row][column] === 3 ||
+      this.map[row][column] === 11
     ) {
       if (obb.intersectsBox3(this.aabb[row][column][orientation])) {
         console.log("Collision with " + name + ".");
