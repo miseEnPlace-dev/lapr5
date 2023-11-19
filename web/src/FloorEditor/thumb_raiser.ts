@@ -368,7 +368,7 @@ import Stats from "three/addons/libs/stats.module.js";
  * }
  */
 
-const LOCAL_STORAGE_PREFIX = "@thumb-raiser:";
+export const LOCAL_STORAGE_PREFIX = "@thumb-raiser:";
 
 export default class ThumbRaiser {
   constructor(

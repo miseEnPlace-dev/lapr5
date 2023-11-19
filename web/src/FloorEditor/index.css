@@ -22,6 +22,10 @@ body {
 select {
   background: #000;
 }
+input {
+  background: #000;
+  text-align: center;
+}
 
 #maps-panel {
   position: absolute;
