@@ -65,7 +65,6 @@ export const useBuildingFloorsPageModule = () => {
     if (!buildingCode) throw new Error("No building code provided");
 
     if (!floorCodeInputRef.current?.value) throw new Error("No floor code provided");
-    if (!floorDescriptionInputRef.current?.value) throw new Error("No floor description provided");
     if (!floorLengthInputRef.current?.value) throw new Error("No floor length provided");
     if (!floorWidthInputRef.current?.value) throw new Error("No floor width provided");
 
@@ -80,6 +79,8 @@ export const useBuildingFloorsPageModule = () => {
     };
 
     await floorService.createFloor(buildingCode, f);
+    if (!floors) return setFloors([f]);
+    setFloors([...floors, f]);
   }
 
   async function handleSave() {

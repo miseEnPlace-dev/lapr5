@@ -27,7 +27,7 @@ const ListBuildings: React.FC = () => {
     try {
       await handleSave();
 
-      swal("Success", "Elevator saved successfully", "success");
+      swal("Success", "Building saved successfully", "success");
       setIsBuildingModalVisible(false);
     } catch (err: unknown) {
       swal("Error", err as string, "error");
