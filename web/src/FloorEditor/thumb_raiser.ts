@@ -368,6 +368,8 @@ import Stats from "three/addons/libs/stats.module.js";
  * }
  */
 
+const LOCAL_STORAGE_PREFIX = "@thumb-raiser:";
+
 export default class ThumbRaiser {
   constructor(
     generalParameters,
@@ -549,17 +551,43 @@ export default class ThumbRaiser {
     this.realisticViewModeCheckBox = document.getElementById("realistic");
     this.realisticViewModeCheckBox.checked = false;
     this.fixedViewCamera.checkBox = document.getElementById("fixed");
-    this.fixedViewCamera.checkBox.checked = true;
+    this.fixedViewCamera.checkBox.checked = localStorage.getItem(
+      LOCAL_STORAGE_PREFIX + "fixedViewCamera"
+    )
+      ? JSON.parse(
+          localStorage.getItem(LOCAL_STORAGE_PREFIX + "fixedViewCamera")
+        )
+      : true;
     this.firstPersonViewCamera.checkBox =
       document.getElementById("first-person");
-    this.firstPersonViewCamera.checkBox.checked = true;
+    this.firstPersonViewCamera.checkBox.checked = localStorage.getItem(
+      LOCAL_STORAGE_PREFIX + "firstPersonViewCamera"
+    )
+      ? JSON.parse(
+          localStorage.getItem(LOCAL_STORAGE_PREFIX + "firstPersonViewCamera")
+        )
+      : true;
     this.thirdPersonViewCamera.checkBox =
       document.getElementById("third-person");
-    this.thirdPersonViewCamera.checkBox.checked = true;
+    this.thirdPersonViewCamera.checkBox.checked = localStorage.getItem(
+      LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera"
+    )
+      ? JSON.parse(
+          localStorage.getItem(LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera")
+        )
+      : true;
     this.topViewCamera.checkBox = document.getElementById("top");
-    this.topViewCamera.checkBox.checked = true;
+    this.topViewCamera.checkBox.checked = localStorage.getItem(
+      LOCAL_STORAGE_PREFIX + "topViewCamera"
+    )
+      ? JSON.parse(localStorage.getItem(LOCAL_STORAGE_PREFIX + "topViewCamera"))
+      : true;
     this.miniMapCamera.checkBox = document.getElementById("mini-map");
-    this.miniMapCamera.checkBox.checked = true;
+    this.miniMapCamera.checkBox.checked = localStorage.getItem(
+      LOCAL_STORAGE_PREFIX + "miniMapCamera"
+    )
+      ? JSON.parse(localStorage.getItem(LOCAL_STORAGE_PREFIX + "miniMapCamera"))
+      : true;
     this.statistics.checkBox = document.getElementById("statistics");
     this.statistics.checkBox.checked = false;
     this.help = { checkBox: document.getElementById("help") };
@@ -1505,20 +1533,40 @@ export default class ThumbRaiser {
         this.zoom.addEventListener("change", (event) =>
           this.elementChange(event)
         );
-        this.fixedViewCamera.checkBox.addEventListener("change", (event) =>
-          this.elementChange(event)
-        );
+        this.fixedViewCamera.checkBox.addEventListener("change", (event) => {
+          localStorage.setItem(
+            LOCAL_STORAGE_PREFIX + "fixedViewCamera",
+            event.target.checked
+          );
+          this.elementChange(event);
+        });
         this.firstPersonViewCamera.checkBox.addEventListener(
           "change",
-          (event) => this.elementChange(event)
+          (event) => {
+            localStorage.setItem(
+              LOCAL_STORAGE_PREFIX + "firstPersonViewCamera",
+              event.target.checked
+            );
+            this.elementChange(event);
+          }
         );
         this.thirdPersonViewCamera.checkBox.addEventListener(
           "change",
-          (event) => this.elementChange(event)
+          (event) => {
+            localStorage.setItem(
+              LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera",
+              event.target.checked
+            );
+            this.elementChange(event);
+          }
         );
-        this.topViewCamera.checkBox.addEventListener("change", (event) =>
-          this.elementChange(event)
-        );
+        this.topViewCamera.checkBox.addEventListener("change", (event) => {
+          localStorage.setItem(
+            LOCAL_STORAGE_PREFIX + "topViewCamera",
+            event.target.checked
+          );
+          this.elementChange(event);
+        });
         this.statistics.checkBox.addEventListener("change", (event) =>
           this.elementChange(event)
         );
