@@ -9,7 +9,7 @@ box "«container (C4)»\nVisualization" <<center>>
   participant SVC as "FloorService" <<component>>
 end box
 
-box "«container (C4)»\n MD Management " <<center>>
+box "«container (C4)»\n MD Management " <<center>>#LightYellow
   participant ROUTE as "FloorRoute" <<component>>
 end box
 
