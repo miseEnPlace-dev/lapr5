@@ -18,10 +18,15 @@ const BuildingPage: React.FC = () => {
     selectedFloors,
     setSelectedFloors,
     handleSave,
+    handleSaveBuilding,
     modelInputRef,
     brandInputRef,
     descriptionInputRef,
     serialNumberInputRef,
+    lengthInputRef,
+    widthInputRef,
+    nameInputRef,
+    buildingDescriptionInputRef,
   } = useBuildingPageModule();
 
   const navigate = useNavigate();
@@ -33,6 +38,16 @@ const BuildingPage: React.FC = () => {
 
       swal("Success", "Elevator saved successfully", "success");
       setIsElevatorModalVisible(false);
+    } catch (err: unknown) {
+      swal("Error", err as string, "error");
+    }
+  }
+
+  async function handleSaveBuildingClick() {
+    try {
+      await handleSaveBuilding();
+
+      swal("Success", "Building saved successfully", "success");
     } catch (err: unknown) {
       swal("Error", err as string, "error");
     }
@@ -58,6 +73,7 @@ const BuildingPage: React.FC = () => {
             className="w-full"
             placeholder="Name"
             defaultValue={building?.name}
+            inputRef={nameInputRef}
           />
           <div className="flex items-center justify-between gap-x-12">
             <Input
@@ -66,6 +82,7 @@ const BuildingPage: React.FC = () => {
               type="number"
               step={0.1}
               defaultValue={building?.maxDimensions.width}
+              inputRef={widthInputRef}
             />
             <Input
               defaultValue={building?.maxDimensions.length}
@@ -73,12 +90,14 @@ const BuildingPage: React.FC = () => {
               placeholder="Length (m)"
               step={0.1}
               type="number"
+              inputRef={lengthInputRef}
             />
           </div>
           <TextArea
             className="w-full"
             placeholder="Description"
             defaultValue={building?.description}
+            inputRef={buildingDescriptionInputRef}
           />
         </main>
 
@@ -103,10 +122,20 @@ const BuildingPage: React.FC = () => {
             </Button>
           </div>
           <div className="flex flex-col gap-y-2">
-            <Button name="save" className="w-full self-end" type="confirm">
+            <Button
+              name="save"
+              onClick={handleSaveBuildingClick}
+              className="w-full self-end"
+              type="confirm"
+            >
               Save
             </Button>
-            <Button className="w-full self-end" disabled type="destroy">
+            <Button
+              className="w-full self-end"
+              disabled
+              type="destroy"
+              name="delete"
+            >
               Delete Building
             </Button>
           </div>

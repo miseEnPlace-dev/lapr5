@@ -1,0 +1,27 @@
+@startuml process-view
+autonumber
+
+actor CM as "Campus Manager"
+participant SYS as "RobDroneGo System" <<system (C4)>>
+
+activate CM
+
+CM -> SYS : wants to create a connector
+activate SYS
+
+CM <-- SYS : asks for the connector code, floor 1 & floor 2 codes
+deactivate SYS
+
+CM -> SYS : inserts the data
+activate SYS
+
+alt a new connector is created
+  CM <-- SYS : returns the new connector
+else there is a connector between those floors
+  CM <-- SYS : shows error message "A connector exists between those floors."
+  deactivate SYS
+end
+
+deactivate CM
+
+@enduml

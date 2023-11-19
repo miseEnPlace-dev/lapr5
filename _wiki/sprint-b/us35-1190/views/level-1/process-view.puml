@@ -1,0 +1,23 @@
+@startuml process-view
+autonumber
+
+actor CM as "Campus Manager"
+participant SYS as "RobDroneGo System" <<system (C4)>>
+
+activate CM
+
+CM -> SYS : wants to list connectors between 2 buildings
+activate SYS
+
+CM <-- SYS : asks for the buildings 1 & 2 codes
+deactivate SYS
+
+CM -> SYS : inserts the data
+activate SYS
+
+CM <-- SYS : returns the list
+deactivate SYS
+
+deactivate CM
+
+@enduml

@@ -1,0 +1,42 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor CM as "Campus Manager"
+
+box "«system (C4)»\nRobDroneGo" <<center>>
+  participant UI as "Visualization" <<container (C4)>>
+  participant MD as "MD Management" <<container (C4)>>
+end box
+
+activate CM
+
+CM -> UI : wants to create a connector
+activate UI
+
+CM <-- UI : asks for the connector code, floors 1 & 2 codes
+deactivate UI
+
+CM -> UI : inserts the data
+activate UI
+
+UI -> MD : POST /connectors {data}
+activate MD
+
+alt a new connector is created
+  UI <-- MD : 201 Created
+  deactivate MD
+
+  CM <-- UI : informs the success of the operation
+else there is a connector between those floors
+  activate MD
+  UI <-- MD : 400 Bad Request
+  deactivate MD
+
+  CM <-- UI : shows error message "A connector exists between those floors."
+  deactivate UI
+end
+
+deactivate CM
+
+@enduml
