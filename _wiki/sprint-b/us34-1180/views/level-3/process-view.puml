@@ -1,0 +1,57 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor CM as "Campus Manager"
+
+box "«container (C4)»\nVisualization" <<center>>
+  participant C as "ConnectorComponent" <<component>>
+  participant SVC as "ConnectorService" <<component>>
+end box
+
+box "«container (C4)»\n MD Management " <<center>>#LightYellow
+  participant ROUTE as "ConnectorRoute" <<component>>
+end box
+
+activate CM
+
+CM -> C : wants to edit a connector
+activate C
+
+CM <-- C : asks for the floors 1 & 2 codes
+deactivate C
+
+CM -> C : inserts the data
+activate C
+
+C -> SVC : updateConnector(code,floor1,floor2)
+activate SVC
+
+SVC -> ROUTE : PATCH /connectors/{code}\t {data}
+activate ROUTE
+
+alt the connector gets updated
+  SVC <-- ROUTE : 200 OK
+  deactivate ROUTE
+
+  C <-- SVC : the updated connector
+  deactivate SVC
+
+  CM <-- C : informs the success of the operation
+else there is a connector between those floors
+  activate SVC
+  activate ROUTE
+
+  SVC <-- ROUTE : 400 Bad Request
+  deactivate ROUTE
+
+  C <-- SVC : error
+  deactivate SVC
+
+  CM <-- C : shows error message "A connector exists between those floors."
+  deactivate C
+end
+
+deactivate CM
+
+@enduml
