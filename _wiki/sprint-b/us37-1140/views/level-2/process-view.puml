@@ -1,0 +1,25 @@
+@startuml process-view
+autonumber
+
+actor CM as "Campus Manager"
+participant UI as "Visualization" <<system (C4)>>
+participant MDD as "MDD" <<system (C4)>>
+participant P as "Planning" <<system (C4)>>
+
+
+activate CM
+
+CM -> UI : asks to list a building elevator
+activate UI
+UI -> MDD : GET /buildings/:id/elevators
+activate MDD
+MDD --> UI : 200 (elevator)
+deactivate MDD
+
+CM <-- UI : shows elevator
+deactivate UI
+
+
+deactivate CM
+
+@enduml
