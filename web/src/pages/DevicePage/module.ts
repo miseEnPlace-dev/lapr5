@@ -6,7 +6,7 @@ import { TYPES } from "../../inversify/types";
 import { Device } from "@/model/Device";
 import { IDeviceService } from "@/service/IService/IDeviceService";
 
-export const useBuildingPageModule = () => {
+export const useDevicePageModule = () => {
   const deviceService = useInjection<IDeviceService>(TYPES.deviceService);
 
   const { deviceCode } = useParams();
