@@ -6,7 +6,7 @@ import { Floor } from '@/domain/floor/floor';
 
 export default interface IRoomRepo extends Repo<Room> {
   save(room: Room): Promise<Room>;
-  findAllRoomsInFloorByCode(floorId: FloorCode): Promise<Room[] | null>;
+  findAllRoomsInFloorByCode(floorCode: FloorCode): Promise<Room[] | null>;
   findAllRoomsByFloor(floor: Floor): Promise<Room[] | null>;
   findByName(name: RoomName): Promise<Room | null>;
   findAll(): Promise<Room[] | null>;
