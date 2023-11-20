@@ -6,6 +6,7 @@
 :- use_module(library(http/http_cors)).
 :- use_module(library(http/json_convert)).
 :- use_module(library(http/http_json)).
+:- use_module(library(http/http_open)).
 :- use_module(library(http/json)).
 % :- use_module(library(http/http_files)).
 
@@ -14,6 +15,8 @@
 % to reload, use make. in the console & refresh the page
 
 :- json_object student(student_name:string).
+
+api_url('http://localhost:3000').
 
 % define route aliases
 http:location(api, root(api), []). % /api
@@ -56,6 +59,13 @@ api_greet(Request):-
     R = student(JsonIn.name),
     prolog_to_json(R, JsonOut),
     reply_json(JsonOut).
+
+read_api(Url, Dict):-
+    setup_call_cleanup(
+        http_open(Url, In, []),
+        json_read_dict(In, Dict),
+        close(In)
+    ).
 
 init_server(Port):-
     debug(http(request)), % debug http requests & responses
