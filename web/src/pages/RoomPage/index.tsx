@@ -12,11 +12,29 @@ import { ArrowLeftIcon } from "../../styles/Icons";
 import { useRoomPageModule } from "./module";
 
 const RoomPage: React.FC = () => {
+  const {
+    room,
+    handleSave,
+    floor,
+    building,
+    roomCategoryInputRef,
+    roomNameInputRef,
+    roomWidthInputRef,
+    roomDescriptionInputRef,
+    roomLengthInputRef,
+  } = useRoomPageModule();
   const navigate = useNavigate();
   const [isRoomModalVisible, setIsRoomModalVisible] = useState(false);
 
   async function handleSaveClick() {
-    //TODO
+    try {
+      await handleSave();
+
+      swal("Success", "Room saved successfully", "success");
+      setIsRoomModalVisible(false);
+    } catch (err: unknown) {
+      swal("Error", err as string, "error");
+    }
   }
 
   return (
@@ -28,22 +46,85 @@ const RoomPage: React.FC = () => {
         <ArrowLeftIcon className="absolute left-4 top-4 h-8 w-8 text-slate-500" />
       </button>
       <div className="w-full rounded-xl bg-slate-200 py-4">
-        <h1 className="text-center text-4xl font-bold">Room </h1>
+        <h1 className="text-center text-4xl font-bold">
+          Floor no. {floor?.code} - {building?.name}
+        </h1>
       </div>
 
       <div className="flex h-full w-full gap-x-8">
-        <div className="flex h-full w-1/4 flex-col justify-between rounded-xl bg-slate-200 px-4 py-8">
-          <div className="flex flex-col gap-y-2">
-            <h2 className="mb-4 text-center text-3xl font-bold">Actions</h2>
-            <Button
-              name="add-room"
-              onClick={() => setIsRoomModalVisible((cur) => !cur)}
-              className="w-full"
-              type="default"
-            >
-              Add Room
-            </Button>
+        <main className="flex h-full w-full flex-col gap-y-6 rounded-xl bg-slate-200 p-8">
+          <ListRooms />
+        </main>
+
+        <div className="flex h-full w-1/4 gap-x-8">
+          <div className="flex h-full w-full flex-col justify-between rounded-xl bg-slate-200 px-4 py-8">
+            <div className="flex flex-col gap-y-2">
+              <h2 className="mb-4 text-center text-3xl font-bold">Actions</h2>
+              <Button
+                name="add-room"
+                onClick={() => setIsRoomModalVisible((cur) => !cur)}
+                className="w-full"
+                type="default"
+              >
+                Add Room
+              </Button>
+            </div>
           </div>
+
+          <Modal
+            setIsVisible={setIsRoomModalVisible}
+            isVisible={isRoomModalVisible}
+            title={`Add Room`}
+          >
+            <div className="flex h-full flex-col gap-y-4">
+              <div className="flex flex-col items-center justify-between gap-x-8">
+                <Input
+                  className="w-full"
+                  placeholder="Name"
+                  inputRef={roomNameInputRef}
+                />
+                <TextArea
+                  className="w-full"
+                  placeholder="Description"
+                  defaultValue={room?.description}
+                  inputRef={roomDescriptionInputRef}
+                />
+                <div className="flex items-center justify-between gap-x-12">
+                  <Input
+                    className="w-full"
+                    placeholder="Width (m)"
+                    type="number"
+                    step={1}
+                    defaultValue={room?.dimensions.width}
+                    inputRef={roomWidthInputRef}
+                  />
+                  <Input
+                    defaultValue={room?.dimensions.length}
+                    className="w-full"
+                    placeholder="Length (m)"
+                    step={1}
+                    type="number"
+                    inputRef={roomLengthInputRef}
+                  />
+                  <Input
+                    defaultValue={room?.dimensions.length}
+                    className="w-full"
+                    placeholder="Category"
+                    type="text"
+                    inputRef={roomCategoryInputRef}
+                  />
+                </div>
+                <Button
+                  name="save"
+                  onClick={handleSaveClick}
+                  type="confirm"
+                  className="my-2 py-2 text-xl"
+                >
+                  Save
+                </Button>
+              </div>
+            </div>
+          </Modal>
         </div>
       </div>
     </div>

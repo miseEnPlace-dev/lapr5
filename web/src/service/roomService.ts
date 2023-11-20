@@ -27,7 +27,10 @@ export class RoomService implements IRoomService {
     const data = response.data;
     return data;
   }
-  /*getRoomWithName(name: string): Promise<Room> {
-    throw new Error("Method not implemented.");
-  }*/
+  async getRoomWithName(buildingCode: string, floorCode: string, roomName: string): Promise<Room> {
+    const response = await this.http.get<Room>(`/buildings/${buildingCode}/floors/${floorCode}/rooms/${roomName}`);
+
+    const data = response.data;
+    return data;
+  }
 }
