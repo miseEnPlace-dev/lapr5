@@ -1,0 +1,42 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor CM as "Campus Manager"
+
+box "«system (C4)»\nRobDroneGo" <<center>>
+  participant UI as "Visualization" <<container (C4)>>
+  participant MD as "MD Management" <<container (C4)>>
+end box
+
+activate CM
+
+CM -> UI : wants to create an elevator in a building
+activate UI
+
+CM <-- UI : asks for the code, model, brand, serial number, description & floors served
+deactivate UI
+
+CM -> UI : inserts the data
+activate UI
+
+UI -> MD : POST /buildings/{code}/elevators {data}
+activate MD
+
+alt a new elevator is created
+  UI <-- MD : 201 Created
+  deactivate MD
+
+  CM <-- UI : informs the success of the operation
+else there is an evelator with the specified code
+  activate MD
+  UI <-- MD : 400 Bad Request
+  deactivate MD
+
+  CM <-- UI : shows error message "An elevator with that code exists."
+  deactivate UI
+end
+
+deactivate CM
+
+@enduml
