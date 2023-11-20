@@ -1,8 +1,8 @@
-# US 02 [160]
+# US 26 [1060] - As a Campus Manager, I want to list all buildings
 
 |              |                         |
 | ------------ | ----------------------- |
-| ID           | 3                       |
+| ID           | 26                      |
 | Sprint       | A                       |
 | Module       | 1.2 - Campus Management |
 | UC           | ARQSI                   |
