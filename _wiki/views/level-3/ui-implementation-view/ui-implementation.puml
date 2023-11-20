@@ -1,0 +1,32 @@
+@startuml implementation-view
+
+component "Visualization" as UI <<component>> <<container (C4)>> {
+  folder Infrastructure as I {
+    package Routes as ROUTE {}
+    package Component as COMP {}
+
+  }
+
+  folder "Interface Adapters" as IA {
+    package Module as MOD {}
+  }
+
+  folder "Application Services/Use Case Services" as UC {
+    package "App Services" as APP {}
+  }
+
+  folder "Entities/Core/Domain" as E {
+    package "Model" as MODEL {}
+  }
+}
+
+COMP ..> MOD
+ROUTE ..> MOD
+MOD ..> APP
+APP ..> MODEL
+
+I ..> IA
+IA ..> UC
+UC ..> E
+
+@enduml

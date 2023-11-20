@@ -4,6 +4,8 @@ autonumber
 actor CM as "Campus Manager"
 participant UI as "Visualization" <<system (C4)>>
 participant MDD as "MDD" <<system (C4)>>
+participant P as "Planning" <<system (C4)>>
+
 
 activate CM
 
