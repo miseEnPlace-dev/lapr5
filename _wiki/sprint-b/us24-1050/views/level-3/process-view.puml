@@ -23,12 +23,30 @@ CM <-- CMP : asks for building data (code,name,description,max dimensions)
 deactivate CMP
 
 CM -> CMP : inputs required data
+activate CMP
+CMP -> MOD : cretes a building
+activate MOD
+MOD -> MOD : validates data
+activate MOD
+deactivate MOD
+MOD -> SRV : creates a building
+activate SRV
+SRV -> HTTP : post('/buildings')
+
 activate HTTP
 
 HTTP -> MDM : POST /buildings
 activate MDM
 MDM --> HTTP : 201 (Created)
 deactivate MDM
+
+HTTP --> SRV : createdBuilding
+deactivate HTTP
+
+SRV --> MOD : createdBuilding
+deactivate SRV
+MOD --> CMP : createdBuilding
+deactivate MOD
 
 CM <-- CMP : returns confirmation message
 deactivate CMP
