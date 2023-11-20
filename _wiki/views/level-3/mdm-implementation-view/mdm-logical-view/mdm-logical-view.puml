@@ -1,0 +1,77 @@
+@startuml logical-view
+
+top to bottom direction
+
+interface "MD API" as API
+
+component "MD Management" as MDM <<component>> <<container (C4)>> {
+  portin " " as P1
+  portin "Persistence API" as P2
+
+  Interface "Controller API" as CTRL_API
+  Interface "Data Model API" as DATA_API
+
+
+  folder "Frameworks & Drivers Layer" #80FFFF {
+    component "Routing" as ROUTE <<component>> {
+    }
+    component "Persistence" as PERSISTENCE <<component>> {
+    }
+  }
+
+  component "Data Model" as DATA <<component>> {
+  }
+  component "DTO" as DTO <<component>> {
+  }
+
+  Interface "App Services API" AS SRV_API
+  Interface "DTO API" AS DTO_API
+  Interface "Repo API" AS REPO_API
+  Interface "Model API" AS MODEL_API
+  Interface "Persistence API" AS PERSISTENCE_API
+
+  folder "Interface Adapters Layer" #80FF80 {
+    component "Controller" as CTRL <<component>> {
+    }
+    component "Repository" as REPO <<component>> {
+    }
+  }
+
+  folder "Application Business Rules" #FF8080 {
+    component "Application Service" as SRV <<component>> {
+    }
+  }
+
+  folder "Enterprise Business Rules" #FFC080 {
+    component "Domain Model DDD" as MODEL <<component>> {
+    }
+  }
+}
+
+API -- P1
+
+ROUTE --- P1
+PERSISTENCE -- P2
+
+ROUTE --( CTRL_API
+CTRL -up- CTRL_API
+PERSISTENCE -- PERSISTENCE_API
+REPO -up-( PERSISTENCE_API 
+PERSISTENCE --( DATA_API 
+REPO -up-( DATA_API 
+DATA --( DATA_API 
+
+CTRL --( SRV_API
+SRV -up-( SRV_API
+SRV -up-( DTO_API
+CTRL --( DTO_API
+DTO --( DTO_API
+
+REPO -- REPO_API
+SRV -up-( REPO_API 
+
+SRV --( MODEL_API 
+REPO --( MODEL_API 
+MODEL -up- MODEL_API 
+
+@enduml
