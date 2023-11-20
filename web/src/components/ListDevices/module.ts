@@ -60,6 +60,7 @@ export const useListDeviceModule = () => {
       modelCode: modelCodeInputRef.current?.value || "",
       serialNumber: serialNumberInputRef.current?.value || "",
       description: descriptionInputRef.current?.value || "",
+      isAvailable: true,
     };
     await deviceService.createDevice(device);
     fetchDevices();
