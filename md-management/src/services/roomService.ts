@@ -12,16 +12,32 @@ import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import { inject, injectable } from 'inversify';
 import IRoomRepo from './IRepos/IRoomRepo';
 import IRoomService from './IServices/IRoomService';
+import IBuildingRepo from './IRepos/IBuildingRepo';
+import { BuildingCode } from '@/domain/building/buildingCode';
 
 @injectable()
 export default class RoomService implements IRoomService {
   constructor(
     @inject(TYPES.floorRepo) private floorRepo: IFloorRepo,
-    @inject(TYPES.roomRepo) private roomRepo: IRoomRepo
-  ) { }
+    @inject(TYPES.roomRepo) private roomRepo: IRoomRepo,
+    @inject(TYPES.buildingRepo) private buildingRepo: IBuildingRepo
+  ) {}
 
   public async createRoom(roomDTO: IRoomDTO): Promise<Result<IRoomDTO>> {
     try {
+      const buildingCode = BuildingCode.create(roomDTO.buildingCode).getValue();
+      const building = await this.buildingRepo.findByCode(buildingCode);
+
+      if (!building) return Result.fail<IRoomDTO>('Building does not exist');
+
+      const code = FloorCode.create(roomDTO.floorCode).getValue();
+      const floor = await this.floorRepo.findByCode(code);
+
+      if (!floor) return Result.fail<IRoomDTO>('Floor does not exist');
+
+      if (!floor.buildingCode.equals(buildingCode))
+        return Result.fail<IRoomDTO>('Floor does not belong to this building');
+
       const name = RoomName.create(roomDTO.name);
 
       if (name.isFailure) return Result.fail<IRoomDTO>(name.error as string);
@@ -29,10 +45,6 @@ export default class RoomService implements IRoomService {
       const description = roomDTO.description
         ? RoomDescription.create(roomDTO.description)
         : undefined;
-
-      const code = FloorCode.create(roomDTO.floorCode).getValue();
-      const floor = await this.floorRepo.findByCode(code);
-      if (!floor) return Result.fail<IRoomDTO>('Floor does not exist');
 
       if (
         !roomDTO.dimensions ||
@@ -46,7 +58,7 @@ export default class RoomService implements IRoomService {
         );
 
       if (
-        (await this.getAvailableAreaInFloor(floor.props.code)).getValue() >=
+        (await this.getAvailableAreaInFloor(buildingCode, floor.props.code)).getValue() >=
         roomDTO.dimensions.width * roomDTO.dimensions.length
       ) {
         const dimensions = RoomDimensions.create(
@@ -87,11 +99,17 @@ export default class RoomService implements IRoomService {
     }
   }
 
-  public async getAvailableAreaInFloor(floorCode: FloorCode): Promise<Result<number>> {
+  public async getAvailableAreaInFloor(
+    buildingCode: BuildingCode,
+    floorCode: FloorCode
+  ): Promise<Result<number>> {
     try {
       const floor = await this.floorRepo.findByCode(floorCode);
 
       if (!floor) return Result.fail<number>('Floor does not exist');
+
+      if (!floor.buildingCode.equals(buildingCode))
+        return Result.fail<number>('Floor does not belong to this building');
 
       const rooms = await this.roomRepo.findAllRoomsInFloorByCode(floor.props.code);
 
@@ -101,15 +119,22 @@ export default class RoomService implements IRoomService {
         return acc + room.dimensions.width * room.dimensions.length;
       }, 0);
 
+      console.log(occupiedArea);
+
       return Result.ok<number>(floor.dimensions.width * floor.dimensions.length - occupiedArea);
     } catch (e) {
       throw e;
     }
   }
 
-  public async getFloorRooms(code: string): Promise<Result<IRoomDTO[]>> {
+  public async getFloorRooms(bgCode: string, floorCode: string): Promise<Result<IRoomDTO[]>> {
     try {
-      const floor = await this.floorRepo.findByCode(FloorCode.create(code).getValue());
+      const buildingCode = BuildingCode.create(bgCode).getValue();
+      const building = await this.buildingRepo.findByCode(buildingCode);
+
+      if (!building) return Result.fail<IRoomDTO[]>('Building does not exist');
+
+      const floor = await this.floorRepo.findByCode(FloorCode.create(floorCode).getValue());
 
       if (!floor) return Result.fail<IRoomDTO[]>('Floor does not exist');
 
@@ -119,6 +144,30 @@ export default class RoomService implements IRoomService {
 
       const roomsDTO = rooms.map(room => RoomMapper.toDTO(room) as IRoomDTO);
       return Result.ok<IRoomDTO[]>(roomsDTO);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async getRoom(
+    buildingCode: string,
+    floorCode: string,
+    roomName: string
+  ): Promise<Result<IRoomDTO>> {
+    try {
+      const building = await this.buildingRepo.findByCode(
+        BuildingCode.create(buildingCode).getValue()
+      );
+      if (!building) return Result.fail<IRoomDTO>('Building does not exist');
+
+      const floor = await this.floorRepo.findByCode(FloorCode.create(floorCode).getValue());
+      if (!floor) return Result.fail<IRoomDTO>('Floor does not exist');
+
+      const room = await this.roomRepo.findByName(RoomName.create(roomName).getValue());
+      if (!room) return Result.fail<IRoomDTO>('Room does not exist');
+
+      const roomDTO = RoomMapper.toDTO(room) as IRoomDTO;
+      return Result.ok<IRoomDTO>(roomDTO);
     } catch (e) {
       throw e;
     }
