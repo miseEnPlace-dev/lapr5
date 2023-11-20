@@ -12,8 +12,11 @@ import { IBuildingService } from "./IService/IBuildingService";
 export class BuildingService implements IBuildingService {
   constructor(@inject(TYPES.api) private http: HttpService) {}
 
-  async getBuildings(): Promise<Building[]> {
-    const response = await this.http.get<Building[]>("/buildings");
+  async getBuildings(filters?: string[]): Promise<Building[]> {
+    const filter = filters
+      ? `?minFloors=${filters[0]}&maxFloors=${filters[1]}`
+      : "";
+    const response = await this.http.get<Building[]>("/buildings" + filter);
     const data = response.data;
     return data;
   }

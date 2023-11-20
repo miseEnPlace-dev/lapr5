@@ -145,4 +145,17 @@ export default class DeviceService implements IDeviceService {
       throw e;
     }
   }
+
+  public async getDeviceRobotWithCode(code: string): Promise<Result<IDeviceDTO>> {
+    try {
+      const deviceCode = DeviceCode.create(code).getValue();
+      const device = await this.deviceRepo.findByCode(deviceCode);
+      if (!device) return Result.fail<IDeviceDTO>('Device not found');
+
+      const deviceDTOResult = DeviceMapper.toDTO(device) as IDeviceDTO;
+      return Result.ok<IDeviceDTO>(deviceDTOResult);
+    } catch (e) {
+      throw e;
+    }
+  }
 }
