@@ -10,7 +10,7 @@ import Modal from "../../components/Modal";
 import TextArea from "../../components/TextArea";
 import { ArrowLeftIcon } from "../../styles/Icons";
 import { useBuildingPageModule } from "./module";
-
+  
 const BuildingPage: React.FC = () => {
   const {
     building,
