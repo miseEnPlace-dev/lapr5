@@ -3,14 +3,14 @@ import "reflect-metadata";
 import { inject, injectable } from "inversify";
 
 import { TYPES } from "../inversify/types";
+import { Device } from "@/model/Device";
 
 import { HttpService } from "./IService/HttpService";
 import { IDeviceService } from "./IService/IDeviceService";
-import { Device } from "@/model/Device";
 
 @injectable()
 export class DeviceService implements IDeviceService {
-  constructor(@inject(TYPES.api) private http: HttpService) { }
+  constructor(@inject(TYPES.api) private http: HttpService) {}
 
   async getDevicesRobots(): Promise<Device[]> {
     const response = await this.http.get<Device[]>("/devices/robots");
@@ -28,6 +28,33 @@ export class DeviceService implements IDeviceService {
     if (response.status === 400) throw new Error("Something went wrong");
 
     const data = response.data;
+    return data;
+  }
+
+  async getDevice(deviceCode: string): Promise<Device> {
+    const response = await this.http
+      .get<Device>(`/devices/${deviceCode}`)
+      .catch((error) => {
+        throw error.message;
+      });
+
+    if (response.status === 400) throw new Error("Something went wrong");
+
+    const data = response.data;
+    return data;
+  }
+
+  async inhibitDevice(deviceCode: string): Promise<Device> {
+    const response = await this.http
+      .patch<Device>(`/devices/${deviceCode}`, {})
+      .catch((error) => {
+        throw error.message;
+      });
+
+    if (response.status === 400) throw new Error("Something went wrong");
+
+    const data = response.data;
+
     return data;
   }
 }

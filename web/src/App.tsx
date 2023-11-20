@@ -9,6 +9,7 @@ import { container } from "./inversify";
 import FloorsPage from "./pages/BuildingFloorsPage";
 import BuildingPage from "./pages/BuildingPage";
 import ConnectorPage from "./pages/ConnectorPage";
+import DevicePage from "./pages/DevicePage";
 import FloorPage from "./pages/FloorPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
@@ -68,6 +69,14 @@ function App() {
               element={
                 <RequireAuth>
                   <ConnectorPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/devices/robots/:deviceCode"
+              element={
+                <RequireAuth>
+                  <DevicePage />
                 </RequireAuth>
               }
             />

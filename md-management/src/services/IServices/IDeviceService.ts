@@ -8,4 +8,5 @@ export default interface IDeviceService {
     value: string | undefined
   ): Promise<Result<IDeviceDTO[]>>;
   inhibitDevice(code: string): Promise<Result<IDeviceDTO>>;
+  getDeviceRobotWithCode(code: string): Promise<Result<IDeviceDTO>>;
 }
