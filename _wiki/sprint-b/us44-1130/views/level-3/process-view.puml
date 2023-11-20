@@ -1,0 +1,57 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor CM as "Campus Manager"
+
+box "«container (C4)»\nVisualization" <<center>>
+  participant C as "ElevatorComponent" <<component>>
+  participant SVC as "ElevatorService" <<component>>
+end box
+
+box "«container (C4)»\n MD Management " <<center>>#LightYellow
+  participant ROUTE as "ElevatorRoute" <<component>>
+end box
+
+activate CM
+
+CM -> C : wants to create an elevator in a building
+activate C
+
+CM <-- C : asks for the code, model, brand, serial number, description & floors served
+deactivate C
+
+CM -> C : inserts the data
+activate C
+
+C -> SVC : createElevator(buildingCode,data)
+activate SVC
+
+SVC -> ROUTE : POST /buildings/{buildingCode}/elevators {data}
+activate ROUTE
+
+alt a new evelator is created
+  SVC <-- ROUTE : 201 Created
+  deactivate ROUTE
+
+  C <-- SVC : the new elevator
+  deactivate SVC
+
+  CM <-- C : informs the success of the operation
+else there is an evelator with the specified code
+  activate SVC
+  activate ROUTE
+
+  SVC <-- ROUTE : 400 Bad Request
+  deactivate ROUTE
+
+  C <-- SVC : error
+  deactivate SVC
+
+  CM <-- C : shows error message "An elevator with that code exists."
+  deactivate C
+end
+
+deactivate CM
+
+@enduml

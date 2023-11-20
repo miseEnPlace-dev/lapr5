@@ -23,7 +23,6 @@ export const useRoomPageModule = () => {
   const [room, setRoom] = useState<Room>();
   const [rooms, setRooms] = useState<Room[]>([]);
   const [floor, setFloor] = useState<Floor>();
-  const [floors, setFloors] = useState<Floor[]>([]);
 
   const roomNameInputRef = useRef<HTMLInputElement>(null);
   const roomDescriptionInputRef = useRef<HTMLTextAreaElement>(null);
@@ -33,25 +32,43 @@ export const useRoomPageModule = () => {
 
   useEffect(() => {
     async function fetchData() {
-      if (!buildingCode) return;
+      if (!buildingCode || !floorCode) return;
 
-      const b = await buildingService.getBuildingWithCode(buildingCode);
-      setBuilding(b);
+      fetchBuilding(buildingCode);
+      fetchFloor(buildingCode, floorCode);
+      fetchRooms(buildingCode, floorCode);
 
-      const floors = await floorService.getBuildingFloors(
-        buildingCode,
-      );
-      setFloors(floors);
-
-      if (!floorCode) return;
-
-      const rooms = await roomService.getFloorRooms(buildingCode, floorCode);
-      setRooms(rooms);
     }
 
     fetchData();
   }, [buildingCode, buildingService, floorService]);
 
+
+  const fetchRoom = useCallback(
+    async (buildingCode: string, floorCode: string, roomName: string) => {
+      const room = await roomService.getRoomWithName(buildingCode, floorCode, roomName);
+      setRoom(room);
+    },
+    [roomService]
+  );
+
+
+  const fetchRooms = useCallback(
+    async (buildingCode: string, floorCode: string) => {
+      const rooms = await roomService.getFloorRooms(buildingCode, floorCode);
+      setRooms(rooms);
+    },
+    [roomService]
+  );
+
+
+  const fetchBuilding = useCallback(
+    async (buildingCode: string) => {
+      const building = await buildingService.getBuildingWithCode(buildingCode);
+      setBuilding(building);
+    },
+    [buildingService]
+  );
 
   const fetchFloor = useCallback(
     async (buildingCode: string, floorCode: string) => {
@@ -85,13 +102,14 @@ export const useRoomPageModule = () => {
   }
 
   async function handleSave() {
-    // TODO
+    if (!room) return await handleCreate();
+
+    if (buildingCode && floorCode && room.name) fetchRoom(buildingCode, floorCode, room.name)
   }
 
   return {
     building,
     floor,
-    floors,
     handleSave,
     handleCreate,
     roomNameInputRef,
