@@ -28,6 +28,11 @@ export const useBuildingPageModule = () => {
   const serialNumberInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const lengthInputRef = useRef<HTMLInputElement>(null);
+  const widthInputRef = useRef<HTMLInputElement>(null);
+  const buildingDescriptionInputRef = useRef<HTMLTextAreaElement>(null);
+
   const [selectedFloors, setSelectedFloors] = useState<
     { name: string; selected: boolean }[]
   >([]);
@@ -137,6 +142,29 @@ export const useBuildingPageModule = () => {
     if (buildingCode) fetchElevator(buildingCode);
   }
 
+  async function handleSaveBuilding() {
+    if (
+      !buildingCode ||
+      !lengthInputRef.current ||
+      !widthInputRef.current ||
+      !nameInputRef.current
+    )
+      throw new Error("Invalid data");
+
+    const building: Building = {
+      code: buildingCode,
+      maxDimensions: {
+        length: parseFloat(lengthInputRef.current?.value),
+        width: parseFloat(widthInputRef.current?.value),
+      },
+      name: nameInputRef.current?.value,
+      description: buildingDescriptionInputRef.current?.value,
+    };
+
+    await buildingService.updateBuilding(building);
+    fetchBuilding(buildingCode);
+  }
+
   return {
     building,
     elevator,
@@ -148,5 +176,10 @@ export const useBuildingPageModule = () => {
     brandInputRef,
     serialNumberInputRef,
     descriptionInputRef,
+    handleSaveBuilding,
+    nameInputRef,
+    lengthInputRef,
+    widthInputRef,
+    buildingDescriptionInputRef,
   };
 };

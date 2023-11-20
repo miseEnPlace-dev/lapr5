@@ -1,26 +1,39 @@
-@startuml _process-view
+@startuml process-view
 autonumber
+skinparam DefaultTextAlignment<<center>> center
+
 actor CM as "Campus Manager"
+box "<<system (C4>>\nVisualization"<<center>>
+  participant CMP as "UI Component" <<component (C4)>>
+  participant MOD as "Module" <<component (C4)>>
+  participant SRV as "Service" <<component (C4)>>
+  participant HTTP as "HTTP" <<component (C4)>>
+end box
 
-participant ROUTE as ":Router"
-participant CTRL as ":Module"
-participant SRV as ":Service"
-participant BUILD as ":building:Building"
+box "<<system (C4)>>\nMD Management" <<center>>#LightYellow
+  participant MDM as "MD Management" <<component (C4)>>
+end box
 
-CM -> ROUTE : asks to create a building
-activate ROUTE
+activate CM
 
-ROUTE -> CTRL : createBuilding(elevatorDTO)
-activate CTRL
-CTRL -> SRV : createBuilding(buildingDTO)
-activate SRV
-SRV -> BUILD** : create()
-SRV -> REPO : save(building)
-SRV --> CTRL : sucess(buildingDTO)
-deactivate SRV
-CTRL --> ROUTE : sucess(buildingDTO)
-deactivate CTRL
-ROUTE --> CM : returns confirmation message
-deactivate ROUTE
+CM -> CMP : asks to create a building
+activate CMP
+
+CM <-- CMP : asks for building data (code,name,description,max dimensions)
+deactivate CMP
+
+CM -> CMP : inputs required data
+activate HTTP
+
+HTTP -> MDM : POST /buildings
+activate MDM
+MDM --> HTTP : 201 (Created)
+deactivate MDM
+
+CM <-- CMP : returns confirmation message
+deactivate CMP
+
+
+deactivate CM
 
 @enduml

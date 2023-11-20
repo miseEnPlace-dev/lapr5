@@ -4,6 +4,7 @@ import * as THREE from "three";
 
 import CubeTexture from "./cubetexture.js";
 import Orientation from "./orientation.js";
+import { LOCAL_STORAGE_PREFIX } from "./thumb_raiser.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -47,6 +48,25 @@ export default class UserInterface extends GUI {
       thumbRaiser.topViewCamera.fogDensity =
         thumbRaiser.topViewCamera.initialFogDensity;
       this.fogParameters.density = thumbRaiser.activeViewCamera.fogDensity;
+
+      thumbRaiser.firstPersonViewCamera.checkBox.checked = true;
+      thumbRaiser.fixedViewCamera.checkBox.checked = true;
+      thumbRaiser.thirdPersonViewCamera.checkBox.checked = true;
+      thumbRaiser.topViewCamera.checkBox.checked = true;
+
+      localStorage.removeItem(LOCAL_STORAGE_PREFIX + "fixedViewCamera");
+      localStorage.removeItem(LOCAL_STORAGE_PREFIX + "firstPersonViewCamera");
+      localStorage.removeItem(LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera");
+      localStorage.removeItem(LOCAL_STORAGE_PREFIX + "topViewCamera");
+
+      [
+        thumbRaiser.fixedViewCamera,
+        thumbRaiser.firstPersonViewCamera,
+        thumbRaiser.thirdPersonViewCamera,
+        thumbRaiser.topViewCamera,
+      ].forEach((camera) => {
+        thumbRaiser.setViewportVisibility(camera);
+      });
     };
 
     const fontSize = "1.5vmin";

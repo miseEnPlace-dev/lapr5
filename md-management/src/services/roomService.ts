@@ -18,7 +18,7 @@ export default class RoomService implements IRoomService {
   constructor(
     @inject(TYPES.floorRepo) private floorRepo: IFloorRepo,
     @inject(TYPES.roomRepo) private roomRepo: IRoomRepo
-  ) {}
+  ) { }
 
   public async createRoom(roomDTO: IRoomDTO): Promise<Result<IRoomDTO>> {
     try {
@@ -64,7 +64,7 @@ export default class RoomService implements IRoomService {
           name: name.getValue(),
           description: description?.getValue(),
           dimensions: dimensions.getValue(),
-          floor,
+          floorCode: floor.code,
           category: category.getValue()
         });
 
@@ -102,6 +102,23 @@ export default class RoomService implements IRoomService {
       }, 0);
 
       return Result.ok<number>(floor.dimensions.width * floor.dimensions.length - occupiedArea);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async getFloorRooms(code: string): Promise<Result<IRoomDTO[]>> {
+    try {
+      const floor = await this.floorRepo.findByCode(FloorCode.create(code).getValue());
+
+      if (!floor) return Result.fail<IRoomDTO[]>('Floor does not exist');
+
+      const rooms = await this.roomRepo.findAllRoomsByFloor(floor);
+
+      if (!rooms) return Result.fail<IRoomDTO[]>('Rooms does not exist');
+
+      const roomsDTO = rooms.map(room => RoomMapper.toDTO(room) as IRoomDTO);
+      return Result.ok<IRoomDTO[]>(roomsDTO);
     } catch (e) {
       throw e;
     }

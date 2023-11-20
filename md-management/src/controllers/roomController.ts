@@ -6,6 +6,7 @@ import IRoomService from '@/services/IServices/IRoomService';
 import IRoomController from './IControllers/IRoomController';
 
 import { IRoomDTO } from '@/dto/IRoomDTO';
+import { Result } from '@/core/logic/Result';
 
 @injectable()
 export default class RoomController implements IRoomController {
@@ -25,6 +26,23 @@ export default class RoomController implements IRoomController {
 
       const floorDTO = roomOrError.getValue();
       return res.status(201).json(floorDTO);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  public async getFloorRooms(req: Request, res: Response, next: NextFunction) {
+    try {
+      const floorCode = req.params.floor;
+      const roomsOrError = (await this.roomServiceInstance.getFloorRooms(floorCode)) as Result<
+        IRoomDTO[]
+      >;
+
+      if (roomsOrError.isFailure)
+        return res.status(400).json({ message: roomsOrError.errorValue() });
+
+      const roomsDTO = roomsOrError.getValue();
+      return res.status(200).json(roomsDTO);
     } catch (e) {
       return next(e);
     }

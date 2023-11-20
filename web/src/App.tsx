@@ -6,11 +6,14 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import FloorEditor from "./FloorEditor";
 import { container } from "./inversify";
-import FloorPage from "./pages/BuildingFloorsPage";
+import FloorsPage from "./pages/BuildingFloorsPage";
 import BuildingPage from "./pages/BuildingPage";
+import ConnectorPage from "./pages/ConnectorPage";
+import FloorPage from "./pages/FloorPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
+import RoomPage from "./pages/RoomPage";
 import { RequireAuth } from "./utils/RequireAuth";
 
 function App() {
@@ -40,13 +43,37 @@ function App() {
               path="/buildings/:buildingCode/floors"
               element={
                 <RequireAuth>
+                  <FloorsPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/buildings/:buildingCode/floors/:floorCode"
+              element={
+                <RequireAuth>
                   <FloorPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/buildings/:buildingCode/floors/:floorCode/rooms"
+              element={
+                <RequireAuth>
+                  <RoomPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/connectors/:code"
+              element={
+                <RequireAuth>
+                  <ConnectorPage />
                 </RequireAuth>
               }
             />
             <Route path="/login" element={<LoginPage />} />
             <Route
-              path="/floor"
+              path="/floor-editor"
               element={
                 <RequireAuth>
                   <FloorEditor />

@@ -58,6 +58,10 @@ export default class BuildingRepo implements IBuildingRepo {
       buildingDocument.name = building.name?.value;
       buildingDocument.code = building.code?.value;
       buildingDocument.description = building.description?.value;
+      buildingDocument.maxDimensions = {
+        width: building.maxDimensions.width,
+        length: building.maxDimensions.length
+      };
       if (building.elevator)
         buildingDocument.elevator = ElevatorMapper.toPersistence(building.elevator);
       await buildingDocument.save();

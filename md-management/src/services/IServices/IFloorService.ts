@@ -12,4 +12,6 @@ export default interface IFloorService {
   uploadMap(floorCode: string, map: IFloorMapDTO): Promise<Result<IFloorMapDTO>>;
 
   getFloorWithBuildingCode(buildingCode: string, floorCode: string): Promise<Result<IFloorDTO>>;
+
+  getFloorWithCode(floorCode: string): Promise<Result<IFloorDTO>>;
 }

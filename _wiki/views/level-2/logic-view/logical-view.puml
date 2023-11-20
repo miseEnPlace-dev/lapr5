@@ -5,25 +5,28 @@ interface "Campus Manager UI" as CUI
 interface "Fleet Manager UI" as FUI
 interface "Task Manager UI" as TUI
 interface "User UI" as UUI
+interface "Filesystem API" as FS
 
 component "RobDroneGo System" <<component>> <<system (C4)>> {
   portin " " as P1
+  portout " " as P2
 
   Interface "API-Management" as API
   Interface "API-Planning" as PAPI
   
-  component "Visualization" as V <<component>> <<system (C4)>> {
+  component "Visualization" as V <<component>> <<container (C4)>> {
   }
 
-  component "MD Management" as MDM <<component>> <<system (C4)>> {
+  component "MD Management" as MDM <<component>> <<container (C4)>> {
   }
 
-  component "Planning" as P <<component>> <<system (C4)>> {
+  component "Planning" as P <<component>> <<container (C4)>> {
   }
 }
 
 
 V -- P1
+V -- P2
 MDM -up- API
 V --( API
 P --( API
@@ -35,5 +38,6 @@ CUI -- P1
 FUI -- P1
 TUI -- P1
 UUI -- P1
+P2 --( FS
 
 @enduml

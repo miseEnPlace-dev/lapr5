@@ -1,0 +1,63 @@
+@startuml logical-view
+
+top to bottom direction
+
+interface "MD API" as API
+interface "UI" as UI
+
+component "Visualization" as VIS <<component>> <<container (C4)>> {
+  portin "MD Management API" as P1
+  portin "UI API" as P2
+
+  Interface "Module API" as MODULE_API
+
+
+  folder "Frameworks & Drivers Layer" #80FFFF {
+    component "Routing" as ROUTE <<component>> {
+    }
+    component "Component" as COMPONENT <<component>> {
+    }
+    component "HTTP" as HTTP <<component>> {
+    }
+  }
+
+  Interface "HTTP API" AS HTTP_API
+
+  Interface "App Services API" AS SRV_API
+  Interface "Model API" AS MODEL_API
+
+  folder "Interface Adapters Layer" #80FF80 {
+    component "Module" as MODULE <<component>> {
+    }
+  }
+
+  folder "Application Business Rules" #FF8080 {
+    component "Application Service" as SRV <<component>> {
+    }
+  }
+
+  folder "Enterprise Business Rules" #FFC080 {
+    component "Domain Model DDD" as MODEL <<component>> {
+    }
+  }
+}
+
+API -- P1
+ROUTE -- P2
+UI -- P2
+
+P1 --- HTTP
+COMPONENT --( MODULE_API
+
+HTTP_API )-- SRV
+HTTP_API -up- HTTP
+
+MODULE -up- MODULE_API
+
+MODULE --( SRV_API
+SRV -up-( SRV_API
+
+SRV --( MODEL_API 
+MODEL -up- MODEL_API 
+
+@enduml

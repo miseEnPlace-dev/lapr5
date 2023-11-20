@@ -62,7 +62,7 @@ export default class Camera {
     // Convert viewport position and size from % to pixels
     let width = viewport.width;
     let height = viewport.height;
-    if (this.view != "mini-map") {
+    if (this.view !== "mini-map") {
       width *= windowWidth;
       height *= windowHeight;
     } else {
@@ -256,21 +256,21 @@ export default class Camera {
     }
 
     let south, north;
-    if (frame == "none" || frame.includes("south")) {
+    if (frame === "none" || frame.includes("south")) {
       south = {
         size: window.innerHeight,
         currentPosition: this.viewport.y,
       };
       this.snapPosition(south);
     }
-    if (frame == "none" || frame.includes("north")) {
+    if (frame === "none" || frame.includes("north")) {
       north = {
         size: window.innerHeight,
         currentPosition: this.viewport.y + this.viewport.height,
       };
       this.snapPosition(north);
     }
-    if (frame == "none") {
+    if (frame === "none") {
       if (south.minDelta < north.minDelta) {
         this.viewport.y = south.newPosition;
       } else {

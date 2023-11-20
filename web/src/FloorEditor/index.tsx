@@ -6,6 +6,15 @@ import "./index.css";
 import Orientation from "./orientation";
 import ThumbRaiser from "./thumb_raiser";
 
+const maps = [
+  "building-c-floor-1.json",
+  "building-d-floor-1.json",
+  "building-d-floor-2.json",
+  "Loquitas_5x5.json",
+  "Loquitas_10x10.json",
+  "Loquitas_20x20.json",
+];
+
 const FloorEditor: React.FC = () => {
   useEffect(() => {
     let thumbRaiser: ThumbRaiser;
@@ -215,12 +224,16 @@ const FloorEditor: React.FC = () => {
           selected: 1,
         }, // Cube texture parameters
         {
-          url: "./mazes/ckarzx_20x20_displacement.json",
-          designCredits:
-            "Maze designed by <a href='https://www.123rf.com/profile_ckarzx' target='_blank' rel='noopener'>ckarzx</a>.",
-          texturesCredits:
-            "Maze textures downloaded from <a href='https://www.texturecan.com/' target='_blank' rel='noopener'>TextureCan</a>.",
-          helpersColor: new THREE.Color(0xff0077),
+          mazes: maps.map((map) => ({
+            name: map,
+            url: "./mazes/" + map,
+            designCredits:
+              "Maze designed by <a href='https://www.123rf.com/profile_ckarzx' target='_blank' rel='noopener'>ckarzx</a>.",
+            texturesCredits:
+              "Maze textures downloaded from <a href='https://www.texturecan.com/' target='_blank' rel='noopener'>TextureCan</a>.",
+            helpersColor: new THREE.Color(0xff0077),
+          })),
+          selected: 0,
         }, // Maze parameters
         { helpersColor: new THREE.Color(0x0055ff) }, // Player parameters
         {
@@ -380,6 +393,24 @@ const FloorEditor: React.FC = () => {
             </tbody>
           </table>
         </div>
+        <div id="maps-panel">
+          <table className="views">
+            <tbody>
+              <tr>
+                <td>
+                  Map:
+                  <select id="maze">
+                    {maps.map((map, i) => (
+                      <option key={map} value={i}>
+                        {map}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div id="mouse-help-panel">
           <table className="mouse-help" id="mouse-help-table">
             <thead>
@@ -528,6 +559,10 @@ const FloorEditor: React.FC = () => {
               <tr>
                 <td></td>
                 <td>Fog</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>Change Perspective</td>
               </tr>
               <tr>
                 <th colSpan={2} style={{ textAlign: "left" }}>

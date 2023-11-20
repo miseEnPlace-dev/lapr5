@@ -10,4 +10,5 @@ export default interface IFloorController {
     res: Response,
     next: NextFunction
   ): Promise<Response | void>;
+  getFloorWithCode(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
 }

@@ -44,6 +44,10 @@ export default (app: Router) => {
     // #swagger.tags = ['Floors']
     ctrl.getFloors(req, res, next)
   );
+  route.get('/buildings/:building/floors/:code', (req, res, next) =>
+    // #swagger.tags = ['Floors']
+    ctrl.getFloorWithCode(req, res, next)
+  );
   route.post('/buildings/:building/floors', validate(floorCreateSchema), (req, res, next) =>
     // #swagger.tags = ['Floors']
     ctrl.createFloor(req, res, next)

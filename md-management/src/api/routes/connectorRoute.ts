@@ -49,6 +49,16 @@ export default (app: Router) => {
     ctrl.getConnectors(req, res, next)
   );
 
+  route.get('/connectors/:code', (req, res, next) =>
+    // #swagger.tags = ['Connectors']
+    // #swagger.summary = 'Get a connector'
+    // #swagger.description = 'Get a connector given its code'
+    // #swagger.parameters['code'] = { description: 'Connector code', in: 'path', required: true, type: 'string' }
+    // #swagger.responses[200] = { description: 'The connector' }
+    // #swagger.responses[400] = { description: 'Invalid input' }
+    ctrl.getConnectorByCode(req, res, next)
+  );
+
   route.post('/connectors', validate(connectorCreateSchema), (req, res, next) =>
     // #swagger.tags = ['Connectors']
     // #swagger.summary = 'Create a connector'

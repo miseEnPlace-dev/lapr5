@@ -8,6 +8,7 @@ import Wall from "./wall.ts";
 
 import { OBB } from "three/addons/math/OBB.js";
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
+import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
 /*
  * parameters = {
@@ -161,7 +162,7 @@ export default class Maze extends THREE.Group {
            *       2       |    Yes     |     No
            *       3       |    Yes     |    Yes
            */
-          if (this.map[i][j] == 2 || this.map[i][j] == 3) {
+          if (this.map[i][j] === 2 || this.map[i][j] === 3) {
             this.aabb[i][j][0] = new THREE.Box3();
             for (let k = 0; k < 2; k++) {
               geometry = wall.geometries[k].clone();
@@ -172,6 +173,7 @@ export default class Maze extends THREE.Group {
                   i - this.halfSize.depth
                 )
               );
+
               geometry.computeBoundingBox();
               geometry.boundingBox.applyMatrix4(
                 new THREE.Matrix4().makeScale(
@@ -187,7 +189,7 @@ export default class Maze extends THREE.Group {
               new THREE.Box3Helper(this.aabb[i][j][0], this.helpersColor)
             );
           }
-          if (this.map[i][j] == 1 || this.map[i][j] == 3) {
+          if (this.map[i][j] === 1 || this.map[i][j] === 3) {
             this.aabb[i][j][1] = new THREE.Box3();
             for (let k = 0; k < 2; k++) {
               geometry = wall.geometries[k].clone();
@@ -201,6 +203,7 @@ export default class Maze extends THREE.Group {
                   i - this.halfSize.depth + 0.5
                 )
               );
+
               geometry.computeBoundingBox();
               geometry.boundingBox.applyMatrix4(
                 new THREE.Matrix4().makeScale(
@@ -214,6 +217,99 @@ export default class Maze extends THREE.Group {
             }
             this.helper.add(
               new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor)
+            );
+          }
+          if (this.map[i][j] === 4) {
+            // load a glTF resource
+            const loader = new GLTFLoader();
+            const half = this.halfSize;
+
+            loader.load(
+              // resource URL
+              description.elevator.url,
+              // called when the resource is loaded
+              (gltf) => {
+                gltf.scene.scale.set(
+                  description.elevator.scale.x,
+                  description.elevator.scale.y,
+                  description.elevator.scale.z
+                );
+                gltf.scene.position.set(j - half.width, 0.5, i - half.depth);
+                gltf.scene.rotation.y = Math.PI / 2;
+                this.add(gltf.scene);
+              },
+              // called while loading is progressing
+              function (xhr) {
+                console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+              },
+              // called when loading has errors
+              function (error) {
+                console.log("An error happened", error);
+              }
+            );
+          }
+
+          if (this.map[i][j] === 11) {
+            this.aabb[i][j][0] = new THREE.Box3();
+            for (let k = 0; k < 2; k++) {
+              geometry = wall.geometries[k].clone();
+              geometry.applyMatrix4(
+                new THREE.Matrix4().makeRotationY(Math.PI / 2.0)
+              );
+              geometry.applyMatrix4(
+                new THREE.Matrix4().makeTranslation(
+                  j - this.halfSize.width,
+                  0.25,
+                  (i - this.halfSize.depth) * 2 + 1.5
+                )
+              );
+
+              geometry.computeBoundingBox();
+              geometry.boundingBox.applyMatrix4(
+                new THREE.Matrix4().makeScale(
+                  this.scale.x,
+                  this.scale.y,
+                  this.scale.z
+                )
+              );
+              geometry.scale(1, 1, 0.5);
+              geometries[k].push(geometry);
+              this.aabb[i][j][0].union(geometry.boundingBox);
+            }
+            this.helper.add(
+              new THREE.Box3Helper(this.aabb[i][j][0], this.helpersColor)
+            );
+
+            // load a glTF resource
+            const loader = new GLTFLoader();
+            const half = this.halfSize;
+
+            loader.load(
+              // resource URL
+              description.door.url,
+              // called when the resource is loaded
+              (gltf) => {
+                gltf.scene.scale.set(
+                  description.door.scale.x,
+                  description.door.scale.y,
+                  description.door.scale.z
+                );
+                gltf.scene.position.set(
+                  j - half.width,
+                  0,
+                  i - half.depth + 0.25
+                );
+                gltf.scene.rotation.y = Math.PI / 2;
+                this.add(gltf.scene);
+              },
+              // called while loading is progressing
+              function (xhr) {
+                console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+              },
+              // called when loading has errors
+              function (error) {
+                console.log("An error happened", error);
+              }
             );
           }
         }
@@ -309,8 +405,8 @@ export default class Maze extends THREE.Group {
     const row = indices[0] + offsets[0];
     const column = indices[1] + offsets[1];
     if (
-      this.map[row][column] == 2 - orientation ||
-      this.map[row][column] == 3
+      this.map[row][column] === 2 - orientation ||
+      this.map[row][column] === 3
     ) {
       const x =
         position.x -
@@ -331,10 +427,10 @@ export default class Maze extends THREE.Group {
     const row = indices[0] + offsets[0];
     const column = indices[1] + offsets[1];
     if (
-      this.map[row][column] == 2 - orientation ||
-      this.map[row][column] == 3
+      this.map[row][column] === 2 - orientation ||
+      this.map[row][column] === 3
     ) {
-      if (orientation != 0) {
+      if (orientation !== 0) {
         if (
           Math.abs(
             position.x -
@@ -356,6 +452,19 @@ export default class Maze extends THREE.Group {
         }
       }
     }
+    if (this.map[row][column] === 11) {
+      if (orientation !== 0) {
+        if (
+          Math.abs(
+            position.x -
+              (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
+          ) < radius
+        ) {
+          console.log("Collision with " + name + ".");
+          return true;
+        }
+      }
+    }
     return false;
   }
 
@@ -364,8 +473,9 @@ export default class Maze extends THREE.Group {
     const row = indices[0] + offsets[0];
     const column = indices[1] + offsets[1];
     if (
-      this.map[row][column] == 2 - orientation ||
-      this.map[row][column] == 3
+      this.map[row][column] === 2 - orientation ||
+      this.map[row][column] === 3 ||
+      this.map[row][column] === 11
     ) {
       if (obb.intersectsBox3(this.aabb[row][column][orientation])) {
         console.log("Collision with " + name + ".");

@@ -39,12 +39,27 @@ export const cubeTextureData = {
 };
 
 export const mazeData = {
-  url: "./mazes/Loquitas_10x10.json",
-  designCredits: "Maze designed by Cecília Fernandes and Nikita.",
-  texturesCredits:
-    "Maze textures downloaded from <a href='https://www.texturecan.com/' target='_blank' rel='noopener'>TextureCan</a>.",
-  scale: new THREE.Vector3(1.0, 1.0, 1.0),
-  helpersColor: new THREE.Color(0xffffff),
+  mazes: [
+    {
+      name: "'Loquitas' 10x10",
+      url: "./mazes/Loquitas_10x10.json",
+      designCredits: "Maze designed by Cecília Fernandes and Nikita.",
+      texturesCredits:
+        "Maze textures downloaded from <a href='https://www.texturecan.com/' target='_blank' rel='noopener'>TextureCan</a>.",
+      scale: new THREE.Vector3(1.0, 1.0, 1.0),
+      helpersColor: new THREE.Color(0xffffff),
+    },
+    {
+      name: "'Loquitas' 20x20",
+      url: "./mazes/Loquitas_20x20.json",
+      designCredits: "Maze designed by Cecília Fernandes and Nikita.",
+      texturesCredits:
+        "Maze textures downloaded from <a href='https://www.texturecan.com/' target='_blank' rel='noopener'>TextureCan</a>.",
+      scale: new THREE.Vector3(1.0, 1.0, 1.0),
+      helpersColor: new THREE.Color(0xffffff),
+    },
+  ],
+  selected: 0,
 };
 
 export const playerData = {
@@ -84,6 +99,7 @@ export const playerData = {
     wave: "KeyW",
     punch: "KeyP",
     thumbsUp: "KeyT",
+    changePerspective: "KeyV",
   },
 };
 

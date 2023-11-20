@@ -6,6 +6,6 @@ export interface IRoomPersistence {
     width: number;
     length: number;
   };
-  floor: string;
+  floorCode: string;
   category: string;
 }

@@ -1,0 +1,67 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor CM as "Campus Manager"
+
+box "«container (C4)»\nVisualization" <<center>>
+  participant C as "ListConnectorsComponent" <<component>>
+  participant SVC as "ConnectorService" <<component>>
+end box
+
+box "«container (C4)»\n MD Management " <<center>>#LightYellow
+  participant ROUTE as "ConnectorRoute" <<component>>
+end box
+
+activate CM
+
+CM -> C : wants to list connectors between 2 buildings
+activate C
+
+CM <-- C : asks for the buildings 1 & 2 codes
+deactivate C
+
+CM -> C : inserts the data
+activate C
+
+C -> SVC : getConnectorsBetweenBuildings(building1,building2)
+activate SVC
+
+SVC -> ROUTE : GET /connectors?buildingCodes[]={code1}&buildingCodes[]={code2}
+activate ROUTE
+
+alt there are connectors between those buildings
+  SVC <-- ROUTE : 200 OK
+  deactivate ROUTE
+
+  C <-- SVC : list of connectors
+  deactivate SVC
+
+  CM <-- C : shows the list
+else a building code does not exist
+  activate SVC
+  activate ROUTE
+
+  SVC <-- ROUTE : 400 Bad Request
+  deactivate ROUTE
+
+  C <-- SVC : error
+  deactivate SVC
+
+  CM <-- C : shows error message "One/both buildings does not exist."
+else there are not connectors between those buildings
+  activate SVC
+  activate ROUTE
+
+  SVC <-- ROUTE : 200 OK
+  deactivate ROUTE
+
+  C <-- SVC : empty list of connectors
+  deactivate SVC
+
+  CM <-- C : shows message "Could not find connectors."
+end
+
+deactivate CM
+
+@enduml

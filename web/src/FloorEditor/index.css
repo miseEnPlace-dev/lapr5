@@ -19,6 +19,23 @@ body {
   color: white;
 }
 
+select {
+  background: #000;
+}
+input {
+  background: #000;
+  text-align: center;
+}
+
+#maps-panel {
+  position: absolute;
+  right: 22vmin;
+  top: -49vh;
+  width: 100vmin;
+  font-size: 1.5vmin;
+  color: white;
+}
+
 #mouse-help-panel {
   display: none;
   position: absolute;

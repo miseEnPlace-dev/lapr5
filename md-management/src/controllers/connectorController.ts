@@ -42,6 +42,23 @@ export default class ConnectorController implements IConnectorController {
     }
   }
 
+  public async getConnectorByCode(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { code } = req.params;
+      const connectorOrError = await this.connectorSvcInstance.getConnectorByCode(code);
+
+      if (connectorOrError.isFailure)
+        return res.status(400).json({
+          errors: connectorOrError.errorValue()
+        });
+
+      const connectorDTO = connectorOrError.getValue();
+      return res.status(200).json(connectorDTO);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
   public async getConnectors(req: Request, res: Response, next: NextFunction) {
     try {
       let connectorsOrError: Result<IConnectorDTO[]>;

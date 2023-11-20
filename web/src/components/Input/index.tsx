@@ -28,7 +28,7 @@ const Input: React.FC<InputProps> = ({
       </label>
       {onChange === undefined ? (
         <input
-          className="w-full rounded-lg border border-slate-500 bg-slate-100 px-4 py-2.5
+          className="w-full rounded-lg border border-slate-500 bg-slate-100 px-4 py-2.5 text-left
           disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500"
           placeholder={placeholder}
           type={type}
@@ -40,7 +40,7 @@ const Input: React.FC<InputProps> = ({
         />
       ) : (
         <input
-          className="w-full rounded-lg border border-slate-500 bg-slate-100 px-4 py-2.5 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500"
+          className="w-full rounded-lg border border-slate-500 bg-slate-100 px-4 py-2.5 text-left disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500"
           placeholder={placeholder}
           type={type}
           name={placeholder}

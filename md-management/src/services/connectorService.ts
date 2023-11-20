@@ -91,6 +91,21 @@ export default class ConnectorService implements IConnectorService {
     }
   }
 
+  public async getConnectorByCode(codeStr: string) {
+    try {
+      const code = ConnectorCode.create(codeStr).getValue();
+      const connector = await this.connectorRepo.findByCode(code);
+
+      if (!connector) return Result.fail<IConnectorDTO>('Connector not found');
+
+      const dto = ConnectorMapper.toDTO(connector);
+
+      return Result.ok<IConnectorDTO>(dto);
+    } catch (e) {
+      throw e;
+    }
+  }
+
   public async getConnectorsBetweenBuildings(code1: string, code2: string) {
     try {
       const buildingCode1 = ConnectorCode.create(code1).getValue();

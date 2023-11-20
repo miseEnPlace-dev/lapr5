@@ -11,12 +11,13 @@ import { container } from '@/loaders/inversify';
 import { TYPES } from '@/loaders/inversify/types';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
+import { FloorCode } from '@/domain/floor/floorCode';
 
 export class RoomMapper extends Mapper<Room> {
   public static toDTO(room: Room): IRoomDTO {
     return {
       name: room.name.value,
-      floorCode: room.floor.code.value,
+      floorCode: room.floorCode.value,
       description: room.description?.value,
       dimensions: {
         width: room.dimensions.width,
@@ -32,7 +33,9 @@ export class RoomMapper extends Mapper<Room> {
 
     const repoFloor = container.get<IFloorRepo>(TYPES.floorRepo);
 
-    const floor = await repoFloor.findByDomainId(room.floor);
+    const floorCode = FloorCode.create(room.floorCode).getValue();
+
+    const floor = await repoFloor.findByCode(floorCode);
     if (!floor) throw new Error('Floor not found');
 
     const roomDimensionsOrError = RoomDimensions.create(width, length);
@@ -48,7 +51,7 @@ export class RoomMapper extends Mapper<Room> {
         name,
         description,
         dimensions: roomDimensionsOrError.getValue(),
-        floor,
+        floorCode,
         category
       },
       new UniqueEntityID(room.domainId)
@@ -68,7 +71,7 @@ export class RoomMapper extends Mapper<Room> {
         width: room.dimensions.width,
         length: room.dimensions.length
       },
-      floor: room.floor.id.toString(),
+      floorCode: room.floorCode.value,
       category: room.category.value
     };
   }
