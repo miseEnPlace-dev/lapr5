@@ -1,6 +1,9 @@
 import { Device } from "@/model/Device";
 
 export interface IDeviceService {
-  getDevicesRobots(): Promise<Device[]>;
+  getDevicesRobots(
+    filterStr?: string[],
+    value?: string[]
+  ): Promise<Device[]>;
   createDevice(device: Device): Promise<Device>;
 }

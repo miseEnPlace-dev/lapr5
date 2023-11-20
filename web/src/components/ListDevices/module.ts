@@ -11,6 +11,8 @@ export const useListDeviceModule = () => {
     TYPES.deviceService
   );
   const [devices, setDevices] = useState<Device[]>([]);
+  const [filters, setFilters] = useState<string[] | null>(null);
+  const [values, setValues] = useState<string[] | null>(null);
 
   const codeInputRef = useRef<HTMLInputElement>(null);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
@@ -18,10 +20,25 @@ export const useListDeviceModule = () => {
   const serialNumberInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
+  const deviceTaskFilterInputRef = useRef<HTMLInputElement>(null);
+  const deviceTaskFilterValueInputRef = useRef<HTMLInputElement>(null);
+  const deviceModelDesignationFilterInputRef = useRef<HTMLInputElement>(null);
+  const deviceModelDesignationFilterValueInputRef = useRef<HTMLInputElement>(null);
+
   const fetchDevices = useCallback(async () => {
-    const devices = await deviceService.getDevicesRobots();
-    console.log(devices);
-    setDevices(devices);
+    try {
+
+      let devices: Device[];
+      if (!filters || !values)
+        devices = await deviceService.getDevicesRobots();
+      else devices = await deviceService.getDevicesRobots(filters, values);
+
+      console.log(devices)
+
+      setDevices(devices);
+    } catch (e) {
+      setDevices([]);
+    }
   }, [deviceService]);
 
   useEffect(() => {
@@ -56,5 +73,13 @@ export const useListDeviceModule = () => {
     modelCodeInputRef,
     serialNumberInputRef,
     descriptionInputRef,
+    filters,
+    setFilters,
+    values,
+    setValues,
+    deviceTaskFilterInputRef,
+    deviceTaskFilterValueInputRef,
+    deviceModelDesignationFilterInputRef,
+    deviceModelDesignationFilterValueInputRef,
   };
 };
