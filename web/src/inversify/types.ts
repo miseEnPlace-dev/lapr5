@@ -4,6 +4,7 @@ export const TYPES = {
   elevatorService: Symbol.for("ElevatorService"),
   floorService: Symbol.for("FloorService"),
   deviceModelService: Symbol.for("DeviceModelService"),
+  deviceService: Symbol.for("DeviceService"),
   roomService: Symbol.for("RoomService"),
 
   api: Symbol.for("Api"),
