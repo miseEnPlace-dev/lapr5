@@ -33,7 +33,7 @@ export class DeviceService implements IDeviceService {
 
   async getDevice(deviceCode: string): Promise<Device> {
     const response = await this.http
-      .get<Device>(`/devices/robots/${deviceCode}`)
+      .get<Device>(`/devices/${deviceCode}`)
       .catch((error) => {
         throw error.message;
       });
@@ -41,6 +41,20 @@ export class DeviceService implements IDeviceService {
     if (response.status === 400) throw new Error("Something went wrong");
 
     const data = response.data;
+    return data;
+  }
+
+  async inhibitDevice(deviceCode: string): Promise<Device> {
+    const response = await this.http
+      .patch<Device>(`/devices/${deviceCode}`, {})
+      .catch((error) => {
+        throw error.message;
+      });
+
+    if (response.status === 400) throw new Error("Something went wrong");
+
+    const data = response.data;
+
     return data;
   }
 }

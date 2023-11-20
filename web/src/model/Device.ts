@@ -4,4 +4,5 @@ export interface Device {
   modelCode: string;
   serialNumber: string;
   description?: string;
+  isAvailable: boolean;
 }

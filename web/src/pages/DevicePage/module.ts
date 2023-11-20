@@ -48,7 +48,11 @@ export const useBuildingPageModule = () => {
   }
 
   async function handleInhibitDevice() {
-    // TODO
+    if (!deviceCode) return;
+
+    await deviceService.inhibitDevice(deviceCode);
+
+    fetchDevice(deviceCode);
   }
 
   return {
