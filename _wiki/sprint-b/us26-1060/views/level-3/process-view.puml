@@ -1,0 +1,50 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor CM as "Campus Manager"
+box "<<system (C4>>\nVisualization"<<center>>
+  participant CMP as "UI Component" <<component (C4)>>
+  participant MOD as "Module" <<component (C4)>>
+  participant SRV as "Service" <<component (C4)>>
+  participant HTTP as "HTTP" <<component (C4)>>
+end box
+
+box "<<system (C4)>>\nMD Management" <<center>>#LightYellow
+  participant MDM as "MD Management" <<component (C4)>>
+end box
+
+activate CM
+
+CM -> CMP : asks to list all buildings
+activate CMP
+
+activate CMP
+CMP -> MOD : list all buildings
+activate MOD
+MOD -> SRV : get all buildings
+activate SRV
+SRV -> HTTP : get('/buildings')
+
+activate HTTP
+
+HTTP -> MDM : GET /buildings
+activate MDM
+MDM --> HTTP : 200 (buildings)
+deactivate MDM
+
+HTTP --> SRV : buildings
+deactivate HTTP
+
+SRV --> MOD : buildings
+deactivate SRV
+MOD --> CMP : buildings
+deactivate MOD
+
+CM <-- CMP : returns all buildings
+deactivate CMP
+
+
+deactivate CM
+
+@enduml
