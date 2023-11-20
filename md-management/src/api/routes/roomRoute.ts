@@ -41,5 +41,10 @@ export default (app: Router) => {
     ctrl.getFloorRooms(req, res, next)
   );
 
+  route.get('/buildings/:building/floors/:floor/rooms/:room', (req, res, next) =>
+    // #swagger.tags = ['Rooms']
+    ctrl.getRoom(req, res, next)
+  );
+
   app.use(route);
 };
