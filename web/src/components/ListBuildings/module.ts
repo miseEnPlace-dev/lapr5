@@ -9,6 +9,7 @@ import { IBuildingService } from "../../service/IService/IBuildingService";
 export const useListBuildingsModule = () => {
   const buildingService = useInjection<IBuildingService>(TYPES.buildingService);
   const [buildings, setBuildings] = useState<Building[]>([]);
+  const [filters, setFilters] = useState<string[] | null>(null);
 
   const codeInputRef = useRef<HTMLInputElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -17,9 +18,16 @@ export const useListBuildingsModule = () => {
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
   const fetchBuildings = useCallback(async () => {
-    const b = await buildingService.getBuildings();
-    setBuildings(b);
-  }, [buildingService]);
+    try {
+      let b: Building[];
+      if (!filters) b = await buildingService.getBuildings();
+      else b = await buildingService.getBuildings(filters);
+
+      setBuildings(b);
+    } catch (e) {
+      setBuildings([]);
+    }
+  }, [buildingService, filters]);
 
   useEffect(() => {
     fetchBuildings();
@@ -55,5 +63,7 @@ export const useListBuildingsModule = () => {
     widthInputRef,
     descriptionInputRef,
     handleSave,
+    filters,
+    setFilters,
   };
 };
