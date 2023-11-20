@@ -69,4 +69,20 @@ export default class DeviceController implements IDeviceController {
       return next(e);
     }
   }
+
+  public async getDeviceRobot(req: Request, res: Response, next: NextFunction) {
+    try {
+      const deviceOrError = (await this.deviceServiceInstance.getDeviceRobotWithCode(
+        req.params.deviceCode
+      )) as Result<IDeviceDTO>;
+
+      if (deviceOrError.isFailure)
+        return res.status(400).json({ message: deviceOrError.errorValue() });
+
+      const deviceDTO = deviceOrError.getValue();
+      return res.status(200).json(deviceDTO);
+    } catch (e) {
+      return next(e);
+    }
+  }
 }
