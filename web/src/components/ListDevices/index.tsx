@@ -21,6 +21,7 @@ const ListDevices: React.FC = () => {
     nicknameInputRef,
     descriptionInputRef,
     serialNumberInputRef,
+    deviceModels,
     setFilters,
     filters,
     values,
@@ -117,16 +118,16 @@ const ListDevices: React.FC = () => {
           transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
           key={i}
           onClick={() => navigate(`/devices/robots/${device.code}`)}
-          className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
+          className={`flex w-full items-center gap-x-10 ${device.isAvailable ? "bg-slate-200" : "bg-red-100"} px-12 py-8`}
         >
           <h2 className="text-6xl font-bold">{device.code}</h2>
           <div className="flex flex-col">
-            <h3 className="text-left text-2xl font-bold">{device.modelCode}</h3>
+            <h3 className="text-left text-2xl font-bold">{device.nickname}</h3>
             <div className="text-left text-sm text-slate-600">
-              {device.nickname}
-              {device.serialNumber && (
-                <span>&nbsp;&middot; {device.serialNumber}</span>
-              )}
+              {device.description}
+              {!device.isAvailable ? (
+                <span>&nbsp;&middot; INACTIVE</span>
+              ): <span>&nbsp;&middot; ACTIVE</span>}
             </div>
           </div>
         </motion.button>
