@@ -10,6 +10,7 @@ import TextArea from "../TextArea";
 import { useListDeviceModule } from "./module";
 
 import { AxiosError } from "axios";
+import InputSelect from "../InputSelect";
 
 const ListDevices: React.FC = () => {
   const navigate = useNavigate();
@@ -157,10 +158,12 @@ const ListDevices: React.FC = () => {
               placeholder="Code"
               inputRef={codeInputRef}
             />
-            <Input
+            <InputSelect
               className="w-full"
-              placeholder="Model Code"
+              name="Device Model"
+              placeholder="Device Model"
               inputRef={modelCodeInputRef}
+              options={deviceModels}
             />
             <Input
               className="w-full"

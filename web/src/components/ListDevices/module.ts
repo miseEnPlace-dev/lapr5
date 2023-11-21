@@ -19,7 +19,7 @@ export const useListDeviceModule = () => {
 
   const codeInputRef = useRef<HTMLInputElement>(null);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
-  const modelCodeInputRef = useRef<HTMLInputElement>(null);
+  const modelCodeInputRef = useRef<HTMLSelectElement>(null);
   const serialNumberInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -50,6 +50,7 @@ export const useListDeviceModule = () => {
 
   useEffect(() => {
     fetchDevices();
+    fetchDeviceModels();
   }, [fetchDevices]);
 
   const handleSave = async () => {
