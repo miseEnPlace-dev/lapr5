@@ -39,11 +39,6 @@ export const useMenuOptions = () => {
         onClick: () => setActiveOption("elevators"),
       });
       options.push({
-        label: "Rooms",
-        icon: RoomIcon,
-        onClick: () => setActiveOption("rooms"),
-      });
-      options.push({
         label: "Connectors",
         icon: BridgeIcon,
         onClick: () => setActiveOption("connectors"),
