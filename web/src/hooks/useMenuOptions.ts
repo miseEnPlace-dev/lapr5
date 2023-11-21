@@ -10,7 +10,6 @@ import {
   HomeIcon,
   LogoutIcon,
   RobotIcon,
-  RoomIcon,
 } from "../styles/Icons";
 
 export const useMenuOptions = () => {
