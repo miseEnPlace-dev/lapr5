@@ -5,6 +5,7 @@ import AuthContext from "../context/AuthContext";
 import {
   BridgeIcon,
   BuildingIcon,
+  DeviceModelIcon,
   ElevatorIcon,
   HomeIcon,
   LogoutIcon,
@@ -38,11 +39,6 @@ export const useMenuOptions = () => {
         onClick: () => setActiveOption("elevators"),
       });
       options.push({
-        label: "Rooms",
-        icon: RoomIcon,
-        onClick: () => setActiveOption("rooms"),
-      });
-      options.push({
         label: "Connectors",
         icon: BridgeIcon,
         onClick: () => setActiveOption("connectors"),
@@ -52,7 +48,7 @@ export const useMenuOptions = () => {
     if (role === "fleet") {
       options.push({
         label: "Device Models",
-        icon: RobotIcon,
+        icon: DeviceModelIcon,
         onClick: () => setActiveOption("device-models"),
       });
       options.push({

@@ -2,15 +2,18 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useInjection } from "inversify-react";
 
 import { TYPES } from "../../inversify/types";
-
-import { IDeviceService } from "@/service/IService/IDeviceService";
 import { Device } from "@/model/Device";
+import { DeviceModel } from "@/model/DeviceModel";
+import { IDeviceModelService } from "@/service/IService/IDeviceModelService";
+import { IDeviceService } from "@/service/IService/IDeviceService";
 
 export const useListDeviceModule = () => {
-  const deviceService = useInjection<IDeviceService>(
-    TYPES.deviceService
+  const deviceService = useInjection<IDeviceService>(TYPES.deviceService);
+  const deviceModelService = useInjection<IDeviceModelService>(
+    TYPES.deviceModelService
   );
   const [devices, setDevices] = useState<Device[]>([]);
+  const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]);
   const [filters, setFilters] = useState<string[] | null>(null);
   const [values, setValues] = useState<string[] | null>(null);
 
@@ -23,23 +26,27 @@ export const useListDeviceModule = () => {
   const deviceTaskFilterInputRef = useRef<HTMLInputElement>(null);
   const deviceTaskFilterValueInputRef = useRef<HTMLInputElement>(null);
   const deviceModelDesignationFilterInputRef = useRef<HTMLInputElement>(null);
-  const deviceModelDesignationFilterValueInputRef = useRef<HTMLInputElement>(null);
+  const deviceModelDesignationFilterValueInputRef =
+    useRef<HTMLInputElement>(null);
 
   const fetchDevices = useCallback(async () => {
     try {
-
       let devices: Device[];
-      if (!filters || !values)
-        devices = await deviceService.getDevicesRobots();
+      if (!filters || !values) devices = await deviceService.getDevicesRobots();
       else devices = await deviceService.getDevicesRobots(filters, values);
 
-      console.log(devices)
+      console.log(devices);
 
       setDevices(devices);
     } catch (e) {
       setDevices([]);
     }
   }, [deviceService]);
+
+  const fetchDeviceModels = useCallback(async () => {
+    const deviceModels = await deviceModelService.getDeviceModels();
+    setDeviceModels(deviceModels);
+  }, [deviceModelService]);
 
   useEffect(() => {
     fetchDevices();
@@ -52,7 +59,7 @@ export const useListDeviceModule = () => {
 
     if (!nicknameInputRef.current) {
       throw new Error("Nickname is required");
-    };
+    }
 
     const device: Device = {
       code: codeInputRef.current.value,
@@ -74,6 +81,7 @@ export const useListDeviceModule = () => {
     modelCodeInputRef,
     serialNumberInputRef,
     descriptionInputRef,
+    deviceModels,
     filters,
     setFilters,
     values,
