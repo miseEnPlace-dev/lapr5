@@ -5,9 +5,9 @@ export interface IFloorMapDTO {
       depth: number;
     };
     map: number[][];
-    exits: number[][];
-    elevator: number[];
-    exitLocation: number[];
+    exits: { x: number; y: number }[];
+    elevator: { x: number; y: number };
+    exitLocation: { x: number; y: number };
   };
   player: {
     initialPosition: number[];
@@ -51,7 +51,7 @@ export interface IFloorMapDTO {
       };
       normal: {
         url: string;
-        tipo: number;
+        type: number;
         scale: {
           x: number;
           y: number;
@@ -103,7 +103,7 @@ export interface IFloorMapDTO {
       };
       normal: {
         url: string;
-        tipo: number;
+        type: number;
         scale: {
           x: number;
           y: number;

@@ -27,7 +27,7 @@ interface FloorMapGroundProps {
     };
     normal: {
       url: string;
-      tipo: number;
+      type: number;
       scale: {
         x: number;
         y: number;
@@ -81,7 +81,7 @@ export class FloorMapGround extends Entity<FloorMapGroundProps> {
     };
     normal: {
       url: string;
-      tipo: number;
+      type: number;
       scale: {
         x: number;
         y: number;

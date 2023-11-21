@@ -25,15 +25,15 @@ export class FloorMapMapper extends Mapper<FloorMap> {
           depth: floorMap.floorMaze.size.depth
         },
         map: floorMap.floorMaze.map.matrix,
-        exits: floorMap.floorMaze.exits.exits.map(exit => [exit.x, exit.y] as [number, number]),
-        elevator: [floorMap.floorMaze.elevator.x, floorMap.floorMaze.elevator.y] as [
-          number,
-          number
-        ],
-        exitLocation: [floorMap.floorMaze.exitLocation.x, floorMap.floorMaze.exitLocation.y] as [
-          number,
-          number
-        ]
+        exits: floorMap.floorMaze.exits.exits,
+        elevator: {
+          x: floorMap.floorMaze.elevator.x,
+          y: floorMap.floorMaze.elevator.y
+        },
+        exitLocation: {
+          x: floorMap.floorMaze.exitLocation.x,
+          y: floorMap.floorMaze.exitLocation.y
+        }
       },
       player: {
         initialPosition: [floorMap.player.initialPosition.x, floorMap.player.initialPosition.y] as [
@@ -80,7 +80,7 @@ export class FloorMapMapper extends Mapper<FloorMap> {
           },
           normal: {
             url: floorMap.wall.maps.normal.url,
-            tipo: floorMap.wall.maps.normal.tipo,
+            type: floorMap.wall.maps.normal.type,
             scale: {
               x: floorMap.wall.maps.normal.scale.x,
               y: floorMap.wall.maps.normal.scale.y
@@ -132,7 +132,7 @@ export class FloorMapMapper extends Mapper<FloorMap> {
           },
           normal: {
             url: floorMap.wall.maps.normal.url,
-            tipo: floorMap.wall.maps.normal.tipo,
+            type: floorMap.wall.maps.normal.type,
             scale: {
               x: floorMap.wall.maps.normal.scale.x,
               y: floorMap.wall.maps.normal.scale.y
@@ -236,7 +236,7 @@ export class FloorMapMapper extends Mapper<FloorMap> {
         },
         normal: {
           url: floorMap.wall.maps.normal.url,
-          tipo: floorMap.wall.maps.normal.tipo,
+          type: floorMap.wall.maps.normal.tipo,
           scale: {
             x: floorMap.wall.maps.normal.scale.x,
             y: floorMap.wall.maps.normal.scale.y
@@ -289,7 +289,7 @@ export class FloorMapMapper extends Mapper<FloorMap> {
         },
         normal: {
           url: floorMap.wall.maps.normal.url,
-          tipo: floorMap.wall.maps.normal.tipo,
+          type: floorMap.wall.maps.normal.tipo,
           scale: {
             x: floorMap.wall.maps.normal.scale.x,
             y: floorMap.wall.maps.normal.scale.y
@@ -389,7 +389,7 @@ export class FloorMapMapper extends Mapper<FloorMap> {
           },
           normal: {
             url: floorMap.wall.maps.normal.url,
-            tipo: floorMap.wall.maps.normal.tipo,
+            tipo: floorMap.wall.maps.normal.type,
             scale: {
               x: floorMap.wall.maps.normal.scale.x,
               y: floorMap.wall.maps.normal.scale.y
@@ -441,7 +441,7 @@ export class FloorMapMapper extends Mapper<FloorMap> {
           },
           normal: {
             url: floorMap.wall.maps.normal.url,
-            tipo: floorMap.wall.maps.normal.tipo,
+            tipo: floorMap.wall.maps.normal.type,
             scale: {
               x: floorMap.wall.maps.normal.scale.x,
               y: floorMap.wall.maps.normal.scale.y

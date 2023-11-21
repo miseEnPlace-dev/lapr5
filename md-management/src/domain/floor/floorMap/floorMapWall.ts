@@ -22,7 +22,7 @@ interface FloorMapWallProps {
     };
     normal: {
       url: string;
-      tipo: number;
+      type: number;
       scale: {
         x: number;
         y: number;
@@ -72,7 +72,7 @@ export class FloorMapWall extends Entity<FloorMapWallProps> {
     };
     normal: {
       url: string;
-      tipo: number;
+      type: number;
       scale: {
         x: number;
         y: number;
