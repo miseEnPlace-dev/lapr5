@@ -14,4 +14,12 @@ export interface IFloorMapPersistence {
     initialPosition: { x: number; y: number };
     initialDirection: number;
   };
+  door: {
+    url: string;
+    scale: {
+      x: number;
+      y: number;
+      z: number;
+    };
+  };
 }

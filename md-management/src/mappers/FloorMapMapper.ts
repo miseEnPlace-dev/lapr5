@@ -10,7 +10,8 @@ import { FloorMazeExitLocation } from '@/domain/floor/floorMap/floorMaze/floorMa
 import { FloorMazeExits } from '@/domain/floor/floorMap/floorMaze/floorMazeExits';
 import { FloorMazeMatrix } from '@/domain/floor/floorMap/floorMaze/floorMazeMatrix';
 import { FloorMaze } from '@/domain/floor/floorMap/floorMaze/floorMaze';
-import { FLoorMapPlayer } from '@/domain/floor/floorMap/floorMapPlayer';
+import { FloorMapPlayer } from '@/domain/floor/floorMap/floorMapPlayer';
+import { FloorMapDoor } from '@/domain/floor/floorMap/floorMapDoor';
 
 export class FloorMapMapper extends Mapper<FloorMap> {
   public static toDTO(floorMap: FloorMap): IFloorMapDTO {
@@ -37,6 +38,14 @@ export class FloorMapMapper extends Mapper<FloorMap> {
           number
         ],
         initialDirection: floorMap.player.initialDirection
+      },
+      door: {
+        url: floorMap.door.url,
+        scale: {
+          x: floorMap.door.scale.x,
+          y: floorMap.door.scale.y,
+          z: floorMap.door.scale.z
+        }
       }
     };
   }
@@ -69,7 +78,18 @@ export class FloorMapMapper extends Mapper<FloorMap> {
       elevator
     }).getValue();
 
-    const player = FLoorMapPlayer.create({
+    const door = FloorMapDoor.create({
+      url: floorMap.door.url,
+      scale: {
+        x: floorMap.door.scale.x,
+        y: floorMap.door.scale.y,
+        z: floorMap.door.scale.z
+      }
+    });
+
+    console.log(floorMap);
+
+    const player = FloorMapPlayer.create({
       initialPosition: {
         x: floorMap.player.initialPosition.x,
         y: floorMap.player.initialPosition.y
@@ -78,7 +98,7 @@ export class FloorMapMapper extends Mapper<FloorMap> {
     });
 
     const floorMapOrError = FloorMap.create(
-      { floorMaze, player },
+      { floorMaze, player, door },
       new UniqueEntityID(floorMap.domainId)
     );
 
@@ -88,7 +108,7 @@ export class FloorMapMapper extends Mapper<FloorMap> {
   }
 
   public static toPersistence(floorMap: FloorMap): IFloorMapPersistence {
-    console.log(floorMap.player.initialPosition);
+    console.log(floorMap.door);
     return {
       domainId: floorMap.id.toString(),
       maze: {
@@ -113,6 +133,14 @@ export class FloorMapMapper extends Mapper<FloorMap> {
           y: floorMap.player.initialPosition.y
         },
         initialDirection: floorMap.player.initialDirection
+      },
+      door: {
+        url: floorMap.door.url,
+        scale: {
+          x: floorMap.door.scale.x,
+          y: floorMap.door.scale.y,
+          z: floorMap.door.scale.z
+        }
       }
     };
   }

@@ -21,7 +21,8 @@ import { inject, injectable } from 'inversify';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import IConnectorRepo from './IRepos/IConnectorRepo';
 import { FloorMaze } from '@/domain/floor/floorMap/floorMaze/floorMaze';
-import { FLoorMapPlayer } from '@/domain/floor/floorMap/floorMapPlayer';
+import { FloorMapPlayer } from '@/domain/floor/floorMap/floorMapPlayer';
+import { FloorMapDoor } from '@/domain/floor/floorMap/floorMapDoor';
 
 @injectable()
 export default class FloorService implements IFloorService {
@@ -208,14 +209,24 @@ export default class FloorService implements IFloorService {
 
       if (floorMaze.isFailure) return Result.fail<IFloorMapDTO>(floorMaze.error as string);
 
-      const player = FLoorMapPlayer.create({
+      const player = FloorMapPlayer.create({
         initialPosition: { x: map.player.initialPosition[0], y: map.player.initialPosition[1] },
         initialDirection: map.player.initialDirection
       });
 
+      const door = FloorMapDoor.create({
+        url: map.door.url,
+        scale: {
+          x: map.door.scale.x,
+          y: map.door.scale.y,
+          z: map.door.scale.z
+        }
+      });
+
       const mapOrError = FloorMap.create({
         floorMaze: floorMaze.getValue(),
-        player
+        player,
+        door
       });
       if (mapOrError.isFailure) return Result.fail<IFloorMapDTO>(mapOrError.error as string);
 

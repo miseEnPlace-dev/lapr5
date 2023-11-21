@@ -34,13 +34,15 @@ export class FloorMapper extends Mapper<Floor> {
     const description = floor.description
       ? FloorDescription.create(floor.description).getValue()
       : undefined;
+    const map = floor.map ? await FloorMapMapper.toDomain(floor.map) : null;
 
     const floorOrError = Floor.create(
       {
         code,
         description,
         buildingCode,
-        dimensions: floorDimensionsOrError.getValue()
+        dimensions: floorDimensionsOrError.getValue(),
+        map: map === null ? undefined : map
       },
       new UniqueEntityID(floor.domainId)
     );
@@ -49,13 +51,6 @@ export class FloorMapper extends Mapper<Floor> {
 
     if (floorOrError.isFailure) {
       return null;
-    }
-
-    if (floor.map && floorOrError.getValue().map !== null) {
-      const map = await FloorMapMapper.toDomain(floor.map);
-      if (map !== null) {
-        floorOrError.getValue().map = map;
-      }
     }
 
     return floorOrError.getValue();
@@ -70,7 +65,8 @@ export class FloorMapper extends Mapper<Floor> {
       dimensions: {
         width: floor.dimensions.width,
         length: floor.dimensions.length
-      }
+      },
+      map: floor.map ? FloorMapMapper.toPersistence(floor.map) : undefined
     };
   }
 }

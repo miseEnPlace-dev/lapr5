@@ -38,6 +38,14 @@ const FloorMapSchema = new mongoose.Schema({
       y: Number
     },
     initialDirection: Number
+  },
+  door: {
+    url: String,
+    scale: {
+      x: Number,
+      y: Number,
+      z: Number
+    }
   }
 });
 

@@ -2,15 +2,17 @@ import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
 import { FloorMaze } from './floorMaze/floorMaze';
 import { Entity } from '@/core/domain/Entity';
 import { Result } from '@/core/logic/Result';
-import { FLoorMapPlayer } from './floorMapPlayer';
+import { FloorMapPlayer } from './floorMapPlayer';
+import { FloorMapDoor } from './floorMapDoor';
 
-interface floorMapProps {
+interface FloorMapProps {
   floorMaze: FloorMaze;
-  player: FLoorMapPlayer;
+  player: FloorMapPlayer;
+  door: FloorMapDoor;
 }
 
-export class FloorMap extends Entity<floorMapProps> {
-  private constructor(props: floorMapProps, id?: UniqueEntityID) {
+export class FloorMap extends Entity<FloorMapProps> {
+  private constructor(props: FloorMapProps, id?: UniqueEntityID) {
     super(props, id);
   }
 
@@ -18,15 +20,19 @@ export class FloorMap extends Entity<floorMapProps> {
     return this.props.floorMaze;
   }
 
-  get player(): FLoorMapPlayer {
+  get player(): FloorMapPlayer {
     return this.props.player;
+  }
+
+  get door(): FloorMapDoor {
+    return this.props.door;
   }
 
   get id(): UniqueEntityID {
     return this._id;
   }
 
-  public static create(props: floorMapProps, id?: UniqueEntityID): Result<FloorMap> {
+  public static create(props: FloorMapProps, id?: UniqueEntityID): Result<FloorMap> {
     const floorMap = new FloorMap(props, id);
 
     return Result.ok<FloorMap>(floorMap);

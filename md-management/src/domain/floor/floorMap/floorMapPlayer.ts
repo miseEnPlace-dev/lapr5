@@ -8,7 +8,7 @@ interface FloorMapPlayerProps {
   initialDirection: number;
 }
 
-export class FLoorMapPlayer extends Entity<FloorMapPlayerProps> {
+export class FloorMapPlayer extends Entity<FloorMapPlayerProps> {
   private constructor(props: FloorMapPlayerProps) {
     super(props);
   }
@@ -21,7 +21,7 @@ export class FLoorMapPlayer extends Entity<FloorMapPlayerProps> {
     return this.props.initialDirection;
   }
 
-  public static create(props: FloorMapPlayerProps): FLoorMapPlayer {
-    return new FLoorMapPlayer(props);
+  public static create(props: FloorMapPlayerProps): FloorMapPlayer {
+    return new FloorMapPlayer(props);
   }
 }
