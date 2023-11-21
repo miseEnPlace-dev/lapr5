@@ -8,6 +8,7 @@ import { FloorDescription } from '@/domain/floor/floorDescription';
 import { FloorDimensions } from '@/domain/floor/floorDimensions';
 import { IFloorDTO } from '@/dto/IFloorDTO';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
+import { FloorMapMapper } from './FloorMapMapper';
 
 export class FloorMapper extends Mapper<Floor> {
   public static toDTO(floor: Floor): IFloorDTO {
@@ -18,7 +19,8 @@ export class FloorMapper extends Mapper<Floor> {
       dimensions: {
         width: floor.dimensions.width,
         length: floor.dimensions.length
-      }
+      },
+      map: floor.map ? FloorMapMapper.toDTO(floor.map) : undefined
     };
   }
 
@@ -45,7 +47,18 @@ export class FloorMapper extends Mapper<Floor> {
 
     floorOrError.isFailure && console.log(floorOrError.error);
 
-    return floorOrError.isSuccess ? floorOrError.getValue() : null;
+    if (floorOrError.isFailure) {
+      return null;
+    }
+
+    if (floor.map && floorOrError.getValue().map !== null) {
+      const map = await FloorMapMapper.toDomain(floor.map);
+      if (map !== null) {
+        floorOrError.getValue().map = map;
+      }
+    }
+
+    return floorOrError.getValue();
   }
 
   public static toPersistence(floor: Floor): IFloorPersistence {
