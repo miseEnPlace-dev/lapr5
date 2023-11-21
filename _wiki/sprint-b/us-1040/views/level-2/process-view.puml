@@ -1,0 +1,25 @@
+@startuml process-view
+autonumber
+actor FM as "Fleet Manager"
+participant UI as "Visualization" <<system (C4)>>
+participant MDD as "MDD" <<system (C4)>>
+participant P as "Planning" <<system (C4)>>
+
+activate FM
+
+FM -> UI : asks to list all robots filtering by designation or task.
+activate UI
+
+UI -> MDD : GET /devices/robots
+activate MDD
+MDD --> UI : 200 (robots)
+deactivate MDD
+
+FM <-- UI : returns all robots with the given designation or task.
+deactivate UI
+
+
+deactivate FM
+
+@enduml
+
