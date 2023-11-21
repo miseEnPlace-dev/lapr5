@@ -75,7 +75,7 @@ const ListDeviceModels: React.FC = () => {
       <Modal
         setIsVisible={setIsBuildingModalVisible}
         isVisible={isBuildingModalVisible}
-        title="Create Building"
+        title="Create Device Model"
       >
         <div className="flex h-full flex-col justify-between gap-y-4">
           <div className="flex w-full flex-col gap-y-4">
