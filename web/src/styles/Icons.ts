@@ -1,5 +1,8 @@
-import { AiOutlineRobot as RobotIcon } from "react-icons/ai";
-import { FaBridgeWater as BridgeIcon } from "react-icons/fa6";
+import { AiOutlineRobot as DeviceModelIcon } from "react-icons/ai";
+import {
+  FaBridgeWater as BridgeIcon,
+  FaRobot as RobotIcon,
+} from "react-icons/fa6";
 import {
   FiArrowLeft as ArrowLeftIcon,
   FiHome as HomeIcon,
@@ -29,4 +32,5 @@ export {
   RoomIcon,
   SuccessIcon,
   WarningIcon,
+  DeviceModelIcon,
 };
