@@ -1,5 +1,6 @@
-:-dynamic ligacel/3.
+:- use_module(server).
 
+:-dynamic ligacel/3.
 %linha 1:1,1,1,1,1,1,1,1
 %linha 2:0,0,0,0,0,0,0,1
 %linha 3:0,0,0,0,0,0,0,1
@@ -248,10 +249,7 @@ aStar2(Dest,[(_,Ca,LA)|Outros],Cam,Custo):-
 	sort(Todos,TodosOrd),
 	aStar2(Dest,TodosOrd,Cam,Custo).
 
-% substituir a chamada edge(Act,X,CustoX)
-% por (edge(Act,X,CustoX);edge(X,Act,CustoX))
-% se quiser ligacoes bidirecionais
-
-
 estimativa(cel(X1,Y1),cel(X2,Y2),Estimativa):-
 	Estimativa is sqrt((X1-X2)^2+(Y1-Y2)^2).
+
+:- cria_grafo(8,7).
