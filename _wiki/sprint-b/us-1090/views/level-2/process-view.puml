@@ -1,0 +1,26 @@
+@startuml process-view
+autonumber
+
+actor CM as "Campus Manager"
+participant UI as "Visualization" <<system (C4)>>
+participant MDD as "MDD" <<system (C4)>>
+participant P as "Planning" <<system (C4)>>
+
+
+activate CM
+
+CM -> UI : asks to create a new floor
+activate UI
+
+UI -> MDD : POST /buildings/buildingCode}/floors
+activate MDD
+MDD --> UI : 201 (floor)
+deactivate MDD
+
+CM <-- UI : returns floor
+deactivate UI
+
+deactivate CM
+
+@enduml
+

@@ -14,6 +14,8 @@ export const useListDeviceModule = () => {
   );
   const [devices, setDevices] = useState<Device[]>([]);
   const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]);
+  const [filters, setFilters] = useState<string[] | null>(null);
+  const [values, setValues] = useState<string[] | null>(null);
 
   const codeInputRef = useRef<HTMLInputElement>(null);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
@@ -21,9 +23,24 @@ export const useListDeviceModule = () => {
   const serialNumberInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
+  const deviceTaskFilterInputRef = useRef<HTMLInputElement>(null);
+  const deviceTaskFilterValueInputRef = useRef<HTMLInputElement>(null);
+  const deviceModelDesignationFilterInputRef = useRef<HTMLInputElement>(null);
+  const deviceModelDesignationFilterValueInputRef =
+    useRef<HTMLInputElement>(null);
+
   const fetchDevices = useCallback(async () => {
-    const devices = await deviceService.getDevicesRobots();
-    setDevices(devices);
+    try {
+      let devices: Device[];
+      if (!filters || !values) devices = await deviceService.getDevicesRobots();
+      else devices = await deviceService.getDevicesRobots(filters, values);
+
+      console.log(devices);
+
+      setDevices(devices);
+    } catch (e) {
+      setDevices([]);
+    }
   }, [deviceService]);
 
   const fetchDeviceModels = useCallback(async () => {
@@ -50,6 +67,7 @@ export const useListDeviceModule = () => {
       modelCode: modelCodeInputRef.current?.value || "",
       serialNumber: serialNumberInputRef.current?.value || "",
       description: descriptionInputRef.current?.value || "",
+      isAvailable: true,
     };
     await deviceService.createDevice(device);
     fetchDevices();
@@ -63,5 +81,13 @@ export const useListDeviceModule = () => {
     modelCodeInputRef,
     serialNumberInputRef,
     descriptionInputRef,
+    filters,
+    setFilters,
+    values,
+    setValues,
+    deviceTaskFilterInputRef,
+    deviceTaskFilterValueInputRef,
+    deviceModelDesignationFilterInputRef,
+    deviceModelDesignationFilterValueInputRef,
   };
 };

@@ -5,7 +5,7 @@ import Button from "../../components/Button";
 import Input from "../../components/Input";
 import TextArea from "../../components/TextArea";
 import { ArrowLeftIcon } from "../../styles/Icons";
-import { useBuildingPageModule } from "./module";
+import { useDevicePageModule } from "./module";
 
 const DevicePage: React.FC = () => {
   const {
@@ -16,7 +16,7 @@ const DevicePage: React.FC = () => {
     descriptionInputRef,
     handleSaveDevice,
     handleInhibitDevice,
-  } = useBuildingPageModule();
+  } = useDevicePageModule();
 
   const navigate = useNavigate();
 
@@ -116,7 +116,7 @@ const DevicePage: React.FC = () => {
               type="destroy"
               name="delete"
             >
-              Delete Building
+              Delete Device
             </Button>
           </div>
         </div>

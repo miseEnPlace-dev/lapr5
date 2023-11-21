@@ -16,41 +16,26 @@ end box
 
 activate CM
 
-CM -> CMP : asks to create a building
+CM -> CMP : asks to list a building elevator
 activate CMP
 
-CM <-- CMP : asks for building data (code,name,description,max dimensions)
-deactivate CMP
-
-CM -> CMP : inputs required data
-activate CMP
-CMP -> MOD : creates a building
+CMP -> MOD : get elevator for building
 activate MOD
-MOD -> MOD : validates data
-activate MOD
-deactivate MOD
-MOD -> SRV : creates a building
+MOD -> SRV : get elevator for building
 activate SRV
-SRV -> HTTP : post('/buildings')
-
+SRV -> HTTP : get('/buildings/:id/elevators')
 activate HTTP
-
-HTTP -> MDM : POST /buildings
-activate MDM
-MDM --> HTTP : 201 (Created)
-deactivate MDM
-
-HTTP --> SRV : createdBuilding
+HTTP -> MDM : GET /buildings/:id/elevators
+MDM --> HTTP : 200 (elevator)
+HTTP --> SRV : elevator
 deactivate HTTP
-
-SRV --> MOD : createdBuilding
+SRV --> MOD : elevator
 deactivate SRV
-MOD --> CMP : createdBuilding
+MOD --> CMP : elevator
 deactivate MOD
 
-CM <-- CMP : returns confirmation message
+CM <-- CMP : shows elevator data
 deactivate CMP
-
 
 deactivate CM
 

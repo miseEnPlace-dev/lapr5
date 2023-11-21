@@ -3,8 +3,9 @@ autonumber
 skinparam DefaultTextAlignment<<center>> center
 
 actor CM as "Campus Manager"
-box "<<system (C4>>\nVisualization"<<center>>
-  participant CMP as "UI Component" <<component (C4)>>
+box "<<system (C4>>\nVisualization)"<<center>>
+  participant CMP as "UI Componente" <<component (C4)>>
+    participant CMP as "UI Component" <<component (C4)>>
   participant MOD as "Module" <<component (C4)>>
   participant SRV as "Service" <<component (C4)>>
   participant HTTP as "HTTP" <<component (C4)>>
@@ -16,41 +17,41 @@ end box
 
 activate CM
 
-CM -> CMP : asks to create a building
+CM -> CMP : asks to create a floor
 activate CMP
 
-CM <-- CMP : asks for building data (code,name,description,max dimensions)
+CM <-- CMP : asks for floor data
 deactivate CMP
 
 CM -> CMP : inputs required data
 activate CMP
-CMP -> MOD : creates a building
+
+CMP -> MOD : create new floor
 activate MOD
-MOD -> MOD : validates data
+MOD -> MOD : validate data
 activate MOD
 deactivate MOD
-MOD -> SRV : creates a building
-activate SRV
-SRV -> HTTP : post('/buildings')
 
+MOD -> SRV : create new floor
+activate SRV
+SRV -> HTTP : post(/buildings/:buildingCode/floors)
 activate HTTP
 
-HTTP -> MDM : POST /buildings
+HTTP -> MDM : POST /buildings/:buildingCode/floors
 activate MDM
-MDM --> HTTP : 201 (Created)
+MDM --> HTTP : 201 Created
 deactivate MDM
 
-HTTP --> SRV : createdBuilding
+HTTP --> SRV : createdFloor
 deactivate HTTP
 
-SRV --> MOD : createdBuilding
+SRV --> MOD : createdFloor
 deactivate SRV
-MOD --> CMP : createdBuilding
+MOD --> CMP : createdFloor
 deactivate MOD
 
 CM <-- CMP : returns confirmation message
 deactivate CMP
-
 
 deactivate CM
 

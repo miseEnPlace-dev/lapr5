@@ -1,0 +1,36 @@
+@startuml process-view
+autonumber
+
+actor CM as "Campus Manager"
+participant UI as "Visualization" <<system (C4)>>
+participant MDD as "MDD" <<system (C4)>>
+participant P as "Planning" <<system (C4)>>
+
+
+activate CM
+
+CM -> UI : asks to edit an elevator
+activate UI
+UI -> MDD : GET /buildings/:id/elevators
+activate MDD
+MDD --> UI : 200 (elevator)
+deactivate MDD
+
+CM <-- UI : shows elevator data
+deactivate UI
+
+CM -> UI : gives new elevator data (brand,serial number,description,floors)
+activate UI
+
+UI -> MDD : PUT /buildings/:id/elevators
+activate MDD
+MDD --> UI : 200 (OK)
+deactivate MDD
+
+CM <-- UI : returns confirmation message
+deactivate UI
+
+
+deactivate CM
+
+@enduml
