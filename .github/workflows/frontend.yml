@@ -1,0 +1,37 @@
+name: Deploy Frontend to Railway
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Change workdir to web/
+        run: cd web
+
+      - name: Use Node 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+
+      - name: Install packages
+        run: pnpm i --frozen-lockfile
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Install Railway
+        run: npm i -g @railway/cli
+
+      - name: Deploy
+        run: railway up
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
