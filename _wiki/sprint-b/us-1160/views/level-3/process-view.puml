@@ -1,0 +1,50 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor CM as "Campus Manager"
+box "<<system (C4>>\nVisualization"<<center>>
+  participant CMP as "UI Component" <<component (C4)>>
+  participant MOD as "Module" <<component (C4)>>
+  participant SRV as "Service" <<component (C4)>>
+  participant HTTP as "HTTP" <<component (C4)>>
+end box
+
+box "<<system (C4)>>\nMD Management" <<center>>#LightYellow
+  participant MDM as "MD Management" <<component (C4)>>
+end box
+
+activate CM
+
+CM -> CMP : asks to list floors serverd with elevator for a given building
+activate CMP
+
+activate CMP
+CMP -> MOD : list 
+activate MOD
+MOD -> SRV : get all floors
+activate SRV
+SRV -> HTTP : get('/buildings/:buildingCode/floors')
+
+activate HTTP
+
+HTTP -> MDM : GET /buildings/:buildingCode/floors
+activate MDM
+MDM --> HTTP : 200 (floors)
+deactivate MDM
+
+HTTP --> SRV : floors
+deactivate HTTP
+
+SRV --> MOD : floors
+deactivate SRV
+MOD --> CMP : floors
+deactivate MOD
+
+CM <-- CMP : returns all floors served with an elevator for a given building
+deactivate CMP
+
+
+deactivate CM
+
+@enduml

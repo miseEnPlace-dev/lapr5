@@ -1,0 +1,26 @@
+@startuml process-view
+autonumber
+
+actor CM as "Campus Manager"
+participant UI as "Visualization" <<system (C4)>>
+participant MDD as "MDD" <<system (C4)>>
+participant P as "Planning" <<system (C4)>>
+
+
+activate CM
+
+CM -> UI : asks to list floors serverd with elevator for a given building
+activate UI
+
+UI -> MDD : GET /buildings/:building/floors
+activate MDD
+MDD --> UI : 200 (floors)
+deactivate MDD
+
+CM <-- UI : returns all floors
+deactivate UI
+
+
+deactivate CM
+
+@enduml
