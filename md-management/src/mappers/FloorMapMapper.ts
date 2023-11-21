@@ -4,44 +4,81 @@ import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 import { FloorMap } from '@/domain/floor/floorMap/floorMap';
 import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
 import { IFloorMapPersistence } from '@/dataschema/IFloorMapPersistence';
-import { FloorMapSize } from '@/domain/floor/floorMap/floorMapSize';
-import { FloorMapElevators } from '@/domain/floor/floorMap/floorMapElevators';
-import { FloorMapExitLocation } from '@/domain/floor/floorMap/floorMapExitLocation';
-import { FloorMapExits } from '@/domain/floor/floorMap/floorMapExits';
-import { FloorMapMatrix } from '@/domain/floor/floorMap/floorMapMatrix';
+import { FloorMazeSize } from '@/domain/floor/floorMap/floorMaze/floorMazeSize';
+import { FloorMazeElevator } from '@/domain/floor/floorMap/floorMaze/floorMazeElevator';
+import { FloorMazeExitLocation } from '@/domain/floor/floorMap/floorMaze/floorMazeExitLocation';
+import { FloorMazeExits } from '@/domain/floor/floorMap/floorMaze/floorMazeExits';
+import { FloorMazeMatrix } from '@/domain/floor/floorMap/floorMaze/floorMazeMatrix';
+import { FloorMaze } from '@/domain/floor/floorMap/floorMaze/floorMaze';
+import { FLoorMapPlayer } from '@/domain/floor/floorMap/floorMapPlayer';
 
 export class FloorMapMapper extends Mapper<FloorMap> {
   public static toDTO(floorMap: FloorMap): IFloorMapDTO {
     return {
-      size: {
-        width: floorMap.size.width,
-        depth: floorMap.size.depth
+      maze: {
+        size: {
+          width: floorMap.floorMaze.size.width,
+          depth: floorMap.floorMaze.size.depth
+        },
+        map: floorMap.floorMaze.map.matrix,
+        exits: floorMap.floorMaze.exits.exits.map(exit => [exit.x, exit.y] as [number, number]),
+        elevator: [floorMap.floorMaze.elevator.x, floorMap.floorMaze.elevator.y] as [
+          number,
+          number
+        ],
+        exitLocation: [floorMap.floorMaze.exitLocation.x, floorMap.floorMaze.exitLocation.y] as [
+          number,
+          number
+        ]
       },
-      map: floorMap.map.matrix,
-      exits: floorMap.exits.exits.map(exit => [exit.x, exit.y] as [number, number]),
-      elevators: floorMap.elevators.elevators.map(
-        elevator => [elevator.x, elevator.y] as [number, number]
-      ),
-      exitLocation: [floorMap.exitLocation.x, floorMap.exitLocation.y] as [number, number]
+      player: {
+        initialPosition: [floorMap.player.initialPosition.x, floorMap.player.initialPosition.y] as [
+          number,
+          number
+        ],
+        initialDirection: floorMap.player.initialDirection
+      }
     };
   }
 
   public static async toDomain(floorMap: IFloorMapPersistence): Promise<FloorMap | null> {
-    const size = FloorMapSize.create(floorMap.size.width, floorMap.size.depth).getValue();
-
-    const mapMatrix = FloorMapMatrix.create(floorMap.map).getValue();
-
-    const exits = FloorMapExits.create(floorMap.exits).getValue();
-
-    const exitLocation = FloorMapExitLocation.create(
-      floorMap.exitLocation.x,
-      floorMap.exitLocation.y
+    const size = FloorMazeSize.create(
+      floorMap.maze.size.width,
+      floorMap.maze.size.depth
     ).getValue();
 
-    const elevators = FloorMapElevators.create(floorMap.elevators).getValue();
+    const mapMatrix = FloorMazeMatrix.create(floorMap.maze.map).getValue();
+
+    const exits = FloorMazeExits.create(floorMap.maze.exits).getValue();
+
+    const exitLocation = FloorMazeExitLocation.create(
+      floorMap.maze.exitLocation.x,
+      floorMap.maze.exitLocation.y
+    ).getValue();
+
+    const elevator = FloorMazeElevator.create(
+      floorMap.maze.elevator.x,
+      floorMap.maze.elevator.y
+    ).getValue();
+
+    const floorMaze = FloorMaze.create({
+      size,
+      map: mapMatrix,
+      exits,
+      exitLocation,
+      elevator
+    }).getValue();
+
+    const player = FLoorMapPlayer.create({
+      initialPosition: {
+        x: floorMap.player.initialPosition.x,
+        y: floorMap.player.initialPosition.y
+      },
+      initialDirection: floorMap.player.initialDirection
+    });
 
     const floorMapOrError = FloorMap.create(
-      { size: size, map: mapMatrix, exits, exitLocation, elevators },
+      { floorMaze, player },
       new UniqueEntityID(floorMap.domainId)
     );
 
@@ -51,18 +88,31 @@ export class FloorMapMapper extends Mapper<FloorMap> {
   }
 
   public static toPersistence(floorMap: FloorMap): IFloorMapPersistence {
+    console.log(floorMap.player.initialPosition);
     return {
       domainId: floorMap.id.toString(),
-      size: {
-        width: floorMap.size.width,
-        depth: floorMap.size.depth
+      maze: {
+        size: {
+          width: floorMap.floorMaze.size.width,
+          depth: floorMap.floorMaze.size.depth
+        },
+        map: floorMap.floorMaze.map.matrix,
+        exits: floorMap.floorMaze.exits.exits,
+        elevator: {
+          x: floorMap.floorMaze.elevator.x,
+          y: floorMap.floorMaze.elevator.y
+        },
+        exitLocation: {
+          x: floorMap.floorMaze.exitLocation.x,
+          y: floorMap.floorMaze.exitLocation.y
+        }
       },
-      map: floorMap.map.matrix,
-      exits: floorMap.exits.exits,
-      elevators: floorMap.elevators.elevators,
-      exitLocation: {
-        x: floorMap.exitLocation.x,
-        y: floorMap.exitLocation.y
+      player: {
+        initialPosition: {
+          x: floorMap.player.initialPosition.x,
+          y: floorMap.player.initialPosition.y
+        },
+        initialDirection: floorMap.player.initialDirection
       }
     };
   }

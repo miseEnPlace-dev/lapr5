@@ -54,8 +54,6 @@ export class Floor extends AggregateRoot<FloorProps> {
   }
 
   set map(map: FloorMap) {
-    if (map.size.depth != this.dimensions.length || map.size.width != this.dimensions.width)
-      throw new Error('Map size does not match floor dimensions');
     this.props.map = map;
   }
 

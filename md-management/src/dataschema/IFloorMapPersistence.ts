@@ -1,11 +1,17 @@
 export interface IFloorMapPersistence {
   domainId: string;
-  size: {
-    width: number;
-    depth: number;
+  maze: {
+    size: {
+      width: number;
+      depth: number;
+    };
+    map: number[][];
+    exits: { x: number; y: number }[];
+    elevator: { x: number; y: number };
+    exitLocation: { x: number; y: number };
   };
-  map: number[][];
-  exits: { x: number; y: number }[];
-  elevators: { x: number; y: number }[];
-  exitLocation: { x: number; y: number };
+  player: {
+    initialPosition: { x: number; y: number };
+    initialDirection: number;
+  };
 }

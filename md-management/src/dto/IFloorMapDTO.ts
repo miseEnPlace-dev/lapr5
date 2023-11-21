@@ -1,10 +1,16 @@
 export interface IFloorMapDTO {
-  size: {
-    width: number;
-    depth: number;
+  maze: {
+    size: {
+      width: number;
+      depth: number;
+    };
+    map: number[][];
+    exits: number[][];
+    elevator: number[];
+    exitLocation: number[];
   };
-  map: number[][];
-  exits: number[][];
-  elevators: number[][];
-  exitLocation: number[];
+  player: {
+    initialPosition: number[];
+    initialDirection: number;
+  };
 }

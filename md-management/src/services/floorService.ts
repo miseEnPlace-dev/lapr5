@@ -5,11 +5,11 @@ import { FloorCode } from '@/domain/floor/floorCode';
 import { FloorDescription } from '@/domain/floor/floorDescription';
 import { FloorDimensions } from '@/domain/floor/floorDimensions';
 import { FloorMap } from '@/domain/floor/floorMap/floorMap';
-import { FloorMapElevators } from '@/domain/floor/floorMap/floorMapElevators';
-import { FloorMapExitLocation } from '@/domain/floor/floorMap/floorMapExitLocation';
-import { FloorMapExits } from '@/domain/floor/floorMap/floorMapExits';
-import { FloorMapMatrix } from '@/domain/floor/floorMap/floorMapMatrix';
-import { FloorMapSize } from '@/domain/floor/floorMap/floorMapSize';
+import { FloorMazeElevator } from '@/domain/floor/floorMap/floorMaze/floorMazeElevator';
+import { FloorMazeExitLocation } from '@/domain/floor/floorMap/floorMaze/floorMazeExitLocation';
+import { FloorMazeExits } from '@/domain/floor/floorMap/floorMaze/floorMazeExits';
+import { FloorMazeMatrix } from '@/domain/floor/floorMap/floorMaze/floorMazeMatrix';
+import { FloorMazeSize } from '@/domain/floor/floorMap/floorMaze/floorMazeSize';
 import { IFloorDTO } from '@/dto/IFloorDTO';
 import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
 import { TYPES } from '@/loaders/inversify/types';
@@ -20,6 +20,8 @@ import IFloorService from '@/services/IServices/IFloorService';
 import { inject, injectable } from 'inversify';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import IConnectorRepo from './IRepos/IConnectorRepo';
+import { FloorMaze } from '@/domain/floor/floorMap/floorMaze/floorMaze';
+import { FLoorMapPlayer } from '@/domain/floor/floorMap/floorMapPlayer';
 
 @injectable()
 export default class FloorService implements IFloorService {
@@ -165,37 +167,55 @@ export default class FloorService implements IFloorService {
 
   public async uploadMap(floorCode: string, map: IFloorMapDTO): Promise<Result<IFloorMapDTO>> {
     try {
-      // check map is valid
-      if (!map.size || !map.map || !map.exits || !map.exitLocation || !map.elevators)
+      if (
+        !map.maze.size ||
+        !map.maze.map ||
+        !map.maze.exits ||
+        !map.maze.exitLocation ||
+        !map.maze.elevator
+      )
         return Result.fail<IFloorMapDTO>('Map is invalid');
 
       const code = FloorCode.create(floorCode).getValue();
       const floor = await this.floorRepo.findByCode(code);
       if (!floor) return Result.fail<IFloorMapDTO>('Floor not found');
 
-      const size = FloorMapSize.create(map.size.width, map.size.depth);
+      const size = FloorMazeSize.create(map.maze.size.width, map.maze.size.depth);
       if (size.isFailure) return Result.fail<IFloorMapDTO>(size.error as string);
 
-      const mapMatrix = FloorMapMatrix.create(map.map);
+      const mapMatrix = FloorMazeMatrix.create(map.maze.map);
       if (mapMatrix.isFailure) return Result.fail<IFloorMapDTO>(mapMatrix.error as string);
 
-      const exits = FloorMapExits.create(map.exits.map(exit => ({ x: exit[0], y: exit[1] })));
+      const exits = FloorMazeExits.create(map.maze.exits.map(exit => ({ x: exit[0], y: exit[1] })));
       if (exits.isFailure) return Result.fail<IFloorMapDTO>(exits.error as string);
 
-      const exitLocation = FloorMapExitLocation.create(map.exitLocation[0], map.exitLocation[1]);
+      const exitLocation = FloorMazeExitLocation.create(
+        map.maze.exitLocation[0],
+        map.maze.exitLocation[1]
+      );
       if (exitLocation.isFailure) return Result.fail<IFloorMapDTO>(exitLocation.error as string);
 
-      const elevators = FloorMapElevators.create(
-        map.elevators.map(elevator => ({ x: elevator[0], y: elevator[1] }))
-      );
-      if (elevators.isFailure) return Result.fail<IFloorMapDTO>(elevators.error as string);
+      const elevator = FloorMazeElevator.create(map.maze.elevator[0], map.maze.elevator[1]);
+      if (elevator.isFailure) return Result.fail<IFloorMapDTO>(elevator.error as string);
 
-      const mapOrError = FloorMap.create({
+      const floorMaze = FloorMaze.create({
         size: size.getValue(),
         map: mapMatrix.getValue(),
         exits: exits.getValue(),
         exitLocation: exitLocation.getValue(),
-        elevators: elevators.getValue()
+        elevator: elevator.getValue()
+      });
+
+      if (floorMaze.isFailure) return Result.fail<IFloorMapDTO>(floorMaze.error as string);
+
+      const player = FLoorMapPlayer.create({
+        initialPosition: { x: map.player.initialPosition[0], y: map.player.initialPosition[1] },
+        initialDirection: map.player.initialDirection
+      });
+
+      const mapOrError = FloorMap.create({
+        floorMaze: floorMaze.getValue(),
+        player
       });
       if (mapOrError.isFailure) return Result.fail<IFloorMapDTO>(mapOrError.error as string);
 

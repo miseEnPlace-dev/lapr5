@@ -5,32 +5,39 @@ const FloorMapSchema = new mongoose.Schema({
   domainId: {
     type: String
   },
-  size: {
-    width: Number,
-    depth: Number
+  maze: {
+    size: {
+      width: Number,
+      depth: Number
+    },
+    map: [[Number]],
+    exits: [
+      {
+        type: {
+          x: Number,
+          y: Number
+        }
+      }
+    ],
+    elevator: {
+      type: {
+        x: Number,
+        y: Number
+      }
+    },
+    exitLocation: {
+      type: {
+        x: Number,
+        y: Number
+      }
+    }
   },
-  map: [[Number]],
-  exits: [
-    {
-      type: {
-        x: Number,
-        y: Number
-      }
-    }
-  ],
-  elevators: [
-    {
-      type: {
-        x: Number,
-        y: Number
-      }
-    }
-  ],
-  exitLocation: {
-    type: {
+  player: {
+    initialPosition: {
       x: Number,
       y: Number
-    }
+    },
+    initialDirection: Number
   }
 });
 

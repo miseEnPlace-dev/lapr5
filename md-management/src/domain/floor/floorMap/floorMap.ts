@@ -1,50 +1,34 @@
-import { Entity } from '@/core/domain/Entity';
 import { UniqueEntityID } from '@/core/domain/UniqueEntityID';
+import { FloorMaze } from './floorMaze/floorMaze';
+import { Entity } from '@/core/domain/Entity';
 import { Result } from '@/core/logic/Result';
-import { FloorMapSize } from './floorMapSize';
-import { FloorMapExitLocation } from './floorMapExitLocation';
-import { FloorMapMatrix } from './floorMapMatrix';
-import { FloorMapExits } from './floorMapExits';
-import { FloorMapElevators } from './floorMapElevators';
+import { FLoorMapPlayer } from './floorMapPlayer';
 
-interface FloorMapProps {
-  size: FloorMapSize;
-  map: FloorMapMatrix;
-  exits: FloorMapExits;
-  elevators: FloorMapElevators;
-  exitLocation: FloorMapExitLocation;
+interface floorMapProps {
+  floorMaze: FloorMaze;
+  player: FLoorMapPlayer;
 }
 
-export class FloorMap extends Entity<FloorMapProps> {
-  get size(): FloorMapSize {
-    return this.props.size;
+export class FloorMap extends Entity<floorMapProps> {
+  private constructor(props: floorMapProps, id?: UniqueEntityID) {
+    super(props, id);
   }
 
-  get map(): FloorMapMatrix {
-    return this.props.map;
+  get floorMaze(): FloorMaze {
+    return this.props.floorMaze;
   }
 
-  get exits(): FloorMapExits {
-    return this.props.exits;
-  }
-  get elevators(): FloorMapElevators {
-    return this.props.elevators;
-  }
-  get exitLocation(): FloorMapExitLocation {
-    return this.props.exitLocation;
+  get player(): FLoorMapPlayer {
+    return this.props.player;
   }
 
   get id(): UniqueEntityID {
     return this._id;
   }
 
-  private constructor(props: FloorMapProps, id?: UniqueEntityID) {
-    super(props, id);
-  }
+  public static create(props: floorMapProps, id?: UniqueEntityID): Result<FloorMap> {
+    const floorMap = new FloorMap(props, id);
 
-  public static create(props: FloorMapProps, id?: UniqueEntityID): Result<FloorMap> {
-    const newMap = new FloorMap(props, id);
-
-    return Result.ok<FloorMap>(newMap);
+    return Result.ok<FloorMap>(floorMap);
   }
 }
