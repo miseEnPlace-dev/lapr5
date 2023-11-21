@@ -3,7 +3,7 @@ autonumber
 skinparam DefaultTextAlignment<<center>> center
 
 actor CM as "Campus Manager"
-box "<<system (C4>>\nVisualization)"<<center>>
+box "<<container (C4>>\nVisualization)"<<center>>
   participant CMP as "UI Componente" <<component (C4)>>
     participant CMP as "UI Component" <<component (C4)>>
   participant MOD as "Module" <<component (C4)>>
@@ -11,8 +11,8 @@ box "<<system (C4>>\nVisualization)"<<center>>
   participant HTTP as "HTTP" <<component (C4)>>
 end box
 
-box "<<system (C4)>>\nMD Management" <<center>>#LightYellow
-  participant MDM as "MD Management" <<component (C4)>>
+box "<<container (C4)>>\nMD Management" <<center>>#LightYellow
+  participant MDM as "Floor Route" <<component>>
 end box
 
 activate CM
