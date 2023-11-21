@@ -81,6 +81,7 @@ export const useListDeviceModule = () => {
     modelCodeInputRef,
     serialNumberInputRef,
     descriptionInputRef,
+    deviceModels,
     filters,
     setFilters,
     values,
