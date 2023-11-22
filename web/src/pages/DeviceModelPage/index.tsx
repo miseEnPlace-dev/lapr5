@@ -83,14 +83,15 @@ const DevicePage: React.FC = () => {
             <h2 className="mb-4 text-center text-3xl font-bold">Actions</h2>
           </div>
           <div className="flex flex-col gap-y-2">
-            {/* <Button
+            <Button
               name="save"
-              onClick={handleSaveDeviceClick}
+              disabled
+              onClick={handleSaveDeviceModelClick}
               className="w-full self-end"
               type="confirm"
             >
               Save
-            </Button> */}
+            </Button>
             <Button
               className="w-full self-end"
               disabled
