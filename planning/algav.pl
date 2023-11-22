@@ -280,9 +280,20 @@ create_elevator(Building) :-
 
 create_floors(Building) :-
 	server:fetch_floors(Building.code, Floors),
+	create_floors_matrix(Floors),
 	floorCodes(Floors, FloorCodes),
 	write("  Floor -> "), write(FloorCodes), nl,
 	asserta(pisos(Building.code, FloorCodes)).
+
+create_floors_matrix([H|T]) :-
+	%	write("  Floor "), write(H.code), write(" -> "), write(H.matrix), nl,
+	create_floor_matrix(H),
+	create_floors_matrix(T).
+
+create_floors_matrix([]).
+
+create_floor_matrix(Floor).
+	%	create_floor_matrix(Floor.matrix, 1, 1, Floor.code).
 
 floorCodes([H|T], [H.code|Codes]) :-
 	floorCodes(T, Codes).
