@@ -62,7 +62,18 @@ export const useDeviceModelPageModule = () => {
   }, [deviceModelCode, fetchDeviceModel, nameInputRef, brandInputRef]);
 
   async function handleSaveDeviceModel() {
-    // TODO
+    if (!nameInputRef.current || !brandInputRef.current || !deviceModelCode)
+      throw new Error("Invalid data");
+
+    const deviceModel: DeviceModel = {
+      code: deviceModelCode,
+      name: nameInputRef.current?.value,
+      brand: brandInputRef.current?.value,
+      type: "robot",
+      capabilities: selectedCapabilities.map((capability) => capability.name),
+    };
+    await deviceModelService.updateDeviceModel(deviceModel);
+    fetchDeviceModel(deviceModelCode);
   }
 
   return {
