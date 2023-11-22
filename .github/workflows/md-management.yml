@@ -41,7 +41,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build
-          path: dist
+          path: md-management/dist
 
       - name: Copy Files
         uses: appleboy/scp-action@v0.1.4
