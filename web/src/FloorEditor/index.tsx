@@ -8,8 +8,11 @@ import ThumbRaiser from "./thumb_raiser";
 
 const maps = [
   "building-a-floor-1.json",
-  "building-c-floor-2.json",
+  "building-b-floor-1.json",
+  "building-b-floor-3.json",
   "building-c-floor-1.json",
+  "building-c-floor-2.json",
+  "building-c-floor-4.json",
   "building-d-floor-1.json",
   "building-d-floor-2.json",
   "building-d-floor-3.json",
