@@ -8,6 +8,7 @@ import Input from "../Input";
 import Modal from "../Modal";
 import TextArea from "../TextArea";
 import { useListBuildingsModule } from "./module";
+
 import { AxiosError } from "axios";
 
 const ListBuildings: React.FC = () => {
@@ -21,7 +22,7 @@ const ListBuildings: React.FC = () => {
     nameInputRef,
     widthInputRef,
     filters,
-    setFilters
+    setFilters,
   } = useListBuildingsModule();
 
   const [isBuildingModalVisible, setIsBuildingModalVisible] = useState(false);
@@ -48,7 +49,17 @@ const ListBuildings: React.FC = () => {
         !maxFloorsFilterInputRef.current?.value
       )
         setFilters(null);
-      else
+      else if (
+        maxFloorsFilterInputRef.current?.value <
+        minFloorsFilterInputRef.current?.value
+      ) {
+        swal(
+          "Warning",
+          "Maximum value must be greater than minimum value!",
+          "warning"
+        );
+        return;
+      } else
         setFilters([
           minFloorsFilterInputRef.current.value,
           maxFloorsFilterInputRef.current.value,
