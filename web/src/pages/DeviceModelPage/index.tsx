@@ -2,30 +2,28 @@ import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
 import InputSelect from "@/components/InputSelect";
+import Selector from "@/components/Selector";
 
 import Button from "../../components/Button";
 import Input from "../../components/Input";
-import TextArea from "../../components/TextArea";
 import { ArrowLeftIcon } from "../../styles/Icons";
 import { useDeviceModelPageModule } from "./module";
 
 const DevicePage: React.FC = () => {
   const {
-    device,
-    nicknameInputRef,
-    modelCodeInputRef,
-    serialNumberInputRef,
-    descriptionInputRef,
-    handleSaveDevice,
-    handleInhibitDevice,
-    deviceModels,
+    deviceModel,
+    nameInputRef,
+    brandInputRef,
+    handleSaveDeviceModel,
+    selectedCapabilities,
+    setSelectedCapabilities,
   } = useDeviceModelPageModule();
 
   const navigate = useNavigate();
 
-  async function handleSaveDeviceClick() {
+  async function handleSaveDeviceModelClick() {
     try {
-      await handleSaveDevice();
+      await handleSaveDeviceModel();
 
       swal("Success", "Device Model saved successfully", "success");
     } catch (err: unknown) {
@@ -43,41 +41,41 @@ const DevicePage: React.FC = () => {
       </button>
       <div className="w-full rounded-xl bg-slate-200 py-4">
         <h1 className="text-center text-4xl font-bold">
-          Device Code - {device?.code} (
-          {device?.isAvailable ? "Active" : "Inactive"})
+          Device Model {deviceModel?.code} - {deviceModel?.name}
         </h1>
       </div>
 
       <div className="flex h-full w-full flex-col gap-x-8 gap-y-12 md:flex-row">
         <main className="flex h-full w-full flex-col gap-y-6 rounded-xl bg-slate-200 p-8 md:w-3/4">
-          <div className="flex items-center justify-between gap-x-12">
+          <div className="flex w-full flex-col gap-y-4">
             <Input
               className="w-full"
-              placeholder="Nickname"
-              defaultValue={device?.nickname}
-              inputRef={nicknameInputRef}
-            />
-            <InputSelect
-              className="w-full"
-              name="Device Model"
-              placeholder="Device Model"
-              inputRef={modelCodeInputRef}
-              selected={device?.modelCode ? device.modelCode : ""}
-              options={deviceModels}
+              placeholder="Name"
+              defaultValue={deviceModel?.name}
+              inputRef={nameInputRef}
             />
             <Input
-              defaultValue={device?.serialNumber}
               className="w-full"
-              placeholder="Serial Number"
-              inputRef={serialNumberInputRef}
+              placeholder="Brand"
+              defaultValue={deviceModel?.brand}
+              inputRef={brandInputRef}
+            />
+            <Input
+              className="w-full"
+              disabled
+              placeholder="Type"
+              defaultValue="Robot"
+            />
+            <Selector
+              items={selectedCapabilities}
+              title="Capabilities"
+              setItems={
+                setSelectedCapabilities as unknown as React.Dispatch<
+                  React.SetStateAction<{ name: string; selected: boolean }[]>
+                >
+              }
             />
           </div>
-          <TextArea
-            className="w-full"
-            placeholder="Description"
-            defaultValue={device?.description}
-            inputRef={descriptionInputRef}
-          />
         </main>
 
         <div className="flex h-full w-full flex-col justify-between gap-y-12 rounded-xl bg-slate-200 px-4 py-8 md:w-1/4">
@@ -85,21 +83,21 @@ const DevicePage: React.FC = () => {
             <h2 className="mb-4 text-center text-3xl font-bold">Actions</h2>
           </div>
           <div className="flex flex-col gap-y-2">
-            <Button
+            {/* <Button
               name="save"
               onClick={handleSaveDeviceClick}
               className="w-full self-end"
               type="confirm"
             >
               Save
-            </Button>
+            </Button> */}
             <Button
               className="w-full self-end"
               disabled
               type="destroy"
               name="delete"
             >
-              Delete Device
+              Delete Device Model
             </Button>
           </div>
         </div>

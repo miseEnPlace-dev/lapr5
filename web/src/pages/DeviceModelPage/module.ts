@@ -3,78 +3,74 @@ import { useInjection } from "inversify-react";
 import { useParams } from "react-router-dom";
 
 import { TYPES } from "../../inversify/types";
-import { Device } from "@/model/Device";
 import { DeviceModel } from "@/model/DeviceModel";
 import { IDeviceModelService } from "@/service/IService/IDeviceModelService";
-import { IDeviceService } from "@/service/IService/IDeviceService";
 
 export const useDeviceModelPageModule = () => {
-  const deviceService = useInjection<IDeviceService>(TYPES.deviceService);
   const deviceModelService = useInjection<IDeviceModelService>(
     TYPES.deviceModelService
   );
 
-  const { deviceCode } = useParams();
+  const { deviceModelCode } = useParams();
 
-  const [device, setDevice] = useState<Device>();
-  const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]);
-
-  const nicknameInputRef = useRef<HTMLInputElement>(null);
-  const modelCodeInputRef = useRef<HTMLSelectElement>(null);
-  const serialNumberInputRef = useRef<HTMLInputElement>(null);
-  const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
-
-  const fetchDevice = useCallback(
-    async (deviceCode: string) => {
-      const device = await deviceService.getDevice(deviceCode);
-      setDevice(device);
+  const [deviceModel, setDeviceModel] = useState<DeviceModel>();
+  const [selectedCapabilities, setSelectedCapabilities] = useState<
+    { name: "pick_delivery" | "surveillance"; selected: boolean }[]
+  >([
+    {
+      name: "pick_delivery",
+      selected: false,
     },
-    [deviceService]
-  );
+    {
+      name: "surveillance",
+      selected: false,
+    },
+  ]);
 
-  const fetchDeviceModels = useCallback(async () => {
-    const deviceModels = await deviceModelService.getDeviceModels();
-    setDeviceModels(deviceModels);
-  }, [deviceModelService]);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const brandInputRef = useRef<HTMLInputElement>(null);
+
+  const fetchDeviceModel = useCallback(
+    async (deviceModelCode: string) => {
+      const deviceModel =
+        await deviceModelService.getDeviceModelWithCode(deviceModelCode);
+      setDeviceModel(deviceModel);
+      setSelectedCapabilities([
+        {
+          name: "pick_delivery",
+          selected:
+            deviceModel?.capabilities?.includes("pick_delivery") || false,
+        },
+        {
+          name: "surveillance",
+          selected:
+            deviceModel?.capabilities?.includes("surveillance") || false,
+        },
+      ]);
+    },
+    [deviceModelService]
+  );
 
   useEffect(() => {
     async function fetchData() {
-      if (!deviceCode) return;
+      if (!deviceModelCode) return;
 
-      fetchDevice(deviceCode);
+      fetchDeviceModel(deviceModelCode);
     }
 
     fetchData();
-    fetchDeviceModels();
-  }, [
-    deviceCode,
-    fetchDevice,
-    nicknameInputRef,
-    modelCodeInputRef,
-    serialNumberInputRef,
-    descriptionInputRef,
-  ]);
+  }, [deviceModelCode, fetchDeviceModel, nameInputRef, brandInputRef]);
 
-  async function handleSaveDevice() {
+  async function handleSaveDeviceModel() {
     // TODO
   }
 
-  async function handleInhibitDevice() {
-    if (!deviceCode) return;
-
-    await deviceService.inhibitDevice(deviceCode);
-
-    fetchDevice(deviceCode);
-  }
-
   return {
-    device,
-    deviceModels,
-    nicknameInputRef,
-    modelCodeInputRef,
-    serialNumberInputRef,
-    descriptionInputRef,
-    handleSaveDevice,
-    handleInhibitDevice,
+    deviceModel,
+    nameInputRef,
+    brandInputRef,
+    selectedCapabilities,
+    setSelectedCapabilities,
+    handleSaveDeviceModel,
   };
 };
