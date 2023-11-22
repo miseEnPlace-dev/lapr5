@@ -15,7 +15,9 @@ export class ConnectorMapper extends Mapper<Floor> {
     return {
       code: c.code.value,
       floor1Code: c.floor1.code.value,
-      floor2Code: c.floor2.code.value
+      floor1BuildingCode: c.floor1.buildingCode.value,
+      floor2Code: c.floor2.code.value,
+      floor2BuildingCode: c.floor2.buildingCode.value
     };
   }
 
