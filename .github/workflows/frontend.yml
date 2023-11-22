@@ -42,11 +42,11 @@ jobs:
           # pnpm test
           pnpm build
 
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build
-          path: web/dist
+      # - name: Archive production artifacts
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: build
+      #     path: web/dist
 
       - name: Deploy to Netlify
         env:
