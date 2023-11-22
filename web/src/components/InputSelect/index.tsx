@@ -1,5 +1,3 @@
-import { DeviceModel } from "@/model/DeviceModel";
-
 interface InputSelectProps
   extends React.SelectHTMLAttributes<HTMLSelectElement> {
   name: string;
@@ -8,7 +6,7 @@ interface InputSelectProps
   className?: string;
   disabled?: boolean;
   inputRef?: React.Ref<HTMLSelectElement>;
-  options: DeviceModel[];
+  options: { code: string; name: string }[];
   selected?: string;
 }
 
