@@ -1,10 +1,17 @@
-name: Deploy Frontend to Railway
+name: Frontend CI/CD
 
 on:
+  # schedule:
+  #   - cron: "0 6 * * *"
   push:
     branches: [main]
     paths:
       - "web/**"
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: web/
 
 jobs:
   deploy:
@@ -14,27 +21,36 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Use Node 20
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20.x
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
+        with:
+          version: 8.10.5
 
-      - name: Change workdir to web/
-        run: cd web
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+          cache-dependency-path: "**/pnpm-lock.yaml"
 
       - name: Install packages
         run: pnpm i --frozen-lockfile
 
-      - name: Run tests
-        run: pnpm test
+      - name: Test & Build
+        run: |
+          export VITE_API_URL="https://vsgate-http.dei.isep.ipp.pt:11003/api"
+          # pnpm test
+          pnpm build
 
-      - name: Install Railway
-        run: npm i -g @railway/cli
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: web/dist
 
-      - name: Deploy
-        run: railway up
+      - name: Deploy to Netlify
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: pnpm netlify deploy --dir=dist -p
+
