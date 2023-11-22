@@ -31,6 +31,12 @@ const CampusHome: React.FC<CampusHomeProps> = ({ activeOption }) => {
           link="/buildings"
           action="Go to Buildings"
         />
+        <Card
+          title="RGPD"
+          description="Read the RGPD of the application."
+          link="/rgpd"
+          action="Go to RGPD"
+        />
       </CardContainer>
 
       {activeOption === "buildings" && <ListBuildings />}
