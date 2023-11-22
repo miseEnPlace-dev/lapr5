@@ -1,4 +1,4 @@
-import config from '@/config.mjs';
+import config from '@/config';
 import cors from 'cors';
 import express, { NextFunction, Request, Response, json } from 'express';
 import morgan from 'morgan';

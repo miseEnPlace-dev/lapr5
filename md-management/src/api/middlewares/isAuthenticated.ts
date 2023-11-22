@@ -1,5 +1,5 @@
 // remove by JRT : import jwt from 'express-jwt';
-import config from '@/config.mjs';
+import config from '@/config';
 import { Request } from 'express';
 import { expressjwt as jwt } from 'express-jwt';
 

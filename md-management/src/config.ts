@@ -14,7 +14,7 @@ export default {
   /**
    * Your favorite port : optional change to 4000 by JRT
    */
-  port: parseInt(process.env.PORT, 10) || 4000,
+  port: parseInt(process.env.PORT as string, 10) || 4000,
 
   databaseURL: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/test',
 

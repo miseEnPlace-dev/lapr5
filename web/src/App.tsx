@@ -14,6 +14,7 @@ import FloorPage from "./pages/FloorPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
+import RGPDPage from "./pages/RGPDPage/page";
 import RoomPage from "./pages/RoomPage";
 import { RequireAuth } from "./utils/RequireAuth";
 
@@ -86,6 +87,14 @@ function App() {
               element={
                 <RequireAuth>
                   <FloorEditor />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/rgpd"
+              element={
+                <RequireAuth>
+                  <RGPDPage />
                 </RequireAuth>
               }
             />
