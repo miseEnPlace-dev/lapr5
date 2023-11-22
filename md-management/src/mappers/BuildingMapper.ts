@@ -16,7 +16,7 @@ export class BuildingMapper extends Mapper<Building> {
       code: building.code.value,
       name: building.name?.value,
       description: building.description?.value,
-      elevatorFloors: building.elevator?.floors.map(f => f.code.value),
+      elevatorFloors: building.elevator?.floors.map(f => f.code.value) || [],
       maxDimensions: {
         width: building.maxDimensions.width,
         length: building.maxDimensions.length

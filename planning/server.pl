@@ -18,7 +18,7 @@
 
 :- json_object student(student_name:string).
 
-api_url('http://localhost:3000').
+api_url('http://localhost:4000/api').
 
 % define route aliases
 http:location(api, root(api), []). % /api
@@ -68,6 +68,24 @@ read_api(Url, Dict):-
         json_read_dict(In, Dict),
         close(In)
     ).
+
+fetch_buildings(Buildings):-
+    api_url(Url),
+    atom_concat(Url, '/buildings', BuildingsUrl),
+    read_api(BuildingsUrl, Buildings).
+
+fetch_connectors(Connectors):-
+    api_url(Url),
+    atom_concat(Url, '/connectors', ConnectorsUrl),
+    read_api(ConnectorsUrl, Connectors).
+
+fetch_floors(BuildingCode, Floors) :-
+    api_url(Url),
+    atom_concat(Url, '/buildings/', FloorsUrl),
+    atom_concat(FloorsUrl, BuildingCode, FloorsUrl2),
+    atom_concat(FloorsUrl2, '/floors', FloorsUrl3),
+    read_api(FloorsUrl3, Floors).
+
 
 init_server(Port):-
     debug(http(request)), % debug http requests & responses
