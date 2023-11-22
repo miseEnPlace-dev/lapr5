@@ -8,7 +8,7 @@ import { DeviceModel } from "@/model/DeviceModel";
 import { IDeviceModelService } from "@/service/IService/IDeviceModelService";
 import { IDeviceService } from "@/service/IService/IDeviceService";
 
-export const useDevicePageModule = () => {
+export const useDeviceModelPageModule = () => {
   const deviceService = useInjection<IDeviceService>(TYPES.deviceService);
   const deviceModelService = useInjection<IDeviceModelService>(
     TYPES.deviceModelService

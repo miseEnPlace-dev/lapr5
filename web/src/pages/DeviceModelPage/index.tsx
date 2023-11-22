@@ -5,10 +5,9 @@ import InputSelect from "@/components/InputSelect";
 
 import Button from "../../components/Button";
 import Input from "../../components/Input";
-// import Dropdown from "../../components/Dropdown";
 import TextArea from "../../components/TextArea";
 import { ArrowLeftIcon } from "../../styles/Icons";
-import { useDevicePageModule } from "./module";
+import { useDeviceModelPageModule } from "./module";
 
 const DevicePage: React.FC = () => {
   const {
@@ -20,7 +19,7 @@ const DevicePage: React.FC = () => {
     handleSaveDevice,
     handleInhibitDevice,
     deviceModels,
-  } = useDevicePageModule();
+  } = useDeviceModelPageModule();
 
   const navigate = useNavigate();
 
@@ -28,17 +27,7 @@ const DevicePage: React.FC = () => {
     try {
       await handleSaveDevice();
 
-      swal("Success", "Device saved successfully", "success");
-    } catch (err: unknown) {
-      swal("Error", err as string, "error");
-    }
-  }
-
-  async function handleInhibitDeviceClick() {
-    try {
-      await handleInhibitDevice();
-
-      swal("Success", "Device inhibited successfully", "success");
+      swal("Success", "Device Model saved successfully", "success");
     } catch (err: unknown) {
       swal("Error", err as string, "error");
     }
@@ -94,18 +83,6 @@ const DevicePage: React.FC = () => {
         <div className="flex h-full w-full flex-col justify-between gap-y-12 rounded-xl bg-slate-200 px-4 py-8 md:w-1/4">
           <div className="flex flex-col gap-y-2">
             <h2 className="mb-4 text-center text-3xl font-bold">Actions</h2>
-            {device?.isAvailable ? (
-              <Button
-                name="inhibitDevice"
-                className="w-full"
-                type="default"
-                onClick={handleInhibitDeviceClick}
-              >
-                Inhibit Device
-              </Button>
-            ) : (
-              <div></div>
-            )}
           </div>
           <div className="flex flex-col gap-y-2">
             <Button
