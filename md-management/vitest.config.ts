@@ -6,7 +6,7 @@ export default defineConfig({
   test: {
     globals: true,
     coverage: {
-      exclude: ['src/loaders/**', 'src/core/**', 'src/repos/**', 'src/config.mjs']
+      exclude: ['src/loaders/**', 'src/core/**', 'src/repos/**', 'src/config.ts']
     }
   },
   resolve: {

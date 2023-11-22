@@ -1,6 +1,8 @@
 :- use_module(server).
 
 :-dynamic ligacel/3.
+%m(piso,col,lin,valor)
+:-dynamic m/4.
 %linha 1:1,1,1,1,1,1,1,1
 %linha 2:0,0,0,0,0,0,0,1
 %linha 3:0,0,0,0,0,0,0,1
@@ -76,6 +78,7 @@ m(6,7,0).
 m(7,7,0).
 m(8,7,1).
 
+:-dynamic liga/2.
 liga(a,h).
 liga(b,g).
 liga(b,i).
@@ -83,6 +86,7 @@ liga(g,h).
 liga(h,i).
 liga(i,j).
 
+:-dynamic pisos/2.
 pisos(a,[a1]).
 pisos(b,[b1,b2,b3,b4]).
 pisos(g,[g2,g3,g4]).
@@ -90,11 +94,13 @@ pisos(h,[h1,h2,h3,h4]).
 pisos(i,[i1,i2,i3,i4]).
 pisos(j,[j1,j2,j3,j4]).
 
+:-dynamic elevador/2.
 elevador(b,[b1,b2,b3,b4]).
 elevador(g,[g2,g3,g4]).
 elevador(i,[i1,i2,i3,i4]).
 elevador(j,[j1,j2,j3,j4]).
 
+:-dynamic corredor/4.
 corredor(a,h,a1,h2).
 corredor(b,g,b2,g2).
 corredor(b,g,b3,g3).
@@ -253,3 +259,57 @@ estimativa(cel(X1,Y1),cel(X2,Y2),Estimativa):-
 	Estimativa is sqrt((X1-X2)^2+(Y1-Y2)^2).
 
 :- cria_grafo(8,7).
+
+load_data() :-
+	server:fetch_buildings(Buildings),
+	server:fetch_connectors(Connectors),
+	create_buildings(Buildings),
+	create_connectors(Connectors).
+
+create_buildings([H|T]) :-
+	write("Loading building "), write(H.code), write(" ..."), nl,
+	create_elevator(H),
+	create_floors(H),
+	create_buildings(T).
+
+create_buildings([]).
+
+create_elevator(Building) :-
+	write("  Elevator -> "), write(Building.elevatorFloors), nl,
+	asserta(elevador(Building.code, Building.elevatorFloors)).
+
+create_floors(Building) :-
+	server:fetch_floors(Building.code, Floors),
+	create_floors_matrix(Floors),
+	floorCodes(Floors, FloorCodes),
+	write("  Floor -> "), write(FloorCodes), nl,
+	asserta(pisos(Building.code, FloorCodes)).
+
+create_floors_matrix([H|T]) :-
+	%	write("  Floor "), write(H.code), write(" -> "), write(H.matrix), nl,
+	create_floor_matrix(H),
+	create_floors_matrix(T).
+
+create_floors_matrix([]).
+
+create_floor_matrix(Floor).
+	%	create_floor_matrix(Floor.matrix, 1, 1, Floor.code).
+
+floorCodes([H|T], [H.code|Codes]) :-
+	floorCodes(T, Codes).
+
+floorCodes([], []).
+
+create_connectors([H|T]) :-
+	create_connector(H),
+	create_connectors(T).
+
+create_connectors([]).
+
+create_connector(Connector) :-
+	write("Loading Connector "), write(Connector.code), write(" ..."), nl,
+	write("  From -> "), write(Connector.floor1BuildingCode), write(" - "), write(Connector.floor1Code), nl,
+	write("  To -> "), write(Connector.floor2BuildingCode), write(" - "), write(Connector.floor2Code), nl,
+	asserta(liga(Connector.floor1BuildingCode, Connector.floor2BuildingCode)),
+	asserta(corredor(Connector.floor1BuildingCode, Connector.floor2BuildingCode, Connector.floor1Code, Connector.floor2Code)).
+

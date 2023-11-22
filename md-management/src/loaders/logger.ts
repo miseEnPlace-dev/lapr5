@@ -1,4 +1,4 @@
-import config from '@/config.mjs';
+import config from '@/config';
 import winston from 'winston';
 
 const transports = [];

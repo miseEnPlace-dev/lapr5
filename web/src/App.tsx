@@ -9,11 +9,13 @@ import { container } from "./inversify";
 import FloorsPage from "./pages/BuildingFloorsPage";
 import BuildingPage from "./pages/BuildingPage";
 import ConnectorPage from "./pages/ConnectorPage";
+import DeviceModelPage from "./pages/DeviceModelPage";
 import DevicePage from "./pages/DevicePage";
 import FloorPage from "./pages/FloorPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
+import RGPDPage from "./pages/RGPDPage/page";
 import RoomPage from "./pages/RoomPage";
 import { RequireAuth } from "./utils/RequireAuth";
 
@@ -73,6 +75,14 @@ function App() {
               }
             />
             <Route
+              path="/deviceModels/:deviceModelCode"
+              element={
+                <RequireAuth>
+                  <DeviceModelPage />
+                </RequireAuth>
+              }
+            />
+            <Route
               path="/devices/robots/:deviceCode"
               element={
                 <RequireAuth>
@@ -86,6 +96,14 @@ function App() {
               element={
                 <RequireAuth>
                   <FloorEditor />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/rgpd"
+              element={
+                <RequireAuth>
+                  <RGPDPage />
                 </RequireAuth>
               }
             />

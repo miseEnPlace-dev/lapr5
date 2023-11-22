@@ -36,4 +36,17 @@ export class DeviceModelService implements IDeviceModelService {
     const data = response.data;
     return data;
   }
+
+  async updateDeviceModel(deviceModel: DeviceModel): Promise<DeviceModel> {
+    const response = await this.http
+      .put<DeviceModel>(`/device-models/${deviceModel.code}`, deviceModel)
+      .catch((error) => {
+        throw error;
+      });
+
+    if (response.status === 400) throw new Error("Something went wrong");
+
+    const data = response.data;
+    return data;
+  }
 }

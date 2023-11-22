@@ -1,5 +1,5 @@
-import config from '@/config.mjs';
-import cors from 'cors';
+import config from '@/config';
+import cors, { CorsOptions } from 'cors';
 import express, { NextFunction, Request, Response, json } from 'express';
 import morgan from 'morgan';
 import swaggerUi from 'swagger-ui-express';
@@ -34,9 +34,14 @@ export default ({ app }: { app: express.Application }) => {
   app.enable('trust proxy');
 
   // The magic package that prevents frontend developers going nuts
-  // Alternate description:
-  // Enable Cross Origin Resource Sharing to all origins by default
-  app.use(cors());
+  const corsOptions: CorsOptions = {
+    origin: (origin, callback) => {
+      const isOriginAllowed = !origin || config.cors.indexOf(origin) !== -1;
+      callback(isOriginAllowed ? null : new Error('Bad Request'), origin);
+    }
+  };
+
+  app.use(cors(corsOptions));
 
   // Middleware that transforms the raw string of req.body into json
   app.use(json());

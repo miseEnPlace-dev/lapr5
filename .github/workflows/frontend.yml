@@ -1,0 +1,56 @@
+name: Frontend CI/CD
+
+on:
+  # schedule:
+  #   - cron: "0 6 * * *"
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: web/
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.10.5
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+          cache-dependency-path: "**/pnpm-lock.yaml"
+
+      - name: Install packages
+        run: pnpm i --frozen-lockfile
+
+      - name: Test & Build
+        run: |
+          export VITE_API_URL="https://vs-gate.dei.isep.ipp.pt:11003/api"
+          # pnpm test
+          pnpm build
+
+      # - name: Archive production artifacts
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: build
+      #     path: web/dist
+
+      - name: Deploy to Netlify
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: pnpm netlify deploy --dir=dist -p
+

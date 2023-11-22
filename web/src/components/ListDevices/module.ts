@@ -19,7 +19,7 @@ export const useListDeviceModule = () => {
 
   const codeInputRef = useRef<HTMLInputElement>(null);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
-  const modelCodeInputRef = useRef<HTMLInputElement>(null);
+  const modelCodeInputRef = useRef<HTMLSelectElement>(null);
   const serialNumberInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -45,12 +45,18 @@ export const useListDeviceModule = () => {
 
   const fetchDeviceModels = useCallback(async () => {
     const deviceModels = await deviceModelService.getDeviceModels();
+    console.log(deviceModels);
     setDeviceModels(deviceModels);
   }, [deviceModelService]);
 
   useEffect(() => {
+    fetchDeviceModels();
+  }, [deviceModelService, fetchDeviceModels]);
+
+  useEffect(() => {
     fetchDevices();
-  }, [fetchDevices]);
+    fetchDeviceModels();
+  }, [fetchDevices, fetchDeviceModels]);
 
   const handleSave = async () => {
     if (!codeInputRef.current) {
