@@ -3,3 +3,4 @@ dockervolume
 out/
 *.code-workspace
 .env
+.netlify
