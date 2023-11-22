@@ -10,7 +10,6 @@ import {
   HomeIcon,
   LogoutIcon,
   RobotIcon,
-  RoomIcon,
 } from "../styles/Icons";
 
 export const useMenuOptions = () => {
@@ -37,11 +36,6 @@ export const useMenuOptions = () => {
         label: "Elevators",
         icon: ElevatorIcon,
         onClick: () => setActiveOption("elevators"),
-      });
-      options.push({
-        label: "Rooms",
-        icon: RoomIcon,
-        onClick: () => setActiveOption("rooms"),
       });
       options.push({
         label: "Connectors",

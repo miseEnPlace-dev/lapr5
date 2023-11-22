@@ -5,11 +5,11 @@ import { FloorCode } from '@/domain/floor/floorCode';
 import { FloorDescription } from '@/domain/floor/floorDescription';
 import { FloorDimensions } from '@/domain/floor/floorDimensions';
 import { FloorMap } from '@/domain/floor/floorMap/floorMap';
-import { FloorMapElevators } from '@/domain/floor/floorMap/floorMapElevators';
-import { FloorMapExitLocation } from '@/domain/floor/floorMap/floorMapExitLocation';
-import { FloorMapExits } from '@/domain/floor/floorMap/floorMapExits';
-import { FloorMapMatrix } from '@/domain/floor/floorMap/floorMapMatrix';
-import { FloorMapSize } from '@/domain/floor/floorMap/floorMapSize';
+import { FloorMazeElevator } from '@/domain/floor/floorMap/floorMaze/floorMazeElevator';
+import { FloorMazeExitLocation } from '@/domain/floor/floorMap/floorMaze/floorMazeExitLocation';
+import { FloorMazeExits } from '@/domain/floor/floorMap/floorMaze/floorMazeExits';
+import { FloorMazeMatrix } from '@/domain/floor/floorMap/floorMaze/floorMazeMatrix';
+import { FloorMazeSize } from '@/domain/floor/floorMap/floorMaze/floorMazeSize';
 import { IFloorDTO } from '@/dto/IFloorDTO';
 import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
 import { TYPES } from '@/loaders/inversify/types';
@@ -20,6 +20,12 @@ import IFloorService from '@/services/IServices/IFloorService';
 import { inject, injectable } from 'inversify';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import IConnectorRepo from './IRepos/IConnectorRepo';
+import { FloorMaze } from '@/domain/floor/floorMap/floorMaze/floorMaze';
+import { FloorMapPlayer } from '@/domain/floor/floorMap/floorMapPlayer';
+import { FloorMapDoor } from '@/domain/floor/floorMap/floorMapDoor';
+import { FloorMapElevator } from '@/domain/floor/floorMap/floorMapElevator';
+import { FloorMapWall } from '@/domain/floor/floorMap/floorMapWall';
+import { FloorMapGround } from '@/domain/floor/floorMap/floorMapGround';
 
 @injectable()
 export default class FloorService implements IFloorService {
@@ -165,37 +171,178 @@ export default class FloorService implements IFloorService {
 
   public async uploadMap(floorCode: string, map: IFloorMapDTO): Promise<Result<IFloorMapDTO>> {
     try {
-      // check map is valid
-      if (!map.size || !map.map || !map.exits || !map.exitLocation || !map.elevators)
+      if (
+        !map.maze.size ||
+        !map.maze.map ||
+        !map.maze.exits ||
+        !map.maze.exitLocation ||
+        !map.maze.elevator
+      )
         return Result.fail<IFloorMapDTO>('Map is invalid');
 
       const code = FloorCode.create(floorCode).getValue();
       const floor = await this.floorRepo.findByCode(code);
       if (!floor) return Result.fail<IFloorMapDTO>('Floor not found');
 
-      const size = FloorMapSize.create(map.size.width, map.size.depth);
+      const size = FloorMazeSize.create(map.maze.size.width, map.maze.size.depth);
       if (size.isFailure) return Result.fail<IFloorMapDTO>(size.error as string);
 
-      const mapMatrix = FloorMapMatrix.create(map.map);
+      const mapMatrix = FloorMazeMatrix.create(map.maze.map);
       if (mapMatrix.isFailure) return Result.fail<IFloorMapDTO>(mapMatrix.error as string);
 
-      const exits = FloorMapExits.create(map.exits.map(exit => ({ x: exit[0], y: exit[1] })));
+      const exits = FloorMazeExits.create(map.maze.exits);
       if (exits.isFailure) return Result.fail<IFloorMapDTO>(exits.error as string);
 
-      const exitLocation = FloorMapExitLocation.create(map.exitLocation[0], map.exitLocation[1]);
+      const exitLocation = FloorMazeExitLocation.create(
+        map.maze.exitLocation.x,
+        map.maze.exitLocation.y
+      );
       if (exitLocation.isFailure) return Result.fail<IFloorMapDTO>(exitLocation.error as string);
 
-      const elevators = FloorMapElevators.create(
-        map.elevators.map(elevator => ({ x: elevator[0], y: elevator[1] }))
-      );
-      if (elevators.isFailure) return Result.fail<IFloorMapDTO>(elevators.error as string);
+      const elevator = FloorMazeElevator.create(map.maze.elevator.x, map.maze.elevator.y);
+      if (elevator.isFailure) return Result.fail<IFloorMapDTO>(elevator.error as string);
 
-      const mapOrError = FloorMap.create({
+      const floorMaze = FloorMaze.create({
         size: size.getValue(),
         map: mapMatrix.getValue(),
         exits: exits.getValue(),
         exitLocation: exitLocation.getValue(),
-        elevators: elevators.getValue()
+        elevator: elevator.getValue()
+      });
+
+      if (floorMaze.isFailure) return Result.fail<IFloorMapDTO>(floorMaze.error as string);
+
+      const player = FloorMapPlayer.create({
+        initialPosition: { x: map.player.initialPosition[0], y: map.player.initialPosition[1] },
+        initialDirection: map.player.initialDirection
+      });
+
+      const door = FloorMapDoor.create({
+        url: map.door.url,
+        scale: {
+          x: map.door.scale.x,
+          y: map.door.scale.y,
+          z: map.door.scale.z
+        }
+      });
+
+      const floorMapElevator = FloorMapElevator.create({
+        url: map.elevator.url,
+        scale: {
+          x: map.elevator.scale.x,
+          y: map.elevator.scale.y,
+          z: map.elevator.scale.z
+        }
+      });
+
+      const wall = FloorMapWall.create({
+        segments: {
+          width: map.wall.segments.width,
+          height: map.wall.segments.height,
+          depth: map.wall.segments.depth
+        },
+        primaryColor: map.wall.primaryColor,
+        maps: {
+          color: {
+            url: map.wall.maps.color.url
+          },
+          ao: {
+            url: map.wall.maps.ao.url,
+            intensity: map.wall.maps.ao.intensity
+          },
+          displacement: {
+            url: map.wall.maps.displacement.url,
+            scale: map.wall.maps.displacement.scale,
+            bias: map.wall.maps.displacement.bias
+          },
+          normal: {
+            url: map.wall.maps.normal.url,
+            type: map.wall.maps.normal.type,
+            scale: {
+              x: map.wall.maps.normal.scale.x,
+              y: map.wall.maps.normal.scale.y
+            }
+          },
+          bump: {
+            url: map.wall.maps.bump.url,
+            scale: map.wall.maps.bump.scale
+          },
+          roughness: {
+            url: map.wall.maps.roughness.url,
+            rough: map.wall.maps.roughness.rough
+          }
+        },
+        wrapS: map.wall.wrapS,
+        wrapT: map.wall.wrapT,
+        repeat: {
+          u: map.wall.repeat.u,
+          v: map.wall.repeat.v
+        },
+        magFilter: map.wall.magFilter,
+        minFilter: map.wall.minFilter,
+        secondaryColor: map.wall.secondaryColor
+      });
+
+      const ground = FloorMapGround.create({
+        size: {
+          width: map.wall.segments.width,
+          height: map.wall.segments.height,
+          depth: map.wall.segments.depth
+        },
+        segments: {
+          width: map.wall.segments.width,
+          height: map.wall.segments.height,
+          depth: map.wall.segments.depth
+        },
+        primaryColor: map.wall.primaryColor,
+        maps: {
+          color: {
+            url: map.wall.maps.color.url
+          },
+          ao: {
+            url: map.wall.maps.ao.url,
+            intensity: map.wall.maps.ao.intensity
+          },
+          displacement: {
+            url: map.wall.maps.displacement.url,
+            scale: map.wall.maps.displacement.scale,
+            bias: map.wall.maps.displacement.bias
+          },
+          normal: {
+            url: map.wall.maps.normal.url,
+            type: map.wall.maps.normal.type,
+            scale: {
+              x: map.wall.maps.normal.scale.x,
+              y: map.wall.maps.normal.scale.y
+            }
+          },
+          bump: {
+            url: map.wall.maps.bump.url,
+            scale: map.wall.maps.bump.scale
+          },
+          roughness: {
+            url: map.wall.maps.roughness.url,
+            rough: map.wall.maps.roughness.rough
+          }
+        },
+        wrapS: map.wall.wrapS,
+        wrapT: map.wall.wrapT,
+        repeat: {
+          u: map.wall.repeat.u,
+          v: map.wall.repeat.v
+        },
+        magFilter: map.wall.magFilter,
+        minFilter: map.wall.minFilter,
+        secondaryColor: map.wall.secondaryColor
+      });
+
+      const mapOrError = FloorMap.create({
+        floorMaze: floorMaze.getValue(),
+        player,
+        door,
+        elevator: floorMapElevator,
+        wall,
+        ground
       });
       if (mapOrError.isFailure) return Result.fail<IFloorMapDTO>(mapOrError.error as string);
 
@@ -228,6 +375,8 @@ export default class FloorService implements IFloorService {
       const code = FloorCode.create(floorCode).getValue();
       const floor = await this.floorRepo.findByCode(code);
       if (!floor) return Result.fail<IFloorDTO>('Floor not found');
+
+      console.log(floor.map);
 
       const floorDTO = FloorMapper.toDTO(floor) as IFloorDTO;
       return Result.ok<IFloorDTO>(floorDTO);

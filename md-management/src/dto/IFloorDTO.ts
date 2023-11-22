@@ -1,3 +1,5 @@
+import { IFloorMapDTO } from './IFloorMapDTO';
+
 export interface IFloorDTO {
   code: string;
   buildingCode: string;
@@ -6,4 +8,5 @@ export interface IFloorDTO {
     width: number;
     length: number;
   };
+  map?: IFloorMapDTO;
 }

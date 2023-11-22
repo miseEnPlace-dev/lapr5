@@ -1,0 +1,57 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor CM as "Campus Manager"
+box "<<system (C4>>\nVisualization)"<<center>>
+  participant CMP as "UI Componente" <<component (C4)>>
+    participant CMP as "UI Component" <<component (C4)>>
+  participant MOD as "Module" <<component (C4)>>
+  participant SRV as "Service" <<component (C4)>>
+  participant HTTP as "HTTP" <<component (C4)>>
+end box
+
+box "<<system (C4)>>\nMD Management" <<center>>#LightYellow
+  participant MDM as "MD Management" <<component (C4)>>
+end box
+
+activate CM
+
+CM -> CMP : asks to create a room
+activate CMP
+
+CM <-- CMP : asks for room data
+deactivate CMP
+
+CM -> CMP : inputs required data
+activate CMP
+
+CMP -> MOD : create new room
+activate MOD
+MOD -> MOD : validate data
+activate MOD
+deactivate MOD
+
+MOD -> SRV : create new room
+activate SRV
+SRV -> HTTP : post(/buildings/:building/floors/:floor/rooms)
+
+HTTP -> MDM : POST /buildings/:building/floors/:floor/rooms
+activate MDM
+MDM --> HTTP : 201 Created
+deactivate MDM
+
+HTTP --> SRV : createdRoom
+deactivate HTTP
+
+SRV --> MOD : createdRoom
+deactivate SRV
+MOD --> CMP : createdRoom
+deactivate MOD
+
+CM <-- CMP : returns confirmation message
+deactivate CMP
+
+deactivate CM
+
+@enduml

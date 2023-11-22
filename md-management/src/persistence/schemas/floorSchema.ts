@@ -5,32 +5,154 @@ const FloorMapSchema = new mongoose.Schema({
   domainId: {
     type: String
   },
-  size: {
-    width: Number,
-    depth: Number
+  maze: {
+    size: {
+      width: Number,
+      depth: Number
+    },
+    map: [[Number]],
+    exits: [
+      {
+        type: {
+          x: Number,
+          y: Number
+        }
+      }
+    ],
+    elevator: {
+      type: {
+        x: Number,
+        y: Number
+      }
+    },
+    exitLocation: {
+      type: {
+        x: Number,
+        y: Number
+      }
+    }
   },
-  map: [[Number]],
-  exits: [
-    {
-      type: {
-        x: Number,
-        y: Number
-      }
-    }
-  ],
-  elevators: [
-    {
-      type: {
-        x: Number,
-        y: Number
-      }
-    }
-  ],
-  exitLocation: {
-    type: {
+  player: {
+    initialPosition: {
       x: Number,
       y: Number
+    },
+    initialDirection: Number
+  },
+  door: {
+    url: String,
+    scale: {
+      x: Number,
+      y: Number,
+      z: Number
     }
+  },
+  elevator: {
+    url: String,
+    scale: {
+      x: Number,
+      y: Number,
+      z: Number
+    }
+  },
+  wall: {
+    segments: {
+      width: Number,
+      height: Number,
+      depth: Number
+    },
+    primaryColor: String,
+    maps: {
+      color: {
+        url: String
+      },
+      ao: {
+        url: String,
+        intensity: Number
+      },
+      displacement: {
+        url: String,
+        scale: Number,
+        bias: Number
+      },
+      normal: {
+        url: String,
+        tipo: Number,
+        scale: {
+          x: Number,
+          y: Number
+        }
+      },
+      bump: {
+        url: String,
+        scale: Number
+      },
+      roughness: {
+        url: String,
+        rough: Number
+      }
+    },
+    wrapS: Number,
+    wrapT: Number,
+    repeat: {
+      u: Number,
+      v: Number
+    },
+    magFilter: Number,
+    minFilter: Number,
+    secondaryColor: String
+  },
+  ground: {
+    size: {
+      width: Number,
+      height: Number,
+      depth: Number
+    },
+    segments: {
+      width: Number,
+      height: Number,
+      depth: Number
+    },
+    primaryColor: String,
+    maps: {
+      color: {
+        url: String
+      },
+      ao: {
+        url: String,
+        intensity: Number
+      },
+      displacement: {
+        url: String,
+        scale: Number,
+        bias: Number
+      },
+      normal: {
+        url: String,
+        tipo: Number,
+        scale: {
+          x: Number,
+          y: Number
+        }
+      },
+      bump: {
+        url: String,
+        scale: Number
+      },
+      roughness: {
+        url: String,
+        rough: Number
+      }
+    },
+    wrapS: Number,
+    wrapT: Number,
+    repeat: {
+      u: Number,
+      v: Number
+    },
+    magFilter: Number,
+    minFilter: Number,
+    secondaryColor: String
   }
 });
 

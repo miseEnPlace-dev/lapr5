@@ -1,0 +1,48 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor FM as "Fleet Manager"
+box "<<container (C4)>>\nVisualization)"<<center>>
+  participant CMP as "UI Component" <<component (C4)>>
+  participant MOD as "Module" <<component (C4)>>
+  participant SRV as "Service" <<component (C4)>>
+  participant HTTP as "HTTP" <<component (C4)>>
+end box
+
+box "<<container (C4)>>\nMD Management" <<center>>#LightYellow
+  participant MDM as "Device Route" <<component>>
+end box
+
+activate FM
+
+FM -> CMP : asks to list all robots filtering by designation or task
+activate CMP
+
+CMP -> MOD : list 
+activate MOD
+MOD -> SRV : get all devices robots with the designation or task given
+activate SRV
+SRV -> HTTP : get('/devices/robots')
+
+activate HTTP
+
+HTTP -> MDM : GET /devices/robots
+activate MDM
+MDM --> HTTP : 200 (robots)
+deactivate MDM
+
+HTTP --> SRV : robots
+deactivate HTTP
+
+SRV --> MOD : robots
+deactivate SRV
+MOD --> CMP : robots
+deactivate MOD
+
+FM <-- CMP : returns all devices robots with the designation or task given
+deactivate CMP
+
+deactivate FM
+
+@enduml
