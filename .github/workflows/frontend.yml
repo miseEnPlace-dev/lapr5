@@ -38,7 +38,7 @@ jobs:
 
       - name: Test & Build
         run: |
-          export VITE_API_URL="https://vsgate-http.dei.isep.ipp.pt:11003/api"
+          export VITE_API_URL="https://vs-gate.dei.isep.ipp.pt:11003/api"
           # pnpm test
           pnpm build
 
