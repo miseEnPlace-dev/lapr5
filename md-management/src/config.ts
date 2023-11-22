@@ -35,5 +35,12 @@ export default {
    */
   api: {
     prefix: '/api'
-  }
+  },
+
+  /**
+   * Array of allowed origin domains for CORS cfg
+   */
+  cors: process.env.ALLOWED_DOMAINS
+    ? (JSON.parse(process.env.ALLOWED_DOMAINS as string) as string[])
+    : ['http://localhost:5173']
 };
