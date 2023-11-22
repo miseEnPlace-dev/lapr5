@@ -45,13 +45,18 @@ export const useListDeviceModule = () => {
 
   const fetchDeviceModels = useCallback(async () => {
     const deviceModels = await deviceModelService.getDeviceModels();
+    console.log(deviceModels);
     setDeviceModels(deviceModels);
   }, [deviceModelService]);
 
   useEffect(() => {
+    fetchDeviceModels();
+  }, [deviceModelService, fetchDeviceModels]);
+
+  useEffect(() => {
     fetchDevices();
     fetchDeviceModels();
-  }, [fetchDevices]);
+  }, [fetchDevices, fetchDeviceModels]);
 
   const handleSave = async () => {
     if (!codeInputRef.current) {

@@ -4,17 +4,23 @@ import { useParams } from "react-router-dom";
 
 import { TYPES } from "../../inversify/types";
 import { Device } from "@/model/Device";
+import { DeviceModel } from "@/model/DeviceModel";
+import { IDeviceModelService } from "@/service/IService/IDeviceModelService";
 import { IDeviceService } from "@/service/IService/IDeviceService";
 
 export const useDevicePageModule = () => {
   const deviceService = useInjection<IDeviceService>(TYPES.deviceService);
+  const deviceModelService = useInjection<IDeviceModelService>(
+    TYPES.deviceModelService
+  );
 
   const { deviceCode } = useParams();
 
   const [device, setDevice] = useState<Device>();
+  const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]);
 
   const nicknameInputRef = useRef<HTMLInputElement>(null);
-  const modelCodeInputRef = useRef<HTMLInputElement>(null);
+  const modelCodeInputRef = useRef<HTMLSelectElement>(null);
   const serialNumberInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -26,6 +32,11 @@ export const useDevicePageModule = () => {
     [deviceService]
   );
 
+  const fetchDeviceModels = useCallback(async () => {
+    const deviceModels = await deviceModelService.getDeviceModels();
+    setDeviceModels(deviceModels);
+  }, [deviceModelService]);
+
   useEffect(() => {
     async function fetchData() {
       if (!deviceCode) return;
@@ -34,6 +45,7 @@ export const useDevicePageModule = () => {
     }
 
     fetchData();
+    fetchDeviceModels();
   }, [
     deviceCode,
     fetchDevice,
@@ -57,6 +69,7 @@ export const useDevicePageModule = () => {
 
   return {
     device,
+    deviceModels,
     nicknameInputRef,
     modelCodeInputRef,
     serialNumberInputRef,

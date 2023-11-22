@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
+import InputSelect from "@/components/InputSelect";
+
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 // import Dropdown from "../../components/Dropdown";
@@ -17,6 +19,7 @@ const DevicePage: React.FC = () => {
     descriptionInputRef,
     handleSaveDevice,
     handleInhibitDevice,
+    deviceModels,
   } = useDevicePageModule();
 
   const navigate = useNavigate();
@@ -65,11 +68,13 @@ const DevicePage: React.FC = () => {
               defaultValue={device?.nickname}
               inputRef={nicknameInputRef}
             />
-            <Input
-              defaultValue={device?.modelCode}
+            <InputSelect
               className="w-full"
-              placeholder="Device Mode (TODO)"
+              name="Device Model"
+              placeholder="Device Model"
               inputRef={modelCodeInputRef}
+              selected={device?.modelCode ? device.modelCode : ""}
+              options={deviceModels}
             />
             <Input
               defaultValue={device?.serialNumber}

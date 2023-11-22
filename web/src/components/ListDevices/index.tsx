@@ -5,12 +5,12 @@ import swal from "sweetalert";
 
 import Button from "../Button";
 import Input from "../Input";
+import InputSelect from "../InputSelect";
 import Modal from "../Modal";
 import TextArea from "../TextArea";
 import { useListDeviceModule } from "./module";
 
 import { AxiosError } from "axios";
-import InputSelect from "../InputSelect";
 
 const ListDevices: React.FC = () => {
   const navigate = useNavigate();
@@ -96,6 +96,8 @@ const ListDevices: React.FC = () => {
 
   const ANIMATION_DELAY = 0.1;
 
+  console.log(deviceModels);
+
   return (
     <div className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left text-lg">
       <motion.button
@@ -119,7 +121,9 @@ const ListDevices: React.FC = () => {
           transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
           key={i}
           onClick={() => navigate(`/devices/robots/${device.code}`)}
-          className={`flex w-full items-center gap-x-10 ${device.isAvailable ? "bg-slate-200" : "bg-red-100"} px-12 py-8`}
+          className={`flex w-full items-center gap-x-10 ${
+            device.isAvailable ? "bg-slate-200" : "bg-red-100"
+          } px-12 py-8`}
         >
           <h2 className="text-6xl font-bold">{device.code}</h2>
           <div className="flex flex-col">
@@ -128,7 +132,9 @@ const ListDevices: React.FC = () => {
               {device.description}
               {!device.isAvailable ? (
                 <span>&nbsp;&middot; INACTIVE</span>
-              ): <span>&nbsp;&middot; ACTIVE</span>}
+              ) : (
+                <span>&nbsp;&middot; ACTIVE</span>
+              )}
             </div>
           </div>
         </motion.button>
