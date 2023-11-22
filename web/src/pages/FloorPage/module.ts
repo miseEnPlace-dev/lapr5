@@ -34,7 +34,7 @@ export const useBuildingPageModule = () => {
   );
 
   const fetchRooms = useCallback(
-    async (buildingCode: string, floorCode: string) => {
+    async (_buildingCode: string, _floorCode: string) => {
       // const rooms = await getRooms
       setRooms([]);
     },

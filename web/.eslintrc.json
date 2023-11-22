@@ -27,6 +27,7 @@
     "@typescript-eslint/no-empty-function": "off",
     "react-hooks/rules-of-hooks": "warn",
     "tailwindcss/classnames-order": "error",
+    "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       { "argsIgnorePattern": "^_" }
