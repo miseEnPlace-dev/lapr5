@@ -219,7 +219,7 @@ export default class Maze extends THREE.Group {
               new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor)
             );
           }
-          if (this.map[i][j] === 4) {
+          if (this.map[i][j] === 4 || this.map[i][j] === 5) {
             // load a glTF resource
             const loader = new GLTFLoader();
             const half = this.halfSize;
@@ -235,7 +235,11 @@ export default class Maze extends THREE.Group {
                   description.elevator.scale.z
                 );
                 gltf.scene.position.set(j - half.width, 0.5, i - half.depth);
-                gltf.scene.rotation.y = Math.PI / 2;
+                if (this.map[i][j] === 4) {
+                  gltf.scene.rotation.y = Math.PI / 2;
+                } else if (this.map[i][j] === 5) {
+                  gltf.scene.rotation.y = -Math.PI / 2;
+                }
                 this.add(gltf.scene);
               },
               // called while loading is progressing
@@ -249,7 +253,7 @@ export default class Maze extends THREE.Group {
             );
           }
 
-          if (this.map[i][j] === 11) {
+          if (this.map[i][j] === 11 || this.map[i][j] === 12) {
             this.aabb[i][j][0] = new THREE.Box3();
             for (let k = 0; k < 2; k++) {
               geometry = wall.geometries[k].clone();
@@ -294,12 +298,22 @@ export default class Maze extends THREE.Group {
                   description.door.scale.y,
                   description.door.scale.z
                 );
-                gltf.scene.position.set(
-                  j - half.width,
-                  0,
-                  i - half.depth + 0.25
-                );
-                gltf.scene.rotation.y = Math.PI / 2;
+                if (this.map[i][j] === 11) {
+                  gltf.scene.rotation.y = Math.PI / 2;
+                  gltf.scene.position.set(
+                    j - half.width,
+                    0,
+                    i - half.depth + 0.25
+                  );
+                } else if (this.map[i][j] === 12) {
+                  gltf.scene.rotation.y = -Math.PI;
+                  gltf.scene.position.set(
+                    j - half.width,
+                    0,
+                    i - half.depth
+                  );
+                }
+
                 this.add(gltf.scene);
               },
               // called while loading is progressing
@@ -339,10 +353,10 @@ export default class Maze extends THREE.Group {
     const onProgress = function (url, xhr) {
       console.log(
         "Resource '" +
-          url +
-          "' " +
-          ((100.0 * xhr.loaded) / xhr.total).toFixed(0) +
-          "% loaded."
+        url +
+        "' " +
+        ((100.0 * xhr.loaded) / xhr.total).toFixed(0) +
+        "% loaded."
       );
     };
 
@@ -434,7 +448,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.x -
-              (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
+            (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
@@ -444,7 +458,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.z -
-              (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
+            (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
@@ -457,7 +471,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.x -
-              (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
+            (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
