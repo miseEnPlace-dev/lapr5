@@ -51,12 +51,14 @@ const DevicePage: React.FC = () => {
             <Input
               className="w-full"
               placeholder="Name"
+              disabled
               defaultValue={deviceModel?.name}
               inputRef={nameInputRef}
             />
             <Input
               className="w-full"
               placeholder="Brand"
+              disabled
               defaultValue={deviceModel?.brand}
               inputRef={brandInputRef}
             />
@@ -69,6 +71,7 @@ const DevicePage: React.FC = () => {
             <Selector
               items={selectedCapabilities}
               title="Capabilities"
+              disabled
               setItems={
                 setSelectedCapabilities as unknown as React.Dispatch<
                   React.SetStateAction<{ name: string; selected: boolean }[]>
