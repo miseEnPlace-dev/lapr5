@@ -6,6 +6,7 @@ import swal from "sweetalert";
 import { useMenuOptions } from "@/hooks/useMenuOptions";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
+import InputSelect from "@/components/InputSelect";
 import Modal from "@/components/Modal";
 import SideBar from "@/components/SideBar";
 import { FilterIcon } from "@/styles/Icons";
@@ -22,6 +23,7 @@ const ConnectorsPage: React.FC = () => {
     floor1InputRef,
     floor2InputRef,
     handleSave,
+    buildings,
     filters,
     setFilters,
   } = useListConnectorsModule();
@@ -29,8 +31,8 @@ const ConnectorsPage: React.FC = () => {
   const [isConnectorModalVisible, setIsConnectorModalVisible] = useState(false);
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
 
-  const building1FilterInputRef = useRef<HTMLInputElement>(null);
-  const building2FilterInputRef = useRef<HTMLInputElement>(null);
+  const building1FilterInputRef = useRef<HTMLSelectElement>(null);
+  const building2FilterInputRef = useRef<HTMLSelectElement>(null);
 
   async function handleSaveClick() {
     try {
@@ -173,17 +175,21 @@ const ConnectorsPage: React.FC = () => {
             <div className="flex h-full flex-col justify-between gap-y-4">
               <div className="flex w-full flex-col gap-y-4">
                 <div className="flex w-full flex-col gap-x-8 gap-y-4">
-                  <Input
+                  <InputSelect
                     className="w-full"
-                    placeholder="Building 1 Code"
+                    placeholder="Building 1"
                     inputRef={building1FilterInputRef}
-                    defaultValue={filters ? filters[0] : undefined}
+                    selected={filters ? filters[0] : undefined}
+                    name="Building 1"
+                    options={buildings}
                   />
-                  <Input
+                  <InputSelect
                     className="w-full"
-                    placeholder="Building 2 Code"
+                    placeholder="Building 2"
                     inputRef={building2FilterInputRef}
-                    defaultValue={filters ? filters[1] : undefined}
+                    selected={filters ? filters[1] : undefined}
+                    name="Building 2"
+                    options={buildings}
                   />
                   {filters && (
                     <Button

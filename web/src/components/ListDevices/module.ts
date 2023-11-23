@@ -48,13 +48,9 @@ export const useListDeviceModule = () => {
   }, [deviceModelService]);
 
   useEffect(() => {
-    fetchDeviceModels();
-  }, [deviceModelService, fetchDeviceModels]);
-
-  useEffect(() => {
     fetchDevices();
     fetchDeviceModels();
-  }, [fetchDevices, fetchDeviceModels]);
+  }, [fetchDevices, deviceModelService, fetchDeviceModels]);
 
   const handleSave = async () => {
     if (!codeInputRef.current) {

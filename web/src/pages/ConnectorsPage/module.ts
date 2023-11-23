@@ -2,12 +2,19 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useInjection } from "inversify-react";
 
 import { TYPES } from "../../inversify/types";
+import { Building } from "@/model/Building";
 import { Connector } from "@/model/Connector";
+import { IBuildingService } from "@/service/IService/IBuildingService";
 import { IConnectorService } from "@/service/IService/IConnectorService";
+import { IFloorService } from "@/service/IService/IFloorService";
 
 export const useListConnectorsModule = () => {
   const connectorSvc = useInjection<IConnectorService>(TYPES.connectorService);
+  const buildingsService = useInjection<IBuildingService>(
+    TYPES.buildingService
+  );
   const [connectors, setConnectors] = useState<Connector[]>([]);
+  const [buildings, setBuildings] = useState<Building[]>([]);
   const [filters, setFilters] = useState<string[] | null>(null);
 
   const codeInputRef = useRef<HTMLInputElement>(null);
@@ -26,9 +33,15 @@ export const useListConnectorsModule = () => {
     }
   }, [connectorSvc, filters]);
 
+  const fetchBuildings = useCallback(async () => {
+    const buildings = await buildingsService.getBuildings();
+    setBuildings(buildings);
+  }, [buildingsService]);
+
   useEffect(() => {
     fetchConnectors();
-  }, [connectorSvc, fetchConnectors]);
+    fetchBuildings();
+  }, [connectorSvc, buildingsService, fetchBuildings, fetchConnectors]);
 
   const handleSave = async () => {
     if (
@@ -53,6 +66,7 @@ export const useListConnectorsModule = () => {
     floor1InputRef,
     floor2InputRef,
     filters,
+    buildings,
     setFilters,
     handleSave,
   };
