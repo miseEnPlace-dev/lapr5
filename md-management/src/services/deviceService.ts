@@ -90,9 +90,9 @@ export default class DeviceService implements IDeviceService {
             const deviceDTO = DeviceMapper.toDTO(device) as IDeviceDTO;
             return deviceDTO;
           });
-        } else if (filters.includes('name')) {
+        } else if (filters.includes('model')) {
           if (value === undefined) return Result.fail<IDeviceDTO[]>('Value not provided');
-          const devices = await this.deviceRepo.findByName(value);
+          const devices = await this.deviceRepo.findByModel(value);
 
           if (!devices) return Result.fail<IDeviceDTO[]>('Devices not found');
           result = devices.map(device => {

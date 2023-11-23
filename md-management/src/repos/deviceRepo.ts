@@ -58,7 +58,7 @@ export default class DeviceRepo implements IDeviceRepo {
     return null;
   }
 
-  public async findByName(name: string): Promise<Device[] | null> {
+  public async findByModel(code: string): Promise<Device[] | null> {
     const query: PipelineStage[] = [
       {
         $lookup: {
@@ -70,7 +70,7 @@ export default class DeviceRepo implements IDeviceRepo {
       },
       {
         $match: {
-          'model.name': name
+          'model.code': code
         }
       }
     ];

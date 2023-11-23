@@ -37,7 +37,7 @@ const ListDeviceModels: React.FC = () => {
   const ANIMATION_DELAY = 0.1;
 
   return (
-    <div className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left text-lg overflow-y-auto">
+    <div className="mr-12 mt-8 flex flex-col justify-between gap-y-6 overflow-y-auto text-left text-lg">
       {deviceModels.map((deviceModel, i) => (
         <motion.button
           initial={{ opacity: 0, x: -100 }}
