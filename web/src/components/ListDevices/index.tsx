@@ -107,7 +107,7 @@ const ListDevices: React.FC = () => {
         }}
         onClick={() => setIsFilterByTaskModalVisible(true)}
         className={`flex w-full items-center justify-center gap-x-10 ${
-          taskFilter ? "bg-slate-400" : "bg-slate-200"
+          taskFilter ? "bg-slate-400" : "bg-slate-300"
         } py-4 text-gray-500`}
       >
         <div className="flex flex-row items-center gap-x-4 text-lg font-bold text-slate-600">

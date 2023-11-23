@@ -8,6 +8,7 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Modal from "@/components/Modal";
 import SideBar from "@/components/SideBar";
+import { FilterIcon } from "@/styles/Icons";
 
 import { useListConnectorsModule } from "./module";
 
@@ -67,6 +68,12 @@ const ConnectorsPage: React.FC = () => {
     }
   }
 
+  async function handleRemoveFilter() {
+    setFilters(null);
+
+    setIsFilterModalVisible(false);
+  }
+
   const ANIMATION_DELAY = 0.1;
 
   const { menuOptions } = useMenuOptions();
@@ -88,10 +95,13 @@ const ConnectorsPage: React.FC = () => {
               delay: connectors.length * ANIMATION_DELAY,
             }}
             onClick={() => setIsFilterModalVisible(true)}
-            className="flex w-full items-center justify-center gap-x-10 bg-slate-400 py-4"
+            className={`flex w-full items-center justify-center gap-x-10 ${
+              filters ? "bg-slate-400" : "bg-slate-300"
+            } py-4 text-gray-500`}
           >
-            <div className="flex flex-col text-lg font-bold text-slate-600">
-              Filter between buildings
+            <div className="flex flex-row items-center gap-x-4 text-lg font-bold text-slate-600">
+              {filters ? <FilterIcon /> : ""}
+              Filter Connectors between Buildings
             </div>
           </motion.button>
           {connectors.map((c, i) => (
@@ -158,11 +168,11 @@ const ConnectorsPage: React.FC = () => {
           <Modal
             setIsVisible={setIsFilterModalVisible}
             isVisible={isFilterModalVisible}
-            title="Filter between buildings"
+            title="Filter Connectors between Buildings"
           >
             <div className="flex h-full flex-col justify-between gap-y-4">
               <div className="flex w-full flex-col gap-y-4">
-                <div className="flex w-full flex-col items-center gap-x-8 gap-y-4 md:flex-row">
+                <div className="flex w-full flex-col gap-x-8 gap-y-4">
                   <Input
                     className="w-full"
                     placeholder="Building 1 Code"
@@ -175,6 +185,15 @@ const ConnectorsPage: React.FC = () => {
                     inputRef={building2FilterInputRef}
                     defaultValue={filters ? filters[1] : undefined}
                   />
+                  {filters && (
+                    <Button
+                      name="removeFilter"
+                      onClick={handleRemoveFilter}
+                      type="reset"
+                    >
+                      Remove Filter
+                    </Button>
+                  )}
                 </div>
               </div>
               <Button
