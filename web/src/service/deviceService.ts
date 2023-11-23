@@ -12,22 +12,21 @@ import { IDeviceService } from "./IService/IDeviceService";
 export class DeviceService implements IDeviceService {
   constructor(@inject(TYPES.api) private http: HttpService) {}
 
-  async getDevicesRobots(filters?: string[], values?: string[]): Promise<Device[]> {
+  async getDevicesRobots(
+    filter?: "task" | "model",
+    value?: string
+  ): Promise<Device[]> {
     let response;
+    console.log("filter: " + filter);
+    console.log("value: " + value);
 
-    if (!filters || !values)
-      response = await this.http.get<Device[]>("/devices/robots");
-    else if (filters.length === 1 && filters[0] === "task")
-      response = await this.http.get<Device[]>("/devices/robots?filter=task" + "&value=" + values[0]);
-    else if (filters.length === 1 && filters[0] === "name") {
-      response = await this.http.get<Device[]>("/devices/robots?filter=name" + "&value=" + values[0]);
-    } else throw new Error("Something went wrong");
-
-    console.log(response);
+    if (filter)
+      response = await this.http.get<Device[]>(
+        "/devices/robots?filter=" + filter + "&value=" + value
+      );
+    else response = await this.http.get<Device[]>("/devices/robots");
 
     const data = response.data;
-
-
     return data;
   }
 

@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
+import { FilterIcon } from "@/styles/Icons";
+
 import Button from "../Button";
 import Input from "../Input";
 import InputSelect from "../InputSelect";
@@ -23,53 +25,49 @@ const ListDevices: React.FC = () => {
     descriptionInputRef,
     serialNumberInputRef,
     deviceModels,
-    setFilters,
-    filters,
-    values,
-    setValues,
-    deviceTaskFilterInputRef,
-    deviceTaskFilterValueInputRef,
-    deviceModelDesignationFilterInputRef,
-    deviceModelDesignationFilterValueInputRef,
+    capabilities,
+    taskFilter,
+    setTaskFilter,
+    modelFilter,
+    setModelFilter,
+    taskFilterInputRef,
+    modelFilterInputRef,
   } = useListDeviceModule();
 
   const [isDeviceModalVisible, setIsDeviceModalVisible] = useState(false);
-  const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
+  const [isFilterByTaskModalVisible, setIsFilterByTaskModalVisible] =
+    useState(false);
+  const [isFilterByModelNameModalVisible, setIsFilterByModelModalVisible] =
+    useState(false);
 
-  async function handleFilterClick() {
+  async function handleFilterByTaskClick() {
     try {
-      const taskFilter = deviceTaskFilterInputRef.current?.value;
-      const taskFilterValue = deviceTaskFilterValueInputRef.current?.value;
-      const designationFilter =
-        deviceModelDesignationFilterInputRef.current?.value;
-      const designationFilterValue =
-        deviceModelDesignationFilterValueInputRef.current?.value;
+      if (!taskFilterInputRef.current?.value) setTaskFilter(null);
+      else setTaskFilter(taskFilterInputRef.current.value);
 
-      const filtersArray = [];
-      const valuesArray = [];
+      setIsFilterByTaskModalVisible(false);
+    } catch (err: unknown) {
+      if (err instanceof AxiosError && err.response)
+        swal("Error", err.response.data.errors as string, "error");
 
-      if (taskFilter && taskFilterValue) {
-        filtersArray.push(taskFilter);
-        valuesArray.push(taskFilterValue);
-      }
+      swal("Error", err as string, "error");
+    }
+  }
 
-      if (designationFilter && designationFilterValue) {
-        filtersArray.push(designationFilter);
-        valuesArray.push(designationFilterValue);
-      }
+  async function handleRemoveFilter() {
+    setModelFilter(null);
+    setTaskFilter(null);
 
-      console.log(filtersArray);
-      console.log(valuesArray);
+    setIsFilterByModelModalVisible(false);
+    setIsFilterByTaskModalVisible(false);
+  }
 
-      if (filtersArray.length > 0) {
-        setFilters(filtersArray);
-        setValues(valuesArray);
-      } else {
-        setFilters(null);
-        setValues(null);
-      }
+  async function handleFilterByModelNameClick() {
+    try {
+      if (!modelFilterInputRef.current?.value) setModelFilter(null);
+      else setModelFilter(modelFilterInputRef.current.value);
 
-      setIsFilterModalVisible(false);
+      setIsFilterByModelModalVisible(false);
     } catch (err: unknown) {
       if (err instanceof AxiosError && err.response)
         swal("Error", err.response.data.errors as string, "error");
@@ -107,11 +105,31 @@ const ListDevices: React.FC = () => {
           duration: 0.2,
           delay: devices.length * ANIMATION_DELAY,
         }}
-        onClick={() => setIsFilterModalVisible(true)}
-        className="flex w-full items-center justify-center gap-x-10 bg-slate-400 py-4"
+        onClick={() => setIsFilterByTaskModalVisible(true)}
+        className={`flex w-full items-center justify-center gap-x-10 ${
+          taskFilter ? "bg-slate-400" : "bg-slate-200"
+        } py-4 text-gray-500`}
       >
-        <div className="flex flex-col text-lg font-bold text-slate-600">
-          Filter devices
+        <div className="flex flex-row items-center gap-x-4 text-lg font-bold text-slate-600">
+          {taskFilter ? <FilterIcon /> : ""}
+          Filter Devices By Task
+        </div>
+      </motion.button>
+      <motion.button
+        initial={{ opacity: 0, y: -100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.2,
+          delay: devices.length * ANIMATION_DELAY,
+        }}
+        onClick={() => setIsFilterByModelModalVisible(true)}
+        className={`flex w-full items-center justify-center gap-x-10 ${
+          modelFilter ? "bg-slate-400" : "bg-slate-200"
+        } py-4 text-gray-500`}
+      >
+        <div className="flex flex-row items-center gap-x-4 text-lg font-bold text-slate-600">
+          {modelFilter ? <FilterIcon /> : ""}
+          Filter Devices By Device Model Name
         </div>
       </motion.button>
       {devices.map((device, i) => (
@@ -194,40 +212,74 @@ const ListDevices: React.FC = () => {
       </Modal>
 
       <Modal
-        setIsVisible={setIsFilterModalVisible}
-        isVisible={isFilterModalVisible}
-        title="Filter devices"
+        setIsVisible={setIsFilterByTaskModalVisible}
+        isVisible={isFilterByTaskModalVisible}
+        title="Filter Devices by Task"
       >
         <div className="flex h-full flex-col justify-between gap-y-4">
           <div className="flex w-full flex-col gap-y-4">
-            <div className="flex w-full flex-col items-center gap-x-8 gap-y-4">
-              <Input
+            <div className="flex w-full flex-col gap-x-8 gap-y-4">
+              <InputSelect
                 className="w-full"
-                placeholder="Task Filter: ('task')"
-                inputRef={deviceTaskFilterInputRef}
-                defaultValue={filters ? filters[0] : undefined}
+                name="Task"
+                placeholder="Task"
+                inputRef={taskFilterInputRef}
+                options={capabilities}
+                selected={taskFilter ? taskFilter : undefined}
               />
-              <Input
-                className="w-full"
-                placeholder="Device Task Value: ('pick_delivery'), ('surveillance')"
-                inputRef={deviceTaskFilterValueInputRef}
-                defaultValue={values ? values[0] : undefined}
-              />
-              <Input
-                className="w-full"
-                placeholder="Device Model Designation Filter: ('name')"
-                inputRef={deviceModelDesignationFilterInputRef}
-                defaultValue={filters ? filters[1] : undefined}
-              />
-              <Input
-                className="w-full"
-                placeholder="Device Model Designation Value: ('name model')"
-                inputRef={deviceModelDesignationFilterValueInputRef}
-                defaultValue={values ? values[1] : undefined}
-              />
+              {taskFilter && (
+                <Button
+                  name="removeFilter"
+                  onClick={handleRemoveFilter}
+                  type="reset"
+                >
+                  Remove Filter
+                </Button>
+              )}
             </div>
           </div>
-          <Button name="listfilter" onClick={handleFilterClick} type="confirm">
+          <Button
+            name="listfilter"
+            onClick={handleFilterByTaskClick}
+            type="confirm"
+          >
+            List
+          </Button>
+        </div>
+      </Modal>
+
+      <Modal
+        setIsVisible={setIsFilterByModelModalVisible}
+        isVisible={isFilterByModelNameModalVisible}
+        title="Filter Devices by Device Model Name"
+      >
+        <div className="flex h-full flex-col justify-between gap-y-4">
+          <div className="flex w-full flex-col gap-y-4">
+            <div className="flex w-full flex-col gap-x-8 gap-y-4">
+              <InputSelect
+                className="w-full"
+                name="Device Model"
+                placeholder="Device Model"
+                inputRef={modelFilterInputRef}
+                options={deviceModels}
+                selected={modelFilter ? modelFilter : undefined}
+              />
+              {modelFilter && (
+                <Button
+                  name="removeFilter"
+                  onClick={handleRemoveFilter}
+                  type="reset"
+                >
+                  Remove Filter
+                </Button>
+              )}
+            </div>
+          </div>
+          <Button
+            name="listfilter"
+            onClick={handleFilterByModelNameClick}
+            type="confirm"
+          >
             List
           </Button>
         </div>
