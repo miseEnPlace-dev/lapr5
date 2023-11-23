@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
-import InputSelect from "@/components/InputSelect";
+import Dropdown from "@/components/Dropdown";
 
 import Button from "../../components/Button";
 import Input from "../../components/Input";
@@ -68,7 +68,7 @@ const DevicePage: React.FC = () => {
               defaultValue={device?.nickname}
               inputRef={nicknameInputRef}
             />
-            <InputSelect
+            <Dropdown
               className="w-full"
               name="Device Model"
               placeholder="Device Model"

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
-import InputSelect from "@/components/InputSelect";
+import Dropdown from "@/components/Dropdown";
 import Selector from "@/components/Selector";
 
 import Button from "../../components/Button";
