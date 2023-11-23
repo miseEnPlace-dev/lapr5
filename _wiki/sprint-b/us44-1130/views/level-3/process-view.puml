@@ -28,23 +28,33 @@ activate C
 C -> SVC : createElevator(buildingCode,data)
 activate SVC
 
-SVC -> ROUTE : POST /buildings/{buildingCode}/elevators {data}
+SVC -> H : post(url,data)
+activate H
+
+H -> ROUTE : POST /buildings/{buildingCode}/elevators {data}
 activate ROUTE
 
 alt a new evelator is created
-  SVC <-- ROUTE : 201 Created
+  H <-- ROUTE : 201 Created
   deactivate ROUTE
+
+  SVC <-- H : the new elevator
+  deactivate H
 
   C <-- SVC : the new elevator
   deactivate SVC
 
   CM <-- C : informs the success of the operation
 else there is an evelator with the specified code
+  activate H
   activate SVC
   activate ROUTE
 
-  SVC <-- ROUTE : 400 Bad Request
+  H <-- ROUTE : 400 Bad Request
   deactivate ROUTE
+
+  SVC <-- H : error
+  deactivate H
 
   C <-- SVC : error
   deactivate SVC
