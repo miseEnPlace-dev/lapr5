@@ -1,8 +1,8 @@
-name: Deploy MD-Management
+name: MD-Management CI/CD
 
 on:
-  schedule:
-    - cron: "0 6 * * *"
+  # schedule:
+  #   - cron: "0 6 * * *"
   push:
     branches: [main]
     paths:
@@ -19,15 +19,19 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Use Node 20
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20.x
+        uses: actions/checkout@v4
 
       - name: Setup pnpm
-        run: npm i -g pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.10.5
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+          cache-dependency-path: "**/pnpm-lock.yaml"
 
       - name: Install packages
         run: pnpm i --frozen-lockfile
@@ -64,5 +68,5 @@ jobs:
           script: |
             cd ~/deploy/md-management
             pnpm i --frozen-lockfile
-            export MONGODB_URI="${{ secrets.MONGODB_URI }}" PORT="2224" JWT_SECRET="${{ secrets.JWT_SECRET }}"
-            pm2 restart md-management || pm2 start dist/index.js --name md-management
+            export MONGODB_URI="${{ secrets.MONGODB_URI }}" JWT_SECRET="${{ secrets.JWT_SECRET }}" ALLOWED_DOMAINS='${{ vars.ALLOWED_DOMAINS }}' PORT="2226" NODE_ENV="production"
+            pm2 restart md-management --update-env || pm2 start dist/index.js --name md-management

@@ -2,4 +2,5 @@ dockervolume
 **/node_modules
 out/
 *.code-workspace
-.env
+.env*
+.netlify
