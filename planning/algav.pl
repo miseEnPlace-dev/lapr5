@@ -315,8 +315,6 @@ create_floor_matrix_line(FloorCode, [H|T], Width, Col) :-
 	create_floor_matrix_line(FloorCode, T, Width1, Col).
 
 
-
-
 floorCodes([H|T], [H.code|Codes]) :-
 	floorCodes(T, Codes).
 

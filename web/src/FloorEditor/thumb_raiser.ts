@@ -1700,6 +1700,11 @@ export default class ThumbRaiser {
               )
             );
           }
+          this.maze.models.forEach((model) => {
+            model.forEach((clip) => {
+              clip.mixer.update(0.01);
+            });
+          });
           if (
             this.maze.collision(
               this.collisionDetectionParameters.method,
