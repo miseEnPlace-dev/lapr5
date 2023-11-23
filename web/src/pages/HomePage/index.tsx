@@ -8,15 +8,15 @@ import CampusHome from "../CampusHome";
 import FleetHome from "../FleetHome";
 
 const HomePage: React.FC = () => {
-  const { menuOptions, activeOption } = useMenuOptions();
+  const { menuOptions } = useMenuOptions();
   const { role } = useContext(AuthContext);
   if (!role) redirect("/login");
 
   return (
     <div className="flex">
-      <SideBar menuOptions={menuOptions} activeOption={activeOption} />
-      {role === "campus" && <CampusHome activeOption={activeOption} />}
-      {role === "fleet" && <FleetHome activeOption={activeOption} />}
+      <SideBar menuOptions={menuOptions} />
+      {role === "campus" && <CampusHome />}
+      {role === "fleet" && <FleetHome />}
     </div>
   );
 };

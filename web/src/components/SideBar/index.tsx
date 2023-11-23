@@ -3,14 +3,13 @@ import { createElement, useContext } from "react";
 import AuthContext from "../../context/AuthContext";
 
 interface SideBarProps {
-  activeOption: string;
   menuOptions: {
     label: string;
     icon: string;
     onClick: () => void;
   }[];
 }
-const SideBar: React.FC<SideBarProps> = ({ menuOptions, activeOption }) => {
+const SideBar: React.FC<SideBarProps> = ({ menuOptions }) => {
   const { role, username } = useContext(AuthContext);
   if (!role) return <></>;
 
@@ -31,9 +30,7 @@ const SideBar: React.FC<SideBarProps> = ({ menuOptions, activeOption }) => {
             onClick={option.onClick}
             key={option.label}
             name={option.label.toLowerCase()}
-            className={`ml-12 flex h-16 items-center gap-x-4 text-white hover:text-secondary ${
-              activeOption === option.label && "text-accent"
-            }`}
+            className={`ml-12 flex h-16 items-center gap-x-4 text-white hover:text-secondary`}
           >
             {createElement(option.icon)}
             {option.label}

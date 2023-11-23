@@ -1,17 +1,10 @@
 import Card from "@/components/Card";
 import CardContainer from "@/components/CardContainer";
-import ListConnectors from "@/components/ListConnectors";
 
-import ListBuildings from "../../components/ListBuildings";
-
-interface CampusHomeProps {
-  activeOption: string;
-}
-
-const CampusHome: React.FC<CampusHomeProps> = ({ activeOption }) => {
+const CampusHome: React.FC = () => {
   return (
     <div className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
-      <h1 className="text-4xl font-bold">Welcome</h1>
+      <h1 className="text-4xl font-bold">Welcome!</h1>
       <p className="text-slate-500">
         Here you can manage all the information about all the components of the
         campus.
@@ -38,9 +31,6 @@ const CampusHome: React.FC<CampusHomeProps> = ({ activeOption }) => {
           action="Go to RGPD"
         />
       </CardContainer>
-
-      {activeOption === "buildings" && <ListBuildings />}
-      {activeOption === "connectors" && <ListConnectors />}
     </div>
   );
 };
