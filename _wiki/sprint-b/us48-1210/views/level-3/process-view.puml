@@ -16,36 +16,36 @@ end box
 
 activate CM
 
-CM -> C : wants to create an elevator in a building
+CM -> C : wants to create a room in a building floor
 activate C
 
-CM <-- C : asks for the code, model, brand, serial number, description & floors served
+CM <-- C : asks for the name, description, floor code, dimensions & category
 deactivate C
 
 CM -> C : inserts the data
 activate C
 
-C -> SVC : createElevator(buildingCode,data)
+C -> SVC : createRoom(buildingFloor,floorCode,data)
 activate SVC
 
 SVC -> H : post(url,data)
 activate H
 
-H -> ROUTE : POST /buildings/{buildingCode}/elevators {data}
+H -> ROUTE : POST /buildings/{buildingCode}/floors/{floorCode}/rooms {data}
 activate ROUTE
 
-alt a new evelator is created
+alt a new room is created
   H <-- ROUTE : 201 Created
   deactivate ROUTE
 
-  SVC <-- H : the new elevator
+  SVC <-- H : the new room
   deactivate H
 
-  C <-- SVC : the new elevator
+  C <-- SVC : the new room
   deactivate SVC
 
   CM <-- C : informs the success of the operation
-else there is an evelator with the specified code
+else there is a room with the specified code
   activate H
   activate SVC
   activate ROUTE
@@ -59,7 +59,7 @@ else there is an evelator with the specified code
   C <-- SVC : error
   deactivate SVC
 
-  CM <-- C : shows error message "An elevator with that code exists."
+  CM <-- C : shows error message "A room with that name exists."
   deactivate C
 end
 
