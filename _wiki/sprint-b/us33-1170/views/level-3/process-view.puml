@@ -5,12 +5,13 @@ skinparam DefaultTextAlignment<<center>> center
 actor CM as "Campus Manager"
 
 box "«container (C4)»\nVisualization" <<center>>
-  participant C as "ConnectorComponent" <<component>>
-  participant SVC as "ConnectorService" <<component>>
+  participant C as "Component" <<component>>
+  participant SVC as "Service" <<component>>
+  participant H as "HTTP" <<component>>
 end box
 
 box "«container (C4)»\n MD Management " <<center>>#LightYellow
-  participant ROUTE as "ConnectorRoute" <<component>>
+  participant ROUTE as "Route" <<component>>
 end box
 
 activate CM
@@ -27,23 +28,33 @@ activate C
 C -> SVC : createConnector(code,floor1,floor2)
 activate SVC
 
-SVC -> ROUTE : POST /connectors {data}
+SVC -> H : post(url,data)
+activate H
+
+H -> ROUTE : POST /connectors {data}
 activate ROUTE
 
 alt a new connector is created
-  SVC <-- ROUTE : 201 Created
+  H <-- ROUTE : 201 Created
   deactivate ROUTE
+
+  SVC <-- H : the new connector
+  deactivate H
 
   C <-- SVC : the new connector
   deactivate SVC
 
   CM <-- C : informs the success of the operation
 else there is a connector between those floors
+  activate H
   activate SVC
   activate ROUTE
 
-  SVC <-- ROUTE : 400 Bad Request
+  H <-- ROUTE : 400 Bad Request
   deactivate ROUTE
+
+  SVC <-- H : error
+  deactivate H
 
   C <-- SVC : error
   deactivate SVC
