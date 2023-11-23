@@ -688,6 +688,10 @@ export default class ThumbRaiser {
       }
     );
     this.scene.add(this.maze);
+
+    document
+      .getElementById("maps-panel")
+      ?.setAttribute("style", "display:none");
   }
 
   updateViewsPanel() {

@@ -493,6 +493,26 @@ export default class Maze extends THREE.Group {
       }
     }
 
+    if (this.map[row][column] === 4 || this.map[row][column] === 5) {
+      if (orientation === 0) {
+        if (
+          Math.abs(
+            position.z -
+              (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
+          ) < radius
+        ) {
+          document
+            .getElementById("maps-panel")
+            ?.setAttribute("style", "display: block");
+          console.log("dentro do elevador");
+          return false;
+        }
+        document
+          .getElementById("maps-panel")
+          ?.setAttribute("style", "display: none");
+      }
+    }
+
     if (this.map[row][column] === 11) {
       if (orientation !== 0) {
         if (

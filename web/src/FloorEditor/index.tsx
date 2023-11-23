@@ -18,9 +18,6 @@ const maps = [
   "building-d-floor-1.json",
   "building-d-floor-2.json",
   "building-d-floor-3.json",
-  "Loquitas_5x5.json",
-  "Loquitas_10x10.json",
-  "Loquitas_20x20.json",
 ];
 
 const FloorEditor: React.FC = () => {
