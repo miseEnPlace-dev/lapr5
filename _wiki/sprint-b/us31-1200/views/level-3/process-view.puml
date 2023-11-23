@@ -5,12 +5,13 @@ skinparam DefaultTextAlignment<<center>> center
 actor CM as "Campus Manager"
 
 box "«container (C4)»\nVisualization" <<center>>
-  participant C as "ListFloorsComponent" <<component>>
-  participant SVC as "FloorService" <<component>>
+  participant C as "Component" <<component>>
+  participant SVC as "Service" <<component>>
+  participant H as "HTTP" <<component>>
 end box
 
 box "«container (C4)»\n MD Management " <<center>>#LightYellow
-  participant ROUTE as "FloorRoute" <<component>>
+  participant ROUTE as "Route" <<component>>
 end box
 
 activate CM
@@ -21,11 +22,17 @@ activate C
 C -> SVC : getFloors(buildingCode,filter)
 activate SVC
 
-SVC -> ROUTE : GET /building/{code}/floors?filter=connectors
+SVC -> H : get(url)
+activate H
+
+H -> ROUTE : GET /building/{code}/floors?filter=connectors
 activate ROUTE
 
-SVC <-- ROUTE : 200 OK
+H <-- ROUTE : 200 OK
 deactivate ROUTE
+
+SVC <-- H : list of floors
+deactivate H
 
 C <-- SVC : list of floors
 deactivate SVC
