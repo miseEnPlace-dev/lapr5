@@ -8,7 +8,10 @@ import FloorEditor from "./FloorEditor";
 import { container } from "./inversify";
 import FloorsPage from "./pages/BuildingFloorsPage";
 import BuildingPage from "./pages/BuildingPage";
+import BuildingsPage from "./pages/BuildingsPage";
+import CampusHome from "./pages/CampusHome";
 import ConnectorPage from "./pages/ConnectorPage";
+import ConnectorsPage from "./pages/ConnectorsPage";
 import DeviceModelPage from "./pages/DeviceModelPage";
 import DevicePage from "./pages/DevicePage";
 import FloorPage from "./pages/FloorPage";
@@ -31,6 +34,22 @@ function App() {
               element={
                 <RequireAuth>
                   <HomePage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/buildings"
+              element={
+                <RequireAuth>
+                  <BuildingsPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/connectors"
+              element={
+                <RequireAuth>
+                  <ConnectorsPage />
                 </RequireAuth>
               }
             />

@@ -1,6 +1,6 @@
-import { AiOutlineRobot as DeviceModelIcon } from "react-icons/ai";
+import { AiFillRobot as DeviceModelIcon } from "react-icons/ai";
 import {
-  FaBridgeWater as BridgeIcon,
+  FaBridge as BridgeIcon,
   FaFilter as FilterIcon,
   FaRobot as RobotIcon,
 } from "react-icons/fa6";

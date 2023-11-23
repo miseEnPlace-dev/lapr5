@@ -15,14 +15,13 @@ import {
 export const useMenuOptions = () => {
   const { role, logout } = useContext(AuthContext);
   const navigation = useNavigate();
-  const [activeOption, setActiveOption] = useState("Home");
 
   const menuOptions = useMemo(() => {
     const options = [
       {
         label: "Home",
         icon: HomeIcon,
-        onClick: () => setActiveOption("home"),
+        onClick: () => navigation("/"),
       },
     ];
 
@@ -30,17 +29,12 @@ export const useMenuOptions = () => {
       options.push({
         label: "Buildings",
         icon: BuildingIcon,
-        onClick: () => setActiveOption("buildings"),
-      });
-      options.push({
-        label: "Elevators",
-        icon: ElevatorIcon,
-        onClick: () => setActiveOption("elevators"),
+        onClick: () => navigation("/buildings"),
       });
       options.push({
         label: "Connectors",
         icon: BridgeIcon,
-        onClick: () => setActiveOption("connectors"),
+        onClick: () => navigation("/connectors"),
       });
     }
 
@@ -48,12 +42,12 @@ export const useMenuOptions = () => {
       options.push({
         label: "Device Models",
         icon: DeviceModelIcon,
-        onClick: () => setActiveOption("device-models"),
+        onClick: () => navigation("/device-models"),
       });
       options.push({
         label: "Devices",
         icon: RobotIcon,
-        onClick: () => setActiveOption("devices"),
+        onClick: () => navigation("/devices"),
       });
     }
 
@@ -63,12 +57,11 @@ export const useMenuOptions = () => {
       onClick: () => {
         logout();
         navigation("/login");
-        setActiveOption("home");
       },
     });
 
     return options;
   }, [navigation, role, logout]);
 
-  return { menuOptions, activeOption };
+  return { menuOptions };
 };
