@@ -60,7 +60,27 @@ export const useBuildingPageModule = () => {
   ]);
 
   async function handleSaveFloor() {
-    // TODO
+    if (
+      !floorCode ||
+      !buildingCode ||
+      !lengthInputRef.current ||
+      !widthInputRef.current ||
+      !descriptionInputRef.current
+    )
+      throw new Error("Invalid data");
+
+    const floor: Floor = {
+      code: floorCode,
+      buildingCode: buildingCode,
+      dimensions: {
+        length: parseFloat(lengthInputRef.current?.value),
+        width: parseFloat(widthInputRef.current?.value),
+      },
+      description: descriptionInputRef.current?.value,
+    };
+
+    await floorService.updateFloor(buildingCode, floor);
+    fetchFloor(buildingCode, floorCode);
   }
 
   async function handleUploadMap() {

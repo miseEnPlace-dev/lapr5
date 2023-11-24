@@ -37,7 +37,7 @@ const FloorPage: React.FC = () => {
       swal("Success", "Map uploaded successfully", "success");
     } catch (err: unknown) {
       swal("Error", err as string, "error");
-    }
+    } 
   }
 
   return (
