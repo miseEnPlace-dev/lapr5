@@ -54,8 +54,8 @@ const DevicePage: React.FC = () => {
       </button>
       <div className="w-full rounded-xl bg-slate-200 py-4">
         <h1 className="text-center text-4xl font-bold">
-          Device Code - {device?.code} (
-          {device?.isAvailable ? "Active" : "Inactive"})
+          Device {device?.code} ({device?.nickname}) -{" "}
+          {device?.isAvailable ? "Active" : "Inactive"}
         </h1>
       </div>
 

@@ -47,6 +47,9 @@ const DevicesPage: React.FC = () => {
       if (!taskFilterInputRef.current?.value) setTaskFilter(null);
       else setTaskFilter(taskFilterInputRef.current.value);
 
+      // Only one filter is valid, remove the other
+      setModelFilter(null);
+
       setIsFilterByTaskModalVisible(false);
     } catch (err: unknown) {
       if (err instanceof AxiosError && err.response)
@@ -68,6 +71,9 @@ const DevicesPage: React.FC = () => {
     try {
       if (!modelFilterInputRef.current?.value) setModelFilter(null);
       else setModelFilter(modelFilterInputRef.current.value);
+
+      // Only one filter is valid, remove the other
+      setTaskFilter(null);
 
       setIsFilterByModelModalVisible(false);
     } catch (err: unknown) {

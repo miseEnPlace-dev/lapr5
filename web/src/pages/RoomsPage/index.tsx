@@ -11,12 +11,12 @@ import Button from "../../components/Button";
 import { ArrowLeftIcon } from "../../styles/Icons";
 import { useRoomPageModule } from "./module";
 
-const RoomPage: React.FC = () => {
+const RoomsPage: React.FC = () => {
   const {
     room,
+    rooms,
     handleSave,
     floor,
-    building,
     roomCategoryInputRef,
     roomNameInputRef,
     roomWidthInputRef,
@@ -47,13 +47,13 @@ const RoomPage: React.FC = () => {
       </button>
       <div className="w-full rounded-xl bg-slate-200 py-4">
         <h1 className="text-center text-4xl font-bold">
-          Floor no. {floor?.code} - {building?.name}
+          Rooms of Floor {floor?.code}
         </h1>
       </div>
 
       <div className="flex h-full w-full gap-x-8">
         <main className="flex h-full w-full flex-col gap-y-6 rounded-xl bg-slate-200 p-8">
-          <ListRooms />
+          <ListRooms rooms={rooms} />
         </main>
 
         <div className="flex h-full w-1/4 gap-x-8">
@@ -131,4 +131,4 @@ const RoomPage: React.FC = () => {
   );
 };
 
-export default RoomPage;
+export default RoomsPage;
