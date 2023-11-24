@@ -23,6 +23,18 @@ export class FloorService implements IFloorService {
     return data;
   }
 
+  async updateFloor(buildingId: string, floor: Floor): Promise<Floor> {
+    const response = await this.http.put<Floor>(
+      `/buildings/${buildingId}/floors/${floor.code}`,
+      floor
+    );
+
+    if (response.status === 400) throw new Error("Something went wrong");
+
+    const data = response.data;
+    return data;
+  }
+
   async getFloor(buildingId: string, floorId: string): Promise<Floor> {
     const response = await this.http.get<Floor>(
       `/buildings/${buildingId}/floors/${floorId}`
