@@ -1,8 +1,6 @@
 :- use_module(server).
 
 :-dynamic ligacel/3.
-%m(piso,col,lin,valor)
-:-dynamic m/4.
 %linha 1:1,1,1,1,1,1,1,1
 %linha 2:0,0,0,0,0,0,0,1
 %linha 3:0,0,0,0,0,0,0,1
@@ -14,69 +12,70 @@
 %
 %
 %
-%m(col,lin,valor)
-m(1,1,1).
-m(2,1,1).
-m(3,1,1).
-m(4,1,1).
-m(5,1,1).
-m(6,1,1).
-m(7,1,1).
-m(8,1,1).
+:-dynamic m/4.
+%m(piso,col,lin,valor)
+m(f1,1,1,1).
+m(f1,2,1,1).
+m(f1,3,1,1).
+m(f1,4,1,1).
+m(f1,5,1,1).
+m(f1,6,1,1).
+m(f1,7,1,1).
+m(f1,8,1,1).
 
-m(1,2,0).
-m(2,2,0).
-m(3,2,0).
-m(4,2,0).
-m(5,2,0).
-m(6,2,0).
-m(7,2,0).
-m(8,2,1).
+m(f1,1,2,0).
+m(f1,2,2,0).
+m(f1,3,2,0).
+m(f1,4,2,0).
+m(f1,5,2,0).
+m(f1,6,2,0).
+m(f1,7,2,0).
+m(f1,8,2,1).
 
-m(1,3,0).
-m(2,3,0).
-m(3,3,0).
-m(4,3,0).
-m(5,3,0).
-m(6,3,0).
-m(7,3,0).
-m(8,3,1).
+m(f1,1,3,0).
+m(f1,2,3,0).
+m(f1,3,3,0).
+m(f1,4,3,0).
+m(f1,5,3,0).
+m(f1,6,3,0).
+m(f1,7,3,0).
+m(f1,8,3,1).
 
-m(1,4,0).
-m(2,4,0).
-m(3,4,0).
-m(4,4,0).
-m(5,4,0).
-m(6,4,0).
-m(7,4,0).
-m(8,4,1).
+m(f1,1,4,0).
+m(f1,2,4,0).
+m(f1,3,4,0).
+m(f1,4,4,0).
+m(f1,5,4,0).
+m(f1,6,4,0).
+m(f1,7,4,0).
+m(f1,8,4,1).
 
-m(1,5,1).
-m(2,5,1).
-m(3,5,1).
-m(4,5,1).
-m(5,5,0).
-m(6,5,0).
-m(7,5,0).
-m(8,5,1).
+m(f1,1,5,1).
+m(f1,2,5,1).
+m(f1,3,5,1).
+m(f1,4,5,1).
+m(f1,5,5,0).
+m(f1,6,5,0).
+m(f1,7,5,0).
+m(f1,8,5,1).
 
-m(1,6,1).
-m(2,6,1).
-m(3,6,1).
-m(4,6,1).
-m(5,6,0).
-m(6,6,0).
-m(7,6,0).
-m(8,6,1).
+m(f1,1,6,1).
+m(f1,2,6,1).
+m(f1,3,6,1).
+m(f1,4,6,1).
+m(f1,5,6,0).
+m(f1,6,6,0).
+m(f1,7,6,0).
+m(f1,8,6,1).
 
-m(1,7,1).
-m(2,7,1).
-m(3,7,1).
-m(4,7,1).
-m(5,7,0).
-m(6,7,0).
-m(7,7,0).
-m(8,7,1).
+m(f1,1,7,1).
+m(f1,2,7,1).
+m(f1,3,7,1).
+m(f1,4,7,1).
+m(f1,5,7,0).
+m(f1,6,7,0).
+m(f1,7,7,0).
+m(f1,8,7,1).
 
 :-dynamic liga/2.
 liga(a,h).
@@ -171,23 +170,23 @@ conta([elev(_,_)|L],NElev,NCor):-conta(L,NElevL,NCor),NElev is NElevL+1.
 conta([cor(_,_)|L],NElev,NCor):-conta(L,NElev,NCorL),NCor is NCorL+1.
 
 
-cria_grafo(_,0):-!.
-cria_grafo(Col,Lin):-cria_grafo_lin(Col,Lin),Lin1 is Lin-1,cria_grafo(Col,Lin1).
+cria_grafo(_,_,0):-!.
+cria_grafo(F,Col,Lin):-cria_grafo_lin(F,Col,Lin),Lin1 is Lin-1,cria_grafo(F,Col,Lin1).
 
 
-cria_grafo_lin(0,_):-!.
-cria_grafo_lin(Col,Lin):-m(Col,Lin,0),!,ColS is Col+1, ColA is Col-1, LinS is Lin+1,LinA is Lin-1,
-    ((m(ColS,Lin,0),m(Col,LinS,0),m(ColS,LinS,0),assertz(ligacel(cel(Col,Lin),cel(ColS,LinS),sqrt(2)));true)),
-    ((m(ColS,Lin,0),m(Col,LinA,0),m(ColS,LinA,0),assertz(ligacel(cel(Col,Lin),cel(ColS,LinA),sqrt(2)));true)),
-    ((m(ColA,Lin,0),m(Col,LinA,0),m(ColA,LinA,0),assertz(ligacel(cel(Col,Lin),cel(ColA,LinA),sqrt(2)));true)),
-    ((m(ColA,Lin,0),m(Col,LinS,0),m(ColA,LinS,0),assertz(ligacel(cel(Col,Lin),cel(ColA,LinS),sqrt(2)));true)),
-    ((m(ColS,Lin,0),assertz(ligacel(cel(Col,Lin),cel(ColS,Lin),1));true)),
-    ((m(ColA,Lin,0),assertz(ligacel(cel(Col,Lin),cel(ColA,Lin),1));true)),
-    ((m(Col,LinS,0),assertz(ligacel(cel(Col,Lin),cel(Col,LinS),1));true)),
-    ((m(Col,LinA,0),assertz(ligacel(cel(Col,Lin),cel(Col,LinA),1));true)),
+cria_grafo_lin(_,0,_):-!.
+cria_grafo_lin(F,Col,Lin):-m(F,Col,Lin,0),!,ColS is Col+1, ColA is Col-1, LinS is Lin+1,LinA is Lin-1,
+    ((m(F,ColS,Lin,0),m(F,Col,LinS,0),m(F,ColS,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinS),sqrt(2)));true)),
+    ((m(F,ColS,Lin,0),m(F,Col,LinA,0),m(F,ColS,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinA),sqrt(2)));true)),
+    ((m(F,ColA,Lin,0),m(F,Col,LinA,0),m(F,ColA,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinA),sqrt(2)));true)),
+    ((m(F,ColA,Lin,0),m(F,Col,LinS,0),m(F,ColA,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinS),sqrt(2)));true)),
+    ((m(F,ColS,Lin,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),1));true)),
+    ((m(F,ColA,Lin,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),1));true)),
+    ((m(F,Col,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),1));true)),
+    ((m(F,Col,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),1));true)),
     Col1 is Col-1,
-    cria_grafo_lin(Col1,Lin).
-cria_grafo_lin(Col,Lin):-Col1 is Col-1,cria_grafo_lin(Col1,Lin).
+    cria_grafo_lin(F,Col1,Lin).
+cria_grafo_lin(F,Col,Lin):-Col1 is Col-1,cria_grafo_lin(F,Col1,Lin).
 
 
 peso([_],0).
@@ -255,10 +254,10 @@ aStar2(Dest,[(_,Ca,LA)|Outros],Cam,Custo):-
 	sort(Todos,TodosOrd),
 	aStar2(Dest,TodosOrd,Cam,Custo).
 
-estimativa(cel(X1,Y1),cel(X2,Y2),Estimativa):-
+estimativa(cel(F,X1,Y1),cel(F,X2,Y2),Estimativa):-
 	Estimativa is sqrt((X1-X2)^2+(Y1-Y2)^2).
 
-:- cria_grafo(8,7).
+:- cria_grafo(_,8,7).
 
 load_data() :-
 	server:fetch_buildings(Buildings),
@@ -282,18 +281,39 @@ create_floors(Building) :-
 	server:fetch_floors(Building.code, Floors),
 	create_floors_matrix(Floors),
 	floorCodes(Floors, FloorCodes),
-	write("  Floor -> "), write(FloorCodes), nl,
 	asserta(pisos(Building.code, FloorCodes)).
 
+
 create_floors_matrix([H|T]) :-
-	%	write("  Floor "), write(H.code), write(" -> "), write(H.matrix), nl,
-	create_floor_matrix(H),
+	write("    Floor "), write(H.code), write(" -> "), is_dict(H.get(map)), nl,
+	write("      Matrix "),  write(H.map.maze.size.width), write("x"), write(H.map.maze.size.depth), nl,
+	write("      "), write(H.map.maze.map), nl,
+	W is H.map.maze.size.width+1,
+	L is H.map.maze.size.depth+1,
+	reverse(H.map.maze.map, H1),
+	create_floor_matrix(H.code, H1, W, L),
 	create_floors_matrix(T).
 
 create_floors_matrix([]).
 
-create_floor_matrix(Floor).
-	%	create_floor_matrix(Floor.matrix, 1, 1, Floor.code).
+create_floors_matrix([_|T]) :-
+	write("No Map"), nl, create_floors_matrix(T).
+
+
+create_floor_matrix(_, _, _, 0).
+create_floor_matrix(FloorCode, [H|T], Width, Length) :-
+	reverse(H, H1),
+	create_floor_matrix_line(FloorCode, H1, Width, Length),
+	Length1 is Length - 1,
+	create_floor_matrix(FloorCode, T, Width, Length1).
+
+
+create_floor_matrix_line(_, _, 0, _).
+create_floor_matrix_line(FloorCode, [H|T], Width, Col) :-
+	asserta(m(FloorCode, Width, Col, H)),
+	Width1 is Width - 1,
+	create_floor_matrix_line(FloorCode, T, Width1, Col).
+
 
 floorCodes([H|T], [H.code|Codes]) :-
 	floorCodes(T, Codes).

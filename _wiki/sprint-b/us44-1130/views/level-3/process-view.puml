@@ -5,12 +5,13 @@ skinparam DefaultTextAlignment<<center>> center
 actor CM as "Campus Manager"
 
 box "«container (C4)»\nVisualization" <<center>>
-  participant C as "ElevatorComponent" <<component>>
-  participant SVC as "ElevatorService" <<component>>
+  participant C as "Component" <<component>>
+  participant SVC as "Service" <<component>>
+  participant H as "HTTP" <<component>>
 end box
 
 box "«container (C4)»\n MD Management " <<center>>#LightYellow
-  participant ROUTE as "ElevatorRoute" <<component>>
+  participant ROUTE as "Route" <<component>>
 end box
 
 activate CM
@@ -27,23 +28,33 @@ activate C
 C -> SVC : createElevator(buildingCode,data)
 activate SVC
 
-SVC -> ROUTE : POST /buildings/{buildingCode}/elevators {data}
+SVC -> H : post(url,data)
+activate H
+
+H -> ROUTE : POST /buildings/{buildingCode}/elevators {data}
 activate ROUTE
 
 alt a new evelator is created
-  SVC <-- ROUTE : 201 Created
+  H <-- ROUTE : 201 Created
   deactivate ROUTE
+
+  SVC <-- H : the new elevator
+  deactivate H
 
   C <-- SVC : the new elevator
   deactivate SVC
 
   CM <-- C : informs the success of the operation
 else there is an evelator with the specified code
+  activate H
   activate SVC
   activate ROUTE
 
-  SVC <-- ROUTE : 400 Bad Request
+  H <-- ROUTE : 400 Bad Request
   deactivate ROUTE
+
+  SVC <-- H : error
+  deactivate H
 
   C <-- SVC : error
   deactivate SVC

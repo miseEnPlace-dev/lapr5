@@ -29,11 +29,13 @@ input {
 
 #maps-panel {
   position: absolute;
-  right: 22vmin;
-  top: -49vh;
+  right: -50vmin;
+  top: -3vh;
   width: 100vmin;
   font-size: 1.5vmin;
   color: white;
+  font-size: 32px;
+  display: none;
 }
 
 #mouse-help-panel {

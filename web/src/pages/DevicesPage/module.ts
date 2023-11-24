@@ -14,8 +14,8 @@ export const useListDeviceModule = () => {
   );
   const [devices, setDevices] = useState<Device[]>([]);
   const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]);
-  const [filters, setFilters] = useState<string[] | null>(null);
-  const [values, setValues] = useState<string[] | null>(null);
+  const [modelFilter, setModelFilter] = useState<string | null>(null);
+  const [taskFilter, setTaskFilter] = useState<string | null>(null);
 
   const codeInputRef = useRef<HTMLInputElement>(null);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
@@ -23,25 +23,23 @@ export const useListDeviceModule = () => {
   const serialNumberInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
-  const deviceTaskFilterInputRef = useRef<HTMLInputElement>(null);
-  const deviceTaskFilterValueInputRef = useRef<HTMLInputElement>(null);
-  const deviceModelDesignationFilterInputRef = useRef<HTMLInputElement>(null);
-  const deviceModelDesignationFilterValueInputRef =
-    useRef<HTMLInputElement>(null);
+  const taskFilterInputRef = useRef<HTMLSelectElement>(null);
+  const modelFilterInputRef = useRef<HTMLSelectElement>(null);
 
   const fetchDevices = useCallback(async () => {
     try {
       let devices: Device[];
-      if (!filters || !values) devices = await deviceService.getDevicesRobots();
-      else devices = await deviceService.getDevicesRobots(filters, values);
-
-      console.log(devices);
+      if (modelFilter)
+        devices = await deviceService.getDevicesRobots("model", modelFilter);
+      else if (taskFilter)
+        devices = await deviceService.getDevicesRobots("task", taskFilter);
+      else devices = await deviceService.getDevicesRobots();
 
       setDevices(devices);
     } catch (e) {
       setDevices([]);
     }
-  }, [deviceService]);
+  }, [deviceService, taskFilter, modelFilter]);
 
   const fetchDeviceModels = useCallback(async () => {
     const deviceModels = await deviceModelService.getDeviceModels();
@@ -50,13 +48,9 @@ export const useListDeviceModule = () => {
   }, [deviceModelService]);
 
   useEffect(() => {
-    fetchDeviceModels();
-  }, [deviceModelService, fetchDeviceModels]);
-
-  useEffect(() => {
     fetchDevices();
     fetchDeviceModels();
-  }, [fetchDevices, fetchDeviceModels]);
+  }, [fetchDevices, deviceModelService, fetchDeviceModels]);
 
   const handleSave = async () => {
     if (!codeInputRef.current) {
@@ -79,6 +73,17 @@ export const useListDeviceModule = () => {
     fetchDevices();
   };
 
+  const capabilities = [
+    {
+      name: "Pick and Delivery",
+      code: "pick_delivery",
+    },
+    {
+      name: "Surveillance",
+      code: "surveillance",
+    },
+  ];
+
   return {
     devices,
     handleSave,
@@ -88,13 +93,12 @@ export const useListDeviceModule = () => {
     serialNumberInputRef,
     descriptionInputRef,
     deviceModels,
-    filters,
-    setFilters,
-    values,
-    setValues,
-    deviceTaskFilterInputRef,
-    deviceTaskFilterValueInputRef,
-    deviceModelDesignationFilterInputRef,
-    deviceModelDesignationFilterValueInputRef,
+    capabilities,
+    modelFilter,
+    setModelFilter,
+    taskFilter,
+    setTaskFilter,
+    taskFilterInputRef,
+    modelFilterInputRef,
   };
 };

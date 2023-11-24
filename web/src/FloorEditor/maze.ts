@@ -25,6 +25,7 @@ export default class Maze extends THREE.Group {
     super();
     merge(this, parameters);
     this.loaded = false;
+    this.models = Array.from(Array(100), () => new Array(100));
 
     this.onLoad = function (description) {
       const normalMapTypes = [
@@ -219,7 +220,7 @@ export default class Maze extends THREE.Group {
               new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor)
             );
           }
-          if (this.map[i][j] === 4) {
+          if (this.map[i][j] === 4 || this.map[i][j] === 5) {
             // load a glTF resource
             const loader = new GLTFLoader();
             const half = this.halfSize;
@@ -235,7 +236,15 @@ export default class Maze extends THREE.Group {
                   description.elevator.scale.z
                 );
                 gltf.scene.position.set(j - half.width, 0.5, i - half.depth);
-                gltf.scene.rotation.y = Math.PI / 2;
+                if (this.map[i][j] === 4) {
+                  gltf.scene.rotation.y = Math.PI / 2;
+                } else if (this.map[i][j] === 5) {
+                  gltf.scene.rotation.y = -Math.PI / 2;
+                }
+                this.models[i][j] = {
+                  mixer: new THREE.AnimationMixer(gltf.scene),
+                  clips: gltf.animations,
+                };
                 this.add(gltf.scene);
               },
               // called while loading is progressing
@@ -249,20 +258,37 @@ export default class Maze extends THREE.Group {
             );
           }
 
-          if (this.map[i][j] === 11) {
+          if (this.map[i][j] === 11 || this.map[i][j] === 12) {
             this.aabb[i][j][0] = new THREE.Box3();
             for (let k = 0; k < 2; k++) {
               geometry = wall.geometries[k].clone();
-              geometry.applyMatrix4(
-                new THREE.Matrix4().makeRotationY(Math.PI / 2.0)
-              );
-              geometry.applyMatrix4(
-                new THREE.Matrix4().makeTranslation(
-                  j - this.halfSize.width,
-                  0.25,
-                  (i - this.halfSize.depth) * 2 + 1.5
-                )
-              );
+              if (this.map[i][j] === 11) {
+                geometry.applyMatrix4(
+                  new THREE.Matrix4().makeRotationY(Math.PI / 2.0)
+                );
+              } else if (this.map[i][j] === 12) {
+                geometry.applyMatrix4(
+                  new THREE.Matrix4().makeRotationY(-Math.PI)
+                );
+              }
+
+              if (this.map[i][j] === 11) {
+                geometry.applyMatrix4(
+                  new THREE.Matrix4().makeTranslation(
+                    j - this.halfSize.width,
+                    0.25,
+                    (i - this.halfSize.depth) * 2 + 1.5
+                  )
+                );
+              } else if (this.map[i][j] === 12) {
+                geometry.applyMatrix4(
+                  new THREE.Matrix4().makeTranslation(
+                    j - this.halfSize.width + 1,
+                    0.25,
+                    (i - this.halfSize.depth) * 2
+                  )
+                );
+              }
 
               geometry.computeBoundingBox();
               geometry.boundingBox.applyMatrix4(
@@ -294,12 +320,26 @@ export default class Maze extends THREE.Group {
                   description.door.scale.y,
                   description.door.scale.z
                 );
-                gltf.scene.position.set(
-                  j - half.width,
-                  0,
-                  i - half.depth + 0.25
-                );
-                gltf.scene.rotation.y = Math.PI / 2;
+                if (this.map[i][j] === 11) {
+                  gltf.scene.rotation.y = Math.PI / 2;
+                  gltf.scene.position.set(
+                    j - half.width,
+                    0,
+                    i - half.depth + 0.25
+                  );
+                } else if (this.map[i][j] === 12) {
+                  gltf.scene.rotation.y = -Math.PI;
+                  gltf.scene.position.set(
+                    j - half.width + 0.25,
+                    0,
+                    i - half.depth
+                  );
+                }
+
+                this.models[i][j] = {
+                  mixer: new THREE.AnimationMixer(gltf.scene),
+                  clips: gltf.animations,
+                };
                 this.add(gltf.scene);
               },
               // called while loading is progressing
@@ -452,6 +492,27 @@ export default class Maze extends THREE.Group {
         }
       }
     }
+
+    if (this.map[row][column] === 4 || this.map[row][column] === 5) {
+      if (orientation === 0) {
+        if (
+          Math.abs(
+            position.z -
+              (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
+          ) < radius
+        ) {
+          document
+            .getElementById("maps-panel")
+            ?.setAttribute("style", "display: block");
+          console.log("dentro do elevador");
+          return false;
+        }
+        document
+          .getElementById("maps-panel")
+          ?.setAttribute("style", "display: none");
+      }
+    }
+
     if (this.map[row][column] === 11) {
       if (orientation !== 0) {
         if (
@@ -461,11 +522,35 @@ export default class Maze extends THREE.Group {
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
-          return true;
+          this.playOpenDoorAnimation(row, column);
+
+          return false;
+        }
+      }
+    }
+    if (this.map[row][column] === 12) {
+      if (orientation === 0) {
+        if (
+          Math.abs(
+            position.z -
+              (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
+          ) < radius
+        ) {
+          this.playOpenDoorAnimation(row, column);
+          console.log("Collision with " + name + ".");
+
+          return false;
         }
       }
     }
     return false;
+  }
+
+  playOpenDoorAnimation(x, y) {
+    const action = this.models[x][y].mixer.clipAction(
+      this.models[x][y].clips[6]
+    );
+    action.reset().setEffectiveTimeScale(3).setLoop(THREE.LoopOnce, 1).play();
   }
 
   // Detect collision with walls and corners (method: OBB/AABB)
@@ -475,7 +560,8 @@ export default class Maze extends THREE.Group {
     if (
       this.map[row][column] === 2 - orientation ||
       this.map[row][column] === 3 ||
-      this.map[row][column] === 11
+      this.map[row][column] === 11 ||
+      this.map[row][column] === 12
     ) {
       if (obb.intersectsBox3(this.aabb[row][column][orientation])) {
         console.log("Collision with " + name + ".");
@@ -488,7 +574,7 @@ export default class Maze extends THREE.Group {
   // Detect collisions
   collision(method, position, halfSize, direction) {
     const indices = this.cartesianToCell(position);
-    if (method != "obb-aabb") {
+    if (method !== "obb-aabb") {
       if (
         this.wallCollision(
           indices,

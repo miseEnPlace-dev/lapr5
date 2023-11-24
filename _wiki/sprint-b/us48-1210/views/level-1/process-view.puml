@@ -1,0 +1,27 @@
+@startuml process-view
+autonumber
+
+actor CM as "Campus Manager"
+participant SYS as "RobDroneGo System" <<system (C4)>>
+
+activate CM
+
+CM -> SYS : wants to create a room in a building floor
+activate SYS
+
+CM <-- SYS : asks for the name, description, floor code, dimensions & category
+deactivate SYS
+
+CM -> SYS : inserts the data
+activate SYS
+
+alt a new room is created
+  CM <-- SYS : returns the new room
+else there is a room with the specified name
+  CM <-- SYS : shows error message "A room with that name exists."
+  deactivate SYS
+end
+
+deactivate CM
+
+@enduml

@@ -6,6 +6,7 @@ interface SelectorProps {
   additionalText?: string;
   activeClassName?: string;
   title?: string;
+  disabled?: boolean;
 }
 
 const Selector: React.FC<SelectorProps> = ({
@@ -13,12 +14,13 @@ const Selector: React.FC<SelectorProps> = ({
   setItems,
   additionalText,
   title,
+  disabled,
   activeClassName = "bg-secondary",
 }) => {
   function sanitizeName(name: string) {
     return name.replace("_", " ");
   }
-
+  console.log("DISA" + disabled);
   return (
     <div className="flex flex-col">
       <h2 className="my-4 ml-1 text-2xl font-bold">{title}</h2>
@@ -27,7 +29,10 @@ const Selector: React.FC<SelectorProps> = ({
         {items.map((item) => (
           <button
             key={item.name}
-            className={`relative flex items-center justify-center gap-x-4 text-center text-xl font-bold capitalize hover:brightness-90
+            disabled={disabled}
+            className={`relative flex items-center justify-center gap-x-4 text-center text-xl font-bold capitalize ${
+              !disabled && "hover:brightness-90"
+            }
           ${
             item.selected ? activeClassName : "bg-slate-200"
           } w-full rounded-md py-2`}
