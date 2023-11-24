@@ -1,0 +1,48 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor CM as "Campus Manager"
+box "<<system (C4>>\nVisualization"<<center>>
+  participant CMP as "UI Component" <<component (C4)>>
+  participant MOD as "Module" <<component (C4)>>
+  participant SRV as "Service" <<component (C4)>>
+  participant HTTP as "HTTP" <<component (C4)>>
+end box
+
+box "<<system (C4)>>\nMD Management" <<center>>#LightYellow
+  participant MDM as "MD Management" <<component (C4)>>
+end box
+
+activate CM
+
+CM -> CMP : asks to inhibit device
+activate CMP
+
+CMP -> MOD : inhibit device
+activate MOD
+MOD -> SRV : inhibit device
+activate SRV
+SRV -> HTTP : patch('/devices/:deviceCode')
+activate HTTP
+
+HTTP -> MDM : patch /devices
+activate MDM
+MDM --> HTTP : 200 (OK)
+deactivate MDM
+
+HTTP --> SRV : updatedDevice
+deactivate HTTP
+
+SRV --> MOD : updatedDevice
+deactivate SRV
+MOD --> CMP : updatedDevice
+deactivate MOD
+
+CM <-- CMP : returns confirmation message
+deactivate CMP
+
+
+deactivate CM
+
+@enduml
