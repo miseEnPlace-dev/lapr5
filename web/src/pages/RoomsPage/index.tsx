@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
+import Dropdown from "@/components/Dropdown";
 import Input from "@/components/Input";
 import ListRooms from "@/components/ListRooms";
 import Modal from "@/components/Modal";
@@ -14,6 +15,7 @@ import { useRoomPageModule } from "./module";
 const RoomsPage: React.FC = () => {
   const {
     room,
+    categories,
     rooms,
     handleSave,
     floor,
@@ -76,8 +78,8 @@ const RoomsPage: React.FC = () => {
             isVisible={isRoomModalVisible}
             title={`Add Room`}
           >
-            <div className="flex h-full flex-col gap-y-4">
-              <div className="flex flex-col items-center justify-between gap-x-8">
+            <div className="flex h-full flex-col justify-between gap-y-4">
+              <div className="flex flex-col items-center justify-between gap-x-8 gap-y-4">
                 <Input
                   className="w-full"
                   placeholder="Name"
@@ -89,7 +91,7 @@ const RoomsPage: React.FC = () => {
                   defaultValue={room?.description}
                   inputRef={roomDescriptionInputRef}
                 />
-                <div className="flex items-center justify-between gap-x-12">
+                <div className="flex w-full items-center justify-between gap-x-12">
                   <Input
                     className="w-full"
                     placeholder="Width (m)"
@@ -106,23 +108,23 @@ const RoomsPage: React.FC = () => {
                     type="number"
                     inputRef={roomLengthInputRef}
                   />
-                  <Input
-                    defaultValue={room?.dimensions.length}
-                    className="w-full"
-                    placeholder="Category"
-                    type="text"
-                    inputRef={roomCategoryInputRef}
-                  />
                 </div>
-                <Button
-                  name="save"
-                  onClick={handleSaveClick}
-                  type="confirm"
-                  className="my-2 py-2 text-xl"
-                >
-                  Save
-                </Button>
+                <Dropdown
+                  className="w-full"
+                  name="Category"
+                  placeholder="Category"
+                  inputRef={roomCategoryInputRef}
+                  options={categories}
+                />
               </div>
+              <Button
+                name="save"
+                onClick={handleSaveClick}
+                type="confirm"
+                className="my-2 w-full py-2 text-xl"
+              >
+                Save
+              </Button>
             </div>
           </Modal>
         </div>

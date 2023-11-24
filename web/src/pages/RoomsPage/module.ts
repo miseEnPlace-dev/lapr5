@@ -25,7 +25,7 @@ export const useRoomPageModule = () => {
 
   const roomNameInputRef = useRef<HTMLInputElement>(null);
   const roomDescriptionInputRef = useRef<HTMLTextAreaElement>(null);
-  const roomCategoryInputRef = useRef<HTMLInputElement>(null);
+  const roomCategoryInputRef = useRef<HTMLSelectElement>(null);
   const roomWidthInputRef = useRef<HTMLInputElement>(null);
   const roomLengthInputRef = useRef<HTMLInputElement>(null);
 
@@ -40,6 +40,25 @@ export const useRoomPageModule = () => {
     },
     [roomService]
   );
+
+  const categories = [
+    {
+      name: "Office",
+      code: "OFFICE",
+    },
+    {
+      name: "Laboratory",
+      code: "LAB",
+    },
+    {
+      name: "Meeting Room",
+      code: "MEETING_ROOM",
+    },
+    {
+      name: "Classroom",
+      code: "CLASSROOM",
+    },
+  ];
 
   async function handleCreate() {
     if (!buildingCode) throw new Error("No building code provided");
@@ -126,6 +145,7 @@ export const useRoomPageModule = () => {
 
   return {
     floor,
+    categories,
     handleSave,
     handleCreate,
     roomNameInputRef,
