@@ -1,0 +1,30 @@
+@startuml process-view
+autonumber
+
+actor CM as "Campus Manager"
+participant UI as "Visualization" <<system (C4)>>
+participant MDD as "MDD" <<system (C4)>>
+
+activate CM
+
+CM -> UI : asks to updload floor map
+activate UI
+
+CM <-- UI : asks to select a json file
+deactivate UI
+
+CM -> UI : selects file
+activate UI
+
+UI -> MDD : PATCH /buildings/floors
+activate MDD
+MDD --> UI : 200 (OK)
+deactivate MDD
+
+CM <-- UI : returns confirmation message
+deactivate UI
+
+
+deactivate CM
+
+@enduml

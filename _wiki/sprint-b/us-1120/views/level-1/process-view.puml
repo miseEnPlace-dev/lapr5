@@ -1,0 +1,24 @@
+@startuml process-view
+autonumber
+
+actor CM as "Campus Manager"
+participant SYS as "RobDroneGo System" <<system (C4)>>
+
+activate CM
+
+CM -> SYS : asks to updload floor map
+activate SYS
+
+CM <-- SYS : asks to select a json file
+deactivate SYS
+
+CM -> SYS : selects file
+activate SYS
+
+CM <-- SYS : returns confirmation message
+deactivate SYS
+
+
+deactivate CM
+
+@enduml

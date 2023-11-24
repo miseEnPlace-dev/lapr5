@@ -1,4 +1,4 @@
-# US 25 [1070] - As a Campus Manager, I want to create a building
+# US 25 [1070] - As a Campus Manager, I want to edit a building
 
 |              |                         |
 | ------------ | ----------------------- |

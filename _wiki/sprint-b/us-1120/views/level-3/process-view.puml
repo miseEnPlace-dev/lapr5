@@ -1,0 +1,57 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor CM as "Campus Manager"
+box "<<system (C4>>\nVisualization"<<center>>
+  participant CMP as "UI Component" <<component (C4)>>
+  participant MOD as "Module" <<component (C4)>>
+  participant SRV as "Service" <<component (C4)>>
+  participant HTTP as "HTTP" <<component (C4)>>
+end box
+
+box "<<system (C4)>>\nMD Management" <<center>>#LightYellow
+  participant MDM as "MD Management" <<component (C4)>>
+end box
+
+activate CM
+
+CM -> CMP : asks to updload floor map
+activate CMP
+
+CM <-- CMP : asks to select a json file
+deactivate CMP
+
+CM -> CMP : selects file
+activate CMP
+CMP -> MOD : uploads floor map
+activate MOD
+MOD -> MOD : validates file path
+activate MOD
+deactivate MOD
+MOD -> SRV : uploads floor map
+activate SRV
+SRV -> HTTP : put('/buildings/:buildingCode/floors/:floorCode')
+
+activate HTTP
+
+HTTP -> MDM : put /buildings/floors
+activate MDM
+MDM --> HTTP : 200 (OK)
+deactivate MDM
+
+HTTP --> SRV : updatedFloorMap
+deactivate HTTP
+
+SRV --> MOD : updatedFloorMap
+deactivate SRV
+MOD --> CMP : updatedFloorMap
+deactivate MOD
+
+CM <-- CMP : returns confirmation message
+deactivate CMP
+
+
+deactivate CM
+
+@enduml
