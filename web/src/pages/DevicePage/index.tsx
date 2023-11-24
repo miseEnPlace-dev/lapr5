@@ -94,18 +94,15 @@ const DevicePage: React.FC = () => {
         <div className="flex h-full w-full flex-col justify-between gap-y-12 rounded-xl bg-slate-200 px-4 py-8 md:w-1/4">
           <div className="flex flex-col gap-y-2">
             <h2 className="mb-4 text-center text-3xl font-bold">Actions</h2>
-            {device?.isAvailable ? (
-              <Button
-                name="inhibitDevice"
-                className="w-full"
-                type="default"
-                onClick={handleInhibitDeviceClick}
-              >
-                Inhibit Device
-              </Button>
-            ) : (
-              <div></div>
-            )}
+
+            <Button
+              name="inhibitDevice"
+              className="w-full"
+              type="default"
+              onClick={handleInhibitDeviceClick}
+            >
+              {device?.isAvailable ? "Disable Device" : "Enable Device"}
+            </Button>
           </div>
           <div className="flex flex-col gap-y-2">
             <Button
