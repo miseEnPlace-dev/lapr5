@@ -20,7 +20,7 @@ const Selector: React.FC<SelectorProps> = ({
   function sanitizeName(name: string) {
     return name.replace("_", " ");
   }
-  console.log("DISA" + disabled);
+
   return (
     <div className="flex flex-col">
       <h2 className="my-4 ml-1 text-2xl font-bold">{title}</h2>

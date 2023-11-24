@@ -55,10 +55,6 @@ export const useDevicePageModule = () => {
     descriptionInputRef,
   ]);
 
-  async function handleSaveDevice() {
-    // TODO
-  }
-
   async function handleInhibitDevice() {
     if (!deviceCode) return;
 
@@ -74,7 +70,6 @@ export const useDevicePageModule = () => {
     modelCodeInputRef,
     serialNumberInputRef,
     descriptionInputRef,
-    handleSaveDevice,
     handleInhibitDevice,
   };
 };
