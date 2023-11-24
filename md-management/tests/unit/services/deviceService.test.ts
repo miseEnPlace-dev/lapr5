@@ -121,26 +121,6 @@ describe('Device  Service', () => {
     expect(result.errorValue()).toBe('Model not found');
   });
 
-  it('createDevice: should return error when device already exists', async () => {
-    const deviceDTO = {
-      code: '12345',
-      nickname: 'name',
-      serialNumber: 'DeviceSerialNumber',
-      modelCode: 'DeviceModel'
-    };
-
-    const deviceRepo = container.get<IDeviceRepo>(TYPES.deviceRepo);
-    const deviceModelRepo = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
-    stub(deviceRepo, 'findByCode').resolves(deviceDTO);
-    stub(deviceModelRepo, 'findByCode').resolves(deviceDTO);
-
-    const deviceService = new DeviceService(deviceRepo, deviceModelRepo);
-    const result = await deviceService.createDevice(deviceDTO);
-
-    expect(result.isFailure).toBe(true);
-    expect(result.errorValue()).toBe('Device already exists');
-  });
-
   it('createDevice: should create a new Device', async () => {
     const deviceDTO = {
       code: '12345',

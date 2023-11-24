@@ -121,8 +121,6 @@ export default class DeviceService implements IDeviceService {
       const device = await this.deviceRepo.findByCode(deviceCode);
       if (!device) return Result.fail<IDeviceDTO>('Device not found');
 
-      if (!device.isAvailable) return Result.fail<IDeviceDTO>('Device already inhibited');
-
       const deviceOrError = Device.create(
         {
           code: device.code,
@@ -130,7 +128,7 @@ export default class DeviceService implements IDeviceService {
           serialNumber: device.serialNumber,
           description: device.description,
           model: device.model,
-          isAvailable: false
+          isAvailable: !device.isAvailable
         },
         device.id
       );
