@@ -1,5 +1,4 @@
-interface InputSelectProps
-  extends React.SelectHTMLAttributes<HTMLSelectElement> {
+interface DropdownProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   name: string;
   center?: boolean;
   placeholder?: string;
@@ -10,7 +9,7 @@ interface InputSelectProps
   selected?: string;
 }
 
-const InputSelect: React.FC<InputSelectProps> = ({
+const Dropdown: React.FC<DropdownProps> = ({
   name,
   center,
   placeholder,
@@ -53,4 +52,4 @@ const InputSelect: React.FC<InputSelectProps> = ({
   );
 };
 
-export default InputSelect;
+export default Dropdown;

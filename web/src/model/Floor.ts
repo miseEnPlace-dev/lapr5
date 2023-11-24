@@ -6,4 +6,5 @@ export interface Floor {
     width: number;
     length: number;
   };
+  map?: {};
 }

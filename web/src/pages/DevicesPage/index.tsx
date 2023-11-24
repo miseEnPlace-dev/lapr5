@@ -5,8 +5,8 @@ import swal from "sweetalert";
 
 import { useMenuOptions } from "@/hooks/useMenuOptions";
 import Button from "@/components/Button";
+import Dropdown from "@/components/Dropdown";
 import Input from "@/components/Input";
-import InputSelect from "@/components/InputSelect";
 import Modal from "@/components/Modal";
 import SideBar from "@/components/SideBar";
 import TextArea from "@/components/TextArea";
@@ -47,6 +47,9 @@ const DevicesPage: React.FC = () => {
       if (!taskFilterInputRef.current?.value) setTaskFilter(null);
       else setTaskFilter(taskFilterInputRef.current.value);
 
+      // Only one filter is valid, remove the other
+      setModelFilter(null);
+
       setIsFilterByTaskModalVisible(false);
     } catch (err: unknown) {
       if (err instanceof AxiosError && err.response)
@@ -68,6 +71,9 @@ const DevicesPage: React.FC = () => {
     try {
       if (!modelFilterInputRef.current?.value) setModelFilter(null);
       else setModelFilter(modelFilterInputRef.current.value);
+
+      // Only one filter is valid, remove the other
+      setTaskFilter(null);
 
       setIsFilterByModelModalVisible(false);
     } catch (err: unknown) {
@@ -195,7 +201,7 @@ const DevicesPage: React.FC = () => {
                   placeholder="Code"
                   inputRef={codeInputRef}
                 />
-                <InputSelect
+                <Dropdown
                   className="w-full"
                   name="Device Model"
                   placeholder="Device Model"
@@ -232,7 +238,7 @@ const DevicesPage: React.FC = () => {
             <div className="flex h-full flex-col justify-between gap-y-4">
               <div className="flex w-full flex-col gap-y-4">
                 <div className="flex w-full flex-col gap-x-8 gap-y-4">
-                  <InputSelect
+                  <Dropdown
                     className="w-full"
                     name="Task"
                     placeholder="Task"
@@ -269,7 +275,7 @@ const DevicesPage: React.FC = () => {
             <div className="flex h-full flex-col justify-between gap-y-4">
               <div className="flex w-full flex-col gap-y-4">
                 <div className="flex w-full flex-col gap-x-8 gap-y-4">
-                  <InputSelect
+                  <Dropdown
                     className="w-full"
                     name="Device Model"
                     placeholder="Device Model"

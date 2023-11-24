@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
-import InputSelect from "@/components/InputSelect";
+import Dropdown from "@/components/Dropdown";
 import Selector from "@/components/Selector";
 
 import Button from "../../components/Button";
@@ -41,7 +41,7 @@ const DevicePage: React.FC = () => {
       </button>
       <div className="w-full rounded-xl bg-slate-200 py-4">
         <h1 className="text-center text-4xl font-bold">
-          Device Model {deviceModel?.code} - {deviceModel?.name}
+          Device Model {deviceModel?.code} ({deviceModel?.name})
         </h1>
       </div>
 

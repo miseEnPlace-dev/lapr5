@@ -50,12 +50,13 @@ const BuildingFloorsPage: React.FC = () => {
       </button>
       <div className="w-full rounded-xl bg-slate-200 py-4">
         <h1 className="text-center text-4xl font-bold">
-          Edifício no. {building?.code} - {building?.name}
+          Floors of Building {building?.code}
         </h1>
       </div>
 
       <div className="flex h-full w-full gap-x-8">
         <main className="flex h-full w-3/4 flex-col gap-y-6 rounded-xl bg-slate-200 p-8">
+          <h2 className="text-3xl font-bold">Floors</h2>
           <ListFloors floors={floors} buildingCode={building?.code} />
         </main>
 
@@ -85,8 +86,8 @@ const BuildingFloorsPage: React.FC = () => {
           isVisible={isFloorModalVisible}
           title={`Add Floor`}
         >
-          <div className="flex h-full flex-col gap-y-4">
-            <div className="flex flex-col items-center justify-between gap-x-8">
+          <div className="flex h-full flex-col justify-between gap-y-4">
+            <div className="flex flex-col items-center justify-between gap-x-8 gap-y-4">
               <Input
                 className="w-full"
                 placeholder="Code"
@@ -98,7 +99,7 @@ const BuildingFloorsPage: React.FC = () => {
                 defaultValue={floor?.description}
                 inputRef={floorDescriptionInputRef}
               />
-              <div className="flex items-center justify-between gap-x-12">
+              <div className="flex w-full items-center justify-between gap-x-12">
                 <Input
                   className="w-full"
                   placeholder="Width (m)"
@@ -116,15 +117,15 @@ const BuildingFloorsPage: React.FC = () => {
                   inputRef={floorLengthInputRef}
                 />
               </div>
-              <Button
-                name="save"
-                onClick={handleSaveClick}
-                type="confirm"
-                className="my-2 py-2 text-xl"
-              >
-                Save
-              </Button>
             </div>
+            <Button
+              name="save"
+              onClick={handleSaveClick}
+              type="confirm"
+              className="my-2 py-2 text-xl"
+            >
+              Save
+            </Button>
           </div>
         </Modal>
       </div>

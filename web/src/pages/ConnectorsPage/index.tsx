@@ -5,8 +5,8 @@ import swal from "sweetalert";
 
 import { useMenuOptions } from "@/hooks/useMenuOptions";
 import Button from "@/components/Button";
+import Dropdown from "@/components/Dropdown";
 import Input from "@/components/Input";
-import InputSelect from "@/components/InputSelect";
 import Modal from "@/components/Modal";
 import SideBar from "@/components/SideBar";
 import { FilterIcon } from "@/styles/Icons";
@@ -175,7 +175,7 @@ const ConnectorsPage: React.FC = () => {
             <div className="flex h-full flex-col justify-between gap-y-4">
               <div className="flex w-full flex-col gap-y-4">
                 <div className="flex w-full flex-col gap-x-8 gap-y-4">
-                  <InputSelect
+                  <Dropdown
                     className="w-full"
                     placeholder="Building 1"
                     inputRef={building1FilterInputRef}
@@ -183,7 +183,7 @@ const ConnectorsPage: React.FC = () => {
                     name="Building 1"
                     options={buildings}
                   />
-                  <InputSelect
+                  <Dropdown
                     className="w-full"
                     placeholder="Building 2"
                     inputRef={building2FilterInputRef}

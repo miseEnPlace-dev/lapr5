@@ -50,12 +50,18 @@ const FloorPage: React.FC = () => {
       </button>
       <div className="w-full rounded-xl bg-slate-200 py-4">
         <h1 className="text-center text-4xl font-bold">
-          Floor no. {floor?.code}
+          Floor {floor?.code} of Building {floor?.buildingCode}
         </h1>
       </div>
 
       <div className="flex h-full w-full flex-col gap-x-8 gap-y-12 md:flex-row">
         <main className="flex h-full w-full flex-col gap-y-6 rounded-xl bg-slate-200 p-8 md:w-3/4">
+          <Input
+            defaultValue={floor?.buildingCode}
+            className="w-full"
+            disabled
+            placeholder="Building"
+          />
           <div className="flex items-center justify-between gap-x-12">
             <Input
               className="w-full"
@@ -86,6 +92,14 @@ const FloorPage: React.FC = () => {
           <div className="flex flex-col gap-y-2">
             <h2 className="mb-4 text-center text-3xl font-bold">Actions</h2>
             <Button
+              name="rooms"
+              className="w-full"
+              type="default"
+              onClick={() => navigate("rooms")}
+            >
+              Rooms
+            </Button>
+            <Button
               name="uploadMap"
               className="w-full"
               type="default"
@@ -93,7 +107,7 @@ const FloorPage: React.FC = () => {
                 mapInputRef.current?.click();
               }}
             >
-              Upload Map
+              {floor?.map ? "Update Map" : "Upload Map"}
             </Button>
             <input
               id="inputCv"
@@ -103,14 +117,6 @@ const FloorPage: React.FC = () => {
               ref={mapInputRef}
               className="hidden"
             />
-            <Button
-              name="rooms"
-              className="w-full"
-              type="default"
-              onClick={() => navigate("rooms")}
-            >
-              Rooms
-            </Button>
           </div>
           <div className="flex flex-col gap-y-2">
             <Button

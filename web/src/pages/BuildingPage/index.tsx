@@ -10,7 +10,7 @@ import Modal from "../../components/Modal";
 import TextArea from "../../components/TextArea";
 import { ArrowLeftIcon } from "../../styles/Icons";
 import { useBuildingPageModule } from "./module";
-  
+
 const BuildingPage: React.FC = () => {
   const {
     building,
@@ -63,7 +63,7 @@ const BuildingPage: React.FC = () => {
       </button>
       <div className="w-full rounded-xl bg-slate-200 py-4">
         <h1 className="text-center text-4xl font-bold">
-          Building no. {building?.code} - {building?.name}
+          Building {building?.code} ({building?.name})
         </h1>
       </div>
 
@@ -105,20 +105,20 @@ const BuildingPage: React.FC = () => {
           <div className="flex flex-col gap-y-2">
             <h2 className="mb-4 text-center text-3xl font-bold">Actions</h2>
             <Button
-              name={`${elevator ? "edit" : "add"}-elevator`}
-              onClick={() => setIsElevatorModalVisible((cur) => !cur)}
-              className="w-full"
-              type="default"
-            >
-              {elevator ? "Edit" : "Add"} Elevator
-            </Button>
-            <Button
               name="floors"
               className="w-full"
               type="default"
               onClick={() => navigate("floors")}
             >
               Floors
+            </Button>
+            <Button
+              name={`${elevator ? "edit" : "add"}-elevator`}
+              onClick={() => setIsElevatorModalVisible((cur) => !cur)}
+              className="w-full"
+              type="default"
+            >
+              {elevator ? "Edit" : "Add"} Elevator
             </Button>
           </div>
           <div className="flex flex-col gap-y-2">
@@ -179,10 +179,9 @@ const BuildingPage: React.FC = () => {
               defaultValue={elevator?.description}
               inputRef={descriptionInputRef}
             />
-
-            <h2 className=" ml-1 mt-4 text-xl font-bold">Floors</h2>
             {selectedFloors.length > 0 ? (
               <Selector
+                title="Floors"
                 items={selectedFloors}
                 setItems={setSelectedFloors}
                 additionalText="Floor "
@@ -200,7 +199,7 @@ const BuildingPage: React.FC = () => {
             onClick={handleSaveClick}
             type="confirm"
             disabled={selectedFloors.length === 0}
-            className="py-2 text-xl"
+            className="mt-4 py-2 text-xl"
           >
             Save
           </Button>

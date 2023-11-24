@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
-import InputSelect from "@/components/InputSelect";
+import Dropdown from "@/components/Dropdown";
 
 import Button from "../../components/Button";
 import Input from "../../components/Input";
@@ -54,8 +54,8 @@ const DevicePage: React.FC = () => {
       </button>
       <div className="w-full rounded-xl bg-slate-200 py-4">
         <h1 className="text-center text-4xl font-bold">
-          Device Code - {device?.code} (
-          {device?.isAvailable ? "Active" : "Inactive"})
+          Device {device?.code} ({device?.nickname}) -{" "}
+          {device?.isAvailable ? "Active" : "Inactive"}
         </h1>
       </div>
 
@@ -68,7 +68,7 @@ const DevicePage: React.FC = () => {
               defaultValue={device?.nickname}
               inputRef={nicknameInputRef}
             />
-            <InputSelect
+            <Dropdown
               className="w-full"
               name="Device Model"
               placeholder="Device Model"

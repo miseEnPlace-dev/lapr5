@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
+import Dropdown from "@/components/Dropdown";
 import Input from "@/components/Input";
 import ListRooms from "@/components/ListRooms";
 import Modal from "@/components/Modal";
@@ -11,12 +12,13 @@ import Button from "../../components/Button";
 import { ArrowLeftIcon } from "../../styles/Icons";
 import { useRoomPageModule } from "./module";
 
-const RoomPage: React.FC = () => {
+const RoomsPage: React.FC = () => {
   const {
     room,
+    categories,
+    rooms,
     handleSave,
     floor,
-    building,
     roomCategoryInputRef,
     roomNameInputRef,
     roomWidthInputRef,
@@ -47,13 +49,13 @@ const RoomPage: React.FC = () => {
       </button>
       <div className="w-full rounded-xl bg-slate-200 py-4">
         <h1 className="text-center text-4xl font-bold">
-          Floor no. {floor?.code} - {building?.name}
+          Rooms of Floor {floor?.code}
         </h1>
       </div>
 
       <div className="flex h-full w-full gap-x-8">
         <main className="flex h-full w-full flex-col gap-y-6 rounded-xl bg-slate-200 p-8">
-          <ListRooms />
+          <ListRooms rooms={rooms} />
         </main>
 
         <div className="flex h-full w-1/4 gap-x-8">
@@ -76,8 +78,8 @@ const RoomPage: React.FC = () => {
             isVisible={isRoomModalVisible}
             title={`Add Room`}
           >
-            <div className="flex h-full flex-col gap-y-4">
-              <div className="flex flex-col items-center justify-between gap-x-8">
+            <div className="flex h-full flex-col justify-between gap-y-4">
+              <div className="flex flex-col items-center justify-between gap-x-8 gap-y-4">
                 <Input
                   className="w-full"
                   placeholder="Name"
@@ -89,7 +91,7 @@ const RoomPage: React.FC = () => {
                   defaultValue={room?.description}
                   inputRef={roomDescriptionInputRef}
                 />
-                <div className="flex items-center justify-between gap-x-12">
+                <div className="flex w-full items-center justify-between gap-x-12">
                   <Input
                     className="w-full"
                     placeholder="Width (m)"
@@ -106,23 +108,23 @@ const RoomPage: React.FC = () => {
                     type="number"
                     inputRef={roomLengthInputRef}
                   />
-                  <Input
-                    defaultValue={room?.dimensions.length}
-                    className="w-full"
-                    placeholder="Category"
-                    type="text"
-                    inputRef={roomCategoryInputRef}
-                  />
                 </div>
-                <Button
-                  name="save"
-                  onClick={handleSaveClick}
-                  type="confirm"
-                  className="my-2 py-2 text-xl"
-                >
-                  Save
-                </Button>
+                <Dropdown
+                  className="w-full"
+                  name="Category"
+                  placeholder="Category"
+                  inputRef={roomCategoryInputRef}
+                  options={categories}
+                />
               </div>
+              <Button
+                name="save"
+                onClick={handleSaveClick}
+                type="confirm"
+                className="my-2 w-full py-2 text-xl"
+              >
+                Save
+              </Button>
             </div>
           </Modal>
         </div>
@@ -131,4 +133,4 @@ const RoomPage: React.FC = () => {
   );
 };
 
-export default RoomPage;
+export default RoomsPage;
