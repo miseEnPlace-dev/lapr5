@@ -4,23 +4,21 @@ autonumber
 actor CM as "Campus Manager"
 participant UI as "Visualization" <<system (C4)>>
 participant MDD as "MDD" <<system (C4)>>
-participant P as "Planning" <<system (C4)>>
-
 
 activate CM
 
-CM -> UI : asks to create a new room
+CM -> UI : asks to inhibit device
 activate UI
 
-UI -> MDD : POST /buildings/:building/floors/:floor/rooms
+UI -> MDD : PATCH /devices
 activate MDD
-MDD --> UI : 201 (room)
+MDD --> UI : 200 (OK)
 deactivate MDD
 
-CM <-- UI : returns room
+CM <-- UI : returns confirmation message
 deactivate UI
+
 
 deactivate CM
 
 @enduml
-

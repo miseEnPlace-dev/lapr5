@@ -1,42 +1,26 @@
 @startuml process-view
 autonumber
-skinparam DefaultTextAlignment<<center>> center
 
 actor CM as "Campus Manager"
+participant UI as "Visualization" <<system (C4)>>
+participant MDD as "MDD" <<system (C4)>>
+participant P as "Planning" <<system (C4)>>
 
-box "«system (C4)»\nRobDroneGo" <<center>>
-  participant UI as "Visualization" <<container (C4)>>
-  participant MD as "MD Management" <<container (C4)>>
-end box
 
 activate CM
 
-CM -> UI : wants to create a room in a building floor
+CM -> UI : asks to create a new room
 activate UI
 
-CM <-- UI : asks for the name, description, floor code, dimensions & category
+UI -> MDD : POST /buildings/:building/floors/:floor/rooms
+activate MDD
+MDD --> UI : 201 (room)
+deactivate MDD
+
+CM <-- UI : returns room
 deactivate UI
-
-CM -> UI : inserts the data
-activate UI
-
-UI -> MD : POST /buildings/{buildingCode}/floors/{floorCode}/rooms {data}
-activate MD
-
-alt a new room is created
-  UI <-- MD : 201 Created
-  deactivate MD
-
-  CM <-- UI : informs the success of the operation
-else there is a room with the specified name
-  activate MD
-  UI <-- MD : 400 Bad Request
-  deactivate MD
-
-  CM <-- UI : shows error message "A room with that name exists."
-  deactivate UI
-end
 
 deactivate CM
 
 @enduml
+
