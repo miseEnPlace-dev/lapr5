@@ -261,6 +261,44 @@ edificio C e D: 12 x 20 células
 
 notem que o formato de mapas que vos foi fornecido no código exemplo "adiciona" uma linha e uma coluna extra à grelha do mapa"
 
+## [Question 15](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26033)
+
+### US1220 - Como gestor de Tarefas pretendo obter os caminhos entre dois edificos considerando um critério de otimização
+
+> Sera necessário apresentar todos os caminhos possíveis? Ou apenas o caminho mais rápido? Devemos considerar o “custo” entre um ponto e o outro?
+> Os pontos a serem considerados tem de ser significativos? Ou seja, o utilizador insere que o robô vai do Edifício A, piso 1, sala A101 para o Edifício B, piso 3 sala B301. Ou então vai de uma célula indicada para outra célula indicada?
+
+### Answer
+
+"o utilizador irá introduzir a sala de inicio e de fim do percurso que pretende obter.
+na UI deve ser apresentado o melhor caminho encontrado de acordo com o critério de otimização "duração do percurso". Podem utilizar tempos médios fixos para contabilizar a deslocação do Robot.
+
+Notem, que em termos do módulo de planeamento (de forma isolada) pode ser interessante conseguir saber todos os percursos possiveis entre esses dois pontos, por exemplo, para efeitos de debug."
+
+## [Question 16](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26105)
+
+### US601 - O formato base do mapa que descreve a planta de um piso de um edifício do campus (um ficheiro/piso/edifício) deve ser complementado com informação do módulo de gestão de campus: dimensão do piso, etc
+
+> Para a realização desta US é necessário obter a informação do módulo de gestão de campus através de um pedido GET à base de dados ou deve ser adquirida de outro modo?
+
+### Answer
+
+"este requisito está intimamente ligado com os requisitos 700, 710 e 730. O módulo de visualização deve ler o mapa do piso que foi carregado no módulo web e complementar com a informação "em falta" (necessária) para o módulo funcionar corretamente. Tecnicamente podem escolher a forma que vos parecer mais adequada; devem justificar essa decisão na análise/design desse requisito."
+
+## [Question 17](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26178)
+
+### US820
+
+> Pretende que a pasta seja visível através da UI ou através do próprio sistema operativo dos usuários?
+> Quando se refere a todos os utilizadores registados no sistema, isto inclui os users, campus managers, fleet managers, task managers que são criados via sign up pela nossa solução ou apenas o users já registados nas maquinas?
+> Ou pretende que a pasta seja de acesso publico apenas com permissões de leitura para o acesso geral, e apenas os managers (campus , fleet, task, system admins ou users registados nas maquinas) tenham de fazer login para terem as permissões de escrita e leitura?
+
+### Answer
+
+"Através da UI seria mais apelativo por nem todos saberão aceder vi sistema operativo, não concorda? Contudo, é aceitável que seja apenas nesta fase visível por sistema operativo.
+Relativamente às permissões note que a US é (propositadamente) omissa sobre isso. O que imagina que o cliente irá colocar na pasta? Instruções (pasta só de leitura para utilizadores "normais", leitura e escrita para internos)? Ou algo diferente que implique que qualquer utilizador tenha permissões de escrita?
+Apresente e implemente de acordo com o princípio que considerarem - o máximo que pode acontecer é o cliente dizer na reunião final "Ah, mas não era essa a minha ideia", tornando-se numa definição incorrecta das especificações da exclusiva responsabilidade do cliente."
+
 ---
 
-_LAST UPDATE: 11/11/2023 13:45H_
+_LAST UPDATE: 24/11/2023 13:45H_
