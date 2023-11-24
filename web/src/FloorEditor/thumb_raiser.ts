@@ -688,6 +688,10 @@ export default class ThumbRaiser {
       }
     );
     this.scene.add(this.maze);
+
+    document
+      .getElementById("maps-panel")
+      ?.setAttribute("style", "display:none");
   }
 
   updateViewsPanel() {
@@ -1700,6 +1704,11 @@ export default class ThumbRaiser {
               )
             );
           }
+          this.maze.models.forEach((model) => {
+            model.forEach((clip) => {
+              clip.mixer.update(0.01);
+            });
+          });
           if (
             this.maze.collision(
               this.collisionDetectionParameters.method,
