@@ -7,7 +7,7 @@ NC='\033[0m' # No Color
 echo "LOG: Deploy web"
 cd web
 echo "> Installing dependencies"
-pnpm i
+pnpm i --frozen-lockfile
 
 echo "> Testing web"
 pnpm test
