@@ -29,11 +29,11 @@ fi
 
 
 echo -e "${NC}> Deploying web"
-pnpm preview
+pnpm preview --2228
 
 if [ $? -eq 0 ]; then
   echo -e "${GREEN}Deploy successful"
-  echo -e "${GREEN}Running in localhost:4173/"
+  echo -e "${GREEN}Running in port 4173/"
 else
   echo -e "${RED}Failed to deploy"
   exit 1
