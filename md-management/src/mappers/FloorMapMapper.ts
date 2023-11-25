@@ -107,9 +107,9 @@ export class FloorMapMapper extends Mapper<FloorMap> {
       },
       ground: {
         size: {
-          width: floorMap.ground.segments.width,
-          height: floorMap.ground.segments.height,
-          depth: floorMap.ground.segments.depth
+          width: floorMap.ground.size.width,
+          height: floorMap.ground.size.height,
+          depth: floorMap.ground.size.depth
         },
         segments: {
           width: floorMap.ground.segments.width,
@@ -264,9 +264,9 @@ export class FloorMapMapper extends Mapper<FloorMap> {
 
     const ground = FloorMapGround.create({
       size: {
-        width: floorMap.ground.segments.width,
-        height: floorMap.ground.segments.height,
-        depth: floorMap.ground.segments.depth
+        width: floorMap.ground.size.width,
+        height: floorMap.ground.size.height,
+        depth: floorMap.ground.size.depth
       },
       segments: {
         width: floorMap.ground.segments.width,
@@ -416,9 +416,9 @@ export class FloorMapMapper extends Mapper<FloorMap> {
       },
       ground: {
         size: {
-          width: floorMap.ground.segments.width,
-          height: floorMap.ground.segments.height,
-          depth: floorMap.ground.segments.depth
+          width: floorMap.ground.size.width,
+          height: floorMap.ground.size.height,
+          depth: floorMap.ground.size.depth
         },
         segments: {
           width: floorMap.ground.segments.width,
