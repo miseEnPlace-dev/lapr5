@@ -5,7 +5,8 @@ skinparam DefaultTextAlignment<<center>> center
 actor CM as "Campus Manager"
 
 box "«container (C4)»\nVisualization" <<center>>
-  participant C as "Component" <<component>>
+  participant C as "UI Component" <<component>>
+  participant M as "Module" <<component>>
   participant SVC as "Service" <<component>>
   participant H as "HTTP" <<component>>
 end box
@@ -19,7 +20,10 @@ activate CM
 CM -> C : wants to list floors with connectors to other buildings
 activate C
 
-C -> SVC : getFloors(buildingCode,filter)
+C -> M : getFloors
+activate M
+
+M -> SVC : getFloors(buildingCode,filter)
 activate SVC
 
 SVC -> H : get(url)
@@ -34,12 +38,19 @@ deactivate ROUTE
 SVC <-- H : list of floors
 deactivate H
 
-C <-- SVC : list of floors
+M <-- SVC : list of floors
 deactivate SVC
 
 alt there are floors with the specified filter
+  C <-- M : list of floors
+  deactivate M
+
   CM <-- C : shows the floors list
 else the list is empty
+  activate M
+  C <-- M : error
+  deactivate M
+
   CM <-- C : shows error message "No floors found."
   deactivate C
 end

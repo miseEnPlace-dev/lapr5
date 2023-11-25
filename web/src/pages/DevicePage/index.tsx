@@ -17,28 +17,17 @@ const DevicePage: React.FC = () => {
     modelCodeInputRef,
     serialNumberInputRef,
     descriptionInputRef,
-    handleSaveDevice,
     handleInhibitDevice,
     deviceModels,
   } = useDevicePageModule();
 
   const navigate = useNavigate();
 
-  async function handleSaveDeviceClick() {
-    try {
-      await handleSaveDevice();
-
-      swal("Success", "Device saved successfully", "success");
-    } catch (err: unknown) {
-      swal("Error", err as string, "error");
-    }
-  }
-
   async function handleInhibitDeviceClick() {
     try {
       await handleInhibitDevice();
 
-      swal("Success", "Device inhibited successfully", "success");
+      swal("Success", "Status of the Device changed successfully", "success");
     } catch (err: unknown) {
       swal("Error", err as string, "error");
     }
@@ -107,7 +96,8 @@ const DevicePage: React.FC = () => {
           <div className="flex flex-col gap-y-2">
             <Button
               name="save"
-              onClick={handleSaveDeviceClick}
+              disabled
+              onClick={() => {}}
               className="w-full self-end"
               type="confirm"
             >

@@ -1,6 +1,5 @@
 interface DropdownProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   name: string;
-  center?: boolean;
   placeholder?: string;
   className?: string;
   disabled?: boolean;
@@ -11,7 +10,6 @@ interface DropdownProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 
 const Dropdown: React.FC<DropdownProps> = ({
   name,
-  center,
   placeholder,
   className,
   disabled,

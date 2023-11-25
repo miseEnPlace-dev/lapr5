@@ -15,6 +15,8 @@ import { useListBuildingsModule } from "./module";
 
 import { AxiosError } from "axios";
 
+const ANIMATION_DELAY = 0.1;
+
 const BuildingsPage: React.FC = () => {
   const navigate = useNavigate();
   const {
@@ -83,8 +85,6 @@ const BuildingsPage: React.FC = () => {
 
     setIsFilterModalVisible(false);
   }
-
-  const ANIMATION_DELAY = 0.1;
 
   const { menuOptions } = useMenuOptions();
 

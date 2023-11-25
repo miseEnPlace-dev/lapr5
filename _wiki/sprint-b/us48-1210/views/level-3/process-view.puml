@@ -3,65 +3,53 @@ autonumber
 skinparam DefaultTextAlignment<<center>> center
 
 actor CM as "Campus Manager"
-
-box "«container (C4)»\nVisualization" <<center>>
-  participant C as "Component" <<component>>
-  participant SVC as "Service" <<component>>
-  participant H as "HTTP" <<component>>
+box "<<system (C4>>\nVisualization)"<<center>>
+  participant CMP as "UI Component" <<component (C4)>>
+  participant MOD as "Module" <<component (C4)>>
+  participant SRV as "Service" <<component (C4)>>
+  participant HTTP as "HTTP" <<component (C4)>>
 end box
 
-box "«container (C4)»\n MD Management " <<center>>#LightYellow
-  participant ROUTE as "Route" <<component>>
+box "<<system (C4)>>\nMD Management" <<center>>#LightYellow
+  participant MDM as "MD Management" <<component (C4)>>
 end box
 
 activate CM
 
-CM -> C : wants to create a room in a building floor
-activate C
+CM -> CMP : asks to create a room
+activate CMP
 
-CM <-- C : asks for the name, description, floor code, dimensions & category
-deactivate C
+CM <-- CMP : asks for room data
+deactivate CMP
 
-CM -> C : inserts the data
-activate C
+CM -> CMP : inputs required data
+activate CMP
 
-C -> SVC : createRoom(buildingFloor,floorCode,data)
-activate SVC
+CMP -> MOD : create new room
+activate MOD
+MOD -> MOD : validate data
+activate MOD
+deactivate MOD
 
-SVC -> H : post(url,data)
-activate H
+MOD -> SRV : create new room
+activate SRV
+SRV -> HTTP : post(/buildings/:building/floors/:floor/rooms)
 
-H -> ROUTE : POST /buildings/{buildingCode}/floors/{floorCode}/rooms {data}
-activate ROUTE
+HTTP -> MDM : POST /buildings/:building/floors/:floor/rooms
+activate MDM
+MDM --> HTTP : 201 Created
+deactivate MDM
 
-alt a new room is created
-  H <-- ROUTE : 201 Created
-  deactivate ROUTE
+HTTP --> SRV : createdRoom
+deactivate HTTP
 
-  SVC <-- H : the new room
-  deactivate H
+SRV --> MOD : createdRoom
+deactivate SRV
+MOD --> CMP : createdRoom
+deactivate MOD
 
-  C <-- SVC : the new room
-  deactivate SVC
-
-  CM <-- C : informs the success of the operation
-else there is a room with the specified code
-  activate H
-  activate SVC
-  activate ROUTE
-
-  H <-- ROUTE : 400 Bad Request
-  deactivate ROUTE
-
-  SVC <-- H : error
-  deactivate H
-
-  C <-- SVC : error
-  deactivate SVC
-
-  CM <-- C : shows error message "A room with that name exists."
-  deactivate C
-end
+CM <-- CMP : returns confirmation message
+deactivate CMP
 
 deactivate CM
 

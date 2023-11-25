@@ -5,7 +5,8 @@ skinparam DefaultTextAlignment<<center>> center
 actor CM as "Campus Manager"
 
 box "«container (C4)»\nVisualization" <<center>>
-  participant C as "Component" <<component>>
+  participant C as "UI Component" <<component>>
+  participant M as "Module" <<component>>
   participant SVC as "Service" <<component>>
   participant H as "HTTP" <<component>>
 end box
@@ -25,7 +26,10 @@ deactivate C
 CM -> C : inserts the data
 activate C
 
-C -> SVC : getConnectorsBetweenBuildings(building1,building2)
+C -> M : getConnectorsBetweenBuildings
+activate M
+
+M -> SVC : getConnectorsBetweenBuildings(building1,building2)
 activate SVC
 
 SVC -> H : get(url)
@@ -41,12 +45,16 @@ alt there are connectors between those buildings
   SVC <-- H : list of connectors
   deactivate H
 
-  C <-- SVC : list of connectors
+  M <-- SVC : list of connectors
   deactivate SVC
+
+  C <-- M : list of connectors
+  deactivate M
 
   CM <-- C : shows the list
 else a building code does not exist
   activate H
+  activate M
   activate SVC
   activate ROUTE
 
@@ -56,12 +64,16 @@ else a building code does not exist
   SVC <-- H : error
   deactivate H
 
-  C <-- SVC : error
+  M <-- SVC : error
   deactivate SVC
+
+  C <-- M : error
+  deactivate M
 
   CM <-- C : shows error message "One/both buildings does not exist."
 else there are not connectors between those buildings
   activate H
+  activate M
   activate SVC
   activate ROUTE
 
@@ -71,8 +83,11 @@ else there are not connectors between those buildings
   SVC <-- H : empty list of connectors
   deactivate H
 
-  C <-- SVC : empty list of connectors
+  M <-- SVC : empty list of connectors
   deactivate SVC
+
+  C <-- M : empty list of connectors
+  deactivate M
 
   CM <-- C : shows message "Could not find connectors."
 end

@@ -5,7 +5,8 @@ skinparam DefaultTextAlignment<<center>> center
 actor CM as "Campus Manager"
 
 box "«container (C4)»\nVisualization" <<center>>
-  participant C as "Component" <<component>>
+  participant C as "UI Component" <<component>>
+  participant M as "Module" <<component>>
   participant SVC as "Service" <<component>>
   participant H as "HTTP" <<component>>
 end box
@@ -25,7 +26,14 @@ deactivate C
 CM -> C : inserts the data
 activate C
 
-C -> SVC : createConnector(code,floor1,floor2)
+C -> M : createConnector
+activate M
+
+M -> M : validates data
+activate M
+deactivate M
+
+M -> SVC : createConnector(code,floor1,floor2)
 activate SVC
 
 SVC -> H : post(url,data)
@@ -41,12 +49,16 @@ alt a new connector is created
   SVC <-- H : the new connector
   deactivate H
 
-  C <-- SVC : the new connector
+  M <-- SVC : the new connector
   deactivate SVC
+
+  C <-- M : success message
+  deactivate M
 
   CM <-- C : informs the success of the operation
 else there is a connector between those floors
   activate H
+  activate M
   activate SVC
   activate ROUTE
 
@@ -56,8 +68,11 @@ else there is a connector between those floors
   SVC <-- H : error
   deactivate H
 
-  C <-- SVC : error
+  M <-- SVC : error
   deactivate SVC
+
+  C <-- M : error
+  deactivate M
 
   CM <-- C : shows error message "A connector exists between those floors."
   deactivate C

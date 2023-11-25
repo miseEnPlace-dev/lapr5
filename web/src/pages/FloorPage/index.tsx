@@ -37,7 +37,7 @@ const FloorPage: React.FC = () => {
       swal("Success", "Map uploaded successfully", "success");
     } catch (err: unknown) {
       swal("Error", err as string, "error");
-    } 
+    }
   }
 
   return (
@@ -133,7 +133,7 @@ const FloorPage: React.FC = () => {
               type="destroy"
               name="delete"
             >
-              Delete Building
+              Delete Floor
             </Button>
           </div>
         </div>

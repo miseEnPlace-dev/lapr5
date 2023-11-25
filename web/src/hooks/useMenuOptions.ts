@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import AuthContext from "../context/AuthContext";
@@ -6,9 +6,9 @@ import {
   BridgeIcon,
   BuildingIcon,
   DeviceModelIcon,
-  ElevatorIcon,
   HomeIcon,
   LogoutIcon,
+  MapIcon,
   RobotIcon,
 } from "../styles/Icons";
 
@@ -35,6 +35,11 @@ export const useMenuOptions = () => {
         label: "Connectors",
         icon: BridgeIcon,
         onClick: () => navigation("/connectors"),
+      });
+      options.push({
+        label: "Paths",
+        icon: MapIcon,
+        onClick: () => navigation("/paths"),
       });
     }
 

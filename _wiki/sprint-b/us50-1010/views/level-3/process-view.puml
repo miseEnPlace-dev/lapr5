@@ -1,0 +1,83 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor CM as "Campus Manager"
+
+box "«container (C4)»\nVisualization" <<center>>
+  participant C as "UI Component" <<component>>
+  participant M as "Module" <<component>>
+  participant SVC as "Service" <<component>>
+  participant H as "HTTP" <<component>>
+end box
+
+box "«container (C4)»\n MD Management " <<center>>#LightYellow
+  participant ROUTE as "Route" <<component>>
+end box
+
+activate CM
+
+CM -> C : wants to create a new robot to the fleet
+activate C
+
+CM <-- C : asks for the code, nickname, model code, serial number & description
+deactivate C
+
+CM -> C : inserts the data
+activate C
+
+C -> M : createDevice
+activate M
+
+M -> M : validates data
+activate M
+deactivate M
+
+M -> SVC : createDevice(data)
+activate SVC
+
+SVC -> H : post(url,data)
+activate H
+
+H -> ROUTE : POST /devices {data}
+activate ROUTE
+
+alt a new robot is created
+  H <-- ROUTE : 201 Created
+  deactivate ROUTE
+
+  SVC <-- H : the new robot
+  deactivate H
+
+  M <-- SVC : the new robot
+  deactivate SVC
+
+  C <-- M : success message
+  deactivate M
+
+  CM <-- C : informs the success of the operation
+else there is a robot with the specified data
+  activate H
+  activate M
+  activate SVC
+  activate ROUTE
+
+  H <-- ROUTE : 400 Bad Request
+  deactivate ROUTE
+
+  SVC <-- H : error
+  deactivate H
+
+  M <-- SVC : error
+  deactivate SVC
+
+  C <-- M : error
+  deactivate M
+
+  CM <-- C : shows error message "A device with the specified data already exists."
+  deactivate C
+end
+
+deactivate CM
+
+@enduml

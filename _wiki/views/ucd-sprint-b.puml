@@ -1,0 +1,89 @@
+@startuml ucd-sprint-a
+
+skinparam usecase {
+    BackgroundColor LightBlue
+    BorderColor DarkBlue
+    ArrowColor DarkBlue
+    FontStyle Bold
+}
+
+:Fleet Manager: as Fleet
+:Campus Manager: as Campus
+:Task Manager: as Task
+:User: as User
+
+left to right direction
+
+rectangle "Campus Managing" as campus {
+  usecase "1050. Create a building" as createBuilding
+  usecase "1070. Edit a building information" as editBuilding
+  usecase "1060. List all buildings" as listBuildings
+  usecase "1080. List all buildings with given minimum and maximum number of floors" as listBuildingsWithFloors
+  usecase "1090. Create a floor in a given building" as createFloor
+  usecase "1110. Edit information of a given floor" as editFloor
+  usecase "1100. List all floors for a given building " as listFloors
+  usecase "1200. List all floors with connection to other buildings" as listFloorsWithConnections
+  usecase "1120. Load a map for a given floor" as loadFloorMap
+  usecase "1170. Create a connection between 2 floors" as createConnection
+  usecase "1180. Edit a connection between 2 floors" as editConnection
+  usecase "1190. List all the connection between 2 buildings" as listBuildingsConnections
+  usecase "1130. Create an elevator" as createElevator
+  usecase "1150. Edit an elevator" as editElevator
+  usecase "1140. List all the elevators for a given building" as listElevators
+  usecase "1160. List all the floors reachable by elevator for a given building" as listFloorsReachableByElevator
+  usecase "1210. Create a room in a given floor" as createRoom
+}
+
+rectangle "Fleet Managing" as fleet {
+  usecase "1000. Create a new robot type and assign specific tasks" as createRobotType
+  usecase "1010. Create a new robot with a given type" as createRobot
+  usecase "1020. Disable a robot" as disableRobot
+  usecase "1030. List all robots" as listRobots
+  usecase "1040. Search robots for a specific designation or task" as searchRobot
+}
+
+rectangle "Task Manager" as task {
+  usecase "1220. Obtain paths between two buildings" as obtainPaths
+  usecase "510. Obtain paths between two buildings using a certain criteria of optimization" as obtainPathsOptimized
+  usecase "515. Complexity analysis of the algorithms" as complexityAnalysis
+
+}
+
+rectangle "User" as user {
+  usecase "535. Menu for all modules" as menu
+  usecase "606. Interactive navigation by a robot through the campus" as interactiveNavigation
+}
+
+Campus --> createBuilding
+Campus --> editBuilding
+Campus --> listBuildings
+Campus --> listBuildingsWithFloors
+Campus --> createFloor
+Campus --> editFloor
+Campus --> listFloors
+Campus --> listFloorsWithConnections
+Campus --> loadFloorMap
+Campus --> createConnection
+Campus --> editConnection
+Campus --> listBuildingsConnections
+Campus --> createElevator
+Campus --> editElevator
+Campus --> listElevators
+Campus --> listFloorsReachableByElevator
+Campus --> createRoom
+
+Fleet --> createRobotType
+Fleet --> createRobot
+Fleet --> disableRobot
+Fleet --> listRobots
+Fleet --> searchRobot
+
+Task --> obtainPaths
+Task --> obtainPathsOptimized
+Task --> complexityAnalysis
+
+User --> menu
+User --> interactiveNavigation
+
+
+@enduml

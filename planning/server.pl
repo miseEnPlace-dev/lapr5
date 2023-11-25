@@ -26,6 +26,7 @@ http:location(api, root(api), []). % /api
 % define your routes here
 :- http_handler(root(.), say_hi, []). % /
 :- http_handler(root(hello), say_hi_html, []). % /hello
+:- http_handler(api(route), api_get_route, []). % /api/route?from=abc&to=xyz&method=elevators
 :- http_handler(root(greet), greet, []). % /greet?name=johny
 :- http_handler(api(hello), api_hello, []). % /api/hello
 :- http_handler(api(greet), api_greet, []). % /api/greet
@@ -49,6 +50,17 @@ greet(Request):-
         format("What's your name?~n", []), !; % Person is a variable (it's empty)
         format("Hello, ~w!~n", [Name]) % Person exists
     ).
+
+api_get_route(Request):-
+    http_parameters(Request, [ from(From, [ optional(false), length >= 1 ]) ]),
+    http_parameters(Request, [ to(To, [ optional(false), length >= 1 ]) ]),
+    http_parameters(Request, [ method(Method, [ optional(false), length >= 1 ]) ]),
+    do_stuff(From, To,Method).
+
+do_stuff(From, To, Method):-
+    R=json([from=From, to=To, method=Method]),
+    prolog_to_json(R, JsonOut),
+    reply_json(JsonOut).
 
 api_hello(_):-
     R = json([message='Hello World!']),

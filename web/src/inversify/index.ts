@@ -3,13 +3,14 @@ import { Container } from "inversify";
 import { TYPES } from "./types";
 import { ConnectorService } from "@/service/connectorService";
 import { DeviceModelService } from "@/service/deviceModelService";
+import { DeviceService } from "@/service/deviceService";
+import { RoomService } from "@/service/roomService";
+import { RouteService } from "@/service/routeService";
 
 import api from "../service/api";
 import { BuildingService } from "../service/buildingsService";
 import { ElevatorService } from "../service/elevatorService";
 import { FloorService } from "../service/floorService";
-import { DeviceService } from "@/service/deviceService";
-import { RoomService } from "@/service/roomService";
 
 const container = new Container();
 
@@ -20,6 +21,7 @@ container.bind(TYPES.floorService).to(FloorService);
 container.bind(TYPES.deviceModelService).to(DeviceModelService);
 container.bind(TYPES.roomService).to(RoomService);
 container.bind(TYPES.deviceService).to(DeviceService);
+container.bind(TYPES.routeService).to(RouteService);
 container.bind(TYPES.api).toConstantValue(api);
 
 export { container };
