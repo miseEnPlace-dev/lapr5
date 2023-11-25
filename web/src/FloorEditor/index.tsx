@@ -5,30 +5,51 @@ import * as THREE from "three";
 import "./index.css";
 
 import React from "react";
+import { useInjection } from "inversify-react";
+import { floor, set } from "lodash";
 
+import { TYPES } from "../inversify/types";
+
+import { Floor } from "../model/Floor";
+import { IFloorService } from "../service/IService/IFloorService";
 import { ArrowLeftIcon } from "../styles/Icons";
 import Orientation from "./orientation";
 import ThumbRaiser from "./thumb_raiser";
 
-const maps = [
-  "building-a-floor-1.json",
-  "building-a-floor-2.json",
-  "building-b-floor-1.json",
-  "building-b-floor-2.json",
-  "building-b-floor-3.json",
-  "building-c-floor-1.json",
-  "building-c-floor-2.json",
-  "building-c-floor-3.json",
-  "building-c-floor-4.json",
-  "building-d-floor-1.json",
-  "building-d-floor-2.json",
-  "building-d-floor-3.json",
-];
+// const maps = [
+//   "building-a-floor-1.json",
+//   "building-a-floor-2.json",
+//   "building-b-floor-1.json",
+//   "building-b-floor-2.json",
+//   "building-b-floor-3.json",
+//   "building-c-floor-1.json",
+//   "building-c-floor-2.json",
+//   "building-c-floor-3.json",
+//   "building-c-floor-4.json",
+//   "building-d-floor-1.json",
+//   "building-d-floor-2.json",
+//   "building-d-floor-3.json",
+// ];
 
 const FloorEditor: React.FC = () => {
+  const floorService = useInjection<IFloorService>(TYPES.floorService);
+  const [floors, setFloors] = React.useState<Floor[]>([]);
+
+  useEffect(() => {
+    async function fetchFloors() {
+      const floors = await floorService.getAllFloors();
+
+      setFloors(floors.filter((floor) => floor.map));
+    }
+
+    fetchFloors();
+  }, []);
+
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (floors.length === 0) return;
+    console.log({ floors });
     let thumbRaiser: ThumbRaiser;
 
     function initialize() {
@@ -236,15 +257,16 @@ const FloorEditor: React.FC = () => {
           selected: 1,
         }, // Cube texture parameters
         {
-          mazes: maps.map((map) => ({
-            name: map,
-            url: "./mazes/" + map,
-            designCredits:
-              "Maze designed by <a href='https://www.123rf.com/profile_ckarzx' target='_blank' rel='noopener'>ckarzx</a>.",
-            texturesCredits:
-              "Maze textures downloaded from <a href='https://www.texturecan.com/' target='_blank' rel='noopener'>TextureCan</a>.",
-            helpersColor: new THREE.Color(0xff0077),
-          })),
+          mazes: floors
+            .map((floor) => {
+              if (floor.map)
+                return {
+                  name: floor.code,
+                  maze: floor.map,
+                  helpersColor: new THREE.Color(0xff0077),
+                };
+            })
+            .filter((maze) => maze !== undefined),
           selected: 0,
         }, // Maze parameters
         { helpersColor: new THREE.Color(0x0055ff) }, // Player parameters
@@ -352,7 +374,7 @@ const FloorEditor: React.FC = () => {
 
     initialize();
     animate();
-  }, []);
+  }, [floors]);
 
   const handleNavigateBack = () => {
     navigate("/");
@@ -420,9 +442,9 @@ const FloorEditor: React.FC = () => {
                 <td>
                   Map:
                   <select id="maze">
-                    {maps.map((map, i) => (
-                      <option key={map} value={i}>
-                        {map}
+                    {floors.map((floor, i) => (
+                      <option key={floor.code} value={i}>
+                        {floor.code}
                       </option>
                     ))}
                   </select>

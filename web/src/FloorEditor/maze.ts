@@ -48,6 +48,7 @@ export default class Maze extends THREE.Group {
       ];
 
       // Store the maze's size, map and exit location
+      console.log({ description });
       this.size = description.maze.size;
       this.halfSize = {
         width: this.size.width / 2.0,
@@ -376,43 +377,11 @@ export default class Maze extends THREE.Group {
       this.loaded = true;
     };
 
-    const onProgress = function (url, xhr) {
-      console.log(
-        "Resource '" +
-          url +
-          "' " +
-          ((100.0 * xhr.loaded) / xhr.total).toFixed(0) +
-          "% loaded."
-      );
-    };
-
-    const onError = function (url, error) {
-      console.error("Error loading resource '" + url + "' (" + error + ").");
-    };
-
     // The cache must be enabled; additional information available at https://threejs.org/docs/api/en/loaders/FileLoader.html
     THREE.Cache.enabled = true;
 
-    // Create a resource file loader
-    const loader = new THREE.FileLoader();
-
-    // Set the response type: the resource file will be parsed with JSON.parse()
-    loader.setResponseType("json");
-
-    // Load a maze description resource file
-    loader.load(
-      //Resource URL
-      this.url,
-
-      // onLoad callback
-      (description) => this.onLoad(description),
-
-      // onProgress callback
-      (xhr) => onProgress(this.url, xhr),
-
-      // onError callback
-      (error) => onError(this.url, error)
-    );
+    console.log({ parameters: parameters.mazes[parameters.selected] })
+    this.onLoad(parameters.mazes[parameters.selected].maze);
   }
 
   // Convert cell [row, column] coordinates to cartesian (x, y, z) coordinates
@@ -474,7 +443,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.x -
-              (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
+            (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
@@ -484,7 +453,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.z -
-              (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
+            (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
@@ -498,7 +467,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.z -
-              (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
+            (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
           ) < radius
         ) {
           document
@@ -518,7 +487,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.x -
-              (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
+            (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
@@ -533,7 +502,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.z -
-              (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
+            (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
           ) < radius
         ) {
           this.playOpenDoorAnimation(row, column);
