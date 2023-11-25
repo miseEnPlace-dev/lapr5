@@ -113,7 +113,128 @@ export default class Bootstrapper {
             [1, 0, 0, 0, 11, 0, 11, 0, 0, 1],
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
           ],
-          exits: []
+          exits: [],
+          elevator: { x: 1, y: 1 },
+          exitLocation: { x: 1, y: 1 }
+        },
+        player: {
+          initialPosition: [1, 1],
+          initialDirection: 1
+        },
+        door: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        elevator: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        wall: {
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        },
+        ground: {
+          size: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
         }
       }
     });
@@ -131,22 +252,143 @@ export default class Bootstrapper {
           size: { width: 9, depth: 14 },
           map: [
             [3, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [3, 1, 0, 0, 0, 3, 2, 2, 2, 1],
-            [1, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 4, 0, 0, 0, 0, 0, 0, 0, 1],
+            [3, 1, 0, 0, 0, 3, 2, 12, 2, 1],
+            [1, 11, 0, 0, 0, 1, 0, 0, 0, 1],
             [3, 2, 1, 0, 0, 3, 2, 2, 2, 1],
             [1, 0, 1, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 1, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 1, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 1, 0, 0, 11, 0, 0, 0, 1],
+            [1, 0, 11, 0, 0, 1, 0, 0, 0, 1],
             [1, 0, 1, 0, 0, 3, 2, 2, 2, 1],
-            [3, 2, 1, 0, 0, 1, 0, 0, 0, 1],
+            [3, 2, 1, 0, 0, 11, 0, 0, 0, 1],
             [1, 0, 1, 0, 0, 3, 2, 2, 2, 1],
-            [1, 0, 1, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 1, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 11, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 1, 0, 0, 11, 0, 0, 0, 1],
             [1, 0, 1, 0, 0, 1, 0, 0, 0, 1],
             [1, 2, 2, 2, 2, 2, 2, 2, 2, 0]
           ],
-          exits: []
+          exits: [],
+          elevator: { x: 1, y: 1 },
+          exitLocation: { x: 1, y: 1 }
+        },
+        player: {
+          initialPosition: [1, 1],
+          initialDirection: 1
+        },
+        door: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        elevator: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        wall: {
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        },
+        ground: {
+          size: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
         }
       }
     });
@@ -175,7 +417,128 @@ export default class Bootstrapper {
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
           ],
-          exits: []
+          exits: [],
+          elevator: { x: 1, y: 1 },
+          exitLocation: { x: 1, y: 1 }
+        },
+        player: {
+          initialPosition: [1, 1],
+          initialDirection: 1
+        },
+        door: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        elevator: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        wall: {
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        },
+        ground: {
+          size: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
         }
       }
     });
@@ -204,7 +567,128 @@ export default class Bootstrapper {
             [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
           ],
-          exits: []
+          exits: [],
+          elevator: { x: 1, y: 1 },
+          exitLocation: { x: 1, y: 1 }
+        },
+        player: {
+          initialPosition: [1, 1],
+          initialDirection: 1
+        },
+        door: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        elevator: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        wall: {
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        },
+        ground: {
+          size: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
         }
       }
     });
@@ -238,7 +722,128 @@ export default class Bootstrapper {
             [1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
           ],
-          exits: [{ x: 11, y: 2 }]
+          exits: [{ x: 11, y: 2, floorCode: 'D2' }],
+          elevator: { x: 1, y: 1 },
+          exitLocation: { x: 1, y: 1 }
+        },
+        player: {
+          initialPosition: [1, 1],
+          initialDirection: 1
+        },
+        door: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        elevator: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        wall: {
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        },
+        ground: {
+          size: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
         }
       }
     });
@@ -256,24 +861,1117 @@ export default class Bootstrapper {
           size: { width: 9, depth: 14 },
           map: [
             [3, 2, 2, 2, 2, 2, 2, 2, 2, 0],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [1, 4, 0, 0, 0, 0, 0, 0, 0, 0],
             [3, 2, 1, 0, 0, 3, 2, 2, 2, 1],
-            [1, 0, 1, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 11, 0, 0, 1, 0, 0, 0, 1],
             [3, 2, 1, 0, 0, 1, 0, 0, 0, 1],
             [1, 0, 1, 0, 0, 1, 0, 0, 0, 1],
             [1, 0, 1, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 1, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 11, 0, 0, 11, 0, 0, 0, 1],
             [1, 0, 1, 0, 0, 1, 0, 0, 0, 1],
             [3, 2, 1, 0, 0, 2, 3, 2, 2, 1],
-            [1, 0, 1, 0, 0, 0, 1, 0, 0, 1],
-            [1, 0, 1, 0, 0, 0, 1, 0, 0, 1],
-            [1, 0, 3, 2, 2, 2, 2, 2, 2, 1],
+            [1, 0, 1, 0, 0, 0, 11, 0, 0, 1],
+            [1, 0, 11, 0, 0, 0, 1, 0, 0, 1],
+            [1, 0, 3, 2, 12, 2, 2, 2, 2, 1],
             [1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
             [1, 2, 2, 2, 2, 2, 2, 2, 2, 0]
           ],
-          exits: [{ x: 11, y: 2 }]
+          exits: [{ x: 2, y: 10, floorCode: 'C2' }],
+          elevator: { x: 1, y: 1 },
+          exitLocation: { x: 1, y: 1 }
+        },
+        player: {
+          initialPosition: [1, 1],
+          initialDirection: 1
+        },
+        door: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        elevator: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        wall: {
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        },
+        ground: {
+          size: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
         }
       }
+    });
+
+    await this.loadFloor({
+      code: 'A2',
+      buildingCode: 'A',
+      description: 'Floor A2',
+      dimensions: {
+        width: 22,
+        length: 10
+      },
+      map: {
+        maze: {
+          size: { width: 22, depth: 10 },
+          map: [
+            [3, 2, 2, 3, 2, 2, 2, 3, 2, 2, 2, 3, 2, 2, 2, 3, 2, 2, 2, 2, 3, 2, 1],
+            [1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 5, 1],
+            [1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 3, 0, 2, 2, 2, 0, 0, 1],
+            [1, 0, 0, 3, 2, 2, 12, 2, 0, 2, 2, 2, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [1, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [3, 2, 2, 2, 2, 2, 2, 0, 3, 2, 2, 0, 3, 0, 2, 2, 1, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 3, 0, 2, 2, 2, 2, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+            [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
+          ],
+          exits: [{ x: 6, y: 23, floorCode: 'B2' }],
+          elevator: { x: 1, y: 1 },
+          exitLocation: { x: 1, y: 1 }
+        },
+        player: {
+          initialPosition: [1, 1],
+          initialDirection: 1
+        },
+        door: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        elevator: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        wall: {
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        },
+        ground: {
+          size: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        }
+      }
+    });
+
+    await this.loadFloor({
+      code: 'B2',
+      buildingCode: 'B',
+      description: 'Floor B2',
+      dimensions: {
+        width: 22,
+        length: 10
+      },
+      map: {
+        maze: {
+          size: { width: 22, depth: 10 },
+          map: [
+            [3, 2, 3, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 3, 2, 2, 2, 1],
+            [1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 1, 0, 0, 0, 1, 0, 3, 2, 2, 2, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+            [3, 2, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 3, 2, 12, 2, 1],
+            [1, 0, 1, 0, 0, 0, 11, 0, 1, 0, 0, 0, 11, 0, 1, 0, 0, 0, 11, 0, 0, 0, 1],
+            [1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 2, 2, 2, 2, 0, 0, 1, 0, 0, 0, 1, 0, 2, 2, 2, 2, 0, 0, 0, 5, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
+          ],
+          exits: [
+            { x: 6, y: 2, floorCode: 'A2' },
+            { x: 9, y: 23, floorCode: 'C3' },
+            { x: 11, y: 22, floorCode: 'D3' }
+          ],
+          elevator: { x: 1, y: 1 },
+          exitLocation: { x: 1, y: 1 }
+        },
+        player: {
+          initialPosition: [1, 1],
+          initialDirection: 1
+        },
+        door: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        elevator: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        wall: {
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        },
+        ground: {
+          size: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        }
+      }
+    });
+
+    await this.loadFloor({
+      code: 'C3',
+      buildingCode: 'C',
+      description: 'Floor C3',
+      dimensions: {
+        width: 9,
+        length: 15
+      },
+      map: {
+        maze: {
+          size: { width: 9, depth: 15 },
+          map: [
+            [3, 2, 3, 2, 2, 3, 2, 2, 2, 1],
+            [1, 0, 11, 0, 0, 1, 0, 0, 0, 1],
+            [3, 2, 1, 0, 0, 12, 2, 2, 2, 1],
+            [1, 0, 11, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 3, 2, 2, 2, 2, 1, 0, 1],
+            [3, 2, 1, 0, 0, 0, 0, 1, 0, 1],
+            [1, 0, 3, 2, 2, 12, 2, 0, 0, 1],
+            [1, 0, 11, 0, 0, 0, 0, 0, 0, 1],
+            [3, 2, 0, 0, 0, 0, 3, 12, 2, 1],
+            [1, 4, 0, 0, 0, 0, 1, 0, 0, 1],
+            [1, 0, 0, 3, 12, 2, 1, 0, 0, 1],
+            [1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+            [3, 12, 2, 1, 0, 0, 1, 0, 0, 1],
+            [1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+            [1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+            [2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
+          ],
+          exits: [
+            { x: 7, y: 2, floorCode: 'B2' },
+            { x: 11, y: 2, floorCode: 'D3' }
+          ],
+          elevator: { x: 1, y: 1 },
+          exitLocation: { x: 1, y: 1 }
+        },
+        player: {
+          initialPosition: [1, 1],
+          initialDirection: 1
+        },
+        door: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        elevator: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        wall: {
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        },
+        ground: {
+          size: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        }
+      }
+    });
+
+    await this.loadFloor({
+      code: 'D3',
+      buildingCode: 'D',
+      description: 'Floor D3',
+      dimensions: {
+        width: 9,
+        length: 14
+      },
+      map: {
+        maze: {
+          size: { width: 9, depth: 14 },
+          map: [
+            [3, 2, 2, 2, 2, 2, 2, 2, 2, 0],
+            [1, 4, 0, 0, 0, 0, 0, 0, 0, 0],
+            [3, 2, 2, 1, 0, 0, 3, 2, 2, 1],
+            [1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+            [1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+            [1, 0, 0, 11, 0, 0, 11, 0, 0, 1],
+            [1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+            [3, 2, 2, 1, 0, 0, 3, 2, 2, 1],
+            [1, 0, 0, 11, 0, 0, 11, 0, 0, 1],
+            [1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+            [1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+            [1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+            [3, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 2, 2, 2, 2, 2, 2, 2, 2, 0]
+          ],
+          exits: [
+            { x: 0, y: 8, floorCode: 'B2' },
+            { x: 1, y: 10, floorCode: 'C3' }
+          ],
+          elevator: { x: 1, y: 1 },
+          exitLocation: { x: 1, y: 1 }
+        },
+        player: {
+          initialPosition: [1, 1],
+          initialDirection: 1
+        },
+        door: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        elevator: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        wall: {
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        },
+        ground: {
+          size: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        }
+      }
+    });
+
+    await this.loadFloor({
+      code: 'B3',
+      buildingCode: 'B',
+      description: 'Floor B3',
+      dimensions: {
+        width: 22,
+        length: 10
+      },
+      map: {
+        maze: {
+          size: { width: 22, depth: 10 },
+          map: [
+            [3, 2, 2, 2, 3, 2, 3, 2, 2, 2, 3, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+            [1, 0, 0, 0, 11, 0, 11, 0, 0, 0, 1, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+            [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 1],
+            [1, 0, 0, 0, 1, 0, 2, 2, 2, 2, 0, 0, 3, 12, 2, 2, 2, 2, 1, 0, 2, 2, 0],
+            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+            [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
+          ],
+          exits: [{ x: 9, y: 23, floorCode: 'C4' }],
+          elevator: { x: 1, y: 1 },
+          exitLocation: { x: 1, y: 1 }
+        },
+        player: {
+          initialPosition: [1, 1],
+          initialDirection: 1
+        },
+        door: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        elevator: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        wall: {
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        },
+        ground: {
+          size: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        }
+      }
+    });
+
+    await this.loadFloor({
+      code: 'C4',
+      buildingCode: 'C',
+      description: 'Floor C4',
+      dimensions: {
+        width: 9,
+        length: 15
+      },
+      map: {
+        maze: {
+          size: { width: 9, depth: 15 },
+          map: [
+            [3, 2, 2, 2, 2, 3, 2, 2, 2, 1],
+            [1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 3, 2, 12, 2, 1],
+            [1, 0, 0, 0, 0, 11, 0, 0, 0, 1],
+            [3, 2, 2, 2, 2, 0, 3, 2, 2, 1],
+            [1, 4, 0, 0, 0, 0, 1, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 2, 12, 2, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [3, 2, 2, 2, 2, 12, 2, 2, 2, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
+          ],
+          exits: [{ x: 9, y: 2, floorCode: 'B3' }],
+          elevator: { x: 1, y: 1 },
+          exitLocation: { x: 1, y: 1 }
+        },
+        player: {
+          initialPosition: [1, 1],
+          initialDirection: 1
+        },
+        door: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        elevator: {
+          url: '',
+          scale: {
+            x: 1,
+            y: 1,
+            z: 1
+          }
+        },
+        wall: {
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        },
+        ground: {
+          size: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          segments: {
+            width: 1,
+            height: 1,
+            depth: 1
+          },
+          primaryColor: '',
+          maps: {
+            color: {
+              url: ''
+            },
+            ao: {
+              url: '',
+              intensity: 1
+            },
+            displacement: {
+              url: '',
+              scale: 1,
+              bias: 1
+            },
+            normal: {
+              url: '',
+              type: 1,
+              scale: {
+                x: 1,
+                y: 1
+              }
+            },
+            bump: {
+              url: '',
+              scale: 1
+            },
+            roughness: {
+              url: '',
+              rough: 1
+            }
+          },
+          wrapS: 1,
+          wrapT: 1,
+          repeat: {
+            u: 1,
+            v: 1
+          },
+          magFilter: 1,
+          minFilter: 1,
+          secondaryColor: ''
+        }
+      }
+    });
+
+    await this.loadConnector({
+      code: 'C2D2',
+      floor1Code: 'C2',
+      floor1BuildingCode: 'C',
+      floor2Code: 'D2',
+      floor2BuildingCode: 'D'
+    });
+
+    await this.loadConnector({
+      code: 'A2B2',
+      floor1Code: 'A2',
+      floor1BuildingCode: 'A',
+      floor2Code: 'B2',
+      floor2BuildingCode: 'B'
+    });
+
+    await this.loadConnector({
+      code: 'B2C3',
+      floor1Code: 'B2',
+      floor1BuildingCode: 'B',
+      floor2Code: 'C3',
+      floor2BuildingCode: 'C'
+    });
+
+    await this.loadConnector({
+      code: 'C3D3',
+      floor1Code: 'C3',
+      floor1BuildingCode: 'C',
+      floor2Code: 'D3',
+      floor2BuildingCode: 'D'
+    });
+
+    await this.loadConnector({
+      code: 'B2D3',
+      floor1Code: 'B2',
+      floor1BuildingCode: 'B',
+      floor2Code: 'D3',
+      floor2BuildingCode: 'D'
+    });
+
+    await this.loadConnector({
+      code: 'B3C4',
+      floor1Code: 'B3',
+      floor1BuildingCode: 'B',
+      floor2Code: 'C4',
+      floor2BuildingCode: 'C'
     });
   }
 
