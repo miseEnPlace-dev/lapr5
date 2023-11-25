@@ -16,6 +16,8 @@ export default {
    */
   port: parseInt(process.env.PORT as string, 10) || 4000,
 
+  planningApiUrl: process.env.PLANNING_API_URL || 'http://127.0.0.1:5000',
+
   databaseURL: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/test',
 
   /**

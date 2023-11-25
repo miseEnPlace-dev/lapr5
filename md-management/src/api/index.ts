@@ -5,6 +5,7 @@ import deviceModel from './routes/deviceModelRoute';
 import device from './routes/deviceRoute';
 import elevator from './routes/elevatorRoute';
 import floor from './routes/floorRoute';
+import planning from './routes/planningRoute';
 import role from './routes/roleRoute';
 import room from './routes/roomRoute';
 import { default as auth, default as user } from './routes/userRoute';
@@ -22,6 +23,7 @@ export default () => {
   room(app);
   deviceModel(app);
   device(app);
+  planning(app);
 
   return app;
 };
