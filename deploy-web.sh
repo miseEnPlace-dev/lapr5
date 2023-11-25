@@ -29,7 +29,7 @@ fi
 
 
 echo -e "${NC}> Deploying web"
-pnpm preview --port 2228
+pnpm preview --port 2228 &
 
 if [ $? -eq 0 ]; then
   echo -e "${GREEN}Deploy successful"
