@@ -9,7 +9,6 @@ import { container } from "./inversify";
 import FloorsPage from "./pages/BuildingFloorsPage";
 import BuildingPage from "./pages/BuildingPage";
 import BuildingsPage from "./pages/BuildingsPage";
-import CampusHome from "./pages/CampusHome";
 import ConnectorPage from "./pages/ConnectorPage";
 import ConnectorsPage from "./pages/ConnectorsPage";
 import DeviceModelPage from "./pages/DeviceModelPage";
@@ -20,7 +19,8 @@ import FloorPage from "./pages/FloorPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
-import RGPDPage from "./pages/RGPDPage/page";
+import PathsPage from "./pages/PathsPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage/page";
 import RoomsPage from "./pages/RoomsPage";
 import { RequireAuth } from "./utils/RequireAuth";
 
@@ -137,13 +137,14 @@ function App() {
               }
             />
             <Route
-              path="/rgpd"
+              path="/paths"
               element={
                 <RequireAuth>
-                  <RGPDPage />
+                  <PathsPage />
                 </RequireAuth>
               }
             />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

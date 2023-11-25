@@ -11,8 +11,6 @@ import TextArea from "../../components/TextArea";
 import { ArrowLeftIcon } from "../../styles/Icons";
 import { useBuildingPageModule } from "./module";
 
-import { div } from "three/examples/jsm/nodes/Nodes.js";
-
 const BuildingPage: React.FC = () => {
   const {
     building,

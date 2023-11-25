@@ -25,10 +25,16 @@ const CampusHome: React.FC = () => {
           action="Go to Buildings"
         />
         <Card
-          title="RGPD"
-          description="Read the RGPD of the application."
-          link="/rgpd"
-          action="Go to RGPD"
+          title="Privacy Policy"
+          description="Read the application's privacy policy."
+          link="/privacy-policy"
+          action="Read the Privacy Policy"
+        />
+        <Card
+          title="Paths"
+          description="Generate optimal routes between floors in your campus."
+          link="/paths"
+          action="Go to Path Finder"
         />
       </CardContainer>
     </div>

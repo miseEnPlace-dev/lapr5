@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 import { ArrowLeftIcon } from "@/styles/Icons";
 
-const RGPDPage: React.FC = () => {
+const PrivacyPolicyPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
@@ -14,7 +14,7 @@ const RGPDPage: React.FC = () => {
         <ArrowLeftIcon className="absolute left-4 top-4 h-8 w-8 text-slate-500" />
       </button>
       <h1 className="text-center text-4xl font-bold">
-        Política de Privacidade – RobDroneGO
+        Política de Privacidade - RobDroneGO
       </h1>
 
       <article className="mt-12">
@@ -172,4 +172,4 @@ const RGPDPage: React.FC = () => {
   );
 };
 
-export default RGPDPage;
+export default PrivacyPolicyPage;
