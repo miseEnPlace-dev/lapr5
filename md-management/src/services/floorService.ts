@@ -35,6 +35,16 @@ export default class FloorService implements IFloorService {
     @inject(TYPES.connectorRepo) private connectorRepo: IConnectorRepo
   ) {}
 
+  public async getAllFloors(): Promise<Result<IFloorDTO[]>> {
+    try {
+      const floors = await this.floorRepo.findAll();
+      const floorsDTO = floors.map(floor => FloorMapper.toDTO(floor) as IFloorDTO);
+      return Result.ok<IFloorDTO[]>(floorsDTO);
+    } catch (e) {
+      throw e;
+    }
+  }
+
   public async updateFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {
     try {
       const code = FloorCode.create(floorDTO.code).getValue();

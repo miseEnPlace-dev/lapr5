@@ -12,7 +12,7 @@ import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
 
 @injectable()
 export default class FloorController implements IFloorController {
-  constructor(@inject(TYPES.floorService) private floorServiceInstance: IFloorService) {}
+  constructor(@inject(TYPES.floorService) private floorServiceInstance: IFloorService) { }
 
   public async createFloor(req: Request, res: Response, next: NextFunction) {
     try {
@@ -27,6 +27,22 @@ export default class FloorController implements IFloorController {
 
       const floorDTO = floorOrError.getValue();
       return res.status(201).json(floorDTO);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  public async getAllFloors(req: Request, res: Response, next: NextFunction) {
+    try {
+      const floorsOrError = (await this.floorServiceInstance.getAllFloors()) as Result<IFloorDTO[]>;
+
+      if (floorsOrError.isFailure)
+        return res.status(400).json({
+          message: floorsOrError.errorValue()
+        });
+
+      const floorsDTO = floorsOrError.getValue();
+      return res.status(200).json(floorsDTO);
     } catch (e) {
       return next(e);
     }

@@ -62,5 +62,10 @@ export default (app: Router) => {
     ctrl.updateFloor(req, res, next)
   );
 
+  route.get('/floors', (req, res, next) =>
+    // #swagger.tags = ['Floors']
+    ctrl.getAllFloors(req, res, next)
+  );
+
   app.use(route);
 };

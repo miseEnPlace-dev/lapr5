@@ -11,7 +11,14 @@ import { IFloorService } from "./IService/IFloorService";
 
 @injectable()
 export class FloorService implements IFloorService {
-  constructor(@inject(TYPES.api) private http: HttpService) {}
+  constructor(@inject(TYPES.api) private http: HttpService) { }
+
+  async getAllFloors(): Promise<Floor[]> {
+    const response = await this.http.get<Floor[]>("/floors");
+
+    const data = response.data;
+    return data;
+  }
 
   async createFloor(buildingId: string, floor: Floor): Promise<Floor> {
     const response = await this.http.post<Floor>(
