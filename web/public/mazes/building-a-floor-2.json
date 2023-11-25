@@ -100,7 +100,7 @@
     "scale": { "x": 0.5, "y": 0.25, "z": 0.25 }
   },
   "player": {
-    "initialPosition": [2.0, 20.0],
-    "initialDirection": 0.0
+    "initialPosition": [0.5, 20.5],
+    "initialDirection": -90.0
   }
 }

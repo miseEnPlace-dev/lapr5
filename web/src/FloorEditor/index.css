@@ -10,6 +10,19 @@ body {
   font-family: Arial, sans-serif;
 }
 
+#navigate-button {
+  position: relative;
+  left: -90svh;
+  top: -45svh;
+  width: 50vsh;
+  height: 50vsh;
+  background-color: #44444450;
+  color: white;
+  font-size: 5.5vmin;
+  line-height: 50vmin;
+  cursor: pointer;
+}
+
 #views-panel {
   position: absolute;
   left: -50vmin;

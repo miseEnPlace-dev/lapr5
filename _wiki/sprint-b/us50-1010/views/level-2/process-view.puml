@@ -1,0 +1,42 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor CM as "Campus Manager"
+
+box "«system (C4)»\nRobDroneGo" <<center>>
+  participant UI as "Visualization" <<container (C4)>>
+  participant MD as "MD Management" <<container (C4)>>
+end box
+
+activate CM
+
+CM -> UI : wants to add a new robot to the fleet
+activate UI
+
+CM <-- UI : asks for the the code, nickname, model code, serial number & description
+deactivate UI
+
+CM -> UI : inserts the data
+activate UI
+
+UI -> MD : POST /devices {data}
+activate MD
+
+alt a new robot is created
+  UI <-- MD : 201 Created
+  deactivate MD
+
+  CM <-- UI : informs the success of the operation
+else there is a robot with the specified code, nickname or serial number
+  activate MD
+  UI <-- MD : 400 Bad Request
+  deactivate MD
+
+  CM <-- UI : shows error message "A device with the specified data already exists."
+  deactivate UI
+end
+
+deactivate CM
+
+@enduml

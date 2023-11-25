@@ -15,7 +15,8 @@ const FloorMapSchema = new mongoose.Schema({
       {
         type: {
           x: Number,
-          y: Number
+          y: Number,
+          floorCode: String
         }
       }
     ],

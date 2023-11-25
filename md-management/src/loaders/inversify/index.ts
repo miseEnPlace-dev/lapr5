@@ -17,6 +17,7 @@ import DeviceController from '@/controllers/deviceController';
 import DeviceModelController from '@/controllers/deviceModelController';
 import ElevatorController from '@/controllers/elevatorController';
 import FloorController from '@/controllers/floorController';
+import PlanningController from '@/controllers/planningController';
 import RoleController from '@/controllers/roleController';
 import RoomController from '@/controllers/roomController';
 import UserController from '@/controllers/userController';
@@ -110,6 +111,8 @@ container.bind<IConnectorController>(TYPES.connectorController).to(ConnectorCont
 container.bind<IConnectorService>(TYPES.connectorService).to(ConnectorService);
 container.bind<IConnectorRepo>(TYPES.connectorRepo).to(ConnectorRepo);
 container.bind(TYPES.connectorSchema).to(ConnectorSchema);
+
+container.bind(TYPES.planningController).to(PlanningController);
 
 container.bind(TYPES.bootstrapper).to(Bootstrapper);
 

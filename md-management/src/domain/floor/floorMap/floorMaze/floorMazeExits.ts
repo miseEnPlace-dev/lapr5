@@ -9,11 +9,12 @@ interface FloorMazeExitsProps {
   exits: {
     x: number;
     y: number;
+    floorCode: string;
   }[];
 }
 
 export class FloorMazeExits extends ValueObject<FloorMazeExitsProps> {
-  get exits(): { x: number; y: number }[] {
+  get exits(): { x: number; y: number; floorCode: string }[] {
     return this.props.exits;
   }
 
@@ -21,7 +22,9 @@ export class FloorMazeExits extends ValueObject<FloorMazeExitsProps> {
     super(props);
   }
 
-  public static create(exits: { x: number; y: number }[]): Result<FloorMazeExits> {
+  public static create(
+    exits: { x: number; y: number; floorCode: string }[]
+  ): Result<FloorMazeExits> {
     if (!exits || exits.length === 0)
       return Result.fail<FloorMazeExits>('Exits is null or undefined');
     return Result.ok<FloorMazeExits>(new FloorMazeExits({ exits }));
