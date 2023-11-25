@@ -25,8 +25,7 @@ export class FloorMazeExits extends ValueObject<FloorMazeExitsProps> {
   public static create(
     exits: { x: number; y: number; floorCode: string }[]
   ): Result<FloorMazeExits> {
-    if (!exits || exits.length === 0)
-      return Result.fail<FloorMazeExits>('Exits is null or undefined');
+    if (!exits) return Result.fail<FloorMazeExits>('Exits is null or undefined');
     return Result.ok<FloorMazeExits>(new FloorMazeExits({ exits }));
   }
 }

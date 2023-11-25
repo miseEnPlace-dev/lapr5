@@ -1,15 +1,20 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import * as THREE from "three";
 
 import "./index.css";
 
+import React from "react";
+
+import { ArrowLeftIcon } from "../styles/Icons";
 import Orientation from "./orientation";
 import ThumbRaiser from "./thumb_raiser";
 
 const maps = [
-  "building-a-floor-2.json",
   "building-a-floor-1.json",
+  "building-a-floor-2.json",
   "building-b-floor-1.json",
+  "building-b-floor-2.json",
   "building-b-floor-3.json",
   "building-c-floor-1.json",
   "building-c-floor-2.json",
@@ -21,6 +26,8 @@ const maps = [
 ];
 
 const FloorEditor: React.FC = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     let thumbRaiser: ThumbRaiser;
 
@@ -347,9 +354,17 @@ const FloorEditor: React.FC = () => {
     animate();
   }, []);
 
+  const handleNavigateBack = () => {
+    navigate("/");
+    window.location.reload();
+  };
+
   return (
     <>
       <div id="container">
+        <button id="navigate-button" onClick={handleNavigateBack}>
+          <ArrowLeftIcon />
+        </button>
         <div id="views-panel">
           <table className="views">
             <tbody>
