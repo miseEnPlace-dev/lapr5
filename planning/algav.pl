@@ -14,68 +14,68 @@
 %
 :-dynamic m/4.
 %m(piso,col,lin,valor)
-m(f1,1,1,1).
-m(f1,2,1,1).
-m(f1,3,1,1).
-m(f1,4,1,1).
-m(f1,5,1,1).
-m(f1,6,1,1).
-m(f1,7,1,1).
-m(f1,8,1,1).
+m(b1,1,1,1).
+m(b1,2,1,1).
+m(b1,3,1,1).
+m(b1,4,1,1).
+m(b1,5,1,1).
+m(b1,6,1,1).
+m(b1,7,1,1).
+m(b1,8,1,1).
 
-m(f1,1,2,0).
-m(f1,2,2,0).
-m(f1,3,2,0).
-m(f1,4,2,0).
-m(f1,5,2,0).
-m(f1,6,2,0).
-m(f1,7,2,0).
-m(f1,8,2,1).
+m(b1,1,2,0).
+m(b1,2,2,0).
+m(b1,3,2,0).
+m(b1,4,2,0).
+m(b1,5,2,0).
+m(b1,6,2,0).
+m(b1,7,2,0).
+m(b1,8,2,1).
 
-m(f1,1,3,0).
-m(f1,2,3,0).
-m(f1,3,3,0).
-m(f1,4,3,0).
-m(f1,5,3,0).
-m(f1,6,3,0).
-m(f1,7,3,0).
-m(f1,8,3,1).
+m(b1,1,3,0).
+m(b1,2,3,0).
+m(b1,3,3,0).
+m(b1,4,3,0).
+m(b1,5,3,0).
+m(b1,6,3,0).
+m(b1,7,3,0).
+m(b1,8,3,1).
 
-m(f1,1,4,0).
-m(f1,2,4,0).
-m(f1,3,4,0).
-m(f1,4,4,0).
-m(f1,5,4,0).
-m(f1,6,4,0).
-m(f1,7,4,0).
-m(f1,8,4,1).
+m(b1,1,4,0).
+m(b1,2,4,0).
+m(b1,3,4,0).
+m(b1,4,4,0).
+m(b1,5,4,0).
+m(b1,6,4,0).
+m(b1,7,4,0).
+m(b1,8,4,1).
 
-m(f1,1,5,1).
-m(f1,2,5,1).
-m(f1,3,5,1).
-m(f1,4,5,1).
-m(f1,5,5,0).
-m(f1,6,5,0).
-m(f1,7,5,0).
-m(f1,8,5,1).
+m(b1,1,5,1).
+m(b1,2,5,1).
+m(b1,3,5,1).
+m(b1,4,5,1).
+m(b1,5,5,0).
+m(b1,6,5,0).
+m(b1,7,5,0).
+m(b1,8,5,1).
 
-m(f1,1,6,1).
-m(f1,2,6,1).
-m(f1,3,6,1).
-m(f1,4,6,1).
-m(f1,5,6,0).
-m(f1,6,6,0).
-m(f1,7,6,0).
-m(f1,8,6,1).
+m(b1,1,6,1).
+m(b1,2,6,1).
+m(b1,3,6,1).
+m(b1,4,6,1).
+m(b1,5,6,0).
+m(b1,6,6,0).
+m(b1,7,6,0).
+m(b1,8,6,1).
 
-m(f1,1,7,1).
-m(f1,2,7,1).
-m(f1,3,7,1).
-m(f1,4,7,1).
-m(f1,5,7,0).
-m(f1,6,7,0).
-m(f1,7,7,0).
-m(f1,8,7,1).
+m(b1,1,7,1).
+m(b1,2,7,1).
+m(b1,3,7,1).
+m(b1,4,7,1).
+m(b1,5,7,0).
+m(b1,6,7,0).
+m(b1,7,7,0).
+m(b1,8,7,1).
 
 :-dynamic liga/2.
 liga(a,h).
@@ -111,8 +111,8 @@ corredor(i,j,i1,j1).
 corredor(i,j,i2,j2).
 corredor(i,j,i3,j3).
 
-:- dynamic exit/3.
-exit(a, 1, 1).
+:- dynamic exit/4.
+exit(b2, c3, 1, 1).
 
 caminho_edificios(EdOr,EdDest,LEdCam):-	caminho_edificios2(EdOr,EdDest,[EdOr],LEdCam).
 
@@ -292,7 +292,7 @@ create_floor_exits(Floor) :-
 
 create_exits([H|T], FloorCode) :-
 	write("      Exit -> "), write("X: "), write(H.x), write(" Y: "), write(H.y), nl,
-	asserta(exit(FloorCode, H.x, H.y)),
+	asserta(exit(FloorCode, H.floorCode, H.x, H.y)),
 	create_exits(T, FloorCode).
 
 create_exits([], _).
@@ -347,4 +347,25 @@ create_connector(Connector) :-
 	write("  To -> "), write(Connector.floor2BuildingCode), write(" - "), write(Connector.floor2Code), nl,
 	asserta(liga(Connector.floor1BuildingCode, Connector.floor2BuildingCode)),
 	asserta(corredor(Connector.floor1BuildingCode, Connector.floor2BuildingCode, Connector.floor1Code, Connector.floor2Code)).
+
+caminho_celulas_elevador(cel(F1,X1,Y1),cel(F2,X2,Y2),C) :-
+	melhor_caminho_pisos_elevadores(F1,F2,L),
+	caminho_celulas(L,cel(F1,X1,Y1),cel(F2,X2,Y2),C).
+
+caminho_celulas_elevador([H|T],C1,C2,L) :-
+	H=..[cor,F1,F2],
+	exits(F1,Ex,Ey),
+	astar(C1,cel(F1,Ex,Ey),L1,_),
+	exits(F2,E1x,E1y),
+	caminho_celulas_elevador(T,cel(F2,E1x,E1y),C2,L2),
+	write(L1),nl,
+	append(L1,L2,L).
+
+caminho_celulas_elevador([H|T],C1,C2,L) :-
+	H=..[_,F1,F2],
+	(m(F1,Ex,Ey,4);m(F1,Ex,Ey,5)),
+	astar(C1,cel(F1,Ex,Ey),L1,_),
+	(m(F2,E1x,E1y,4);m(F2,E1x,E1y,5)),
+	caminho_celulas_elevador(T,cel(F2,E1x,E1y),C2,L2),
+	append(L1,L2,L).
 

@@ -6,14 +6,14 @@ export interface IFloorMapDTO {
     };
     map: number[][];
     exits: { x: number; y: number; floorCode: string }[];
-    elevator?: { x: number; y: number };
-    exitLocation?: { x: number; y: number };
+    elevator: { x: number; y: number };
+    exitLocation: { x: number; y: number };
   };
-  player?: {
+  player: {
     initialPosition: number[];
     initialDirection: number;
   };
-  door?: {
+  door: {
     url: string;
     scale: {
       x: number;
@@ -21,7 +21,7 @@ export interface IFloorMapDTO {
       z: number;
     };
   };
-  elevator?: {
+  elevator: {
     url: string;
     scale: {
       x: number;
@@ -29,7 +29,7 @@ export interface IFloorMapDTO {
       z: number;
     };
   };
-  wall?: {
+  wall: {
     segments: {
       width: number;
       height: number;
@@ -76,7 +76,7 @@ export interface IFloorMapDTO {
     minFilter: number;
     secondaryColor: string;
   };
-  ground?: {
+  ground: {
     size: {
       width: number;
       height: number;
