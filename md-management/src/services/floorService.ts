@@ -287,55 +287,55 @@ export default class FloorService implements IFloorService {
 
       const ground = FloorMapGround.create({
         size: {
-          width: map.wall.segments.width,
-          height: map.wall.segments.height,
-          depth: map.wall.segments.depth
+          width: map.ground.size.width,
+          height: map.ground.size.height,
+          depth: map.ground.size.depth
         },
         segments: {
-          width: map.wall.segments.width,
-          height: map.wall.segments.height,
-          depth: map.wall.segments.depth
+          width: map.ground.segments.width,
+          height: map.ground.segments.height,
+          depth: map.ground.segments.depth
         },
-        primaryColor: map.wall.primaryColor,
+        primaryColor: map.ground.primaryColor,
         maps: {
           color: {
-            url: map.wall.maps.color.url
+            url: map.ground.maps.color.url
           },
           ao: {
-            url: map.wall.maps.ao.url,
-            intensity: map.wall.maps.ao.intensity
+            url: map.ground.maps.ao.url,
+            intensity: map.ground.maps.ao.intensity
           },
           displacement: {
-            url: map.wall.maps.displacement.url,
-            scale: map.wall.maps.displacement.scale,
-            bias: map.wall.maps.displacement.bias
+            url: map.ground.maps.displacement.url,
+            scale: map.ground.maps.displacement.scale,
+            bias: map.ground.maps.displacement.bias
           },
           normal: {
-            url: map.wall.maps.normal.url,
-            type: map.wall.maps.normal.type,
+            url: map.ground.maps.normal.url,
+            type: map.ground.maps.normal.type,
             scale: {
-              x: map.wall.maps.normal.scale.x,
-              y: map.wall.maps.normal.scale.y
+              x: map.ground.maps.normal.scale.x,
+              y: map.ground.maps.normal.scale.y
             }
           },
           bump: {
-            url: map.wall.maps.bump.url,
-            scale: map.wall.maps.bump.scale
+            url: map.ground.maps.bump.url,
+            scale: map.ground.maps.bump.scale
           },
           roughness: {
-            url: map.wall.maps.roughness.url,
-            rough: map.wall.maps.roughness.rough
+            url: map.ground.maps.roughness.url,
+            rough: map.ground.maps.roughness.rough
           }
         },
-        wrapS: map.wall.wrapS,
-        wrapT: map.wall.wrapT,
+        wrapS: map.ground.wrapS,
+        wrapT: map.ground.wrapT,
         repeat: {
-          u: map.wall.repeat.u,
-          v: map.wall.repeat.v
+          u: map.ground.repeat.u,
+          v: map.ground.repeat.v
         },
-        magFilter: map.wall.magFilter,
-        minFilter: map.wall.minFilter,
-        secondaryColor: map.wall.secondaryColor
+        magFilter: map.ground.magFilter,
+        minFilter: map.ground.minFilter,
+        secondaryColor: map.ground.secondaryColor
       });
 
       const mapOrError = FloorMap.create({
