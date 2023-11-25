@@ -111,6 +111,9 @@ corredor(i,j,i1,j1).
 corredor(i,j,i2,j2).
 corredor(i,j,i3,j3).
 
+:- dynamic exit/3.
+exit(a, 1, 1).
+
 caminho_edificios(EdOr,EdDest,LEdCam):-	caminho_edificios2(EdOr,EdDest,[EdOr],LEdCam).
 
 caminho_edificios2(EdX,EdX,LEdInv,LEdCam):-!,reverse(LEdInv,LEdCam).
@@ -284,8 +287,19 @@ create_floors(Building) :-
 	asserta(pisos(Building.code, FloorCodes)).
 
 
+create_floor_exits(Floor) :-
+	create_exits(Floor.map.maze.exits, Floor.code).
+
+create_exits([H|T], FloorCode) :-
+	write("      Exit -> "), write("X: "), write(H.x), write(" Y: "), write(H.y), nl,
+	asserta(exit(FloorCode, H.x, H.y)),
+	create_exits(T, FloorCode).
+
+create_exits([], _).
+
 create_floors_matrix([H|T]) :-
 	write("    Floor "), write(H.code), write(" -> "), is_dict(H.get(map)), nl,
+	create_floor_exits(H),
 	write("      Matrix "),  write(H.map.maze.size.width), write("x"), write(H.map.maze.size.depth), nl,
 	write("      "), write(H.map.maze.map), nl,
 	W is H.map.maze.size.width+1,
@@ -293,6 +307,7 @@ create_floors_matrix([H|T]) :-
 	reverse(H.map.maze.map, H1),
 	create_floor_matrix(H.code, H1, W, L),
 	create_floors_matrix(T).
+
 
 create_floors_matrix([]).
 
