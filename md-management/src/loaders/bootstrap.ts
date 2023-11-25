@@ -10,6 +10,12 @@ import { IFloorDTO } from '@/dto/IFloorDTO';
 import IFloorService from '@/services/IServices/IFloorService';
 import { IConnectorDTO } from '@/dto/IConnectorDTO';
 import IConnectorService from '@/services/IServices/IConnectorService';
+import { IRoomDTO } from '@/dto/IRoomDTO';
+import IRoomService from '@/services/IServices/IRoomService';
+import { IDeviceModelDTO } from '@/dto/IDeviceModelDTO';
+import IDeviceModelService from '@/services/IServices/IDeviceModelService';
+import { IDeviceDTO } from '@/dto/IDeviceDTO';
+import IDeviceService from '@/services/IServices/IDeviceService';
 
 @injectable()
 export default class Bootstrapper {
@@ -18,7 +24,10 @@ export default class Bootstrapper {
     @inject(TYPES.userService) private userService: IUserService,
     @inject(TYPES.buildingService) private buildingService: IBuildingService,
     @inject(TYPES.floorService) private floorService: IFloorService,
-    @inject(TYPES.connectorService) private connectorService: IConnectorService
+    @inject(TYPES.connectorService) private connectorService: IConnectorService,
+    @inject(TYPES.roomService) private roomService: IRoomService,
+    @inject(TYPES.deviceModelService) private deviceModelService: IDeviceModelService,
+    @inject(TYPES.deviceService) private deviceService: IDeviceService
   ) {}
 
   public async bootstrap() {
@@ -1973,6 +1982,105 @@ export default class Bootstrapper {
       floor2Code: 'C4',
       floor2BuildingCode: 'C'
     });
+
+    await this.loadRoom({
+      name: 'B201',
+      buildingCode: 'B',
+      floorCode: 'B2',
+      description: 'Auditório B201',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'CLASSROOM'
+    });
+
+    await this.loadRoom({
+      name: 'B203',
+      buildingCode: 'B',
+      floorCode: 'B2',
+      description: 'Sala de Aula B203',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'CLASSROOM'
+    });
+
+    await this.loadRoom({
+      name: 'B306',
+      buildingCode: 'B',
+      floorCode: 'B3',
+      description: 'Sala de Aula B306',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'CLASSROOM'
+    });
+
+    await this.loadRoom({
+      name: 'B216',
+      buildingCode: 'B',
+      floorCode: 'B2',
+      description: 'Gabinete B216',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE'
+    });
+
+    await this.loadDeviceModel({
+      code: 'SRV',
+      name: 'Surveillance Master',
+      type: 'robot',
+      brand: 'DJI',
+      capabilities: ['surveillance']
+    });
+
+    await this.loadDeviceModel({
+      code: 'DLV',
+      name: 'Delivery Expert',
+      type: 'robot',
+      brand: 'DJI',
+      capabilities: ['pick_delivery']
+    });
+
+    await this.loadDeviceModel({
+      code: 'ALL',
+      name: 'All in One Robot',
+      type: 'robot',
+      brand: 'DJI',
+      capabilities: ['pick_delivery', 'surveillance']
+    });
+
+    await this.loadDevice({
+      code: 'GUARD',
+      nickname: 'ISEP Guard',
+      modelCode: 'SRV',
+      description: 'ISEP Security Guard',
+      serialNumber: 'RBT1',
+      isAvailable: true
+    });
+
+    await this.loadDevice({
+      code: 'DELIVER',
+      nickname: 'ISEP Delivery Guy',
+      modelCode: 'DLV',
+      description: 'ISEP Pick and Delivery Robot',
+      serialNumber: 'RBT2',
+      isAvailable: true
+    });
+
+    await this.loadDevice({
+      code: 'MASTER',
+      nickname: 'ISEP Master Robot',
+      modelCode: 'ALL',
+      description: 'ISEP Master All in One Robot',
+      serialNumber: 'RBT3',
+      isAvailable: true
+    });
   }
 
   private async loadRole({
@@ -2047,6 +2155,58 @@ export default class Bootstrapper {
         floor1BuildingCode: connector.floor1BuildingCode,
         floor2Code: connector.floor2Code,
         floor2BuildingCode: connector.floor2BuildingCode
+      });
+
+      if (res.isFailure) throw new Error(res.errorValue());
+    }
+  }
+
+  private async loadRoom(room: IRoomDTO) {
+    const roomExists = await this.roomService.getRoom(room.buildingCode, room.floorCode, room.name);
+
+    if (roomExists.isFailure) {
+      const res = await this.roomService.createRoom({
+        name: room.name,
+        buildingCode: room.buildingCode,
+        floorCode: room.floorCode,
+        description: room.description,
+        dimensions: room.dimensions,
+        category: room.category
+      });
+
+      if (res.isFailure) throw new Error(res.errorValue());
+    }
+  }
+
+  private async loadDeviceModel(deviceModel: IDeviceModelDTO) {
+    const deviceModelExists = await this.deviceModelService.getDeviceModelWithCode(
+      deviceModel.code
+    );
+
+    if (deviceModelExists.isFailure) {
+      const res = await this.deviceModelService.createDeviceModel({
+        code: deviceModel.code,
+        name: deviceModel.name,
+        type: deviceModel.type,
+        brand: deviceModel.brand,
+        capabilities: deviceModel.capabilities
+      });
+
+      if (res.isFailure) throw new Error(res.errorValue());
+    }
+  }
+
+  private async loadDevice(device: IDeviceDTO) {
+    const deviceExists = await this.deviceService.getDeviceRobotWithCode(device.code);
+
+    if (deviceExists.isFailure) {
+      const res = await this.deviceService.createDevice({
+        code: device.code,
+        nickname: device.nickname,
+        modelCode: device.modelCode,
+        description: device.description,
+        serialNumber: device.serialNumber,
+        isAvailable: device.isAvailable
       });
 
       if (res.isFailure) throw new Error(res.errorValue());
