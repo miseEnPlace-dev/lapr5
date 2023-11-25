@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./",
+    "typeRoots": ["./node_modules/@types", "./src/types"],
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
     "pretty": true,
@@ -14,12 +15,12 @@
     "strict": true /* Enable all strict type-checking options. */,
     "noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
-    "target": "ES6",
-    "lib": ["ES6", "DOM"],
+    "target": "ES2015",
+    "lib": ["es6", "DOM", "ES2015.Iterable"],
     "resolveJsonModule": true,
-    "types": ["node", "reflect-metadata"],
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "types": ["node"],
+    "module": "CommonJS",
+    "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "incremental": true, // Enable incremental compilation
@@ -28,5 +29,5 @@
     }
   },
   "exclude": ["node_modules", "dist", "tests/**/*.test.ts"],
-  "include": ["src/**/*.ts", "tests"]
+  "include": ["src/**/*", "tests"]
 }
