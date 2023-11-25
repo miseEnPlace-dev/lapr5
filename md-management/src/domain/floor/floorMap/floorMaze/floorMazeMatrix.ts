@@ -23,8 +23,8 @@ export class FloorMazeMatrix extends ValueObject<FloorMazeMatrixProps> {
     for (let i = 0; i < map.length; i++) {
       for (let j = 0; j < map[i].length; j++) {
         const pos = map[i][j];
-        if ((pos <= 0 && pos >= 3) || pos === 10 || pos === 13) {
-          return Result.fail<FloorMazeMatrix>('Matrix values must be between 0 and 3 or 11 or 12');
+        if (!((pos >= 0 && pos <= 5) || pos === 11 || pos === 12)) {
+          return Result.fail<FloorMazeMatrix>('Matrix values must be between 0 and 5 or 11 or 12');
         }
       }
     }
