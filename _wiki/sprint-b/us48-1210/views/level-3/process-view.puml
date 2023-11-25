@@ -4,8 +4,7 @@ skinparam DefaultTextAlignment<<center>> center
 
 actor CM as "Campus Manager"
 box "<<system (C4>>\nVisualization)"<<center>>
-  participant CMP as "UI Componente" <<component (C4)>>
-    participant CMP as "UI Component" <<component (C4)>>
+  participant CMP as "UI Component" <<component (C4)>>
   participant MOD as "Module" <<component (C4)>>
   participant SRV as "Service" <<component (C4)>>
   participant HTTP as "HTTP" <<component (C4)>>
