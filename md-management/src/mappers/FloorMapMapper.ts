@@ -107,55 +107,55 @@ export class FloorMapMapper extends Mapper<FloorMap> {
       },
       ground: {
         size: {
-          width: floorMap.wall.segments.width,
-          height: floorMap.wall.segments.height,
-          depth: floorMap.wall.segments.depth
+          width: floorMap.ground.segments.width,
+          height: floorMap.ground.segments.height,
+          depth: floorMap.ground.segments.depth
         },
         segments: {
-          width: floorMap.wall.segments.width,
-          height: floorMap.wall.segments.height,
-          depth: floorMap.wall.segments.depth
+          width: floorMap.ground.segments.width,
+          height: floorMap.ground.segments.height,
+          depth: floorMap.ground.segments.depth
         },
-        primaryColor: floorMap.wall.primaryColor,
+        primaryColor: floorMap.ground.primaryColor,
         maps: {
           color: {
-            url: floorMap.wall.maps.color.url
+            url: floorMap.ground.maps.color.url
           },
           ao: {
-            url: floorMap.wall.maps.ao.url,
-            intensity: floorMap.wall.maps.ao.intensity
+            url: floorMap.ground.maps.ao.url,
+            intensity: floorMap.ground.maps.ao.intensity
           },
           displacement: {
-            url: floorMap.wall.maps.displacement.url,
-            scale: floorMap.wall.maps.displacement.scale,
-            bias: floorMap.wall.maps.displacement.bias
+            url: floorMap.ground.maps.displacement.url,
+            scale: floorMap.ground.maps.displacement.scale,
+            bias: floorMap.ground.maps.displacement.bias
           },
           normal: {
-            url: floorMap.wall.maps.normal.url,
-            type: floorMap.wall.maps.normal.type,
+            url: floorMap.ground.maps.normal.url,
+            type: floorMap.ground.maps.normal.type,
             scale: {
-              x: floorMap.wall.maps.normal.scale.x,
-              y: floorMap.wall.maps.normal.scale.y
+              x: floorMap.ground.maps.normal.scale.x,
+              y: floorMap.ground.maps.normal.scale.y
             }
           },
           bump: {
-            url: floorMap.wall.maps.bump.url,
-            scale: floorMap.wall.maps.bump.scale
+            url: floorMap.ground.maps.bump.url,
+            scale: floorMap.ground.maps.bump.scale
           },
           roughness: {
-            url: floorMap.wall.maps.roughness.url,
-            rough: floorMap.wall.maps.roughness.rough
+            url: floorMap.ground.maps.roughness.url,
+            rough: floorMap.ground.maps.roughness.rough
           }
         },
-        wrapS: floorMap.wall.wrapS,
-        wrapT: floorMap.wall.wrapT,
+        wrapS: floorMap.ground.wrapS,
+        wrapT: floorMap.ground.wrapT,
         repeat: {
-          u: floorMap.wall.repeat.u,
-          v: floorMap.wall.repeat.v
+          u: floorMap.ground.repeat.u,
+          v: floorMap.ground.repeat.v
         },
-        magFilter: floorMap.wall.magFilter,
-        minFilter: floorMap.wall.minFilter,
-        secondaryColor: floorMap.wall.secondaryColor
+        magFilter: floorMap.ground.magFilter,
+        minFilter: floorMap.ground.minFilter,
+        secondaryColor: floorMap.ground.secondaryColor
       }
     };
   }
@@ -264,55 +264,55 @@ export class FloorMapMapper extends Mapper<FloorMap> {
 
     const ground = FloorMapGround.create({
       size: {
-        width: floorMap.wall.segments.width,
-        height: floorMap.wall.segments.height,
-        depth: floorMap.wall.segments.depth
+        width: floorMap.ground.segments.width,
+        height: floorMap.ground.segments.height,
+        depth: floorMap.ground.segments.depth
       },
       segments: {
-        width: floorMap.wall.segments.width,
-        height: floorMap.wall.segments.height,
-        depth: floorMap.wall.segments.depth
+        width: floorMap.ground.segments.width,
+        height: floorMap.ground.segments.height,
+        depth: floorMap.ground.segments.depth
       },
-      primaryColor: floorMap.wall.primaryColor,
+      primaryColor: floorMap.ground.primaryColor,
       maps: {
         color: {
-          url: floorMap.wall.maps.color.url
+          url: floorMap.ground.maps.color.url
         },
         ao: {
-          url: floorMap.wall.maps.ao.url,
-          intensity: floorMap.wall.maps.ao.intensity
+          url: floorMap.ground.maps.ao.url,
+          intensity: floorMap.ground.maps.ao.intensity
         },
         displacement: {
-          url: floorMap.wall.maps.displacement.url,
-          scale: floorMap.wall.maps.displacement.scale,
-          bias: floorMap.wall.maps.displacement.bias
+          url: floorMap.ground.maps.displacement.url,
+          scale: floorMap.ground.maps.displacement.scale,
+          bias: floorMap.ground.maps.displacement.bias
         },
         normal: {
-          url: floorMap.wall.maps.normal.url,
-          type: floorMap.wall.maps.normal.tipo,
+          url: floorMap.ground.maps.normal.url,
+          type: floorMap.ground.maps.normal.tipo,
           scale: {
-            x: floorMap.wall.maps.normal.scale.x,
-            y: floorMap.wall.maps.normal.scale.y
+            x: floorMap.ground.maps.normal.scale.x,
+            y: floorMap.ground.maps.normal.scale.y
           }
         },
         bump: {
-          url: floorMap.wall.maps.bump.url,
-          scale: floorMap.wall.maps.bump.scale
+          url: floorMap.ground.maps.bump.url,
+          scale: floorMap.ground.maps.bump.scale
         },
         roughness: {
-          url: floorMap.wall.maps.roughness.url,
-          rough: floorMap.wall.maps.roughness.rough
+          url: floorMap.ground.maps.roughness.url,
+          rough: floorMap.ground.maps.roughness.rough
         }
       },
-      wrapS: floorMap.wall.wrapS,
-      wrapT: floorMap.wall.wrapT,
+      wrapS: floorMap.ground.wrapS,
+      wrapT: floorMap.ground.wrapT,
       repeat: {
-        u: floorMap.wall.repeat.u,
-        v: floorMap.wall.repeat.v
+        u: floorMap.ground.repeat.u,
+        v: floorMap.ground.repeat.v
       },
-      magFilter: floorMap.wall.magFilter,
-      minFilter: floorMap.wall.minFilter,
-      secondaryColor: floorMap.wall.secondaryColor
+      magFilter: floorMap.ground.magFilter,
+      minFilter: floorMap.ground.minFilter,
+      secondaryColor: floorMap.ground.secondaryColor
     });
 
     const floorMapOrError = FloorMap.create(
@@ -416,55 +416,55 @@ export class FloorMapMapper extends Mapper<FloorMap> {
       },
       ground: {
         size: {
-          width: floorMap.wall.segments.width,
-          height: floorMap.wall.segments.height,
-          depth: floorMap.wall.segments.depth
+          width: floorMap.ground.segments.width,
+          height: floorMap.ground.segments.height,
+          depth: floorMap.ground.segments.depth
         },
         segments: {
-          width: floorMap.wall.segments.width,
-          height: floorMap.wall.segments.height,
-          depth: floorMap.wall.segments.depth
+          width: floorMap.ground.segments.width,
+          height: floorMap.ground.segments.height,
+          depth: floorMap.ground.segments.depth
         },
-        primaryColor: floorMap.wall.primaryColor,
+        primaryColor: floorMap.ground.primaryColor,
         maps: {
           color: {
-            url: floorMap.wall.maps.color.url
+            url: floorMap.ground.maps.color.url
           },
           ao: {
-            url: floorMap.wall.maps.ao.url,
-            intensity: floorMap.wall.maps.ao.intensity
+            url: floorMap.ground.maps.ao.url,
+            intensity: floorMap.ground.maps.ao.intensity
           },
           displacement: {
-            url: floorMap.wall.maps.displacement.url,
-            scale: floorMap.wall.maps.displacement.scale,
-            bias: floorMap.wall.maps.displacement.bias
+            url: floorMap.ground.maps.displacement.url,
+            scale: floorMap.ground.maps.displacement.scale,
+            bias: floorMap.ground.maps.displacement.bias
           },
           normal: {
-            url: floorMap.wall.maps.normal.url,
-            tipo: floorMap.wall.maps.normal.type,
+            url: floorMap.ground.maps.normal.url,
+            tipo: floorMap.ground.maps.normal.type,
             scale: {
-              x: floorMap.wall.maps.normal.scale.x,
-              y: floorMap.wall.maps.normal.scale.y
+              x: floorMap.ground.maps.normal.scale.x,
+              y: floorMap.ground.maps.normal.scale.y
             }
           },
           bump: {
-            url: floorMap.wall.maps.bump.url,
-            scale: floorMap.wall.maps.bump.scale
+            url: floorMap.ground.maps.bump.url,
+            scale: floorMap.ground.maps.bump.scale
           },
           roughness: {
-            url: floorMap.wall.maps.roughness.url,
-            rough: floorMap.wall.maps.roughness.rough
+            url: floorMap.ground.maps.roughness.url,
+            rough: floorMap.ground.maps.roughness.rough
           }
         },
-        wrapS: floorMap.wall.wrapS,
-        wrapT: floorMap.wall.wrapT,
+        wrapS: floorMap.ground.wrapS,
+        wrapT: floorMap.ground.wrapT,
         repeat: {
-          u: floorMap.wall.repeat.u,
-          v: floorMap.wall.repeat.v
+          u: floorMap.ground.repeat.u,
+          v: floorMap.ground.repeat.v
         },
-        magFilter: floorMap.wall.magFilter,
-        minFilter: floorMap.wall.minFilter,
-        secondaryColor: floorMap.wall.secondaryColor
+        magFilter: floorMap.ground.magFilter,
+        minFilter: floorMap.ground.minFilter,
+        secondaryColor: floorMap.ground.secondaryColor
       }
     };
   }
