@@ -5,7 +5,8 @@ skinparam DefaultTextAlignment<<center>> center
 actor CM as "Campus Manager"
 
 box "«container (C4)»\nVisualization" <<center>>
-  participant C as "Component" <<component>>
+  participant C as "UI Component" <<component>>
+  participant M as "Module" <<component>>
   participant SVC as "Service" <<component>>
   participant H as "HTTP" <<component>>
 end box
@@ -25,7 +26,14 @@ deactivate C
 CM -> C : inserts the data
 activate C
 
-C -> SVC : createElevator(buildingCode,data)
+C -> M : createElevator
+activate M
+
+M -> M : validates data
+activate M
+deactivate M
+
+M -> SVC : createElevator(buildingCode,data)
 activate SVC
 
 SVC -> H : post(url,data)
@@ -41,12 +49,16 @@ alt a new evelator is created
   SVC <-- H : the new elevator
   deactivate H
 
-  C <-- SVC : the new elevator
+  M <-- SVC : the new elevator
   deactivate SVC
+
+  C <-- M : success message
+  deactivate M
 
   CM <-- C : informs the success of the operation
 else there is an evelator with the specified code
   activate H
+  activate M
   activate SVC
   activate ROUTE
 
@@ -56,8 +68,11 @@ else there is an evelator with the specified code
   SVC <-- H : error
   deactivate H
 
-  C <-- SVC : error
+  M <-- SVC : error
   deactivate SVC
+
+  C <-- M : error
+  deactivate M
 
   CM <-- C : shows error message "An elevator with that code exists."
   deactivate C
