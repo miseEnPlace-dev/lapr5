@@ -1,0 +1,27 @@
+@startuml process-view
+autonumber
+
+actor FM as "Fleet Manager"
+participant SYS as "RobDroneGo System" <<system (C4)>>
+
+activate FM
+
+FM -> SYS : wants to add a new robot to the fleet
+activate SYS
+
+FM <-- SYS : asks for the code, nickname, model code, serial number & description
+deactivate SYS
+
+FM -> SYS : inserts the data
+activate SYS
+
+alt a new robot is created
+  FM <-- SYS : returns the new robot
+else there is a robot with the specified code, nickname or serial number
+  FM <-- SYS : shows error message "A device with the specified data already exists."
+  deactivate SYS
+end
+
+deactivate FM
+
+@enduml
