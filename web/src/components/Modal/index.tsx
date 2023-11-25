@@ -26,6 +26,7 @@ const Modal: React.FC<ModalProps> = ({
     return (
       <>
         <section
+          aria-label="modal-overlay"
           onClick={() => setIsVisible((cur) => !cur)}
           className="fixed left-0 top-0 h-screen w-screen bg-slate-300 p-6 opacity-70 shadow-lg"
         ></section>

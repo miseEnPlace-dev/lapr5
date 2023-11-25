@@ -23,7 +23,7 @@ const ConnectorPage: React.FC = () => {
   }
 
   return (
-    <div className="mx-auto flex h-screen min-h-screen w-11/12 flex-col gap-y-8 py-8">
+    <main className="mx-auto flex h-screen min-h-screen w-11/12 flex-col gap-y-8 py-8">
       <button
         className="flex items-center gap-x-2"
         onClick={() => navigate(-1)}
@@ -70,7 +70,7 @@ const ConnectorPage: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

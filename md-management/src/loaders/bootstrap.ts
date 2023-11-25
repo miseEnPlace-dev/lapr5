@@ -1,21 +1,21 @@
 import { defaultRoles } from '@/domain/role/defaultRoles';
+import { IBuildingDTO } from '@/dto/IBuildingDTO';
+import { IConnectorDTO } from '@/dto/IConnectorDTO';
+import { IDeviceDTO } from '@/dto/IDeviceDTO';
+import { IDeviceModelDTO } from '@/dto/IDeviceModelDTO';
+import { IFloorDTO } from '@/dto/IFloorDTO';
+import { IRoomDTO } from '@/dto/IRoomDTO';
 import { IUserDTO } from '@/dto/IUserDTO';
+import IBuildingService from '@/services/IServices/IBuildingService';
+import IConnectorService from '@/services/IServices/IConnectorService';
+import IDeviceModelService from '@/services/IServices/IDeviceModelService';
+import IDeviceService from '@/services/IServices/IDeviceService';
+import IFloorService from '@/services/IServices/IFloorService';
 import IRoleService from '@/services/IServices/IRoleService';
+import IRoomService from '@/services/IServices/IRoomService';
 import IUserService from '@/services/IServices/IUserService';
 import { inject, injectable } from 'inversify';
 import { TYPES } from './inversify/types';
-import IBuildingService from '@/services/IServices/IBuildingService';
-import { IBuildingDTO } from '@/dto/IBuildingDTO';
-import { IFloorDTO } from '@/dto/IFloorDTO';
-import IFloorService from '@/services/IServices/IFloorService';
-import { IConnectorDTO } from '@/dto/IConnectorDTO';
-import IConnectorService from '@/services/IServices/IConnectorService';
-import { IRoomDTO } from '@/dto/IRoomDTO';
-import IRoomService from '@/services/IServices/IRoomService';
-import { IDeviceModelDTO } from '@/dto/IDeviceModelDTO';
-import IDeviceModelService from '@/services/IServices/IDeviceModelService';
-import { IDeviceDTO } from '@/dto/IDeviceDTO';
-import IDeviceService from '@/services/IServices/IDeviceService';
 
 @injectable()
 export default class Bootstrapper {
@@ -1654,7 +1654,7 @@ export default class Bootstrapper {
             [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
           ],
-          exits: [{ x: 9, y: 23, floorCode: 'C4' }],
+          exits: [{ x: 10, y: 22, floorCode: 'C4' }],
           elevator: { x: 1, y: 1 },
           exitLocation: { x: 1, y: 1 }
         },

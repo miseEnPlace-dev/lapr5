@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import http from 'http';
 import { injectable } from 'inversify';
-import fetch from 'node-fetch';
 
 import config from '@/config';
 import IPlanningController from './IControllers/IPlanningController';
@@ -10,17 +8,13 @@ import IPlanningController from './IControllers/IPlanningController';
 export default class PlanningController implements IPlanningController {
   constructor() {}
 
-  private httpAgent = new http.Agent({});
-
   public async getRoute(req: Request, res: Response, next: NextFunction) {
     try {
-      const url = `${config.planningApiUrl}/api/route?from=${req.query.from}&to=${req.query.to}&method=${req.query.method}`;
+      const { fromX, fromY, toX, toY, fromFloor, toFloor, method } = req.body;
+      const url = `${config.planningApiUrl}/api/route?fromX=${fromX}&fromY=${fromY}&toX=${toX}&toY=${toY}&fromFloor=${fromFloor}&toFloor=${toFloor}&method=${method}`;
 
       console.log(url);
-      const response = await fetch(url, {
-        method: 'GET',
-        agent: this.httpAgent
-      });
+      const response = await fetch(url);
 
       const data = await response.json();
 

@@ -1,5 +1,8 @@
 :- module(server, []).
 
+:- use_module(planning).
+
+
 :- use_module(library(http/thread_httpd)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)). % produce html
@@ -51,16 +54,6 @@ greet(Request):-
         format("Hello, ~w!~n", [Name]) % Person exists
     ).
 
-api_get_route(Request):-
-    http_parameters(Request, [ from(From, [ optional(false), length >= 1 ]) ]),
-    http_parameters(Request, [ to(To, [ optional(false), length >= 1 ]) ]),
-    http_parameters(Request, [ method(Method, [ optional(false), length >= 1 ]) ]),
-    do_stuff(From, To,Method).
-
-do_stuff(From, To, Method):-
-    R=json([from=From, to=To, method=Method]),
-    prolog_to_json(R, JsonOut),
-    reply_json(JsonOut).
 
 api_hello(_):-
     R = json([message='Hello World!']),
@@ -98,6 +91,27 @@ fetch_floors(BuildingCode, Floors) :-
     atom_concat(FloorsUrl2, '/floors', FloorsUrl3),
     read_api(FloorsUrl3, Floors).
 
+api_get_route(Request):-
+    http_parameters(Request, [ fromX(FromX, [ optional(false), length >= 1 ]) ]),
+    http_parameters(Request, [ fromY(FromY, [ optional(false), length >= 1 ]) ]),
+    http_parameters(Request, [ fromFloor(FromFloor, [ optional(false), length >= 1 ]) ]),
+    http_parameters(Request, [ toX(ToX, [ optional(false), length >= 1 ]) ]),
+    http_parameters(Request, [ toY(ToY, [ optional(false), length >= 1 ]) ]),
+    http_parameters(Request, [ toFloor(ToFloor, [ optional(false), length >= 1 ]) ]),
+    http_parameters(Request, [ method(_, [ optional(false), length >= 1 ]) ]),
+
+    atom_number(FromX, FromX2),
+    atom_number(FromY, FromY2),
+    atom_number(ToX, ToX2),
+    atom_number(ToY, ToY2),
+    atom_string(FromFloor2, FromFloor),
+    atom_string(ToFloor2, ToFloor),
+    C1=cel(FromFloor2, FromX2, FromY2),
+    C2=cel(ToFloor2, ToX2, ToY2),
+
+    planning:caminho_celulas_elevador(C1,C2, R),
+    prolog_to_json(R, JsonOut),
+    reply_json(JsonOut).
 
 init_server(Port):-
     debug(http(request)), % debug http requests & responses

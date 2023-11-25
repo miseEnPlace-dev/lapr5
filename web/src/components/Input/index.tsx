@@ -6,6 +6,7 @@ interface InputProps {
   placeholder?: string;
   className?: string;
   step?: number;
+  name: string;
   disabled?: boolean;
   inputRef?: React.RefObject<HTMLInputElement>;
 }
