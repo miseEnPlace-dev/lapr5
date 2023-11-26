@@ -92,29 +92,33 @@ fetch_floors(BuildingCode, Floors) :-
     read_api(FloorsUrl3, Floors).
 
 api_get_route(Request):-
-    http_parameters(Request, [ fromX(FromX, [ optional(false), number ]) ]),
-    http_parameters(Request, [ fromY(FromY, [ optional(false), number ]) ]),
-    http_parameters(Request, [ fromFloor(FromFloor, [ optional(false), length >= 1 ]) ]),
-    http_parameters(Request, [ toX(ToX, [ optional(false), number ]) ]),
-    http_parameters(Request, [ toY(ToY, [ optional(false), number ]) ]),
-    http_parameters(Request, [ toFloor(ToFloor, [ optional(false), length >= 1 ]) ]),
-    http_parameters(Request, [ method(_, [ optional(false), length >= 1 ]) ]),
+    http_parameters(Request, [ fromX(FromX, [ integer ]) ]),
+    http_parameters(Request, [ fromY(FromY, [ integer ]) ]),
+    http_parameters(Request, [ fromFloor(FromFloor, [ string ]) ]),
+    http_parameters(Request, [ toX(ToX, [ integer ]) ]),
+    http_parameters(Request, [ toY(ToY, [ integer ]) ]),
+    http_parameters(Request, [ toFloor(ToFloor, [ string ]) ]),
+    http_parameters(Request, [ method(Met, [ optional(false), length >= 1 ]) ]),
+    get_path(FromX, FromY, FromFloor, ToX, ToY, ToFloor, Met, R),
 
-    C1=cel(FromFloor, FromX, FromY),
-    C2=cel(ToFloor, ToX, ToY),
+    cells_to_json(R, R2),
+    prolog_to_json(R2, JsonOut),
+    reply_json(JsonOut, [json_object(dict)]).
 
-    R=[C1,C2],
-    cells_to_json(R,R2),
-    prolog_to_json(R2,JsonOut),
-    reply_json(JsonOut).
+get_path(FromX, FromY, FromFloor, ToX, ToY, ToFloor, Met, R):-
+    Met=='elevators',
+    planning:caminho_celulas_elevador(cel(FromFloor, FromX, FromY), cel(ToFloor, ToX, ToY), R).
+get_path(FromX, FromY, FromFloor, ToX, ToY, ToFloor, Met, R):-
+    Met=='connectors',
+    planning:caminho_celulas_edificios(cel(FromFloor, FromX, FromY), cel(ToFloor, ToX, ToY), R).
 
-%    planning:caminho_celulas_elevador(C1,C2, R),
-%    cells_to_json(R, R2),
-%    prolog_to_json(R2, JsonOut),
-%    reply_json(JsonOut, [json_object(dict)]).
 
 cell_to_json(cel(Floor, X, Y), JsonOut):-
     JsonOut = json([floor=Floor, x=X, y=Y]).
+cell_to_json(elev(F1, F2), JsonOut):-
+    JsonOut = json([floor1=F1, floor2=F2,type=elevator]).
+cell_to_json(cor(F1, F2), JsonOut):-
+    JsonOut = json([floor1=F1, floor2=F2,type=connector]).
 cells_to_json([], []).
 cells_to_json([H|T], [H2|T2]):-
     cell_to_json(H, H2),

@@ -5,7 +5,17 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 echo "LOG: Deploy web"
-cd web
+cd md-management
+
+if [ -e .env ]; then
+  echo "The .env file exists."
+else
+  echo "The .env file does not exist."
+  touch .env
+  cp .env.example .env
+fi
+
+
 echo "> Installing dependencies"
 pnpm i --frozen-lockfile
 
@@ -27,9 +37,10 @@ else
   exit 1
 fi
 
+export MONGODB_URI="mongodb+srv://user:NHdZ6bANdTkbzpYG@cluster0.nt1utn2.mongodb.net/?retryWrites=true&w=majority" JWT_SECRET="nf98hf98f3ohf3hf" PORT="2228" NODE_ENV="production"
 
 echo -e "${NC}> Deploying web"
-pnpm preview --port 2228 &
+pnpm start &
 
 if [ $? -eq 0 ]; then
   echo -e "${GREEN}Deploy successful"

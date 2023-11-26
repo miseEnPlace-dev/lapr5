@@ -31,7 +31,7 @@ export class BuildingService implements IBuildingService {
     const response = await this.http
       .post<Building>("/buildings", building)
       .catch((error) => {
-        throw error;
+        throw error.message;
       });
 
     if (response.status === 400) throw new Error("Something went wrong");

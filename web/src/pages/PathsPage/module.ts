@@ -6,7 +6,7 @@ import { Building } from "@/model/Building";
 import { Floor } from "@/model/Floor";
 import { IBuildingService } from "@/service/IService/IBuildingService";
 import { IFloorService } from "@/service/IService/IFloorService";
-import { IRouteService } from "@/service/IService/IRouteService";
+import { IRouteService, RouteCell } from "@/service/IService/IRouteService";
 
 const strategies = [
   {
@@ -36,17 +36,33 @@ export const usePathsPageModule = () => {
   const [floor1Code, setFloor1Code] = useState<string>("");
   const [floor2Code, setFloor2Code] = useState<string>("");
 
+  const [fromCoords, setFromCoords] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
+  const [toCoords, setToCoords] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
+
   const [loading, setLoading] = useState(false);
 
-  const [path, setPath] = useState<string[]>([]);
+  const [path, setPath] = useState<RouteCell[]>([]);
 
   async function handleFind() {
     setLoading(true);
 
-    const p = await routeService.getRoutes(floor1Code, floor2Code, strategy);
-    setPath(p);
+    const p = await routeService.getRoutes({
+      fromX: fromCoords.x,
+      fromY: fromCoords.y,
+      fromFloor: floor1Code,
+      toX: toCoords.x,
+      toY: toCoords.y,
+      toFloor: floor2Code,
+      method: strategy,
+    });
 
-    setLoading(false);
+    setPath(p);
   }
 
   useEffect(() => {
@@ -57,6 +73,10 @@ export const usePathsPageModule = () => {
 
     fetchBuildings();
   }, [buildingService]);
+
+  useEffect(() => {
+    if (path) setLoading(false);
+  }, [path]);
 
   useEffect(() => {
     async function fetchFloors() {
@@ -96,5 +116,9 @@ export const usePathsPageModule = () => {
     handleFind,
     loading,
     path,
+    fromCoords,
+    toCoords,
+    setFromCoords,
+    setToCoords,
   };
 };

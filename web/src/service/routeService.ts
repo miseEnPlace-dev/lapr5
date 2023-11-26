@@ -3,17 +3,20 @@ import { inject, injectable } from "inversify";
 import { TYPES } from "@/inversify/types";
 
 import { HttpService } from "./IService/HttpService";
-import { IRouteService } from "./IService/IRouteService";
+import {
+  GetRouteProps,
+  IRouteService,
+  RouteCell,
+} from "./IService/IRouteService";
 
 @injectable()
 export class RouteService implements IRouteService {
   constructor(@inject(TYPES.api) private http: HttpService) {}
 
-  async getRoutes(from: string, to: string, method: string): Promise<string[]> {
-    const res = await this.http.get(
-      `/routes?from=${from}&to=${to}&method=${method}`
-    );
+  async getRoutes(props: GetRouteProps): Promise<RouteCell[]> {
+    console.log({ props });
+    const res = await this.http.post("/routes", props);
 
-    return res.data as string[];
+    return res.data as RouteCell[];
   }
 }

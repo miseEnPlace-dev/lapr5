@@ -44,12 +44,15 @@ const DeviceModelsPage: React.FC = () => {
   return (
     <div className="flex">
       <SideBar menuOptions={menuOptions} />
-      <div className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
+      <main className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
         <h1 className="text-4xl font-bold">Device Models</h1>
         <p className="text-slate-500">
           Manage here all the device models of the fleet.
         </p>
-        <div className="mr-12 mt-8 flex flex-col justify-between gap-y-6 overflow-y-auto text-left text-lg">
+        <div
+          aria-label="device-models-container"
+          className="mr-12 mt-8 flex flex-col justify-between gap-y-6 overflow-y-auto text-left text-lg"
+        >
           {deviceModels.map((deviceModel, i) => (
             <motion.button
               initial={{ opacity: 0, x: -100 }}
@@ -81,6 +84,7 @@ const DeviceModelsPage: React.FC = () => {
               delay: deviceModels.length * ANIMATION_DELAY,
             }}
             onClick={() => setIsBuildingModalVisible(true)}
+            name="create-device-model"
             className="flex w-full items-center justify-center bg-secondary px-12 py-4 text-center text-5xl font-bold"
           >
             +
@@ -132,7 +136,7 @@ const DeviceModelsPage: React.FC = () => {
             </div>
           </Modal>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

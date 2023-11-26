@@ -29,6 +29,7 @@ const Selector: React.FC<SelectorProps> = ({
         {items.map((item) => (
           <button
             key={item.name}
+            name={item.name}
             disabled={disabled}
             className={`relative flex items-center justify-center gap-x-4 text-center text-xl font-bold capitalize ${
               !disabled && "hover:brightness-90"

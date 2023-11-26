@@ -72,8 +72,10 @@ describe('Elevator Mapper', () => {
     expect(result).toEqual({
       code: 1,
       floors: [floor.id.toValue()],
-      brand: 'brand',
-      model: 'model',
+      branding: {
+        brand: 'brand',
+        model: 'model'
+      },
       serialNumber: 'serial',
       description: 'description'
     });
