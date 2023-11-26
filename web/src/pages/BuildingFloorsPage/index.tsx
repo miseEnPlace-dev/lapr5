@@ -89,11 +89,13 @@ const BuildingFloorsPage: React.FC = () => {
           <div className="flex h-full flex-col justify-between gap-y-4">
             <div className="flex flex-col items-center justify-between gap-x-8 gap-y-4">
               <Input
+                name="code"
                 className="w-full"
                 placeholder="Code"
                 inputRef={floorCodeInputRef}
               />
               <TextArea
+                name="description"
                 className="w-full"
                 placeholder="Description"
                 defaultValue={floor?.description}
@@ -101,6 +103,7 @@ const BuildingFloorsPage: React.FC = () => {
               />
               <div className="flex w-full items-center justify-between gap-x-12">
                 <Input
+                  name="width"
                   className="w-full"
                   placeholder="Width (m)"
                   type="number"
@@ -109,6 +112,7 @@ const BuildingFloorsPage: React.FC = () => {
                   inputRef={floorWidthInputRef}
                 />
                 <Input
+                  name="length"
                   defaultValue={floor?.dimensions.length}
                   className="w-full"
                   placeholder="Length (m)"
