@@ -29,17 +29,9 @@ describe("Devices", () => {
   });
 
   it("should be able to list all devices", () => {
-    cy.intercept("GET", BASE_URL + "/devices", {
+    cy.intercept("GET", BASE_URL + "/devices/robots", {
       statusCode: 200,
       body: [
-        {
-          code: "GUARD",
-          nickname: "ISEP Guard",
-          description: "ISEP Security Guard",
-          serialNumber: "RBT1",
-          modelCode: "SRV",
-          isAvailable: true,
-        },
         {
           code: "GUARD",
           nickname: "ISEP Guard",
@@ -54,11 +46,11 @@ describe("Devices", () => {
     cy.get("main").get("h1").should("contain", "Devices");
     cy.get("div[aria-label=devices-container")
       .children()
-      .should("have.length", 6);
+      .should("have.length", 4);
   });
 
   it("should be able to create a device", () => {
-    cy.intercept("GET", BASE_URL + "/devices", {
+    cy.intercept("GET", BASE_URL + "/devices/robots", {
       statusCode: 200,
       body: [
         {
@@ -105,7 +97,7 @@ describe("Devices", () => {
   });
 
   it("should be able to get an error when create a device fails", () => {
-    cy.intercept("GET", BASE_URL + "/devices", {
+    cy.intercept("GET", BASE_URL + "/devices/robots", {
       statusCode: 200,
       body: [],
     });
@@ -130,5 +122,69 @@ describe("Devices", () => {
     cy.get("button[name=save]").click();
 
     cy.get("div[class=swal-modal]").should("contain", "Error");
+  });
+
+  it("should be able to filter by capability", () => {
+    cy.intercept(
+      "GET",
+      BASE_URL + "/devices/robots?filter=task&value=pick_delivery",
+      {
+        statusCode: 200,
+        body: [
+          {
+            code: "GUARD",
+            nickname: "ISEP Guard",
+            description: "ISEP Security Guard",
+            serialNumber: "RBT1",
+            modelCode: "SRV",
+            isAvailable: true,
+          },
+          {
+            code: "GUARD",
+            nickname: "ISEP Guard",
+            description: "ISEP Security Guard",
+            serialNumber: "RBT1",
+            modelCode: "SRV",
+            isAvailable: true,
+          },
+        ],
+      }
+    );
+
+    cy.get("button[name=filterByTask]").click();
+    cy.get("select[name=Task]").select("pick_delivery");
+
+    cy.get("button[name=listfilter]").click();
+
+    cy.get("main").get("h1").should("contain", "Devices");
+    cy.get("div[aria-label=devices-container")
+      .children()
+      .should("have.length", 5);
+  });
+
+  it("should be able to filter by model name", () => {
+    cy.intercept("GET", BASE_URL + "/devices/robots?filter=model&value=SRV", {
+      statusCode: 200,
+      body: [
+        {
+          code: "GUARD",
+          nickname: "ISEP Guard",
+          description: "ISEP Security Guard",
+          serialNumber: "RBT1",
+          modelCode: "SRV",
+          isAvailable: true,
+        },
+      ],
+    });
+
+    cy.get("button[name=filterByModel]").click();
+    cy.get("select[name='Device Model']").select("SRV");
+
+    cy.get("button[name=listfiltermodel]").click();
+
+    cy.get("main").get("h1").should("contain", "Devices");
+    cy.get("div[aria-label=devices-container")
+      .children()
+      .should("have.length", 4);
   });
 });

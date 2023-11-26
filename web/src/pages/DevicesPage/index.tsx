@@ -119,6 +119,7 @@ const DevicesPage: React.FC = () => {
           className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left text-lg"
         >
           <motion.button
+            name="filterByTask"
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -136,6 +137,7 @@ const DevicesPage: React.FC = () => {
             </div>
           </motion.button>
           <motion.button
+            name="filterByModel"
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -299,7 +301,7 @@ const DevicesPage: React.FC = () => {
                 </div>
               </div>
               <Button
-                name="listfilter"
+                name="listfiltermodel"
                 onClick={handleFilterByModelNameClick}
                 type="confirm"
               >
