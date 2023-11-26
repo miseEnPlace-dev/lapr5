@@ -177,6 +177,7 @@ const DevicesPage: React.FC = () => {
             </motion.button>
           ))}
           <motion.button
+            name="createDevice"
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
