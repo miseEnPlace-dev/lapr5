@@ -148,20 +148,17 @@ const ConnectorsPage: React.FC = () => {
             <div className="flex h-full flex-col justify-between gap-y-4">
               <div className="flex w-full flex-col gap-y-4">
                 <Input
-                  name="code"
                   className="w-full"
                   placeholder="Code"
                   inputRef={codeInputRef}
                 />
                 <div className="flex w-full flex-col items-center gap-x-8 gap-y-4 md:flex-row">
                   <Input
-                    name="floor1Code"
                     className="w-full"
                     placeholder="Floor 1 Code"
                     inputRef={floor1InputRef}
                   />
                   <Input
-                    name="floor2Code"
                     className="w-full"
                     placeholder="Floor 2 Code"
                     inputRef={floor2InputRef}

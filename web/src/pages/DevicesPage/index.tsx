@@ -88,7 +88,7 @@ const DevicesPage: React.FC = () => {
     try {
       await handleSave();
 
-      swal("Success", "Devices saved successfully", "success");
+      swal("Success", "Device saved successfully", "success");
       setIsDeviceModalVisible(false);
     } catch (err: unknown) {
       console.error(err);
@@ -109,12 +109,15 @@ const DevicesPage: React.FC = () => {
   return (
     <div className="flex">
       <SideBar menuOptions={menuOptions} />
-      <div className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
+      <main className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
         <h1 className="text-4xl font-bold">Devices</h1>
         <p className="text-slate-500">
           Manage here all the devices of the fleet.
         </p>
-        <div className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left text-lg">
+        <div
+          aria-label="devices-container"
+          className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left text-lg"
+        >
           <motion.button
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
@@ -305,7 +308,7 @@ const DevicesPage: React.FC = () => {
             </div>
           </Modal>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

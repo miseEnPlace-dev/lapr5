@@ -55,6 +55,31 @@ describe("Connectors", () => {
       .should("have.length", 2);
   });
 
+  it("should be able to get an error when create a connector fails", () => {
+    cy.intercept("GET", BASE_URL + "/connectors", {
+      statusCode: 200,
+      body: [],
+    });
+    cy.intercept("POST", BASE_URL + "/connectors", {
+      statusCode: 400,
+      message: "Error message",
+    });
+
+    cy.get("main").get("h1").should("contain", "Connectors");
+    cy.get("button[name=createConnector]").should("contain", "+");
+    cy.get("button[name=createConnector]").click();
+    cy.get("section[aria-label=modal-overlay]")
+      .get("span")
+      .should("contain", "Create Connector");
+
+    cy.get("input[name=Code]").type("CPG");
+    cy.get("input[name='Floor 1 Code']").type("B1");
+    cy.get("input[name='Floor 2 Code']").type("G3");
+    // cy.get("button[name=save]").click();
+
+    // cy.get("div[class=swal-modal]").should("contain", "Error");
+  });
+
   it("should be able to create a connector", () => {
     cy.intercept("GET", BASE_URL + "/connectors", {
       statusCode: 200,
@@ -84,39 +109,14 @@ describe("Connectors", () => {
       .get("span")
       .should("contain", "Create Connector");
 
-    cy.get("input[name=code]").type("CBG");
-    cy.get("input[name=floor1Code]").type("B1");
-    cy.get("input[name=floor2Code]").type("G2");
+    cy.get("input[name=Code]").type("CBG");
+    cy.get("input[name='Floor 1 Code']").type("B1");
+    cy.get("input[name='Floor 2 Code']").type("G2");
     cy.get("button[name=save]").click();
 
     cy.get("div[class=swal-modal]").should(
       "contain",
       "Connector saved successfully"
     );
-  });
-
-  it("should be able to get an error when create a connector fails", () => {
-    cy.intercept("GET", BASE_URL + "/connectors", {
-      statusCode: 200,
-      body: [],
-    });
-    cy.intercept("POST", BASE_URL + "/connectors", {
-      statusCode: 400,
-      message: "Error message",
-    });
-
-    cy.get("main").get("h1").should("contain", "Connectors");
-    cy.get("button[name=createConnector]").should("contain", "+");
-    cy.get("button[name=createConnector]").click();
-    cy.get("section[aria-label=modal-overlay]")
-      .get("span")
-      .should("contain", "Create Connector");
-
-    cy.get("input[name=code]").type("CPG");
-    cy.get("input[name=floor1Code]").type("B1");
-    cy.get("input[name=floor2Code]").type("G3");
-    // cy.get("button[name=save]").click();
-
-    // cy.get("div[class=swal-modal]").should("contain", "Error");
   });
 });
