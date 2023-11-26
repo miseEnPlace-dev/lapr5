@@ -6,6 +6,7 @@ interface TextAreaProps {
   className?: string;
   inputRef?: React.RefObject<HTMLTextAreaElement>;
   rows?: number;
+  name?: string;
 }
 
 const TextArea: React.FC<TextAreaProps> = ({
@@ -16,6 +17,7 @@ const TextArea: React.FC<TextAreaProps> = ({
   inputRef,
   defaultValue,
   rows = 5,
+  name,
 }) => {
   return (
     <div className={`flex flex-col gap-y-1 ${className}`}>
@@ -27,7 +29,7 @@ const TextArea: React.FC<TextAreaProps> = ({
         placeholder={placeholder}
         defaultValue={defaultValue}
         value={value}
-        name={placeholder}
+        name={name}
         maxLength={255}
         rows={rows}
         onChange={(e) => onChange && onChange(e.target.value)}
