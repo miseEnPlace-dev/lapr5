@@ -5,7 +5,17 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 echo "LOG: Deploy web"
-cd web
+cd md-management
+
+if [ -e .env ]; then
+  echo "The .env file exists."
+else
+  echo "The .env file does not exist."
+  touch .env
+  cp .env.example .env
+fi
+
+
 echo "> Installing dependencies"
 pnpm i --frozen-lockfile
 
