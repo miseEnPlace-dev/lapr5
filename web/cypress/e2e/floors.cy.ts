@@ -28,7 +28,7 @@ describe("Floors", () => {
     cy.visit("/buildings/2/floors");
   });
 
-  it("should be able to list all buildings", () => {
+  it("should be able to list all floors", () => {
     cy.intercept("GET", BASE_URL + "/buildings/2", {
       statusCode: 200,
       body: {
