@@ -289,17 +289,41 @@ caminho_celulas_elevador([H|T],C1,C2,L) :-
 	caminho_celulas_elevador(T,cel(F2,E1x,E1y),C2,L2),
 	append(L1,L2,L).
 
+caminho_celulas_elevador([H|T],C1,C2,L) :-
+	H=..[_,F1,F2],
+	m(F1,Ex,Ey,4),
+	aStar(C1,cel(F1,Ex,Ey),L1,_),
+	(m(F2,E1x,E1y,4),
+	caminho_celulas_elevador(T,cel(F2,E1x,E1y),C2,L2),
+	append(L1,L2,L).
+
+caminho_celulas_elevador([H|T],C1,C2,L) :-
+	H=..[_,F1,F2],
+	m(F1,Ex,Ey,4),
+	aStar(C1,cel(F1,Ex,Ey),L1,_),
+	(m(F2,E1x,E1y,5),
+	caminho_celulas_elevador(T,cel(F2,E1x,E1y),C2,L2),
+	append(L1,L2,L).
+
+caminho_celulas_elevador([H|T],C1,C2,L) :-
+	H=..[_,F1,F2],
+	m(F1,Ex,Ey,5),
+	aStar(C1,cel(F1,Ex,Ey),L1,_),
+	(m(F2,E1x,E1y,4),
+	caminho_celulas_elevador(T,cel(F2,E1x,E1y),C2,L2),
+	append(L1,L2,L).
+caminho_celulas_elevador([H|T],C1,C2,L) :-
+	H=..[_,F1,F2],
+	m(F1,Ex,Ey,5),
+	aStar(C1,cel(F1,Ex,Ey),L1,_),
+	(m(F2,E1x,E1y,5),
+	caminho_celulas_elevador(T,cel(F2,E1x,E1y),C2,L2),
+	append(L1,L2,L).
+
 caminho_celulas_elevador([],C1,C2,L) :-
 	write("aStar "), write(C1), write(" "), write(C2), nl,
 	aStar(C1,C2,L,_).
 
-caminho_celulas_elevador([H|T],C1,C2,L) :-
-	H=..[_,F1,F2],
-	(m(F1,Ex,Ey,4);m(F1,Ex,Ey,5)),
-	aStar(C1,cel(F1,Ex,Ey),L1,_),
-	(m(F2,E1x,E1y,4);m(F2,E1x,E1y,5)),
-	caminho_celulas_elevador(T,cel(F2,E1x,E1y),C2,L2),
-	append(L1,L2,L).
 
 :- load_data().
 
