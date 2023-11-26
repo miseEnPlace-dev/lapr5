@@ -23,14 +23,13 @@
     "noUnusedLocals": false,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["node"],
+    "types": ["cypress", "node"],
 
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     }
   },
-  "include": ["**/*.{ts,tsx}"],
-  "exclude": ["node_modules", "dist", "build", "coverage", "cypress"],
+  "include": ["src/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
