@@ -98,14 +98,19 @@ api_get_route(Request):-
     http_parameters(Request, [ toX(ToX, [ integer ]) ]),
     http_parameters(Request, [ toY(ToY, [ integer ]) ]),
     http_parameters(Request, [ toFloor(ToFloor, [ string ]) ]),
-    http_parameters(Request, [ method(_, [ optional(false), length >= 1 ]) ]),
-
-
-
-    planning:caminho_celulas_elevador(cel(FromFloor, FromX, FromY), cel(ToFloor, ToX, ToY), R),
+    http_parameters(Request, [ method(Met, [ optional(false), length >= 1 ]) ]),
+    get_path(FromX, FromY, FromFloor, ToX, ToY, ToFloor, Met, R),
     cells_to_json(R, R2),
     prolog_to_json(R2, JsonOut),
     reply_json(JsonOut, [json_object(dict)]).
+
+get_path(FromX, FromY, FromFloor, ToX, ToY, ToFloor, Met, R):-
+    Met=='elevators',
+    planning:caminho_celulas_elevador(cel(FromFloor, FromX, FromY), cel(ToFloor, ToX, ToY), R).
+get_path(FromX, FromY, FromFloor, ToX, ToY, ToFloor, Met, R):-
+    Met=='connectors',
+    planning:caminho_celulas_edificios(cel(FromFloor, FromX, FromY), cel(ToFloor, ToX, ToY), R).
+
 
 cell_to_json(cel(Floor, X, Y), JsonOut):-
     JsonOut = json([floor=Floor, x=X, y=Y]).

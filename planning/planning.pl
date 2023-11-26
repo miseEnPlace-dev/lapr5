@@ -276,9 +276,15 @@ caminho_celulas_elevador(cel(F1,X1,Y1),cel(F2,X2,Y2),C) :-
 	%	write("caminho_celulas_elevador "), write(F1), write(" "), write(F2), nl,
 	melhor_caminho_pisos_elevadores(F1,F2,L),
 	% 	write(L),nl,
-	caminho_celulas_elevador(L,cel(F1,X1,Y1),cel(F2,X2,Y2),C).
+	caminho_celulas(L,cel(F1,X1,Y1),cel(F2,X2,Y2),C).
 
-caminho_celulas_elevador([H|T],C1,C2,L) :-
+caminho_celulas_edificios(cel(F1,X1,Y1),cel(F2,X2,Y2),C) :-
+	%	write("caminho_celulas_elevador "), write(F1), write(" "), write(F2), nl,
+	melhor_caminho_pisos_edificios(F1,F2,L),
+	% 	write(L),nl,
+	caminho_celulas(L,cel(F1,X1,Y1),cel(F2,X2,Y2),C).
+
+caminho_celulas([H|T],C1,C2,L) :-
 	H=..[cor,F1,F2],
 	%	write("corredor "), write(F1), write(" "), write(F2), nl,
 	exit(F1,F2,Ex,Ey),
@@ -286,19 +292,19 @@ caminho_celulas_elevador([H|T],C1,C2,L) :-
 	%	write("aStar "), write(C1), write(" "), write(cel(F1,Ex,Ey)), nl,
 	aStar(C1,cel(F1,Ex,Ey),L1,_),
 	exit(F2,F1,E1x,E1y),
-	caminho_celulas_elevador(T,cel(F2,E1x,E1y),C2,L2),
+	caminho_celulas(T,cel(F2,E1x,E1y),C2,L2),
 	append(L1,L2,L).
 
-caminho_celulas_elevador([H|T],C1,C2,L) :-
+caminho_celulas([H|T],C1,C2,L) :-
 	H=..[_,F1,F2],
 	%	write("elevador "), write(F1), write(" "), write(F2), nl,
 	(m(F1,Ex,Ey,4);m(F1,Ex,Ey,5)),
 	aStar(C1,cel(F1,Ex,Ey),L1,_),
 	(m(F1,E1x,E1y,4);m(F1,E1x,E1y,5)),
-	caminho_celulas_elevador(T,cel(F2,E1x,E1y),C2,L2),
+	caminho_celulas(T,cel(F2,E1x,E1y),C2,L2),
 	append(L1,L2,L).
 
-caminho_celulas_elevador([],C1,C2,L) :-
+caminho_celulas([],C1,C2,L) :-
 	%	write("aStar "), write(C1), write(" "), write(C2), nl,
 	aStar(C1,C2,L,_).
 

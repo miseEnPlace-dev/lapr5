@@ -6,7 +6,7 @@ interface InputProps {
   placeholder?: string;
   className?: string;
   step?: number;
-  name: string;
+  name?: string;
   disabled?: boolean;
   inputRef?: React.RefObject<HTMLInputElement>;
 }
@@ -16,6 +16,7 @@ const Input: React.FC<InputProps> = ({
   onChange,
   type = "text",
   placeholder,
+  name,
   step,
   disabled,
   className,
@@ -24,8 +25,11 @@ const Input: React.FC<InputProps> = ({
 }) => {
   return (
     <div className={`flex flex-col gap-y-1 ${className}`}>
-      <label htmlFor={placeholder} className="ml-1 font-bold text-slate-500">
-        {placeholder}
+      <label
+        htmlFor={name || placeholder}
+        className="ml-1 font-bold text-slate-500"
+      >
+        {name || placeholder}
       </label>
       {onChange === undefined ? (
         <input
@@ -33,7 +37,7 @@ const Input: React.FC<InputProps> = ({
           disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500"
           placeholder={placeholder}
           type={type}
-          name={placeholder}
+          name={name || placeholder}
           step={step}
           disabled={disabled}
           defaultValue={defaultValue}
@@ -44,7 +48,7 @@ const Input: React.FC<InputProps> = ({
           className="w-full rounded-lg border border-slate-500 bg-slate-100 px-4 py-2.5 text-left disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500"
           placeholder={placeholder}
           type={type}
-          name={placeholder}
+          name={name || placeholder}
           disabled={disabled}
           step={step}
           defaultValue={defaultValue}

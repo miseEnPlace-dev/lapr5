@@ -4,6 +4,7 @@ import swal from "sweetalert";
 
 import Button from "@/components/Button";
 import Dropdown from "@/components/Dropdown";
+import Input from "@/components/Input";
 import { ArrowLeftIcon } from "@/styles/Icons";
 
 import { usePathsPageModule } from "./module";
@@ -29,13 +30,17 @@ const PathsPage: React.FC = () => {
     loading,
     handleFind,
     path,
+    fromCoords,
+    setFromCoords,
+    setToCoords,
+    toCoords,
   } = usePathsPageModule();
 
   async function handleFindClick() {
     try {
       await handleFind();
     } catch (err: unknown) {
-      swal("Error", err as string, "error");
+      swal("Error", err.message, "error");
     }
   }
 
@@ -91,6 +96,52 @@ const PathsPage: React.FC = () => {
                 onChange={(e) => setFloor2Code(e.target?.value)}
               />
             </div>
+            <div className="flex items-center justify-between gap-x-8">
+              <div className="flex w-full items-center justify-between gap-x-8">
+                <Input
+                  className="w-full"
+                  placeholder="X"
+                  name="From X"
+                  disabled={floor1Code === ""}
+                  type="number"
+                  value={fromCoords?.x.toString()}
+                  onChange={(value) =>
+                    setFromCoords({ ...fromCoords, x: +value })
+                  }
+                />
+                <Input
+                  className="w-full"
+                  disabled={floor1Code === ""}
+                  placeholder="Y"
+                  name="From Y"
+                  type="number"
+                  value={fromCoords?.y.toString()}
+                  onChange={(value) =>
+                    setFromCoords({ ...fromCoords, y: +value })
+                  }
+                />
+              </div>
+              <div className="flex w-full items-center justify-between gap-x-8">
+                <Input
+                  className="w-full"
+                  placeholder="X"
+                  name="To X"
+                  type="number"
+                  disabled={floor2Code === ""}
+                  value={toCoords?.x.toString()}
+                  onChange={(value) => setToCoords({ ...toCoords, x: +value })}
+                />
+                <Input
+                  className="w-full"
+                  placeholder="Y"
+                  disabled={floor2Code === ""}
+                  type="number"
+                  name="To Y"
+                  value={toCoords?.y.toString()}
+                  onChange={(value) => setToCoords({ ...toCoords, y: +value })}
+                />
+              </div>
+            </div>
             <Dropdown
               className="w-full"
               onChange={(e) => setStrategy(e.target?.value)}
@@ -98,21 +149,41 @@ const PathsPage: React.FC = () => {
               options={strategies}
             />
             <div className="flex items-center justify-center">
-              {loading ? (
+              {loading || !path ? (
                 <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-gray-900"></div>
               ) : (
-                <div className="flex flex-col gap-y-4">
-                  {path.map((p) => (
-                    <div className="flex items-center gap-x-4">
-                      <span className="text-2xl font-bold">{p}</span>
-                    </div>
-                  ))}
+                <div className="mt-4 h-96 w-full overflow-y-scroll">
+                  <table className="w-full table-auto overflow-scroll">
+                    <thead>
+                      <tr className="bg-secondary">
+                        <th className="w-24 text-2xl font-bold">X</th>
+                        <th className="w-24 text-2xl font-bold">Y</th>
+                        <th className="w-24 text-2xl font-bold">Floor</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-center">
+                      {path.map((p) => (
+                        <tr>
+                          <td className="py-1 text-2xl font-bold">{p.x}</td>
+                          <td className="py-1 text-2xl font-bold">{p.y}</td>
+                          <td className="py-1 text-2xl font-bold">{p.floor}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               )}
             </div>
           </div>
           <Button
-            disabled={floor1Code === "" || floor2Code === "" || strategy === ""}
+            disabled={
+              floor1Code === "" ||
+              floor2Code === "" ||
+              strategy === "" ||
+              loading ||
+              !fromCoords ||
+              !toCoords
+            }
             type="confirm"
             onClick={handleFindClick}
             name="find"
