@@ -41,7 +41,9 @@ const ConnectorsPage: React.FC = () => {
       swal("Success", "Connector saved successfully", "success");
       setIsConnectorModalVisible(false);
     } catch (err: unknown) {
-      swal("Error", err as string, "error");
+      if (err instanceof AxiosError)
+        swal("Error", err.response?.data.errors, "error");
+      else swal("Error", err as string, "error");
     }
   }
 

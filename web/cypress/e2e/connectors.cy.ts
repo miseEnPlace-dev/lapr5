@@ -110,6 +110,105 @@ describe("Connectors", () => {
     cy.get("input[name=floor2code]").type("B2");
     cy.get("button[name=save]").click();
 
-    cy.get("div[class=swal-modal]").should("contain", "erro");
+    cy.get("div[class=swal-modal]").should("contain", errors);
+  });
+
+  it("should show buildings to filter from", () => {
+    cy.intercept("GET", BASE_URL + "/buildings", {
+      statusCode: 200,
+      body: [
+        {
+          code: "B",
+          name: "Building 1 B",
+          maxDimensions: {
+            width: 20,
+            length: 20,
+          },
+          description: "description",
+        },
+        {
+          code: "C",
+          name: "Building 2 C",
+          maxDimensions: {
+            width: 20,
+            length: 20,
+          },
+          description: "description",
+        },
+      ],
+    });
+    cy.intercept("POST", BASE_URL + "/connectors", (req) => {
+      expect(req.query).to.have.property("buildingCodes[]", "B");
+      expect(req.query).to.have.property("buildingCodes[]", "B");
+    });
+
+    cy.get("main").get("h1").should("contain", "Connectors");
+    cy.get("button[name=filter-connectors]").should("exist");
+
+    cy.get("button[name=filter-connectors]").click();
+
+    cy.get("select[name='Building 1']").should("contain", "Building 1 B");
+    cy.get("select[name='Building 1']").should("contain", "Building 2 C");
+    cy.get("select[name='Building 2']").should("contain", "Building 1 B");
+    cy.get("select[name='Building 2']").should("contain", "Building 2 C");
+    cy.get("select[name='Building 1']").select("B");
+    cy.get("select[name='Building 2']").select("C");
+
+    cy.get("button[name=listfilter]").click();
+  });
+
+  it("should show the filtered connectors", () => {
+    cy.intercept("GET", BASE_URL + "/buildings", {
+      statusCode: 200,
+      body: [
+        {
+          code: "B",
+          name: "Building 1 B",
+          maxDimensions: {
+            width: 20,
+            length: 20,
+          },
+          description: "description",
+        },
+        {
+          code: "C",
+          name: "Building 2 C",
+          maxDimensions: {
+            width: 20,
+            length: 20,
+          },
+          description: "description",
+        },
+      ],
+    });
+    cy.intercept(
+      "GET",
+      BASE_URL + "/connectors?buildingCodes[]=B&buildingCodes[]=C",
+      {
+        statusCode: 200,
+        body: [
+          {
+            code: "C1B1",
+            floor1Code: "C1",
+            floor1BuildingCode: "C",
+            floor2Code: "B1",
+            floor2BuildingCode: "B",
+          },
+        ],
+      }
+    );
+
+    cy.get("main").get("h1").should("contain", "Connectors");
+    cy.get("button[name=filter-connectors]").should("exist");
+    cy.get("button[name=filter-connectors]").click();
+
+    cy.get("select[name='Building 1']").select("B");
+    cy.get("select[name='Building 2']").select("C");
+
+    cy.get("button[name=listfilter]").click();
+
+    cy.get("div[aria-label=connectors-list]")
+      .children()
+      .should("have.length", 1);
   });
 });
