@@ -88,9 +88,9 @@ cria_grafo(F,Col,Lin):-cria_grafo_lin(F,Col,Lin),Lin1 is Lin-1,cria_grafo(F,Col,
 cria_grafo_lin(_,0,_):-!.
 cria_grafo_lin(F,Col,Lin):-(m(F,Col,Lin,0);m(F,Col,Lin,11);m(F,Col,Lin,12);m(F,Col,Lin,4);m(F,Col,Lin,5)),!,ColS is Col+1, ColA is Col-1, LinS is Lin+1,LinA is Lin-1,
     ((m(F,ColS,Lin,0),m(F,Col,LinS,0),m(F,ColS,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinS),sqrt(2)));true)),
-   ((m(F,ColS,Lin,0),m(F,Col,LinA,0),m(F,ColS,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinA),sqrt(2)));true)),
-   ((m(F,ColA,Lin,0),m(F,Col,LinA,0),m(F,ColA,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinA),sqrt(2)));true)),
-   ((m(F,ColA,Lin,0),m(F,Col,LinS,0),m(F,ColA,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinS),sqrt(2)));true)),
+    ((m(F,ColS,Lin,0),m(F,Col,LinA,0),m(F,ColS,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinA),sqrt(2)));true)),
+    ((m(F,ColA,Lin,0),m(F,Col,LinA,0),m(F,ColA,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinA),sqrt(2)));true)),
+    ((m(F,ColA,Lin,0),m(F,Col,LinS,0),m(F,ColA,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinS),sqrt(2)));true)),
     ((m(F,ColS,Lin,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),1));true)),
     ((m(F,ColA,Lin,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),1));true)),
     ((m(F,Col,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),1));true)),
@@ -228,7 +228,7 @@ create_floors_matrix([H|T]) :-
 	L is H.map.maze.size.depth+1,
 	reverse(H.map.maze.map, H1),
 	create_floor_matrix(H.code, H1, W, L),
-	write("       cria_grafo"), write(H.code), write(","), write(H.map.maze.size.depth), write(","), write(H.map.maze.size.width), nl,
+	write("       cria_grafo("), write(H.code), write(","), write(H.map.maze.size.depth), write(","), write(H.map.maze.size.width), write(")"), nl,
 	cria_grafo(H.code,H.map.maze.size.depth,H.map.maze.size.width),
 	create_floors_matrix(T).
 
@@ -273,17 +273,17 @@ create_connector(Connector) :-
 	asserta(corredor(Connector.floor1BuildingCode, Connector.floor2BuildingCode, Connector.floor1Code, Connector.floor2Code)).
 
 caminho_celulas_elevador(cel(F1,X1,Y1),cel(F2,X2,Y2),C) :-
-	write("caminho_celulas_elevador "), write(F1), write(" "), write(F2), nl,
+	%	write("caminho_celulas_elevador "), write(F1), write(" "), write(F2), nl,
 	melhor_caminho_pisos_elevadores(F1,F2,L),
-	write(L),nl,
+	% 	write(L),nl,
 	caminho_celulas_elevador(L,cel(F1,X1,Y1),cel(F2,X2,Y2),C).
 
 caminho_celulas_elevador([H|T],C1,C2,L) :-
 	H=..[cor,F1,F2],
-	write("corredor "), write(F1), write(" "), write(F2), nl,
+	%	write("corredor "), write(F1), write(" "), write(F2), nl,
 	exit(F1,F2,Ex,Ey),
-	write("exit "), write(F1), write(" "), write(F2), write(" "), write(Ex), write(" "), write(Ey), nl,
-	write("aStar "), write(C1), write(" "), write(cel(F1,Ex,Ey)), nl,
+	%	write("exit "), write(F1), write(" "), write(F2), write(" "), write(Ex), write(" "), write(Ey), nl,
+	%	write("aStar "), write(C1), write(" "), write(cel(F1,Ex,Ey)), nl,
 	aStar(C1,cel(F1,Ex,Ey),L1,_),
 	exit(F2,F1,E1x,E1y),
 	caminho_celulas_elevador(T,cel(F2,E1x,E1y),C2,L2),
@@ -291,7 +291,7 @@ caminho_celulas_elevador([H|T],C1,C2,L) :-
 
 caminho_celulas_elevador([H|T],C1,C2,L) :-
 	H=..[_,F1,F2],
-	write("elevador "), write(F1), write(" "), write(F2), nl,
+	%	write("elevador "), write(F1), write(" "), write(F2), nl,
 	(m(F1,Ex,Ey,4);m(F1,Ex,Ey,5)),
 	aStar(C1,cel(F1,Ex,Ey),L1,_),
 	(m(F1,E1x,E1y,4);m(F1,E1x,E1y,5)),
@@ -299,7 +299,7 @@ caminho_celulas_elevador([H|T],C1,C2,L) :-
 	append(L1,L2,L).
 
 caminho_celulas_elevador([],C1,C2,L) :-
-	write("aStar "), write(C1), write(" "), write(C2), nl,
+	%	write("aStar "), write(C1), write(" "), write(C2), nl,
 	aStar(C1,C2,L,_).
 
 

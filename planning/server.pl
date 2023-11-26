@@ -92,26 +92,20 @@ fetch_floors(BuildingCode, Floors) :-
     read_api(FloorsUrl3, Floors).
 
 api_get_route(Request):-
-    http_parameters(Request, [ fromX(FromX, [ optional(false), number ]) ]),
-    http_parameters(Request, [ fromY(FromY, [ optional(false), number ]) ]),
-    http_parameters(Request, [ fromFloor(FromFloor, [ optional(false), length >= 1 ]) ]),
-    http_parameters(Request, [ toX(ToX, [ optional(false), number ]) ]),
-    http_parameters(Request, [ toY(ToY, [ optional(false), number ]) ]),
-    http_parameters(Request, [ toFloor(ToFloor, [ optional(false), length >= 1 ]) ]),
+    http_parameters(Request, [ fromX(FromX, [ integer ]) ]),
+    http_parameters(Request, [ fromY(FromY, [ integer ]) ]),
+    http_parameters(Request, [ fromFloor(FromFloor, [ string ]) ]),
+    http_parameters(Request, [ toX(ToX, [ integer ]) ]),
+    http_parameters(Request, [ toY(ToY, [ integer ]) ]),
+    http_parameters(Request, [ toFloor(ToFloor, [ string ]) ]),
     http_parameters(Request, [ method(_, [ optional(false), length >= 1 ]) ]),
 
-    C1=cel(FromFloor, FromX, FromY),
-    C2=cel(ToFloor, ToX, ToY),
 
-    R=[C1,C2],
-    cells_to_json(R,R2),
-    prolog_to_json(R2,JsonOut),
-    reply_json(JsonOut).
 
-%    planning:caminho_celulas_elevador(C1,C2, R),
-%    cells_to_json(R, R2),
-%    prolog_to_json(R2, JsonOut),
-%    reply_json(JsonOut, [json_object(dict)]).
+    planning:caminho_celulas_elevador(cel(FromFloor, FromX, FromY), cel(ToFloor, ToX, ToY), R),
+    cells_to_json(R, R2),
+    prolog_to_json(R2, JsonOut),
+    reply_json(JsonOut, [json_object(dict)]).
 
 cell_to_json(cel(Floor, X, Y), JsonOut):-
     JsonOut = json([floor=Floor, x=X, y=Y]).

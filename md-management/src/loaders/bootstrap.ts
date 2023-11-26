@@ -3,6 +3,7 @@ import { IBuildingDTO } from '@/dto/IBuildingDTO';
 import { IConnectorDTO } from '@/dto/IConnectorDTO';
 import { IDeviceDTO } from '@/dto/IDeviceDTO';
 import { IDeviceModelDTO } from '@/dto/IDeviceModelDTO';
+import { IElevatorDTO } from '@/dto/IElevatorDTO';
 import { IFloorDTO } from '@/dto/IFloorDTO';
 import { IRoomDTO } from '@/dto/IRoomDTO';
 import { IUserDTO } from '@/dto/IUserDTO';
@@ -10,14 +11,13 @@ import IBuildingService from '@/services/IServices/IBuildingService';
 import IConnectorService from '@/services/IServices/IConnectorService';
 import IDeviceModelService from '@/services/IServices/IDeviceModelService';
 import IDeviceService from '@/services/IServices/IDeviceService';
+import IElevatorService from '@/services/IServices/IElevatorService';
 import IFloorService from '@/services/IServices/IFloorService';
 import IRoleService from '@/services/IServices/IRoleService';
 import IRoomService from '@/services/IServices/IRoomService';
 import IUserService from '@/services/IServices/IUserService';
 import { inject, injectable } from 'inversify';
 import { TYPES } from './inversify/types';
-import { IElevatorDTO } from '@/dto/IElevatorDTO';
-import IElevatorService from '@/services/IServices/IElevatorService';
 
 @injectable()
 export default class Bootstrapper {
@@ -60,7 +60,7 @@ export default class Bootstrapper {
     });
 
     await this.loadBuilding({
-      code: 'A',
+      code: 'a',
       name: 'Building A',
       description: 'Building A',
       maxDimensions: {
@@ -69,7 +69,7 @@ export default class Bootstrapper {
       }
     });
     await this.loadBuilding({
-      code: 'B',
+      code: 'b',
       name: 'Building B',
       description: 'Building B',
       maxDimensions: {
@@ -78,7 +78,7 @@ export default class Bootstrapper {
       }
     });
     await this.loadBuilding({
-      code: 'C',
+      code: 'c',
       name: 'Building C',
       description: 'Building C',
       maxDimensions: {
@@ -87,7 +87,7 @@ export default class Bootstrapper {
       }
     });
     await this.loadBuilding({
-      code: 'D',
+      code: 'd',
       name: 'Building D',
       description: 'Building D',
       maxDimensions: {
@@ -97,8 +97,8 @@ export default class Bootstrapper {
     });
 
     await this.loadFloor({
-      code: 'C1',
-      buildingCode: 'C',
+      code: 'c1',
+      buildingCode: 'c',
       description: 'Floor C1',
       dimensions: {
         width: 9,
@@ -252,8 +252,8 @@ export default class Bootstrapper {
     });
 
     await this.loadFloor({
-      code: 'D1',
-      buildingCode: 'D',
+      code: 'd1',
+      buildingCode: 'd',
       description: 'Floor D1',
       dimensions: {
         width: 9,
@@ -406,8 +406,8 @@ export default class Bootstrapper {
     });
 
     await this.loadFloor({
-      code: 'A1',
-      buildingCode: 'A',
+      code: 'a1',
+      buildingCode: 'a',
       description: 'Floor A1',
       dimensions: {
         width: 22,
@@ -556,8 +556,8 @@ export default class Bootstrapper {
     });
 
     await this.loadFloor({
-      code: 'B1',
-      buildingCode: 'B',
+      code: 'b1',
+      buildingCode: 'b',
       description: 'Floor B1',
       dimensions: {
         width: 22,
@@ -706,8 +706,8 @@ export default class Bootstrapper {
     });
 
     await this.loadFloor({
-      code: 'C2',
-      buildingCode: 'C',
+      code: 'c2',
+      buildingCode: 'c',
       description: 'Floor C2',
       dimensions: {
         width: 9,
@@ -734,7 +734,7 @@ export default class Bootstrapper {
             [1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
           ],
-          exits: [{ x: 11, y: 2, floorCode: 'D2' }],
+          exits: [{ x: 11, y: 2, floorCode: 'd2' }],
           elevator: { x: 1, y: 1 },
           exitLocation: { x: 1, y: 1 }
         },
@@ -861,8 +861,8 @@ export default class Bootstrapper {
     });
 
     await this.loadFloor({
-      code: 'D2',
-      buildingCode: 'D',
+      code: 'd2',
+      buildingCode: 'd',
       description: 'Floor D2',
       dimensions: {
         width: 9,
@@ -888,7 +888,7 @@ export default class Bootstrapper {
             [1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
             [1, 2, 2, 2, 2, 2, 2, 2, 2, 0]
           ],
-          exits: [{ x: 2, y: 10, floorCode: 'C2' }],
+          exits: [{ x: 2, y: 10, floorCode: 'c2' }],
           elevator: { x: 1, y: 1 },
           exitLocation: { x: 1, y: 1 }
         },
@@ -1015,8 +1015,8 @@ export default class Bootstrapper {
     });
 
     await this.loadFloor({
-      code: 'A2',
-      buildingCode: 'A',
+      code: 'a2',
+      buildingCode: 'a',
       description: 'Floor A2',
       dimensions: {
         width: 22,
@@ -1038,7 +1038,7 @@ export default class Bootstrapper {
             [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
           ],
-          exits: [{ x: 6, y: 23, floorCode: 'B2' }],
+          exits: [{ x: 6, y: 23, floorCode: 'b2' }],
           elevator: { x: 1, y: 1 },
           exitLocation: { x: 1, y: 1 }
         },
@@ -1165,8 +1165,8 @@ export default class Bootstrapper {
     });
 
     await this.loadFloor({
-      code: 'B2',
-      buildingCode: 'B',
+      code: 'b2',
+      buildingCode: 'b',
       description: 'Floor B2',
       dimensions: {
         width: 22,
@@ -1189,9 +1189,9 @@ export default class Bootstrapper {
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
           ],
           exits: [
-            { x: 6, y: 2, floorCode: 'A2' },
-            { x: 9, y: 23, floorCode: 'C3' },
-            { x: 11, y: 22, floorCode: 'D3' }
+            { x: 6, y: 2, floorCode: 'a2' },
+            { x: 9, y: 23, floorCode: 'c3' },
+            { x: 11, y: 22, floorCode: 'd3' }
           ],
           elevator: { x: 1, y: 1 },
           exitLocation: { x: 1, y: 1 }
@@ -1319,8 +1319,8 @@ export default class Bootstrapper {
     });
 
     await this.loadFloor({
-      code: 'C3',
-      buildingCode: 'C',
+      code: 'c3',
+      buildingCode: 'c',
       description: 'Floor C3',
       dimensions: {
         width: 9,
@@ -1348,8 +1348,8 @@ export default class Bootstrapper {
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
           ],
           exits: [
-            { x: 7, y: 2, floorCode: 'B2' },
-            { x: 11, y: 2, floorCode: 'D3' }
+            { x: 7, y: 2, floorCode: 'b2' },
+            { x: 11, y: 2, floorCode: 'd3' }
           ],
           elevator: { x: 1, y: 1 },
           exitLocation: { x: 1, y: 1 }
@@ -1477,8 +1477,8 @@ export default class Bootstrapper {
     });
 
     await this.loadFloor({
-      code: 'D3',
-      buildingCode: 'D',
+      code: 'd3',
+      buildingCode: 'd',
       description: 'Floor D3',
       dimensions: {
         width: 9,
@@ -1505,8 +1505,8 @@ export default class Bootstrapper {
             [1, 2, 2, 2, 2, 2, 2, 2, 2, 0]
           ],
           exits: [
-            { x: 0, y: 8, floorCode: 'B2' },
-            { x: 1, y: 10, floorCode: 'C3' }
+            { x: 0, y: 8, floorCode: 'b2' },
+            { x: 1, y: 10, floorCode: 'c3' }
           ],
           elevator: { x: 1, y: 1 },
           exitLocation: { x: 1, y: 1 }
@@ -1634,8 +1634,8 @@ export default class Bootstrapper {
     });
 
     await this.loadFloor({
-      code: 'B3',
-      buildingCode: 'B',
+      code: 'b3',
+      buildingCode: 'b',
       description: 'Floor B3',
       dimensions: {
         width: 22,
@@ -1657,7 +1657,7 @@ export default class Bootstrapper {
             [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
           ],
-          exits: [{ x: 10, y: 22, floorCode: 'C4' }],
+          exits: [{ x: 10, y: 22, floorCode: 'c4' }],
           elevator: { x: 1, y: 1 },
           exitLocation: { x: 1, y: 1 }
         },
@@ -1784,8 +1784,8 @@ export default class Bootstrapper {
     });
 
     await this.loadFloor({
-      code: 'C4',
-      buildingCode: 'C',
+      code: 'c4',
+      buildingCode: 'c',
       description: 'Floor C4',
       dimensions: {
         width: 9,
@@ -1812,7 +1812,7 @@ export default class Bootstrapper {
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
           ],
-          exits: [{ x: 10, y: 2, floorCode: 'B3' }],
+          exits: [{ x: 10, y: 2, floorCode: 'b3' }],
           elevator: { x: 1, y: 1 },
           exitLocation: { x: 1, y: 1 }
         },
@@ -1939,57 +1939,57 @@ export default class Bootstrapper {
     });
 
     await this.loadConnector({
-      code: 'C2D2',
-      floor1Code: 'C2',
-      floor1BuildingCode: 'C',
-      floor2Code: 'D2',
-      floor2BuildingCode: 'D'
+      code: 'c2d2',
+      floor1Code: 'c2',
+      floor1BuildingCode: 'c',
+      floor2Code: 'd2',
+      floor2BuildingCode: 'd'
     });
 
     await this.loadConnector({
-      code: 'A2B2',
-      floor1Code: 'A2',
-      floor1BuildingCode: 'A',
-      floor2Code: 'B2',
-      floor2BuildingCode: 'B'
+      code: 'a2b2',
+      floor1Code: 'a2',
+      floor1BuildingCode: 'a',
+      floor2Code: 'b2',
+      floor2BuildingCode: 'b'
     });
 
     await this.loadConnector({
-      code: 'B2C3',
-      floor1Code: 'B2',
-      floor1BuildingCode: 'B',
-      floor2Code: 'C3',
-      floor2BuildingCode: 'C'
+      code: 'b2c3',
+      floor1Code: 'b2',
+      floor1BuildingCode: 'b',
+      floor2Code: 'c3',
+      floor2BuildingCode: 'c'
     });
 
     await this.loadConnector({
-      code: 'C3D3',
-      floor1Code: 'C3',
-      floor1BuildingCode: 'C',
-      floor2Code: 'D3',
-      floor2BuildingCode: 'D'
+      code: 'c3d3',
+      floor1Code: 'c3',
+      floor1BuildingCode: 'c',
+      floor2Code: 'd3',
+      floor2BuildingCode: 'd'
     });
 
     await this.loadConnector({
-      code: 'B2D3',
-      floor1Code: 'B2',
-      floor1BuildingCode: 'B',
-      floor2Code: 'D3',
-      floor2BuildingCode: 'D'
+      code: 'b2d3',
+      floor1Code: 'b2',
+      floor1BuildingCode: 'b',
+      floor2Code: 'd3',
+      floor2BuildingCode: 'd'
     });
 
     await this.loadConnector({
-      code: 'B3C4',
-      floor1Code: 'B3',
-      floor1BuildingCode: 'B',
-      floor2Code: 'C4',
-      floor2BuildingCode: 'C'
+      code: 'b3c4',
+      floor1Code: 'b3',
+      floor1BuildingCode: 'b',
+      floor2Code: 'c4',
+      floor2BuildingCode: 'c'
     });
 
     await this.loadRoom({
       name: 'B201',
-      buildingCode: 'B',
-      floorCode: 'B2',
+      buildingCode: 'b',
+      floorCode: 'b2',
       description: 'Auditório B201',
       dimensions: {
         width: 2,
@@ -2000,8 +2000,8 @@ export default class Bootstrapper {
 
     await this.loadRoom({
       name: 'B203',
-      buildingCode: 'B',
-      floorCode: 'B2',
+      buildingCode: 'b',
+      floorCode: 'b2',
       description: 'Sala de Aula B203',
       dimensions: {
         width: 2,
@@ -2012,8 +2012,8 @@ export default class Bootstrapper {
 
     await this.loadRoom({
       name: 'B306',
-      buildingCode: 'B',
-      floorCode: 'B3',
+      buildingCode: 'b',
+      floorCode: 'b3',
       description: 'Sala de Aula B306',
       dimensions: {
         width: 2,
@@ -2024,8 +2024,8 @@ export default class Bootstrapper {
 
     await this.loadRoom({
       name: 'B216',
-      buildingCode: 'B',
-      floorCode: 'B2',
+      buildingCode: 'b',
+      floorCode: 'b2',
       description: 'Gabinete B216',
       dimensions: {
         width: 2,
@@ -2059,7 +2059,7 @@ export default class Bootstrapper {
     });
 
     await this.loadDevice({
-      code: 'GUARD',
+      code: 'guard',
       nickname: 'ISEP Guard',
       modelCode: 'SRV',
       description: 'ISEP Security Guard',
@@ -2068,7 +2068,7 @@ export default class Bootstrapper {
     });
 
     await this.loadDevice({
-      code: 'DELIVER',
+      code: 'deliver',
       nickname: 'ISEP Delivery Guy',
       modelCode: 'DLV',
       description: 'ISEP Pick and Delivery Robot',
@@ -2077,7 +2077,7 @@ export default class Bootstrapper {
     });
 
     await this.loadDevice({
-      code: 'MASTER',
+      code: 'master',
       nickname: 'ISEP Master Robot',
       modelCode: 'ALL',
       description: 'ISEP Master All in One Robot',
@@ -2087,8 +2087,8 @@ export default class Bootstrapper {
 
     await this.loadElevator({
       code: 1,
-      floorCodes: ['A1', 'A2'],
-      buildingCode: 'A',
+      floorCodes: ['a1', 'a2'],
+      buildingCode: 'a',
       brand: 'Schindler',
       model: 'S3000',
       serialNumber: 'E1',
@@ -2097,8 +2097,8 @@ export default class Bootstrapper {
 
     await this.loadElevator({
       code: 2,
-      floorCodes: ['B1', 'B2', 'B3'],
-      buildingCode: 'B',
+      floorCodes: ['b1', 'b2', 'b3'],
+      buildingCode: 'b',
       brand: 'Schindler',
       model: 'S3000',
       serialNumber: 'E1',
@@ -2107,8 +2107,8 @@ export default class Bootstrapper {
 
     await this.loadElevator({
       code: 3,
-      floorCodes: ['C1', 'C2', 'C3', 'C4'],
-      buildingCode: 'C',
+      floorCodes: ['c1', 'c2', 'c3', 'c4'],
+      buildingCode: 'c',
       brand: 'Schindler',
       model: 'S3000',
       serialNumber: 'E1',
@@ -2117,8 +2117,8 @@ export default class Bootstrapper {
 
     await this.loadElevator({
       code: 4,
-      floorCodes: ['D1', 'D2', 'D3'],
-      buildingCode: 'D',
+      floorCodes: ['d1', 'd2', 'd3'],
+      buildingCode: 'd',
       brand: 'Schindler',
       model: 'S3000',
       serialNumber: 'E1',
