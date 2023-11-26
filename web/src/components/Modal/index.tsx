@@ -39,7 +39,7 @@ const Modal: React.FC<ModalProps> = ({
           >
             <button
               onClick={() => setIsVisible(false)}
-              className="z-10 self-end text-2xl font-black text-red-500 hover:text-red-600"
+              className="z-40 self-end text-2xl font-black text-red-500 hover:text-red-600"
             >
               X
             </button>
