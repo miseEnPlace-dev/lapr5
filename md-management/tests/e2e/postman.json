@@ -36,6 +36,13 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -134,7 +141,7 @@
 							"})",
 							"",
 							"pm.test(\"Ensure response is an array with two positions\", () => {",
-							"    pm.expect(pm.response.json().length).to.eql(2)",
+							"    pm.expect(pm.response.json().length).to.eql(6)",
 							"})",
 							"",
 							"pm.test(\"Ensure response has returned a Building\", () => {",
@@ -364,7 +371,7 @@
 							"})",
 							"",
 							"pm.test(\"Ensure response is an array with one position\", () => {",
-							"    pm.expect(pm.response.json().length).to.eql(1)",
+							"    pm.expect(pm.response.json().length).to.eql(4)",
 							"})",
 							"",
 							"pm.test(\"Ensure response has returned a Building\", () => {",
@@ -495,6 +502,13 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -537,6 +551,15 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -544,7 +567,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"maze\": {\n        \"size\": { \"width\": 8, \"depth\": 7 },\n        \"map\": [\n            [3, 2, 2, 2, 2, 3, 2, 2, 1],\n            [1, 0, 0, 0, 0, 1, 0, 0, 1],\n            [2, 2, 2, 0, 2, 2, 0, 2, 0],\n            [0, 0, 0, 0, 0, 0, 0, 0, 0],\n            [3, 2, 2, 2, 2, 2, 0, 0, 1],\n            [1, 0, 0, 0, 0, 0, 1, 0, 0],\n            [1, 0, 0, 0, 0, 0, 1, 0, 0],\n            [2, 2, 2, 2, 2, 2, 2, 2, 0]\n        ],\n        \"exits\": [\n            [2.0, -1.0],\n            [5.0, 8.0]\n        ],\n        \"elevators\": [\n            [2.0, 8.0]\n        ],\n        \"exitLocation\": [2.0, 8.0]\n    }\n}",
+					"raw": "{\n  \"maze\": {\n    \"size\": { \"width\": 9, \"depth\": 15 },\n    \"map\": [\n      [3, 2, 2, 2, 3, 2, 3, 2, 2, 1],\n      [1, 0, 0, 0, 1, 0, 1, 0, 0, 1],\n      [1, 0, 0, 0, 11, 0, 1, 0, 0, 1],\n      [3, 2, 2, 2, 1, 0, 3, 2, 2, 1],\n      [1, 0, 0, 0, 1, 0, 1, 0, 0, 1],\n      [1, 0, 0, 0, 11, 0, 11, 0, 0, 1],\n      [3, 2, 2, 2, 0, 0, 3, 2, 2, 1],\n      [1, 0, 0, 0, 0, 0, 1, 0, 0, 1],\n      [1, 0, 0, 0, 0, 0, 11, 0, 0, 1],\n      [1, 4, 0, 0, 0, 0, 3, 2, 2, 1],\n      [1, 0, 0, 0, 0, 0, 1, 0, 0, 1],\n      [1, 0, 0, 0, 0, 0, 11, 0, 0, 1],\n      [3, 2, 2, 2, 1, 0, 3, 2, 2, 1],\n      [1, 0, 0, 0, 1, 0, 1, 0, 0, 1],\n      [1, 0, 0, 0, 11, 0, 11, 0, 0, 1],\n      [2, 2, 2, 2, 2, 2, 2, 2, 2, 0]\n    ],\n    \"exitLocation\": {\n\t\t\t\"x\": 9.5,\n\t\t\t\"y\": 6.0\n\t\t},\n\t\t\"exits\": [\n\t\t\t{\"x\": 2.0, \"y\": -1.0},\n\t\t\t{\"x\": 5.0, \"y\": 8.0}\n\t\t],\n\t\t\"elevator\": {\n\t\t\t\"x\": 2.0, \n\t\t\t\"y\": 8.0\n\t\t}\n  },\n  \"ground\": {\n    \"size\": { \"width\": 9.0, \"height\": 0.0625, \"depth\": 15.0 },\n    \"segments\": { \"width\": 1, \"height\": 1, \"depth\": 1 },\n    \"primaryColor\": \"0xffffff\",\n    \"maps\": {\n      \"color\": {\n        \"url\": \"./textures/ground_luxury-vinyl-plank-light-bl/luxury-vinyl-plank_light_albedo.png\"\n      },\n      \"ao\": {\n        \"url\": \"./textures/ground_luxury-vinyl-plank-light-bl/luxury-vinyl-plank_light_ao.png\",\n        \"intensity\": 1.0\n      },\n      \"displacement\": {\n        \"url\": \"\",\n        \"scale\": 1.0,\n        \"bias\": 0.0\n      },\n\t\t\t\t\"normal\": {\n\t\t\t\t\t\"url\": \"./textures/ground_luxury-vinyl-plank-light-bl/luxury-vinyl-plank_light_normal-ogl.png\",\n\t\t\t\t\t\"type\": 0,\n\t\t\t\t\t\"scale\": { \"x\": 2.0, \"y\": 2.0 }\n\t\t\t\t},\n      \"bump\": {\n        \"url\": \"\",\n        \"scale\": 1.0\n      },\n      \"roughness\": {\n        \"url\": \"./textures/ground_luxury-vinyl-plank-light-bl/luxury-vinyl-plank_light_roughness.png\",\n        \"rough\": 1.0\n      }\n    },\n    \"wrapS\": 1,\n    \"wrapT\": 1,\n    \"repeat\": { \"u\": 4.0, \"v\": 4.0 },\n    \"magFilter\": 1,\n    \"minFilter\": 5,\n    \"secondaryColor\": \"0x6b554b\"\n  },\n  \"wall\": {\n    \"segments\": { \"width\": 1, \"height\": 2 },\n    \"primaryColor\": \"0xffffff\",\n    \"maps\": {\n      \"color\": {\n        \"url\": \"./textures/wall_fiber-textured-wall-bl/fiber-textured-wall1_albedo.png\"\n      },\n      \"ao\": {\n        \"url\": \"./textures/wall_fiber-textured-wall-bl/fiber-textured-wall1_ao.png\",\n        \"intensity\": 2.0\n      },\n      \"displacement\": {\n        \"url\": \"\",\n        \"scale\": 1.0,\n        \"bias\": 0.0\n      },\n      \"normal\": {\n        \"url\": \"./textures/wall_fiber-textured-wall-bl/fiber-textured-wall1_normal-ogl.png\",\n        \"type\": 0,\n        \"scale\": { \"x\": 1.0, \"y\": 2.0 }\n      },\n      \"bump\": {\n        \"url\": \"\",\n        \"scale\": 1.0\n      },\n      \"roughness\": {\n        \"url\": \"./textures/wall_fiber-textured-wall-bl/fiber-textured-wall1_roughness.png\",\n        \"rough\": 1.0\n      }\n    },\n    \"wrapS\": 1,\n    \"wrapT\": 0,\n    \"repeat\": { \"u\": 2.0, \"v\": 1.0 },\n    \"magFilter\": 1,\n    \"minFilter\": 5,\n    \"secondaryColor\": \"0xffffff\"\n  },\n  \"elevator\": {\n    \"url\": \"./models/gltf/elevator.glb\",\n    \"scale\": { \"x\": 0.005, \"y\": 0.005, \"z\": 0.005 }\n  },\n  \"door\": {\n    \"url\": \"./models/gltf/mid-poly_wooden_door_with_animations.glb\",\n    \"scale\": { \"x\": 0.5, \"y\": 0.25, \"z\": 0.25 }\n  },\n  \"player\": {\n    \"initialPosition\": [4.0, 4.0],\n    \"initialDirection\": 0.0\n  }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -863,7 +886,7 @@
 							"",
 							"pm.test(\"Ensure response has a code property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('code')",
-							"    pm.expect(pm.response.json().code).to.eql('C1')",
+							"    pm.expect(pm.response.json().code).to.eql('CBG')",
 							"})",
 							"",
 							"pm.test(\"Ensure response has a floor1Code property\", () => {",
@@ -879,6 +902,13 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -886,7 +916,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"code\": \"C1\",\n\t\"floor1Code\": \"B1\",\n    \"floor2Code\": \"G2\"\n}",
+					"raw": "{\n    \"code\": \"CBG\",\n\t\"floor1Code\": \"B1\",\n    \"floor2Code\": \"G2\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -918,7 +948,7 @@
 							"",
 							"pm.test(\"Ensure response has a code property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('code')",
-							"    pm.expect(pm.response.json().code).to.eql('C1')",
+							"    pm.expect(pm.response.json().code).to.eql('CBG')",
 							"})",
 							"",
 							"pm.test(\"Ensure response has a floor1Code property\", () => {",
@@ -958,13 +988,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{API_URL}}/connectors/C1",
+					"raw": "{{API_URL}}/connectors/CBG",
 					"host": [
 						"{{API_URL}}"
 					],
 					"path": [
 						"connectors",
-						"C1"
+						"CBG"
 					]
 				}
 			},
@@ -998,6 +1028,13 @@
 							"    )",
 							"})"
 						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
 						"type": "text/javascript"
 					}
 				}
@@ -1062,6 +1099,13 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -1100,7 +1144,7 @@
 							"",
 							"pm.test(\"Ensure response has a name property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('name')",
-							"    pm.expect(pm.response.json().name).to.eql('B201')",
+							"    pm.expect(pm.response.json().name).to.eql('B2011')",
 							"})",
 							"",
 							"pm.test(\"Ensure response has a description property\", () => {",
@@ -1122,6 +1166,15 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -1129,7 +1182,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"B201\",\n    \"description\": \"Sala de Aula B201\",\n    \"category\": \"CLASSROOM\",\n    \"dimensions\": {\n\t\t\"width\": 5,\n\t\t\"length\": 5\n\t}\n}",
+					"raw": "{\n    \"name\": \"B2011\",\n    \"description\": \"Sala de Aula B201\",\n    \"category\": \"CLASSROOM\",\n    \"dimensions\": {\n\t\t\"width\": 5,\n\t\t\"length\": 5\n\t}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1137,7 +1190,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{API_URL}}/buildings/B/floors/B1/rooms",
+					"raw": "{{API_URL}}/buildings/B/floors/B2/rooms",
 					"host": [
 						"{{API_URL}}"
 					],
@@ -1145,7 +1198,7 @@
 						"buildings",
 						"B",
 						"floors",
-						"B1",
+						"B2",
 						"rooms"
 					]
 				}
@@ -1165,7 +1218,7 @@
 							"",
 							"pm.test(\"Ensure response has a name property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('name')",
-							"    pm.expect(pm.response.json().name).to.eql('pick-delivery')",
+							"    pm.expect(pm.response.json().name).to.eql('Delivery Master')",
 							"})",
 							"",
 							"pm.test(\"Ensure response has a brand property\", () => {",
@@ -1180,7 +1233,7 @@
 							"",
 							"pm.test(\"Ensure response has a code property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('code')",
-							"    pm.expect(pm.response.json().code).to.eql('PD')",
+							"    pm.expect(pm.response.json().code).to.eql('DLV2')",
 							"})",
 							"",
 							"pm.test(\"Ensure response has a capabilities property and length equal to 1\", () => {",
@@ -1207,7 +1260,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{     \n\t\"code\": \"PD\",     \n\t\"brand\": \"Ford\",     \n\t\"name\": \"pick-delivery\",     \n\t\"type\": \"robot\",     \n\t\"capabilities\": [\"pick_delivery\"] \n}",
+					"raw": "{     \n\t\"code\": \"DLV2\",     \n\t\"brand\": \"Ford\",     \n\t\"name\": \"Delivery Master\",     \n\t\"type\": \"robot\",     \n\t\"capabilities\": [\"pick_delivery\"] \n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1239,12 +1292,12 @@
 							"",
 							"pm.test(\"Ensure response has a name property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('name')",
-							"    pm.expect(pm.response.json().name).to.eql('surveillance')",
+							"    pm.expect(pm.response.json().name).to.eql('Security Plus')",
 							"})",
 							"",
 							"pm.test(\"Ensure response has a brand property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('brand')",
-							"    pm.expect(pm.response.json().brand).to.eql('Ford')",
+							"    pm.expect(pm.response.json().brand).to.eql('Dyson')",
 							"})",
 							"",
 							"pm.test(\"Ensure response has a type property\", () => {",
@@ -1254,7 +1307,7 @@
 							"",
 							"pm.test(\"Ensure response has a code property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('code')",
-							"    pm.expect(pm.response.json().code).to.eql('SV')",
+							"    pm.expect(pm.response.json().code).to.eql('SRV2')",
 							"})",
 							"",
 							"pm.test(\"Ensure response has a capabilities property and length equal to 1\", () => {",
@@ -1281,7 +1334,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{     \n\t\"code\": \"SV\",     \n\t\"brand\": \"Ford\",     \n\t\"name\": \"surveillance\",     \n\t\"type\": \"robot\",     \n\t\"capabilities\": [\"surveillance\"] \n}",
+					"raw": "{     \n\t\"code\": \"SRV2\",     \n\t\"brand\": \"Dyson\",     \n\t\"name\": \"Security Plus\",     \n\t\"type\": \"robot\",     \n\t\"capabilities\": [\"surveillance\"] \n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1313,17 +1366,17 @@
 							"",
 							"pm.test(\"Ensure response has a code property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('code')",
-							"    pm.expect(pm.response.json().code).to.eql('ROBPD')",
+							"    pm.expect(pm.response.json().code).to.eql('RDLVR')",
 							"})",
 							"",
 							"pm.test(\"Ensure response has a nickname property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('nickname')",
-							"    pm.expect(pm.response.json().nickname).to.eql('Robby')",
+							"    pm.expect(pm.response.json().nickname).to.eql('Robby Delivery')",
 							"})",
 							"",
 							"pm.test(\"Ensure response has a modelCode property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('modelCode')",
-							"    pm.expect(pm.response.json().modelCode).to.eql('PD')",
+							"    pm.expect(pm.response.json().modelCode).to.eql('DLV2')",
 							"})",
 							"",
 							"pm.test(\"Ensure response has a serialNumber property\", () => {",
@@ -1333,7 +1386,7 @@
 							"",
 							"pm.test(\"Ensure response has a description property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('description')",
-							"    pm.expect(pm.response.json().description).to.eql('Robot do Edificio B')",
+							"    pm.expect(pm.response.json().description).to.eql('Robot de Delivery do Edificio B')",
 							"})",
 							"",
 							"pm.test(\"Ensure robot is available\", () => {",
@@ -1361,7 +1414,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"code\": \"ROBPD\",\n\t\"nickname\": \"Robby\",\n\t\"modelCode\": \"PD\",\n\t\"serialNumber\": \"SERROB1\",\n\t\"description\": \"Robot do Edificio B\"\n}",
+					"raw": "{\n    \"code\": \"RDLVR\",\n\t\"nickname\": \"Robby Delivery\",\n\t\"modelCode\": \"DLV2\",\n\t\"serialNumber\": \"SERROB1\",\n\t\"description\": \"Robot de Delivery do Edificio B\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1393,17 +1446,17 @@
 							"",
 							"pm.test(\"Ensure response has a code property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('code')",
-							"    pm.expect(pm.response.json().code).to.eql('ROBSV')",
+							"    pm.expect(pm.response.json().code).to.eql('RSRVL')",
 							"})",
 							"",
 							"pm.test(\"Ensure response has a nickname property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('nickname')",
-							"    pm.expect(pm.response.json().nickname).to.eql('Robby Femea')",
+							"    pm.expect(pm.response.json().nickname).to.eql('Robby Security')",
 							"})",
 							"",
 							"pm.test(\"Ensure response has a modelCode property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('modelCode')",
-							"    pm.expect(pm.response.json().modelCode).to.eql('SV')",
+							"    pm.expect(pm.response.json().modelCode).to.eql('SRV2')",
 							"})",
 							"",
 							"pm.test(\"Ensure response has a serialNumber property\", () => {",
@@ -1413,7 +1466,7 @@
 							"",
 							"pm.test(\"Ensure response has a description property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('description')",
-							"    pm.expect(pm.response.json().description).to.eql('Mulher do Robot do Edificio B')",
+							"    pm.expect(pm.response.json().description).to.eql('Robot de Vigilancia do Edificio B')",
 							"})",
 							"",
 							"pm.test(\"Ensure robot is available\", () => {",
@@ -1441,7 +1494,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"code\": \"ROBSV\",\n\t\"nickname\": \"Robby Femea\",\n\t\"modelCode\": \"SV\",\n\t\"serialNumber\": \"SERROB1F\",\n\t\"description\": \"Mulher do Robot do Edificio B\"\n}",
+					"raw": "{\n    \"code\": \"RSRVL\",\n\t\"nickname\": \"Robby Security\",\n\t\"modelCode\": \"SRV2\",\n\t\"serialNumber\": \"SERROB1F\",\n\t\"description\": \"Robot de Vigilancia do Edificio B\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1476,7 +1529,7 @@
 							"})",
 							"",
 							"pm.test(\"Ensure response is an array with two positions\", () => {",
-							"    pm.expect(pm.response.json().length).to.eql(2)",
+							"    pm.expect(pm.response.json().length).to.eql(5)",
 							"})",
 							"",
 							"pm.test(\"Ensure response has returned a Device\", () => {",
@@ -1490,6 +1543,15 @@
 							"}   ",
 							"    )",
 							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -1524,17 +1586,17 @@
 							"",
 							"pm.test(\"Ensure response has a code property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('code')",
-							"    pm.expect(pm.response.json().code).to.eql('ROBPD')",
+							"    pm.expect(pm.response.json().code).to.eql('RDLVR')",
 							"})",
 							"",
 							"pm.test(\"Ensure response has a nickname property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('nickname')",
-							"    pm.expect(pm.response.json().nickname).to.eql('Robby')",
+							"    pm.expect(pm.response.json().nickname).to.eql('Robby Delivery')",
 							"})",
 							"",
 							"pm.test(\"Ensure response has a modelCode property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('modelCode')",
-							"    pm.expect(pm.response.json().modelCode).to.eql('PD')",
+							"    pm.expect(pm.response.json().modelCode).to.eql('DLV2')",
 							"})",
 							"",
 							"pm.test(\"Ensure response has a serialNumber property\", () => {",
@@ -1544,7 +1606,7 @@
 							"",
 							"pm.test(\"Ensure response has a description property\", () => {",
 							"    pm.expect(pm.response.json()).to.have.property('description')",
-							"    pm.expect(pm.response.json().description).to.eql('Robot do Edificio B')",
+							"    pm.expect(pm.response.json().description).to.eql('Robot de Delivery do Edificio B')",
 							"})",
 							"",
 							"pm.test(\"Ensure robot is inhibit\", () => {",
@@ -1571,13 +1633,13 @@
 				"method": "PATCH",
 				"header": [],
 				"url": {
-					"raw": "{{API_URL}}/devices/ROBPD",
+					"raw": "{{API_URL}}/devices/RDLVR",
 					"host": [
 						"{{API_URL}}"
 					],
 					"path": [
 						"devices",
-						"ROBPD"
+						"RDLVR"
 					]
 				}
 			},
@@ -1631,7 +1693,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{API_URL}}/devices/robots?filter=name&value=surveillance",
+					"raw": "{{API_URL}}/devices/robots?filter=model&value=SRV",
 					"host": [
 						"{{API_URL}}"
 					],
@@ -1642,11 +1704,11 @@
 					"query": [
 						{
 							"key": "filter",
-							"value": "name"
+							"value": "model"
 						},
 						{
 							"key": "value",
-							"value": "surveillance"
+							"value": "SRV"
 						}
 					]
 				}
@@ -1669,7 +1731,7 @@
 							"})",
 							"",
 							"pm.test(\"Ensure response is an array with one positions\", () => {",
-							"    pm.expect(pm.response.json().length).to.eql(1)",
+							"    pm.expect(pm.response.json().length).to.eql(3)",
 							"})",
 							"",
 							"pm.test(\"Ensure response has returned a Device\", () => {",
