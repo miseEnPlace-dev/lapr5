@@ -16,6 +16,8 @@ import IRoomService from '@/services/IServices/IRoomService';
 import IUserService from '@/services/IServices/IUserService';
 import { inject, injectable } from 'inversify';
 import { TYPES } from './inversify/types';
+import { IElevatorDTO } from '@/dto/IElevatorDTO';
+import IElevatorService from '@/services/IServices/IElevatorService';
 
 @injectable()
 export default class Bootstrapper {
@@ -27,7 +29,8 @@ export default class Bootstrapper {
     @inject(TYPES.connectorService) private connectorService: IConnectorService,
     @inject(TYPES.roomService) private roomService: IRoomService,
     @inject(TYPES.deviceModelService) private deviceModelService: IDeviceModelService,
-    @inject(TYPES.deviceService) private deviceService: IDeviceService
+    @inject(TYPES.deviceService) private deviceService: IDeviceService,
+    @inject(TYPES.elevatorService) private elevatorService: IElevatorService
   ) {}
 
   public async bootstrap() {
@@ -2081,6 +2084,46 @@ export default class Bootstrapper {
       serialNumber: 'RBT3',
       isAvailable: true
     });
+
+    await this.loadElevator({
+      code: 1,
+      floorCodes: ['A1', 'A2'],
+      buildingCode: 'A',
+      brand: 'Schindler',
+      model: 'S3000',
+      serialNumber: 'E1',
+      description: 'Elevator of Building A'
+    });
+
+    await this.loadElevator({
+      code: 2,
+      floorCodes: ['B1', 'B2', 'B3'],
+      buildingCode: 'B',
+      brand: 'Schindler',
+      model: 'S3000',
+      serialNumber: 'E1',
+      description: 'Elevator of Building B'
+    });
+
+    await this.loadElevator({
+      code: 3,
+      floorCodes: ['C1', 'C2', 'C3', 'C4'],
+      buildingCode: 'C',
+      brand: 'Schindler',
+      model: 'S3000',
+      serialNumber: 'E1',
+      description: 'Elevator of Building C'
+    });
+
+    await this.loadElevator({
+      code: 4,
+      floorCodes: ['D1', 'D2', 'D3'],
+      buildingCode: 'D',
+      brand: 'Schindler',
+      model: 'S3000',
+      serialNumber: 'E1',
+      description: 'Elevator of Building D'
+    });
   }
 
   private async loadRole({
@@ -2207,6 +2250,24 @@ export default class Bootstrapper {
         description: device.description,
         serialNumber: device.serialNumber,
         isAvailable: device.isAvailable
+      });
+
+      if (res.isFailure) throw new Error(res.errorValue());
+    }
+  }
+
+  private async loadElevator(elevator: IElevatorDTO) {
+    const elevatorExists = await this.elevatorService.getElevatorForBuilding(elevator.buildingCode);
+
+    if (elevatorExists.isFailure) {
+      const res = await this.elevatorService.createElevator({
+        code: elevator.code,
+        floorCodes: elevator.floorCodes,
+        buildingCode: elevator.buildingCode,
+        brand: elevator.brand,
+        model: elevator.model,
+        serialNumber: elevator.serialNumber,
+        description: elevator.description
       });
 
       if (res.isFailure) throw new Error(res.errorValue());
