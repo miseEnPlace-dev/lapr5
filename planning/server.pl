@@ -103,10 +103,15 @@ api_get_route(Request):-
     C1=cel(FromFloor, FromX, FromY),
     C2=cel(ToFloor, ToX, ToY),
 
-    planning:caminho_celulas_elevador(C1,C2, R),
-    cells_to_json(R, R2),
-    prolog_to_json(R2, JsonOut),
+    R=[C1,C2],
+    cells_to_json(R,R2),
+    prolog_to_json(R2,JsonOut),
     reply_json(JsonOut).
+
+%    planning:caminho_celulas_elevador(C1,C2, R),
+%    cells_to_json(R, R2),
+%    prolog_to_json(R2, JsonOut),
+%    reply_json(JsonOut, [json_object(dict)]).
 
 cell_to_json(cel(Floor, X, Y), JsonOut):-
     JsonOut = json([floor=Floor, x=X, y=Y]).
