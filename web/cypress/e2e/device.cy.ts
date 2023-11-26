@@ -29,7 +29,7 @@ describe("Device", () => {
     cy.visit("/devices/robots/PA");
   });
 
-  it("should be able to inhibit a device", () => {
+  it("should be able to deactivate a device", () => {
     cy.intercept("GET", BASE_URL + "/devices/PA", {
       statusCode: 200,
       body: {
@@ -50,6 +50,38 @@ describe("Device", () => {
         serialNumber: "9",
         modelCode: "4",
         isAvailable: false,
+      },
+    });
+
+    cy.get("button[name=inhibitDevice]").click();
+
+    cy.get("div[class=swal-modal]").should(
+      "contain",
+      "Status of the Device changed successfully"
+    );
+  });
+
+  it("should be able to activate a device", () => {
+    cy.intercept("GET", BASE_URL + "/devices/PA", {
+      statusCode: 200,
+      body: {
+        code: "PA",
+        nickname: "Nickname7",
+        description: "Descricao",
+        serialNumber: "9",
+        modelCode: "4",
+        isAvailable: false,
+      },
+    });
+    cy.intercept("PATCH", BASE_URL + "/devices/PA", {
+      statusCode: 200,
+      body: {
+        code: "PA",
+        nickname: "Nickname7",
+        description: "Descricao",
+        serialNumber: "9",
+        modelCode: "4",
+        isAvailable: true,
       },
     });
 
