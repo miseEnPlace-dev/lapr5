@@ -40,7 +40,7 @@ const PathsPage: React.FC = () => {
     try {
       await handleFind();
     } catch (err: unknown) {
-      swal("Error", err.message, "error");
+      swal("Error", (err as { message: string }).message, "error");
     }
   }
 

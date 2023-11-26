@@ -96,7 +96,10 @@ const BuildingsPage: React.FC = () => {
         <p className="text-slate-500">
           Manage here all buildings of the campus.
         </p>
-        <div className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left text-lg">
+        <div
+          aria-label="buildings-container"
+          className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left text-lg"
+        >
           <motion.button
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
@@ -139,7 +142,7 @@ const BuildingsPage: React.FC = () => {
             </motion.button>
           ))}
           <motion.button
-            name="createBuilding"
+            name="create-building"
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
