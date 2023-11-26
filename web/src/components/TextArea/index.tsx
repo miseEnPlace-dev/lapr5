@@ -30,6 +30,7 @@ const TextArea: React.FC<TextAreaProps> = ({
         defaultValue={defaultValue}
         value={value}
         name={name}
+        aria-label={name}
         maxLength={255}
         rows={rows}
         onChange={(e) => onChange && onChange(e.target.value)}
