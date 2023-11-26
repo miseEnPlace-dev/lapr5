@@ -85,7 +85,7 @@ describe("Device Models", () => {
     );
   });
 
-  it("should get error when create building fails", () => {
+  it("should get error when create device model fails", () => {
     cy.intercept("GET", BASE_URL + "/device-models", {
       statusCode: 200,
       body: [],

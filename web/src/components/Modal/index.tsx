@@ -43,7 +43,7 @@ const Modal: React.FC<ModalProps> = ({
             >
               X
             </button>
-            <span className="z-30 -mt-9 mb-6 w-full text-center text-4xl font-black">
+            <span className="-mt-9 mb-6 w-full text-center text-4xl font-black">
               {title}
             </span>
             {children}
