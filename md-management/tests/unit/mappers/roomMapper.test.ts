@@ -42,14 +42,7 @@ describe('Room Mapper', () => {
       name: RoomName.create('name').getValue(),
       dimensions: RoomDimensions.create(1, 1).getValue(),
       category: RoomCategory.create('OFFICE').getValue(),
-      floor: Floor.create(
-        {
-          code: FloorCode.create('1').getValue(),
-          buildingCode: BuildingCode.create('1').getValue(),
-          dimensions: FloorDimensions.create(1, 1).getValue()
-        },
-        UniqueEntityID.create('1')
-      ).getValue()
+      floorCode: FloorCode.create('1').getValue()
     });
 
     const result = RoomMapper.toDTO(room.getValue());
@@ -63,14 +56,7 @@ describe('Room Mapper', () => {
         name: RoomName.create('name').getValue(),
         dimensions: RoomDimensions.create(1, 1).getValue(),
         category: RoomCategory.create('OFFICE').getValue(),
-        floor: Floor.create(
-          {
-            code: FloorCode.create('1').getValue(),
-            buildingCode: BuildingCode.create('1').getValue(),
-            dimensions: FloorDimensions.create(1, 1).getValue()
-          },
-          UniqueEntityID.create('1')
-        ).getValue()
+        floorCode: FloorCode.create('1').getValue()
       },
       UniqueEntityID.create('1')
     );
@@ -86,14 +72,15 @@ describe('Room Mapper', () => {
         length: 1
       },
       category: 'OFFICE',
-      floor: '1'
+      floorCode: '1'
     });
   });
 
   it('should map a room from persistence', async () => {
+    const floorCode: FloorCode = FloorCode.create('1').getValue();
     const floor = Floor.create(
       {
-        code: FloorCode.create('1').getValue(),
+        code: floorCode,
         buildingCode: BuildingCode.create('1').getValue(),
         dimensions: FloorDimensions.create(1, 1).getValue()
       },
@@ -105,13 +92,13 @@ describe('Room Mapper', () => {
         name: RoomName.create('name').getValue(),
         dimensions: RoomDimensions.create(1, 1).getValue(),
         category: RoomCategory.create('OFFICE').getValue(),
-        floor
+        floorCode: floorCode
       },
       UniqueEntityID.create('1')
     );
 
     const floorRepoStub = container.get<IFloorRepo>(TYPES.floorRepo);
-    stub(floorRepoStub, 'findByDomainId').resolves(floor);
+    stub(floorRepoStub, 'findByCode').resolves(floor);
     container.unbind(TYPES.floorRepo);
     container.bind<IFloorRepo>(TYPES.floorRepo).toConstantValue(floorRepoStub);
 
@@ -124,7 +111,7 @@ describe('Room Mapper', () => {
         length: 1
       },
       category: 'OFFICE',
-      floor: '1'
+      floorCode: '1'
     });
 
     expect(result).toEqual(room.getValue());
@@ -132,7 +119,7 @@ describe('Room Mapper', () => {
 
   it('should throw an error when floor is not found', async () => {
     const floorRepoStub = container.get<IFloorRepo>(TYPES.floorRepo);
-    stub(floorRepoStub, 'findByDomainId').resolves(undefined);
+    stub(floorRepoStub, 'findByCode').resolves(undefined);
     container.unbind(TYPES.floorRepo);
     container.bind<IFloorRepo>(TYPES.floorRepo).toConstantValue(floorRepoStub);
 
@@ -146,7 +133,7 @@ describe('Room Mapper', () => {
           length: 1
         },
         category: 'OFFICE',
-        floor: '1'
+        floorCode: '1'
       })
     ).rejects.toThrowError('Floor not found');
   });

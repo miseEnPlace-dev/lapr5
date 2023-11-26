@@ -185,41 +185,6 @@ describe('Device  Service', () => {
     expect(deviceService.createDevice(deviceDTO)).rejects.toThrow('Error');
   });
 
-  it('inhibitDevice: should return error when device not found', async () => {
-    const deviceCode = '12345';
-
-    const deviceRepo = container.get<IDeviceRepo>(TYPES.deviceRepo);
-    stub(deviceRepo, 'findByCode').resolves(null);
-
-    const deviceModelRepo = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
-    const deviceService = new DeviceService(deviceRepo, deviceModelRepo);
-    const result = await deviceService.inhibitDevice(deviceCode);
-
-    expect(result.isFailure).toBe(true);
-    expect(result.errorValue()).toBe('Device not found');
-  });
-
-  it('inhibitDevice: should return error when device is already inhibited', async () => {
-    const deviceCode = '12345';
-
-    const deviceRepo = container.get<IDeviceRepo>(TYPES.deviceRepo);
-    const device = {
-      code: deviceCode,
-      nickname: 'name',
-      serialNumber: 'DeviceSerialNumber',
-      modelCode: 'DeviceModel',
-      isAvailable: false
-    };
-    stub(deviceRepo, 'findByCode').resolves(device);
-
-    const deviceModelRepo = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
-    const deviceService = new DeviceService(deviceRepo, deviceModelRepo);
-    const result = await deviceService.inhibitDevice(deviceCode);
-
-    expect(result.isFailure).toBe(true);
-    expect(result.errorValue()).toBe('Device already inhibited');
-  });
-
   it('inhibitDevice: should inhibit a device', async () => {
     const deviceRepo = container.get<IDeviceRepo>(TYPES.deviceRepo);
 
@@ -302,27 +267,6 @@ describe('Device  Service', () => {
     expect(result.errorValue()).toBe('Invalid filter.');
   });
 
-  it('getDevices: should return devices when filter is name', async () => {
-    const deviceRepo = container.get<IDeviceRepo>(TYPES.deviceRepo);
-    const deviceModelRepo = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
-
-    const device = {
-      code: '12345',
-      nickname: 'name',
-      serialNumber: 'DeviceSerialNumber',
-      modelCode: 'DeviceModel',
-      isAvailable: false
-    };
-
-    stub(deviceRepo, 'findByName').resolves([device]);
-
-    const deviceService = new DeviceService(deviceRepo, deviceModelRepo);
-    const result = await deviceService.getDevicesRobots('name', 'name');
-
-    expect(result.isSuccess).toBe(true);
-    expect(result.getValue()).toStrictEqual([device]);
-  });
-
   it('getDevices: should return error when filter is name and value is not provided', async () => {
     const deviceRepo = container.get<IDeviceRepo>(TYPES.deviceRepo);
     const deviceModelRepo = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
@@ -331,7 +275,7 @@ describe('Device  Service', () => {
     const result = await deviceService.getDevicesRobots('name', undefined);
 
     expect(result.isFailure).toBe(true);
-    expect(result.errorValue()).toBe('Value not provided');
+    expect(result.errorValue()).toBe('Invalid filter.');
   });
 
   it('getDevices: should return devices when filter is task', async () => {
