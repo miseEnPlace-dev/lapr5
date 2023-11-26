@@ -246,7 +246,9 @@ describe('Connector Service', () => {
     const connectorDTO = {
       code: '12345',
       floor1Code: '34343',
-      floor2Code: '21212'
+      floor1BuildingCode: '34343',
+      floor2Code: '21212',
+      floor2BuildingCode: '12345'
     };
 
     const buildingRepo = container.get<IBuildingRepo>(TYPES.buildingRepo);
