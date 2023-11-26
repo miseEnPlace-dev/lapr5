@@ -109,4 +109,31 @@ describe("Buildings", () => {
 
     cy.get("div[class=swal-modal]").should("contain", "Error");
   });
+
+  it("should be able to filter by min and max floors", () => {
+    cy.intercept("GET", BASE_URL + "/buildings?minFloors=1&maxFloors=3", {
+      statusCode: 200,
+      body: [
+        {
+          code: "B1",
+          name: "Building 1",
+          maxDimensions: {
+            width: 20,
+            length: 20,
+          },
+          description: "description",
+        },
+      ],
+    });
+
+    cy.get("button[name=filter]").click();
+    cy.get("input[name='Minimum Number of Floors']").type("1");
+    cy.get("input[name='Maximum Number of Floors']").type("3");
+    cy.get("button[name=listfilter]").click();
+
+    cy.get("main").get("h1").should("contain", "Buildings");
+    cy.get("div[aria-label=buildings-container")
+      .children()
+      .should("have.length", 3);
+  });
 });

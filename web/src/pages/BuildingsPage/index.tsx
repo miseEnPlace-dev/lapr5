@@ -101,6 +101,7 @@ const BuildingsPage: React.FC = () => {
           className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left text-lg"
         >
           <motion.button
+            name="filter"
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
