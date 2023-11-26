@@ -484,11 +484,9 @@ export default class ThumbRaiser {
       this.cubeTexturesParameters.skyboxes[this.cubeTexturesParameters.selected]
     );
 
-    console.log({ mazeParams: this.mazeParameters })
-
     // Create the maze
     this.maze = new Maze(
-      this.mazeParameters
+      this.mazeParameters.mazes[this.mazeParameters.selected]
     );
 
     // Create the player
@@ -558,8 +556,8 @@ export default class ThumbRaiser {
       LOCAL_STORAGE_PREFIX + "fixedViewCamera"
     )
       ? JSON.parse(
-        localStorage.getItem(LOCAL_STORAGE_PREFIX + "fixedViewCamera")
-      )
+          localStorage.getItem(LOCAL_STORAGE_PREFIX + "fixedViewCamera")
+        )
       : true;
     this.firstPersonViewCamera.checkBox =
       document.getElementById("first-person");
@@ -567,8 +565,8 @@ export default class ThumbRaiser {
       LOCAL_STORAGE_PREFIX + "firstPersonViewCamera"
     )
       ? JSON.parse(
-        localStorage.getItem(LOCAL_STORAGE_PREFIX + "firstPersonViewCamera")
-      )
+          localStorage.getItem(LOCAL_STORAGE_PREFIX + "firstPersonViewCamera")
+        )
       : true;
     this.thirdPersonViewCamera.checkBox =
       document.getElementById("third-person");
@@ -576,8 +574,8 @@ export default class ThumbRaiser {
       LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera"
     )
       ? JSON.parse(
-        localStorage.getItem(LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera")
-      )
+          localStorage.getItem(LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera")
+        )
       : true;
     this.topViewCamera.checkBox = document.getElementById("top");
     this.topViewCamera.checkBox.checked = localStorage.getItem(
@@ -672,7 +670,8 @@ export default class ThumbRaiser {
       this.mazeParameters.mazes[index].maze.player.initialPosition
     );
     this.player.position.set(cellPos.x, cellPos.y, cellPos.z);
-    this.player.direction = this.mazeParameters.mazes[index].maze.player.initialDirection;
+    this.player.direction =
+      this.mazeParameters.mazes[index].maze.player.initialDirection;
 
     this.scene.add(this.maze);
 
@@ -1213,12 +1212,12 @@ export default class ThumbRaiser {
                   ((mouseIncrement.x / this.miniMapCamera.viewport.width) *
                     (this.miniMapCamera.orthographic.left -
                       this.miniMapCamera.orthographic.right)) /
-                  this.miniMapCamera.orthographic.zoom,
+                    this.miniMapCamera.orthographic.zoom,
                   0.0,
                   ((mouseIncrement.y / this.miniMapCamera.viewport.height) *
                     (this.miniMapCamera.orthographic.top -
                       this.miniMapCamera.orthographic.bottom)) /
-                  this.miniMapCamera.orthographic.zoom
+                    this.miniMapCamera.orthographic.zoom
                 );
                 this.miniMapCamera.updateTarget(targetIncrement);
               }

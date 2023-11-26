@@ -6,7 +6,6 @@ import "./index.css";
 
 import React from "react";
 import { useInjection } from "inversify-react";
-import { floor, set } from "lodash";
 
 import { TYPES } from "../inversify/types";
 
@@ -38,6 +37,7 @@ const FloorEditor: React.FC = () => {
   useEffect(() => {
     async function fetchFloors() {
       const floors = await floorService.getAllFloors();
+      console.log({ floors });
 
       setFloors(floors.filter((floor) => floor.map));
     }
