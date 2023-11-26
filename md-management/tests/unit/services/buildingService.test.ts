@@ -113,6 +113,7 @@ describe('Building Service', () => {
       code: '12345',
       name: 'Building 1',
       description: 'Description',
+      elevatorFloors: [],
       maxDimensions: {
         width: 10,
         length: 10
@@ -156,6 +157,8 @@ describe('Building Service', () => {
     const buildingDTO = {
       code: '12345',
       name: 'Building 1',
+      description: undefined,
+      elevatorFloors: [],
       maxDimensions: {
         width: 10,
         length: 10
@@ -177,6 +180,8 @@ describe('Building Service', () => {
     const buildingDTO = {
       code: '12345',
       description: 'Description',
+      elevatorFloors: [],
+      name: undefined,
       maxDimensions: {
         width: 10,
         length: 10
@@ -244,6 +249,7 @@ describe('Building Service', () => {
       code: '12345',
       name: 'Building 1',
       description: 'Description',
+      elevatorFloors: [],
       maxDimensions: {
         width: 10,
         length: 10
@@ -281,6 +287,7 @@ describe('Building Service', () => {
       code: '12345',
       name: 'Building 1',
       description: 'Description',
+      elevatorFloors: [],
       maxDimensions: {
         width: 10,
         length: 10
@@ -343,6 +350,7 @@ describe('Building Service', () => {
       code: '12345',
       name: 'Building 1',
       description: 'Description',
+      elevatorFloors: [],
       maxDimensions: {
         width: 10,
         length: 10
@@ -413,6 +421,8 @@ describe('Building Service', () => {
     const dto = {
       code: '12345',
       name: 'Building 1',
+      description: undefined,
+      elevatorFloors: [],
       maxDimensions: {
         width: 10,
         length: 10
@@ -440,6 +450,8 @@ describe('Building Service', () => {
     const dto = {
       code: '12345',
       description: 'Description',
+      name: undefined,
+      elevatorFloors: [],
       maxDimensions: {
         width: 10,
         length: 10
