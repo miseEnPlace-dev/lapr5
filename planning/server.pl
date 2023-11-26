@@ -92,6 +92,13 @@ fetch_floors(BuildingCode, Floors) :-
     read_api(FloorsUrl3, Floors).
 
 api_get_route(Request):-
+    retractall(planning:m(_,_,_,_)),
+    retractall(planning:liga(_,_)),
+    retractall(planning:pisos(_,_)),
+    retractall(planning:elevador(_,_)),
+    retractall(planning:corredor(_,_,_,_)),
+    retractall(planning:exit(_,_,_,_)),
+    planning:load_data(),
     http_parameters(Request, [ fromX(FromX, [ integer ]) ]),
     http_parameters(Request, [ fromY(FromY, [ integer ]) ]),
     http_parameters(Request, [ fromFloor(FromFloor, [ string ]) ]),

@@ -193,7 +193,7 @@ load_data() :-
 	create_connectors(Connectors).
 
 create_buildings([H|T]) :-
-	write("Loading building "), write(H.code), write(" ..."), nl,
+	%	write("Loading building "), write(H.code), write(" ..."), nl,
 	create_elevator(H),
 	create_floors(H),
 	create_buildings(T).
@@ -201,7 +201,7 @@ create_buildings([H|T]) :-
 create_buildings([]).
 
 create_elevator(Building) :-
-	write("  Elevator -> "), write(Building.elevatorFloors), nl,
+	%write("  Elevator -> "), write(Building.elevatorFloors), nl,
 	asserta(elevador(Building.code, Building.elevatorFloors)).
 
 create_floors(Building) :-
@@ -215,22 +215,23 @@ create_floor_exits(Floor) :-
 	create_exits(Floor.map.maze.exits, Floor.code).
 
 create_exits([H|T], FloorCode) :-
-	write("      Exit -> "), write("X: "), write(H.x), write(" Y: "), write(H.y), nl,
+	%write("      Exit -> "), write("X: "), write(H.x), write(" Y: "), write(H.y), nl,
 	asserta(exit(FloorCode, H.floorCode, H.x, H.y)),
 	create_exits(T, FloorCode).
 
 create_exits([], _).
 
 create_floors_matrix([H|T]) :-
-	write("    Floor "), write(H.code), write(" -> "), is_dict(H.get(map)), nl,
+	%	write("    Floor "), write(H.code), write(" -> "), 
+	is_dict(H.get(map)),
 	create_floor_exits(H),
-	write("      Matrix "),  write(H.map.maze.size.width), write("x"), write(H.map.maze.size.depth), nl,
-	write("      "), write(H.map.maze.map), nl,
+	%	write("      Matrix "),  write(H.map.maze.size.width), write("x"), write(H.map.maze.size.depth), nl,
+	%write("      "), write(H.map.maze.map), nl,
 	W is H.map.maze.size.width+1,
 	L is H.map.maze.size.depth+1,
 	reverse(H.map.maze.map, H1),
 	create_floor_matrix(H.code, H1, W, L),
-	write("       cria_grafo("), write(H.code), write(","), write(H.map.maze.size.depth), write(","), write(H.map.maze.size.width), write(")"), nl,
+	%	write("       cria_grafo("), write(H.code), write(","), write(H.map.maze.size.depth), write(","), write(H.map.maze.size.width), write(")"), nl,
 	cria_grafo(H.code,H.map.maze.size.depth,H.map.maze.size.width),
 	create_floors_matrix(T).
 
@@ -238,7 +239,8 @@ create_floors_matrix([H|T]) :-
 create_floors_matrix([]).
 
 create_floors_matrix([_|T]) :-
-	write("No Map"), nl, create_floors_matrix(T).
+	%write("No Map"), nl, 
+	create_floors_matrix(T).
 
 
 create_floor_matrix(_, _, _, 0).
@@ -268,9 +270,9 @@ create_connectors([H|T]) :-
 create_connectors([]).
 
 create_connector(Connector) :-
-	write("Loading Connector "), write(Connector.code), write(" ..."), nl,
-	write("  From -> "), write(Connector.floor1BuildingCode), write(" - "), write(Connector.floor1Code), nl,
-	write("  To -> "), write(Connector.floor2BuildingCode), write(" - "), write(Connector.floor2Code), nl,
+	%write("Loading Connector "), write(Connector.code), write(" ..."), nl,
+	%write("  From -> "), write(Connector.floor1BuildingCode), write(" - "), write(Connector.floor1Code), nl,
+	%write("  To -> "), write(Connector.floor2BuildingCode), write(" - "), write(Connector.floor2Code), nl,
 	asserta(liga(Connector.floor1BuildingCode, Connector.floor2BuildingCode)),
 	asserta(corredor(Connector.floor1BuildingCode, Connector.floor2BuildingCode, Connector.floor1Code, Connector.floor2Code)).
 
@@ -304,5 +306,4 @@ caminho_celulas([],C1,C2,L) :-
 	aStar(C1,C2,L,_).
 
 
-:- load_data().
 
