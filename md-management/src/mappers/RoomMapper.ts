@@ -31,12 +31,18 @@ export class RoomMapper extends Mapper<Room> {
     const name = RoomName.create(room.name).getValue();
     const { width, length } = room.dimensions;
 
+    console.log({ room });
+
     const repoFloor = container.get<IFloorRepo>(TYPES.floorRepo);
 
     const floorCode = FloorCode.create(room.floorCode).getValue();
 
+    console.log({ floorCode });
+
     const floor = await repoFloor.findByCode(floorCode);
     if (!floor) throw new Error('Floor not found');
+
+    console.log({ floor });
 
     const roomDimensionsOrError = RoomDimensions.create(width, length);
 
