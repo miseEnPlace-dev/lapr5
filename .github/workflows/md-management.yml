@@ -38,7 +38,7 @@ jobs:
 
       - name: Test & Build
         run: |
-          # pnpm test
+          pnpm test
           pnpm build
 
       - name: Archive production artifacts

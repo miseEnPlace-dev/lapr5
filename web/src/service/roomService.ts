@@ -28,10 +28,11 @@ export class RoomService implements IRoomService {
     floorCode: string,
     room: Room
   ): Promise<Room> {
-    const response = await this.http.post<Room>(
-      `/buildings/${buildingCode}/floors/${floorCode}/rooms`,
-      room
-    );
+    const response = await this.http
+      .post<Room>(`/buildings/${buildingCode}/floors/${floorCode}/rooms`, room)
+      .catch((error) => {
+        throw error.message;
+      });
 
     const data = response.data;
     return data;

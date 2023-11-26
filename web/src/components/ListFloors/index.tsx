@@ -25,7 +25,10 @@ const ListFloors: React.FC<ListFloorsProps> = ({ floors, buildingCode }) => {
   return (
     <>
       {floors.length ? (
-        <div className="flex flex-col gap-8 overflow-auto rounded-xl bg-slate-300 px-6 py-6">
+        <div
+          aria-label="floors-container"
+          className="flex flex-col gap-8 overflow-auto rounded-xl bg-slate-300 px-6 py-6"
+        >
           {floors.map((floor, i) => (
             <motion.button
               initial={{ opacity: 0, x: -100 }}
