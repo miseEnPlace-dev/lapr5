@@ -83,12 +83,15 @@ const ConnectorsPage: React.FC = () => {
   return (
     <div className="flex">
       <SideBar menuOptions={menuOptions} />
-      <div className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
+      <main className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
         <h1 className="text-4xl font-bold">Connectors</h1>
         <p className="text-slate-500">
           Manage here all connectors of the campus.
         </p>
-        <div className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left text-lg">
+        <div
+          aria-label="connectors-container"
+          className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left text-lg"
+        >
           <motion.button
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
@@ -124,6 +127,7 @@ const ConnectorsPage: React.FC = () => {
             </motion.button>
           ))}
           <motion.button
+            name="createConnector"
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -144,17 +148,20 @@ const ConnectorsPage: React.FC = () => {
             <div className="flex h-full flex-col justify-between gap-y-4">
               <div className="flex w-full flex-col gap-y-4">
                 <Input
+                  name="code"
                   className="w-full"
                   placeholder="Code"
                   inputRef={codeInputRef}
                 />
                 <div className="flex w-full flex-col items-center gap-x-8 gap-y-4 md:flex-row">
                   <Input
+                    name="floor1Code"
                     className="w-full"
                     placeholder="Floor 1 Code"
                     inputRef={floor1InputRef}
                   />
                   <Input
+                    name="floor2Code"
                     className="w-full"
                     placeholder="Floor 2 Code"
                     inputRef={floor2InputRef}
@@ -212,7 +219,7 @@ const ConnectorsPage: React.FC = () => {
             </div>
           </Modal>
         </div>
-      </div>
+      </main>
     </div>
   );
 };
