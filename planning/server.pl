@@ -100,6 +100,7 @@ api_get_route(Request):-
     http_parameters(Request, [ toFloor(ToFloor, [ string ]) ]),
     http_parameters(Request, [ method(Met, [ optional(false), length >= 1 ]) ]),
     get_path(FromX, FromY, FromFloor, ToX, ToY, ToFloor, Met, R),
+
     cells_to_json(R, R2),
     prolog_to_json(R2, JsonOut),
     reply_json(JsonOut, [json_object(dict)]).
@@ -114,6 +115,10 @@ get_path(FromX, FromY, FromFloor, ToX, ToY, ToFloor, Met, R):-
 
 cell_to_json(cel(Floor, X, Y), JsonOut):-
     JsonOut = json([floor=Floor, x=X, y=Y]).
+cell_to_json(elev(F1, F2), JsonOut):-
+    JsonOut = json([floor1=F1, floor2=F2,type=elevator]).
+cell_to_json(cor(F1, F2), JsonOut):-
+    JsonOut = json([floor1=F1, floor2=F2,type=connector]).
 cells_to_json([], []).
 cells_to_json([H|T], [H2|T2]):-
     cell_to_json(H, H2),

@@ -6,7 +6,7 @@ import { Building } from "@/model/Building";
 import { Floor } from "@/model/Floor";
 import { IBuildingService } from "@/service/IService/IBuildingService";
 import { IFloorService } from "@/service/IService/IFloorService";
-import { IRouteService } from "@/service/IService/IRouteService";
+import { IRouteService, RouteCell } from "@/service/IService/IRouteService";
 
 const strategies = [
   {
@@ -47,13 +47,7 @@ export const usePathsPageModule = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const [path, setPath] = useState<
-    {
-      x: number;
-      y: number;
-      floor: string;
-    }[]
-  >([]);
+  const [path, setPath] = useState<RouteCell[]>([]);
 
   async function handleFind() {
     setLoading(true);

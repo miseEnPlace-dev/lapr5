@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
@@ -162,12 +163,25 @@ const PathsPage: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody className="text-center">
-                      {path.map((p) => (
-                        <tr>
-                          <td className="py-1 text-2xl font-bold">{p.x}</td>
-                          <td className="py-1 text-2xl font-bold">{p.y}</td>
-                          <td className="py-1 text-2xl font-bold">{p.floor}</td>
-                        </tr>
+                      {path.map((p: any) => (
+                        <>
+                          {p.x ? (
+                            <tr>
+                              <td className="py-1 text-2xl font-bold">{p.x}</td>
+                              <td className="py-1 text-2xl font-bold">{p.y}</td>
+                              <td className="py-1 text-2xl font-bold">
+                                {p.floor}
+                              </td>
+                            </tr>
+                          ) : (
+                            <tr>
+                              <td
+                                colSpan={3}
+                                className="py-1 text-2xl font-bold"
+                              >{`Use ${p.type} from ${p.floor1} to ${p.floor2}`}</td>
+                            </tr>
+                          )}
+                        </>
                       ))}
                     </tbody>
                   </table>

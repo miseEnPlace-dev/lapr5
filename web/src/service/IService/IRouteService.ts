@@ -8,12 +8,20 @@ export interface GetRouteProps {
   method: string;
 }
 
+export type Cell = {
+  x: number;
+  y: number;
+  floor: string;
+};
+
+export type RouteAction = {
+  floor1: string;
+  floor2: string;
+  type: string;
+};
+
+export type RouteCell = Cell | RouteAction;
+
 export interface IRouteService {
-  getRoutes: (props: GetRouteProps) => Promise<
-    {
-      x: number;
-      y: number;
-      floor: string;
-    }[]
-  >;
+  getRoutes: (props: GetRouteProps) => Promise<RouteCell[]>;
 }
