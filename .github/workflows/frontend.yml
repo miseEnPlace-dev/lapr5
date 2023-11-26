@@ -36,8 +36,9 @@ jobs:
       - name: Install packages
         run: pnpm i --frozen-lockfile
 
-      - name: Build
+      - name: Test & Build
         run: |
+          pnpm test
           export VITE_API_URL="https://vs-gate.dei.isep.ipp.pt:11107/api"
           pnpm build
 

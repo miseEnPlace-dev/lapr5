@@ -26,6 +26,30 @@ describe("Connectors", () => {
       },
     });
     cy.visit("/connectors");
+
+    cy.intercept("GET", BASE_URL + "/buildings", {
+      statusCode: 200,
+      body: [
+        {
+          code: "B",
+          name: "Building 1 B",
+          maxDimensions: {
+            width: 20,
+            length: 20,
+          },
+          description: "description",
+        },
+        {
+          code: "C",
+          name: "Building 2 C",
+          maxDimensions: {
+            width: 20,
+            length: 20,
+          },
+          description: "description",
+        },
+      ],
+    });
   });
 
   it("should be able to list all connectors", () => {
@@ -114,29 +138,6 @@ describe("Connectors", () => {
   });
 
   it("should show buildings to filter from", () => {
-    cy.intercept("GET", BASE_URL + "/buildings", {
-      statusCode: 200,
-      body: [
-        {
-          code: "B",
-          name: "Building 1 B",
-          maxDimensions: {
-            width: 20,
-            length: 20,
-          },
-          description: "description",
-        },
-        {
-          code: "C",
-          name: "Building 2 C",
-          maxDimensions: {
-            width: 20,
-            length: 20,
-          },
-          description: "description",
-        },
-      ],
-    });
     cy.intercept("POST", BASE_URL + "/connectors", (req) => {
       expect(req.query).to.have.property("buildingCodes[]", "B");
       expect(req.query).to.have.property("buildingCodes[]", "B");
@@ -158,29 +159,6 @@ describe("Connectors", () => {
   });
 
   it("should show the filtered connectors", () => {
-    cy.intercept("GET", BASE_URL + "/buildings", {
-      statusCode: 200,
-      body: [
-        {
-          code: "B",
-          name: "Building 1 B",
-          maxDimensions: {
-            width: 20,
-            length: 20,
-          },
-          description: "description",
-        },
-        {
-          code: "C",
-          name: "Building 2 C",
-          maxDimensions: {
-            width: 20,
-            length: 20,
-          },
-          description: "description",
-        },
-      ],
-    });
     cy.intercept(
       "GET",
       BASE_URL + "/connectors?buildingCodes[]=B&buildingCodes[]=C",

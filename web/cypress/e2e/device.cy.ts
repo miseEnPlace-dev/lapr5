@@ -41,6 +41,19 @@ describe("Device", () => {
         isAvailable: true,
       },
     });
+
+    cy.intercept("GET", BASE_URL + "/device-models", {
+      statusCode: 200,
+      body: [
+        {
+          code: "4",
+          description: "Descricao",
+          brand: "Marca",
+          isAvailable: true,
+        },
+      ],
+    });
+
     cy.intercept("PATCH", BASE_URL + "/devices/PA", {
       statusCode: 200,
       body: {
@@ -72,6 +85,17 @@ describe("Device", () => {
         modelCode: "4",
         isAvailable: false,
       },
+    });
+    cy.intercept("GET", BASE_URL + "/device-models", {
+      statusCode: 200,
+      body: [
+        {
+          code: "4",
+          description: "Descricao",
+          brand: "Marca",
+          isAvailable: true,
+        },
+      ],
     });
     cy.intercept("PATCH", BASE_URL + "/devices/PA", {
       statusCode: 200,
