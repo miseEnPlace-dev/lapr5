@@ -91,7 +91,7 @@ const BuildingsPage: React.FC = () => {
   return (
     <div className="flex">
       <SideBar menuOptions={menuOptions} />
-      <div className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
+      <main className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
         <h1 className="text-4xl font-bold">Buildings</h1>
         <p className="text-slate-500">
           Manage here all buildings of the campus.
@@ -139,6 +139,7 @@ const BuildingsPage: React.FC = () => {
             </motion.button>
           ))}
           <motion.button
+            name="createBuilding"
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -238,7 +239,7 @@ const BuildingsPage: React.FC = () => {
             </div>
           </Modal>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

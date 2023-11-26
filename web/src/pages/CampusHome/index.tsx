@@ -3,7 +3,7 @@ import CardContainer from "@/components/CardContainer";
 
 const CampusHome: React.FC = () => {
   return (
-    <div className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
+    <main className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
       <h1 className="text-4xl font-bold">Welcome!</h1>
       <p className="text-slate-500">
         Here you can manage all the information about all the components of the
@@ -37,7 +37,7 @@ const CampusHome: React.FC = () => {
           action="Go to Path Finder"
         />
       </CardContainer>
-    </div>
+    </main>
   );
 };
 

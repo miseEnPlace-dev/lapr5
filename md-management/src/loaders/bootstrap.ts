@@ -1,21 +1,23 @@
 import { defaultRoles } from '@/domain/role/defaultRoles';
+import { IBuildingDTO } from '@/dto/IBuildingDTO';
+import { IConnectorDTO } from '@/dto/IConnectorDTO';
+import { IDeviceDTO } from '@/dto/IDeviceDTO';
+import { IDeviceModelDTO } from '@/dto/IDeviceModelDTO';
+import { IFloorDTO } from '@/dto/IFloorDTO';
+import { IRoomDTO } from '@/dto/IRoomDTO';
 import { IUserDTO } from '@/dto/IUserDTO';
+import IBuildingService from '@/services/IServices/IBuildingService';
+import IConnectorService from '@/services/IServices/IConnectorService';
+import IDeviceModelService from '@/services/IServices/IDeviceModelService';
+import IDeviceService from '@/services/IServices/IDeviceService';
+import IFloorService from '@/services/IServices/IFloorService';
 import IRoleService from '@/services/IServices/IRoleService';
+import IRoomService from '@/services/IServices/IRoomService';
 import IUserService from '@/services/IServices/IUserService';
 import { inject, injectable } from 'inversify';
 import { TYPES } from './inversify/types';
-import IBuildingService from '@/services/IServices/IBuildingService';
-import { IBuildingDTO } from '@/dto/IBuildingDTO';
-import { IFloorDTO } from '@/dto/IFloorDTO';
-import IFloorService from '@/services/IServices/IFloorService';
-import { IConnectorDTO } from '@/dto/IConnectorDTO';
-import IConnectorService from '@/services/IServices/IConnectorService';
-import { IRoomDTO } from '@/dto/IRoomDTO';
-import IRoomService from '@/services/IServices/IRoomService';
-import { IDeviceModelDTO } from '@/dto/IDeviceModelDTO';
-import IDeviceModelService from '@/services/IServices/IDeviceModelService';
-import { IDeviceDTO } from '@/dto/IDeviceDTO';
-import IDeviceService from '@/services/IServices/IDeviceService';
+import { IElevatorDTO } from '@/dto/IElevatorDTO';
+import IElevatorService from '@/services/IServices/IElevatorService';
 
 @injectable()
 export default class Bootstrapper {
@@ -27,7 +29,8 @@ export default class Bootstrapper {
     @inject(TYPES.connectorService) private connectorService: IConnectorService,
     @inject(TYPES.roomService) private roomService: IRoomService,
     @inject(TYPES.deviceModelService) private deviceModelService: IDeviceModelService,
-    @inject(TYPES.deviceService) private deviceService: IDeviceService
+    @inject(TYPES.deviceService) private deviceService: IDeviceService,
+    @inject(TYPES.elevatorService) private elevatorService: IElevatorService
   ) {}
 
   public async bootstrap() {
@@ -1654,7 +1657,7 @@ export default class Bootstrapper {
             [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
           ],
-          exits: [{ x: 9, y: 23, floorCode: 'C4' }],
+          exits: [{ x: 10, y: 22, floorCode: 'C4' }],
           elevator: { x: 1, y: 1 },
           exitLocation: { x: 1, y: 1 }
         },
@@ -2081,6 +2084,46 @@ export default class Bootstrapper {
       serialNumber: 'RBT3',
       isAvailable: true
     });
+
+    await this.loadElevator({
+      code: 1,
+      floorCodes: ['A1', 'A2'],
+      buildingCode: 'A',
+      brand: 'Schindler',
+      model: 'S3000',
+      serialNumber: 'E1',
+      description: 'Elevator of Building A'
+    });
+
+    await this.loadElevator({
+      code: 2,
+      floorCodes: ['B1', 'B2', 'B3'],
+      buildingCode: 'B',
+      brand: 'Schindler',
+      model: 'S3000',
+      serialNumber: 'E1',
+      description: 'Elevator of Building B'
+    });
+
+    await this.loadElevator({
+      code: 3,
+      floorCodes: ['C1', 'C2', 'C3', 'C4'],
+      buildingCode: 'C',
+      brand: 'Schindler',
+      model: 'S3000',
+      serialNumber: 'E1',
+      description: 'Elevator of Building C'
+    });
+
+    await this.loadElevator({
+      code: 4,
+      floorCodes: ['D1', 'D2', 'D3'],
+      buildingCode: 'D',
+      brand: 'Schindler',
+      model: 'S3000',
+      serialNumber: 'E1',
+      description: 'Elevator of Building D'
+    });
   }
 
   private async loadRole({
@@ -2207,6 +2250,24 @@ export default class Bootstrapper {
         description: device.description,
         serialNumber: device.serialNumber,
         isAvailable: device.isAvailable
+      });
+
+      if (res.isFailure) throw new Error(res.errorValue());
+    }
+  }
+
+  private async loadElevator(elevator: IElevatorDTO) {
+    const elevatorExists = await this.elevatorService.getElevatorForBuilding(elevator.buildingCode);
+
+    if (elevatorExists.isFailure) {
+      const res = await this.elevatorService.createElevator({
+        code: elevator.code,
+        floorCodes: elevator.floorCodes,
+        buildingCode: elevator.buildingCode,
+        brand: elevator.brand,
+        model: elevator.model,
+        serialNumber: elevator.serialNumber,
+        description: elevator.description
       });
 
       if (res.isFailure) throw new Error(res.errorValue());

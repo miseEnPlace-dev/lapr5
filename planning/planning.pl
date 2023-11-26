@@ -1,3 +1,5 @@
+:- module(planning, []).
+
 :- use_module(server).
 
 :-dynamic ligacel/3.
@@ -14,105 +16,11 @@
 %
 :-dynamic m/4.
 %m(piso,col,lin,valor)
-m(b1,1,1,1).
-m(b1,2,1,1).
-m(b1,3,1,1).
-m(b1,4,1,1).
-m(b1,5,1,1).
-m(b1,6,1,1).
-m(b1,7,1,1).
-m(b1,8,1,1).
-
-m(b1,1,2,0).
-m(b1,2,2,0).
-m(b1,3,2,0).
-m(b1,4,2,0).
-m(b1,5,2,0).
-m(b1,6,2,0).
-m(b1,7,2,0).
-m(b1,8,2,1).
-
-m(b1,1,3,0).
-m(b1,2,3,0).
-m(b1,3,3,0).
-m(b1,4,3,0).
-m(b1,5,3,0).
-m(b1,6,3,0).
-m(b1,7,3,0).
-m(b1,8,3,1).
-
-m(b1,1,4,0).
-m(b1,2,4,0).
-m(b1,3,4,0).
-m(b1,4,4,0).
-m(b1,5,4,0).
-m(b1,6,4,0).
-m(b1,7,4,0).
-m(b1,8,4,1).
-
-m(b1,1,5,1).
-m(b1,2,5,1).
-m(b1,3,5,1).
-m(b1,4,5,1).
-m(b1,5,5,0).
-m(b1,6,5,0).
-m(b1,7,5,0).
-m(b1,8,5,1).
-
-m(b1,1,6,1).
-m(b1,2,6,1).
-m(b1,3,6,1).
-m(b1,4,6,1).
-m(b1,5,6,0).
-m(b1,6,6,0).
-m(b1,7,6,0).
-m(b1,8,6,1).
-
-m(b1,1,7,1).
-m(b1,2,7,1).
-m(b1,3,7,1).
-m(b1,4,7,1).
-m(b1,5,7,0).
-m(b1,6,7,0).
-m(b1,7,7,0).
-m(b1,8,7,1).
-
 :-dynamic liga/2.
-liga(a,h).
-liga(b,g).
-liga(b,i).
-liga(g,h).
-liga(h,i).
-liga(i,j).
-
 :-dynamic pisos/2.
-pisos(a,[a1]).
-pisos(b,[b1,b2,b3,b4]).
-pisos(g,[g2,g3,g4]).
-pisos(h,[h1,h2,h3,h4]).
-pisos(i,[i1,i2,i3,i4]).
-pisos(j,[j1,j2,j3,j4]).
-
 :-dynamic elevador/2.
-elevador(b,[b1,b2,b3,b4]).
-elevador(g,[g2,g3,g4]).
-elevador(i,[i1,i2,i3,i4]).
-elevador(j,[j1,j2,j3,j4]).
-
 :-dynamic corredor/4.
-corredor(a,h,a1,h2).
-corredor(b,g,b2,g2).
-corredor(b,g,b3,g3).
-corredor(b,i,b3,i3).
-corredor(g,h,g2,h2).
-corredor(g,h,g3,h3).
-corredor(h,i,h2,i2).
-corredor(i,j,i1,j1).
-corredor(i,j,i2,j2).
-corredor(i,j,i3,j3).
-
-:- dynamic exit/4.
-exit(b2, c3, 1, 1).
+:-dynamic exit/4.
 
 caminho_edificios(EdOr,EdDest,LEdCam):-	caminho_edificios2(EdOr,EdDest,[EdOr],LEdCam).
 
@@ -178,15 +86,31 @@ cria_grafo(F,Col,Lin):-cria_grafo_lin(F,Col,Lin),Lin1 is Lin-1,cria_grafo(F,Col,
 
 
 cria_grafo_lin(_,0,_):-!.
-cria_grafo_lin(F,Col,Lin):-m(F,Col,Lin,0),!,ColS is Col+1, ColA is Col-1, LinS is Lin+1,LinA is Lin-1,
+cria_grafo_lin(F,Col,Lin):-(m(F,Col,Lin,0);m(F,Col,Lin,11);m(F,Col,Lin,12);m(F,Col,Lin,4);m(F,Col,Lin,5)),!,ColS is Col+1, ColA is Col-1, LinS is Lin+1,LinA is Lin-1,
     ((m(F,ColS,Lin,0),m(F,Col,LinS,0),m(F,ColS,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinS),sqrt(2)));true)),
-    ((m(F,ColS,Lin,0),m(F,Col,LinA,0),m(F,ColS,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinA),sqrt(2)));true)),
-    ((m(F,ColA,Lin,0),m(F,Col,LinA,0),m(F,ColA,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinA),sqrt(2)));true)),
-    ((m(F,ColA,Lin,0),m(F,Col,LinS,0),m(F,ColA,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinS),sqrt(2)));true)),
+   ((m(F,ColS,Lin,0),m(F,Col,LinA,0),m(F,ColS,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinA),sqrt(2)));true)),
+   ((m(F,ColA,Lin,0),m(F,Col,LinA,0),m(F,ColA,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinA),sqrt(2)));true)),
+   ((m(F,ColA,Lin,0),m(F,Col,LinS,0),m(F,ColA,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinS),sqrt(2)));true)),
     ((m(F,ColS,Lin,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),1));true)),
     ((m(F,ColA,Lin,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),1));true)),
     ((m(F,Col,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),1));true)),
     ((m(F,Col,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),1));true)),
+    ((m(F,ColS,Lin,11),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),1));true)),
+    ((m(F,ColA,Lin,11),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),1));true)),
+    ((m(F,Col,LinS,11),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),1));true)),
+    ((m(F,Col,LinA,11),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),1));true)),
+    ((m(F,ColS,Lin,12),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),1));true)),
+    ((m(F,ColA,Lin,12),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),1));true)),
+    ((m(F,Col,LinS,12),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),1));true)),
+    ((m(F,Col,LinA,12),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),1));true)),
+    ((m(F,ColS,Lin,4),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),1));true)),
+    ((m(F,ColA,Lin,4),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),1));true)),
+    ((m(F,Col,LinS,4),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),1));true)),
+    ((m(F,Col,LinA,4),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),1));true)),
+    ((m(F,ColS,Lin,5),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),1));true)),
+    ((m(F,ColA,Lin,5),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),1));true)),
+    ((m(F,Col,LinS,5),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),1));true)),
+    ((m(F,Col,LinA,5),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),1));true)),
     Col1 is Col-1,
     cria_grafo_lin(F,Col1,Lin).
 cria_grafo_lin(F,Col,Lin):-Col1 is Col-1,cria_grafo_lin(F,Col1,Lin).
@@ -250,7 +174,7 @@ aStar2(Dest,[(_,Custo,[Dest|T])|_],Cam,Custo):-
 aStar2(Dest,[(_,Ca,LA)|Outros],Cam,Custo):-
 	LA=[Act|_],
 	findall((CEX,CaX,[X|LA]),
-		(Dest\==Act,ligacel(Act,X,CustoX),\+ member(X,LA),
+		(Dest\==Act,(ligacel(Act,X,CustoX);ligacel(X,Act,CustoX)),\+ member(X,LA),
 		CaX is CustoX + Ca, estimativa(X,Dest,EstX),
 		CEX is CaX +EstX),Novos),
 	append(Outros,Novos,Todos),
@@ -259,8 +183,6 @@ aStar2(Dest,[(_,Ca,LA)|Outros],Cam,Custo):-
 
 estimativa(cel(F,X1,Y1),cel(F,X2,Y2),Estimativa):-
 	Estimativa is sqrt((X1-X2)^2+(Y1-Y2)^2).
-
-:- cria_grafo(_,8,7).
 
 load_data() :-
 	server:fetch_buildings(Buildings),
@@ -306,6 +228,8 @@ create_floors_matrix([H|T]) :-
 	L is H.map.maze.size.depth+1,
 	reverse(H.map.maze.map, H1),
 	create_floor_matrix(H.code, H1, W, L),
+	write("       cria_grafo"), write(H.code), write(","), write(H.map.maze.size.depth), write(","), write(H.map.maze.size.width), nl,
+	cria_grafo(H.code,H.map.maze.size.depth,H.map.maze.size.width),
 	create_floors_matrix(T).
 
 
@@ -325,7 +249,7 @@ create_floor_matrix(FloorCode, [H|T], Width, Length) :-
 
 create_floor_matrix_line(_, _, 0, _).
 create_floor_matrix_line(FloorCode, [H|T], Width, Col) :-
-	asserta(m(FloorCode, Width, Col, H)),
+	asserta(m(FloorCode, Col, Width, H)),
 	Width1 is Width - 1,
 	create_floor_matrix_line(FloorCode, T, Width1, Col).
 
@@ -349,23 +273,35 @@ create_connector(Connector) :-
 	asserta(corredor(Connector.floor1BuildingCode, Connector.floor2BuildingCode, Connector.floor1Code, Connector.floor2Code)).
 
 caminho_celulas_elevador(cel(F1,X1,Y1),cel(F2,X2,Y2),C) :-
+	write("caminho_celulas_elevador "), write(F1), write(" "), write(F2), nl,
 	melhor_caminho_pisos_elevadores(F1,F2,L),
-	caminho_celulas(L,cel(F1,X1,Y1),cel(F2,X2,Y2),C).
+	write(L),nl,
+	caminho_celulas_elevador(L,cel(F1,X1,Y1),cel(F2,X2,Y2),C).
 
 caminho_celulas_elevador([H|T],C1,C2,L) :-
 	H=..[cor,F1,F2],
-	exits(F1,Ex,Ey),
-	astar(C1,cel(F1,Ex,Ey),L1,_),
-	exits(F2,E1x,E1y),
+	write("corredor "), write(F1), write(" "), write(F2), nl,
+	exit(F1,F2,Ex,Ey),
+	write("exit "), write(F1), write(" "), write(F2), write(" "), write(Ex), write(" "), write(Ey), nl,
+	write("aStar "), write(C1), write(" "), write(cel(F1,Ex,Ey)), nl,
+	aStar(C1,cel(F1,Ex,Ey),L1,_),
+	exit(F2,F1,E1x,E1y),
 	caminho_celulas_elevador(T,cel(F2,E1x,E1y),C2,L2),
-	write(L1),nl,
 	append(L1,L2,L).
 
 caminho_celulas_elevador([H|T],C1,C2,L) :-
 	H=..[_,F1,F2],
+	write("elevador "), write(F1), write(" "), write(F2), nl,
 	(m(F1,Ex,Ey,4);m(F1,Ex,Ey,5)),
-	astar(C1,cel(F1,Ex,Ey),L1,_),
-	(m(F2,E1x,E1y,4);m(F2,E1x,E1y,5)),
+	aStar(C1,cel(F1,Ex,Ey),L1,_),
+	(m(F1,E1x,E1y,4);m(F1,E1x,E1y,5)),
 	caminho_celulas_elevador(T,cel(F2,E1x,E1y),C2,L2),
 	append(L1,L2,L).
+
+caminho_celulas_elevador([],C1,C2,L) :-
+	write("aStar "), write(C1), write(" "), write(C2), nl,
+	aStar(C1,C2,L,_).
+
+
+:- load_data().
 
