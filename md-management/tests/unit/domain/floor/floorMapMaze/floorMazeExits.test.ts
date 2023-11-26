@@ -2,17 +2,17 @@ import { FloorMazeExits } from '../../../../../src/domain/floor/floorMap/floorMa
 import { describe, expect, it } from 'vitest';
 
 describe('FloorMazeExits', () => {
-  it('should not allow to create a FloorMazeExits with an empty array', () => {
+  it('should allow to create a FloorMazeExits with an empty array', () => {
     const result = FloorMazeExits.create([]);
-    expect(result.isFailure).toBe(true);
+    expect(result.isSuccess).toBe(true);
   });
 
-  it('should allow to create a FloorMazeExits with ', () => {
-    const exits = [
-      { x: 1, y: 1 },
-      { x: 2, y: 2 }
+  it('should allow to create a FloorMazeExits', () => {
+    const exit = [
+      { x: 1, y: 1, floorCode: '123' },
+      { x: 2, y: 2, floorCode: '123' }
     ];
-    const result = FloorMazeExits.create(exits);
+    const result = FloorMazeExits.create(exit);
     expect(result.isSuccess).toBe(true);
   });
 });

@@ -28,7 +28,8 @@ describe('Building Mapper', () => {
         length: 1
       },
       description: 'description',
-      name: 'name'
+      name: 'name',
+      elevatorFloors: []
     };
 
     const building = Building.create({

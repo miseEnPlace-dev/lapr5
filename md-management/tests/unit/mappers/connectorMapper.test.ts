@@ -27,7 +27,9 @@ describe('Connector Mapper', () => {
   it('should map a connector to a dto', () => {
     const connectorDTO = {
       code: '1',
+      floor1BuildingCode: 'b1',
       floor1Code: 'f1',
+      floor2BuildingCode: 'b1',
       floor2Code: 'f2'
     };
 
