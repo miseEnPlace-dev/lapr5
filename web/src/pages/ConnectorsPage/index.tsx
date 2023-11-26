@@ -41,10 +41,9 @@ const ConnectorsPage: React.FC = () => {
       swal("Success", "Connector saved successfully", "success");
       setIsConnectorModalVisible(false);
     } catch (err: unknown) {
-      if (err instanceof AxiosError && err.response)
-        swal("Error", err.response.data.errors as string, "error");
-
-      swal("Error", err as string, "error");
+      if (err instanceof AxiosError)
+        swal("Error", err.response?.data.errors, "error");
+      else swal("Error", err as string, "error");
     }
   }
 
@@ -81,7 +80,7 @@ const ConnectorsPage: React.FC = () => {
   const { menuOptions } = useMenuOptions();
 
   return (
-    <div className="flex">
+    <main className="flex">
       <SideBar menuOptions={menuOptions} />
       <div className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
         <h1 className="text-4xl font-bold">Connectors</h1>
@@ -96,6 +95,7 @@ const ConnectorsPage: React.FC = () => {
               duration: 0.2,
               delay: connectors.length * ANIMATION_DELAY,
             }}
+            name="filter-connectors"
             onClick={() => setIsFilterModalVisible(true)}
             className={`flex w-full items-center justify-center gap-x-10 ${
               filters ? "bg-slate-400" : "bg-slate-300"
@@ -106,23 +106,25 @@ const ConnectorsPage: React.FC = () => {
               Filter Connectors between Buildings
             </div>
           </motion.button>
-          {connectors.map((c, i) => (
-            <motion.button
-              initial={{ opacity: 0, x: -100 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
-              key={c.code}
-              onClick={() => navigate(`/connectors/${c.code}`)}
-              className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
-            >
-              <h2 className="text-6xl font-bold">{c.code}</h2>
-              <div className="flex flex-col">
-                <div className="text-left text-sm text-slate-600">
-                  Floor {c.floor1Code} - Floor {c.floor2Code}
+          <div className="flex flex-col gap-y-6" aria-label="connectors-list">
+            {connectors.map((c, i) => (
+              <motion.button
+                initial={{ opacity: 0, x: -100 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
+                key={c.code}
+                onClick={() => navigate(`/connectors/${c.code}`)}
+                className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
+              >
+                <h2 className="text-6xl font-bold">{c.code}</h2>
+                <div className="flex flex-col">
+                  <div className="text-left text-sm text-slate-600">
+                    Floor {c.floor1Code} - Floor {c.floor2Code}
+                  </div>
                 </div>
-              </div>
-            </motion.button>
-          ))}
+              </motion.button>
+            ))}
+          </div>
           <motion.button
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
@@ -132,88 +134,92 @@ const ConnectorsPage: React.FC = () => {
             }}
             onClick={() => setIsConnectorModalVisible(true)}
             className="flex w-full items-center justify-center bg-secondary px-12 py-4 text-center text-5xl font-bold"
+            name="create-connector"
           >
             +
           </motion.button>
+        </div>
 
-          <Modal
-            setIsVisible={setIsConnectorModalVisible}
-            isVisible={isConnectorModalVisible}
-            title="Create Connector"
-          >
-            <div className="flex h-full flex-col justify-between gap-y-4">
-              <div className="flex w-full flex-col gap-y-4">
+        <Modal
+          setIsVisible={setIsConnectorModalVisible}
+          isVisible={isConnectorModalVisible}
+          title="Create Connector"
+        >
+          <div className="flex h-full flex-col justify-between gap-y-4">
+            <div className="flex w-full flex-col gap-y-4">
+              <Input
+                className="w-full"
+                placeholder="Code"
+                inputRef={codeInputRef}
+                name="code"
+              />
+              <div className="flex w-full flex-col items-center gap-x-8 gap-y-4 md:flex-row">
                 <Input
                   className="w-full"
-                  placeholder="Code"
-                  inputRef={codeInputRef}
+                  placeholder="Floor 1 Code"
+                  inputRef={floor1InputRef}
+                  name="floor1code"
                 />
-                <div className="flex w-full flex-col items-center gap-x-8 gap-y-4 md:flex-row">
-                  <Input
-                    className="w-full"
-                    placeholder="Floor 1 Code"
-                    inputRef={floor1InputRef}
-                  />
-                  <Input
-                    className="w-full"
-                    placeholder="Floor 2 Code"
-                    inputRef={floor2InputRef}
-                  />
-                </div>
+                <Input
+                  className="w-full"
+                  placeholder="Floor 2 Code"
+                  inputRef={floor2InputRef}
+                  name="floor2code"
+                />
               </div>
-              <Button name="save" onClick={handleSaveClick} type="confirm">
-                Save
-              </Button>
             </div>
-          </Modal>
+            <Button name="save" onClick={handleSaveClick} type="confirm">
+              Save
+            </Button>
+          </div>
+        </Modal>
 
-          <Modal
-            setIsVisible={setIsFilterModalVisible}
-            isVisible={isFilterModalVisible}
-            title="Filter Connectors between Buildings"
-          >
-            <div className="flex h-full flex-col justify-between gap-y-4">
-              <div className="flex w-full flex-col gap-y-4">
-                <div className="flex w-full flex-col gap-x-8 gap-y-4">
-                  <Dropdown
-                    className="w-full"
-                    placeholder="Building 1"
-                    inputRef={building1FilterInputRef}
-                    selected={filters ? filters[0] : undefined}
-                    name="Building 1"
-                    options={buildings}
-                  />
-                  <Dropdown
-                    className="w-full"
-                    placeholder="Building 2"
-                    inputRef={building2FilterInputRef}
-                    selected={filters ? filters[1] : undefined}
-                    name="Building 2"
-                    options={buildings}
-                  />
-                  {filters && (
-                    <Button
-                      name="removeFilter"
-                      onClick={handleRemoveFilter}
-                      type="reset"
-                    >
-                      Remove Filter
-                    </Button>
-                  )}
-                </div>
+        <Modal
+          setIsVisible={setIsFilterModalVisible}
+          isVisible={isFilterModalVisible}
+          title="Filter Connectors between Buildings"
+        >
+          <div className="flex h-full flex-col justify-between gap-y-4">
+            <div className="flex w-full flex-col gap-y-4">
+              <div className="flex w-full flex-col gap-x-8 gap-y-4">
+                <Dropdown
+                  className="w-full"
+                  placeholder="Building 1"
+                  inputRef={building1FilterInputRef}
+                  selected={filters ? filters[0] : undefined}
+                  name="Building 1"
+                  options={buildings}
+                />
+                <Dropdown
+                  className="w-full"
+                  placeholder="Building 2"
+                  inputRef={building2FilterInputRef}
+                  selected={filters ? filters[1] : undefined}
+                  name="Building 2"
+                  options={buildings}
+                />
+                {filters && (
+                  <Button
+                    name="removeFilter"
+                    onClick={handleRemoveFilter}
+                    type="reset"
+                  >
+                    Remove Filter
+                  </Button>
+                )}
               </div>
-              <Button
-                name="listfilter"
-                onClick={handleFilterClick}
-                type="confirm"
-              >
-                List
-              </Button>
             </div>
-          </Modal>
-        </div>
+            <Button
+              name="listfilter"
+              onClick={handleFilterClick}
+              type="confirm"
+            >
+              List
+            </Button>
+          </div>
+        </Modal>
       </div>
-    </div>
+    </main>
   );
 };
 

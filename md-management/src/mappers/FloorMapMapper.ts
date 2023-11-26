@@ -1,20 +1,20 @@
 import { Mapper } from '../core/infra/Mapper';
 
-import { UniqueEntityID } from '../core/domain/UniqueEntityID';
-import { FloorMap } from '@/domain/floor/floorMap/floorMap';
-import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
 import { IFloorMapPersistence } from '@/dataschema/IFloorMapPersistence';
-import { FloorMazeSize } from '@/domain/floor/floorMap/floorMaze/floorMazeSize';
+import { FloorMap } from '@/domain/floor/floorMap/floorMap';
+import { FloorMapDoor } from '@/domain/floor/floorMap/floorMapDoor';
+import { FloorMapElevator } from '@/domain/floor/floorMap/floorMapElevator';
+import { FloorMapGround } from '@/domain/floor/floorMap/floorMapGround';
+import { FloorMapPlayer } from '@/domain/floor/floorMap/floorMapPlayer';
+import { FloorMapWall } from '@/domain/floor/floorMap/floorMapWall';
+import { FloorMaze } from '@/domain/floor/floorMap/floorMaze/floorMaze';
 import { FloorMazeElevator } from '@/domain/floor/floorMap/floorMaze/floorMazeElevator';
 import { FloorMazeExitLocation } from '@/domain/floor/floorMap/floorMaze/floorMazeExitLocation';
 import { FloorMazeExits } from '@/domain/floor/floorMap/floorMaze/floorMazeExits';
 import { FloorMazeMatrix } from '@/domain/floor/floorMap/floorMaze/floorMazeMatrix';
-import { FloorMaze } from '@/domain/floor/floorMap/floorMaze/floorMaze';
-import { FloorMapPlayer } from '@/domain/floor/floorMap/floorMapPlayer';
-import { FloorMapDoor } from '@/domain/floor/floorMap/floorMapDoor';
-import { FloorMapElevator } from '@/domain/floor/floorMap/floorMapElevator';
-import { FloorMapWall } from '@/domain/floor/floorMap/floorMapWall';
-import { FloorMapGround } from '@/domain/floor/floorMap/floorMapGround';
+import { FloorMazeSize } from '@/domain/floor/floorMap/floorMaze/floorMazeSize';
+import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
+import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 
 export class FloorMapMapper extends Mapper<FloorMap> {
   public static toDTO(floorMap: FloorMap): IFloorMapDTO {
@@ -360,11 +360,11 @@ export class FloorMapMapper extends Mapper<FloorMap> {
         }
       },
       elevator: {
-        url: floorMap.door.url,
+        url: floorMap.elevator.url,
         scale: {
-          x: floorMap.door.scale.x,
-          y: floorMap.door.scale.y,
-          z: floorMap.door.scale.z
+          x: floorMap.elevator.scale.x,
+          y: floorMap.elevator.scale.y,
+          z: floorMap.elevator.scale.z
         }
       },
       wall: {

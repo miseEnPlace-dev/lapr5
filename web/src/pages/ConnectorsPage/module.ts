@@ -6,7 +6,6 @@ import { Building } from "@/model/Building";
 import { Connector } from "@/model/Connector";
 import { IBuildingService } from "@/service/IService/IBuildingService";
 import { IConnectorService } from "@/service/IService/IConnectorService";
-import { IFloorService } from "@/service/IService/IFloorService";
 
 export const useListConnectorsModule = () => {
   const connectorSvc = useInjection<IConnectorService>(TYPES.connectorService);
