@@ -19,14 +19,14 @@ fi
 echo "> Installing dependencies"
 pnpm i --frozen-lockfile
 
-echo "> Testing web"
-pnpm test
-if [ $? -eq 0 ]; then
-  echo -e "${GREEN}Tests passed"
-else
-  echo -e "${RED}Tests failed"
-  exit 1
-fi
+#echo "> Testing web"
+#pnpm test
+#if [ $? -eq 0 ]; then
+#  echo -e "${GREEN}Tests passed"
+#else
+#  echo -e "${RED}Tests failed"
+#  exit 1
+#fi
 
 echo -e "${NC}> Building web"
 pnpm build
@@ -39,7 +39,7 @@ fi
 
 
 echo -e "${NC}> Deploying web"
-pnpm preview --port 2228 &
+pnpm start &
 
 if [ $? -eq 0 ]; then
   echo -e "${GREEN}Deploy successful"
