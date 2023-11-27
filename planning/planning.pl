@@ -297,7 +297,7 @@ caminho_celulas([H|T],C1,C2,L) :-
 	H=..[_,F1,F2],
 	(m(F1,Ex,Ey,4);m(F1,Ex,Ey,5)),
 	aStar(C1,cel(F1,Ex,Ey),L1,_),
-	(m(F1,E1x,E1y,4);m(F1,E1x,E1y,5)),
+	(m(F2,E1x,E1y,4);m(F2,E1x,E1y,5)),
 	caminho_celulas(T,cel(F2,E1x,E1y),C2,L2),
 	append([elev(F1,F2)],L2,L3),
 	append(L1,L3,L).
