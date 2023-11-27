@@ -77,6 +77,7 @@ const DevicePage: React.FC = () => {
             placeholder="Description"
             defaultValue={device?.description}
             inputRef={descriptionInputRef}
+            name="Description"
           />
         </main>
 

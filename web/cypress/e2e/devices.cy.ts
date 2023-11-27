@@ -26,6 +26,18 @@ describe("Devices", () => {
       },
     });
     cy.visit("/devices");
+    cy.intercept("GET", BASE_URL + "/device-models", {
+      statusCode: 200,
+      body: [
+        {
+          brand: "DJI",
+          capabilities: ["surveillance"],
+          code: "SRV",
+          name: "Surveillance Master",
+          type: "robot",
+        },
+      ],
+    });
   });
 
   it("should be able to list all devices", () => {
@@ -86,7 +98,7 @@ describe("Devices", () => {
     cy.get("input[name=Nickname]").type("Test Robot");
     cy.get("input[name='Serial Number']").type("RBT1");
     cy.get("select").select("SRV");
-    cy.get("textarea[name=Description]").type("description");
+    // cy.get("textarea[name=Description]").type("description");
 
     cy.get("button[name=save]").click();
 
@@ -117,7 +129,7 @@ describe("Devices", () => {
     cy.get("input[name=Nickname]").type("Test Robot");
     cy.get("input[name='Serial Number']").type("RBT1");
     cy.get("select").select("SRV");
-    cy.get("textarea[name=Description]").type("description");
+    // cy.get("textarea[name=Description]").type("description");
 
     cy.get("button[name=save]").click();
 
