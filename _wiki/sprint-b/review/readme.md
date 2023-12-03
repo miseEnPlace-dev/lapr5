@@ -1,7 +1,17 @@
-# Sprint C Review
+# Sprint Review - Sprint B
 
-## Needs improve
+**Date:** 30/11/2023
+**Time:** 17:45  
+**Duration:** 20 min
 
-- Dependências de US, estimar tempo e prioridade;
-- evidencias da utilizacao do dor e dod;
-- documentar SGRAI;
+**Attendees:**  
+- Client Representative: Prof. Nuno Peralta
+- Development Team Members: André, Carlos, Ricardo, Tomás Lopes, Tomás Russo
+
+## What needs to be improved...
+
+- Define dependencies between User Stories;
+- Estimate User Stories and define priorities;
+- Create documentation for SGRAI project;
+- Write comments in Jira Issues to explain the use of DoD and DoR;
+- Connect Jira with GitHub (for connecting commits with issues).
