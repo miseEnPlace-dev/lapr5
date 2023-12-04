@@ -21,6 +21,7 @@ import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
 import PathsPage from "./pages/PathsPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage/page";
+import RegisterPage from "./pages/RegisterPage";
 import RoomsPage from "./pages/RoomsPage";
 import { RequireAuth } from "./utils/RequireAuth";
 
@@ -128,6 +129,7 @@ function App() {
               }
             />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             <Route
               path="/floor-editor"
               element={

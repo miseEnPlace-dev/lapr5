@@ -1,19 +1,25 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
+
+import { usePhoneNumber } from "@/hooks/usePhoneNumber";
 
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import AuthContext from "../../context/AuthContext";
 import { useEmail } from "../../hooks/useEmail";
 
-const LoginPage: React.FC = () => {
+const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const { state } = useLocation();
 
   const { email, setEmail, isEmailValid } = useEmail("");
   const [password, setPassword] = useState("");
+  const { phoneNumber, setPhoneNumber, isPhoneNumberValid } =
+    usePhoneNumber("");
+  const firstNameInputRef = useRef<HTMLInputElement>(null);
+  const lastNameInputRef = useRef<HTMLInputElement>(null);
 
   const handleLogin = () => {
     login(email, password)
@@ -42,6 +48,26 @@ const LoginPage: React.FC = () => {
           />
         </div>
         <form className="flex w-full flex-col gap-y-4">
+          <div className="flex w-full items-center gap-x-4">
+            <Input
+              placeholder="First name"
+              type="text"
+              className="w-full"
+              inputRef={firstNameInputRef}
+            />
+            <Input
+              placeholder="Last name"
+              className="w-full"
+              type="text"
+              inputRef={lastNameInputRef}
+            />
+          </div>
+          <Input
+            placeholder="Phone Number"
+            type="text"
+            value={phoneNumber}
+            onChange={setPhoneNumber}
+          />
           <Input
             placeholder="Email"
             type="email"
@@ -59,19 +85,19 @@ const LoginPage: React.FC = () => {
               e.preventDefault();
               handleLogin();
             }}
-            name="login"
-            disabled={!isEmailValid || !password}
+            name="register"
+            disabled={!isEmailValid || !password || !isPhoneNumberValid}
             className="mt-4 w-full"
           >
-            Login
+            Register
           </Button>
         </form>
-        <Link to="/register" className="text-slate-600 underline">
-          Don't have an account? Register here.
+        <Link to="/login" className="text-slate-600 underline">
+          Already have an account? Login here.
         </Link>
       </main>
     </div>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
