@@ -30,7 +30,7 @@ A User Story is considered **done** when it matches the following criteria:
 
 - The user story is implemented following the acceptance criteria
 - The user story is tested
-- The user story is documented considering the ARQSI requirements
+- The user story is documented considering the respective US requirements
 - The user story is reviewed by the team
 
 ## Group Members
