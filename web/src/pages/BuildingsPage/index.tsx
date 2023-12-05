@@ -30,9 +30,7 @@ const BuildingsPage: React.FC = () => {
     widthInputRef,
     filters,
     setFilters,
-    page,
     handlePagination,
-    itemsPerPage,
   } = useListBuildingsModule();
 
   const [isBuildingModalVisible, setIsBuildingModalVisible] = useState(false);
