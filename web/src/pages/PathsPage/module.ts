@@ -68,7 +68,7 @@ export const usePathsPageModule = () => {
   useEffect(() => {
     async function fetchBuildings() {
       const b = await buildingService.getBuildings();
-      setBuildings(b);
+      setBuildings(b.data);
     }
 
     fetchBuildings();

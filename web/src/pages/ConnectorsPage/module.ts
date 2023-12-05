@@ -34,7 +34,7 @@ export const useListConnectorsModule = () => {
 
   const fetchBuildings = useCallback(async () => {
     const buildings = await buildingsService.getBuildings();
-    setBuildings(buildings);
+    setBuildings(buildings.data);
   }, [buildingsService]);
 
   useEffect(() => {
