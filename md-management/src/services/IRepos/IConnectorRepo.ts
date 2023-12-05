@@ -12,4 +12,5 @@ export default interface IConnectorRepo extends Repo<Connector> {
   findBetweenFloors(floor1Id: UniqueEntityID, floor2Id: UniqueEntityID): Promise<Connector | null>;
   findBetweenMultipleFloors(ids1: UniqueEntityID[], ids2: UniqueEntityID[]): Promise<Connector[]>;
   findOfFloors(ids: UniqueEntityID[]): Promise<Connector[]>;
+  count(): Promise<number>;
 }

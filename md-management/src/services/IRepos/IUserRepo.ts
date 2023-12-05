@@ -6,4 +6,5 @@ export default interface IUserRepo extends Repo<User> {
   save(user: User): Promise<User>;
   findByEmail(email: UserEmail | string): Promise<User | null>;
   findById(id: string): Promise<User | null>;
+  count(): Promise<number>;
 }

@@ -22,6 +22,10 @@ export default class DeviceModelRepo implements IDeviceModelRepo {
     return null;
   }
 
+  public async count(): Promise<number> {
+    return await deviceModelSchema.count();
+  }
+
   public async exists(deviceModel: DeviceModel): Promise<boolean> {
     const idX = deviceModel.id;
 

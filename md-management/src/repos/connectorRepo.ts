@@ -23,6 +23,10 @@ export default class ConnectorRepo implements IConnectorRepo {
     return !!connectorDocument;
   }
 
+  public async count(): Promise<number> {
+    return await connectorSchema.count();
+  }
+
   public async save(connector: Connector): Promise<Connector> {
     const query = { domainId: connector.id } as FilterQuery<IConnectorPersistence & Document>;
 

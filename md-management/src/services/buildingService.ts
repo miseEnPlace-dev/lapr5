@@ -14,6 +14,7 @@ import IBuildingService from './IServices/IBuildingService';
 import { IBuildingDTO } from '@/dto/IBuildingDTO';
 import { BuildingMapper } from '@/mappers/BuildingMapper';
 import { Result } from '../core/logic/Result';
+import { IPaginationDTO } from '@/dto/IPaginationDTO';
 
 @injectable()
 export default class BuildingService implements IBuildingService {
@@ -119,8 +120,10 @@ export default class BuildingService implements IBuildingService {
 
   public async getBuildingsWithMinMaxFloors(
     min: number,
-    max: number
-  ): Promise<Result<IBuildingDTO[]>> {
+    max: number,
+    page: number = 1,
+    limit: number = 3
+  ): Promise<Result<IPaginationDTO<IBuildingDTO>>> {
     try {
       const buildingCodes = await this.floorRepo.findBuildingCodesWithMinMaxFloors(min, max);
       const buildings: Building[] = [];
@@ -130,17 +133,46 @@ export default class BuildingService implements IBuildingService {
         buildings.push(building);
       }
       const buildingsDTO = buildings.map(b => BuildingMapper.toDTO(b));
-      return Result.ok<IBuildingDTO[]>(buildingsDTO);
+
+      const start = (page - 1) * limit;
+      const total = buildingsDTO.length;
+
+      const result: IPaginationDTO<IBuildingDTO> = {
+        meta: {
+          limit,
+          page,
+          total,
+          totalPages: Math.ceil(total / limit)
+        },
+        data: buildingsDTO.slice(start, start + limit)
+      };
+
+      return Result.ok(result);
     } catch (e) {
       throw e;
     }
   }
 
-  public async getBuildings(): Promise<Result<IBuildingDTO[]>> {
+  public async getBuildings(
+    page: number = 1,
+    limit: number = 3
+  ): Promise<Result<IPaginationDTO<IBuildingDTO>>> {
     try {
-      const buildings = await this.buildingRepo.findAll();
+      const buildings = await this.buildingRepo.findAll(page - 1, limit);
       const buildingDTOs = buildings.map(b => BuildingMapper.toDTO(b));
-      return Result.ok<IBuildingDTO[]>(buildingDTOs);
+      const total = await this.buildingRepo.count();
+
+      const result: IPaginationDTO<IBuildingDTO> = {
+        meta: {
+          total,
+          limit,
+          page: page,
+          totalPages: Math.ceil(total / limit)
+        },
+        data: buildingDTOs
+      };
+
+      return Result.ok(result);
     } catch (e) {
       throw e;
     }

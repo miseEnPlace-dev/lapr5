@@ -18,6 +18,10 @@ export default class UserRepo implements IUserRepo {
     return !!userDocument;
   }
 
+  public async count(): Promise<number> {
+    return await userSchema.count();
+  }
+
   public async save(user: User): Promise<User> {
     const query = { domainId: user.id };
 

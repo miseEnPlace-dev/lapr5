@@ -23,6 +23,10 @@ export default class RoleRepo implements IRoleRepo {
     return !!roleDocument === true;
   }
 
+  public async count(): Promise<number> {
+    return await roleSchema.count();
+  }
+
   public async save(role: Role): Promise<Role> {
     const query: FilterQuery<IRolePersistence & Document> = { domainId: role.id.toString() };
 

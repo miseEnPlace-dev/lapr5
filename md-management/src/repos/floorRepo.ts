@@ -25,6 +25,10 @@ export default class FloorRepo implements IFloorRepo {
     return !!roleDocument;
   }
 
+  public async count(): Promise<number> {
+    return await floorSchema.count();
+  }
+
   public async findBuildingCodesWithMinMaxFloors(
     min: number,
     max: number
@@ -42,7 +46,9 @@ export default class FloorRepo implements IFloorRepo {
         }
       }
     ]);
-    return floors.map(f => BuildingCode.create(f._id).getValue());
+    return floors
+      .map(f => BuildingCode.create(f._id).getValue())
+      .sort((a, b) => a.value.localeCompare(b.value));
   }
 
   public async save(floor: Floor): Promise<Floor> {
