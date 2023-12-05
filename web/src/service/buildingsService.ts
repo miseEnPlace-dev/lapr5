@@ -3,6 +3,7 @@ import "reflect-metadata";
 import { inject, injectable } from "inversify";
 
 import { TYPES } from "../inversify/types";
+import { IPaginationDTO } from "@/dto/IPaginationDTO";
 
 import { Building } from "../model/Building";
 import { HttpService } from "./IService/HttpService";
@@ -12,11 +13,25 @@ import { IBuildingService } from "./IService/IBuildingService";
 export class BuildingService implements IBuildingService {
   constructor(@inject(TYPES.api) private http: HttpService) {}
 
-  async getBuildings(filters?: string[]): Promise<Building[]> {
-    const filter = filters
-      ? `?minFloors=${filters[0]}&maxFloors=${filters[1]}`
-      : "";
-    const response = await this.http.get<Building[]>("/buildings" + filter);
+  async getBuildings(
+    filters?: string[],
+    page: number = 0,
+    limit: number = 2
+  ): Promise<IPaginationDTO<Building>> {
+    const params = {} as { [key: string]: string };
+    if (filters) {
+      params["minFloors"] = filters[0];
+      params["maxFloors"] = filters[1];
+    }
+    if (page && limit) {
+      params["limit"] = limit.toString();
+      params["page"] = page.toString();
+    }
+
+    const response = await this.http.get<IPaginationDTO<Building>>(
+      "/buildings",
+      { params }
+    );
     const data = response.data;
     return data;
   }

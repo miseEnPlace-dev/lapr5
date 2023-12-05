@@ -7,6 +7,7 @@ import { useMenuOptions } from "@/hooks/useMenuOptions";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Modal from "@/components/Modal";
+import Pagination from "@/components/Pagination";
 import SideBar from "@/components/SideBar";
 import TextArea from "@/components/TextArea";
 import { FilterIcon } from "@/styles/Icons";
@@ -29,6 +30,9 @@ const BuildingsPage: React.FC = () => {
     widthInputRef,
     filters,
     setFilters,
+    page,
+    handlePagination,
+    itemsPerPage,
   } = useListBuildingsModule();
 
   const [isBuildingModalVisible, setIsBuildingModalVisible] = useState(false);
@@ -106,7 +110,7 @@ const BuildingsPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.2,
-              delay: buildings.length * ANIMATION_DELAY,
+              delay: buildings?.data.length || 0 * ANIMATION_DELAY,
             }}
             onClick={() => setIsFilterModalVisible(true)}
             className={`flex w-full items-center justify-center gap-x-10 ${
@@ -118,43 +122,51 @@ const BuildingsPage: React.FC = () => {
               Filter Buildings by Number of Floors
             </div>
           </motion.button>
-          {buildings.map((building, i) => (
-            <motion.button
-              initial={{ opacity: 0, x: -100 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
-              key={building.code}
-              onClick={() => navigate(`/buildings/${building.code}`)}
-              className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
-            >
-              <h2 className="text-6xl font-bold">{building.code}</h2>
-              <div className="flex flex-col">
-                <h3 className="text-left text-2xl font-bold">
-                  {building.name}
-                </h3>
-                <div className="text-left text-sm text-slate-600">
-                  {building.maxDimensions.length} x{" "}
-                  {building.maxDimensions.width}
-                  {building.description && (
-                    <span>&nbsp;&middot; {building.description}</span>
-                  )}
-                </div>
-              </div>
-            </motion.button>
-          ))}
           <motion.button
             name="create-building"
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.2,
-              delay: buildings.length * ANIMATION_DELAY,
+              delay: buildings?.data.length || 0 * ANIMATION_DELAY,
             }}
             onClick={() => setIsBuildingModalVisible(true)}
             className="flex w-full items-center justify-center bg-secondary px-12 py-4 text-center text-5xl font-bold"
           >
             +
           </motion.button>
+          {!buildings
+            ? null // TODO: skeleton component
+            : buildings.data.map((building, i) => (
+                <motion.button
+                  initial={{ opacity: 0, x: -100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
+                  key={building.code}
+                  onClick={() => navigate(`/buildings/${building.code}`)}
+                  className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
+                >
+                  <h2 className="text-6xl font-bold">{building.code}</h2>
+                  <div className="flex flex-col">
+                    <h3 className="text-left text-2xl font-bold">
+                      {building.name}
+                    </h3>
+                    <div className="text-left text-sm text-slate-600">
+                      {building.maxDimensions.length} x{" "}
+                      {building.maxDimensions.width}
+                      {building.description && (
+                        <span>&nbsp;&middot; {building.description}</span>
+                      )}
+                    </div>
+                  </div>
+                </motion.button>
+              ))}
+
+          <Pagination
+            meta={buildings?.meta}
+            changePage={handlePagination}
+            className="flex items-center justify-center gap-x-4"
+          />
 
           <Modal
             setIsVisible={setIsBuildingModalVisible}

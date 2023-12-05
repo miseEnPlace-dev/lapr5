@@ -2,14 +2,18 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useInjection } from "inversify-react";
 
 import { TYPES } from "../../inversify/types";
+import { IPaginationDTO } from "@/dto/IPaginationDTO";
 
 import { Building } from "../../model/Building";
 import { IBuildingService } from "../../service/IService/IBuildingService";
 
 export const useListBuildingsModule = () => {
   const buildingService = useInjection<IBuildingService>(TYPES.buildingService);
-  const [buildings, setBuildings] = useState<Building[]>([]);
+  const [buildings, setBuildings] = useState<IPaginationDTO<Building> | null>(
+    null
+  );
   const [filters, setFilters] = useState<string[] | null>(null);
+  const [page, setPage] = useState<number>(1);
 
   const codeInputRef = useRef<HTMLInputElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -17,21 +21,29 @@ export const useListBuildingsModule = () => {
   const widthInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
+  const itemsPerPage = 3;
+
   const fetchBuildings = useCallback(async () => {
     try {
-      let b: Building[];
-      if (!filters) b = await buildingService.getBuildings();
-      else b = await buildingService.getBuildings(filters);
+      let b = await buildingService.getBuildings(
+        filters || undefined,
+        page,
+        itemsPerPage
+      );
 
       setBuildings(b);
     } catch (e) {
-      setBuildings([]);
+      setBuildings({ data: [] });
     }
-  }, [buildingService, filters]);
+  }, [buildingService, filters, page]);
 
   useEffect(() => {
     fetchBuildings();
   }, [buildingService, fetchBuildings]);
+
+  const handlePagination = (page: number) => {
+    setPage(page);
+  };
 
   const handleSave = async () => {
     if (
@@ -65,5 +77,8 @@ export const useListBuildingsModule = () => {
     handleSave,
     filters,
     setFilters,
+    page,
+    handlePagination,
+    itemsPerPage,
   };
 };
