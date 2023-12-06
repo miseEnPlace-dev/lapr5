@@ -5,8 +5,9 @@ import { z } from 'zod';
 import { container } from '@/loaders/inversify';
 
 import IUserController from '@/controllers/IControllers/IUserController';
+import { defaultRoles } from '@/domain/role/defaultRoles';
 import { TYPES } from '@/loaders/inversify/types';
-import { attachCurrentSession, isAuthenticated, validate } from '../middlewares/';
+import { attachCurrentSession, isAuthenticated, isAuthorizedAs, validate } from '../middlewares/';
 
 const signUpSchema = z.object({
   firstName: z
@@ -52,6 +53,20 @@ export default (app: Router) => {
     // #swagger.responses[200] = { description: 'The created user' }
     // #swagger.responses[400] = { description: 'Invalid input' }
     userController.signUp(req, res, next)
+  );
+
+  route.patch(
+    '/users/:id',
+    isAuthenticated,
+    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.admin.name),
+    (req, res, next) =>
+      // #swagger.tags = ['Users']
+      // #swagger.summary = 'Activate user'
+      // #swagger.description = 'Activate a user'
+      // #swagger.parameters['id'] = { description: 'User id', in: 'path', required: true }
+      // #swagger.responses[200] = { description: 'The activated user' }
+      // #swagger.responses[400] = { description: 'Invalid input' }
+      userController.activateUser(req, res, next)
   );
 
   route.delete('/users', isAuthenticated, attachCurrentSession, (req, res, next) =>
