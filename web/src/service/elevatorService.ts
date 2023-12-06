@@ -11,10 +11,13 @@ import { IElevatorService } from "./IService/IElevatorService";
 
 @injectable()
 export class ElevatorService implements IElevatorService {
-  constructor(@inject(TYPES.api) private http: HttpService) {}
+  constructor(
+    @inject(TYPES.api) private http: HttpService,
+    @inject(TYPES.localStorage) private localStorage: Storage
+  ) {}
 
   async getBuildingElevator(buildingCode: string): Promise<Elevator | null> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http.get<Elevator>(
       `/buildings/${buildingCode}/elevators`,
@@ -33,7 +36,7 @@ export class ElevatorService implements IElevatorService {
     buildingCode: string,
     elevator: Elevator
   ): Promise<Elevator> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http
       .post<Elevator>(`/buildings/${buildingCode}/elevators`, elevator, {
@@ -53,7 +56,7 @@ export class ElevatorService implements IElevatorService {
     buildingCode: string,
     elevator: Partial<Elevator>
   ): Promise<Elevator> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http
       .put<Elevator>(`/buildings/${buildingCode}/elevators`, elevator, {

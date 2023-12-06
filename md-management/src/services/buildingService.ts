@@ -12,9 +12,9 @@ import IFloorRepo from './IRepos/IFloorRepo';
 import IBuildingService from './IServices/IBuildingService';
 
 import { IBuildingDTO } from '@/dto/IBuildingDTO';
+import { IPaginationDTO } from '@/dto/IPaginationDTO';
 import { BuildingMapper } from '@/mappers/BuildingMapper';
 import { Result } from '../core/logic/Result';
-import { IPaginationDTO } from '@/dto/IPaginationDTO';
 
 @injectable()
 export default class BuildingService implements IBuildingService {

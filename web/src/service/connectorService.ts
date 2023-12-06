@@ -12,7 +12,10 @@ import { IConnectorService } from "./IService/IConnectorService";
 
 @injectable()
 export class ConnectorService implements IConnectorService {
-  constructor(@inject(TYPES.api) private http: HttpService) {}
+  constructor(
+    @inject(TYPES.api) private http: HttpService,
+    @inject(TYPES.localStorage) private localStorage: Storage
+  ) {}
 
   async getConnectors(
     buildingCodes?: string[],
@@ -29,7 +32,7 @@ export class ConnectorService implements IConnectorService {
       params["page"] = page.toString();
     }
 
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http.get<IPaginationDTO<Connector>>(
       "/connectors",
@@ -40,7 +43,7 @@ export class ConnectorService implements IConnectorService {
   }
 
   async getConnectorWithCode(code: string): Promise<Connector> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http.get<Connector>(`/connectors/${code}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -50,7 +53,7 @@ export class ConnectorService implements IConnectorService {
   }
 
   async createConnector(connector: Connector): Promise<Connector> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http
       .post<Connector>("/connectors", connector, {
@@ -69,7 +72,7 @@ export class ConnectorService implements IConnectorService {
   }
 
   async updateConnector(connector: Connector): Promise<Connector> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const res = await this.http
       .patch<Connector>(`/connectors/${connector.code}`, connector, {

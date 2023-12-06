@@ -12,7 +12,10 @@ import { IBuildingService } from "./IService/IBuildingService";
 
 @injectable()
 export class BuildingService implements IBuildingService {
-  constructor(@inject(TYPES.api) private http: HttpService) {}
+  constructor(
+    @inject(TYPES.api) private http: HttpService,
+    @inject(TYPES.localStorage) private localStorage: Storage
+  ) {}
 
   async getBuildings(
     filters?: string[],
@@ -29,7 +32,7 @@ export class BuildingService implements IBuildingService {
       params["page"] = page.toString();
     }
 
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
     const response = await this.http.get<IPaginationDTO<Building>>(
       "/buildings",
       { params, headers: { Authorization: `Bearer ${token}` } }
@@ -39,7 +42,7 @@ export class BuildingService implements IBuildingService {
   }
 
   async getBuildingWithCode(code: string): Promise<Building> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http.get<Building>(`/buildings/${code}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -49,7 +52,7 @@ export class BuildingService implements IBuildingService {
   }
 
   async createBuilding(building: Building): Promise<Building> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http
       .post<Building>("/buildings", building, {
@@ -68,7 +71,7 @@ export class BuildingService implements IBuildingService {
   }
 
   async updateBuilding(building: Building): Promise<Building> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http
       .put<Building>(`/buildings/${building.code}`, building, {

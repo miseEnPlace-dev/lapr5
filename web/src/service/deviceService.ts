@@ -11,7 +11,10 @@ import { IDeviceService } from "./IService/IDeviceService";
 
 @injectable()
 export class DeviceService implements IDeviceService {
-  constructor(@inject(TYPES.api) private http: HttpService) {}
+  constructor(
+    @inject(TYPES.api) private http: HttpService,
+    @inject(TYPES.localStorage) private localStorage: Storage
+  ) {}
 
   async getDevicesRobots(
     filter?: "task" | "model",
@@ -19,7 +22,7 @@ export class DeviceService implements IDeviceService {
   ): Promise<Device[]> {
     let response;
 
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     if (filter)
       response = await this.http.get<Device[]>(
@@ -42,7 +45,7 @@ export class DeviceService implements IDeviceService {
   }
 
   async createDevice(device: Device): Promise<Device> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http
       .post<Device>("/devices", device, {
@@ -61,7 +64,7 @@ export class DeviceService implements IDeviceService {
   }
 
   async getDevice(deviceCode: string): Promise<Device> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http
       .get<Device>(`/devices/${deviceCode}`, {
@@ -78,7 +81,7 @@ export class DeviceService implements IDeviceService {
   }
 
   async inhibitDevice(deviceCode: string): Promise<Device> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http
       .patch<Device>(

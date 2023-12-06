@@ -12,10 +12,13 @@ import { IFloorService } from "./IService/IFloorService";
 
 @injectable()
 export class FloorService implements IFloorService {
-  constructor(@inject(TYPES.api) private http: HttpService) {}
+  constructor(
+    @inject(TYPES.api) private http: HttpService,
+    @inject(TYPES.localStorage) private localStorage: Storage
+  ) {}
 
   async getAllFloors(): Promise<Floor[]> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http.get<Floor[]>("/floors", {
       headers: { Authorization: `Bearer ${token}` },
@@ -26,7 +29,7 @@ export class FloorService implements IFloorService {
   }
 
   async createFloor(buildingId: string, floor: Floor): Promise<Floor> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http
       .post<Floor>(`/buildings/${buildingId}/floors`, floor, {
@@ -43,7 +46,7 @@ export class FloorService implements IFloorService {
   }
 
   async updateFloor(buildingId: string, floor: Floor): Promise<Floor> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http.put<Floor>(
       `/buildings/${buildingId}/floors/${floor.code}`,
@@ -58,7 +61,7 @@ export class FloorService implements IFloorService {
   }
 
   async getFloor(buildingId: string, floorId: string): Promise<Floor> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http.get<Floor>(
       `/buildings/${buildingId}/floors/${floorId}`,
@@ -76,7 +79,7 @@ export class FloorService implements IFloorService {
     const filter =
       filters && filters.length ? "?filter=" + filters.join(",") : "";
 
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http.get<Floor[]>(
       `/buildings/${buildingCode}/floors${filter}`,
@@ -92,7 +95,7 @@ export class FloorService implements IFloorService {
     floorCode: string,
     map: string
   ): Promise<FloorMap> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http.patch<FloorMap>(
       `/buildings/${buildingId}/floors/${floorCode}`,

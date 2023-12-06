@@ -11,10 +11,13 @@ import { IDeviceModelService } from "./IService/IDeviceModelService";
 
 @injectable()
 export class DeviceModelService implements IDeviceModelService {
-  constructor(@inject(TYPES.api) private http: HttpService) {}
+  constructor(
+    @inject(TYPES.api) private http: HttpService,
+    @inject(TYPES.localStorage) private localStorage: Storage
+  ) {}
 
   async getDeviceModels(): Promise<DeviceModel[]> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http.get<DeviceModel[]>("/device-models", {
       headers: {
@@ -26,7 +29,7 @@ export class DeviceModelService implements IDeviceModelService {
   }
 
   async getDeviceModelWithCode(code: string): Promise<DeviceModel> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http.get<DeviceModel>(
       `/device-models/${code}`,
@@ -39,7 +42,7 @@ export class DeviceModelService implements IDeviceModelService {
   }
 
   async createDeviceModel(building: DeviceModel): Promise<DeviceModel> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http
       .post<DeviceModel>("/device-models", building, {
@@ -56,7 +59,7 @@ export class DeviceModelService implements IDeviceModelService {
   }
 
   async updateDeviceModel(deviceModel: DeviceModel): Promise<DeviceModel> {
-    const token = localStorage.getItem(localStorageConfig.token);
+    const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http
       .put<DeviceModel>(`/device-models/${deviceModel.code}`, deviceModel, {
