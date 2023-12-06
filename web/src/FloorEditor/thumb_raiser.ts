@@ -1417,10 +1417,6 @@ export default class ThumbRaiser {
     }
     // Set the final action
     this.animations.fadeToAction("Dance", 0.2);
-    // Stop the introduction clip and play dance and end clips
-    this.audio.stop(this.audio.introductionClips);
-    this.audio.play(this.audio.danceClips, false);
-    this.audio.play(this.audio.endClips, false);
   }
 
   update() {
@@ -1653,7 +1649,11 @@ export default class ThumbRaiser {
         const f = this.maze.foundExit(this.player.position);
         if (f) {
           console.log({ f });
-          this.finalSequence();
+          //this.finalSequence();
+          const mazeIndex = this.mazeParameters.mazes.findIndex(
+            (maze) => maze.name === f
+          );
+          this.updateMaze(mazeIndex);
         } else {
           let coveredDistance = this.player.walkingSpeed * deltaT;
           let directionIncrement = this.player.turningSpeed * deltaT;
