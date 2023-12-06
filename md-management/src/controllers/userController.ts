@@ -25,6 +25,18 @@ export default class UserController implements IUserController {
     }
   }
 
+  async activateUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await this.userService.activateUser(req.params.token);
+
+      if (result.isFailure) return res.status(400).json({ message: result.errorValue() });
+
+      return res.status(204).send();
+    } catch (e) {
+      return next(e);
+    }
+  }
+
   public async getMe(req: Request & { session: ISessionDTO }, res: Response) {
     return res.status(200).json(req.session);
   }

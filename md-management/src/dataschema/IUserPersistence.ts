@@ -7,4 +7,5 @@ export interface IUserPersistence {
   phoneNumber: string;
   salt: string;
   role: string;
+  state: string;
 }

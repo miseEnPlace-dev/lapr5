@@ -16,7 +16,9 @@ import { UserPassword } from '../domain/user/userPassword';
 
 import { Role } from '../domain/role/role';
 
+import { defaultRoles } from '@/domain/role/defaultRoles';
 import { PhoneNumber } from '@/domain/user/phoneNumber';
+import { UserState } from '@/domain/user/userState';
 import { TYPES } from '@/loaders/inversify/types';
 import { inject, injectable } from 'inversify';
 import { Result } from '../core/logic/Result';
@@ -65,7 +67,8 @@ export default class UserService implements IUserService {
         phoneNumber: phoneNumberOrError.getValue(),
         email: emailOrError.getValue(),
         role,
-        password
+        password,
+        state: role.title.value === defaultRoles.user.title ? UserState.PENDING : UserState.ACTIVE
       });
 
       if (userOrError.isFailure) throw Result.fail<IUserDTO>(userOrError.errorValue());
@@ -144,6 +147,15 @@ export default class UserService implements IUserService {
       },
       config.jwtSecret
     );
+  }
+
+  async activateUser(userId: string): Promise<Result<void>> {
+    const user = await this.userRepo.findById(userId);
+    if (!user) return Result.fail<void>('User not found');
+
+    user.state = UserState.ACTIVE;
+    await this.userRepo.save(user);
+    return Result.ok<void>();
   }
 
   async findUserById(userId: string): Promise<Result<IUserDTO>> {
