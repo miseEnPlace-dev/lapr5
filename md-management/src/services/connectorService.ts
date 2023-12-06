@@ -81,7 +81,10 @@ export default class ConnectorService implements IConnectorService {
     }
   }
 
-  public async getAllConnectors(page: number = 1, limit: number = 3) {
+  public async getAllConnectors(
+    page: number = 1,
+    limit: number = 3
+  ): Promise<Result<IPaginationDTO<IConnectorDTO>>> {
     try {
       const connectors = await this.connectorRepo.findAll(page - 1, limit);
       const connectorsDTO = connectors.map(connector => ConnectorMapper.toDTO(connector));
@@ -91,13 +94,13 @@ export default class ConnectorService implements IConnectorService {
         meta: {
           total,
           limit,
-          page: page,
+          page,
           totalPages: Math.ceil(total / limit)
         },
         data: connectorsDTO
       };
 
-      return Result.ok(result);
+      return Result.ok<IPaginationDTO<IConnectorDTO>>(result);
     } catch (e) {
       throw e;
     }

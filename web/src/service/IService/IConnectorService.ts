@@ -5,7 +5,7 @@ export interface IConnectorService {
   getConnectors(
     buildingCodes?: string[],
     page?: number,
-    count?: number
+    limit?: number
   ): Promise<IPaginationDTO<Connector>>;
   getConnectorWithCode(code: string): Promise<Connector>;
   createConnector(connector: Connector): Promise<Connector>;
