@@ -52,4 +52,17 @@ export default class UserController implements IUserController {
       return next(e);
     }
   }
+
+  async deleteUser(req: Request & { session: ISessionDTO }, res: Response, next: NextFunction) {
+    try {
+      const result = await this.userService.deleteUser(req.session.id);
+
+      if (result.isFailure) return res.status(400).json({ message: result.errorValue() });
+
+      return res.status(204).send();
+    } catch (e) {
+      console.error('🔥 error %o', e);
+      return next(e);
+    }
+  }
 }

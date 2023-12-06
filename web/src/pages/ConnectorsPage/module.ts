@@ -28,7 +28,7 @@ export const useListConnectorsModule = () => {
 
   const fetchConnectors = useCallback(async () => {
     try {
-      let b = await connectorSvc.getConnectors(
+      const b = await connectorSvc.getConnectors(
         filters || undefined,
         page,
         itemsPerPage

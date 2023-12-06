@@ -6,4 +6,5 @@ export default interface IUserService {
   signIn(email: string, password: string): Promise<Result<{ userDTO: IUserDTO; token: string }>>;
   findUserById(userId: string): Promise<Result<IUserDTO>>;
   findByEmail(email: string): Promise<Result<IUserDTO>>;
+  deleteUser(userId: string): Promise<Result<void>>;
 }

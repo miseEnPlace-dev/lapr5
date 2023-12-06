@@ -1,4 +1,7 @@
 import { createElement, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { sanitizeRole } from "@/utils/sanitizeRole";
 
 import AuthContext from "../../context/AuthContext";
 
@@ -11,15 +14,14 @@ interface SideBarProps {
 }
 const SideBar: React.FC<SideBarProps> = ({ menuOptions }) => {
   const { role, username } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   if (!role) return <></>;
 
-  const sanitizedRole =
-    role === "user"
-      ? "User"
-      : role.charAt(0).toUpperCase() + role.slice(1) + " Manager";
+  const sanitizedRole = sanitizeRole(role);
 
   return (
-    <nav className="grid h-screen w-1/4 max-w-sm grid-rows-[1fr_4fr_1fr] bg-primary pt-12">
+    <nav className="grid min-h-screen w-1/4 max-w-sm grid-rows-[1fr_4fr_1fr] bg-primary pt-12">
       <img
         src="/assets/logos/light-reverse/png/logo-no-background.png"
         alt="Logo"
@@ -40,7 +42,10 @@ const SideBar: React.FC<SideBarProps> = ({ menuOptions }) => {
         ))}
       </ul>
 
-      <div className="ml-12 flex items-center justify-start gap-x-4">
+      <button
+        className="ml-12 flex items-center justify-start gap-x-4"
+        onClick={() => navigate("/profile")}
+      >
         <img
           src="/assets/avatar.jpg"
           alt="Avatar"
@@ -50,7 +55,7 @@ const SideBar: React.FC<SideBarProps> = ({ menuOptions }) => {
           <h1 className="text-xl font-bold text-white">{username}</h1>
           <p className="text-sm text-white">{sanitizedRole}</p>
         </div>
-      </div>
+      </button>
     </nav>
   );
 };

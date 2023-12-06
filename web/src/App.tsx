@@ -21,9 +21,11 @@ import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
 import PathsPage from "./pages/PathsPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage/page";
+import ProfilePage from "./pages/ProfilePage";
 import RegisterPage from "./pages/RegisterPage";
 import RoomsPage from "./pages/RoomsPage";
 import { RequireAuth } from "./utils/RequireAuth";
+import { RequireRole } from "./utils/RequireRole";
 
 function App() {
   return (
@@ -44,7 +46,9 @@ function App() {
               path="/buildings"
               element={
                 <RequireAuth>
-                  <BuildingsPage />
+                  <RequireRole role="campus">
+                    <BuildingsPage />
+                  </RequireRole>
                 </RequireAuth>
               }
             />
@@ -52,7 +56,9 @@ function App() {
               path="/connectors"
               element={
                 <RequireAuth>
-                  <ConnectorsPage />
+                  <RequireRole role="campus">
+                    <ConnectorsPage />
+                  </RequireRole>
                 </RequireAuth>
               }
             />
@@ -60,7 +66,9 @@ function App() {
               path="/device-models"
               element={
                 <RequireAuth>
-                  <DeviceModelsPage />
+                  <RequireRole role="fleet">
+                    <DeviceModelsPage />
+                  </RequireRole>
                 </RequireAuth>
               }
             />
@@ -68,7 +76,9 @@ function App() {
               path="/devices"
               element={
                 <RequireAuth>
-                  <DevicesPage />
+                  <RequireRole role="fleet">
+                    <DevicesPage />
+                  </RequireRole>
                 </RequireAuth>
               }
             />
@@ -76,7 +86,9 @@ function App() {
               path="/buildings/:buildingCode"
               element={
                 <RequireAuth>
-                  <BuildingPage />
+                  <RequireRole role="campus">
+                    <BuildingPage />
+                  </RequireRole>
                 </RequireAuth>
               }
             />
@@ -84,7 +96,9 @@ function App() {
               path="/buildings/:buildingCode/floors"
               element={
                 <RequireAuth>
-                  <FloorsPage />
+                  <RequireRole role="campus">
+                    <FloorsPage />
+                  </RequireRole>
                 </RequireAuth>
               }
             />
@@ -92,7 +106,9 @@ function App() {
               path="/buildings/:buildingCode/floors/:floorCode"
               element={
                 <RequireAuth>
-                  <FloorPage />
+                  <RequireRole role="campus">
+                    <FloorPage />
+                  </RequireRole>
                 </RequireAuth>
               }
             />
@@ -100,7 +116,9 @@ function App() {
               path="/buildings/:buildingCode/floors/:floorCode/rooms"
               element={
                 <RequireAuth>
-                  <RoomsPage />
+                  <RequireRole role="campus">
+                    <RoomsPage />
+                  </RequireRole>
                 </RequireAuth>
               }
             />
@@ -108,7 +126,9 @@ function App() {
               path="/connectors/:code"
               element={
                 <RequireAuth>
-                  <ConnectorPage />
+                  <RequireRole role="campus">
+                    <ConnectorPage />
+                  </RequireRole>
                 </RequireAuth>
               }
             />
@@ -116,7 +136,9 @@ function App() {
               path="/device-models/:deviceModelCode"
               element={
                 <RequireAuth>
-                  <DeviceModelPage />
+                  <RequireRole role="fleet">
+                    <DeviceModelPage />
+                  </RequireRole>
                 </RequireAuth>
               }
             />
@@ -124,7 +146,9 @@ function App() {
               path="/devices/robots/:deviceCode"
               element={
                 <RequireAuth>
-                  <DevicePage />
+                  <RequireRole role="fleet">
+                    <DevicePage />
+                  </RequireRole>
                 </RequireAuth>
               }
             />
@@ -135,6 +159,14 @@ function App() {
               element={
                 <RequireAuth>
                   <FloorEditor />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <RequireAuth>
+                  <ProfilePage />
                 </RequireAuth>
               }
             />

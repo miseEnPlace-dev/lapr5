@@ -5,4 +5,5 @@ export default interface IUserController {
   signIn(req: Request, res: Response, next?: NextFunction): Promise<Response | void>;
   signOut(req: Request, res: Response, next?: NextFunction): Promise<Response | void>;
   getMe(req: Request, res: Response, next?: NextFunction): Promise<Response | void>;
+  deleteUser(req: Request, res: Response, next?: NextFunction): Promise<Response | void>;
 }

@@ -54,6 +54,16 @@ export default (app: Router) => {
     userController.signUp(req, res, next)
   );
 
+  route.delete('/users', isAuthenticated, attachCurrentSession, (req, res, next) =>
+    // #swagger.tags = ['Users']
+    // #swagger.summary = 'Delete user'
+    // #swagger.description = 'Delete a user'
+    // #swagger.parameters['id'] = { description: 'User id', in: 'path', required: true }
+    // #swagger.responses[200] = { description: 'The deleted user' }
+    // #swagger.responses[400] = { description: 'Invalid input' }
+    userController.deleteUser(req, res, next)
+  );
+
   route.post('/users/login', validate(signInSchema), (req, res, next) =>
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Sign in'

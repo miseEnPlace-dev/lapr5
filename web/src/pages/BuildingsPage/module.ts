@@ -25,7 +25,7 @@ export const useListBuildingsModule = () => {
 
   const fetchBuildings = useCallback(async () => {
     try {
-      let b = await buildingService.getBuildings(
+      const b = await buildingService.getBuildings(
         filters || undefined,
         page,
         itemsPerPage

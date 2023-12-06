@@ -70,4 +70,11 @@ export default class UserRepo implements IUserRepo {
 
     return null;
   }
+
+  async delete(id: string): Promise<void> {
+    const query = { domainId: id };
+
+    const result = await userSchema.deleteOne(query);
+    if (!result) throw new Error('User not deleted');
+  }
 }

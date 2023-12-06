@@ -162,6 +162,14 @@ export default class UserService implements IUserService {
     return Result.ok<IUserDTO>(userDTO);
   }
 
+  async deleteUser(userId: string): Promise<Result<void>> {
+    const user = await this.userRepo.findById(userId);
+    if (!user) return Result.fail<void>('User not found');
+
+    await this.userRepo.delete(userId);
+    return Result.ok<void>();
+  }
+
   private async getRole(name: string): Promise<Result<Role>> {
     const role = await this.roleRepo.findByName(name);
     const found = !!role;
