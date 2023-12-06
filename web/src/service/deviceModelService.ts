@@ -8,18 +8,25 @@ import { localStorageConfig } from "@/config/localStorageConfig";
 import { DeviceModel } from "../model/DeviceModel";
 import { HttpService } from "./IService/HttpService";
 import { IDeviceModelService } from "./IService/IDeviceModelService";
+import { IPaginationDTO } from "@/dto/IPaginationDTO";
 
 @injectable()
 export class DeviceModelService implements IDeviceModelService {
   constructor(
     @inject(TYPES.api) private http: HttpService,
     @inject(TYPES.localStorage) private localStorage: Storage
-  ) {}
+  ) { }
 
-  async getDeviceModels(): Promise<DeviceModel[]> {
+  async getDeviceModels(page: number = 0, limit: number = 2): Promise<IPaginationDTO<DeviceModel>> {
     const token = this.localStorage.getItem(localStorageConfig.token);
 
-    const response = await this.http.get<DeviceModel[]>("/device-models", {
+    const params = {} as { [key: string]: string };
+
+    params["limit"] = limit.toString();
+    params["page"] = page.toString();
+
+    const response = await this.http.get<IPaginationDTO<DeviceModel>>("/device-models", {
+      params,
       headers: {
         Authorization: `Bearer ${token}`,
       },

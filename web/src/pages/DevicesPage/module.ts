@@ -14,7 +14,7 @@ export const useListDeviceModule = () => {
     TYPES.deviceModelService
   );
   const [devices, setDevices] = useState<IPaginationDTO<Device> | null>(null);
-  const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]);
+  const [deviceModels, setDeviceModels] = useState<IPaginationDTO<DeviceModel> | null>(null);
   const [modelFilter, setModelFilter] = useState<string | null>(null);
   const [taskFilter, setTaskFilter] = useState<string | null>(null);
 
@@ -29,7 +29,7 @@ export const useListDeviceModule = () => {
   const taskFilterInputRef = useRef<HTMLSelectElement>(null);
   const modelFilterInputRef = useRef<HTMLSelectElement>(null);
 
-  const itemsPerPage = 2;
+  const itemsPerPage = 3;
 
   const fetchDevices = useCallback(async () => {
     try {
@@ -51,8 +51,7 @@ export const useListDeviceModule = () => {
   };
 
   const fetchDeviceModels = useCallback(async () => {
-    const deviceModels = await deviceModelService.getDeviceModels();
-    console.log(deviceModels);
+    const deviceModels = await deviceModelService.getDeviceModels(page, itemsPerPage);
     setDeviceModels(deviceModels);
   }, [deviceModelService]);
 

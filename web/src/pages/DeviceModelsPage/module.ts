@@ -5,12 +5,15 @@ import { TYPES } from "../../inversify/types";
 
 import { DeviceModel } from "../../model/DeviceModel";
 import { IDeviceModelService } from "../../service/IService/IDeviceModelService";
+import { IPaginationDTO } from "@/dto/IPaginationDTO";
 
 export const useListDeviceModelModule = () => {
   const deviceModelService = useInjection<IDeviceModelService>(
     TYPES.deviceModelService
   );
-  const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]);
+  const [deviceModels, setDeviceModels] = useState<IPaginationDTO<DeviceModel> | null>(null);
+  const [page, setPage] = useState<number>(1);
+
   const [selectedCapabilities, setSelectedCapabilities] = useState<
     { name: "pick_delivery" | "surveillance"; selected: boolean }[]
   >([
@@ -24,15 +27,20 @@ export const useListDeviceModelModule = () => {
     },
   ]);
 
+  const handlePagination = (page: number) => {
+    setPage(page);
+  };
+
   const codeInputRef = useRef<HTMLInputElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const brandInputRef = useRef<HTMLInputElement>(null);
 
+  const itemsPerPage = 3;
+
   const fetchDeviceModels = useCallback(async () => {
-    const deviceModels = await deviceModelService.getDeviceModels();
-    console.log(deviceModels);
+    const deviceModels = await deviceModelService.getDeviceModels(page, itemsPerPage);
     setDeviceModels(deviceModels);
-  }, [deviceModelService]);
+  }, [deviceModelService, page, itemsPerPage]);
 
   useEffect(() => {
     fetchDeviceModels();
@@ -61,5 +69,6 @@ export const useListDeviceModelModule = () => {
     handleSave,
     selectedCapabilities,
     setSelectedCapabilities,
+    handlePagination,
   };
 };

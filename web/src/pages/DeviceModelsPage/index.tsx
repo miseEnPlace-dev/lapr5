@@ -7,6 +7,7 @@ import { useMenuOptions } from "@/hooks/useMenuOptions";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Modal from "@/components/Modal";
+import Pagination from "@/components/Pagination";
 import Selector from "@/components/Selector";
 import SideBar from "@/components/SideBar";
 
@@ -22,6 +23,7 @@ const DeviceModelsPage: React.FC = () => {
     brandInputRef,
     selectedCapabilities,
     setSelectedCapabilities,
+    handlePagination,
   } = useListDeviceModelModule();
 
   const [isBuildingModalVisible, setIsBuildingModalVisible] = useState(false);
@@ -53,35 +55,41 @@ const DeviceModelsPage: React.FC = () => {
           aria-label="device-models-container"
           className="mr-12 mt-8 flex flex-col justify-between gap-y-6 overflow-y-auto text-left text-lg"
         >
-          {deviceModels.map((deviceModel, i) => (
-            <motion.button
-              initial={{ opacity: 0, x: -100 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
-              key={deviceModel.code}
-              onClick={() => navigate(`/device-models/${deviceModel.code}`)}
-              className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
-            >
-              <h2 className="text-6xl font-bold">{deviceModel.code}</h2>
-              <div className="flex flex-col">
-                <h3 className="text-left text-2xl font-bold">
-                  {deviceModel.name}
-                </h3>
-                <div className="text-left text-sm text-slate-600">
-                  {deviceModel.type}
-                  {deviceModel.brand && (
-                    <span>&nbsp;&middot; {deviceModel.brand}</span>
-                  )}
+          {!deviceModels ? null : deviceModels.data.length == 0 ? ( // TODO: skeleton component
+            <p className="text-slate-600">
+              No results were found for your search...
+            </p>
+          ) : (
+            deviceModels.data.map((deviceModel, i) => (
+              <motion.button
+                initial={{ opacity: 0, x: -100 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
+                key={deviceModel.code}
+                onClick={() => navigate(`/device-models/${deviceModel.code}`)}
+                className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
+              >
+                <h2 className="text-6xl font-bold">{deviceModel.code}</h2>
+                <div className="flex flex-col">
+                  <h3 className="text-left text-2xl font-bold">
+                    {deviceModel.name}
+                  </h3>
+                  <div className="text-left text-sm text-slate-600">
+                    {deviceModel.type}
+                    {deviceModel.brand && (
+                      <span>&nbsp;&middot; {deviceModel.brand}</span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </motion.button>
-          ))}
+              </motion.button>
+            ))
+          )}
           <motion.button
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.2,
-              delay: deviceModels.length * ANIMATION_DELAY,
+              delay: deviceModels?.data.length || 0 * ANIMATION_DELAY,
             }}
             onClick={() => setIsBuildingModalVisible(true)}
             name="create-device-model"
@@ -89,6 +97,12 @@ const DeviceModelsPage: React.FC = () => {
           >
             +
           </motion.button>
+
+          <Pagination
+            meta={deviceModels?.meta}
+            changePage={handlePagination}
+            className="flex items-center justify-center gap-x-4"
+          />
 
           <Modal
             setIsVisible={setIsBuildingModalVisible}
