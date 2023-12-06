@@ -7,6 +7,7 @@ export const TYPES = {
   deviceService: Symbol.for("DeviceService"),
   roomService: Symbol.for("RoomService"),
   routeService: Symbol.for("RouteService"),
+  userService: Symbol.for("UserService"),
 
   api: Symbol.for("Api"),
 };

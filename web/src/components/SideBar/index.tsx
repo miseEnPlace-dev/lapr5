@@ -14,7 +14,9 @@ const SideBar: React.FC<SideBarProps> = ({ menuOptions }) => {
   if (!role) return <></>;
 
   const sanitizedRole =
-    role.charAt(0).toUpperCase() + role.slice(1) + " Manager";
+    role === "user"
+      ? "User"
+      : role.charAt(0).toUpperCase() + role.slice(1) + " Manager";
 
   return (
     <nav className="grid h-screen w-1/4 max-w-sm grid-rows-[1fr_4fr_1fr] bg-primary pt-12">
