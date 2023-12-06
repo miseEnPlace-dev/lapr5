@@ -7,6 +7,12 @@ import IDeviceModelController from './IControllers/IDeviceModelController';
 
 import { IDeviceModelDTO } from '@/dto/IDeviceModelDTO';
 import { Result } from '../core/logic/Result';
+import { z } from 'zod';
+
+const querySchema = z.object({
+  page: z.string().optional(),
+  limit: z.string().optional()
+});
 
 @injectable()
 export default class DeviceModelController implements IDeviceModelController {
@@ -32,7 +38,16 @@ export default class DeviceModelController implements IDeviceModelController {
 
   public async getDeviceModels(req: Request, res: Response, next: NextFunction) {
     try {
-      const deviceModelsOrError = await this.deviceModelServiceInstance.getDeviceModels();
+      const query = querySchema.safeParse(req.query);
+      if (!query.success) return res.status(400).json({ message: query.error });
+
+      const page = Number(query.data.page) || undefined;
+      const limit = Number(query.data.limit) || undefined;
+
+      const deviceModelsOrError = await this.deviceModelServiceInstance.getDeviceModels(
+        page,
+        limit
+      );
 
       if (deviceModelsOrError.isFailure) {
         return res.status(400).json({ message: deviceModelsOrError.errorValue() });

@@ -11,6 +11,7 @@ import { DeviceModelMapper } from '@/mappers/DeviceModelMapper';
 import { inject, injectable } from 'inversify';
 import IDeviceModelRepo from './IRepos/IDeviceModelRepo';
 import IDeviceModelService from './IServices/IDeviceModelService';
+import { IPaginationDTO } from '@/dto/IPaginationDTO';
 
 @injectable()
 export default class DeviceModelService implements IDeviceModelService {
@@ -58,11 +59,26 @@ export default class DeviceModelService implements IDeviceModelService {
     }
   }
 
-  public async getDeviceModels(): Promise<Result<IDeviceModelDTO[]>> {
+  public async getDeviceModels(
+    page: number = 1,
+    limit: number = 3
+  ): Promise<Result<IPaginationDTO<IDeviceModelDTO>>> {
     try {
-      const deviceModels = await this.deviceModelRepo.findAll();
+      const deviceModels = await this.deviceModelRepo.findAll(page - 1, limit);
       const deviceModelDTOs = deviceModels.map(b => DeviceModelMapper.toDTO(b));
-      return Result.ok<IDeviceModelDTO[]>(deviceModelDTOs);
+      const total = await this.deviceModelRepo.count();
+
+      const result: IPaginationDTO<IDeviceModelDTO> = {
+        meta: {
+          page,
+          limit,
+          total,
+          totalPages: Math.ceil(total / limit)
+        },
+        data: deviceModelDTOs
+      };
+
+      return Result.ok<IPaginationDTO<IDeviceModelDTO>>(result);
     } catch (e) {
       throw e;
     }

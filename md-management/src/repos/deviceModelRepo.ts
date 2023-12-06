@@ -83,8 +83,14 @@ export default class DeviceModelRepo implements IDeviceModelRepo {
     return null;
   }
 
-  public async findAll(): Promise<DeviceModel[]> {
-    const records = await deviceModelSchema.find();
+  public async findAll(page: number, limit: number): Promise<DeviceModel[]> {
+    const records = await deviceModelSchema
+      .find()
+      .limit(limit)
+      .skip(page * limit)
+      .sort({
+        code: 1
+      });
 
     const deviceModels: DeviceModel[] = [];
 
