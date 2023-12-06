@@ -64,11 +64,11 @@ const RegisterPage: React.FC = () => {
 
   return (
     <div className="flex h-screen items-center justify-center">
-      <main className="flex h-3/4 w-full flex-col items-center justify-center gap-y-24 rounded-lg bg-slate-100 px-6 md:px-12 lg:w-1/2">
-        <div className="flex w-full flex-col gap-y-4">
-          <h1 className="text-center text-xl font-bold md:text-3xl">
+      <main className="flex h-3/4 w-5/6 flex-col items-center justify-center gap-y-6 rounded-lg bg-slate-100 px-6 md:px-24 lg:w-1/2">
+        <div className="mb-4 flex flex-col gap-y-4">
+          {/* <h1 className="text-center text-xl font-bold md:text-3xl">
             Welcome to
-          </h1>
+          </h1> */}
           <img
             className="mx-auto w-1/2"
             src="/assets/logos/light/svg/logo-no-background.svg"
@@ -129,13 +129,13 @@ const RegisterPage: React.FC = () => {
             disabled={
               !isEmailValid || !password || !isPhoneNumberValid || !isAgreed
             }
-            className="mt-4 w-full"
+            className="mt-2 w-full"
           >
             Register
           </Button>
         </form>
         <Link to="/login" className="text-slate-600 underline">
-          Already have an account? Login here.
+          Already have an account? Login here
         </Link>
       </main>
     </div>

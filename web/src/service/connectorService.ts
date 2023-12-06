@@ -4,6 +4,7 @@ import { inject, injectable } from "inversify";
 
 import { TYPES } from "@/inversify/types";
 import { localStorageConfig } from "@/config/localStorageConfig";
+import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Connector } from "@/model/Connector";
 
 import { HttpService } from "./IService/HttpService";
@@ -13,17 +14,27 @@ import { IConnectorService } from "./IService/IConnectorService";
 export class ConnectorService implements IConnectorService {
   constructor(@inject(TYPES.api) private http: HttpService) {}
 
-  async getConnectors(buildingCodes?: string[]): Promise<Connector[]> {
-    const filter = buildingCodes
-      ? `?buildingCodes[]=${buildingCodes[0]}&buildingCodes[]=${buildingCodes[1]}`
-      : "";
+  async getConnectors(
+    buildingCodes?: string[],
+    page: number = 0,
+    limit: number = 2
+  ): Promise<IPaginationDTO<Connector>> {
+    const params = {} as { [key: string]: string };
+    if (buildingCodes) {
+      params["buildingCodes[0]"] = buildingCodes[0];
+      params["buildingCodes[1]"] = buildingCodes[1];
+    }
+    if (page && limit) {
+      params["limit"] = limit.toString();
+      params["page"] = page.toString();
+    }
+
     const token = localStorage.getItem(localStorageConfig.token);
 
-    const response = await this.http.get<Connector[]>("/connectors" + filter, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await this.http.get<IPaginationDTO<Connector>>(
+      "/connectors",
+      { params, headers: { Authorization: `Bearer ${token}` } }
+    );
     const data = response.data;
     return data;
   }

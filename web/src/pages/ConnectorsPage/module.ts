@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useInjection } from "inversify-react";
 
 import { TYPES } from "../../inversify/types";
+import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Building } from "@/model/Building";
 import { Connector } from "@/model/Connector";
 import { IBuildingService } from "@/service/IService/IBuildingService";
@@ -12,25 +13,36 @@ export const useListConnectorsModule = () => {
   const buildingsService = useInjection<IBuildingService>(
     TYPES.buildingService
   );
-  const [connectors, setConnectors] = useState<Connector[]>([]);
+  const [connectors, setConnectors] =
+    useState<IPaginationDTO<Connector> | null>(null);
   const [buildings, setBuildings] = useState<Building[]>([]);
+
   const [filters, setFilters] = useState<string[] | null>(null);
+  const [page, setPage] = useState<number>(1);
 
   const codeInputRef = useRef<HTMLInputElement>(null);
   const floor1InputRef = useRef<HTMLInputElement>(null);
   const floor2InputRef = useRef<HTMLInputElement>(null);
 
+  const itemsPerPage = 3;
+
   const fetchConnectors = useCallback(async () => {
     try {
-      let b: Connector[];
-      if (!filters) b = await connectorSvc.getConnectors();
-      else b = await connectorSvc.getConnectors(filters);
+      let b = await connectorSvc.getConnectors(
+        filters || undefined,
+        page,
+        itemsPerPage
+      );
 
       setConnectors(b);
     } catch (e) {
-      setConnectors([]);
+      setConnectors({ data: [] });
     }
-  }, [connectorSvc, filters]);
+  }, [connectorSvc, filters, page]);
+
+  const handlePagination = (page: number) => {
+    setPage(page);
+  };
 
   const fetchBuildings = useCallback(async () => {
     const buildings = await buildingsService.getBuildings();
@@ -68,5 +80,6 @@ export const useListConnectorsModule = () => {
     buildings,
     setFilters,
     handleSave,
+    handlePagination,
   };
 };

@@ -30,9 +30,7 @@ const BuildingsPage: React.FC = () => {
     widthInputRef,
     filters,
     setFilters,
-    page,
     handlePagination,
-    itemsPerPage,
   } = useListBuildingsModule();
 
   const [isBuildingModalVisible, setIsBuildingModalVisible] = useState(false);
@@ -135,32 +133,37 @@ const BuildingsPage: React.FC = () => {
           >
             +
           </motion.button>
-          {!buildings
-            ? null // TODO: skeleton component
-            : buildings.data.map((building, i) => (
-                <motion.button
-                  initial={{ opacity: 0, x: -100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
-                  key={building.code}
-                  onClick={() => navigate(`/buildings/${building.code}`)}
-                  className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
-                >
-                  <h2 className="text-6xl font-bold">{building.code}</h2>
-                  <div className="flex flex-col">
-                    <h3 className="text-left text-2xl font-bold">
-                      {building.name}
-                    </h3>
-                    <div className="text-left text-sm text-slate-600">
-                      {building.maxDimensions.length} x{" "}
-                      {building.maxDimensions.width}
-                      {building.description && (
-                        <span>&nbsp;&middot; {building.description}</span>
-                      )}
-                    </div>
+          {!buildings ? null : buildings.data.length == 0 ? ( // TODO: skeleton component // TODO: skeleton component
+            <p className="text-slate-600">
+              No results were found for your search... Try to change or remove
+              the filters.
+            </p>
+          ) : (
+            buildings.data.map((building, i) => (
+              <motion.button
+                initial={{ opacity: 0, x: -100 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
+                key={building.code}
+                onClick={() => navigate(`/buildings/${building.code}`)}
+                className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
+              >
+                <h2 className="text-6xl font-bold">{building.code}</h2>
+                <div className="flex flex-col">
+                  <h3 className="text-left text-2xl font-bold">
+                    {building.name}
+                  </h3>
+                  <div className="text-left text-sm text-slate-600">
+                    {building.maxDimensions.length} x{" "}
+                    {building.maxDimensions.width}
+                    {building.description && (
+                      <span>&nbsp;&middot; {building.description}</span>
+                    )}
                   </div>
-                </motion.button>
-              ))}
+                </div>
+              </motion.button>
+            ))
+          )}
 
           <Pagination
             meta={buildings?.meta}

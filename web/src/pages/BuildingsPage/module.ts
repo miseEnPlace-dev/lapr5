@@ -77,8 +77,6 @@ export const useListBuildingsModule = () => {
     handleSave,
     filters,
     setFilters,
-    page,
     handlePagination,
-    itemsPerPage,
   };
 };
