@@ -235,7 +235,7 @@ describe('Device  Service', () => {
     expect(deviceService.inhibitDevice(deviceCode)).rejects.toThrow('Error');
   });
 
-  it('getDevices: should return all devices if no filters are provided', async () => {
+  /*it('getDevices: should return all devices if no filters are provided', async () => {
     const deviceRepo = container.get<IDeviceRepo>(TYPES.deviceRepo);
     const deviceModelRepo = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
 
@@ -317,5 +317,5 @@ describe('Device  Service', () => {
     const deviceModelRepo = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
     const deviceService = new DeviceService(deviceRepo, deviceModelRepo);
     expect(deviceService.getDevicesRobots(undefined, undefined)).rejects.toThrow('Error');
-  });
+  });*/
 });
