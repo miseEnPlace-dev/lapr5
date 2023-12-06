@@ -3,6 +3,7 @@ import "reflect-metadata";
 import { inject, injectable } from "inversify";
 
 import { TYPES } from "../inversify/types";
+import { localStorageConfig } from "@/config/localStorageConfig";
 
 import { DeviceModel } from "../model/DeviceModel";
 import { HttpService } from "./IService/HttpService";
@@ -13,20 +14,37 @@ export class DeviceModelService implements IDeviceModelService {
   constructor(@inject(TYPES.api) private http: HttpService) {}
 
   async getDeviceModels(): Promise<DeviceModel[]> {
-    const response = await this.http.get<DeviceModel[]>("/device-models");
+    const token = localStorage.getItem(localStorageConfig.token);
+
+    const response = await this.http.get<DeviceModel[]>("/device-models", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const data = response.data;
     return data;
   }
 
   async getDeviceModelWithCode(code: string): Promise<DeviceModel> {
-    const response = await this.http.get<DeviceModel>(`/device-models/${code}`);
+    const token = localStorage.getItem(localStorageConfig.token);
+
+    const response = await this.http.get<DeviceModel>(
+      `/device-models/${code}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     const data = response.data;
     return data;
   }
 
   async createDeviceModel(building: DeviceModel): Promise<DeviceModel> {
+    const token = localStorage.getItem(localStorageConfig.token);
+
     const response = await this.http
-      .post<DeviceModel>("/device-models", building)
+      .post<DeviceModel>("/device-models", building, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .catch((error) => {
         throw error.message;
       });
@@ -38,8 +56,12 @@ export class DeviceModelService implements IDeviceModelService {
   }
 
   async updateDeviceModel(deviceModel: DeviceModel): Promise<DeviceModel> {
+    const token = localStorage.getItem(localStorageConfig.token);
+
     const response = await this.http
-      .put<DeviceModel>(`/device-models/${deviceModel.code}`, deviceModel)
+      .put<DeviceModel>(`/device-models/${deviceModel.code}`, deviceModel, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .catch((error) => {
         throw error;
       });

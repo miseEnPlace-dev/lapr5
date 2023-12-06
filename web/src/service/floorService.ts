@@ -3,6 +3,7 @@ import "reflect-metadata";
 import { inject, injectable } from "inversify";
 
 import { TYPES } from "../inversify/types";
+import { localStorageConfig } from "@/config/localStorageConfig";
 import { FloorMap } from "@/model/FloorMap";
 
 import { Floor } from "../model/Floor";
@@ -14,15 +15,23 @@ export class FloorService implements IFloorService {
   constructor(@inject(TYPES.api) private http: HttpService) {}
 
   async getAllFloors(): Promise<Floor[]> {
-    const response = await this.http.get<Floor[]>("/floors");
+    const token = localStorage.getItem(localStorageConfig.token);
+
+    const response = await this.http.get<Floor[]>("/floors", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     const data = response.data;
     return data;
   }
 
   async createFloor(buildingId: string, floor: Floor): Promise<Floor> {
+    const token = localStorage.getItem(localStorageConfig.token);
+
     const response = await this.http
-      .post<Floor>(`/buildings/${buildingId}/floors`, floor)
+      .post<Floor>(`/buildings/${buildingId}/floors`, floor, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .catch((error) => {
         throw error.message;
       });
@@ -34,9 +43,12 @@ export class FloorService implements IFloorService {
   }
 
   async updateFloor(buildingId: string, floor: Floor): Promise<Floor> {
+    const token = localStorage.getItem(localStorageConfig.token);
+
     const response = await this.http.put<Floor>(
       `/buildings/${buildingId}/floors/${floor.code}`,
-      floor
+      floor,
+      { headers: { Authorization: `Bearer ${token}` } }
     );
 
     if (response.status === 400) throw new Error("Something went wrong");
@@ -46,8 +58,11 @@ export class FloorService implements IFloorService {
   }
 
   async getFloor(buildingId: string, floorId: string): Promise<Floor> {
+    const token = localStorage.getItem(localStorageConfig.token);
+
     const response = await this.http.get<Floor>(
-      `/buildings/${buildingId}/floors/${floorId}`
+      `/buildings/${buildingId}/floors/${floorId}`,
+      { headers: { Authorization: `Bearer ${token}` } }
     );
 
     const data = response.data;
@@ -60,8 +75,12 @@ export class FloorService implements IFloorService {
   ): Promise<Floor[]> {
     const filter =
       filters && filters.length ? "?filter=" + filters.join(",") : "";
+
+    const token = localStorage.getItem(localStorageConfig.token);
+
     const response = await this.http.get<Floor[]>(
-      `/buildings/${buildingCode}/floors${filter}`
+      `/buildings/${buildingCode}/floors${filter}`,
+      { headers: { Authorization: `Bearer ${token}` } }
     );
 
     const data = response.data;
@@ -72,10 +91,13 @@ export class FloorService implements IFloorService {
     buildingId: string,
     floorCode: string,
     map: string
-  ): Promise<any> {
+  ): Promise<FloorMap> {
+    const token = localStorage.getItem(localStorageConfig.token);
+
     const response = await this.http.patch<FloorMap>(
       `/buildings/${buildingId}/floors/${floorCode}`,
-      JSON.parse(map)
+      JSON.parse(map),
+      { headers: { Authorization: `Bearer ${token}` } }
     );
 
     if (response.status !== 200) {

@@ -3,6 +3,7 @@ import "reflect-metadata";
 import { inject, injectable } from "inversify";
 
 import { TYPES } from "../inversify/types";
+import { localStorageConfig } from "@/config/localStorageConfig";
 
 import { Elevator } from "../model/Elevator";
 import { HttpService } from "./IService/HttpService";
@@ -13,8 +14,13 @@ export class ElevatorService implements IElevatorService {
   constructor(@inject(TYPES.api) private http: HttpService) {}
 
   async getBuildingElevator(buildingCode: string): Promise<Elevator | null> {
+    const token = localStorage.getItem(localStorageConfig.token);
+
     const response = await this.http.get<Elevator>(
-      `/buildings/${buildingCode}/elevators`
+      `/buildings/${buildingCode}/elevators`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
     );
 
     if (response.status === 400) return null;
@@ -27,8 +33,12 @@ export class ElevatorService implements IElevatorService {
     buildingCode: string,
     elevator: Elevator
   ): Promise<Elevator> {
+    const token = localStorage.getItem(localStorageConfig.token);
+
     const response = await this.http
-      .post<Elevator>(`/buildings/${buildingCode}/elevators`, elevator)
+      .post<Elevator>(`/buildings/${buildingCode}/elevators`, elevator, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .catch((error) => {
         throw error;
       });
@@ -43,8 +53,12 @@ export class ElevatorService implements IElevatorService {
     buildingCode: string,
     elevator: Partial<Elevator>
   ): Promise<Elevator> {
+    const token = localStorage.getItem(localStorageConfig.token);
+
     const response = await this.http
-      .put<Elevator>(`/buildings/${buildingCode}/elevators`, elevator)
+      .put<Elevator>(`/buildings/${buildingCode}/elevators`, elevator, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .catch(() => {
         throw "Something went wrong";
       });

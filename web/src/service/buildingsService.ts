@@ -3,6 +3,7 @@ import "reflect-metadata";
 import { inject, injectable } from "inversify";
 
 import { TYPES } from "../inversify/types";
+import { localStorageConfig } from "@/config/localStorageConfig";
 import { IPaginationDTO } from "@/dto/IPaginationDTO";
 
 import { Building } from "../model/Building";
@@ -28,23 +29,34 @@ export class BuildingService implements IBuildingService {
       params["page"] = page.toString();
     }
 
+    const token = localStorage.getItem(localStorageConfig.token);
     const response = await this.http.get<IPaginationDTO<Building>>(
       "/buildings",
-      { params }
+      { params, headers: { Authorization: `Bearer ${token}` } }
     );
     const data = response.data;
     return data;
   }
 
   async getBuildingWithCode(code: string): Promise<Building> {
-    const response = await this.http.get<Building>(`/buildings/${code}`);
+    const token = localStorage.getItem(localStorageConfig.token);
+
+    const response = await this.http.get<Building>(`/buildings/${code}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     const data = response.data;
     return data;
   }
 
   async createBuilding(building: Building): Promise<Building> {
+    const token = localStorage.getItem(localStorageConfig.token);
+
     const response = await this.http
-      .post<Building>("/buildings", building)
+      .post<Building>("/buildings", building, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .catch((error) => {
         throw error.message;
       });
@@ -56,8 +68,14 @@ export class BuildingService implements IBuildingService {
   }
 
   async updateBuilding(building: Building): Promise<Building> {
+    const token = localStorage.getItem(localStorageConfig.token);
+
     const response = await this.http
-      .put<Building>(`/buildings/${building.code}`, building)
+      .put<Building>(`/buildings/${building.code}`, building, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .catch((error) => {
         throw error;
       });
