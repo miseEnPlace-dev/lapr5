@@ -34,7 +34,10 @@ export default class BuildingRepo implements IBuildingRepo {
     const buildingRecords = await buildingSchema
       .find()
       .limit(limit)
-      .skip(page * limit);
+      .skip(page * limit)
+      .sort({
+        code: 1
+      });
     const buildings: Building[] = [];
 
     for (const b of buildingRecords) {

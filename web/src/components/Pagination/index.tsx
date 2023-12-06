@@ -14,7 +14,7 @@ const Pagination: React.FC<PaginationProps> = ({
   changePage,
   className,
 }) => {
-  if (!meta || !meta.total) return null;
+  if (!meta || !meta.total || meta.totalPages == 1) return null;
 
   return (
     <div className={`flex items-center justify-center gap-x-4 ${className}`}>

@@ -8,6 +8,7 @@ import IConnectorController from './IControllers/IConnectorController';
 import { Result } from '@/core/logic/Result';
 import { IConnectorDTO } from '@/dto/IConnectorDTO';
 import { TYPES } from '../loaders/inversify/types';
+import { IPaginationDTO } from '@/dto/IPaginationDTO';
 
 const buildingIdsSchema = z.object({
   buildingCodes: z
@@ -18,6 +19,13 @@ const buildingIdsSchema = z.object({
         .max(5)
     )
     .length(2)
+});
+
+const querySchema = z.object({
+  minFloors: z.string().optional(),
+  maxFloors: z.string().optional(),
+  page: z.string().optional(),
+  limit: z.string().optional()
 });
 
 @injectable()
@@ -61,18 +69,24 @@ export default class ConnectorController implements IConnectorController {
 
   public async getConnectors(req: Request, res: Response, next: NextFunction) {
     try {
-      let connectorsOrError: Result<IConnectorDTO[]>;
+      let connectorsOrError: Result<IPaginationDTO<IConnectorDTO>>;
+
+      const query = querySchema.parse(req.query);
+
+      const page = Number(query.page) || undefined;
+      const limit = Number(query.limit) || undefined;
 
       if (!req.query.buildingCodes) {
-        connectorsOrError = await this.connectorSvcInstance.getAllConnectors();
+        connectorsOrError = await this.connectorSvcInstance.getAllConnectors(page, limit);
       } else {
         const parsed = buildingIdsSchema.safeParse(req.query);
         if (!parsed.success) return res.status(400).send(parsed.error);
         const { buildingCodes } = parsed.data;
-
         connectorsOrError = await this.connectorSvcInstance.getConnectorsBetweenBuildings(
           buildingCodes[0],
-          buildingCodes[1]
+          buildingCodes[1],
+          page,
+          limit
         );
       }
 

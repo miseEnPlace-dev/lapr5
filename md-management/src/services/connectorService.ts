@@ -10,6 +10,7 @@ import IBuildingRepo from './IRepos/IBuildingRepo';
 import IConnectorRepo from './IRepos/IConnectorRepo';
 import IFloorRepo from './IRepos/IFloorRepo';
 import IConnectorService from './IServices/IConnectorService';
+import { IPaginationDTO } from '@/dto/IPaginationDTO';
 
 @injectable()
 export default class ConnectorService implements IConnectorService {
@@ -80,12 +81,23 @@ export default class ConnectorService implements IConnectorService {
     }
   }
 
-  public async getAllConnectors() {
+  public async getAllConnectors(page: number = 1, limit: number = 3) {
     try {
-      const connectors = await this.connectorRepo.findAll();
+      const connectors = await this.connectorRepo.findAll(page - 1, limit);
       const connectorsDTO = connectors.map(connector => ConnectorMapper.toDTO(connector));
+      const total = await this.connectorRepo.count();
 
-      return Result.ok<IConnectorDTO[]>(connectorsDTO);
+      const result: IPaginationDTO<IConnectorDTO> = {
+        meta: {
+          total,
+          limit,
+          page: page,
+          totalPages: Math.ceil(total / limit)
+        },
+        data: connectorsDTO
+      };
+
+      return Result.ok(result);
     } catch (e) {
       throw e;
     }
@@ -106,14 +118,19 @@ export default class ConnectorService implements IConnectorService {
     }
   }
 
-  public async getConnectorsBetweenBuildings(code1: string, code2: string) {
+  public async getConnectorsBetweenBuildings(
+    code1: string,
+    code2: string,
+    page: number = 1,
+    limit: number = 3
+  ) {
     try {
       const buildingCode1 = ConnectorCode.create(code1).getValue();
       const buildingCode2 = ConnectorCode.create(code2).getValue();
       const building1 = await this.buildingRepo.findByCode(buildingCode1);
       const building2 = await this.buildingRepo.findByCode(buildingCode2);
       if (!building1 || !building2)
-        return Result.fail<IConnectorDTO[]>('One/both buildings do not exist');
+        return Result.fail<IPaginationDTO<IConnectorDTO>>('One/both buildings do not exist');
 
       const floorsBuilding1 = await this.floorRepo.findByBuildingCode(building1.code);
       const floorsBuilding2 = await this.floorRepo.findByBuildingCode(building2.code);
@@ -125,7 +142,20 @@ export default class ConnectorService implements IConnectorService {
 
       const connectorsDTO = connectors.map(connector => ConnectorMapper.toDTO(connector));
 
-      return Result.ok<IConnectorDTO[]>(connectorsDTO);
+      const start = (page - 1) * limit;
+      const total = connectorsDTO.length;
+
+      const result: IPaginationDTO<IConnectorDTO> = {
+        meta: {
+          limit,
+          page,
+          total,
+          totalPages: Math.ceil(total / limit)
+        },
+        data: connectorsDTO.slice(start, start + limit)
+      };
+
+      return Result.ok(result);
     } catch (e) {
       throw e;
     }

@@ -73,8 +73,12 @@ export default class ConnectorRepo implements IConnectorRepo {
     return null;
   }
 
-  public async findAll(): Promise<Connector[]> {
-    const records = await connectorSchema.find();
+  public async findAll(page: number, limit: number): Promise<Connector[]> {
+    const records = await connectorSchema
+      .find()
+      .limit(limit)
+      .skip(page * limit)
+      .sort({ code: 1 });
 
     const connectors: Connector[] = [];
 
