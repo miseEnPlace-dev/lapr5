@@ -25,6 +25,7 @@ export default class Maze extends THREE.Group {
     super();
     merge(this, parameters);
     this.loaded = false;
+    this.insideElevator = false;
     this.models = Array.from(Array(100), () => new Array(100));
 
     this.onLoad = function ({ maze: description }) {
@@ -54,6 +55,7 @@ export default class Maze extends THREE.Group {
         depth: this.size.depth / 2.0,
       };
       this.map = description.maze.map;
+      this.exits = description.maze.exits;
       this.exitLocation = this.cellToCartesian(description.maze.exitLocation);
 
       // Create the helpers
@@ -149,6 +151,35 @@ export default class Maze extends THREE.Group {
       geometries[0] = [];
       geometries[1] = [];
       this.aabb = [];
+
+      if (description.maze.exits)
+        for (const exit of description.maze.exits) {
+          const i = exit.x;
+
+          const j = exit.y;
+
+          for (let k = 0; k < 2; k++) {
+            geometry = wall.geometries[k].clone();
+            geometry.applyMatrix4(
+              new THREE.Matrix4().makeTranslation(
+                j - this.halfSize.width + 0.5,
+                1,
+                i - this.halfSize.depth
+              )
+            );
+
+            geometry.computeBoundingBox();
+            geometry.boundingBox.applyMatrix4(
+              new THREE.Matrix4().makeScale(
+                this.scale.x,
+                this.scale.y,
+                this.scale.z
+              )
+            );
+            geometries[k].push(geometry);
+          }
+        }
+
       for (let i = 0; i <= this.size.depth; i++) {
         // In order to represent the southmost walls, the map depth is one row greater than the actual maze depth
         this.aabb[i] = [];
@@ -433,6 +464,11 @@ export default class Maze extends THREE.Group {
   wallCollision(indices, offsets, orientation, position, delta, radius, name) {
     const row = indices[0] + offsets[0];
     const column = indices[1] + offsets[1];
+    if (!this.insideElevator)
+      document
+        .getElementById("maps-panel")
+        ?.setAttribute("style", "display: none");
+
     if (
       this.map[row][column] === 2 - orientation ||
       this.map[row][column] === 3
@@ -471,12 +507,10 @@ export default class Maze extends THREE.Group {
           document
             .getElementById("maps-panel")
             ?.setAttribute("style", "display: block");
-          console.log("dentro do elevador");
-          return false;
+          this.insideElevator = true;
+        } else {
+          this.insideElevator = false;
         }
-        document
-          .getElementById("maps-panel")
-          ?.setAttribute("style", "display: none");
       }
     }
 
@@ -734,9 +768,14 @@ export default class Maze extends THREE.Group {
   }
 
   foundExit(position) {
-    return (
-      Math.abs(position.x - this.exitLocation.x) < 0.5 * this.scale.x &&
-      Math.abs(position.z - this.exitLocation.z) < 0.5 * this.scale.z
-    );
+    for (const exit of this.exits) {
+      if (
+        Math.abs(position.x - this.cellToCartesian(exit.x)) <
+          0.5 * this.scale.x &&
+        Math.abs(position.z - this.cellToCartesian(exit.z)) < 0.5 * this.scale.z
+      )
+        return exit.floorCode;
+    }
+    return null;
   }
 }
