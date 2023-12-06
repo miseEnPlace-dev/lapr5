@@ -24,7 +24,7 @@ export class UserMapper extends Mapper<User> {
       phoneNumber: user.phoneNumber.value,
       password: '',
       role: user.role.name.value,
-      state: user.state.value,
+      state: user.state ? user.state.value : 'inactive',
       id: user.id.toString()
     };
   }
@@ -70,7 +70,7 @@ export class UserMapper extends Mapper<User> {
       lastName: user.lastName,
       role: user.role.name.value,
       phoneNumber: user.phoneNumber.value,
-      state: user.state.value
+      state: user.state ? user.state.value : 'inactive'
     };
   }
 }
