@@ -8,6 +8,7 @@ import Button from "@/components/Button";
 import Dropdown from "@/components/Dropdown";
 import Input from "@/components/Input";
 import Modal from "@/components/Modal";
+import Pagination from "@/components/Pagination";
 import SideBar from "@/components/SideBar";
 import TextArea from "@/components/TextArea";
 import { FilterIcon } from "@/styles/Icons";
@@ -34,6 +35,7 @@ const DevicesPage: React.FC = () => {
     setModelFilter,
     taskFilterInputRef,
     modelFilterInputRef,
+    handlePagination,
   } = useListDeviceModule();
 
   const [isDeviceModalVisible, setIsDeviceModalVisible] = useState(false);
@@ -103,6 +105,7 @@ const DevicesPage: React.FC = () => {
   const ANIMATION_DELAY = 0.1;
 
   console.log(deviceModels);
+  console.log("DEVICES!! = ", devices);
 
   const { menuOptions } = useMenuOptions();
 
@@ -124,7 +127,7 @@ const DevicesPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.2,
-              delay: devices.length * ANIMATION_DELAY,
+              delay: devices?.data.length || 0 * ANIMATION_DELAY,
             }}
             onClick={() => setIsFilterByTaskModalVisible(true)}
             className={`flex w-full items-center justify-center gap-x-10 ${
@@ -142,7 +145,7 @@ const DevicesPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.2,
-              delay: devices.length * ANIMATION_DELAY,
+              delay: devices?.data.length || 0 * ANIMATION_DELAY,
             }}
             onClick={() => setIsFilterByModelModalVisible(true)}
             className={`flex w-full items-center justify-center gap-x-10 ${
@@ -154,46 +157,59 @@ const DevicesPage: React.FC = () => {
               Filter Devices By Device Model Name
             </div>
           </motion.button>
-          {devices.map((device, i) => (
-            <motion.button
-              initial={{ opacity: 0, x: -100 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
-              key={i}
-              onClick={() => navigate(`/devices/robots/${device.code}`)}
-              className={`flex w-full items-center gap-x-10 ${
-                device.isAvailable ? "bg-slate-200" : "bg-red-100"
-              } px-12 py-8`}
-            >
-              <h2 className="text-6xl font-bold">{device.code}</h2>
-              <div className="flex flex-col">
-                <h3 className="text-left text-2xl font-bold">
-                  {device.nickname}
-                </h3>
-                <div className="text-left text-sm text-slate-600">
-                  {device.description}
-                  {!device.isAvailable ? (
-                    <span>&nbsp;&middot; INACTIVE</span>
-                  ) : (
-                    <span>&nbsp;&middot; ACTIVE</span>
-                  )}
+          {!devices ? null : devices.data.length == 0 ? ( // TODO: skeleton component // TODO: skeleton component
+            <p className="text-slate-600">
+              No results were found for your search... Try to change or remove
+              the filters.
+            </p>
+          ) : (
+            devices.data.map((device, i) => (
+              <motion.button
+                initial={{ opacity: 0, x: -100 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
+                key={i}
+                onClick={() => navigate(`/devices/robots/${device.code}`)}
+                className={`flex w-full items-center gap-x-10 ${
+                  device.isAvailable ? "bg-slate-200" : "bg-red-100"
+                } px-12 py-8`}
+              >
+                <h2 className="text-6xl font-bold">{device.code}</h2>
+                <div className="flex flex-col">
+                  <h3 className="text-left text-2xl font-bold">
+                    {device.nickname}
+                  </h3>
+                  <div className="text-left text-sm text-slate-600">
+                    {device.description}
+                    {!device.isAvailable ? (
+                      <span>&nbsp;&middot; INACTIVE</span>
+                    ) : (
+                      <span>&nbsp;&middot; ACTIVE</span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </motion.button>
-          ))}
+              </motion.button>
+            ))
+          )}
           <motion.button
             name="createDevice"
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.2,
-              delay: devices.length * ANIMATION_DELAY,
+              delay: devices?.data.length || 0 * ANIMATION_DELAY,
             }}
             onClick={() => setIsDeviceModalVisible(true)}
             className="flex w-full items-center justify-center bg-secondary px-12 py-4 text-center text-5xl font-bold"
           >
             +
           </motion.button>
+
+          <Pagination
+            meta={devices?.meta}
+            changePage={handlePagination}
+            className="flex items-center justify-center gap-x-4"
+          />
 
           <Modal
             setIsVisible={setIsDeviceModalVisible}
