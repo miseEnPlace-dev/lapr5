@@ -7,7 +7,7 @@ namespace DDDSample1.Infrastructure.Shared
     public class EntityIdValueConverter<TTypedIdValue> : ValueConverter<TTypedIdValue, String>
         where TTypedIdValue : EntityId
     {
-        public EntityIdValueConverter(ConverterMappingHints mappingHints = null) 
+        public EntityIdValueConverter(ConverterMappingHints mappingHints = null)
             : base(id => id.Value, value => Create(value), mappingHints)
         {
         }
