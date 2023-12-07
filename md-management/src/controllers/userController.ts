@@ -27,7 +27,7 @@ export default class UserController implements IUserController {
 
   async activateUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await this.userService.activateUser(req.params.token);
+      const result = await this.userService.activateUser(req.params.id);
 
       if (result.isFailure) return res.status(400).json({ message: result.errorValue() });
 
@@ -41,7 +41,7 @@ export default class UserController implements IUserController {
     return res.status(200).json(req.session);
   }
 
-  async signIn(req: Request, res: Response, next: NextFunction) {
+  async signIn(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
       const result = await this.userService.signIn(email, password);
@@ -51,7 +51,7 @@ export default class UserController implements IUserController {
       const { userDTO, token } = result.getValue();
       return res.status(200).json({ userDTO, token });
     } catch (e) {
-      return next(e);
+      return res.status(400).json({ message: (e as { message: string }).message });
     }
   }
 
@@ -71,7 +71,7 @@ export default class UserController implements IUserController {
 
       if (result.isFailure) return res.status(400).json({ message: result.errorValue() });
 
-      return res.status(204).send();
+      return res.status(204).end();
     } catch (e) {
       console.error('🔥 error %o', e);
       return next(e);

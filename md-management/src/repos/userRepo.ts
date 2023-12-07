@@ -2,7 +2,6 @@ import { injectable } from 'inversify';
 
 import { User } from '@/domain/user/user';
 import { UserEmail } from '@/domain/user/userEmail';
-import { UserId } from '@/domain/user/userId';
 import { UserMapper } from '@/mappers/UserMapper';
 import userSchema from '@/persistence/schemas/userSchema';
 import IUserRepo from '@/services/IRepos/IUserRepo';
@@ -41,6 +40,9 @@ export default class UserRepo implements IUserRepo {
       } else {
         userDocument.firstName = user.firstName;
         userDocument.lastName = user.lastName;
+        userDocument.email = user.email.value;
+        userDocument.phoneNumber = user.phoneNumber.value;
+        userDocument.state = user.state.value;
         await userDocument.save();
 
         return user;
@@ -60,10 +62,8 @@ export default class UserRepo implements IUserRepo {
     return null;
   }
 
-  public async findById(userId: UserId | string): Promise<User | null> {
-    const idX = userId instanceof UserId ? (<UserId>userId).id.toValue() : userId;
-
-    const query = { domainId: idX };
+  public async findById(userId: string): Promise<User | null> {
+    const query = { domainId: userId };
     const userRecord = await userSchema.findOne(query);
 
     if (userRecord !== null) return UserMapper.toDomain(userRecord);

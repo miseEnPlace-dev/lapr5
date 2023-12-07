@@ -30,7 +30,9 @@ export default class UserService implements IUserService {
     @inject(TYPES.roleRepo) private roleRepo: IRoleRepo
   ) {}
 
-  public async signUp(userDTO: IUserDTO): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
+  public async signUp(
+    userDTO: Omit<IUserDTO, 'id'>
+  ): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
     try {
       const userDocument = await this.userRepo.findByEmail(userDTO.email);
       const found = !!userDocument;
@@ -68,7 +70,7 @@ export default class UserService implements IUserService {
         email: emailOrError.getValue(),
         role,
         password,
-        state: role.title.value === defaultRoles.user.title ? UserState.PENDING : UserState.ACTIVE
+        state: role.title.value === defaultRoles.user.title ? UserState.Pending : UserState.Active
       });
 
       if (userOrError.isFailure) throw Result.fail<IUserDTO>(userOrError.errorValue());
@@ -100,6 +102,8 @@ export default class UserService implements IUserService {
     const user = await this.userRepo.findByEmail(email);
 
     if (!user) throw new Error('User not registered');
+
+    if (user.state.value === UserState.Pending.value) throw new Error('User not activated');
 
     /**
      * We use verify from argon2 to prevent 'timing based' attacks
@@ -153,7 +157,7 @@ export default class UserService implements IUserService {
     const user = await this.userRepo.findById(userId);
     if (!user) return Result.fail<void>('User not found');
 
-    user.state = UserState.ACTIVE;
+    user.state = UserState.Active;
     await this.userRepo.save(user);
     return Result.ok<void>();
   }

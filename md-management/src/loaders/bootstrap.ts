@@ -71,6 +71,14 @@ export default class Bootstrapper {
       phoneNumber: '912345678',
       role: defaultRoles.campus.name
     });
+    await this.loadUser({
+      firstName: 'Admin',
+      lastName: 'Admin',
+      email: 'admin@admin.com',
+      password: 'admin',
+      phoneNumber: '912345678',
+      role: defaultRoles.admin.name
+    });
 
     await this.loadBuilding({
       code: 'a',

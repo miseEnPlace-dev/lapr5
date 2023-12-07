@@ -5,7 +5,6 @@ import { Result } from '../../core/logic/Result';
 import { Role } from '../role/role';
 import { PhoneNumber } from './phoneNumber';
 import { UserEmail } from './userEmail';
-import { UserId } from './userId';
 import { UserPassword } from './userPassword';
 import { UserState } from './userState';
 
@@ -22,10 +21,6 @@ interface UserProps {
 export class User extends AggregateRoot<UserProps> {
   get id(): UniqueEntityID {
     return this._id;
-  }
-
-  get userId(): UserId {
-    return UserId.create(this.id);
   }
 
   get email(): UserEmail {

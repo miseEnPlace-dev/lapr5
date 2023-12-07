@@ -4,11 +4,8 @@ export class UserState {
   static get Active() {
     return new UserState('active');
   }
-  static get Inactive() {
-    return new UserState('inactive');
-  }
-  static get Deleted() {
-    return new UserState('deleted');
+  static get Pending() {
+    return new UserState('pending');
   }
 
   get value() {
@@ -16,8 +13,7 @@ export class UserState {
   }
 
   static create(value: string): UserState {
-    if (value !== 'active' && value !== 'inactive' && value !== 'deleted')
-      throw new Error('Invalid user state');
+    if (value !== 'active' && value !== 'pending') throw new Error('Invalid user state');
 
     return new UserState(value);
   }
