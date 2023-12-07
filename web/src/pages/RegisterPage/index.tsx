@@ -50,16 +50,7 @@ const RegisterPage: React.FC = () => {
         "You must now wait for an Administrator to approve your account",
         "success"
       );
-      // login(email, password)
-      //   .then(() => {
-      //     navigate("/");
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //     swal("Error", "Invalid email or password", "error");
-      //     setPassword("");
-      //     setEmail("");
-      //   });
+      navigate("/login");
     } catch (err) {
       console.log(err);
       swal("Error", "Error creating account", "error");
