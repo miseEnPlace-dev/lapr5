@@ -55,6 +55,19 @@ const DeviceModelsPage: React.FC = () => {
           aria-label="device-models-container"
           className="mr-12 mt-8 flex flex-col justify-between gap-y-6 overflow-y-auto text-left text-lg"
         >
+          <motion.button
+            initial={{ opacity: 0, y: -100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.2,
+              delay: deviceModels?.data.length || 0 * ANIMATION_DELAY,
+            }}
+            onClick={() => setIsBuildingModalVisible(true)}
+            name="create-device-model"
+            className="flex w-full items-center justify-center bg-secondary px-12 py-4 text-center text-5xl font-bold"
+          >
+            +
+          </motion.button>
           {!deviceModels ? null : deviceModels.data.length == 0 ? ( // TODO: skeleton component
             <p className="text-slate-600">
               No results were found for your search...
@@ -84,19 +97,6 @@ const DeviceModelsPage: React.FC = () => {
               </motion.button>
             ))
           )}
-          <motion.button
-            initial={{ opacity: 0, y: -100 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.2,
-              delay: deviceModels?.data.length || 0 * ANIMATION_DELAY,
-            }}
-            onClick={() => setIsBuildingModalVisible(true)}
-            name="create-device-model"
-            className="flex w-full items-center justify-center bg-secondary px-12 py-4 text-center text-5xl font-bold"
-          >
-            +
-          </motion.button>
 
           <Pagination
             meta={deviceModels?.meta}
