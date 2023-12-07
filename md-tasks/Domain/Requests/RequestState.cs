@@ -1,27 +1,25 @@
-using System;
 using DDDSample1.Domain.Requests;
 using DDDSample1.Domain.Shared;
 
-namespace DDDSample1.Domain.Categories
+namespace DDDSample1.Domain.Requests
 {
   public class RequestState : IValueObject<RequestId>
   {
-
     public string State { get; private set; }
 
     private RequestState()
     {
-      this.State = "Pending";
+      State = "Pending";
     }
 
-    public RequestState(string state)
+    public RequestState(string State)
     {
-      this.State = state;
+      this.State = State;
     }
 
-    public void ChangeState(string state)
+    public void ChangeState(string State)
     {
-      this.State = state;
+      this.State = State;
     }
   }
 }

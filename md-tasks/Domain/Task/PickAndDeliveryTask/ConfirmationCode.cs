@@ -1,22 +1,20 @@
-using System;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Tasks;
 
-namespace DDDSample1.Domain.Categories
+namespace DDDSample1.Domain.Task.PickAndDeliveryTask
 {
   public class ConfirmationCode : IValueObject<TaskId>
   {
 
-    public string code { get; private set; }
+    public string Code { get; private set; }
 
     private ConfirmationCode()
     {
-      this.code = "Pending";
+      Code = "Pending";
     }
 
-    public ConfirmationCode(string state)
+    public ConfirmationCode(string Code)
     {
-      this.code = code;
+      this.Code = Code;
     }
   }
 }

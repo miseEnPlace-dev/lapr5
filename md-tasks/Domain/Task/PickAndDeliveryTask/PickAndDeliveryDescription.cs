@@ -1,8 +1,7 @@
 using System;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Tasks;
 
-namespace DDDSample1.Domain.Categories
+namespace DDDSample1.Domain.Task.PickAndDeliveryTask
 {
   public class PickAndDeliveryDescription : IValueObject<TaskId>
   {
@@ -11,7 +10,7 @@ namespace DDDSample1.Domain.Categories
 
     private PickAndDeliveryDescription()
     {
-      this.Description = "";
+      Description = "";
     }
 
     public PickAndDeliveryDescription(string Description)
