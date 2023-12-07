@@ -29,11 +29,11 @@ const ProfilePage: React.FC = () => {
     <div className="flex">
       <SideBar menuOptions={menuOptions} />
       <main className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
-        <h1 className="text-3xl">
+        <h1 className="text-4xl font-bold">
           Welcome, <span className="text-primary">{username}</span>
         </h1>
-        <p className="-mt-4 text-xl capitalize text-slate-600">{role}</p>
-        <div className="flex w-full flex-col gap-y-4 py-8 pr-24">
+        <p className="-mt-2 text-lg capitalize text-slate-600">{role}</p>
+        <div className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left">
           <Input
             name="Username"
             type="text"
@@ -44,7 +44,7 @@ const ProfilePage: React.FC = () => {
         <Button
           type="destroy"
           name="delete-account"
-          className="mx-auto mr-24 w-1/2 -translate-x-1/2"
+          className="mr-12 mt-4"
           onClick={handleDeleteAccount}
         >
           Delete Account

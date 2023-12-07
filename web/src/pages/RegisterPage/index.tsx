@@ -45,16 +45,21 @@ const RegisterPage: React.FC = () => {
         lastName: lastNameInputRef.current?.value,
         phoneNumber,
       });
-      login(email, password)
-        .then(() => {
-          navigate("/");
-        })
-        .catch((err) => {
-          console.log(err);
-          swal("Error", "Invalid email or password", "error");
-          setPassword("");
-          setEmail("");
-        });
+      swal(
+        "Success",
+        "You must now wait for an Administrator to approve your account",
+        "success"
+      );
+      // login(email, password)
+      //   .then(() => {
+      //     navigate("/");
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //     swal("Error", "Invalid email or password", "error");
+      //     setPassword("");
+      //     setEmail("");
+      //   });
     } catch (err) {
       console.log(err);
       swal("Error", "Error creating account", "error");

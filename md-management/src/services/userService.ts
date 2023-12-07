@@ -51,16 +51,19 @@ export default class UserService implements IUserService {
 
       if (found)
         return Result.fail<{ userDTO: IUserDTO; token: string }>(
-          'User already exists with email=' + userDTO.email
+          'User already exists with email: ' + userDTO.email
         );
 
       const salt = randomBytes(32);
       const hashedPassword = await argon2.hash(userDTO.password, { salt });
 
-      const password = UserPassword.create({
+      const passwordOrError = UserPassword.create({
         value: hashedPassword,
         hashed: true
-      }).getValue();
+      });
+      if (passwordOrError.isFailure)
+        return Result.fail<{ userDTO: IUserDTO; token: string }>(passwordOrError.error);
+
       const emailOrError = UserEmail.create(userDTO.email);
       if (emailOrError.isFailure)
         return Result.fail<{ userDTO: IUserDTO; token: string }>(emailOrError.error);
@@ -81,7 +84,7 @@ export default class UserService implements IUserService {
         phoneNumber: phoneNumberOrError.getValue(),
         email: emailOrError.getValue(),
         role,
-        password,
+        password: passwordOrError.getValue(),
         state: role.title.value === defaultRoles.user.title ? UserState.Pending : UserState.Active
       });
 

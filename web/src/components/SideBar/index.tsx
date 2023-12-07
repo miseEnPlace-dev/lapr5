@@ -51,7 +51,7 @@ const SideBar: React.FC<SideBarProps> = ({ menuOptions }) => {
           alt="Avatar"
           className="aspect-square h-1/3 max-h-[64px] max-w-[64px] rounded-full"
         />
-        <div>
+        <div className="flex flex-col items-start">
           <h1 className="text-xl font-bold text-white">{username}</h1>
           <p className="text-sm text-white">{sanitizedRole}</p>
         </div>
