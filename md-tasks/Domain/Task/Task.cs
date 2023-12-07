@@ -1,8 +1,7 @@
 using System;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Tasks;
 
-namespace DDDSample1.Domain.Categories
+namespace DDDSample1.Domain.Task
 {
     public abstract class Task : Entity<TaskId>, IAggregateRoot
     {
