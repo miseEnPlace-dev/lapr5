@@ -23,7 +23,9 @@ import PathsPage from "./pages/PathsPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage/page";
 import ProfilePage from "./pages/ProfilePage";
 import RegisterPage from "./pages/RegisterPage";
+import RequestsPage from "./pages/RequestsPage";
 import RoomsPage from "./pages/RoomsPage";
+import UsersPage from "./pages/UsersPage";
 import { RequireAuth } from "./utils/RequireAuth";
 import { RequireRole } from "./utils/RequireRole";
 
@@ -48,6 +50,16 @@ function App() {
                 <RequireAuth>
                   <RequireRole role="campus">
                     <BuildingsPage />
+                  </RequireRole>
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/users"
+              element={
+                <RequireAuth>
+                  <RequireRole role="admin">
+                    <UsersPage />
                   </RequireRole>
                 </RequireAuth>
               }
@@ -167,6 +179,16 @@ function App() {
               element={
                 <RequireAuth>
                   <ProfilePage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/requests"
+              element={
+                <RequireAuth>
+                  <RequireRole role="admin">
+                    <RequestsPage />
+                  </RequireRole>
                 </RequireAuth>
               }
             />

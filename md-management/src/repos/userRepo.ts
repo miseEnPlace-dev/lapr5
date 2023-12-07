@@ -22,6 +22,32 @@ export default class UserRepo implements IUserRepo {
     return users;
   }
 
+  async findActive(): Promise<User[]> {
+    const query = { state: 'active' };
+    const userRecords = await userSchema.find(query);
+
+    const users = [];
+    for (const userRecord of userRecords) {
+      const user = await UserMapper.toDomain(userRecord);
+      if (user) users.push(user);
+    }
+
+    return users;
+  }
+
+  async findPending(): Promise<User[]> {
+    const query = { state: 'pending' };
+    const userRecords = await userSchema.find(query);
+
+    const users = [];
+    for (const userRecord of userRecords) {
+      const user = await UserMapper.toDomain(userRecord);
+      if (user) users.push(user);
+    }
+
+    return users;
+  }
+
   async findByRole(role: string): Promise<User[]> {
     const query = { role };
     const userRecords = await userSchema.find(query);

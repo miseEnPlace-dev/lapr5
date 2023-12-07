@@ -9,7 +9,9 @@ import {
   HomeIcon,
   LogoutIcon,
   MapIcon,
+  RequestsIcon,
   RobotIcon,
+  UsersIcon,
 } from "../styles/Icons";
 
 export const useMenuOptions = () => {
@@ -40,6 +42,19 @@ export const useMenuOptions = () => {
         label: "Paths",
         icon: MapIcon,
         onClick: () => navigation("/paths"),
+      });
+    }
+
+    if (role === "admin") {
+      options.push({
+        label: "Users",
+        icon: UsersIcon,
+        onClick: () => navigation("/users"),
+      });
+      options.push({
+        label: "Requests",
+        icon: RequestsIcon,
+        onClick: () => navigation("/requests"),
       });
     }
 
