@@ -121,41 +121,56 @@ const DevicesPage: React.FC = () => {
           aria-label="devices-container"
           className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left text-lg"
         >
+          <div className="flex flex-row gap-x-4">
+            <motion.button
+              name="filterByTask"
+              initial={{ opacity: 0, y: -100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.2,
+                delay: devices?.data.length || 0 * ANIMATION_DELAY,
+              }}
+              onClick={() => setIsFilterByTaskModalVisible(true)}
+              className={`flex w-full items-center justify-center gap-x-10 ${
+                taskFilter ? "bg-slate-400" : "bg-slate-300"
+              } py-4 text-gray-500`}
+            >
+              <div className="flex flex-row items-center gap-x-4 text-lg font-bold text-slate-600">
+                {taskFilter ? <FilterIcon /> : ""}
+                Filter Devices By Task
+              </div>
+            </motion.button>
+            <motion.button
+              name="filterByModel"
+              initial={{ opacity: 0, y: -100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.2,
+                delay: devices?.data.length || 0 * ANIMATION_DELAY,
+              }}
+              onClick={() => setIsFilterByModelModalVisible(true)}
+              className={`flex w-full items-center justify-center gap-x-10 ${
+                modelFilter ? "bg-slate-400" : "bg-slate-300"
+              } py-4 text-gray-500`}
+            >
+              <div className="flex flex-row items-center gap-x-4 text-lg font-bold text-slate-600">
+                {modelFilter ? <FilterIcon /> : ""}
+                Filter Devices By Device Model Name
+              </div>
+            </motion.button>
+          </div>
           <motion.button
-            name="filterByTask"
+            name="createDevice"
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.2,
               delay: devices?.data.length || 0 * ANIMATION_DELAY,
             }}
-            onClick={() => setIsFilterByTaskModalVisible(true)}
-            className={`flex w-full items-center justify-center gap-x-10 ${
-              taskFilter ? "bg-slate-400" : "bg-slate-300"
-            } py-4 text-gray-500`}
+            onClick={() => setIsDeviceModalVisible(true)}
+            className="flex w-full items-center justify-center bg-secondary px-12 py-4 text-center text-5xl font-bold"
           >
-            <div className="flex flex-row items-center gap-x-4 text-lg font-bold text-slate-600">
-              {taskFilter ? <FilterIcon /> : ""}
-              Filter Devices By Task
-            </div>
-          </motion.button>
-          <motion.button
-            name="filterByModel"
-            initial={{ opacity: 0, y: -100 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.2,
-              delay: devices?.data.length || 0 * ANIMATION_DELAY,
-            }}
-            onClick={() => setIsFilterByModelModalVisible(true)}
-            className={`flex w-full items-center justify-center gap-x-10 ${
-              modelFilter ? "bg-slate-400" : "bg-slate-300"
-            } py-4 text-gray-500`}
-          >
-            <div className="flex flex-row items-center gap-x-4 text-lg font-bold text-slate-600">
-              {modelFilter ? <FilterIcon /> : ""}
-              Filter Devices By Device Model Name
-            </div>
+            +
           </motion.button>
           {!devices ? null : devices.data.length == 0 ? ( // TODO: skeleton component // TODO: skeleton component
             <p className="text-slate-600">
@@ -191,19 +206,6 @@ const DevicesPage: React.FC = () => {
               </motion.button>
             ))
           )}
-          <motion.button
-            name="createDevice"
-            initial={{ opacity: 0, y: -100 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.2,
-              delay: devices?.data.length || 0 * ANIMATION_DELAY,
-            }}
-            onClick={() => setIsDeviceModalVisible(true)}
-            className="flex w-full items-center justify-center bg-secondary px-12 py-4 text-center text-5xl font-bold"
-          >
-            +
-          </motion.button>
 
           <Pagination
             meta={devices?.meta}
@@ -228,7 +230,7 @@ const DevicesPage: React.FC = () => {
                   name="Device Model"
                   placeholder="Device Model"
                   inputRef={modelCodeInputRef}
-                  options={deviceModels}
+                  options={!deviceModels ? [] : deviceModels.data}
                 />
                 <Input
                   className="w-full"
@@ -302,7 +304,7 @@ const DevicesPage: React.FC = () => {
                     name="Device Model"
                     placeholder="Device Model"
                     inputRef={modelFilterInputRef}
-                    options={deviceModels}
+                    options={!deviceModels ? [] : deviceModels.data}
                     selected={modelFilter ? modelFilter : undefined}
                   />
                   {modelFilter && (

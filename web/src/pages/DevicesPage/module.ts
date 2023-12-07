@@ -2,11 +2,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useInjection } from "inversify-react";
 
 import { TYPES } from "../../inversify/types";
+import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Device } from "@/model/Device";
 import { DeviceModel } from "@/model/DeviceModel";
 import { IDeviceModelService } from "@/service/IService/IDeviceModelService";
 import { IDeviceService } from "@/service/IService/IDeviceService";
-import { IPaginationDTO } from "@/dto/IPaginationDTO";
 
 export const useListDeviceModule = () => {
   const deviceService = useInjection<IDeviceService>(TYPES.deviceService);
@@ -14,7 +14,8 @@ export const useListDeviceModule = () => {
     TYPES.deviceModelService
   );
   const [devices, setDevices] = useState<IPaginationDTO<Device> | null>(null);
-  const [deviceModels, setDeviceModels] = useState<IPaginationDTO<DeviceModel> | null>(null);
+  const [deviceModels, setDeviceModels] =
+    useState<IPaginationDTO<DeviceModel> | null>(null);
   const [modelFilter, setModelFilter] = useState<string | null>(null);
   const [taskFilter, setTaskFilter] = useState<string | null>(null);
 
@@ -51,7 +52,10 @@ export const useListDeviceModule = () => {
   };
 
   const fetchDeviceModels = useCallback(async () => {
-    const deviceModels = await deviceModelService.getDeviceModels(page, itemsPerPage);
+    const deviceModels = await deviceModelService.getDeviceModels(
+      page,
+      itemsPerPage
+    );
     setDeviceModels(deviceModels);
   }, [deviceModelService]);
 

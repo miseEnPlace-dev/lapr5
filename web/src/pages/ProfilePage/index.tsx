@@ -16,10 +16,18 @@ const ProfilePage: React.FC = () => {
 
   async function handleDeleteAccount() {
     try {
-      await deleteUser();
-      swal("Success", "Account deleted successfully", "success");
-
-      navigate("/login");
+      if (
+        await swal({
+          title: "Do you want to delete your account?",
+          icon: "warning",
+          buttons: ["Cancel", "Yes, delete it"],
+          dangerMode: true,
+        })
+      ) {
+        await deleteUser();
+        swal("Success", "Account deleted successfully", "success");
+        navigate("/login");
+      }
     } catch (err) {
       swal("Error", err as string, "error");
     }
