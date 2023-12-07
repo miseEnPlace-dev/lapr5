@@ -6,6 +6,7 @@ import { DeviceModelService } from "@/service/deviceModelService";
 import { DeviceService } from "@/service/deviceService";
 import { RoomService } from "@/service/roomService";
 import { RouteService } from "@/service/routeService";
+import { UserService } from "@/service/userService";
 
 import api from "../service/api";
 import { BuildingService } from "../service/buildingsService";
@@ -22,6 +23,14 @@ container.bind(TYPES.deviceModelService).to(DeviceModelService);
 container.bind(TYPES.roomService).to(RoomService);
 container.bind(TYPES.deviceService).to(DeviceService);
 container.bind(TYPES.routeService).to(RouteService);
+container.bind(TYPES.userService).to(UserService);
+container.bind(TYPES.localStorage).toConstantValue(
+  import.meta.env.MODE !== "staging"
+    ? window.localStorage
+    : {
+        getItem: () => null,
+      }
+);
 container.bind(TYPES.api).toConstantValue(api);
 
 export { container };

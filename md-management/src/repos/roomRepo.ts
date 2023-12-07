@@ -38,6 +38,10 @@ export default class RoomRepo implements IRoomRepo {
     }
   }
 
+  public async count(): Promise<number> {
+    return await roomSchema.count();
+  }
+
   public async findAll(): Promise<Room[]> {
     const roomRecords = await roomSchema.find();
 

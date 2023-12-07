@@ -16,7 +16,9 @@ import { UserPassword } from '../domain/user/userPassword';
 
 import { Role } from '../domain/role/role';
 
+import { defaultRoles } from '@/domain/role/defaultRoles';
 import { PhoneNumber } from '@/domain/user/phoneNumber';
+import { UserState } from '@/domain/user/userState';
 import { TYPES } from '@/loaders/inversify/types';
 import { inject, injectable } from 'inversify';
 import { Result } from '../core/logic/Result';
@@ -28,23 +30,55 @@ export default class UserService implements IUserService {
     @inject(TYPES.roleRepo) private roleRepo: IRoleRepo
   ) {}
 
-  public async signUp(userDTO: IUserDTO): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
+  async getAllUsers(): Promise<Result<IUserDTO[]>> {
+    const users = await this.userRepo.findActive();
+    const usersDTO = users.map(user => UserMapper.toDTO(user) as IUserDTO);
+    return Result.ok<IUserDTO[]>(usersDTO);
+  }
+
+  async getPendingUsers(): Promise<Result<IUserDTO[]>> {
+    const users = await this.userRepo.findPending();
+    const usersDTO = users.map(user => UserMapper.toDTO(user) as IUserDTO);
+    return Result.ok<IUserDTO[]>(usersDTO);
+  }
+
+  async getUsersWithRole(role: string): Promise<Result<IUserDTO[]>> {
+    const users = await this.userRepo.findByRole(role);
+    const usersDTO = users.map(user => UserMapper.toDTO(user) as IUserDTO);
+    return Result.ok<IUserDTO[]>(usersDTO);
+  }
+
+  async rejectUser(userId: string): Promise<Result<void>> {
+    const user = await this.userRepo.findById(userId);
+    if (!user) return Result.fail<void>('User not found');
+
+    user.state = UserState.Rejected;
+    await this.userRepo.save(user);
+    return Result.ok<void>();
+  }
+
+  async signUp(
+    userDTO: Omit<IUserDTO, 'id'>
+  ): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
     try {
       const userDocument = await this.userRepo.findByEmail(userDTO.email);
       const found = !!userDocument;
 
       if (found)
         return Result.fail<{ userDTO: IUserDTO; token: string }>(
-          'User already exists with email=' + userDTO.email
+          'User already exists with email: ' + userDTO.email
         );
 
       const salt = randomBytes(32);
       const hashedPassword = await argon2.hash(userDTO.password, { salt });
 
-      const password = UserPassword.create({
+      const passwordOrError = UserPassword.create({
         value: hashedPassword,
         hashed: true
-      }).getValue();
+      });
+      if (passwordOrError.isFailure)
+        return Result.fail<{ userDTO: IUserDTO; token: string }>(passwordOrError.error);
+
       const emailOrError = UserEmail.create(userDTO.email);
       if (emailOrError.isFailure)
         return Result.fail<{ userDTO: IUserDTO; token: string }>(emailOrError.error);
@@ -65,7 +99,8 @@ export default class UserService implements IUserService {
         phoneNumber: phoneNumberOrError.getValue(),
         email: emailOrError.getValue(),
         role,
-        password
+        password: passwordOrError.getValue(),
+        state: role.title.value === defaultRoles.user.title ? UserState.Pending : UserState.Active
       });
 
       if (userOrError.isFailure) throw Result.fail<IUserDTO>(userOrError.errorValue());
@@ -90,13 +125,15 @@ export default class UserService implements IUserService {
     }
   }
 
-  public async signIn(
+  async signIn(
     email: string,
     password: string
   ): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
     const user = await this.userRepo.findByEmail(email);
 
     if (!user) throw new Error('User not registered');
+
+    if (user.state.value === UserState.Pending.value) throw new Error('User not activated');
 
     /**
      * We use verify from argon2 to prevent 'timing based' attacks
@@ -121,7 +158,7 @@ export default class UserService implements IUserService {
      * A JWT means JSON Web Token, so basically it's a json that is _hashed_ into a string
      * The cool thing is that you can add custom properties a.k.a metadata
      * Here we are adding the userId, role and name
-     * Beware that the metadata is public and can be decoded without _the secret_
+     * Beware that the metadata is  and can be decoded without _the secret_
      * but the client cannot craft a JWT to fake a userId
      * because it doesn't have _the secret_ to sign it
      * more information here: https://softwareontheroad.com/you-dont-need-passport
@@ -146,6 +183,15 @@ export default class UserService implements IUserService {
     );
   }
 
+  async activateUser(userId: string): Promise<Result<void>> {
+    const user = await this.userRepo.findById(userId);
+    if (!user) return Result.fail<void>('User not found');
+
+    user.state = UserState.Active;
+    await this.userRepo.save(user);
+    return Result.ok<void>();
+  }
+
   async findUserById(userId: string): Promise<Result<IUserDTO>> {
     const user = await this.userRepo.findById(userId);
     if (!user) return Result.fail<IUserDTO>('User not found');
@@ -160,6 +206,14 @@ export default class UserService implements IUserService {
 
     const userDTO = UserMapper.toDTO(user) as IUserDTO;
     return Result.ok<IUserDTO>(userDTO);
+  }
+
+  async deleteUser(userId: string): Promise<Result<void>> {
+    const user = await this.userRepo.findById(userId);
+    if (!user) return Result.fail<void>('User not found');
+
+    await this.userRepo.delete(userId);
+    return Result.ok<void>();
   }
 
   private async getRole(name: string): Promise<Result<Role>> {

@@ -9,6 +9,7 @@ import {
   FiHome as HomeIcon,
 } from "react-icons/fi";
 import {
+  MdDone as CheckIcon,
   MdOutlineElevator as ElevatorIcon,
   MdError as ErrorIcon,
   MdInfo as InfoIcon,
@@ -16,8 +17,11 @@ import {
   MdMap as MapIcon,
   MdMeetingRoom as RoomIcon,
   MdDone as SuccessIcon,
+  MdPerson as UserIcon,
+  MdGroup as UsersIcon,
   MdWarning as WarningIcon,
 } from "react-icons/md";
+import { TbUserQuestion as RequestsIcon } from "react-icons/tb";
 
 import { BsFillBuildingFill as BuildingIcon } from "react-icons/bs";
 
@@ -25,6 +29,7 @@ export {
   ArrowLeftIcon,
   BridgeIcon,
   BuildingIcon,
+  CheckIcon,
   DeviceModelIcon,
   ElevatorIcon,
   ErrorIcon,
@@ -33,8 +38,11 @@ export {
   InfoIcon,
   LogoutIcon,
   MapIcon,
+  RequestsIcon,
   RobotIcon,
   RoomIcon,
   SuccessIcon,
+  UserIcon,
+  UsersIcon,
   WarningIcon,
 };

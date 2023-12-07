@@ -10,6 +10,7 @@ import { UserPassword } from '../domain/user/userPassword';
 
 import { IUserPersistence } from '@/dataschema/IUserPersistence';
 import { PhoneNumber } from '@/domain/user/phoneNumber';
+import { UserState } from '@/domain/user/userState';
 import { container } from '@/loaders/inversify';
 import { TYPES } from '@/loaders/inversify/types';
 import IRoleRepo from '@/services/IRepos/IRoleRepo';
@@ -17,12 +18,14 @@ import IRoleRepo from '@/services/IRepos/IRoleRepo';
 export class UserMapper extends Mapper<User> {
   public static toDTO(user: User): IUserDTO {
     return {
+      id: user.id.toString(),
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email.value,
       phoneNumber: user.phoneNumber.value,
       password: '',
-      role: user.role.name.value
+      role: user.role.name.value,
+      state: user.state ? user.state.value : 'inactive'
     };
   }
 
@@ -47,7 +50,8 @@ export class UserMapper extends Mapper<User> {
         email: userEmailOrError.getValue(),
         password: userPasswordOrError.getValue(),
         phoneNumber: phoneNumberOrError.getValue(),
-        role
+        role,
+        state: UserState.create(raw.state)
       },
       new UniqueEntityID(raw.domainId)
     );
@@ -65,7 +69,8 @@ export class UserMapper extends Mapper<User> {
       firstName: user.firstName,
       lastName: user.lastName,
       role: user.role.name.value,
-      phoneNumber: user.phoneNumber.value
+      phoneNumber: user.phoneNumber.value,
+      state: user.state ? user.state.value : 'inactive'
     };
   }
 }

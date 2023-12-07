@@ -26,8 +26,18 @@ export default class BuildingRepo implements IBuildingRepo {
     return !!roleDocument;
   }
 
-  public async findAll(): Promise<Building[]> {
-    const buildingRecords = await buildingSchema.find();
+  public async count(): Promise<number> {
+    return await buildingSchema.count();
+  }
+
+  public async findAll(page: number, limit: number): Promise<Building[]> {
+    const buildingRecords = await buildingSchema
+      .find()
+      .limit(limit)
+      .skip(page * limit)
+      .sort({
+        code: 1
+      });
     const buildings: Building[] = [];
 
     for (const b of buildingRecords) {

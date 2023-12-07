@@ -14,7 +14,6 @@ export class RouteService implements IRouteService {
   constructor(@inject(TYPES.api) private http: HttpService) {}
 
   async getRoutes(props: GetRouteProps): Promise<RouteCell[]> {
-    console.log({ props });
     const res = await this.http.post("/routes", props);
 
     return res.data as RouteCell[];

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useInjection } from "inversify-react";
 
 import { TYPES } from "../../inversify/types";
+import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Device } from "@/model/Device";
 import { DeviceModel } from "@/model/DeviceModel";
 import { IDeviceModelService } from "@/service/IService/IDeviceModelService";
@@ -12,10 +13,13 @@ export const useListDeviceModule = () => {
   const deviceModelService = useInjection<IDeviceModelService>(
     TYPES.deviceModelService
   );
-  const [devices, setDevices] = useState<Device[]>([]);
-  const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]);
+  const [devices, setDevices] = useState<IPaginationDTO<Device> | null>(null);
+  const [deviceModels, setDeviceModels] =
+    useState<IPaginationDTO<DeviceModel> | null>(null);
   const [modelFilter, setModelFilter] = useState<string | null>(null);
   const [taskFilter, setTaskFilter] = useState<string | null>(null);
+
+  const [page, setPage] = useState<number>(1);
 
   const codeInputRef = useRef<HTMLInputElement>(null);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
@@ -26,31 +30,39 @@ export const useListDeviceModule = () => {
   const taskFilterInputRef = useRef<HTMLSelectElement>(null);
   const modelFilterInputRef = useRef<HTMLSelectElement>(null);
 
+  const itemsPerPage = 3;
+
   const fetchDevices = useCallback(async () => {
     try {
-      let devices: Device[];
-      if (modelFilter)
-        devices = await deviceService.getDevicesRobots("model", modelFilter);
-      else if (taskFilter)
-        devices = await deviceService.getDevicesRobots("task", taskFilter);
-      else devices = await deviceService.getDevicesRobots();
+      const devices = await deviceService.getDevicesRobots(
+        taskFilter ? "task" : modelFilter ? "model" : undefined,
+        taskFilter || modelFilter || undefined,
+        page,
+        itemsPerPage
+      );
 
       setDevices(devices);
     } catch (e) {
-      setDevices([]);
+      setDevices({ data: [] });
     }
-  }, [deviceService, taskFilter, modelFilter]);
+  }, [deviceService, taskFilter, modelFilter, page, itemsPerPage]);
+
+  const handlePagination = (page: number) => {
+    setPage(page);
+  };
 
   const fetchDeviceModels = useCallback(async () => {
-    const deviceModels = await deviceModelService.getDeviceModels();
-    console.log(deviceModels);
+    const deviceModels = await deviceModelService.getDeviceModels(
+      page,
+      itemsPerPage
+    );
     setDeviceModels(deviceModels);
   }, [deviceModelService]);
 
   useEffect(() => {
     fetchDevices();
     fetchDeviceModels();
-  }, [fetchDevices, deviceModelService, fetchDeviceModels]);
+  }, [fetchDevices, deviceModelService, fetchDeviceModels, deviceService]);
 
   const handleSave = async () => {
     if (!codeInputRef.current) {
@@ -100,5 +112,6 @@ export const useListDeviceModule = () => {
     setTaskFilter,
     taskFilterInputRef,
     modelFilterInputRef,
+    handlePagination,
   };
 };

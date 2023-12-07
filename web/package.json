@@ -9,7 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "cypress:open": "cypress open",
-    "test": "vitest run",
+    "test": "vitest run --mode staging",
     "test:watch": "vitest watch",
     "coverage": "vitest run --coverage",
     "preinstall": "npx only-allow pnpm"

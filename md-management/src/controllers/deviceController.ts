@@ -8,6 +8,14 @@ import IDeviceController from './IControllers/IDeviceController';
 import { IDeviceDTO } from '@/dto/IDeviceDTO';
 import { z } from 'zod';
 import { Result } from '../core/logic/Result';
+import { IPaginationDTO } from '@/dto/IPaginationDTO';
+
+const querySchema = z.object({
+  filter: z.string().optional(),
+  value: z.string().optional(),
+  page: z.string().optional(),
+  limit: z.string().optional()
+});
 
 @injectable()
 export default class DeviceController implements IDeviceController {
@@ -31,18 +39,20 @@ export default class DeviceController implements IDeviceController {
 
   public async getDevicesRobots(req: Request, res: Response, next: NextFunction) {
     try {
-      const filterSchema = z.object({ filter: z.string().optional() });
-      const filter = filterSchema.safeParse(req.query);
-      if (!filter.success) return res.status(400).json({ errors: filter.error });
+      const query = querySchema.safeParse(req.query);
+      if (!query.success) return res.status(400).json({ message: query.error });
 
-      const valueSchema = z.object({ value: z.string().optional() });
-      const value = valueSchema.safeParse(req.query);
-      if (!value.success) return res.status(400).json({ errors: value.error });
+      const filter = query.data.filter || undefined;
+      const value = query.data.value || undefined;
+      const page = Number(query.data.page) || undefined;
+      const limit = Number(query.data.limit) || undefined;
 
       const devicesOrError = (await this.deviceServiceInstance.getDevicesRobots(
-        filter.data.filter,
-        value.data.value
-      )) as Result<IDeviceDTO[]>;
+        filter,
+        value,
+        page,
+        limit
+      )) as Result<IPaginationDTO<IDeviceDTO>>;
 
       if (devicesOrError.isFailure)
         return res.status(400).json({ message: devicesOrError.errorValue() });

@@ -15,21 +15,6 @@ import { ArrowLeftIcon } from "../styles/Icons";
 import Orientation from "./orientation";
 import ThumbRaiser from "./thumb_raiser";
 
-// const maps = [
-//   "building-a-floor-1.json",
-//   "building-a-floor-2.json",
-//   "building-b-floor-1.json",
-//   "building-b-floor-2.json",
-//   "building-b-floor-3.json",
-//   "building-c-floor-1.json",
-//   "building-c-floor-2.json",
-//   "building-c-floor-3.json",
-//   "building-c-floor-4.json",
-//   "building-d-floor-1.json",
-//   "building-d-floor-2.json",
-//   "building-d-floor-3.json",
-// ];
-
 const FloorEditor: React.FC = () => {
   const floorService = useInjection<IFloorService>(TYPES.floorService);
   const [floors, setFloors] = React.useState<Floor[]>([]);
@@ -37,7 +22,6 @@ const FloorEditor: React.FC = () => {
   useEffect(() => {
     async function fetchFloors() {
       const floors = await floorService.getAllFloors();
-      console.log({ floors });
 
       setFloors(floors.filter((floor) => floor.map));
     }
@@ -49,7 +33,6 @@ const FloorEditor: React.FC = () => {
 
   useEffect(() => {
     if (floors.length === 0) return;
-    console.log({ floors });
     let thumbRaiser: ThumbRaiser;
 
     function initialize() {

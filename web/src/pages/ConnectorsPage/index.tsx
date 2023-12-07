@@ -8,6 +8,7 @@ import Button from "@/components/Button";
 import Dropdown from "@/components/Dropdown";
 import Input from "@/components/Input";
 import Modal from "@/components/Modal";
+import Pagination from "@/components/Pagination";
 import SideBar from "@/components/SideBar";
 import { FilterIcon } from "@/styles/Icons";
 
@@ -26,6 +27,7 @@ const ConnectorsPage: React.FC = () => {
     buildings,
     filters,
     setFilters,
+    handlePagination,
   } = useListConnectorsModule();
 
   const [isConnectorModalVisible, setIsConnectorModalVisible] = useState(false);
@@ -93,7 +95,7 @@ const ConnectorsPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.2,
-              delay: connectors.length * ANIMATION_DELAY,
+              delay: connectors?.data.length || 0 * ANIMATION_DELAY,
             }}
             name="filter-connectors"
             onClick={() => setIsFilterModalVisible(true)}
@@ -106,31 +108,12 @@ const ConnectorsPage: React.FC = () => {
               Filter Connectors between Buildings
             </div>
           </motion.button>
-          <div className="flex flex-col gap-y-6" aria-label="connectors-list">
-            {connectors.map((c, i) => (
-              <motion.button
-                initial={{ opacity: 0, x: -100 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
-                key={c.code}
-                onClick={() => navigate(`/connectors/${c.code}`)}
-                className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
-              >
-                <h2 className="text-6xl font-bold">{c.code}</h2>
-                <div className="flex flex-col">
-                  <div className="text-left text-sm text-slate-600">
-                    Floor {c.floor1Code} - Floor {c.floor2Code}
-                  </div>
-                </div>
-              </motion.button>
-            ))}
-          </div>
           <motion.button
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.2,
-              delay: connectors.length * ANIMATION_DELAY,
+              delay: connectors?.data.length || 0 * ANIMATION_DELAY,
             }}
             onClick={() => setIsConnectorModalVisible(true)}
             className="flex w-full items-center justify-center bg-secondary px-12 py-4 text-center text-5xl font-bold"
@@ -138,7 +121,39 @@ const ConnectorsPage: React.FC = () => {
           >
             +
           </motion.button>
+          <div className="flex flex-col gap-y-6" aria-label="connectors-list">
+            {!connectors ? null : connectors.data.length == 0 ? ( // TODO: skeleton component
+              <p className="text-slate-600">
+                No results were found for your search... Try to change or remove
+                the filters.
+              </p>
+            ) : (
+              connectors.data.map((c, i) => (
+                <motion.button
+                  initial={{ opacity: 0, x: -100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
+                  key={c.code}
+                  onClick={() => navigate(`/connectors/${c.code}`)}
+                  className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
+                >
+                  <h2 className="text-6xl font-bold">{c.code}</h2>
+                  <div className="flex flex-col">
+                    <div className="text-left text-sm text-slate-600">
+                      Floor {c.floor1Code} - Floor {c.floor2Code}
+                    </div>
+                  </div>
+                </motion.button>
+              ))
+            )}
+          </div>
         </div>
+
+        <Pagination
+          meta={connectors?.meta}
+          changePage={handlePagination}
+          className="flex items-center justify-center gap-x-4"
+        />
 
         <Modal
           setIsVisible={setIsConnectorModalVisible}

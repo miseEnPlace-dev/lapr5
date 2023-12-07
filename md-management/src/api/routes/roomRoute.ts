@@ -4,8 +4,10 @@ import { z } from 'zod';
 import { validate } from '@/api/middlewares/validate';
 
 import IRoomController from '@/controllers/IControllers/IRoomController';
+import { defaultRoles } from '@/domain/role/defaultRoles';
 import { container } from '@/loaders/inversify';
 import { TYPES } from '@/loaders/inversify/types';
+import { isAuthenticated, isAuthorizedAs } from '../middlewares';
 
 const roomCreateSchema = z.object({
   name: z
@@ -30,6 +32,8 @@ export default (app: Router) => {
 
   route.post(
     '/buildings/:building/floors/:floor/rooms',
+    isAuthenticated,
+    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.campus.name),
     validate(roomCreateSchema),
     (req, res, next) =>
       // #swagger.tags = ['Rooms']

@@ -16,19 +16,22 @@ namespace DDDSample1.Domain.Categories
         }
 
         override
-        protected  Object createFromString(String text){
+        protected Object createFromString(String text)
+        {
             return new Guid(text);
         }
 
         override
-        public String AsString(){
-            Guid obj = (Guid) base.ObjValue;
+        public String AsString()
+        {
+            Guid obj = (Guid)base.ObjValue;
             return obj.ToString();
         }
-        
-       
-        public Guid AsGuid(){
-            return (Guid) base.ObjValue;
+
+
+        public Guid AsGuid()
+        {
+            return (Guid)base.ObjValue;
         }
     }
 }

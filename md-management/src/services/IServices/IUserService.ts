@@ -2,8 +2,14 @@ import { Result } from '../../core/logic/Result';
 import { IUserDTO } from '../../dto/IUserDTO';
 
 export default interface IUserService {
-  signUp(userDTO: IUserDTO): Promise<Result<{ userDTO: IUserDTO; token: string }>>;
+  signUp(userDTO: Omit<IUserDTO, 'id'>): Promise<Result<{ userDTO: IUserDTO; token: string }>>;
   signIn(email: string, password: string): Promise<Result<{ userDTO: IUserDTO; token: string }>>;
   findUserById(userId: string): Promise<Result<IUserDTO>>;
   findByEmail(email: string): Promise<Result<IUserDTO>>;
+  deleteUser(userId: string): Promise<Result<void>>;
+  activateUser(userId: string): Promise<Result<void>>;
+  rejectUser(userId: string): Promise<Result<void>>;
+  getUsersWithRole(role: string): Promise<Result<IUserDTO[]>>;
+  getAllUsers(): Promise<Result<IUserDTO[]>>;
+  getPendingUsers(): Promise<Result<IUserDTO[]>>;
 }

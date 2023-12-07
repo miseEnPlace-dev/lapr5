@@ -13,6 +13,7 @@ import { inject, injectable } from 'inversify';
 import IDeviceModelRepo from './IRepos/IDeviceModelRepo';
 import IDeviceRepo from './IRepos/IDeviceRepo';
 import IDeviceService from './IServices/IDeviceService';
+import { IPaginationDTO } from '@/dto/IPaginationDTO';
 
 @injectable()
 export default class DeviceService implements IDeviceService {
@@ -73,43 +74,65 @@ export default class DeviceService implements IDeviceService {
 
   public async getDevicesRobots(
     filterStr: string | undefined,
-    value: string | undefined
-  ): Promise<Result<IDeviceDTO[]>> {
+    value: string | undefined,
+    page: number = 1,
+    limit: number = 3
+  ): Promise<Result<IPaginationDTO<IDeviceDTO>>> {
     try {
       const filters = filterStr ? filterStr : '';
 
-      let result: IDeviceDTO[] = [];
+      let devicesDTO: IDeviceDTO[] = [];
 
       if (filters) {
         if (filters.includes('task')) {
-          if (value === undefined) return Result.fail<IDeviceDTO[]>('Value not provided');
+          if (value === undefined)
+            return Result.fail<IPaginationDTO<IDeviceDTO>>('Value not provided');
           const devices = await this.deviceRepo.findByTask(value);
 
-          if (!devices) return Result.fail<IDeviceDTO[]>('Devices not found');
-          result = devices.map(device => {
+          if (!devices) return Result.fail<IPaginationDTO<IDeviceDTO>>('Devices not found');
+          devicesDTO = devices.map(device => {
             const deviceDTO = DeviceMapper.toDTO(device) as IDeviceDTO;
             return deviceDTO;
           });
         } else if (filters.includes('model')) {
-          if (value === undefined) return Result.fail<IDeviceDTO[]>('Value not provided');
+          if (value === undefined)
+            return Result.fail<IPaginationDTO<IDeviceDTO>>('Value not provided');
           const devices = await this.deviceRepo.findByModel(value);
 
-          if (!devices) return Result.fail<IDeviceDTO[]>('Devices not found');
-          result = devices.map(device => {
+          if (!devices) return Result.fail<IPaginationDTO<IDeviceDTO>>('Devices not found');
+          devicesDTO = devices.map(device => {
             const deviceDTO = DeviceMapper.toDTO(device) as IDeviceDTO;
             return deviceDTO;
           });
         } else {
-          return Result.fail<IDeviceDTO[]>('Invalid filter.');
+          return Result.fail<IPaginationDTO<IDeviceDTO>>('Invalid filter');
         }
       } else {
         const devices = await this.deviceRepo.findRobots();
-        result = devices.map(device => {
+
+        console.log('DEVICES = ', devices);
+
+        devicesDTO = devices.map(device => {
           const deviceDTO = DeviceMapper.toDTO(device) as IDeviceDTO;
           return deviceDTO;
         });
       }
-      return Result.ok<IDeviceDTO[]>(result);
+      const start = (page - 1) * limit;
+      const total = devicesDTO.length;
+
+      const result: IPaginationDTO<IDeviceDTO> = {
+        meta: {
+          total,
+          limit,
+          page,
+          totalPages: Math.ceil(total / limit)
+        },
+        data: devicesDTO.slice(start, start + limit)
+      };
+
+      console.log('RESULT = ', result);
+
+      return Result.ok<IPaginationDTO<IDeviceDTO>>(result);
     } catch (e) {
       throw e;
     }

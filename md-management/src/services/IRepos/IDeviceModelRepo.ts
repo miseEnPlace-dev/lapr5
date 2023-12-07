@@ -7,5 +7,6 @@ export default interface IDeviceModelRepo extends Repo<DeviceModel> {
   save(deviceModel: DeviceModel): Promise<DeviceModel>;
   findByName(name: DeviceModelName): Promise<DeviceModel | null>;
   findByCode(code: DeviceModelCode): Promise<DeviceModel | null>;
-  findAll(): Promise<DeviceModel[]>;
+  findAll(page: number, limit: number): Promise<DeviceModel[]>;
+  count(): Promise<number>;
 }

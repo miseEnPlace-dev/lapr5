@@ -16,6 +16,7 @@ import { TYPES } from '../../../src/loaders/inversify/types';
 import IRoleRepo from '../../../src/services/IRepos/IRoleRepo';
 
 import { stub } from 'sinon';
+import { UserState } from '../../../src/domain/user/userState';
 
 describe('User Mapper', () => {
   beforeEach(() => {
@@ -28,12 +29,14 @@ describe('User Mapper', () => {
 
   it('should map a user to a dto', () => {
     const userDto = {
+      id: '1',
       firstName: 'firstName',
       lastName: 'lastName',
       email: 'email@email.com',
       password: '',
       phoneNumber: '911234567',
-      role: 'ADMIN'
+      role: 'ADMIN',
+      state: 'active'
     };
 
     const user = User.create(
@@ -49,7 +52,8 @@ describe('User Mapper', () => {
         role: Role.create({
           name: RoleName.create('ADMIN').getValue(),
           title: RoleTitle.create('ADMIN').getValue()
-        }).getValue()
+        }).getValue(),
+        state: UserState.create('active')
       },
       UniqueEntityID.create('1')
     );
@@ -73,7 +77,8 @@ describe('User Mapper', () => {
         role: Role.create({
           name: RoleName.create('ADMIN').getValue(),
           title: RoleTitle.create('ADMIN').getValue()
-        }).getValue()
+        }).getValue(),
+        state: UserState.create('active')
       },
       UniqueEntityID.create('1')
     );
@@ -87,7 +92,8 @@ describe('User Mapper', () => {
       email: 'email@email.com',
       password: 'Password-1',
       phoneNumber: '911234567',
-      role: 'ADMIN'
+      role: 'ADMIN',
+      state: 'active'
     });
   });
 
@@ -107,7 +113,8 @@ describe('User Mapper', () => {
           hashed: true
         }).getValue(),
         phoneNumber: PhoneNumber.create('911234567').getValue(),
-        role
+        role,
+        state: UserState.create('active')
       },
       UniqueEntityID.create('1')
     );
@@ -124,7 +131,8 @@ describe('User Mapper', () => {
       email: 'email@email.com',
       password: 'Password-1',
       phoneNumber: '911234567',
-      role: 'ADMIN'
+      role: 'ADMIN',
+      state: 'active'
     });
 
     expect(result).toEqual(user.getValue());
@@ -145,7 +153,8 @@ describe('User Mapper', () => {
           email: 'email@email.com',
           password: 'Password-1',
           phoneNumber: '911234567',
-          role: 'ADMIN'
+          role: 'ADMIN',
+          state: 'active'
         })
     ).rejects.toThrow('Role not found');
   });

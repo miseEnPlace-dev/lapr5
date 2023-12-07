@@ -10,4 +10,5 @@ export default interface IRoomRepo extends Repo<Room> {
   findAllRoomsByFloor(floor: Floor): Promise<Room[] | null>;
   findByName(name: RoomName): Promise<Room | null>;
   findAll(): Promise<Room[] | null>;
+  count(): Promise<number>;
 }

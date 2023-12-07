@@ -11,6 +11,39 @@ import IUserController from './IControllers/IUserController';
 export default class UserController implements IUserController {
   constructor(@inject(TYPES.userService) private userService: IUserService) {}
 
+  async getUsers(req: Request, res: Response, next: NextFunction) {
+    try {
+      const role = req.query.role as string;
+      const usersOrError = role
+        ? await this.userService.getUsersWithRole(role)
+        : await this.userService.getAllUsers();
+
+      if (usersOrError.isFailure)
+        return res.status(400).json({ message: usersOrError.errorValue() });
+
+      const usersDTO = usersOrError.getValue();
+
+      return res.status(200).json(usersDTO);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  async getRequests(req: Request, res: Response, next: NextFunction) {
+    try {
+      const requestsOrError = await this.userService.getPendingUsers();
+
+      if (requestsOrError.isFailure)
+        return res.status(400).json({ message: requestsOrError.errorValue() });
+
+      const requestsDTO = requestsOrError.getValue();
+
+      return res.status(200).json(requestsDTO);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
   async signUp(req: Request, res: Response, next: NextFunction) {
     try {
       const userOrError = await this.userService.signUp(req.body as IUserDTO);
@@ -25,11 +58,35 @@ export default class UserController implements IUserController {
     }
   }
 
+  async activateUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await this.userService.activateUser(req.params.id);
+
+      if (result.isFailure) return res.status(400).json({ message: result.errorValue() });
+
+      return res.status(204).send();
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  async rejectUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await this.userService.rejectUser(req.params.id);
+
+      if (result.isFailure) return res.status(400).json({ message: result.errorValue() });
+
+      return res.status(204).send();
+    } catch (e) {
+      return next(e);
+    }
+  }
+
   public async getMe(req: Request & { session: ISessionDTO }, res: Response) {
     return res.status(200).json(req.session);
   }
 
-  async signIn(req: Request, res: Response, next: NextFunction) {
+  async signIn(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
       const result = await this.userService.signIn(email, password);
@@ -39,7 +96,7 @@ export default class UserController implements IUserController {
       const { userDTO, token } = result.getValue();
       return res.status(200).json({ userDTO, token });
     } catch (e) {
-      return next(e);
+      return res.status(400).json({ message: (e as { message: string }).message });
     }
   }
 
@@ -47,6 +104,19 @@ export default class UserController implements IUserController {
     try {
       // TODO AuthService.Logout(req.user) do some clever stuff
       return res.status(200).end();
+    } catch (e) {
+      console.error('🔥 error %o', e);
+      return next(e);
+    }
+  }
+
+  async deleteUser(req: Request & { session: ISessionDTO }, res: Response, next: NextFunction) {
+    try {
+      const result = await this.userService.deleteUser(req.session.id);
+
+      if (result.isFailure) return res.status(400).json({ message: result.errorValue() });
+
+      return res.status(204).end();
     } catch (e) {
       console.error('🔥 error %o', e);
       return next(e);

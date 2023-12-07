@@ -23,6 +23,10 @@ export default class ConnectorRepo implements IConnectorRepo {
     return !!connectorDocument;
   }
 
+  public async count(): Promise<number> {
+    return await connectorSchema.count();
+  }
+
   public async save(connector: Connector): Promise<Connector> {
     const query = { domainId: connector.id } as FilterQuery<IConnectorPersistence & Document>;
 
@@ -69,8 +73,12 @@ export default class ConnectorRepo implements IConnectorRepo {
     return null;
   }
 
-  public async findAll(): Promise<Connector[]> {
-    const records = await connectorSchema.find();
+  public async findAll(page: number, limit: number): Promise<Connector[]> {
+    const records = await connectorSchema
+      .find()
+      .limit(limit)
+      .skip(page * limit)
+      .sort({ code: 1 });
 
     const connectors: Connector[] = [];
 

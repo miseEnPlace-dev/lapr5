@@ -12,6 +12,7 @@ import { IConnectorService } from "../../../src/service/IService/IConnectorServi
 
 describe("Connector Service", () => {
   beforeEach(() => {
+    process.env.environment = "test";
     sinon.restore();
   });
 

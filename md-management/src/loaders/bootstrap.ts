@@ -71,6 +71,14 @@ export default class Bootstrapper {
       phoneNumber: '912345678',
       role: defaultRoles.campus.name
     });
+    await this.loadUser({
+      firstName: 'Admin',
+      lastName: 'Admin',
+      email: 'admin@admin.com',
+      password: 'admin',
+      phoneNumber: '912345678',
+      role: defaultRoles.admin.name
+    });
 
     await this.loadBuilding({
       code: 'a',
@@ -442,7 +450,7 @@ export default class Bootstrapper {
     if (!roleExists) await this.roleService.createRole({ name, title, description });
   }
 
-  private async loadUser(user: IUserDTO) {
+  private async loadUser(user: Omit<IUserDTO, 'state' | 'id'>) {
     const userExists = await this.userService.findByEmail(user.email);
 
     if (userExists.isFailure) {
@@ -452,7 +460,8 @@ export default class Bootstrapper {
         email: user.email,
         password: user.password,
         phoneNumber: user.phoneNumber,
-        role: user.role
+        role: user.role,
+        state: 'active'
       });
 
       if (res.isFailure) throw new Error(res.errorValue());

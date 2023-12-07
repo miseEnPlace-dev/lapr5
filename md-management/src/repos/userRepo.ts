@@ -2,7 +2,6 @@ import { injectable } from 'inversify';
 
 import { User } from '@/domain/user/user';
 import { UserEmail } from '@/domain/user/userEmail';
-import { UserId } from '@/domain/user/userId';
 import { UserMapper } from '@/mappers/UserMapper';
 import userSchema from '@/persistence/schemas/userSchema';
 import IUserRepo from '@/services/IRepos/IUserRepo';
@@ -11,14 +10,69 @@ import IUserRepo from '@/services/IRepos/IUserRepo';
 export default class UserRepo implements IUserRepo {
   constructor() {}
 
-  public async exists(user: User): Promise<boolean> {
+  async findAll(): Promise<User[]> {
+    const userRecords = await userSchema.find();
+
+    const users = [];
+    for (const userRecord of userRecords) {
+      const user = await UserMapper.toDomain(userRecord);
+      if (user) users.push(user);
+    }
+
+    return users;
+  }
+
+  async findActive(): Promise<User[]> {
+    const query = { state: 'active' };
+    const userRecords = await userSchema.find(query);
+
+    const users = [];
+    for (const userRecord of userRecords) {
+      const user = await UserMapper.toDomain(userRecord);
+      if (user) users.push(user);
+    }
+
+    return users;
+  }
+
+  async findPending(): Promise<User[]> {
+    const query = { state: 'pending' };
+    const userRecords = await userSchema.find(query);
+
+    const users = [];
+    for (const userRecord of userRecords) {
+      const user = await UserMapper.toDomain(userRecord);
+      if (user) users.push(user);
+    }
+
+    return users;
+  }
+
+  async findByRole(role: string): Promise<User[]> {
+    const query = { role };
+    const userRecords = await userSchema.find(query);
+
+    const users = [];
+    for (const userRecord of userRecords) {
+      const user = await UserMapper.toDomain(userRecord);
+      if (user) users.push(user);
+    }
+
+    return users;
+  }
+
+  async exists(user: User): Promise<boolean> {
     const query = { domainId: user.id };
     const userDocument = await userSchema.findOne(query);
 
     return !!userDocument;
   }
 
-  public async save(user: User): Promise<User> {
+  async count(): Promise<number> {
+    return await userSchema.count();
+  }
+
+  async save(user: User): Promise<User> {
     const query = { domainId: user.id };
 
     const userDocument = await userSchema.findOne(query);
@@ -37,6 +91,9 @@ export default class UserRepo implements IUserRepo {
       } else {
         userDocument.firstName = user.firstName;
         userDocument.lastName = user.lastName;
+        userDocument.email = user.email.value;
+        userDocument.phoneNumber = user.phoneNumber.value;
+        userDocument.state = user.state.value;
         await userDocument.save();
 
         return user;
@@ -46,7 +103,7 @@ export default class UserRepo implements IUserRepo {
     }
   }
 
-  public async findByEmail(email: UserEmail | string): Promise<User | null> {
+  async findByEmail(email: UserEmail | string): Promise<User | null> {
     const emailVal = email instanceof UserEmail ? (<UserEmail>email).value : email;
     const query = { email: emailVal };
     const userRecord = await userSchema.findOne(query);
@@ -56,14 +113,19 @@ export default class UserRepo implements IUserRepo {
     return null;
   }
 
-  public async findById(userId: UserId | string): Promise<User | null> {
-    const idX = userId instanceof UserId ? (<UserId>userId).id.toValue() : userId;
-
-    const query = { domainId: idX };
+  async findById(userId: string): Promise<User | null> {
+    const query = { domainId: userId };
     const userRecord = await userSchema.findOne(query);
 
     if (userRecord !== null) return UserMapper.toDomain(userRecord);
 
     return null;
+  }
+
+  async delete(id: string): Promise<void> {
+    const query = { domainId: id };
+
+    const result = await userSchema.deleteOne(query);
+    if (!result) throw new Error('User not deleted');
   }
 }

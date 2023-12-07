@@ -5,7 +5,6 @@ import Dropdown from "@/components/Dropdown";
 
 import Button from "../../components/Button";
 import Input from "../../components/Input";
-// import Dropdown from "../../components/Dropdown";
 import TextArea from "../../components/TextArea";
 import { ArrowLeftIcon } from "../../styles/Icons";
 import { useDevicePageModule } from "./module";

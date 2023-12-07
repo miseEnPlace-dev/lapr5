@@ -27,6 +27,10 @@ export default class DeviceRepo implements IDeviceRepo {
     return devices;
   }
 
+  public async count(): Promise<number> {
+    return await deviceSchema.count();
+  }
+
   public async findByTask(task: string): Promise<Device[] | null> {
     const query: PipelineStage[] = [
       {

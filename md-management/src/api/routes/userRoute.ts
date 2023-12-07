@@ -5,8 +5,9 @@ import { z } from 'zod';
 import { container } from '@/loaders/inversify';
 
 import IUserController from '@/controllers/IControllers/IUserController';
+import { defaultRoles } from '@/domain/role/defaultRoles';
 import { TYPES } from '@/loaders/inversify/types';
-import { attachCurrentSession, isAuthenticated, validate } from '../middlewares/';
+import { attachCurrentSession, isAuthenticated, isAuthorizedAs, validate } from '../middlewares/';
 
 const signUpSchema = z.object({
   firstName: z
@@ -44,6 +45,20 @@ export default (app: Router) => {
   const route = Router();
   const userController = container.get<IUserController>(TYPES.userController);
 
+  route.get(
+    '/users',
+    isAuthenticated,
+    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.admin.name),
+    (req, res, next) =>
+      // #swagger.tags = ['Users']
+      // #swagger.summary = 'Get users'
+      // #swagger.description = 'Get all users'
+      // #swagger.queryParameters['filter'] = { description: 'Filter users', in: 'query', required: false }
+      // #swagger.responses[200] = { description: 'The users' }
+      // #swagger.responses[400] = { description: 'Invalid input' }
+      userController.getUsers(req, res, next)
+  );
+
   route.post('/users/signup', validate(signUpSchema), (req, res, next) =>
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Sign up'
@@ -52,6 +67,58 @@ export default (app: Router) => {
     // #swagger.responses[200] = { description: 'The created user' }
     // #swagger.responses[400] = { description: 'Invalid input' }
     userController.signUp(req, res, next)
+  );
+
+  route.get(
+    '/requests',
+    isAuthenticated,
+    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.admin.name),
+    (req, res, next) =>
+      // #swagger.tags = ['Users']
+      // #swagger.summary = 'Get requests'
+      // #swagger.description = 'Get all requests'
+      // #swagger.responses[200] = { description: 'The requests' }
+      // #swagger.responses[400] = { description: 'Invalid input' }
+
+      userController.getRequests(req, res, next)
+  );
+
+  route.patch(
+    '/users/:id/accept',
+    isAuthenticated,
+    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.admin.name),
+    (req, res, next) =>
+      // #swagger.tags = ['Users']
+      // #swagger.summary = 'Activate user'
+      // #swagger.description = 'Activate a user'
+      // #swagger.parameters['id'] = { description: 'User id', in: 'path', required: true }
+      // #swagger.responses[200] = { description: 'The activated user' }
+      // #swagger.responses[400] = { description: 'Invalid input' }
+      userController.activateUser(req, res, next)
+  );
+
+  route.patch(
+    '/users/:id/reject',
+    isAuthenticated,
+    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.admin.name),
+    (req, res, next) =>
+      // #swagger.tags = ['Users']
+      // #swagger.summary = 'Activate user'
+      // #swagger.description = 'Activate a user'
+      // #swagger.parameters['id'] = { description: 'User id', in: 'path', required: true }
+      // #swagger.responses[200] = { description: 'The activated user' }
+      // #swagger.responses[400] = { description: 'Invalid input' }
+      userController.rejectUser(req, res, next)
+  );
+
+  route.delete('/users', isAuthenticated, attachCurrentSession, (req, res, next) =>
+    // #swagger.tags = ['Users']
+    // #swagger.summary = 'Delete user'
+    // #swagger.description = 'Delete a user'
+    // #swagger.parameters['id'] = { description: 'User id', in: 'path', required: true }
+    // #swagger.responses[200] = { description: 'The deleted user' }
+    // #swagger.responses[400] = { description: 'Invalid input' }
+    userController.deleteUser(req, res, next)
   );
 
   route.post('/users/login', validate(signInSchema), (req, res, next) =>

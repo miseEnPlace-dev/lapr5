@@ -5,8 +5,8 @@ import { Result } from '../../core/logic/Result';
 import { Role } from '../role/role';
 import { PhoneNumber } from './phoneNumber';
 import { UserEmail } from './userEmail';
-import { UserId } from './userId';
 import { UserPassword } from './userPassword';
+import { UserState } from './userState';
 
 interface UserProps {
   firstName: string;
@@ -15,15 +15,12 @@ interface UserProps {
   password: UserPassword;
   role: Role;
   phoneNumber: PhoneNumber;
+  state: UserState;
 }
 
 export class User extends AggregateRoot<UserProps> {
   get id(): UniqueEntityID {
     return this._id;
-  }
-
-  get userId(): UserId {
-    return UserId.create(this.id);
   }
 
   get email(): UserEmail {
@@ -52,6 +49,14 @@ export class User extends AggregateRoot<UserProps> {
 
   get phoneNumber(): PhoneNumber {
     return this.props.phoneNumber;
+  }
+
+  get state(): UserState {
+    return this.props.state;
+  }
+
+  set state(value: UserState) {
+    this.props.state = value;
   }
 
   private constructor(props: UserProps, id?: UniqueEntityID) {

@@ -30,8 +30,8 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="flex h-screen items-center justify-center">
-      <main className="flex h-3/4 w-5/6 flex-col items-center justify-center gap-y-24 rounded-lg bg-slate-100 px-6 md:px-24 lg:w-1/2">
-        <div className="flex flex-col gap-y-4">
+      <main className="flex h-3/4 w-5/6 flex-col items-center justify-center gap-y-6 rounded-lg bg-slate-100 px-6 md:px-24 lg:w-1/2">
+        <div className="mb-10 flex flex-col gap-y-4">
           <h1 className="text-center text-xl font-bold md:text-3xl">
             Welcome to
           </h1>
@@ -67,7 +67,7 @@ const LoginPage: React.FC = () => {
           </Button>
         </form>
         <Link to="/register" className="text-slate-600 underline">
-          Don't have an account? Register here.
+          Don't have an account? Register here
         </Link>
       </main>
     </div>

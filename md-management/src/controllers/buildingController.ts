@@ -8,6 +8,15 @@ import IBuildingController from './IControllers/IBuildingController';
 
 import { Result } from '@/core/logic/Result';
 import { IBuildingDTO } from '@/dto/IBuildingDTO';
+import { z } from 'zod';
+import { IPaginationDTO } from '@/dto/IPaginationDTO';
+
+const querySchema = z.object({
+  minFloors: z.string().optional(),
+  maxFloors: z.string().optional(),
+  page: z.string().optional(),
+  limit: z.string().optional()
+});
 
 @injectable()
 export default class BuildingController implements IBuildingController {
@@ -52,8 +61,12 @@ export default class BuildingController implements IBuildingController {
 
   public async getBuildingsWithMinMaxFloors(req: Request, res: Response, next: NextFunction) {
     try {
-      const min = Number(req.query.minFloors);
-      const max = Number(req.query.maxFloors);
+      const query = querySchema.parse(req.query);
+
+      const min = Number(query.minFloors);
+      const max = Number(query.maxFloors);
+      const page = Number(query.page) || undefined;
+      const limit = Number(query.limit) || undefined;
 
       if (min > max) {
         return res.status(400).send({
@@ -63,8 +76,10 @@ export default class BuildingController implements IBuildingController {
 
       const buildingsOrError = (await this.buildingServiceInstance.getBuildingsWithMinMaxFloors(
         min,
-        max
-      )) as Result<IBuildingDTO[]>;
+        max,
+        page,
+        limit
+      )) as Result<IPaginationDTO<IBuildingDTO>>;
 
       if (buildingsOrError.isFailure) {
         return res.status(400).json({ message: buildingsOrError.errorValue() });
@@ -78,13 +93,19 @@ export default class BuildingController implements IBuildingController {
 
   public async getBuildings(req: Request, res: Response, next: NextFunction) {
     try {
-      if (req.query.minFloors && req.query.maxFloors) {
-        return this.getBuildingsWithMinMaxFloors(req, res, next);
-      }
+      const query = querySchema.parse(req.query);
 
-      const buildingsOrError = (await this.buildingServiceInstance.getBuildings()) as Result<
-        IBuildingDTO[]
-      >;
+      if (query.minFloors && query.maxFloors)
+        return this.getBuildingsWithMinMaxFloors(req, res, next);
+
+      // TODO: validate page & limit
+      const page = Number(query.page) || undefined;
+      const limit = Number(query.limit) || undefined;
+
+      const buildingsOrError = (await this.buildingServiceInstance.getBuildings(
+        page,
+        limit
+      )) as Result<IPaginationDTO<IBuildingDTO>>;
 
       if (buildingsOrError.isFailure) {
         return res.status(400).json({ message: buildingsOrError.errorValue() });
