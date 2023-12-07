@@ -8,6 +8,8 @@ export default interface IUserService {
   findByEmail(email: string): Promise<Result<IUserDTO>>;
   deleteUser(userId: string): Promise<Result<void>>;
   activateUser(userId: string): Promise<Result<void>>;
+  rejectUser(userId: string): Promise<Result<void>>;
   getUsersWithRole(role: string): Promise<Result<IUserDTO[]>>;
   getAllUsers(): Promise<Result<IUserDTO[]>>;
+  getPendingUsers(): Promise<Result<IUserDTO[]>>;
 }

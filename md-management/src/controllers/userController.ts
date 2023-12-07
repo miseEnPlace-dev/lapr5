@@ -29,6 +29,21 @@ export default class UserController implements IUserController {
     }
   }
 
+  async getRequests(req: Request, res: Response, next: NextFunction) {
+    try {
+      const requestsOrError = await this.userService.getPendingUsers();
+
+      if (requestsOrError.isFailure)
+        return res.status(400).json({ message: requestsOrError.errorValue() });
+
+      const requestsDTO = requestsOrError.getValue();
+
+      return res.status(200).json(requestsDTO);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
   async signUp(req: Request, res: Response, next: NextFunction) {
     try {
       const userOrError = await this.userService.signUp(req.body as IUserDTO);
@@ -46,6 +61,18 @@ export default class UserController implements IUserController {
   async activateUser(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.userService.activateUser(req.params.id);
+
+      if (result.isFailure) return res.status(400).json({ message: result.errorValue() });
+
+      return res.status(204).send();
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  async rejectUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await this.userService.rejectUser(req.params.id);
 
       if (result.isFailure) return res.status(400).json({ message: result.errorValue() });
 

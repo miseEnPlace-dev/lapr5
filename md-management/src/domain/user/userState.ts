@@ -7,13 +7,17 @@ export class UserState {
   static get Pending() {
     return new UserState('pending');
   }
+  static get Rejected() {
+    return new UserState('rejected');
+  }
 
   get value() {
     return this.name;
   }
 
   static create(value: string): UserState {
-    if (value !== 'active' && value !== 'pending') throw new Error('Invalid user state');
+    if (value !== 'active' && value !== 'pending' && value !== 'rejected')
+      throw new Error('Invalid user state');
 
     return new UserState(value);
   }

@@ -1,6 +1,8 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import swal from "sweetalert";
+
+import { localStorageConfig } from "@/config/localStorageConfig";
 
 import AuthContext from "../context/AuthContext";
 
@@ -12,7 +14,14 @@ interface RequireAuthProps {
 export const RequireRole: React.FC<RequireAuthProps> = ({ children, role }) => {
   const { role: r } = useContext(AuthContext);
 
-  if (!r) swal("Error", "You are not able to access this page", "error");
+  const [isValid, setIsValid] = useState(true);
 
-  return r === role ? children : <Navigate to="/login" replace />;
+  useEffect(() => {
+    if (!localStorage.getItem(localStorageConfig.token)) setIsValid(false);
+    if (r && r !== role) setIsValid(false);
+  }, [r, role]);
+
+  if (!isValid) swal("Error", "You are not able to access this page", "error");
+
+  return isValid ? children : <Navigate to="/login" replace />;
 };
