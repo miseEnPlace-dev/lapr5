@@ -4,4 +4,5 @@
 
 - `web/`: Visualization Module
 - `md-management/`: Master Data Management
+- `md-tasks/`: Master Data Tasks
 - `planning/` Planning Module
