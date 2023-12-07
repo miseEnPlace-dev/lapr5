@@ -450,7 +450,7 @@ export default class Bootstrapper {
     if (!roleExists) await this.roleService.createRole({ name, title, description });
   }
 
-  private async loadUser(user: Omit<IUserDTO, 'state'>) {
+  private async loadUser(user: Omit<IUserDTO, 'state' | 'id'>) {
     const userExists = await this.userService.findByEmail(user.email);
 
     if (userExists.isFailure) {
