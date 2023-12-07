@@ -6,5 +6,4 @@ export interface IUserDTO {
   phoneNumber: string;
   role: string;
   state: string;
-  id: string;
 }
