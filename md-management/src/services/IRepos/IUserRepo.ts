@@ -8,4 +8,6 @@ export default interface IUserRepo extends Repo<User> {
   findById(id: string): Promise<User | null>;
   count(): Promise<number>;
   delete(id: string): Promise<void>;
+  findAll(): Promise<User[]>;
+  findByRole(role: string): Promise<User[]>;
 }

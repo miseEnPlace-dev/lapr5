@@ -11,6 +11,24 @@ import IUserController from './IControllers/IUserController';
 export default class UserController implements IUserController {
   constructor(@inject(TYPES.userService) private userService: IUserService) {}
 
+  async getUsers(req: Request, res: Response, next: NextFunction) {
+    try {
+      const role = req.query.role as string;
+      const usersOrError = role
+        ? await this.userService.getUsersWithRole(role)
+        : await this.userService.getAllUsers();
+
+      if (usersOrError.isFailure)
+        return res.status(400).json({ message: usersOrError.errorValue() });
+
+      const usersDTO = usersOrError.getValue();
+
+      return res.status(200).json(usersDTO);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
   async signUp(req: Request, res: Response, next: NextFunction) {
     try {
       const userOrError = await this.userService.signUp(req.body as IUserDTO);

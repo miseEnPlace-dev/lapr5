@@ -45,6 +45,19 @@ export default (app: Router) => {
   const route = Router();
   const userController = container.get<IUserController>(TYPES.userController);
 
+  route.get(
+    '/users',
+    isAuthenticated,
+    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.admin.name),
+    (req, res, next) =>
+      // #swagger.tags = ['Users']
+      // #swagger.summary = 'Get users'
+      // #swagger.description = 'Get all users'
+      // #swagger.queryParameters['filter'] = { description: 'Filter users', in: 'query', required: false }
+      // #swagger.responses[200] = { description: 'The users' }
+      // #swagger.responses[400] = { description: 'Invalid input' }
+      userController.getUsers(req, res, next)
+  );
   route.post('/users/signup', validate(signUpSchema), (req, res, next) =>
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Sign up'

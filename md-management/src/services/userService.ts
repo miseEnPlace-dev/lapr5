@@ -30,7 +30,19 @@ export default class UserService implements IUserService {
     @inject(TYPES.roleRepo) private roleRepo: IRoleRepo
   ) {}
 
-  public async signUp(
+  async getAllUsers(): Promise<Result<IUserDTO[]>> {
+    const users = await this.userRepo.findAll();
+    const usersDTO = users.map(user => UserMapper.toDTO(user) as IUserDTO);
+    return Result.ok<IUserDTO[]>(usersDTO);
+  }
+
+  async getUsersWithRole(role: string): Promise<Result<IUserDTO[]>> {
+    const users = await this.userRepo.findByRole(role);
+    const usersDTO = users.map(user => UserMapper.toDTO(user) as IUserDTO);
+    return Result.ok<IUserDTO[]>(usersDTO);
+  }
+
+  async signUp(
     userDTO: Omit<IUserDTO, 'id'>
   ): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
     try {
@@ -95,7 +107,7 @@ export default class UserService implements IUserService {
     }
   }
 
-  public async signIn(
+  async signIn(
     email: string,
     password: string
   ): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
@@ -128,7 +140,7 @@ export default class UserService implements IUserService {
      * A JWT means JSON Web Token, so basically it's a json that is _hashed_ into a string
      * The cool thing is that you can add custom properties a.k.a metadata
      * Here we are adding the userId, role and name
-     * Beware that the metadata is public and can be decoded without _the secret_
+     * Beware that the metadata is  and can be decoded without _the secret_
      * but the client cannot craft a JWT to fake a userId
      * because it doesn't have _the secret_ to sign it
      * more information here: https://softwareontheroad.com/you-dont-need-passport
