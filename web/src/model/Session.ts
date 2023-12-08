@@ -4,4 +4,5 @@ export interface Session {
   role: string;
   firstName: string;
   lastName: string;
+  phoneNumber: string;
 }

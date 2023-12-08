@@ -7,6 +7,7 @@ export default interface IUserService {
   findUserById(userId: string): Promise<Result<IUserDTO>>;
   findByEmail(email: string): Promise<Result<IUserDTO>>;
   deleteUser(userId: string): Promise<Result<void>>;
+  updateUser(user: IUserDTO, email: string): Promise<Result<IUserDTO>>;
   activateUser(userId: string): Promise<Result<void>>;
   getUsersWithRole(role: string): Promise<Result<IUserDTO[]>>;
   getAllUsers(): Promise<Result<IUserDTO[]>>;

@@ -2,6 +2,7 @@ import { inject, injectable } from "inversify";
 
 import { TYPES } from "@/inversify/types";
 import { localStorageConfig } from "@/config/localStorageConfig";
+import { Session } from "@/model/Session";
 import { User } from "@/model/User";
 
 import { HttpService } from "./IService/HttpService";
@@ -23,6 +24,17 @@ export class UserService implements IUserService {
     return res.data as UserSession;
   }
 
+  async getCurrentUser(): Promise<User> {
+    const token = this.localStorage.getItem(localStorageConfig.token);
+    const res = await this.http.get<User>("/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data;
+  }
+
   async deleteUser(): Promise<void> {
     const token = this.localStorage.getItem(localStorageConfig.token);
     await this.http.delete("/users", {
@@ -30,5 +42,16 @@ export class UserService implements IUserService {
         Authorization: `Bearer ${token}`,
       },
     });
+  }
+
+  async updateUser(user: Partial<User>): Promise<User> {
+    const token = this.localStorage.getItem(localStorageConfig.token);
+    const res = await this.http.put<User>("/users", user, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data;
   }
 }

@@ -30,6 +30,23 @@ const signUpSchema = z.object({
   phoneNumber: z.string().min(1)
 });
 
+const updateSchema = z.object({
+  firstName: z
+    .string()
+    .min(1)
+    .max(255),
+  lastName: z
+    .string()
+    .min(1)
+    .max(255),
+  password: z
+    .string()
+    .min(8)
+    .max(255)
+    .optional(),
+  phoneNumber: z.string().min(1)
+});
+
 const signInSchema = z.object({
   email: z
     .string()
@@ -118,6 +135,20 @@ export default (app: Router) => {
     // #swagger.responses[200] = { description: 'The logged user' }
     // #swagger.responses[400] = { description: 'Invalid input' }
     userController.signOut(req, res, next)
+  );
+
+  route.put(
+    '/users/',
+    isAuthenticated,
+    attachCurrentSession,
+    validate(updateSchema),
+    (req, res, next) =>
+      // #swagger.tags = ['Users']
+      // #swagger.summary = 'Update the current authenticated user'
+      // #swagger.description = 'Update a user given its code'
+      // #swagger.responses[200] = { description: 'The updated user' }
+      // #swagger.responses[400] = { description: 'Invalid input' }
+      userController.updateUser(req, res, next)
   );
 
   app.use(route);

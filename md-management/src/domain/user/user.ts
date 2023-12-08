@@ -51,6 +51,26 @@ export class User extends AggregateRoot<UserProps> {
     return this.props.phoneNumber;
   }
 
+  set password(password: UserPassword) {
+    this.props.password = password;
+  }
+
+  set email(email: UserEmail) {
+    this.props.email = email;
+  }
+
+  set firstName(firstName: string) {
+    this.props.firstName = firstName;
+  }
+
+  set lastName(lastName: string) {
+    this.props.lastName = lastName;
+  }
+
+  set phoneNumber(phoneNumber: PhoneNumber) {
+    this.props.phoneNumber = phoneNumber;
+  }
+
   get state(): UserState {
     return this.props.state;
   }

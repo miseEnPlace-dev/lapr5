@@ -55,7 +55,7 @@ export default class UserService implements IUserService {
         );
 
       const salt = randomBytes(32);
-      const hashedPassword = await argon2.hash(userDTO.password, { salt });
+      const hashedPassword = await argon2.hash(userDTO.password ? userDTO.password : '', { salt });
 
       const passwordOrError = UserPassword.create({
         value: hashedPassword,
@@ -154,6 +154,7 @@ export default class UserService implements IUserService {
     const firstName = user.firstName;
     const lastName = user.lastName;
     const role = user.role.name.value;
+    const phoneNumber = user.phoneNumber.props.value;
 
     return jwt.sign(
       {
@@ -162,6 +163,7 @@ export default class UserService implements IUserService {
         role,
         firstName,
         lastName,
+        phoneNumber,
         exp: exp.getTime() / 1000
       },
       config.jwtSecret
@@ -199,6 +201,44 @@ export default class UserService implements IUserService {
 
     await this.userRepo.delete(userId);
     return Result.ok<void>();
+  }
+
+  async updateUser(userDTO: IUserDTO, email: string): Promise<Result<IUserDTO>> {
+    try {
+      const user = await this.userRepo.findByEmail(email);
+
+      if (!user) return Result.fail<IUserDTO>('User not found');
+
+      if (userDTO.password) {
+        const salt = randomBytes(32);
+        const hashedPassword = await argon2.hash(userDTO.password, {
+          salt
+        });
+
+        const passwordOrError = UserPassword.create({
+          value: hashedPassword,
+          hashed: true
+        });
+        if (passwordOrError.isFailure) return Result.fail<IUserDTO>(passwordOrError.error);
+
+        user.password = passwordOrError.getValue();
+      }
+
+      const phoneNumberOrError = PhoneNumber.create(userDTO.phoneNumber);
+      if (phoneNumberOrError.isFailure) return Result.fail<IUserDTO>(phoneNumberOrError.error);
+
+      user.phoneNumber = phoneNumberOrError.getValue();
+      user.firstName = userDTO.firstName;
+      user.lastName = userDTO.lastName;
+
+      await this.userRepo.save(user);
+
+      const userDTOResult = UserMapper.toDTO(user);
+      return Result.ok<IUserDTO>(userDTOResult);
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   }
 
   private async getRole(name: string): Promise<Result<Role>> {

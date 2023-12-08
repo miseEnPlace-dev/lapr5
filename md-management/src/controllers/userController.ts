@@ -6,6 +6,7 @@ import { IUserDTO } from '@/dto/IUserDTO';
 import { TYPES } from '@/loaders/inversify/types';
 import IUserService from '@/services/IServices/IUserService';
 import IUserController from './IControllers/IUserController';
+import { Result } from '@/core/logic/Result';
 
 @injectable()
 export default class UserController implements IUserController {
@@ -90,6 +91,23 @@ export default class UserController implements IUserController {
       if (result.isFailure) return res.status(400).json({ message: result.errorValue() });
 
       return res.status(204).end();
+    } catch (e) {
+      console.error('🔥 error %o', e);
+      return next(e);
+    }
+  }
+
+  async updateUser(req: Request & { session: ISessionDTO }, res: Response, next: NextFunction) {
+    try {
+      const result = (await this.userService.updateUser(
+        req.body as IUserDTO,
+        req.session.email
+      )) as Result<IUserDTO>;
+
+      if (result.isFailure) return res.status(400).json({ message: result.errorValue() });
+
+      const userDTO = result.getValue();
+      return res.status(200).json(userDTO);
     } catch (e) {
       console.error('🔥 error %o', e);
       return next(e);

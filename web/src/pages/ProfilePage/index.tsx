@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
@@ -8,9 +9,22 @@ import SideBar from "@/components/SideBar";
 
 import { useModule } from "./module";
 
+import { AxiosError } from "axios";
+
 const ProfilePage: React.FC = () => {
   const { menuOptions } = useMenuOptions();
-  const { username, role, deleteUser } = useModule();
+  const {
+    username,
+    role,
+    user,
+    deleteUser,
+    firstNameInputRef,
+    lastNameInputRef,
+    phoneNumberInputRef,
+    passwordInputRef,
+    handleUpdate,
+    confirmPasswordInputRef,
+  } = useModule();
 
   const navigate = useNavigate();
 
@@ -33,6 +47,21 @@ const ProfilePage: React.FC = () => {
     }
   }
 
+  async function handleSave() {
+    try {
+      await handleUpdate();
+
+      swal("Success", "Profile saved successfully", "success");
+    } catch (err: unknown) {
+      if (err instanceof AxiosError && err.response)
+        swal("Error", err.response.data.errors as string, "error");
+      else if (err instanceof Error) swal("Error", err.message, "error");
+      else swal("Error", err as string, "error");
+    }
+  }
+
+  console.log("USER", user);
+
   return (
     <div className="flex">
       <SideBar menuOptions={menuOptions} />
@@ -40,19 +69,64 @@ const ProfilePage: React.FC = () => {
         <h1 className="text-4xl font-bold">
           Welcome, <span className="text-primary">{username}</span>
         </h1>
-        <p className="-mt-2 text-lg capitalize text-slate-600">{role}</p>
+        <p className="text-slate-500">
+          Manage here all your personal information.
+        </p>
         <div className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left">
+          <div className="flex flex-row gap-x-4">
+            <Input
+              name="First Name"
+              type="text"
+              className="w-full"
+              inputRef={firstNameInputRef}
+              defaultValue={user?.firstName || ""}
+            />
+            <Input
+              name="Last Name"
+              type="text"
+              className="w-full"
+              inputRef={lastNameInputRef}
+              defaultValue={user?.lastName || ""}
+            />
+          </div>
+          <Input name="Role" type="text" defaultValue={role || ""} disabled />
           <Input
-            name="Username"
+            name="Email"
             type="text"
-            defaultValue={username || ""}
+            defaultValue={user?.email || ""}
             disabled
+          />
+          <Input
+            name="Phone Number"
+            type="text"
+            inputRef={phoneNumberInputRef}
+            defaultValue={user?.phoneNumber || ""}
+          />
+          <Input
+            name="New Password"
+            type="password"
+            inputRef={passwordInputRef}
+            placeholder="Insert a new password"
+          />
+          <Input
+            name="Confirm your New Password"
+            type="password"
+            inputRef={confirmPasswordInputRef}
+            placeholder="Reinsert your new password"
           />
         </div>
         <Button
+          type="confirm"
+          name="save"
+          className="mr-12 mt-4"
+          onClick={handleSave}
+        >
+          Save
+        </Button>
+        <Button
           type="destroy"
           name="delete-account"
-          className="mr-12 mt-4"
+          className="mr-12"
           onClick={handleDeleteAccount}
         >
           Delete Account
