@@ -8,5 +8,7 @@ export default interface IUserController {
   deleteUser(req: Request, res: Response, next?: NextFunction): Promise<Response | void>;
   updateUser(req: Request, res: Response, next?: NextFunction): Promise<Response | void>;
   activateUser(req: Request, res: Response, next?: NextFunction): Promise<Response | void>;
+  rejectUser(req: Request, res: Response, next?: NextFunction): Promise<Response | void>;
   getUsers(req: Request, res: Response, next?: NextFunction): Promise<Response | void>;
+  getRequests(req: Request, res: Response, next?: NextFunction): Promise<Response | void>;
 }

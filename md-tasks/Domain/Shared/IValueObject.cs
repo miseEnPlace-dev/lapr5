@@ -1,7 +1,7 @@
 namespace DDDSample1.Domain.Shared
 {
-    public interface IValueObject
+    public interface IValueObject<T>
     {
-        
+
     }
 }

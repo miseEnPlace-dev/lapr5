@@ -75,6 +75,7 @@ export default (app: Router) => {
       // #swagger.responses[400] = { description: 'Invalid input' }
       userController.getUsers(req, res, next)
   );
+
   route.post('/users/signup', validate(signUpSchema), (req, res, next) =>
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Sign up'
@@ -85,8 +86,22 @@ export default (app: Router) => {
     userController.signUp(req, res, next)
   );
 
+  route.get(
+    '/requests',
+    isAuthenticated,
+    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.admin.name),
+    (req, res, next) =>
+      // #swagger.tags = ['Users']
+      // #swagger.summary = 'Get requests'
+      // #swagger.description = 'Get all requests'
+      // #swagger.responses[200] = { description: 'The requests' }
+      // #swagger.responses[400] = { description: 'Invalid input' }
+
+      userController.getRequests(req, res, next)
+  );
+
   route.patch(
-    '/users/:id',
+    '/users/:id/accept',
     isAuthenticated,
     (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.admin.name),
     (req, res, next) =>
@@ -97,6 +112,20 @@ export default (app: Router) => {
       // #swagger.responses[200] = { description: 'The activated user' }
       // #swagger.responses[400] = { description: 'Invalid input' }
       userController.activateUser(req, res, next)
+  );
+
+  route.patch(
+    '/users/:id/reject',
+    isAuthenticated,
+    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.admin.name),
+    (req, res, next) =>
+      // #swagger.tags = ['Users']
+      // #swagger.summary = 'Activate user'
+      // #swagger.description = 'Activate a user'
+      // #swagger.parameters['id'] = { description: 'User id', in: 'path', required: true }
+      // #swagger.responses[200] = { description: 'The activated user' }
+      // #swagger.responses[400] = { description: 'Invalid input' }
+      userController.rejectUser(req, res, next)
   );
 
   route.delete('/users', isAuthenticated, attachCurrentSession, (req, res, next) =>

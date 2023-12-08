@@ -9,6 +9,8 @@ export default interface IUserService {
   deleteUser(userId: string): Promise<Result<void>>;
   updateUser(user: IUserDTO, email: string): Promise<Result<IUserDTO>>;
   activateUser(userId: string): Promise<Result<void>>;
+  rejectUser(userId: string): Promise<Result<void>>;
   getUsersWithRole(role: string): Promise<Result<IUserDTO[]>>;
   getAllUsers(): Promise<Result<IUserDTO[]>>;
+  getPendingUsers(): Promise<Result<IUserDTO[]>>;
 }

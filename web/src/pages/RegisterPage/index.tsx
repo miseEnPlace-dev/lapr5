@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useInjection } from "inversify-react";
 import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
@@ -9,12 +9,10 @@ import { IUserService } from "@/service/IService/IUserService";
 
 import Button from "../../components/Button";
 import Input from "../../components/Input";
-import AuthContext from "../../context/AuthContext";
 import { useEmail } from "../../hooks/useEmail";
 
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
 
   const userService = useInjection<IUserService>(TYPES.userService);
 
@@ -50,16 +48,7 @@ const RegisterPage: React.FC = () => {
         "You must now wait for an Administrator to approve your account",
         "success"
       );
-      // login(email, password)
-      //   .then(() => {
-      //     navigate("/");
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //     swal("Error", "Invalid email or password", "error");
-      //     setPassword("");
-      //     setEmail("");
-      //   });
+      navigate("/login");
     } catch (err) {
       console.log(err);
       swal("Error", "Error creating account", "error");

@@ -31,7 +31,13 @@ export default class UserService implements IUserService {
   ) {}
 
   async getAllUsers(): Promise<Result<IUserDTO[]>> {
-    const users = await this.userRepo.findAll();
+    const users = await this.userRepo.findActive();
+    const usersDTO = users.map(user => UserMapper.toDTO(user) as IUserDTO);
+    return Result.ok<IUserDTO[]>(usersDTO);
+  }
+
+  async getPendingUsers(): Promise<Result<IUserDTO[]>> {
+    const users = await this.userRepo.findPending();
     const usersDTO = users.map(user => UserMapper.toDTO(user) as IUserDTO);
     return Result.ok<IUserDTO[]>(usersDTO);
   }
@@ -40,6 +46,15 @@ export default class UserService implements IUserService {
     const users = await this.userRepo.findByRole(role);
     const usersDTO = users.map(user => UserMapper.toDTO(user) as IUserDTO);
     return Result.ok<IUserDTO[]>(usersDTO);
+  }
+
+  async rejectUser(userId: string): Promise<Result<void>> {
+    const user = await this.userRepo.findById(userId);
+    if (!user) return Result.fail<void>('User not found');
+
+    user.state = UserState.Rejected;
+    await this.userRepo.save(user);
+    return Result.ok<void>();
   }
 
   async signUp(

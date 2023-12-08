@@ -31,8 +31,18 @@ export class UserService implements IUserService {
         Authorization: `Bearer ${token}`,
       },
     });
-
     return res.data;
+  }
+
+  async getRequests(): Promise<User[]> {
+    const token = this.localStorage.getItem(localStorageConfig.token);
+    const requests = await this.http.get<User[]>("/requests", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return requests.data;
   }
 
   async deleteUser(): Promise<void> {
@@ -53,5 +63,42 @@ export class UserService implements IUserService {
     });
 
     return res.data;
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    const token = this.localStorage.getItem(localStorageConfig.token);
+    const res = await this.http.get("/users", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data as User[];
+  }
+
+  async acceptRequest(id: string): Promise<void> {
+    const token = this.localStorage.getItem(localStorageConfig.token);
+    await this.http.patch(
+      `/users/${id}/accept`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  }
+
+  async rejectRequest(id: string): Promise<void> {
+    const token = this.localStorage.getItem(localStorageConfig.token);
+    await this.http.patch(
+      `/users/${id}/reject`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   }
 }
