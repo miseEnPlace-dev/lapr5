@@ -55,7 +55,7 @@ const UsersPage: React.FC = () => {
               </h2>
               <div className="flex flex-col">
                 <h3 className="text-left text-2xl font-bold">{user.email}</h3>
-                <div className="text-left text-sm text-slate-600">
+                <div className="text-left text-sm capitalize text-slate-600">
                   {user.role}
                 </div>
               </div>

@@ -61,10 +61,17 @@ const ProfilePage: React.FC = () => {
       await logout();
       navigate("/login");
     } catch (err: unknown) {
-      if (err instanceof AxiosError && err.response)
+      if (err instanceof AxiosError && err.response?.data.errors)
         swal("Error", err.response.data.errors as string, "error");
+      else if (err instanceof AxiosError && err.response?.data.message)
+        swal("Error", err.response.data.message as string, "error");
       else if (err instanceof Error) swal("Error", err.message, "error");
-      else swal("Error", err as string, "error");
+      else
+        swal(
+          "Error",
+          "Error updating profile. Please review your information.",
+          "error"
+        );
     }
   }
 

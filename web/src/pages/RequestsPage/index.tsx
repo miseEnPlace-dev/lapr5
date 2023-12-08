@@ -30,6 +30,11 @@ const RequestsPage: React.FC = () => {
           RobDroneGO.
         </p>
         <div className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left text-lg">
+          {requests.length === 0 && (
+            <p className="text-slate-500">
+              There are no requests pending at the moment.
+            </p>
+          )}
           {requests.map((request, i) => (
             <motion.div
               initial={{ opacity: 0, x: -100 }}

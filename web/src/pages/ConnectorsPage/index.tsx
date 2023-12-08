@@ -123,7 +123,7 @@ const ConnectorsPage: React.FC = () => {
           </motion.button>
           <div className="flex flex-col gap-y-6" aria-label="connectors-list">
             {!connectors ? null : connectors.data.length == 0 ? ( // TODO: skeleton component
-              <p className="text-slate-600">
+              <p className="text-slate-500">
                 No results were found for your search... Try to change or remove
                 the filters.
               </p>

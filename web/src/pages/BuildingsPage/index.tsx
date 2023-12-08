@@ -134,7 +134,7 @@ const BuildingsPage: React.FC = () => {
             +
           </motion.button>
           {!buildings ? null : buildings.data.length == 0 ? ( // TODO: skeleton component // TODO: skeleton component
-            <p className="text-slate-600">
+            <p className="text-slate-500">
               No results were found for your search... Try to change or remove
               the filters.
             </p>
