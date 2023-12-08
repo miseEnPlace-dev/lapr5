@@ -2,23 +2,34 @@ using System;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Task;
 
-public class SurveillanceTask : Entity<TaskId>, IAggregateRoot
+public class SurveillanceTask
 {
   public string Description { get; private set; }
 
+  public bool Active { get; private set; }
+
   public SurveillanceTask()
   {
-    Description = "";
+    this.Active = true;
   }
 
-  public SurveillanceTask(string Description)
+  public SurveillanceTask(string description)
   {
-    Id = new TaskId(Guid.NewGuid());
-    this.Description = Description;
+    this.Description = description;
+    this.Active = true;
   }
 
-  public void ChangeDescription(string Description)
+  public void ChangeDescription(string description)
   {
-    this.Description = Description;
+    if (!this.Active)
+    {
+      throw new BusinessRuleValidationException("Task is not active.");
+    }
+    this.Description = description;
+  }
+
+  public void Deactivate()
+  {
+    this.Active = false;
   }
 }

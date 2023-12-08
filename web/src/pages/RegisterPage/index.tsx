@@ -72,13 +72,13 @@ const RegisterPage: React.FC = () => {
         <form className="flex w-full flex-col gap-y-4">
           <div className="flex w-full items-center gap-x-4">
             <Input
-              placeholder="First name"
+              placeholder="First Name"
               type="text"
               className="w-full"
               inputRef={firstNameInputRef}
             />
             <Input
-              placeholder="Last name"
+              placeholder="Last Name"
               className="w-full"
               type="text"
               inputRef={lastNameInputRef}

@@ -8,20 +8,31 @@ namespace DDDSample1.Domain.Requests
     {
         public RequestState State { get; private set; }
 
+        public bool Active { get; private set; }
+
         private Request()
         {
-            State = new RequestState("Pending");
+            this.Active = true;
         }
 
-        public Request(PickAndDeliveryTask task)
+        public Request(RequestState state)
         {
-            Id = new RequestId(Guid.NewGuid());
-            State = new RequestState("Pending");
+            this.State = state;
+            this.Active = true;
         }
 
-        public void ChangeState(string state)
+        public void ChangeState(RequestState state)
         {
-            State.ChangeState(state);
+            if (!this.Active)
+            {
+                throw new BusinessRuleValidationException("Request is not active.");
+            }
+            this.State = state;
+        }
+
+        public void Deactivate()
+        {
+            this.Active = false;
         }
     }
 }
