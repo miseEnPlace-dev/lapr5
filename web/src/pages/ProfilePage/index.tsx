@@ -17,6 +17,7 @@ const ProfilePage: React.FC = () => {
     username,
     role,
     user,
+    logout,
     deleteUser,
     firstNameInputRef,
     lastNameInputRef,
@@ -51,7 +52,14 @@ const ProfilePage: React.FC = () => {
     try {
       await handleUpdate();
 
-      swal("Success", "Profile saved successfully", "success");
+      await swal(
+        "Success",
+        "Profile saved successfully! Please login again.",
+        "success"
+      );
+
+      await logout();
+      navigate("/login");
     } catch (err: unknown) {
       if (err instanceof AxiosError && err.response)
         swal("Error", err.response.data.errors as string, "error");

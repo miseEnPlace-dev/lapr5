@@ -10,7 +10,7 @@ import { sanitizeRole } from "@/utils/sanitizeRole";
 
 export const useModule = () => {
   const userService = useInjection<IUserService>(TYPES.userService);
-  const { username, role } = useAuth();
+  const { username, role, logout } = useAuth();
   const [user, setUser] = useState<User | null>(null);
 
   const firstNameInputRef = useRef<HTMLInputElement>(null);
@@ -63,13 +63,13 @@ export const useModule = () => {
     };
 
     await userService.updateUser(part);
-    fetchUser();
   };
 
   return {
     deleteUser,
     username,
     user,
+    logout,
     firstNameInputRef,
     lastNameInputRef,
     phoneNumberInputRef,
