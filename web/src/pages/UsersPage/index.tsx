@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 
 import { useMenuOptions } from "@/hooks/useMenuOptions";
 import Button from "@/components/Button";
@@ -14,11 +15,39 @@ const ANIMATION_DELAY = 0.1;
 
 const UsersPage: React.FC = () => {
   const navigate = useNavigate();
-  const { users } = useListUsersModule();
+  const {
+    users,
+    email,
+    setEmail,
+    isEmailValid,
+    password,
+    setPassword,
+    phoneNumber,
+    setPhoneNumber,
+    isPhoneNumberValid,
+    firstNameInputRef,
+    lastNameInputRef,
+    isAgreed,
+    handleCreateUser,
+    setIsAgreed,
+  } = useListUsersModule();
 
   const [isUserModalVisible, setIsUserModalVisible] = useState(false);
 
   const { menuOptions } = useMenuOptions();
+
+  const handleRegister = async () => {
+    try {
+      handleCreateUser();
+
+      swal("Success", "User created successfully", "success");
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+      swal("Error", "Error creating account", "error");
+      setPassword("");
+    }
+  };
 
   return (
     <div className="flex">
@@ -68,11 +97,63 @@ const UsersPage: React.FC = () => {
             title="Create User"
           >
             <div className="flex h-full flex-col justify-between gap-y-4">
-              <div className="flex w-full flex-col gap-y-4">
-                <Input className="w-full" placeholder="Name" />
+              <div className="flex w-full items-center gap-x-4">
+                <Input
+                  placeholder="First Name"
+                  type="text"
+                  className="w-full"
+                  inputRef={firstNameInputRef}
+                />
+                <Input
+                  placeholder="Last Name"
+                  className="w-full"
+                  type="text"
+                  inputRef={lastNameInputRef}
+                />
               </div>
-              <Button name="save" type="confirm">
-                Save
+              <Input
+                placeholder="Phone Number"
+                type="text"
+                value={phoneNumber}
+                onChange={setPhoneNumber}
+              />
+              <Input
+                placeholder="Email"
+                type="email"
+                value={email}
+                onChange={setEmail}
+              />
+              <Input
+                placeholder="Password"
+                type="password"
+                value={password}
+                onChange={setPassword}
+              />
+              <div className="flex items-center gap-x-2">
+                <input
+                  type="checkbox"
+                  onChange={(e) => setIsAgreed(e.target.checked)}
+                />
+                <label className="text-slate-600">
+                  The user agrees to the{" "}
+                  <Link to="/privacy-policy" className="text-primary underline">
+                    Privacy Policy
+                  </Link>
+                </label>
+              </div>
+              <Button
+                type="confirm"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleRegister();
+                }}
+                name="register"
+                disabled={
+                  !isEmailValid || !password || !isPhoneNumberValid || !isAgreed
+                }
+                className="mt-2 w-full"
+              >
+                Register
               </Button>
             </div>
           </Modal>
