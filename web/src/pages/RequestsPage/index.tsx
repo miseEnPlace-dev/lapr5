@@ -26,7 +26,7 @@ const RequestsPage: React.FC = () => {
       <main className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
         <h1 className="text-4xl font-bold">Requests</h1>
         <p className="text-slate-500">
-          Manage here all requests from requests that want to sign up in
+          Manage here all requests from users that want to sign up in
           RobDroneGO.
         </p>
         <div className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left text-lg">
@@ -51,7 +51,7 @@ const RequestsPage: React.FC = () => {
                   {request.email}
                 </h3>
                 <div className="text-left text-base text-slate-600">
-                  {request.role}
+                  {request.phoneNumber}
                 </div>
               </div>
               <div className="absolute right-8 flex items-center gap-x-6">
