@@ -1,6 +1,6 @@
 # Client Clarifications
 
-This document is a collection of clarifications for the first sprint. The doubts are synthesized for easier reading.
+This document is a collection of clarifications for the second sprint. The doubts are synthesized for easier reading.
 
 ---
 
