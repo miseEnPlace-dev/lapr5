@@ -24,6 +24,7 @@ const ProfilePage: React.FC = () => {
     phoneNumberInputRef,
     passwordInputRef,
     handleUpdate,
+    downloadData,
     confirmPasswordInputRef,
   } = useModule();
 
@@ -33,7 +34,8 @@ const ProfilePage: React.FC = () => {
     try {
       if (
         await swal({
-          title: "Do you want to delete your account?",
+          title: "Do you really want to delete your account?",
+          text: "This action cannot be undone.",
           icon: "warning",
           buttons: ["Cancel", "Yes, delete it"],
           dangerMode: true,
@@ -75,7 +77,22 @@ const ProfilePage: React.FC = () => {
     }
   }
 
-  console.log("USER", user);
+  async function handleDownload() {
+    try {
+      if (
+        await swal({
+          title: "Download Personal Data?",
+          text: "Your personal data will be downloaded in a JSON file.",
+          icon: "info",
+          buttons: ["Cancel", "Download"],
+          dangerMode: false,
+        })
+      )
+        await downloadData();
+    } catch (err) {
+      swal("Error", err as string, "error");
+    }
+  }
 
   return (
     <div className="flex">
@@ -137,6 +154,14 @@ const ProfilePage: React.FC = () => {
           onClick={handleSave}
         >
           Save
+        </Button>
+        <Button
+          type="default"
+          name="save"
+          className="mr-12 mt-4"
+          onClick={handleDownload}
+        >
+          Download Personal Data
         </Button>
         <Button
           type="destroy"

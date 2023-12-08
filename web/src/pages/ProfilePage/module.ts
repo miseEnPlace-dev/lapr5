@@ -3,7 +3,7 @@ import { useInjection } from "inversify-react";
 
 import { TYPES } from "@/inversify/types";
 import { useAuth } from "@/hooks/useAuth";
-import { Building } from "@/model/Building";
+import { IUserDataDTO } from "@/dto/IUserDataDTO";
 import { User } from "@/model/User";
 import { IUserService } from "@/service/IService/IUserService";
 import { sanitizeRole } from "@/utils/sanitizeRole";
@@ -65,6 +65,33 @@ export const useModule = () => {
     await userService.updateUser(part);
   };
 
+  // TODO: This is a temporary solution!!!!!!!!!!!!!!!
+  const downloadData = async () => {
+    const element = document.createElement("a");
+    const file = new Blob(
+      [
+        JSON.stringify(
+          user,
+          (k, v) => {
+            if (k === "id") return undefined;
+            if (k === "exp") return undefined;
+            if (k === "iat") return undefined;
+            if (k === "password") return undefined;
+            return v;
+          },
+          2
+        ),
+      ],
+      {
+        type: "application/json",
+      }
+    );
+    element.href = URL.createObjectURL(file);
+    element.download = `${user?.firstName}_${user?.lastName}.json`;
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+  };
+
   return {
     deleteUser,
     username,
@@ -76,6 +103,7 @@ export const useModule = () => {
     passwordInputRef,
     confirmPasswordInputRef,
     handleUpdate,
+    downloadData,
     role: sanitizedRole,
   };
 };

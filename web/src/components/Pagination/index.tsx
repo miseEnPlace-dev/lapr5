@@ -21,7 +21,7 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         disabled={meta.page === 1}
         onClick={() => changePage(meta.page - 1)}
-        className="flex h-10 w-10 items-start justify-center rounded-md bg-slate-500 text-2xl font-bold text-white opacity-90 disabled:opacity-20"
+        className="flex h-10 w-10 items-start justify-center rounded-md bg-slate-500 text-2xl font-bold text-white opacity-90 hover:bg-slate-600 disabled:opacity-20 disabled:hover:bg-slate-500"
       >
         <span>←</span>
       </button>
@@ -47,7 +47,7 @@ const Pagination: React.FC<PaginationProps> = ({
         onClick={() => {
           changePage(meta.page + 1);
         }}
-        className="flex h-10 w-10 items-start justify-center rounded-md bg-slate-500 text-2xl font-bold text-white opacity-90 disabled:opacity-20"
+        className="flex h-10 w-10 items-start justify-center rounded-md bg-slate-500 text-2xl font-bold text-white opacity-90 hover:bg-slate-600 disabled:opacity-20 disabled:hover:bg-slate-500"
       >
         <span>→</span>
       </button>
