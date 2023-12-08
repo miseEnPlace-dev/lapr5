@@ -30,7 +30,6 @@ namespace DDDSample1.Domain.Task.PickAndDeliveryTask
       {
         throw new BusinessRuleValidationException("Description cannot be empty.");
       }
-
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
