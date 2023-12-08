@@ -134,6 +134,7 @@ export default class UserService implements IUserService {
     if (!user) throw new Error('User not registered');
 
     if (user.state.value === UserState.Pending.value) throw new Error('User not activated');
+    if (user.state.value === UserState.Rejected.value) throw new Error('User not allowed');
 
     /**
      * We use verify from argon2 to prevent 'timing based' attacks
