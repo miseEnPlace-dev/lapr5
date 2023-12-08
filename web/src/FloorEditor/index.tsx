@@ -27,7 +27,7 @@ const FloorEditor: React.FC = () => {
     }
 
     fetchFloors();
-  }, []);
+  }, [floorService]);
 
   const navigate = useNavigate();
 
@@ -357,7 +357,8 @@ const FloorEditor: React.FC = () => {
 
     initialize();
     animate();
-  }, [floors]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleNavigateBack = () => {
     navigate("/");
