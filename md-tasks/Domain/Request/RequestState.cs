@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using DDDSample1.Domain.Requests;
 using DDDSample1.Domain.Shared;
 
 namespace DDDSample1.Domain.Requests
 {
-  public class RequestState : IValueObject<RequestId>
+  public class RequestState : ValueObject
   {
     public string State { get; private set; }
 
@@ -20,6 +21,11 @@ namespace DDDSample1.Domain.Requests
     public void ChangeState(string State)
     {
       this.State = State;
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+      yield return State;
     }
   }
 }
