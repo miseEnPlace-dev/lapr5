@@ -34,7 +34,7 @@ export const useDevicePageModule = () => {
 
   const fetchDeviceModels = useCallback(async () => {
     const deviceModels = await deviceModelService.getDeviceModels();
-    setDeviceModels(deviceModels);
+    setDeviceModels(deviceModels.data);
   }, [deviceModelService]);
 
   useEffect(() => {

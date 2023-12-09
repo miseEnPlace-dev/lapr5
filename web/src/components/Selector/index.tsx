@@ -31,7 +31,7 @@ const Selector: React.FC<SelectorProps> = ({
             key={item.name}
             name={item.name}
             disabled={disabled}
-            className={`relative flex items-center justify-center gap-x-4 text-center text-xl font-bold capitalize ${
+            className={`relative flex items-center justify-center gap-x-4 text-center text-xl font-bold capitalize disabled:cursor-not-allowed disabled:bg-slate-300 ${
               !disabled && "hover:brightness-90"
             }
           ${

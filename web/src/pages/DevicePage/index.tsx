@@ -52,11 +52,13 @@ const DevicePage: React.FC = () => {
           <div className="flex items-center justify-between gap-x-12">
             <Input
               className="w-full"
+              disabled
               placeholder="Nickname"
               defaultValue={device?.nickname}
               inputRef={nicknameInputRef}
             />
             <Dropdown
+              disabled
               className="w-full"
               name="Device Model"
               placeholder="Device Model"
@@ -65,6 +67,7 @@ const DevicePage: React.FC = () => {
               options={deviceModels}
             />
             <Input
+              disabled
               defaultValue={device?.serialNumber}
               className="w-full"
               placeholder="Serial Number"
@@ -72,6 +75,7 @@ const DevicePage: React.FC = () => {
             />
           </div>
           <TextArea
+            disabled
             className="w-full"
             placeholder="Description"
             defaultValue={device?.description}

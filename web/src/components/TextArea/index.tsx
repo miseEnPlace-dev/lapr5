@@ -4,6 +4,7 @@ interface TextAreaProps {
   onChange?: (val: string) => void;
   placeholder?: string;
   className?: string;
+  disabled?: boolean;
   inputRef?: React.RefObject<HTMLTextAreaElement>;
   rows?: number;
   name?: string;
@@ -14,6 +15,7 @@ const TextArea: React.FC<TextAreaProps> = ({
   onChange,
   placeholder,
   className,
+  disabled,
   inputRef,
   defaultValue,
   rows = 5,
@@ -25,7 +27,8 @@ const TextArea: React.FC<TextAreaProps> = ({
         {placeholder}
       </label>
       <textarea
-        className={`h-28 max-h-64 min-h-[80px] w-full resize-y rounded-lg border border-slate-500 bg-slate-100 px-4 py-2.5 ${className}`}
+        disabled={disabled}
+        className={`h-28 max-h-64 min-h-[80px] w-full resize-y rounded-lg border border-slate-500 bg-slate-100 px-4 py-2.5 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500 ${className}`}
         placeholder={placeholder}
         defaultValue={defaultValue}
         value={value}
