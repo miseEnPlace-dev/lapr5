@@ -16,7 +16,6 @@ namespace DDDSample1.Infrastructure.Shared
         public BaseRepository(DbSet<TEntity> objs)
         {
             this._objs = objs ?? throw new ArgumentNullException(nameof(objs));
-
         }
 
         public async Task<List<TEntity>> GetAllAsync()

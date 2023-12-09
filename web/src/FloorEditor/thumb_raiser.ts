@@ -1648,7 +1648,6 @@ export default class ThumbRaiser {
         // Check if the player found the exit
         const f = this.maze.foundExit(this.player.position);
         if (f) {
-          console.log({ f });
           //this.finalSequence();
           const mazeIndex = this.mazeParameters.mazes.findIndex(
             (maze) => maze.name === f

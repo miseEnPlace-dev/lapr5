@@ -1,0 +1,23 @@
+@startuml process-view
+autonumber
+
+actor FM as "Fleet Manager"
+participant SYS as "RobDroneGo System" <<system (C4)>>
+
+activate FM
+
+FM -> SYS : requests a task 
+activate SYS
+
+FM <-- SYS : asks for the necessary information
+deactivate SYS
+
+FM -> SYS : sends the information
+activate SYS
+
+FM <-- SYS : returns sucess
+deactivate SYS
+
+deactivate FM
+
+@enduml
