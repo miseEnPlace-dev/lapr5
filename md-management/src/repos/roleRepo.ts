@@ -72,4 +72,16 @@ export default class RoleRepo implements IRoleRepo {
 
     return null;
   }
+
+  public async findAll(): Promise<Role[]> {
+    const roleRecords = await roleSchema.find();
+
+    const roles: Role[] = [];
+    for (const rec of roleRecords) {
+      const role = await RoleMapper.toDomain(rec);
+      if (role) roles.push(role);
+    }
+
+    return roles;
+  }
 }

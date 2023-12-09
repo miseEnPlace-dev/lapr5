@@ -25,6 +25,10 @@ export default (app: Router) => {
     // #swagger.tags = ['Roles']
     ctrl.updateRole(req, res, next)
   );
+  route.get('/roles', (req, res, next) =>
+    // #swagger.tags = ['Roles']
+    ctrl.getRoles(req, res, next)
+  );
 
   app.use(route);
 };
