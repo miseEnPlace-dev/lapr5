@@ -1,12 +1,12 @@
 name: MD-Management CI/CD
 
 on:
-  # schedule:
-  #   - cron: "0 6 * * *"
-  push:
-    branches: [main]
-    paths:
-      - "md-management/**"
+  schedule:
+    - cron: "0 6 * * *"
+  # push:
+  #   branches: [main]
+  #   paths:
+  #     - "md-management/**"
   workflow_dispatch:
 
 defaults:
@@ -30,7 +30,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: 'pnpm'
+          cache: "pnpm"
           cache-dependency-path: "**/pnpm-lock.yaml"
 
       - name: Install packages
