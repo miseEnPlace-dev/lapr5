@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
 import { TYPES } from "@/inversify/types";
+import { useNif } from "@/hooks/useNif";
 import { usePhoneNumber } from "@/hooks/usePhoneNumber";
 import { IUserService } from "@/service/IService/IUserService";
 
@@ -20,6 +21,7 @@ const RegisterPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const { phoneNumber, setPhoneNumber, isPhoneNumberValid } =
     usePhoneNumber("");
+  const { nif, setNif, isNifValid } = useNif("");
   const firstNameInputRef = useRef<HTMLInputElement>(null);
   const lastNameInputRef = useRef<HTMLInputElement>(null);
   const [isAgreed, setIsAgreed] = useState(false);
@@ -31,6 +33,7 @@ const RegisterPage: React.FC = () => {
       !firstNameInputRef.current ||
       !lastNameInputRef.current ||
       !isPhoneNumberValid ||
+      !isNifValid ||
       !isAgreed
     )
       return;
@@ -84,12 +87,22 @@ const RegisterPage: React.FC = () => {
               inputRef={lastNameInputRef}
             />
           </div>
-          <Input
-            placeholder="Phone Number"
-            type="text"
-            value={phoneNumber}
-            onChange={setPhoneNumber}
-          />
+          <div className="flex w-full items-center gap-x-4">
+            <Input
+              placeholder="Phone Number"
+              type="text"
+              className="w-1/2"
+              value={phoneNumber}
+              onChange={setPhoneNumber}
+            />
+            <Input
+              placeholder="NIF"
+              type="text"
+              className="w-full"
+              value={nif}
+              onChange={setNif}
+            />
+          </div>
           <Input
             placeholder="Email"
             type="email"
@@ -121,7 +134,11 @@ const RegisterPage: React.FC = () => {
             }}
             name="register"
             disabled={
-              !isEmailValid || !password || !isPhoneNumberValid || !isAgreed
+              !isEmailValid ||
+              !password ||
+              !isPhoneNumberValid ||
+              !isAgreed ||
+              !isNifValid
             }
             className="mt-2 w-full"
           >
