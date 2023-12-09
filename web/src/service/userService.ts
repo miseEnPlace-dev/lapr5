@@ -2,6 +2,7 @@ import { inject, injectable } from "inversify";
 
 import { TYPES } from "@/inversify/types";
 import { localStorageConfig } from "@/config/localStorageConfig";
+import { Role } from "@/model/Role";
 import { Session } from "@/model/Session";
 import { User } from "@/model/User";
 
@@ -74,6 +75,17 @@ export class UserService implements IUserService {
     });
 
     return res.data as User[];
+  }
+
+  async getAllRoles(): Promise<Role[]> {
+    const token = this.localStorage.getItem(localStorageConfig.token);
+    const res = await this.http.get("/roles", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data as Role[];
   }
 
   async acceptRequest(id: string): Promise<void> {

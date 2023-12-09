@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useInjection } from "inversify-react";
 
 import { TYPES } from "@/inversify/types";
@@ -9,7 +9,7 @@ export const useListRequestsModule = () => {
   const [requests, setRequests] = useState<User[]>([]);
   const userService = useInjection<IUserService>(TYPES.userService);
 
-  async function fetchUsers() {
+  const fetchUsers = useCallback(async () => {
     try {
       const res = await userService.getRequests();
 
@@ -18,7 +18,7 @@ export const useListRequestsModule = () => {
       console.log(err);
       throw err;
     }
-  }
+  }, [userService]);
 
   async function handleAcceptRequest(id: string) {
     try {
@@ -42,7 +42,7 @@ export const useListRequestsModule = () => {
 
   useEffect(() => {
     fetchUsers();
-  });
+  }, [fetchUsers]);
 
   return {
     requests,

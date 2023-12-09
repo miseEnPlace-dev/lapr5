@@ -5,6 +5,7 @@ import swal from "sweetalert";
 
 import { useMenuOptions } from "@/hooks/useMenuOptions";
 import Button from "@/components/Button";
+import Dropdown from "@/components/Dropdown/index.tsx";
 import Input from "@/components/Input";
 import Modal from "@/components/Modal";
 import SideBar from "@/components/SideBar";
@@ -17,6 +18,9 @@ const UsersPage: React.FC = () => {
   const navigate = useNavigate();
   const {
     users,
+    roles,
+    role,
+    setRole,
     email,
     setEmail,
     isEmailValid,
@@ -27,6 +31,7 @@ const UsersPage: React.FC = () => {
     isPhoneNumberValid,
     firstNameInputRef,
     lastNameInputRef,
+    roleInputRef,
     isAgreed,
     handleCreateUser,
     setIsAgreed,
@@ -111,12 +116,39 @@ const UsersPage: React.FC = () => {
                   inputRef={lastNameInputRef}
                 />
               </div>
-              <Input
-                placeholder="Phone Number"
-                type="text"
-                value={phoneNumber}
-                onChange={setPhoneNumber}
+              <Dropdown
+                options={roles}
+                placeholder="Select Role"
+                className="w-full"
+                inputRef={roleInputRef}
+                name="Role"
+                onChange={(e) => setRole(e.target.value)}
               />
+              {role == "user" ? (
+                <div className="flex w-full items-center gap-x-4">
+                  <Input
+                    placeholder="Phone Number"
+                    type="text"
+                    className="w-full"
+                    value={phoneNumber}
+                    onChange={setPhoneNumber}
+                  />
+                  <Input
+                    placeholder="NIF"
+                    type="text"
+                    className="w-full"
+                    value={phoneNumber}
+                    onChange={setPhoneNumber}
+                  />
+                </div>
+              ) : (
+                <Input
+                  placeholder="Phone Number"
+                  type="text"
+                  value={phoneNumber}
+                  onChange={setPhoneNumber}
+                />
+              )}
               <Input
                 placeholder="Email"
                 type="email"
