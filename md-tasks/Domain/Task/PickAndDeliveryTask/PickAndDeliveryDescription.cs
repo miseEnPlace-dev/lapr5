@@ -16,14 +16,15 @@ namespace DDDSample1.Domain.Task.PickAndDeliveryTask
 
     public PickAndDeliveryDescription(string description)
     {
+      ValidateDescription(description);
       Description = description;
     }
 
-    private void ValidateDescription(string description)
+    private static void ValidateDescription(string description)
     {
-      if (description.Length > 255)
+      if (description.Length > 999)
       {
-        throw new BusinessRuleValidationException("Description cannot be longer than 255 characters.");
+        throw new BusinessRuleValidationException("Description cannot be longer than 1000 characters.");
       }
 
       if (string.IsNullOrEmpty(description))
