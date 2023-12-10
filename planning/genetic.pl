@@ -10,6 +10,9 @@ prob_cruzamento(0.7).
 % prob_mutacao(ProbabilidadeMutacao).
 prob_mutacao(0.2).
 
+%lim_time(Tempo_segundos).
+lim_time(5).
+
 % tarefas(NTarefas).
 tarefas(5).
 
@@ -21,14 +24,23 @@ tarefa(t4,3,9).
 tarefa(t5,3,8).
 
 
-gera:-
+gera_lim_ger:-
 	gera_populacao(Pop),
 	write('Pop='),write(Pop),nl,
 	avalia_populacao(Pop,PopAv),
 	write('PopAv='),write(PopAv),nl,
 	ordena_populacao(PopAv,PopOrd),
 	geracoes(NG),
-	gera_geracao(0,NG,PopOrd).
+	gera_geracao_ger(0,NG,PopOrd).
+
+gera_lim_time:-
+	gera_populacao(Pop),
+	write('Pop='),write(Pop),nl,
+	avalia_populacao(Pop,PopAv),
+	write('PopAv='),write(PopAv),nl,
+	ordena_populacao(PopAv,PopOrd),
+	get_time(Ti),
+	gera_geracao_time(Ti,0,PopOrd).
 
 
 gera_populacao(Pop):-
@@ -100,10 +112,10 @@ btroca([X*VX,Y*VY|L1],[Y*VY|L2]):-
 btroca([X|L1],[X|L2]):-btroca(L1,L2).
 
 
-gera_geracao(G,G,Pop):-!,
+gera_geracao_ger(G,G,Pop):-!,
 	write('Geração '), write(G), write(':'), nl, write(Pop), nl.
 
-gera_geracao(N,G,Pop):-
+gera_geracao_ger(N,G,Pop):-
 	write('Geração '), write(N), write(':'), nl, write(Pop), nl,
 	cruzamento(Pop,NPop1),
 	mutacao(NPop1,NPop),
@@ -112,7 +124,26 @@ gera_geracao(N,G,Pop):-
 	melhor_individuo(NPopOrd,Ind),
 	write('Melhor individuo: '), write(Ind), nl, nl,
 	N1 is N+1,
-	gera_geracao(N1,G,NPopOrd).
+	gera_geracao_ger(N1,G,NPopOrd).
+
+gera_geracao_time(T,G,Pop):-
+	lim_time(Lim),
+	get_time(Ti),
+	Tf is Ti - T,
+	Tf > Lim,
+	!,
+	write('Geração '), write(G), write(':'), nl, write(Pop), nl.
+
+gera_geracao_time(T,N,Pop):-
+	write('Geração '), write(N), write(':'), nl, write(Pop), nl,
+	cruzamento(Pop,NPop1),
+	mutacao(NPop1,NPop),
+	avalia_populacao(NPop,NPopAv),
+	ordena_populacao(NPopAv,NPopOrd),
+	melhor_individuo(NPopOrd,Ind),
+	write('Melhor individuo: '), write(Ind), nl, nl,
+	N1 is N+1,
+	gera_geracao_time(T,N1,NPopOrd).
 
 melhor_individuo([Ind*V|Resto],Ind1):-
 	melhor_individuo(Resto,Ind*V,Ind1).
