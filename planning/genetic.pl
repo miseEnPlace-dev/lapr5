@@ -109,9 +109,19 @@ gera_geracao(N,G,Pop):-
 	mutacao(NPop1,NPop),
 	avalia_populacao(NPop,NPopAv),
 	ordena_populacao(NPopAv,NPopOrd),
+	melhor_individuo(NPopOrd,Ind),
+	write('Melhor individuo: '), write(Ind), nl, nl,
 	N1 is N+1,
 	gera_geracao(N1,G,NPopOrd).
 
+melhor_individuo([Ind*V|Resto],Ind1):-
+	melhor_individuo(Resto,Ind*V,Ind1).
+
+melhor_individuo([],Ind,Ind):-!.
+
+melhor_individuo([Ind*V|Resto],Ind1*V1,Ind2):-
+	(V < V1,! ,melhor_individuo(Resto,Ind*V,Ind2));
+	melhor_individuo(Resto,Ind1*V1,Ind2).
 
 gerar_pontos_cruzamento(P1,P2):-
 	gerar_pontos_cruzamento1(P1,P2).
