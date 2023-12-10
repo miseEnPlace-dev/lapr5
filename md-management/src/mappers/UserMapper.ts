@@ -25,7 +25,7 @@ export class UserMapper extends Mapper<User> {
       phoneNumber: user.phoneNumber.value,
       password: '',
       role: user.role.name.value,
-      state: user.state ? user.state.value : 'inactive'
+      state: user.state ? user.state.value : 'pending'
     };
   }
 
@@ -42,6 +42,8 @@ export class UserMapper extends Mapper<User> {
     const roleRepo = container.get<IRoleRepo>(TYPES.roleRepo);
     const role = await roleRepo.findByName(raw.role);
     if (!role) throw new Error('Role not found');
+
+    console.log(raw.state);
 
     const userOrError = User.create(
       {
@@ -70,7 +72,7 @@ export class UserMapper extends Mapper<User> {
       lastName: user.lastName,
       role: user.role.name.value,
       phoneNumber: user.phoneNumber.value,
-      state: user.state ? user.state.value : 'inactive'
+      state: user.state ? user.state.value : 'pending'
     };
   }
 }
