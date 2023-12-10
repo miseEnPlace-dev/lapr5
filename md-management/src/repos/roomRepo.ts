@@ -66,8 +66,6 @@ export default class RoomRepo implements IRoomRepo {
   public async findAllRoomsInFloorByCode(floorCode: FloorCode): Promise<Room[] | null> {
     const query: FilterQuery<IRoomPersistence & Document> = { floorCode: floorCode.value };
 
-    console.log(query);
-
     const roomRecords = await roomSchema.find(query);
 
     const rooms: Room[] = [];

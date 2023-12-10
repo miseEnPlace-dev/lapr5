@@ -52,8 +52,6 @@ export class DeviceService implements IDeviceService {
       });
     }
 
-    console.log('RESPONSE PAGE = ', page, response);
-
     const data = response.data;
     return data;
   }
