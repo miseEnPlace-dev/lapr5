@@ -12,6 +12,7 @@
 :- use_module(library(http/json_convert)).
 :- use_module(library(http/http_json)).
 :- use_module(library(http/http_open)).
+:- use_module(library(http/http_client)).
 :- use_module(library(http/json)).
 % :- use_module(library(http/http_files)).
 
@@ -27,52 +28,30 @@ api_url('http://localhost:4000/api').
 http:location(api, root(api), []). % /api
 
 % define your routes here
-:- http_handler(root(.), say_hi, []). % /
-:- http_handler(root(hello), say_hi_html, []). % /hello
 :- http_handler(api(route), api_get_route, []). % /api/route?from=abc&to=xyz&method=elevators
-:- http_handler(root(greet), greet, []). % /greet?name=johny
-:- http_handler(api(hello), api_hello, []). % /api/hello
-:- http_handler(api(greet), api_greet, []). % /api/greet
 
-say_hi(_):-
-    format('Content-type: text/plain~n~n'),
-    format('Hello World!~n').
-
-say_hi_html(_):-
-    reply_html_page(
-        title('Hello World!'),
-        [ \html_requires(css('style.css')) ],
-        [ h1('Hello World!'), p(['sponsored by prolog. ', i('bye')]) ]
-    ).
-
-greet(Request):-
-    format('Content-type: text/plain~n~n'),
-    http_parameters(Request, [ name(Name, [ optional(true), length >= 2 ]) ]),
-    (
-        var(Name) ->
-        format("What's your name?~n", []), !; % Person is a variable (it's empty)
-        format("Hello, ~w!~n", [Name]) % Person exists
-    ).
-
-
-api_hello(_):-
-    R = json([message='Hello World!']),
-    prolog_to_json(R, JsonOut),
-    reply_json(JsonOut).
-
-api_greet(Request):-
-    http_read_json(Request, JsonIn, [json_object(dict)]),
-    % R = json([message=JsonIn.name]),
-    R = student(JsonIn.name),
-    prolog_to_json(R, JsonOut),
-    reply_json(JsonOut).
+:- dynamic token/1.
 
 read_api(Url, Dict):-
+    token(T),
+    T \== '',
     setup_call_cleanup(
-        http_open(Url, In, []),
+        http_open(Url, In, [
+            authorization(bearer(T))
+        ]),
         json_read_dict(In, Dict),
         close(In)
     ).
+
+%read_api(Url, Dict):-
+%    setup_call_cleanup(
+%        http_open(Url, In, []),
+%        json_read_dict(In, Dict),
+%        close(In)
+%    ).
+
+post_api(Url, Data, Dict):-
+        http_post(Url, json(Data), json(Dict), [method(post)]).
 
 fetch_buildings(Buildings):-
     api_url(Url),
@@ -90,6 +69,18 @@ fetch_floors(BuildingCode, Floors) :-
     atom_concat(FloorsUrl, BuildingCode, FloorsUrl2),
     atom_concat(FloorsUrl2, '/floors', FloorsUrl3),
     read_api(FloorsUrl3, Floors).
+
+password('campus').
+email('campus@campus.com').
+
+authenticate():-
+    api_url(Url),
+    atom_concat(Url, '/users/login', AuthUrl),
+    email(Email),
+    password(Pass),
+    JsonData = json([email=Email, password=Pass]),
+    post_api(AuthUrl, JsonData, Out),
+    (retract(token(_));true), !,assertz(token(Out.token)).
 
 api_get_route(Request):-
     retractall(planning:m(_,_,_,_)),
