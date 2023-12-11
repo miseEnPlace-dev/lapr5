@@ -22,6 +22,8 @@
 :-dynamic corredor/4.
 :-dynamic exit/4.
 
+peso_hv(1).
+peso_diagonal(W):- W is sqrt(2).
 debug_mode(0).
 peso_corr(5).
 peso_elev(30).
@@ -89,40 +91,43 @@ cria_grafo(_,_,0):-!.
 cria_grafo(F,Col,Lin):-cria_grafo_lin(F,Col,Lin),Lin1 is Lin-1,cria_grafo(F,Col,Lin1).
 
 
+
 cria_grafo_lin(_,0,_):-!.
 cria_grafo_lin(F,Col,Lin):-(m(F,Col,Lin,0);m(F,Col,Lin,11);m(F,Col,Lin,12);m(F,Col,Lin,4);m(F,Col,Lin,5)),!,
 			ColS is Col+1, ColA is Col-1, LinS is Lin+1,LinA is Lin-1,
-    ((m(F,ColS,Lin,0),m(F,Col,LinS,0),m(F,ColS,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinS),sqrt(2)));true)),
-    ((m(F,ColS,Lin,0),m(F,Col,LinA,0),m(F,ColS,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinA),sqrt(2)));true)),
-    ((m(F,ColA,Lin,0),m(F,Col,LinA,0),m(F,ColA,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinA),sqrt(2)));true)),
-    ((m(F,ColA,Lin,0),m(F,Col,LinS,0),m(F,ColA,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinS),sqrt(2)));true)),
-    ((m(F,ColS,Lin,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),1));true)),
-    ((m(F,ColA,Lin,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),1));true)),
-    ((m(F,Col,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),1));true)),
-    ((m(F,Col,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),1));true)),
-    ((m(F,ColS,Lin,11),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),1));true)),
-    ((m(F,ColA,Lin,11),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),1));true)),
-    ((m(F,Col,LinS,11),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),1));true)),
-    ((m(F,Col,LinA,11),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),1));true)),
-    ((m(F,ColS,Lin,12),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),1));true)),
-    ((m(F,ColA,Lin,12),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),1));true)),
-    ((m(F,Col,LinS,12),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),1));true)),
-    ((m(F,Col,LinA,12),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),1));true)),
-    ((m(F,ColS,Lin,4),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),1));true)),
-    ((m(F,ColA,Lin,4),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),1));true)),
-    ((m(F,Col,LinS,4),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),1));true)),
-    ((m(F,Col,LinA,4),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),1));true)),
-    ((m(F,ColS,Lin,5),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),1));true)),
-    ((m(F,ColA,Lin,5),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),1));true)),
-    ((m(F,Col,LinS,5),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),1));true)),
-    ((m(F,Col,LinA,5),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),1));true)),
+			peso_diagonal(D),
+			peso_hv(P),
+    ((m(F,ColS,Lin,0),m(F,Col,LinS,0),m(F,ColS,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinS),D));true)),
+    ((m(F,ColS,Lin,0),m(F,Col,LinA,0),m(F,ColS,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinA),D));true)),
+    ((m(F,ColA,Lin,0),m(F,Col,LinA,0),m(F,ColA,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinA),D));true)),
+    ((m(F,ColA,Lin,0),m(F,Col,LinS,0),m(F,ColA,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinS),D));true)),
+    ((m(F,ColS,Lin,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),P));true)),
+    ((m(F,ColA,Lin,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),P));true)),
+    ((m(F,Col,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),P));true)),
+    ((m(F,Col,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),P));true)),
+    ((m(F,ColS,Lin,11),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),P));true)),
+    ((m(F,ColA,Lin,11),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),P));true)),
+    ((m(F,Col,LinS,11),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),P));true)),
+    ((m(F,Col,LinA,11),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),P));true)),
+    ((m(F,ColS,Lin,12),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),P));true)),
+    ((m(F,ColA,Lin,12),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),P));true)),
+    ((m(F,Col,LinS,12),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),P));true)),
+    ((m(F,Col,LinA,12),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),P));true)),
+    ((m(F,ColS,Lin,4),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),P));true)),
+    ((m(F,ColA,Lin,4),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),P));true)),
+    ((m(F,Col,LinS,4),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),P));true)),
+    ((m(F,Col,LinA,4),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),P));true)),
+    ((m(F,ColS,Lin,5),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),P));true)),
+    ((m(F,ColA,Lin,5),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),P));true)),
+    ((m(F,Col,LinS,5),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),P));true)),
+    ((m(F,Col,LinA,5),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),P));true)),
     Col1 is Col-1,
     cria_grafo_lin(F,Col1,Lin).
 cria_grafo_lin(F,Col,Lin):-Col1 is Col-1,cria_grafo_lin(F,Col1,Lin).
 
 
 peso([_],0).
-peso([A,B|T],W):-ligacel(A,B,W1),peso([B|T],W2),W is W1+W2 ,!.
+peso([A,B|T],W):-ligacel(A,B,W1),peso([B|T],W2), W is W1+W2, write(W), !.
 
 
 dfs(Orig,Dest,Cam,W):-
@@ -130,13 +135,15 @@ dfs(Orig,Dest,Cam,W):-
 dfs(Orig,Dest,Cam):-
 	dfs2(Orig,Dest,[Orig],Cam).
 
-dfs2(Dest,Dest,LA,Cam):-
-	reverse(LA,Cam).
+dfs2(Dest, Dest, LA, Cam) :-
+    reverse(LA, Cam).
+    % write('Chegou ao destino: '), write(Dest), write(' Caminho encontrado: '), write(Cam), nl.
 
-dfs2(Act,Dest,LA,Cam):-
-	ligacel(Act,X,_),
-  \+ member(X,LA),
-	dfs2(X,Dest,[X|LA],Cam).
+dfs2(Act, Dest, LA, Cam) :-
+    ligacel(Act, X, _),
+    \+ member(X, LA),
+    % write('Explorando vizinhos de: '), write(Act), write(' Vizinho: '), write(X), nl,
+    dfs2(X, Dest, [X | LA], Cam).
 
 all_dfs(Orig,Dest,LCam):-findall(Cam,dfs(Orig,Dest,Cam,_),LCam).
 
