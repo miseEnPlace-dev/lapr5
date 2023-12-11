@@ -8,8 +8,8 @@ import IBuildingController from './IControllers/IBuildingController';
 
 import { Result } from '@/core/logic/Result';
 import { IBuildingDTO } from '@/dto/IBuildingDTO';
-import { z } from 'zod';
 import { IPaginationDTO } from '@/dto/IPaginationDTO';
+import { z } from 'zod';
 
 const querySchema = z.object({
   minFloors: z.string().optional(),
@@ -74,12 +74,12 @@ export default class BuildingController implements IBuildingController {
         });
       }
 
-      const buildingsOrError = (await this.buildingServiceInstance.getBuildingsWithMinMaxFloors(
+      const buildingsOrError = await this.buildingServiceInstance.getBuildingsWithMinMaxFloors(
         min,
         max,
         page,
         limit
-      )) as Result<IPaginationDTO<IBuildingDTO>>;
+      );
 
       if (buildingsOrError.isFailure) {
         return res.status(400).json({ message: buildingsOrError.errorValue() });

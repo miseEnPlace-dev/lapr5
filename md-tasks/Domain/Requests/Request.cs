@@ -1,6 +1,4 @@
-using System;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Task.PickAndDeliveryTask;
 
 namespace DDDSample1.Domain.Requests
 {
@@ -30,9 +28,9 @@ namespace DDDSample1.Domain.Requests
             this.State = state;
         }
 
-        public void Deactivate()
+        public bool ToggleActive()
         {
-            this.Active = false;
+            return Active = !Active;
         }
     }
 }

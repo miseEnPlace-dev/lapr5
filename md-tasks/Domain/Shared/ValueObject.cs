@@ -5,17 +5,15 @@ namespace DDDSample1.Domain.Shared
 {
   public abstract class ValueObject
   {
-    protected static bool EqualOperator(ValueObject left, ValueObject right)
+    protected bool EqualOperator(ValueObject other)
     {
-      if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null))
-        return false;
-
-      return ReferenceEquals(left, null) || left.Equals(right);
+      // ^ operator -> xor
+      return other is not null || other.Equals(this);
     }
 
-    protected static bool NotEqualOperator(ValueObject left, ValueObject right)
+    protected bool NotEqualOperator(ValueObject other)
     {
-      return !(EqualOperator(left, right));
+      return !EqualOperator(other);
     }
 
     protected abstract IEnumerable<object> GetEqualityComponents();
@@ -35,7 +33,5 @@ namespace DDDSample1.Domain.Shared
       return GetEqualityComponents()
           .Select(x => x != null ? x.GetHashCode() : 0).Aggregate((x, y) => x ^ y);
     }
-
-
   }
 }

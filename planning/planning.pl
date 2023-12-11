@@ -22,6 +22,8 @@
 :-dynamic corredor/4.
 :-dynamic exit/4.
 
+peso_hv(1).
+peso_diagonal(W):- W is sqrt(2).
 debug_mode(0).
 peso_corr(5).
 peso_elev(30).
@@ -89,40 +91,43 @@ cria_grafo(_,_,0):-!.
 cria_grafo(F,Col,Lin):-cria_grafo_lin(F,Col,Lin),Lin1 is Lin-1,cria_grafo(F,Col,Lin1).
 
 
+
 cria_grafo_lin(_,0,_):-!.
 cria_grafo_lin(F,Col,Lin):-(m(F,Col,Lin,0);m(F,Col,Lin,11);m(F,Col,Lin,12);m(F,Col,Lin,4);m(F,Col,Lin,5)),!,
 			ColS is Col+1, ColA is Col-1, LinS is Lin+1,LinA is Lin-1,
-    ((m(F,ColS,Lin,0),m(F,Col,LinS,0),m(F,ColS,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinS),sqrt(2)));true)),
-    ((m(F,ColS,Lin,0),m(F,Col,LinA,0),m(F,ColS,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinA),sqrt(2)));true)),
-    ((m(F,ColA,Lin,0),m(F,Col,LinA,0),m(F,ColA,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinA),sqrt(2)));true)),
-    ((m(F,ColA,Lin,0),m(F,Col,LinS,0),m(F,ColA,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinS),sqrt(2)));true)),
-    ((m(F,ColS,Lin,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),1));true)),
-    ((m(F,ColA,Lin,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),1));true)),
-    ((m(F,Col,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),1));true)),
-    ((m(F,Col,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),1));true)),
-    ((m(F,ColS,Lin,11),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),1));true)),
-    ((m(F,ColA,Lin,11),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),1));true)),
-    ((m(F,Col,LinS,11),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),1));true)),
-    ((m(F,Col,LinA,11),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),1));true)),
-    ((m(F,ColS,Lin,12),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),1));true)),
-    ((m(F,ColA,Lin,12),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),1));true)),
-    ((m(F,Col,LinS,12),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),1));true)),
-    ((m(F,Col,LinA,12),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),1));true)),
-    ((m(F,ColS,Lin,4),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),1));true)),
-    ((m(F,ColA,Lin,4),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),1));true)),
-    ((m(F,Col,LinS,4),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),1));true)),
-    ((m(F,Col,LinA,4),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),1));true)),
-    ((m(F,ColS,Lin,5),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),1));true)),
-    ((m(F,ColA,Lin,5),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),1));true)),
-    ((m(F,Col,LinS,5),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),1));true)),
-    ((m(F,Col,LinA,5),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),1));true)),
+			peso_diagonal(D),
+			peso_hv(P),
+    ((m(F,ColS,Lin,0),m(F,Col,LinS,0),m(F,ColS,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinS),D));true)),
+    ((m(F,ColS,Lin,0),m(F,Col,LinA,0),m(F,ColS,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinA),D));true)),
+    ((m(F,ColA,Lin,0),m(F,Col,LinA,0),m(F,ColA,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinA),D));true)),
+    ((m(F,ColA,Lin,0),m(F,Col,LinS,0),m(F,ColA,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinS),D));true)),
+    ((m(F,ColS,Lin,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),P));true)),
+    ((m(F,ColA,Lin,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),P));true)),
+    ((m(F,Col,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),P));true)),
+    ((m(F,Col,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),P));true)),
+    ((m(F,ColS,Lin,11),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),P));true)),
+    ((m(F,ColA,Lin,11),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),P));true)),
+    ((m(F,Col,LinS,11),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),P));true)),
+    ((m(F,Col,LinA,11),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),P));true)),
+    ((m(F,ColS,Lin,12),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),P));true)),
+    ((m(F,ColA,Lin,12),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),P));true)),
+    ((m(F,Col,LinS,12),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),P));true)),
+    ((m(F,Col,LinA,12),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),P));true)),
+    ((m(F,ColS,Lin,4),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),P));true)),
+    ((m(F,ColA,Lin,4),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),P));true)),
+    ((m(F,Col,LinS,4),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),P));true)),
+    ((m(F,Col,LinA,4),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),P));true)),
+    ((m(F,ColS,Lin,5),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),P));true)),
+    ((m(F,ColA,Lin,5),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),P));true)),
+    ((m(F,Col,LinS,5),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),P));true)),
+    ((m(F,Col,LinA,5),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinA),P));true)),
     Col1 is Col-1,
     cria_grafo_lin(F,Col1,Lin).
 cria_grafo_lin(F,Col,Lin):-Col1 is Col-1,cria_grafo_lin(F,Col1,Lin).
 
 
 peso([_],0).
-peso([A,B|T],W):-ligacel(A,B,W1),peso([B|T],W2),W is W1+W2 ,!.
+peso([A,B|T],W):-ligacel(A,B,W1),peso([B|T],W2), W is W1+W2, write(W), !.
 
 
 dfs(Orig,Dest,Cam,W):-
@@ -130,13 +135,15 @@ dfs(Orig,Dest,Cam,W):-
 dfs(Orig,Dest,Cam):-
 	dfs2(Orig,Dest,[Orig],Cam).
 
-dfs2(Dest,Dest,LA,Cam):-
-	reverse(LA,Cam).
+dfs2(Dest, Dest, LA, Cam) :-
+    reverse(LA, Cam).
+    % write('Chegou ao destino: '), write(Dest), write(' Caminho encontrado: '), write(Cam), nl.
 
-dfs2(Act,Dest,LA,Cam):-
-	ligacel(Act,X,_),
-  \+ member(X,LA),
-	dfs2(X,Dest,[X|LA],Cam).
+dfs2(Act, Dest, LA, Cam) :-
+    ligacel(Act, X, _),
+    \+ member(X, LA),
+    % write('Explorando vizinhos de: '), write(Act), write(' Vizinho: '), write(X), nl,
+    dfs2(X, Dest, [X | LA], Cam).
 
 all_dfs(Orig,Dest,LCam):-findall(Cam,dfs(Orig,Dest,Cam,_),LCam).
 
@@ -191,15 +198,19 @@ estimativa(cel(F,X1,Y1),cel(F,X2,Y2),Estimativa):-
 	Estimativa is sqrt((X1-X2)^2+(Y1-Y2)^2).
 
 load_data() :-
+	debug_mode(D),
 	server:authenticate(),
+	((D==0,write("Authenticated..."), nl);true),
 	server:fetch_buildings(Buildings),
+	((D==0,write("Fetching buildings..."), nl);true),
 	server:fetch_connectors(Connectors),
+	((D==0,write("Fetching connectors..."), nl);true),
 	create_buildings(Buildings),
 	create_connectors(Connectors).
 
 create_buildings([H|T]) :-
 	debug_mode(D),
-	(D==0,write("Loading building "), write(H.code), write(" ..."), nl);true,
+	((D==0,write("Loading building "), write(H.code), write(" ..."), nl);true),
 	create_elevator(H),
 	create_floors(H),
 	create_buildings(T).
@@ -208,7 +219,7 @@ create_buildings([]).
 
 create_elevator(Building) :-
 	debug_mode(D),
-	(D==0,write("  Elevator -> "), write(Building.elevatorFloors), nl);true,
+	((D==0,write("  Elevator -> "), write(Building.elevatorFloors), nl);true),
 	asserta(elevador(Building.code, Building.elevatorFloors)).
 
 create_floors(Building) :-
@@ -223,7 +234,7 @@ create_floor_exits(Floor) :-
 
 create_exits([H|T], FloorCode) :-
 	debug_mode(D),
-	(D==0,write("      Exit -> "), write("X: "), write(H.x), write(" Y: "), write(H.y), nl);true,
+	((D==0,write("      Exit -> "), write("X: "), write(H.x), write(" Y: "), write(H.y), nl);true),
 	asserta(exit(FloorCode, H.floorCode, H.x, H.y)),
 	create_exits(T, FloorCode).
 
@@ -231,16 +242,16 @@ create_exits([], _).
 
 create_floors_matrix([H|T]):-
 	debug_mode(D),
-	(D==0,write("  Floor -> "), write(H.code), nl);true,
+	((D==0,write("  Floor -> "), write(H.code), nl);true),
 	is_dict(H.get(map)),
 	create_floor_exits(H),
-	(D,write("      Matrix "),  write(H.map.maze.size.width), write("x"), write(H.map.maze.size.depth), nl);true,
-	(D,write("      "), write(H.map.maze.map), nl);true,
+	((D==0,write("      Matrix "),  write(H.map.maze.size.width), write("x"), write(H.map.maze.size.depth), nl);true),
+	((D==0,write("      "), write(H.map.maze.map), nl);true),
 	W is H.map.maze.size.width+1,
 	L is H.map.maze.size.depth+1,
 	reverse(H.map.maze.map, H1),
 	create_floor_matrix(H.code, H1, W, L),
-	(D,write("       cria_grafo("), write(H.code), write(","), write(H.map.maze.size.depth), write(","), write(H.map.maze.size.width), write(")"), nl);true,
+	((D==0,write("       cria_grafo("), write(H.code), write(","), write(H.map.maze.size.depth), write(","), write(H.map.maze.size.width), write(")"), nl);true),
 	cria_grafo(H.code,H.map.maze.size.depth,H.map.maze.size.width),
 	create_floors_matrix(T).
 
@@ -249,7 +260,7 @@ create_floors_matrix([]).
 
 create_floors_matrix([_|T]) :-
 	debug_mode(D),
-	(D==0,write("     No Map"), nl);true,
+	((D==0,write("     No Map"), nl);true),
 	create_floors_matrix(T).
 
 
@@ -281,9 +292,9 @@ create_connectors([]).
 
 create_connector(Connector):-
 	debug_mode(D),
-	(D==0,write("Loading Connector "), write(Connector.code), write(" ..."), nl);true,
-	(D==0,write("  From -> "), write(Connector.floor1BuildingCode), write(" - "), write(Connector.floor1Code), nl);true,
-	(D==0,write("  To -> "), write(Connector.floor2BuildingCode), write(" - "), write(Connector.floor2Code), nl);true,
+	((D==0,write("Loading Connector "), write(Connector.code), write(" ..."), nl);true),
+	((D==0,write("  From -> "), write(Connector.floor1BuildingCode), write(" - "), write(Connector.floor1Code), nl);true),
+	((D==0,write("  To -> "), write(Connector.floor2BuildingCode), write(" - "), write(Connector.floor2Code), nl);true),
 	asserta(liga(Connector.floor1BuildingCode, Connector.floor2BuildingCode)),
 	asserta(corredor(Connector.floor1BuildingCode, Connector.floor2BuildingCode, Connector.floor1Code, Connector.floor2Code)).
 

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using DDDSample1.Domain.Requests;
 using DDDSample1.Domain.Shared;
 
 namespace DDDSample1.Domain.Requests
@@ -26,6 +25,11 @@ namespace DDDSample1.Domain.Requests
     protected override IEnumerable<object> GetEqualityComponents()
     {
       yield return State;
+    }
+
+    public string AsString()
+    {
+      return State;
     }
   }
 }
