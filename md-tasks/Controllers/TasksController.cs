@@ -1,48 +1,76 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using DDDSample1.Domain.Shared;
+using DDDSample1.Domain.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DDDSample1.Controllers
+namespace DDDSample1.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class TasksController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class TasksController : ControllerBase
+    private readonly TaskService _svc;
+
+    public TasksController(TaskService svc)
     {
-        private readonly TasksService _svc;
+        _svc = svc;
+    }
 
-        public TasksController(TasksService svc)
+    // GET api/Tasks
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<TaskDto>>> GetAll()
+    {
+        return await _svc.GetAllAsync();
+    }
+
+    // GET api/Tasks/{id}
+    [HttpGet("{id}")]
+    public async Task<ActionResult<TaskDto>> Get(string id)
+    {
+        var t = await _svc.GetByIdAsync(new TaskId(id));
+        if (t == null) return NotFound();
+        return t;
+    }
+
+    // POST api/Tasks
+    [HttpPost]
+    public void Create(TaskDto dto) // Task<ActionResult<TaskDto>>
+    {
+        // var t = await _svc.AddAsync()
+    }
+
+    // PUT api/Tasks/5
+    [HttpPut("{id}")]
+    public async Task<ActionResult<TaskDto>> Put(string id, TaskDto dto)
+    {
+        if (id != dto.Id) return BadRequest();
+
+        try
         {
-            _svc = svc;
+            var t = await _svc.UpdateAsync(dto);
+            if (t == null) return NotFound();
+            return Ok(t);
         }
-
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        catch (BusinessRuleValidationException ex)
         {
-            return new string[] { "hello world" };
+            return BadRequest(new { ex.Message });
         }
+    }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+    // DELETE api/Tasks/5
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<TaskDto>> Delete(string id)
+    {
+        try
         {
-            return "value";
+            var t = await _svc.DeleteAsync(new TaskId(id));
+            if (t == null) return NotFound();
+            return Ok(t);
         }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
+        catch (BusinessRuleValidationException ex)
         {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return BadRequest(new { ex.Message });
         }
     }
 }

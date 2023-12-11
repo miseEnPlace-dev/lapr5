@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DDDSample1.Domain.Shared;
 
 namespace DDDSample1.Domain.Tasks
@@ -10,18 +11,16 @@ namespace DDDSample1.Domain.Tasks
 
     public TaskService(IUnitOfWork unitOfWork, ITaskRepository repo)
     {
-      this._unitOfWork = unitOfWork;
-      this._repo = repo;
+      _unitOfWork = unitOfWork;
+      _repo = repo;
     }
 
-    public async Task<List<TaskDto>> GetAllAsync()
-    {
-      var list = await this._repo.GetAllAsync();
-
-      List<TaskDto> listDto = list.ConvertAll<TaskDto>(task => new TaskDto { Id = task.Id.AsString() });
-
-      return listDto;
-    }
+    // public async Task<List<TaskDto>> GetAllAsync()
+    // {
+    //   var list = await _repo.GetAllAsync();
+    //   List<TaskDto> listDto = list.ConvertAll(task => new TaskDto(Task) { Id = task.Id.AsString() });
+    //   return listDto;
+    // }
 
     public async Task<TaskDto> GetByIdAsync(TaskId id)
     {
@@ -33,16 +32,16 @@ namespace DDDSample1.Domain.Tasks
       return new TaskDto { Id = task.Id.AsString() };
     }
 
-    public async Task<TaskDto> AddAsync(TaskDto dto)
-    {
-      var task = new Task(dto.Id);
+    // public async Task<TaskDto> AddAsync(TaskDto dto)
+    // {
+    //   var task = new Tasks.Task(dto.Id);
 
-      await this._repo.AddAsync(task);
+    //   await this._repo.AddAsync(task);
 
-      await this._unitOfWork.CommitAsync();
+    //   await this._unitOfWork.CommitAsync();
 
-      return new TaskDto { Id = task.Id.AsString() };
-    }
+    //   return new TaskDto { Id = task.Id.AsString() };
+    // }
 
     public async Task<TaskDto> UpdateAsync(TaskDto dto)
     {
