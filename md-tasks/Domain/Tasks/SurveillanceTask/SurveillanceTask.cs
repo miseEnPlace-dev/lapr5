@@ -1,6 +1,6 @@
 using System;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Task;
+using DDDSample1.Domain.Tasks;
 
 public class SurveillanceTask
 {

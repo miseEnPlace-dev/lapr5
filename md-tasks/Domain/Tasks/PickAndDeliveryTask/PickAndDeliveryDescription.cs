@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
 
-namespace DDDSample1.Domain.Task.PickAndDeliveryTask
+namespace DDDSample1.Domain.Tasks.PickAndDeliveryTask
 {
   public class PickAndDeliveryDescription : ValueObject
   {
