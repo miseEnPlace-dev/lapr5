@@ -23,6 +23,41 @@ tarefa(t3,1,11).
 tarefa(t4,3,9).
 tarefa(t5,3,8).
 
+factorial(0, 1).
+factorial(N, F) :-
+	N > 0,
+	N1 is N - 1,
+	factorial(N1, F1),
+	F is N * F1.
+
+is_empty([]).
+
+gera_best_bruteforce:-
+	tarefas(NTarefas),
+	findall(Tarefa,tarefa(Tarefa,_,_),Tarefas),
+	factorial(NTarefas,NTotal),
+	gera_best_bruteforce(NTotal,NTarefas,Tarefas,Pop),
+	avalia_populacao(Pop,PopAv),
+	ordena_populacao(PopAv,PopOrd),
+	melhor_individuo(PopOrd,Ind),
+	write('Melhor individuo: '), write(Ind), nl, nl.
+
+gera_best_bruteforce(N, NT, T, P):-
+	!,
+	gera_best_bruteforce(N, NT, T, [], P).
+
+gera_best_bruteforce(0,_,_,P1,P1):- !.
+
+gera_best_bruteforce(TPop,NTarefas,Tarefas,Temp,Pop):-
+	gera_individuo(Tarefas,NTarefas,Ind),
+	(not(member(Ind,Temp));is_empty(Temp)),
+	!,
+	TPop1 is TPop - 1,
+	append(Temp,[Ind],Temp1),
+	gera_best_bruteforce(TPop1,NTarefas,Tarefas,Temp1,Pop).
+
+gera_best_bruteforce(TPop,NTarefas,Tarefas,Temp,Pop):-
+	gera_best_bruteforce(TPop,NTarefas,Tarefas,Temp,Pop).
 
 gera_lim_ger:-
 	gera_populacao(Pop),
