@@ -16,6 +16,7 @@ export const useModule = () => {
   const firstNameInputRef = useRef<HTMLInputElement>(null);
   const lastNameInputRef = useRef<HTMLInputElement>(null);
   const phoneNumberInputRef = useRef<HTMLInputElement>(null);
+  const nifInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const confirmPasswordInputRef = useRef<HTMLInputElement>(null);
 
@@ -43,7 +44,8 @@ export const useModule = () => {
     if (
       !firstNameInputRef.current ||
       !lastNameInputRef.current ||
-      !phoneNumberInputRef.current
+      !phoneNumberInputRef.current ||
+      !nifInputRef.current
     )
       throw new Error("Invalid data");
 
@@ -56,6 +58,7 @@ export const useModule = () => {
       firstName: firstNameInputRef.current?.value,
       lastName: lastNameInputRef.current?.value,
       phoneNumber: phoneNumberInputRef.current?.value,
+      nif: nifInputRef.current?.value,
       password:
         passwordInputRef.current?.value === ""
           ? undefined
@@ -101,6 +104,7 @@ export const useModule = () => {
     lastNameInputRef,
     phoneNumberInputRef,
     passwordInputRef,
+    nifInputRef,
     confirmPasswordInputRef,
     handleUpdate,
     downloadData,

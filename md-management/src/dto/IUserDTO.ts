@@ -3,6 +3,7 @@ export interface IUserDTO {
   lastName: string;
   email: string;
   password?: string;
+  nif?: string;
   phoneNumber: string;
   role: string;
   state: string;

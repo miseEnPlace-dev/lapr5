@@ -23,6 +23,7 @@ const ProfilePage: React.FC = () => {
     lastNameInputRef,
     phoneNumberInputRef,
     passwordInputRef,
+    nifInputRef,
     handleUpdate,
     downloadData,
     confirmPasswordInputRef,
@@ -131,13 +132,35 @@ const ProfilePage: React.FC = () => {
             defaultValue={user?.email || ""}
             disabled
           />
-          <Input
-            name="Phone Number"
-            type="text"
-            autoComplete="new-password"
-            inputRef={phoneNumberInputRef}
-            defaultValue={user?.phoneNumber || ""}
-          />
+          {user?.nif ? (
+            <div className="flex flex-row gap-x-4">
+              <Input
+                name="Phone Number"
+                type="text"
+                className="w-full"
+                autoComplete="new-password"
+                inputRef={phoneNumberInputRef}
+                defaultValue={user?.phoneNumber || ""}
+              />
+              <Input
+                name="NIF"
+                type="text"
+                className="w-full"
+                autoComplete="new-password"
+                inputRef={nifInputRef}
+                defaultValue={user?.nif || ""}
+              />
+            </div>
+          ) : (
+            <Input
+              name="Phone Number"
+              type="text"
+              className="w-full"
+              autoComplete="new-password"
+              inputRef={phoneNumberInputRef}
+              defaultValue={user?.phoneNumber || ""}
+            />
+          )}
           <Input
             name="New Password"
             type="password"

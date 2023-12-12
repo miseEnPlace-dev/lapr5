@@ -22,6 +22,7 @@ import { UserState } from '@/domain/user/userState';
 import { TYPES } from '@/loaders/inversify/types';
 import { inject, injectable } from 'inversify';
 import { Result } from '../core/logic/Result';
+import { UserNif } from '@/domain/user/userNif';
 
 @injectable()
 export default class UserService implements IUserService {
@@ -87,6 +88,9 @@ export default class UserService implements IUserService {
       if (phoneNumberOrError.isFailure)
         return Result.fail<{ userDTO: IUserDTO; token: string }>(phoneNumberOrError.error);
 
+      const nifOrError = userDTO.nif ? UserNif.create(userDTO.nif) : undefined;
+      if (nifOrError?.isFailure) throw new Error(nifOrError.errorValue());
+
       const roleOrError = await this.getRole(userDTO.role);
       if (roleOrError.isFailure)
         return Result.fail<{ userDTO: IUserDTO; token: string }>(roleOrError.error);
@@ -99,6 +103,7 @@ export default class UserService implements IUserService {
         phoneNumber: phoneNumberOrError.getValue(),
         email: emailOrError.getValue(),
         role,
+        nif: nifOrError?.getValue(),
         password: passwordOrError.getValue(),
         state: role.title.value === defaultRoles.user.title ? UserState.Pending : UserState.Active
       });
@@ -171,6 +176,7 @@ export default class UserService implements IUserService {
     const lastName = user.lastName;
     const role = user.role.name.value;
     const phoneNumber = user.phoneNumber.props.value;
+    const nif = user.nif?.value;
 
     return jwt.sign(
       {
@@ -180,6 +186,7 @@ export default class UserService implements IUserService {
         firstName,
         lastName,
         phoneNumber,
+        nif,
         exp: exp.getTime() / 1000
       },
       config.jwtSecret
@@ -243,9 +250,13 @@ export default class UserService implements IUserService {
       const phoneNumberOrError = PhoneNumber.create(userDTO.phoneNumber);
       if (phoneNumberOrError.isFailure) return Result.fail<IUserDTO>(phoneNumberOrError.error);
 
+      const nifOrError = userDTO.nif ? UserNif.create(userDTO.nif) : undefined;
+      if (nifOrError?.isFailure) throw new Error(nifOrError.errorValue());
+
       user.phoneNumber = phoneNumberOrError.getValue();
       user.firstName = userDTO.firstName;
       user.lastName = userDTO.lastName;
+      user.nif = nifOrError?.getValue();
 
       await this.userRepo.save(user);
 

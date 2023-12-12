@@ -33,6 +33,11 @@ const User = new mongoose.Schema(
       index: true
     },
 
+    nif: {
+      type: String,
+      index: true
+    },
+
     password: String,
 
     salt: String,

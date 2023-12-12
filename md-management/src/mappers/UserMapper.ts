@@ -14,6 +14,7 @@ import { UserState } from '@/domain/user/userState';
 import { container } from '@/loaders/inversify';
 import { TYPES } from '@/loaders/inversify/types';
 import IRoleRepo from '@/services/IRepos/IRoleRepo';
+import { UserNif } from '@/domain/user/userNif';
 
 export class UserMapper extends Mapper<User> {
   public static toDTO(user: User): IUserDTO {
@@ -23,6 +24,7 @@ export class UserMapper extends Mapper<User> {
       lastName: user.lastName,
       email: user.email.value,
       phoneNumber: user.phoneNumber.value,
+      nif: user.nif?.value,
       password: '',
       role: user.role.name.value,
       state: user.state ? user.state.value : 'pending'
@@ -39,6 +41,9 @@ export class UserMapper extends Mapper<User> {
     const phoneNumberOrError = PhoneNumber.create(raw.phoneNumber);
     if (phoneNumberOrError.isFailure) throw new Error(phoneNumberOrError.errorValue());
 
+    const nifOrError = raw.nif ? UserNif.create(raw.nif) : undefined;
+    if (nifOrError?.isFailure) throw new Error(nifOrError.errorValue());
+
     const roleRepo = container.get<IRoleRepo>(TYPES.roleRepo);
     const role = await roleRepo.findByName(raw.role);
     if (!role) throw new Error('Role not found');
@@ -50,6 +55,7 @@ export class UserMapper extends Mapper<User> {
         email: userEmailOrError.getValue(),
         password: userPasswordOrError.getValue(),
         phoneNumber: phoneNumberOrError.getValue(),
+        nif: nifOrError?.getValue(),
         role,
         state: UserState.create(raw.state)
       },
@@ -68,6 +74,7 @@ export class UserMapper extends Mapper<User> {
       password: user.password.value,
       firstName: user.firstName,
       lastName: user.lastName,
+      nif: user.nif?.value,
       role: user.role.name.value,
       phoneNumber: user.phoneNumber.value,
       state: user.state ? user.state.value : 'pending'

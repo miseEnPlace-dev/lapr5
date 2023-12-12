@@ -46,6 +46,7 @@ const RegisterPage: React.FC = () => {
         password,
         firstName: firstNameInputRef.current.value,
         lastName: lastNameInputRef.current?.value,
+        nif,
         phoneNumber,
       });
       swal(
