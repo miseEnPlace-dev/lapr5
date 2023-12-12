@@ -8,7 +8,7 @@ export interface IDevicePersistence {
   isAvailable: boolean;
   initialCoordinates: {
     width: number;
-    length: number;
+    depth: number;
     floorCode: string;
   };
 }

@@ -7,7 +7,7 @@ import { DeviceDescription } from './deviceDescription';
 import { DeviceNickname } from './deviceNickname';
 import { DeviceSerialNumber } from './deviceSerialNumber';
 import { DeviceModel } from '../deviceModel/deviceModel';
-import { Coordinates } from './deviceCoordinates';
+import { DeviceCoordinates } from './deviceCoordinates';
 
 interface DeviceProps {
   code: DeviceCode;
@@ -16,7 +16,7 @@ interface DeviceProps {
   serialNumber: DeviceSerialNumber;
   model: DeviceModel;
   isAvailable?: boolean;
-  initialCoordinates: Coordinates;
+  initialCoordinates: DeviceCoordinates;
 }
 
 export class Device extends AggregateRoot<DeviceProps> {
@@ -56,7 +56,7 @@ export class Device extends AggregateRoot<DeviceProps> {
     this.isAvailable = false;
   }
 
-  get initialCoordinates(): Coordinates {
+  get initialCoordinates(): DeviceCoordinates {
     return this.props.initialCoordinates;
   }
 

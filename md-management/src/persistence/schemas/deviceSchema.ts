@@ -37,7 +37,7 @@ const Device = new mongoose.Schema(
 
     initialCoordinates: {
       width: Number,
-      length: Number,
+      depth: Number,
       floorCode: String
     }
   },

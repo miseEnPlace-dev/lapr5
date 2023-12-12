@@ -14,7 +14,7 @@ import IDeviceModelRepo from './IRepos/IDeviceModelRepo';
 import IDeviceRepo from './IRepos/IDeviceRepo';
 import IDeviceService from './IServices/IDeviceService';
 import { IPaginationDTO } from '@/dto/IPaginationDTO';
-import { Coordinates } from '@/domain/device/deviceCoordinates';
+import { DeviceCoordinates } from '@/domain/device/deviceCoordinates';
 import { FloorCode } from '@/domain/floor/floorCode';
 import { container } from '@/loaders/inversify';
 import IFloorRepo from './IRepos/IFloorRepo';
@@ -56,9 +56,9 @@ export default class DeviceService implements IDeviceService {
 
       if (!floor) return Result.fail<IDeviceDTO>('Floor not found');
 
-      const initialCoordinatesOrError = Coordinates.create(
+      const initialCoordinatesOrError = DeviceCoordinates.create(
         deviceDTO.initialCoordinates.width,
-        deviceDTO.initialCoordinates.length,
+        deviceDTO.initialCoordinates.depth,
         floor.code
       ).getValue();
 
