@@ -6,4 +6,9 @@ export interface IDevicePersistence {
   description?: string;
   serialNumber: string;
   isAvailable: boolean;
+  initialCoordinates: {
+    width: number;
+    length: number;
+    floorCode: string;
+  };
 }

@@ -43,8 +43,6 @@ export class UserMapper extends Mapper<User> {
     const role = await roleRepo.findByName(raw.role);
     if (!role) throw new Error('Role not found');
 
-    console.log(raw.state);
-
     const userOrError = User.create(
       {
         firstName: raw.firstName,
