@@ -1,8 +1,10 @@
+import { exit } from "process";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useInjection } from "inversify-react";
 
 import { TYPES } from "@/inversify/types";
 import { useEmail } from "@/hooks/useEmail";
+import { useNif } from "@/hooks/useNif";
 import { usePhoneNumber } from "@/hooks/usePhoneNumber";
 import { Role } from "@/model/Role";
 import { User } from "@/model/User";
@@ -22,6 +24,7 @@ export const useListUsersModule = () => {
   const [password, setPassword] = useState("");
   const { phoneNumber, setPhoneNumber, isPhoneNumberValid } =
     usePhoneNumber("");
+  const { nif, setNif, isNifValid } = useNif("");
   const firstNameInputRef = useRef<HTMLInputElement>(null);
   const lastNameInputRef = useRef<HTMLInputElement>(null);
   const roleInputRef = useRef<HTMLSelectElement>(null);
@@ -59,25 +62,26 @@ export const useListUsersModule = () => {
       !firstNameInputRef.current ||
       !lastNameInputRef.current ||
       !isPhoneNumberValid ||
+      !role ||
+      (role === "user" && !isNifValid) ||
       !isAgreed
     )
       return;
 
-    try {
-      const res = await userService.register({
-        email,
-        password,
-        firstName: firstNameInputRef.current.value,
-        lastName: lastNameInputRef.current?.value,
-        phoneNumber,
-      });
+    const res = await userService.register({
+      email,
+      password,
+      firstName: firstNameInputRef.current.value,
+      lastName: lastNameInputRef.current?.value,
+      phoneNumber,
+      ...(role === "user" && { nif }),
+      role,
+    });
 
-      if (res) {
-        fetchUsers();
-      }
-    } catch (err) {
-      console.log(err);
-      throw err;
+    if (role === "user") await userService.acceptRequest(res.user.id);
+
+    if (res) {
+      fetchUsers();
     }
   }
 
@@ -96,6 +100,9 @@ export const useListUsersModule = () => {
     isEmailValid,
     password,
     setPassword,
+    nif,
+    setNif,
+    isNifValid,
     phoneNumber,
     setPhoneNumber,
     isPhoneNumberValid,

@@ -137,7 +137,7 @@ const ProfilePage: React.FC = () => {
               <Input
                 name="Phone Number"
                 type="text"
-                className="w-full"
+                className="w-3/4"
                 autoComplete="new-password"
                 inputRef={phoneNumberInputRef}
                 defaultValue={user?.phoneNumber || ""}
@@ -184,22 +184,24 @@ const ProfilePage: React.FC = () => {
         >
           Save
         </Button>
-        <Button
-          type="default"
-          name="save"
-          className="mr-12 mt-4"
-          onClick={handleDownload}
-        >
-          Download Personal Data
-        </Button>
-        <Button
-          type="destroy"
-          name="delete-account"
-          className="mr-12"
-          onClick={handleDeleteAccount}
-        >
-          Delete Account
-        </Button>
+        <div className="mr-12 mt-4 flex flex-row gap-x-4">
+          <Button
+            type="default"
+            name="save"
+            className="w-full"
+            onClick={handleDownload}
+          >
+            Download Personal Data
+          </Button>
+          <Button
+            type="destroy"
+            name="delete-account"
+            className="w-full"
+            onClick={handleDeleteAccount}
+          >
+            Delete Account
+          </Button>
+        </div>
       </main>
     </div>
   );

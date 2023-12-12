@@ -3,7 +3,6 @@ import { inject, injectable } from "inversify";
 import { TYPES } from "@/inversify/types";
 import { localStorageConfig } from "@/config/localStorageConfig";
 import { Role } from "@/model/Role";
-import { Session } from "@/model/Session";
 import { User } from "@/model/User";
 
 import { HttpService } from "./IService/HttpService";
@@ -17,9 +16,8 @@ export class UserService implements IUserService {
   ) {}
 
   async register(user: User): Promise<UserSession> {
-    const res = await this.http.post("/users/signup", {
+    const res = await this.http.post<UserSession>("/users/signup", {
       ...user,
-      role: "user",
     });
 
     return res.data as UserSession;

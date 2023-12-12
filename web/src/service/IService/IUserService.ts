@@ -11,7 +11,7 @@ export interface IUserService {
   getCurrentUser(): Promise<User>;
   deleteUser(): Promise<void>;
   updateUser(user: Partial<User>): Promise<User>;
-  register(user: Omit<User, "role" | "id">): Promise<UserSession>;
+  register(user: Omit<User, "id">): Promise<UserSession>;
   getAllUsers(): Promise<User[]>;
   getAllRoles(): Promise<Role[]>;
   getRequests(): Promise<User[]>;

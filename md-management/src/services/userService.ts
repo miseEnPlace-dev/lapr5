@@ -58,15 +58,13 @@ export default class UserService implements IUserService {
     return Result.ok<void>();
   }
 
-  async signUp(
-    userDTO: Omit<IUserDTO, 'id'>
-  ): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
+  async signUp(userDTO: Omit<IUserDTO, 'id'>): Promise<Result<{ user: IUserDTO; token: string }>> {
     try {
       const userDocument = await this.userRepo.findByEmail(userDTO.email);
       const found = !!userDocument;
 
       if (found)
-        return Result.fail<{ userDTO: IUserDTO; token: string }>(
+        return Result.fail<{ user: IUserDTO; token: string }>(
           'User already exists with email: ' + userDTO.email
         );
 
@@ -78,22 +76,22 @@ export default class UserService implements IUserService {
         hashed: true
       });
       if (passwordOrError.isFailure)
-        return Result.fail<{ userDTO: IUserDTO; token: string }>(passwordOrError.error);
+        return Result.fail<{ user: IUserDTO; token: string }>(passwordOrError.error);
 
       const emailOrError = UserEmail.create(userDTO.email);
       if (emailOrError.isFailure)
-        return Result.fail<{ userDTO: IUserDTO; token: string }>(emailOrError.error);
+        return Result.fail<{ user: IUserDTO; token: string }>(emailOrError.error);
 
       const phoneNumberOrError = PhoneNumber.create(userDTO.phoneNumber);
       if (phoneNumberOrError.isFailure)
-        return Result.fail<{ userDTO: IUserDTO; token: string }>(phoneNumberOrError.error);
+        return Result.fail<{ user: IUserDTO; token: string }>(phoneNumberOrError.error);
 
       const nifOrError = userDTO.nif ? UserNif.create(userDTO.nif) : undefined;
       if (nifOrError?.isFailure) throw new Error(nifOrError.errorValue());
 
       const roleOrError = await this.getRole(userDTO.role);
       if (roleOrError.isFailure)
-        return Result.fail<{ userDTO: IUserDTO; token: string }>(roleOrError.error);
+        return Result.fail<{ user: IUserDTO; token: string }>(roleOrError.error);
 
       const role = roleOrError.getValue();
 
@@ -120,8 +118,8 @@ export default class UserService implements IUserService {
 
       await this.userRepo.save(userResult);
       const userDTOResult = UserMapper.toDTO(userResult);
-      return Result.ok<{ userDTO: IUserDTO; token: string }>({
-        userDTO: userDTOResult,
+      return Result.ok<{ user: IUserDTO; token: string }>({
+        user: userDTOResult,
         token: token
       });
     } catch (e) {

@@ -48,6 +48,7 @@ const RegisterPage: React.FC = () => {
         lastName: lastNameInputRef.current?.value,
         nif,
         phoneNumber,
+        role: "user",
       });
       swal(
         "Success",
@@ -95,7 +96,7 @@ const RegisterPage: React.FC = () => {
             <Input
               placeholder="Phone Number"
               type="text"
-              className="w-1/2"
+              className="w-3/4"
               value={phoneNumber}
               onChange={setPhoneNumber}
             />

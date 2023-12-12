@@ -51,9 +51,9 @@ export default class UserController implements IUserController {
 
       if (userOrError.isFailure) return res.status(400).json({ message: userOrError.errorValue() });
 
-      const { userDTO, token } = userOrError.getValue();
+      const { user, token } = userOrError.getValue();
 
-      return res.status(201).json({ userDTO, token });
+      return res.status(201).json({ user, token });
     } catch (e) {
       return next(e);
     }

@@ -12,6 +12,8 @@ import SideBar from "@/components/SideBar";
 
 import { useListUsersModule } from "./module.ts";
 
+import { AxiosError } from "axios";
+
 const ANIMATION_DELAY = 0.1;
 
 const UsersPage: React.FC = () => {
@@ -28,6 +30,9 @@ const UsersPage: React.FC = () => {
     setPassword,
     phoneNumber,
     setPhoneNumber,
+    nif,
+    setNif,
+    isNifValid,
     isPhoneNumberValid,
     firstNameInputRef,
     lastNameInputRef,
@@ -43,16 +48,23 @@ const UsersPage: React.FC = () => {
 
   const handleRegister = async () => {
     try {
-      handleCreateUser();
+      await handleCreateUser();
 
       swal("Success", "User created successfully", "success");
-      navigate("/login");
+      setIsUserModalVisible(false);
     } catch (err) {
       console.log(err);
-      swal("Error", "Error creating account", "error");
+      if (err instanceof AxiosError && err.response?.data.message)
+        swal("Error", err.response.data.message, "error");
+      else swal("Error", "Error creating account", "error");
       setPassword("");
     }
   };
+
+  function changeRole(role: string) {
+    if (role == "user") setNif("");
+    setRole(role);
+  }
 
   return (
     <div className="flex">
@@ -122,14 +134,14 @@ const UsersPage: React.FC = () => {
                 className="w-full"
                 inputRef={roleInputRef}
                 name="Role"
-                onChange={(e) => setRole(e.target.value)}
+                onChange={(e) => changeRole(e.target.value)}
               />
               {role == "user" ? (
                 <div className="flex w-full items-center gap-x-4">
                   <Input
                     placeholder="Phone Number"
                     type="text"
-                    className="w-full"
+                    className="w-3/4"
                     value={phoneNumber}
                     onChange={setPhoneNumber}
                   />
@@ -137,8 +149,8 @@ const UsersPage: React.FC = () => {
                     placeholder="NIF"
                     type="text"
                     className="w-full"
-                    value={phoneNumber}
-                    onChange={setPhoneNumber}
+                    value={nif}
+                    onChange={setNif}
                   />
                 </div>
               ) : (
@@ -181,7 +193,11 @@ const UsersPage: React.FC = () => {
                 }}
                 name="register"
                 disabled={
-                  !isEmailValid || !password || !isPhoneNumberValid || !isAgreed
+                  !isEmailValid ||
+                  !password ||
+                  !isPhoneNumberValid ||
+                  !isAgreed ||
+                  (!isNifValid && role == "user")
                 }
                 className="mt-2 w-full"
               >
