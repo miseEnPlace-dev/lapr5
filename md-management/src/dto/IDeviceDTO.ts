@@ -7,7 +7,7 @@ export interface IDeviceDTO {
   isAvailable: boolean;
   initialCoordinates: {
     width: number;
-    length: number;
+    depth: number;
     floorCode: string;
   };
 }

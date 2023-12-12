@@ -9,7 +9,7 @@ import { DeviceNickname } from '@/domain/device/deviceNickname';
 import { DeviceSerialNumber } from '@/domain/device/deviceSerialNumber';
 import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
 import { FloorCode } from '@/domain/floor/floorCode';
-import { Coordinates } from '@/domain/device/deviceCoordinates';
+import { DeviceCoordinates } from '@/domain/device/deviceCoordinates';
 import { IDeviceDTO } from '@/dto/IDeviceDTO';
 import { container } from '@/loaders/inversify';
 import { TYPES } from '@/loaders/inversify/types';
@@ -27,7 +27,7 @@ export class DeviceMapper extends Mapper<Device> {
       isAvailable: device.isAvailable !== undefined ? device.isAvailable : true,
       initialCoordinates: {
         width: device.initialCoordinates.width,
-        length: device.initialCoordinates.length,
+        depth: device.initialCoordinates.depth,
         floorCode: device.initialCoordinates.floorCode.value
       }
     };
@@ -56,9 +56,9 @@ export class DeviceMapper extends Mapper<Device> {
     if (!nickname || !serialNumber || !code || !modelCode || !floorCode)
       throw new Error('Invalid device data');
 
-    const initialCoordinates = Coordinates.create(
+    const initialCoordinates = DeviceCoordinates.create(
       device.initialCoordinates.width,
-      device.initialCoordinates.length,
+      device.initialCoordinates.depth,
       floor.code
     ).getValue();
 
@@ -91,7 +91,7 @@ export class DeviceMapper extends Mapper<Device> {
       isAvailable: device.isAvailable !== undefined ? device.isAvailable : true,
       initialCoordinates: {
         width: device.initialCoordinates.width,
-        length: device.initialCoordinates.length,
+        depth: device.initialCoordinates.depth,
         floorCode: device.initialCoordinates.floorCode.value
       }
     };

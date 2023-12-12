@@ -1,4 +1,5 @@
 
+import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Floor } from "../../model/Floor";
 
 export interface IFloorService {

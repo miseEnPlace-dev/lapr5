@@ -23,6 +23,9 @@ export const useDevicePageModule = () => {
   const modelCodeInputRef = useRef<HTMLSelectElement>(null);
   const serialNumberInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
+  const widthInputRef = useRef<HTMLInputElement>(null);
+  const depthInputRef = useRef<HTMLInputElement>(null);
+  const floorCodeInputRef = useRef<HTMLInputElement>(null);
 
   const fetchDevice = useCallback(
     async (deviceCode: string) => {
@@ -53,6 +56,9 @@ export const useDevicePageModule = () => {
     modelCodeInputRef,
     serialNumberInputRef,
     descriptionInputRef,
+    widthInputRef,
+    depthInputRef,
+    floorCodeInputRef,
   ]);
 
   async function handleInhibitDevice() {
@@ -71,5 +77,8 @@ export const useDevicePageModule = () => {
     serialNumberInputRef,
     descriptionInputRef,
     handleInhibitDevice,
+    widthInputRef,
+    depthInputRef,
+    floorCodeInputRef,
   };
 };
