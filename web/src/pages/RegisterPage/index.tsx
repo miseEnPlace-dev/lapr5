@@ -12,6 +12,8 @@ import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { useEmail } from "../../hooks/useEmail";
 
+import { Axios, AxiosError } from "axios";
+
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
 
@@ -53,8 +55,9 @@ const RegisterPage: React.FC = () => {
       );
       navigate("/login");
     } catch (err) {
-      console.log(err);
-      swal("Error", "Error creating account", "error");
+      if (err instanceof AxiosError && err.response?.data.message)
+        swal("Error", err.response.data.message, "error");
+      else swal("Error", "Error creating account", "error");
       setPassword("");
     }
   };

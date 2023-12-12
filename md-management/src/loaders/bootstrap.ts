@@ -58,7 +58,7 @@ export default class Bootstrapper {
     await this.loadUser({
       firstName: 'Fleet',
       lastName: 'Manager',
-      email: 'fleet@fleet.com',
+      email: 'fleet@isep.ipp.pt',
       password: 'fleet',
       phoneNumber: '912345678',
       role: defaultRoles.fleet.name
@@ -66,7 +66,7 @@ export default class Bootstrapper {
     await this.loadUser({
       firstName: 'Campus',
       lastName: 'Manager',
-      email: 'campus@campus.com',
+      email: 'campus@isep.ipp.pt',
       password: 'campus',
       phoneNumber: '912345678',
       role: defaultRoles.campus.name
@@ -74,7 +74,7 @@ export default class Bootstrapper {
     await this.loadUser({
       firstName: 'Admin',
       lastName: 'Admin',
-      email: 'admin@admin.com',
+      email: 'admin@isep.ipp.pt',
       password: 'admin',
       phoneNumber: '912345678',
       role: defaultRoles.admin.name
