@@ -311,9 +311,9 @@ caminho_celulas([H|T],C1,C2,L,W) :-
 	exit(F1,F2,Ex,Ey),
 	aStar(C1,cel(F1,Ex,Ey),L1,W1),
 	exit(F2,F1,E1x,E1y),
-	peso_cor(Wc),
-	W2 is W1 + Wc + W,
 	caminho_celulas(T,cel(F2,E1x,E1y),C2,L2, W2),
+	peso_corr(Wc),
+	W is W2 + W1 + Wc,
 	append([cor(F1,F2)],L2,L3),
 	append(L1,L3,L).
 
@@ -322,9 +322,9 @@ caminho_celulas([H|T],C1,C2,L,W) :-
 	(m(F1,Ex,Ey,4);m(F1,Ex,Ey,5)),
 	aStar(C1,cel(F1,Ex,Ey),L1,W1),
 	(m(F2,E1x,E1y,4);m(F2,E1x,E1y,5)),
-	peso_elev(We),
-	W2 is W1 + We + W,
 	caminho_celulas(T,cel(F2,E1x,E1y),C2,L2, W2),
+	peso_elev(We),
+	W is W2 + W1 + We,
 	append([elev(F1,F2)],L2,L3),
 	append(L1,L3,L).
 
