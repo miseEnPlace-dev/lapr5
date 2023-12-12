@@ -109,6 +109,7 @@ const ProfilePage: React.FC = () => {
             <Input
               name="First Name"
               type="text"
+              autoComplete="new-password"
               className="w-full"
               inputRef={firstNameInputRef}
               defaultValue={user?.firstName || ""}
@@ -116,6 +117,7 @@ const ProfilePage: React.FC = () => {
             <Input
               name="Last Name"
               type="text"
+              autoComplete="new-password"
               className="w-full"
               inputRef={lastNameInputRef}
               defaultValue={user?.lastName || ""}
@@ -125,24 +127,28 @@ const ProfilePage: React.FC = () => {
           <Input
             name="Email"
             type="text"
+            autoComplete="new-password"
             defaultValue={user?.email || ""}
             disabled
           />
           <Input
             name="Phone Number"
             type="text"
+            autoComplete="new-password"
             inputRef={phoneNumberInputRef}
             defaultValue={user?.phoneNumber || ""}
           />
           <Input
             name="New Password"
             type="password"
+            autoComplete="new-password"
             inputRef={passwordInputRef}
             placeholder="Insert a new password"
           />
           <Input
             name="Confirm your New Password"
             type="password"
+            autoComplete="new-password"
             inputRef={confirmPasswordInputRef}
             placeholder="Reinsert your new password"
           />

@@ -43,7 +43,7 @@ const PrivacyPolicyPage: React.FC = () => {
       </article>
 
       <article className="mt-12">
-        <h2 className="text-2xl font-semibold">Responsável pelo tratamento</h2>
+        <h2 className="text-2xl font-semibold">Responsável pelo Tratamento</h2>
         <p className="mt-2">
           A RobDroneGO, S.A, sediada no Porto, é a organização responsável pelo
           tratamento dos seus dados pessoais. Poderá entrar em contacto com a
@@ -67,12 +67,14 @@ const PrivacyPolicyPage: React.FC = () => {
           Para usar a nossa aplicação é necessário ter uma conta de utilizador,
           criada pelo nosso administrador, e por esse motivo é preciso
           fornecer-nos certas informações. Isto inclui o nome, palavra-passe,
-          endereço de correio eletrónico, número de telemóvel e o seu cargo na
-          organização. O número de telemóvel é necessário para facilitar o
-          contacto em caso de necessidade de coordenação operacional entre os
-          diferentes utilizadores. O endereço de email é usado para
-          identificação e, em conjunto com a palavra-passe, para autenticação no
-          sistema. O nome tem o propósito de identificar o utilizador e o cargo
+          endereço de correio eletrónico, número de telemóvel, número de
+          identificação fiscal e o seu cargo na organização. O número de
+          telemóvel é necessário para facilitar o contacto em caso de
+          necessidade de coordenação operacional entre os diferentes
+          utilizadores. O endereço de email é usado para identificação e, em
+          conjunto com a palavra-passe, para autenticação no sistema. O número
+          de identificação fiscal é utilizado exclusivamente para a faturação de
+          serviços. O nome tem o propósito de identificar o utilizador e o cargo
           na organização para determinar quais as funcionalidades do nosso
           serviço é que o utilizador deve ter acesso. Podemos então concluir que
           todos os dados solicitados têm um fim específico e justificado,
@@ -130,7 +132,7 @@ const PrivacyPolicyPage: React.FC = () => {
 
       <article className="mt-12">
         <h2 className="text-2xl font-semibold">
-          Alteração de informações pessoais
+          Alteração de Informações Pessoais
         </h2>
         <p className="mt-2">
           Os dados pessoais devem encontrar-se sempre atualizados e por este
