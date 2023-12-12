@@ -375,7 +375,12 @@ export default class Bootstrapper {
       modelCode: 'SRV',
       description: 'ISEP Security Guard',
       serialNumber: 'RBT1',
-      isAvailable: true
+      isAvailable: true,
+      initialCoordinates: {
+        width: 1,
+        length: 1,
+        floorCode: 'a1'
+      }
     });
 
     await this.loadDevice({
@@ -384,7 +389,12 @@ export default class Bootstrapper {
       modelCode: 'DLV',
       description: 'ISEP Pick and Delivery Robot',
       serialNumber: 'RBT2',
-      isAvailable: true
+      isAvailable: true,
+      initialCoordinates: {
+        width: 1,
+        length: 1,
+        floorCode: 'a1'
+      }
     });
 
     await this.loadDevice({
@@ -393,7 +403,12 @@ export default class Bootstrapper {
       modelCode: 'ALL',
       description: 'ISEP Master All in One Robot',
       serialNumber: 'RBT3',
-      isAvailable: true
+      isAvailable: true,
+      initialCoordinates: {
+        width: 1,
+        length: 1,
+        floorCode: 'a1'
+      }
     });
 
     await this.loadElevator({
@@ -563,7 +578,8 @@ export default class Bootstrapper {
         modelCode: device.modelCode,
         description: device.description,
         serialNumber: device.serialNumber,
-        isAvailable: device.isAvailable
+        isAvailable: device.isAvailable,
+        initialCoordinates: device.initialCoordinates
       });
 
       if (res.isFailure) throw new Error(res.errorValue());

@@ -14,6 +14,10 @@ import IDeviceModelRepo from './IRepos/IDeviceModelRepo';
 import IDeviceRepo from './IRepos/IDeviceRepo';
 import IDeviceService from './IServices/IDeviceService';
 import { IPaginationDTO } from '@/dto/IPaginationDTO';
+import { Coordinates } from '@/domain/device/deviceCoordinates';
+import { FloorCode } from '@/domain/floor/floorCode';
+import { container } from '@/loaders/inversify';
+import IFloorRepo from './IRepos/IFloorRepo';
 
 @injectable()
 export default class DeviceService implements IDeviceService {
@@ -46,13 +50,26 @@ export default class DeviceService implements IDeviceService {
 
       if (!model) return Result.fail<IDeviceDTO>('Model not found');
 
+      const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+      const floorCode = FloorCode.create(deviceDTO.initialCoordinates.floorCode).getValue();
+      const floor = await floorRepo.findByCode(floorCode);
+
+      if (!floor) return Result.fail<IDeviceDTO>('Floor not found');
+
+      const initialCoordinatesOrError = Coordinates.create(
+        deviceDTO.initialCoordinates.width,
+        deviceDTO.initialCoordinates.length,
+        floor.code
+      ).getValue();
+
       const deviceOrError = Device.create({
         code: codeOrError.getValue(),
         nickname: nicknameOrError.getValue(),
         serialNumber: serialNumberOrError.getValue(),
         description: descriptionOrError ? descriptionOrError.getValue() : undefined,
         model,
-        isAvailable: true
+        isAvailable: true,
+        initialCoordinates: initialCoordinatesOrError
       });
 
       if (deviceOrError.isFailure) return Result.fail<IDeviceDTO>(deviceOrError.errorValue());
@@ -147,7 +164,8 @@ export default class DeviceService implements IDeviceService {
           serialNumber: device.serialNumber,
           description: device.description,
           model: device.model,
-          isAvailable: !device.isAvailable
+          isAvailable: !device.isAvailable,
+          initialCoordinates: device.initialCoordinates
         },
         device.id
       );

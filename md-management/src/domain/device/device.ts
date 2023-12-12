@@ -7,6 +7,7 @@ import { DeviceDescription } from './deviceDescription';
 import { DeviceNickname } from './deviceNickname';
 import { DeviceSerialNumber } from './deviceSerialNumber';
 import { DeviceModel } from '../deviceModel/deviceModel';
+import { Coordinates } from './deviceCoordinates';
 
 interface DeviceProps {
   code: DeviceCode;
@@ -15,6 +16,7 @@ interface DeviceProps {
   serialNumber: DeviceSerialNumber;
   model: DeviceModel;
   isAvailable?: boolean;
+  initialCoordinates: Coordinates;
 }
 
 export class Device extends AggregateRoot<DeviceProps> {
@@ -54,6 +56,10 @@ export class Device extends AggregateRoot<DeviceProps> {
     this.isAvailable = false;
   }
 
+  get initialCoordinates(): Coordinates {
+    return this.props.initialCoordinates;
+  }
+
   constructor(props: DeviceProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -64,7 +70,8 @@ export class Device extends AggregateRoot<DeviceProps> {
       { argument: props.nickname, argumentName: 'nickname' },
       { argument: props.serialNumber, argumentName: 'serialNumber' },
       { argument: props.model, argumentName: 'model' },
-      { argument: props.isAvailable, argumentName: 'isAvailable' }
+      { argument: props.isAvailable, argumentName: 'isAvailable' },
+      { argument: props.initialCoordinates, argumentName: 'initialCoordinates' }
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);

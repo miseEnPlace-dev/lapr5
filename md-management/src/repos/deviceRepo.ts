@@ -126,6 +126,7 @@ export default class DeviceRepo implements IDeviceRepo {
       deviceDocument.description = raw.description;
       deviceDocument.serialNumber = raw.serialNumber;
       deviceDocument.isAvailable = raw.isAvailable;
+      deviceDocument.initialCoordinates = raw.initialCoordinates;
 
       await deviceDocument.save();
       return device;
