@@ -110,8 +110,6 @@ export default class DeviceService implements IDeviceService {
       } else {
         const devices = await this.deviceRepo.findRobots();
 
-        console.log('DEVICES = ', devices);
-
         devicesDTO = devices.map(device => {
           const deviceDTO = DeviceMapper.toDTO(device) as IDeviceDTO;
           return deviceDTO;
@@ -129,8 +127,6 @@ export default class DeviceService implements IDeviceService {
         },
         data: devicesDTO.slice(start, start + limit)
       };
-
-      console.log('RESULT = ', result);
 
       return Result.ok<IPaginationDTO<IDeviceDTO>>(result);
     } catch (e) {

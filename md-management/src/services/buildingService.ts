@@ -166,7 +166,7 @@ export default class BuildingService implements IBuildingService {
         meta: {
           total,
           limit,
-          page: page,
+          page,
           totalPages: Math.ceil(total / limit)
         },
         data: buildingDTOs

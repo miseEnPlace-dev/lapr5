@@ -30,11 +30,10 @@ http:location(api, root(api), []). % /api
 % define your routes here
 :- http_handler(api(route), api_get_route, []). % /api/route?from=abc&to=xyz&method=elevators
 
-:- dynamic token/1.
+:- dynamic bearer_token/1.
 
 read_api(Url, Dict):-
-    token(T),
-    T \== '',
+    bearer_token(T),
     setup_call_cleanup(
         http_open(Url, In, [
             authorization(bearer(T))
@@ -55,13 +54,15 @@ post_api(Url, Data, Dict):-
 
 fetch_buildings(Buildings):-
     api_url(Url),
-    atom_concat(Url, '/buildings', BuildingsUrl),
-    read_api(BuildingsUrl, Buildings).
+    atom_concat(Url, '/buildings?limit=100000', BuildingsUrl),
+    read_api(BuildingsUrl, B),
+    Buildings = B.data.
 
 fetch_connectors(Connectors):-
     api_url(Url),
-    atom_concat(Url, '/connectors', ConnectorsUrl),
-    read_api(ConnectorsUrl, Connectors).
+    atom_concat(Url, '/connectors?limit=100000', ConnectorsUrl),
+    read_api(ConnectorsUrl, C),
+    Connectors = C.data.
 
 fetch_floors(BuildingCode, Floors) :-
     api_url(Url),
@@ -80,7 +81,7 @@ authenticate():-
     password(Pass),
     JsonData = json([email=Email, password=Pass]),
     post_api(AuthUrl, JsonData, Out),
-    (retract(token(_));true), !,assertz(token(Out.token)).
+    (retract(bearer_token(_));true), assertz(bearer_token(Out.token)), !.
 
 api_get_route(Request):-
     retractall(planning:m(_,_,_,_)),

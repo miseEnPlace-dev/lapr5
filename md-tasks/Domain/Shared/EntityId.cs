@@ -7,35 +7,46 @@ namespace DDDSample1.Domain.Shared
     /// </summary>
     public abstract class EntityId : IEquatable<EntityId>, IComparable<EntityId>
     {
-        protected Object ObjValue { get; }
+        protected Guid ObjValue { get; }
 
-        public String Value
+        public string Value
         {
             get
             {
-                if (this.ObjValue.GetType() == typeof(String))
-                    return (String)this.ObjValue;
                 return AsString();
             }
         }
 
-        protected EntityId(Object value)
+        protected EntityId(string value)
         {
-            if (value.GetType() == typeof(String))
-                this.ObjValue = createFromString((String)value);
-            else
-                this.ObjValue = value;
+            ObjValue = CreateFromString((string)value);
+        }
+
+        protected EntityId(Guid value)
+        {
+            ObjValue = CreateFromString(value.ToString());
         }
 
 
-        protected abstract Object createFromString(String text);
+        protected Guid CreateFromString(string text)
+        {
+            return new Guid(text);
+        }
 
-        public abstract String AsString();
+        public string AsString()
+        {
+            Guid obj = ObjValue;
+            return obj.ToString();
+        }
 
+        public Guid AsGuid()
+        {
+            return ObjValue;
+        }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (obj is null) return false;
             return obj is EntityId other && Equals(other);
         }
 
@@ -46,32 +57,23 @@ namespace DDDSample1.Domain.Shared
 
         public bool Equals(EntityId other)
         {
-            if (other == null)
-                return false;
-            if (this.GetType() != other.GetType())
-                return false;
-            return this.Value == other.Value;
+            if (other == null) return false;
+            if (GetType() != other.GetType()) return false;
+            return Value == other.Value;
         }
 
         public int CompareTo(EntityId other)
         {
-            if (other == null)
-                return -1;
-            return this.Value.CompareTo(other.Value);
+            if (other == null) return -1;
+            return Value.CompareTo(other.Value);
         }
 
         public static bool operator ==(EntityId obj1, EntityId obj2)
         {
-            if (object.Equals(obj1, null))
-            {
-                if (object.Equals(obj2, null))
-                {
-                    return true;
-                }
-                return false;
-            }
+            if (Equals(obj1, null)) return Equals(obj2, null);
             return obj1.Equals(obj2);
         }
+
         public static bool operator !=(EntityId x, EntityId y)
         {
             return !(x == y);

@@ -1,16 +1,11 @@
 using System;
 using DDDSample1.Domain.Shared;
 
-namespace DDDSample1.Domain.Requests
+namespace DDDSample1.Domain.Tasks
 {
-  public class RequestId : EntityId
+  public class TaskId : EntityId
   {
-
-    public RequestId(Guid value) : base(value)
-    {
-    }
-
-    public RequestId(String value) : base(value)
+    public TaskId(String value) : base(value)
     {
 
     }

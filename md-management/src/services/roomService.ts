@@ -119,8 +119,6 @@ export default class RoomService implements IRoomService {
         return acc + room.dimensions.width * room.dimensions.length;
       }, 0);
 
-      console.log(occupiedArea);
-
       return Result.ok<number>(floor.dimensions.width * floor.dimensions.length - occupiedArea);
     } catch (e) {
       throw e;
