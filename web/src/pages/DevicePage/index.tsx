@@ -18,6 +18,9 @@ const DevicePage: React.FC = () => {
     descriptionInputRef,
     handleInhibitDevice,
     deviceModels,
+    widthInputRef,
+    depthInputRef,
+    floorCodeInputRef,
   } = useDevicePageModule();
 
   const navigate = useNavigate();
@@ -74,6 +77,28 @@ const DevicePage: React.FC = () => {
               inputRef={serialNumberInputRef}
             />
           </div>
+          <Input
+            disabled
+            className="w-full"
+            placeholder="X-axis initial position of the device"
+            defaultValue={device?.initialCoordinates.width}
+            inputRef={widthInputRef}
+          />
+          <Input
+            disabled
+            className="w-full"
+            placeholder="Y-axis initial position of the device"
+            defaultValue={device?.initialCoordinates.depth}
+            inputRef={depthInputRef}
+          />
+          <Input
+            disabled
+            className="w-full"
+            name="Floor code"
+            placeholder="Floor code"
+            defaultValue={device?.initialCoordinates.floorCode}
+            inputRef={floorCodeInputRef}
+          />
           <TextArea
             disabled
             className="w-full"

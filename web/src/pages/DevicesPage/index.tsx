@@ -36,6 +36,10 @@ const DevicesPage: React.FC = () => {
     taskFilterInputRef,
     modelFilterInputRef,
     handlePagination,
+    widthInputRef,
+    depthInputRef,
+    floorCodeInputRef,
+    floors,
   } = useListDeviceModule();
 
   const [isDeviceModalVisible, setIsDeviceModalVisible] = useState(false);
@@ -242,6 +246,24 @@ const DevicesPage: React.FC = () => {
                   placeholder="Serial Number"
                   inputRef={serialNumberInputRef}
                 />
+                <div className="flex flex-row gap-x-4">
+                  <Input
+                    className="w-full"
+                    placeholder="X-axis initial position of the device"
+                    inputRef={widthInputRef}
+                  />
+                  <Input
+                    className="w-full"
+                    placeholder="Y-axis initial position of the device"
+                    inputRef={depthInputRef}
+                  />
+                  <Input
+                    className="w-full"
+                    name="Floor code"
+                    placeholder="Floor code"
+                    inputRef={floorCodeInputRef}
+                  />
+                </div>
                 <TextArea
                   className="w-full"
                   placeholder="Description"
