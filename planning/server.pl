@@ -72,7 +72,7 @@ fetch_floors(BuildingCode, Floors) :-
     read_api(FloorsUrl3, Floors).
 
 password('campus').
-email('campus@campus.com').
+email('campus@isep.ipp.pt').
 
 authenticate():-
     api_url(Url),
