@@ -12,11 +12,11 @@ const CampusHome: React.FC = () => {
       <h2 className="my-4 text-3xl font-bold text-primary">Quick Links</h2>
       <CardContainer>
         <Card
-          title="Floor Editor"
+          title="Campus Explorer"
           description="Explore the campus in a 3D environment to have a better understanding
         about the campus."
           link="/floor-editor"
-          action="Go to Floor Editor"
+          action="Go to Campus Explorer"
         />
         <Card
           title="Buildings"
