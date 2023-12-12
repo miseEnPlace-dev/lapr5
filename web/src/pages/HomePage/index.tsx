@@ -7,6 +7,7 @@ import { useMenuOptions } from "../../hooks/useMenuOptions";
 import AdminHome from "../AdminHome ";
 import CampusHome from "../CampusHome";
 import FleetHome from "../FleetHome";
+import UserHome from "../UserHome";
 
 const HomePage: React.FC = () => {
   const { menuOptions } = useMenuOptions();
@@ -19,6 +20,7 @@ const HomePage: React.FC = () => {
       {role === "campus" && <CampusHome />}
       {role === "fleet" && <FleetHome />}
       {role === "admin" && <AdminHome />}
+      {role === "user" && <UserHome />}
     </div>
   );
 };
