@@ -1,8 +1,8 @@
 % geracoes(NGeracoes).
-geracoes(8).
+geracoes(2).
 
 % populacao(TamanhoPopulacao).
-populacao(10).
+populacao(2).
 
 % prob_cruzamento(ProbabilidadeCruzamento).
 prob_cruzamento(0.7).
@@ -41,6 +41,40 @@ gera_lim_time:-
 	ordena_populacao(PopAv,PopOrd),
 	get_time(Ti),
 	gera_geracao_time(Ti,0,PopOrd).
+
+gera_estab:-
+    gera_populacao(Pop),
+    write('Pop='), write(Pop), nl,
+    avalia_populacao(Pop, PopAv),
+    write('PopAv='), write(PopAv), nl,
+    ordena_populacao(PopAv, PopOrd),
+    gera_estab_ger(0, PopOrd, 2, Pop).
+
+gera_estab_ger(_, _, 0, Pop):-
+    write('Condição de paragem atingida. População estável por duas gerações consecutivas.'), nl,
+    write('População final: '), write(Pop), nl.
+
+gera_estab_ger(G, Pop, GerIguais, PopAnterior):-
+    write('Geração '), write(G), write(':'), nl, write(Pop), nl,
+    cruzamento(Pop, NPop1),
+    mutacao(NPop1, NPop),
+    avalia_populacao(NPop, NPopAv),
+    ordena_populacao(NPopAv, NPopOrd),
+    melhor_individuo(NPopOrd, Ind),
+    write('Melhor individuo: '), write(Ind), nl, nl,
+		(GerIguais > 0, avaliar_semelhanca_entre_pop(Pop, PopAnterior, GerIguais),
+				G1 is G + 1,
+				NovoGerIguais is GerIguais - 1,
+				gera_estab_ger(G1, NPopOrd, NovoGerIguais, NPop)
+		; 
+				G1 is G + 1,
+				gera_estab_ger(G1, NPopOrd, GerIguais, NPop)
+		).
+
+avaliar_semelhanca_entre_pop(_, _, 0):-!.
+avaliar_semelhanca_entre_pop([P1|Populacao],[P2|ProxGeracao], _):-
+    P1 = P2, 
+    avaliar_semelhanca_entre_pop(Populacao, ProxGeracao, _).
 
 
 gera_populacao(Pop):-
