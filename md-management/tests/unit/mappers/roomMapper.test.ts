@@ -17,6 +17,7 @@ import { TYPES } from '../../../src/loaders/inversify/types';
 import IFloorRepo from '../../../src/services/IRepos/IFloorRepo';
 
 import { stub } from 'sinon';
+import { RoomDoor } from '../../../src/domain/room/roomDoor';
 
 describe('Room Mapper', () => {
   beforeEach(() => {
@@ -35,14 +36,19 @@ describe('Room Mapper', () => {
         length: 1
       },
       category: 'OFFICE',
-      floorCode: '1'
+      floorCode: '1',
+      roomDoor: {
+        x: 1,
+        y: 1
+      }
     };
 
     const room = Room.create({
       name: RoomName.create('name').getValue(),
       dimensions: RoomDimensions.create(1, 1).getValue(),
       category: RoomCategory.create('OFFICE').getValue(),
-      floorCode: FloorCode.create('1').getValue()
+      floorCode: FloorCode.create('1').getValue(),
+      roomDoor: RoomDoor.create(1, 1).getValue()
     });
 
     const result = RoomMapper.toDTO(room.getValue());
@@ -56,7 +62,8 @@ describe('Room Mapper', () => {
         name: RoomName.create('name').getValue(),
         dimensions: RoomDimensions.create(1, 1).getValue(),
         category: RoomCategory.create('OFFICE').getValue(),
-        floorCode: FloorCode.create('1').getValue()
+        floorCode: FloorCode.create('1').getValue(),
+        roomDoor: RoomDoor.create(1, 1).getValue()
       },
       UniqueEntityID.create('1')
     );
@@ -72,7 +79,11 @@ describe('Room Mapper', () => {
         length: 1
       },
       category: 'OFFICE',
-      floorCode: '1'
+      floorCode: '1',
+      roomDoor: {
+        x: 1,
+        y: 1
+      }
     });
   });
 
@@ -92,7 +103,8 @@ describe('Room Mapper', () => {
         name: RoomName.create('name').getValue(),
         dimensions: RoomDimensions.create(1, 1).getValue(),
         category: RoomCategory.create('OFFICE').getValue(),
-        floorCode: floorCode
+        floorCode: floorCode,
+        roomDoor: RoomDoor.create(1, 1).getValue()
       },
       UniqueEntityID.create('1')
     );
@@ -111,7 +123,11 @@ describe('Room Mapper', () => {
         length: 1
       },
       category: 'OFFICE',
-      floorCode: '1'
+      floorCode: '1',
+      roomDoor: {
+        x: 1,
+        y: 1
+      }
     });
 
     expect(result).toEqual(room.getValue());
@@ -133,7 +149,11 @@ describe('Room Mapper', () => {
           length: 1
         },
         category: 'OFFICE',
-        floorCode: '1'
+        floorCode: '1',
+        roomDoor: {
+          x: 1,
+          y: 1
+        }
       })
     ).rejects.toThrowError('Floor not found');
   });
