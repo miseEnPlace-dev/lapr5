@@ -1,3 +1,4 @@
+using DDDSample1.Domain.DeviceModel;
 using DDDSample1.Domain.Shared;
 
 namespace DDDSample1.Domain.Requests
@@ -6,26 +7,29 @@ namespace DDDSample1.Domain.Requests
     {
         public RequestState State { get; private set; }
 
+        public DeviceModelId DeviceModelId { get; private set; }
+
         public bool Active { get; private set; }
 
         private Request()
         {
-            this.Active = true;
+            Active = true;
         }
 
-        public Request(RequestState state)
+        public Request(RequestState state, DeviceModelId deviceModelId)
         {
-            this.State = state;
-            this.Active = true;
+            State = state;
+            DeviceModelId = deviceModelId;
+            Active = true;
         }
 
         public void ChangeState(RequestState state)
         {
-            if (!this.Active)
+            if (!Active)
             {
                 throw new BusinessRuleValidationException("Request is not active.");
             }
-            this.State = state;
+            State = state;
         }
 
         public bool ToggleActive()
