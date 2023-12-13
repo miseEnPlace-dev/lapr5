@@ -23,7 +23,7 @@ tarefas(5).
 % t(id_tarefa, inicio, fim).
 t(t1, cel("b1",7,20),cel("b2",6,21)).
 t(t2, cel("b1",7,20),cel("b2",6,20)).
-t(t3, cel("b3",6,18),cel("b3",7,21)).
+t(t3, cel("b3",9,18),cel("b3",8,20)).
 t(t4, cel("b2",6,19),cel("b2",9,18)).
 t(t5, cel("b3",9,18),cel("b3",8,17)).
 
