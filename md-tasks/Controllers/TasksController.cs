@@ -21,7 +21,8 @@ public class TasksController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TaskDto>>> GetAll()
     {
-        return await _svc.GetAllAsync();
+        return null;
+        // TODO return await _svc.GetAllAsync();
     }
 
     // GET api/Tasks/{id}
