@@ -365,6 +365,8 @@ const FloorEditor: React.FC = () => {
     window.location.reload();
   };
 
+  console.log(floors);
+
   return (
     <>
       <div id="container">
