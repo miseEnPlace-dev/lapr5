@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DDDSample1.Domain.DeviceModel;
 using DDDSample1.Domain.Shared;
+using DDDSample1.Domain.User;
 using DDDSample1.Infrastructure.Requests;
 
 namespace DDDSample1.Domain.Requests
@@ -19,7 +21,7 @@ namespace DDDSample1.Domain.Requests
     public async Task<List<RequestDto>> GetAllAsync()
     {
       var list = await _repo.GetAllAsync();
-      List<RequestDto> listDto = list.ConvertAll(r => new RequestDto(r.Id.AsGuid(), r.State.AsString()));
+      List<RequestDto> listDto = list.ConvertAll(r => new RequestDto(r.Id.AsGuid(), r.State.AsString(), r.UserId.AsString(), r.DeviceModelId.AsString()));
       return listDto;
     }
 
@@ -27,15 +29,15 @@ namespace DDDSample1.Domain.Requests
     {
       var r = await _repo.GetByIdAsync(id);
       if (r == null) return null;
-      return new RequestDto(r.Id.AsGuid(), r.State.AsString());
+      return new RequestDto(r.Id.AsGuid(), r.State.AsString(), r.UserId.AsString(), r.DeviceModelId.AsString());
     }
 
     public async Task<RequestDto> AddAsync(CreatingRequestDto dto)
     {
-      var r = new Request(new RequestState(dto.State));
+      var r = new Request(new RequestState(dto.State), new DeviceModelId(dto.DeviceModelId), new UserId(dto.UserId));
       await _repo.AddAsync(r);
       await _unitOfWork.CommitAsync();
-      return new RequestDto(r.Id.AsGuid(), r.State.AsString());
+      return new RequestDto(r.Id.AsGuid(), r.State.AsString(), r.UserId.AsString(), r.DeviceModelId.AsString());
     }
 
     public async Task<RequestDto> UpdateAsync(RequestDto dto)
@@ -48,7 +50,7 @@ namespace DDDSample1.Domain.Requests
         task.ChangeState(new RequestState(dto.State));
 
       await _unitOfWork.CommitAsync();
-      return new RequestDto(task.Id.AsGuid(), task.State.AsString());
+      return new RequestDto(task.Id.AsGuid(), task.State.AsString(), task.UserId.AsString(), task.DeviceModelId.AsString());
     }
 
     public async Task<RequestDto> PutAsync(RequestDto dto)
@@ -60,7 +62,7 @@ namespace DDDSample1.Domain.Requests
       task.ChangeState(new RequestState(dto.State));
 
       await _unitOfWork.CommitAsync();
-      return new RequestDto(task.Id.AsGuid(), task.State.AsString());
+      return new RequestDto(task.Id.AsGuid(), task.State.AsString(), task.UserId.AsString(), task.DeviceModelId.AsString());
     }
 
     public async Task<RequestDto> InactivateAsync(RequestId id)
@@ -71,7 +73,7 @@ namespace DDDSample1.Domain.Requests
       if (task.Active) task.ToggleActive();
 
       await _unitOfWork.CommitAsync();
-      return new RequestDto(task.Id.AsGuid(), task.State.AsString());
+      return new RequestDto(task.Id.AsGuid(), task.State.AsString(), task.UserId.AsString(), task.DeviceModelId.AsString());
     }
 
     public async Task<RequestDto> DeleteAsync(RequestId id)
@@ -84,7 +86,7 @@ namespace DDDSample1.Domain.Requests
       _repo.Remove(task);
       await _unitOfWork.CommitAsync();
 
-      return new RequestDto(task.Id.AsGuid(), task.State.AsString());
+      return new RequestDto(task.Id.AsGuid(), task.State.AsString(), task.UserId.AsString(), task.DeviceModelId.AsString());
     }
   }
 }
