@@ -8,4 +8,5 @@ export interface IRoomPersistence {
   };
   floorCode: string;
   category: string;
+  roomDoor: { x: number; y: number };
 }

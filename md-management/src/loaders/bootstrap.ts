@@ -306,7 +306,11 @@ export default class Bootstrapper {
         width: 2,
         length: 2
       },
-      category: 'CLASSROOM'
+      category: 'CLASSROOM',
+      roomDoor: {
+        x: 1,
+        y: 1
+      }
     });
 
     await this.loadRoom({
@@ -318,7 +322,11 @@ export default class Bootstrapper {
         width: 2,
         length: 2
       },
-      category: 'CLASSROOM'
+      category: 'CLASSROOM',
+      roomDoor: {
+        x: 1,
+        y: 1
+      }
     });
 
     await this.loadRoom({
@@ -330,7 +338,11 @@ export default class Bootstrapper {
         width: 2,
         length: 2
       },
-      category: 'CLASSROOM'
+      category: 'CLASSROOM',
+      roomDoor: {
+        x: 1,
+        y: 1
+      }
     });
 
     await this.loadRoom({
@@ -342,7 +354,11 @@ export default class Bootstrapper {
         width: 2,
         length: 2
       },
-      category: 'OFFICE'
+      category: 'OFFICE',
+      roomDoor: {
+        x: 1,
+        y: 1
+      }
     });
 
     await this.loadDeviceModel({
@@ -378,7 +394,7 @@ export default class Bootstrapper {
       isAvailable: true,
       initialCoordinates: {
         width: 1,
-        length: 1,
+        depth: 1,
         floorCode: 'a1'
       }
     });
@@ -392,7 +408,7 @@ export default class Bootstrapper {
       isAvailable: true,
       initialCoordinates: {
         width: 1,
-        length: 1,
+        depth: 1,
         floorCode: 'a1'
       }
     });
@@ -406,7 +422,7 @@ export default class Bootstrapper {
       isAvailable: true,
       initialCoordinates: {
         width: 1,
-        length: 1,
+        depth: 1,
         floorCode: 'a1'
       }
     });
@@ -543,7 +559,8 @@ export default class Bootstrapper {
         floorCode: room.floorCode,
         description: room.description,
         dimensions: room.dimensions,
-        category: room.category
+        category: room.category,
+        roomDoor: room.roomDoor
       });
 
       if (res.isFailure) throw new Error(res.errorValue());

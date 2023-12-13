@@ -8,4 +8,8 @@ export interface IRoomDTO {
     length: number;
   };
   category: string;
+  roomDoor: {
+    x: number;
+    y: number;
+  };
 }

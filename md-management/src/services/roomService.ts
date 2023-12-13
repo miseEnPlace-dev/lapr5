@@ -14,6 +14,7 @@ import IRoomRepo from './IRepos/IRoomRepo';
 import IRoomService from './IServices/IRoomService';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import { BuildingCode } from '@/domain/building/buildingCode';
+import { RoomDoor } from '@/domain/room/roomDoor';
 
 @injectable()
 export default class RoomService implements IRoomService {
@@ -25,6 +26,7 @@ export default class RoomService implements IRoomService {
 
   public async createRoom(roomDTO: IRoomDTO): Promise<Result<IRoomDTO>> {
     try {
+      if (!roomDTO.buildingCode) return Result.fail<IRoomDTO>('Building code not defined');
       const buildingCode = BuildingCode.create(roomDTO.buildingCode).getValue();
       const building = await this.buildingRepo.findByCode(buildingCode);
 
@@ -72,12 +74,17 @@ export default class RoomService implements IRoomService {
 
         if (category.isFailure) return Result.fail<IRoomDTO>(category.error as string);
 
+        const roomDoor = RoomDoor.create(roomDTO.roomDoor.x, roomDTO.roomDoor.y);
+
+        if (roomDoor.isFailure) return Result.fail<IRoomDTO>(roomDoor.error as string);
+
         const roomOrError = Room.create({
           name: name.getValue(),
           description: description?.getValue(),
           dimensions: dimensions.getValue(),
           floorCode: floor.code,
-          category: category.getValue()
+          category: category.getValue(),
+          roomDoor: roomDoor.getValue()
         });
 
         if (roomOrError.isFailure) return Result.fail<IRoomDTO>(roomOrError.error as string);
