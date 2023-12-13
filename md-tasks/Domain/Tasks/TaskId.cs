@@ -9,16 +9,5 @@ namespace DDDSample1.Domain.Tasks
     {
 
     }
-
-    override
-    protected Object createFromString(String text)
-    {
-      return text;
-    }
-    override
-    public String AsString()
-    {
-      return (String)base.Value;
-    }
   }
 }
