@@ -172,7 +172,7 @@ Surveillance "1" --> "1..*" Floor : target
 PickUpAndDelivery --|> Task
 Surveillance --|> Task
 
-DeviceModel "1" --> "*" Task : can perform
+DeviceModel "1" <-- "1" Request : can perform
 
 Request "1" *-- "1" RequestState
 
