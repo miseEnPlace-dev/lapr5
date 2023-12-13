@@ -6,6 +6,7 @@ import { FloorCode } from '../floor/floorCode';
 import { RoomCategory } from './roomCategory';
 import { RoomDescription } from './roomDescription';
 import { RoomDimensions } from './roomDimensions';
+import { RoomDoor } from './roomDoor';
 import { RoomName } from './roomName';
 
 interface RoomProps {
@@ -14,6 +15,7 @@ interface RoomProps {
   dimensions: RoomDimensions;
   floorCode: FloorCode;
   category: RoomCategory;
+  roomDoor: RoomDoor;
 }
 
 export class Room extends AggregateRoot<RoomProps> {
@@ -41,6 +43,10 @@ export class Room extends AggregateRoot<RoomProps> {
     return this.props.category;
   }
 
+  get roomDoor(): RoomDoor {
+    return this.props.roomDoor;
+  }
+
   private constructor(props: RoomProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -50,7 +56,8 @@ export class Room extends AggregateRoot<RoomProps> {
       { argument: props.name, argumentName: 'name' },
       { argument: props.dimensions, argumentName: 'dimensions' },
       { argument: props.floorCode, argumentName: 'floorCode' },
-      { argument: props.category, argumentName: 'category' }
+      { argument: props.category, argumentName: 'category' },
+      { argument: props.roomDoor, argumentName: 'roomDoor' }
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
