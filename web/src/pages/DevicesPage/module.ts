@@ -7,17 +7,24 @@ import { Device } from "@/model/Device";
 import { DeviceModel } from "@/model/DeviceModel";
 import { IDeviceModelService } from "@/service/IService/IDeviceModelService";
 import { IDeviceService } from "@/service/IService/IDeviceService";
+import { Floor } from "@/model/Floor";
+import { IFloorService } from "@/service/IService/IFloorService";
 
 export const useListDeviceModule = () => {
   const deviceService = useInjection<IDeviceService>(TYPES.deviceService);
   const deviceModelService = useInjection<IDeviceModelService>(
     TYPES.deviceModelService
   );
+  const floorService = useInjection<IFloorService>(
+    TYPES.floorService
+  );
+
   const [devices, setDevices] = useState<IPaginationDTO<Device> | null>(null);
   const [deviceModels, setDeviceModels] =
     useState<IPaginationDTO<DeviceModel> | null>(null);
   const [modelFilter, setModelFilter] = useState<string | null>(null);
   const [taskFilter, setTaskFilter] = useState<string | null>(null);
+  const [floors, setFloors] = useState<Floor[] | null>(null);
 
   const [page, setPage] = useState<number>(1);
 
@@ -26,6 +33,9 @@ export const useListDeviceModule = () => {
   const modelCodeInputRef = useRef<HTMLSelectElement>(null);
   const serialNumberInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
+  const widthInputRef = useRef<HTMLInputElement>(null);
+  const depthInputRef = useRef<HTMLInputElement>(null);
+  const floorCodeInputRef = useRef<HTMLInputElement>(null);
 
   const taskFilterInputRef = useRef<HTMLSelectElement>(null);
   const modelFilterInputRef = useRef<HTMLSelectElement>(null);
@@ -51,6 +61,17 @@ export const useListDeviceModule = () => {
     setPage(page);
   };
 
+  const fetchFloors = useCallback(async () => {
+    try {
+      const floors = await floorService.getAllFloors();
+
+      setFloors(floors);
+    } catch (e) {
+      setFloors([]);
+    }
+    setFloors(floors);
+  }, [floorService, page, itemsPerPage]);
+
   const fetchDeviceModels = useCallback(async () => {
     const deviceModels = await deviceModelService.getDeviceModels(
       page,
@@ -62,7 +83,8 @@ export const useListDeviceModule = () => {
   useEffect(() => {
     fetchDevices();
     fetchDeviceModels();
-  }, [fetchDevices, deviceModelService, fetchDeviceModels, deviceService]);
+    fetchFloors();
+  }, [fetchDevices, deviceModelService, fetchDeviceModels, deviceService, fetchFloors, floorService]);
 
   const handleSave = async () => {
     if (!codeInputRef.current) {
@@ -73,6 +95,26 @@ export const useListDeviceModule = () => {
       throw new Error("Nickname is required");
     }
 
+    if (!modelCodeInputRef.current) {
+      throw new Error("Model code is required");
+    }
+
+    if (!serialNumberInputRef.current) {
+      throw new Error("Serial number is required");
+    }
+
+    if (!widthInputRef.current) {
+      throw new Error("Width is required");
+    }
+
+    if (!depthInputRef.current) {
+      throw new Error("Depth is required");
+    }
+
+    if (!floorCodeInputRef.current) {
+      throw new Error("Floor code is required");
+    }
+
     const device: Device = {
       code: codeInputRef.current.value,
       nickname: nicknameInputRef.current.value,
@@ -80,6 +122,11 @@ export const useListDeviceModule = () => {
       serialNumber: serialNumberInputRef.current?.value || "",
       description: descriptionInputRef.current?.value || "",
       isAvailable: true,
+      initialCoordinates: {
+        width: parseFloat(widthInputRef.current?.value || "0"),
+        depth: parseFloat(depthInputRef.current?.value || "0"),
+        floorCode: floorCodeInputRef.current?.value || "",
+      }
     };
     await deviceService.createDevice(device);
     fetchDevices();
@@ -113,5 +160,9 @@ export const useListDeviceModule = () => {
     taskFilterInputRef,
     modelFilterInputRef,
     handlePagination,
+    widthInputRef,
+    depthInputRef,
+    floorCodeInputRef,
+    floors
   };
 };

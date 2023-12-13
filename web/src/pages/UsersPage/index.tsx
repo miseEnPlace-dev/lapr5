@@ -8,9 +8,12 @@ import Button from "@/components/Button";
 import Dropdown from "@/components/Dropdown/index.tsx";
 import Input from "@/components/Input";
 import Modal from "@/components/Modal";
+import Pagination from "@/components/Pagination/index.tsx";
 import SideBar from "@/components/SideBar";
 
 import { useListUsersModule } from "./module.ts";
+
+import { AxiosError } from "axios";
 
 const ANIMATION_DELAY = 0.1;
 
@@ -28,13 +31,15 @@ const UsersPage: React.FC = () => {
     setPassword,
     phoneNumber,
     setPhoneNumber,
+    nif,
+    setNif,
+    isNifValid,
     isPhoneNumberValid,
     firstNameInputRef,
     lastNameInputRef,
     roleInputRef,
-    isAgreed,
     handleCreateUser,
-    setIsAgreed,
+    handlePagination,
   } = useListUsersModule();
 
   const [isUserModalVisible, setIsUserModalVisible] = useState(false);
@@ -43,16 +48,23 @@ const UsersPage: React.FC = () => {
 
   const handleRegister = async () => {
     try {
-      handleCreateUser();
+      await handleCreateUser();
 
       swal("Success", "User created successfully", "success");
-      navigate("/login");
+      setIsUserModalVisible(false);
     } catch (err) {
       console.log(err);
-      swal("Error", "Error creating account", "error");
+      if (err instanceof AxiosError && err.response?.data.message)
+        swal("Error", err.response.data.message, "error");
+      else swal("Error", "Error creating account", "error");
       setPassword("");
     }
   };
+
+  function changeRole(role: string) {
+    if (role == "user") setNif("");
+    setRole(role);
+  }
 
   return (
     <div className="flex">
@@ -67,34 +79,45 @@ const UsersPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.2,
-              delay: users.length || 0 * ANIMATION_DELAY,
+              delay: users?.data.length || 0 * ANIMATION_DELAY,
             }}
             onClick={() => setIsUserModalVisible(true)}
             className="flex w-full items-center justify-center bg-secondary px-12 py-4 text-center text-5xl font-bold"
           >
             +
           </motion.button>
-
-          {users.map((user, i) => (
-            <motion.button
-              initial={{ opacity: 0, x: -100 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
-              key={user.email}
-              onClick={() => navigate(`/users/${user.id}`)}
-              className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
-            >
-              <h2 className="text-5xl font-bold">
-                {user.firstName} {user.lastName}
-              </h2>
-              <div className="flex flex-col">
-                <h3 className="text-left text-2xl font-bold">{user.email}</h3>
-                <div className="text-left text-sm capitalize text-slate-600">
-                  {user.role}
+          {!users ? null : users.data.length == 0 ? ( // TODO: skeleton component
+            <p className="text-slate-600">
+              No results were found for your search...
+            </p>
+          ) : (
+            users.data.map((user, i) => (
+              <motion.button
+                initial={{ opacity: 0, x: -100 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
+                key={user.email}
+                onClick={() => navigate(`/users/${user.id}`)}
+                className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
+              >
+                <h2 className="text-5xl font-bold">
+                  {user.firstName} {user.lastName}
+                </h2>
+                <div className="flex flex-col">
+                  <h3 className="text-left text-2xl font-bold">{user.email}</h3>
+                  <div className="text-left text-sm capitalize text-slate-600">
+                    {user.role}
+                  </div>
                 </div>
-              </div>
-            </motion.button>
-          ))}
+              </motion.button>
+            ))
+          )}
+
+          <Pagination
+            meta={users?.meta}
+            changePage={handlePagination}
+            className="flex items-center justify-center gap-x-4"
+          />
 
           <Modal
             setIsVisible={setIsUserModalVisible}
@@ -122,14 +145,14 @@ const UsersPage: React.FC = () => {
                 className="w-full"
                 inputRef={roleInputRef}
                 name="Role"
-                onChange={(e) => setRole(e.target.value)}
+                onChange={(e) => changeRole(e.target.value)}
               />
               {role == "user" ? (
                 <div className="flex w-full items-center gap-x-4">
                   <Input
                     placeholder="Phone Number"
                     type="text"
-                    className="w-full"
+                    className="w-3/4"
                     value={phoneNumber}
                     onChange={setPhoneNumber}
                   />
@@ -137,8 +160,8 @@ const UsersPage: React.FC = () => {
                     placeholder="NIF"
                     type="text"
                     className="w-full"
-                    value={phoneNumber}
-                    onChange={setPhoneNumber}
+                    value={nif}
+                    onChange={setNif}
                   />
                 </div>
               ) : (
@@ -161,18 +184,6 @@ const UsersPage: React.FC = () => {
                 value={password}
                 onChange={setPassword}
               />
-              <div className="flex items-center gap-x-2">
-                <input
-                  type="checkbox"
-                  onChange={(e) => setIsAgreed(e.target.checked)}
-                />
-                <label className="text-slate-600">
-                  The user agrees to the{" "}
-                  <Link to="/privacy-policy" className="text-primary underline">
-                    Privacy Policy
-                  </Link>
-                </label>
-              </div>
               <Button
                 type="confirm"
                 onClick={(e) => {
@@ -181,7 +192,10 @@ const UsersPage: React.FC = () => {
                 }}
                 name="register"
                 disabled={
-                  !isEmailValid || !password || !isPhoneNumberValid || !isAgreed
+                  !isEmailValid ||
+                  !password ||
+                  !isPhoneNumberValid ||
+                  (!isNifValid && role == "user")
                 }
                 className="mt-2 w-full"
               >

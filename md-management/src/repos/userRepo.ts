@@ -10,8 +10,14 @@ import IUserRepo from '@/services/IRepos/IUserRepo';
 export default class UserRepo implements IUserRepo {
   constructor() {}
 
-  async findAll(): Promise<User[]> {
-    const userRecords = await userSchema.find();
+  async findAll(page: number, limit: number): Promise<User[]> {
+    const userRecords = await userSchema
+      .find()
+      .limit(limit)
+      .skip(page * limit)
+      .sort({
+        firstName: 1
+      });
 
     const users = [];
     for (const userRecord of userRecords) {
@@ -22,9 +28,15 @@ export default class UserRepo implements IUserRepo {
     return users;
   }
 
-  async findActive(): Promise<User[]> {
+  async findActive(page: number, limit: number): Promise<User[]> {
     const query = { state: 'active' };
-    const userRecords = await userSchema.find(query);
+    const userRecords = await userSchema
+      .find(query)
+      .limit(limit)
+      .skip(page * limit)
+      .sort({
+        firstName: 1
+      });
 
     const users = [];
     for (const userRecord of userRecords) {
@@ -72,6 +84,11 @@ export default class UserRepo implements IUserRepo {
     return await userSchema.count();
   }
 
+  async countActive(): Promise<number> {
+    const query = { state: 'active' };
+    return await userSchema.count(query);
+  }
+
   async save(user: User): Promise<User> {
     const query = { domainId: user.id };
 
@@ -94,6 +111,7 @@ export default class UserRepo implements IUserRepo {
         userDocument.email = user.email.value;
         userDocument.phoneNumber = user.phoneNumber.value;
         userDocument.state = user.state.value;
+        userDocument.nif = user.nif?.value;
         userDocument.password = user.password.value;
 
         await userDocument.save();

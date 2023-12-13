@@ -20,6 +20,8 @@ export default {
 
   databaseURL: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/test',
 
+  allowedEmailDomain: process.env.ALLOWED_EMAIL_DOMAIN || null,
+
   /**
    * Your secret sauce
    */

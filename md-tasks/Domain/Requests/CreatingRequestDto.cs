@@ -4,9 +4,15 @@ namespace DDDSample1.Domain.Requests
   {
     public string State { get; set; }
 
-    public CreatingRequestDto(string State)
+    public string DeviceModelId { get; set; }
+
+    public string UserId { get; set; }
+
+    public CreatingRequestDto(string state, string deviceModelId, string userId)
     {
-      this.State = State;
+      State = state;
+      DeviceModelId = deviceModelId;
+      UserId = userId;
     }
   }
 }

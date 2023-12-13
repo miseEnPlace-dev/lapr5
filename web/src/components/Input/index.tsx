@@ -8,6 +8,7 @@ interface InputProps {
   step?: number;
   name?: string;
   disabled?: boolean;
+  autoComplete?: string;
   inputRef?: React.RefObject<HTMLInputElement>;
 }
 
@@ -19,6 +20,7 @@ const Input: React.FC<InputProps> = ({
   name,
   step,
   disabled,
+  autoComplete,
   className,
   inputRef,
   defaultValue,
@@ -41,6 +43,7 @@ const Input: React.FC<InputProps> = ({
           step={step}
           disabled={disabled}
           defaultValue={defaultValue}
+          autoComplete={autoComplete}
           ref={inputRef}
         />
       ) : (

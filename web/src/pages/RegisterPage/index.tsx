@@ -12,6 +12,8 @@ import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { useEmail } from "../../hooks/useEmail";
 
+import { Axios, AxiosError } from "axios";
+
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
 
@@ -44,7 +46,9 @@ const RegisterPage: React.FC = () => {
         password,
         firstName: firstNameInputRef.current.value,
         lastName: lastNameInputRef.current?.value,
+        nif,
         phoneNumber,
+        role: "user",
       });
       swal(
         "Success",
@@ -53,8 +57,9 @@ const RegisterPage: React.FC = () => {
       );
       navigate("/login");
     } catch (err) {
-      console.log(err);
-      swal("Error", "Error creating account", "error");
+      if (err instanceof AxiosError && err.response?.data.message)
+        swal("Error", err.response.data.message, "error");
+      else swal("Error", "Error creating account", "error");
       setPassword("");
     }
   };
@@ -91,7 +96,7 @@ const RegisterPage: React.FC = () => {
             <Input
               placeholder="Phone Number"
               type="text"
-              className="w-1/2"
+              className="w-3/4"
               value={phoneNumber}
               onChange={setPhoneNumber}
             />

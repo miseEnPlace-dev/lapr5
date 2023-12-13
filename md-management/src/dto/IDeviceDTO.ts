@@ -5,4 +5,9 @@ export interface IDeviceDTO {
   description?: string;
   serialNumber: string;
   isAvailable: boolean;
+  initialCoordinates: {
+    width: number;
+    depth: number;
+    floorCode: string;
+  };
 }

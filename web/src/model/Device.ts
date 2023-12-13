@@ -5,4 +5,9 @@ export interface Device {
   serialNumber: string;
   description?: string;
   isAvailable: boolean;
+  initialCoordinates: {
+    width: number;
+    depth: number;
+    floorCode: string;
+  };
 }

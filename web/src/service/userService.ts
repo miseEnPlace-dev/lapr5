@@ -2,8 +2,8 @@ import { inject, injectable } from "inversify";
 
 import { TYPES } from "@/inversify/types";
 import { localStorageConfig } from "@/config/localStorageConfig";
+import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Role } from "@/model/Role";
-import { Session } from "@/model/Session";
 import { User } from "@/model/User";
 
 import { HttpService } from "./IService/HttpService";
@@ -17,9 +17,8 @@ export class UserService implements IUserService {
   ) {}
 
   async register(user: User): Promise<UserSession> {
-    const res = await this.http.post("/users/signup", {
+    const res = await this.http.post<UserSession>("/users/signup", {
       ...user,
-      role: "user",
     });
 
     return res.data as UserSession;
@@ -66,15 +65,25 @@ export class UserService implements IUserService {
     return res.data;
   }
 
-  async getAllUsers(): Promise<User[]> {
+  async getAllUsers(
+    page: number = 0,
+    limit: number = 2
+  ): Promise<IPaginationDTO<User>> {
     const token = this.localStorage.getItem(localStorageConfig.token);
-    const res = await this.http.get("/users", {
+
+    const params = {} as { [key: string]: string };
+
+    params["limit"] = limit.toString();
+    params["page"] = page.toString();
+
+    const res = await this.http.get<IPaginationDTO<User>>("/users", {
+      params,
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
-    return res.data as User[];
+    return res.data;
   }
 
   async getAllRoles(): Promise<Role[]> {

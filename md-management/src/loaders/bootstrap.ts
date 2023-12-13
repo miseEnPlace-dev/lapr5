@@ -58,7 +58,7 @@ export default class Bootstrapper {
     await this.loadUser({
       firstName: 'Fleet',
       lastName: 'Manager',
-      email: 'fleet@fleet.com',
+      email: 'fleet@isep.ipp.pt',
       password: 'fleet',
       phoneNumber: '912345678',
       role: defaultRoles.fleet.name
@@ -66,7 +66,7 @@ export default class Bootstrapper {
     await this.loadUser({
       firstName: 'Campus',
       lastName: 'Manager',
-      email: 'campus@campus.com',
+      email: 'campus@isep.ipp.pt',
       password: 'campus',
       phoneNumber: '912345678',
       role: defaultRoles.campus.name
@@ -74,7 +74,7 @@ export default class Bootstrapper {
     await this.loadUser({
       firstName: 'Admin',
       lastName: 'Admin',
-      email: 'admin@admin.com',
+      email: 'admin@isep.ipp.pt',
       password: 'admin',
       phoneNumber: '912345678',
       role: defaultRoles.admin.name
@@ -306,7 +306,11 @@ export default class Bootstrapper {
         width: 2,
         length: 2
       },
-      category: 'CLASSROOM'
+      category: 'CLASSROOM',
+      roomDoor: {
+        x: 1,
+        y: 1
+      }
     });
 
     await this.loadRoom({
@@ -318,7 +322,11 @@ export default class Bootstrapper {
         width: 2,
         length: 2
       },
-      category: 'CLASSROOM'
+      category: 'CLASSROOM',
+      roomDoor: {
+        x: 1,
+        y: 1
+      }
     });
 
     await this.loadRoom({
@@ -330,7 +338,11 @@ export default class Bootstrapper {
         width: 2,
         length: 2
       },
-      category: 'CLASSROOM'
+      category: 'CLASSROOM',
+      roomDoor: {
+        x: 1,
+        y: 1
+      }
     });
 
     await this.loadRoom({
@@ -342,7 +354,11 @@ export default class Bootstrapper {
         width: 2,
         length: 2
       },
-      category: 'OFFICE'
+      category: 'OFFICE',
+      roomDoor: {
+        x: 1,
+        y: 1
+      }
     });
 
     await this.loadDeviceModel({
@@ -375,7 +391,12 @@ export default class Bootstrapper {
       modelCode: 'SRV',
       description: 'ISEP Security Guard',
       serialNumber: 'RBT1',
-      isAvailable: true
+      isAvailable: true,
+      initialCoordinates: {
+        width: 1,
+        depth: 1,
+        floorCode: 'a1'
+      }
     });
 
     await this.loadDevice({
@@ -384,7 +405,12 @@ export default class Bootstrapper {
       modelCode: 'DLV',
       description: 'ISEP Pick and Delivery Robot',
       serialNumber: 'RBT2',
-      isAvailable: true
+      isAvailable: true,
+      initialCoordinates: {
+        width: 1,
+        depth: 1,
+        floorCode: 'a1'
+      }
     });
 
     await this.loadDevice({
@@ -393,7 +419,12 @@ export default class Bootstrapper {
       modelCode: 'ALL',
       description: 'ISEP Master All in One Robot',
       serialNumber: 'RBT3',
-      isAvailable: true
+      isAvailable: true,
+      initialCoordinates: {
+        width: 1,
+        depth: 1,
+        floorCode: 'a1'
+      }
     });
 
     await this.loadElevator({
@@ -528,7 +559,8 @@ export default class Bootstrapper {
         floorCode: room.floorCode,
         description: room.description,
         dimensions: room.dimensions,
-        category: room.category
+        category: room.category,
+        roomDoor: room.roomDoor
       });
 
       if (res.isFailure) throw new Error(res.errorValue());
@@ -563,7 +595,8 @@ export default class Bootstrapper {
         modelCode: device.modelCode,
         description: device.description,
         serialNumber: device.serialNumber,
-        isAvailable: device.isAvailable
+        isAvailable: device.isAvailable,
+        initialCoordinates: device.initialCoordinates
       });
 
       if (res.isFailure) throw new Error(res.errorValue());

@@ -25,6 +25,13 @@ const RoomSchema = new mongoose.Schema(
 
     category: {
       type: String
+    },
+
+    roomDoor: {
+      type: {
+        x: Number,
+        y: Number
+      }
     }
   },
   { timestamps: true }

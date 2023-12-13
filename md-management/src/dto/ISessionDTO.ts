@@ -5,6 +5,7 @@ export interface ISessionDTO {
   firstName: string;
   lastName: string;
   phoneNumber: string;
+  nif?: string;
   exp: number;
   iat: number;
 }

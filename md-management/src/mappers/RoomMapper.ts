@@ -12,6 +12,7 @@ import { TYPES } from '@/loaders/inversify/types';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 import { FloorCode } from '@/domain/floor/floorCode';
+import { RoomDoor } from '@/domain/room/roomDoor';
 
 export class RoomMapper extends Mapper<Room> {
   public static toDTO(room: Room): IRoomDTO {
@@ -23,7 +24,11 @@ export class RoomMapper extends Mapper<Room> {
         width: room.dimensions.width,
         length: room.dimensions.length
       },
-      category: room.category.value
+      category: room.category.value,
+      roomDoor: {
+        x: room.roomDoor.x,
+        y: room.roomDoor.y
+      }
     };
   }
 
@@ -46,13 +51,17 @@ export class RoomMapper extends Mapper<Room> {
 
     const category = RoomCategory.create(room.category).getValue();
 
+    const { x, y } = room.roomDoor;
+    const roomDoor = RoomDoor.create(x, y).getValue();
+
     const roomOrError = Room.create(
       {
         name,
         description,
         dimensions: roomDimensionsOrError.getValue(),
         floorCode,
-        category
+        category,
+        roomDoor
       },
       new UniqueEntityID(room.domainId)
     );
@@ -72,7 +81,11 @@ export class RoomMapper extends Mapper<Room> {
         length: room.dimensions.length
       },
       floorCode: room.floorCode.value,
-      category: room.category.value
+      category: room.category.value,
+      roomDoor: {
+        x: room.roomDoor.x,
+        y: room.roomDoor.y
+      }
     };
   }
 }

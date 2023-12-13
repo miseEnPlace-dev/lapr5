@@ -33,7 +33,13 @@ const Device = new mongoose.Schema(
       unique: true
     },
 
-    isAvailable: Boolean
+    isAvailable: Boolean,
+
+    initialCoordinates: {
+      width: Number,
+      depth: Number,
+      floorCode: String
+    }
   },
   { timestamps: true }
 );

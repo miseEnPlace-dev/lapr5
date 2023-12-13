@@ -5,6 +5,7 @@ import { Result } from '../../core/logic/Result';
 import { Role } from '../role/role';
 import { PhoneNumber } from './phoneNumber';
 import { UserEmail } from './userEmail';
+import { UserNif } from './userNif';
 import { UserPassword } from './userPassword';
 import { UserState } from './userState';
 
@@ -15,6 +16,7 @@ interface UserProps {
   password: UserPassword;
   role: Role;
   phoneNumber: PhoneNumber;
+  nif?: UserNif;
   state: UserState;
 }
 
@@ -77,6 +79,14 @@ export class User extends AggregateRoot<UserProps> {
 
   set state(value: UserState) {
     this.props.state = value;
+  }
+
+  get nif(): UserNif | undefined {
+    return this.props.nif;
+  }
+
+  set nif(value: UserNif | undefined) {
+    this.props.nif = value;
   }
 
   private constructor(props: UserProps, id?: UniqueEntityID) {
