@@ -8,6 +8,7 @@ import Button from "@/components/Button";
 import Dropdown from "@/components/Dropdown/index.tsx";
 import Input from "@/components/Input";
 import Modal from "@/components/Modal";
+import Pagination from "@/components/Pagination/index.tsx";
 import SideBar from "@/components/SideBar";
 
 import { useListUsersModule } from "./module.ts";
@@ -37,9 +38,8 @@ const UsersPage: React.FC = () => {
     firstNameInputRef,
     lastNameInputRef,
     roleInputRef,
-    isAgreed,
     handleCreateUser,
-    setIsAgreed,
+    handlePagination,
   } = useListUsersModule();
 
   const [isUserModalVisible, setIsUserModalVisible] = useState(false);
@@ -79,34 +79,45 @@ const UsersPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.2,
-              delay: users.length || 0 * ANIMATION_DELAY,
+              delay: users?.data.length || 0 * ANIMATION_DELAY,
             }}
             onClick={() => setIsUserModalVisible(true)}
             className="flex w-full items-center justify-center bg-secondary px-12 py-4 text-center text-5xl font-bold"
           >
             +
           </motion.button>
-
-          {users.map((user, i) => (
-            <motion.button
-              initial={{ opacity: 0, x: -100 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
-              key={user.email}
-              onClick={() => navigate(`/users/${user.id}`)}
-              className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
-            >
-              <h2 className="text-5xl font-bold">
-                {user.firstName} {user.lastName}
-              </h2>
-              <div className="flex flex-col">
-                <h3 className="text-left text-2xl font-bold">{user.email}</h3>
-                <div className="text-left text-sm capitalize text-slate-600">
-                  {user.role}
+          {!users ? null : users.data.length == 0 ? ( // TODO: skeleton component
+            <p className="text-slate-600">
+              No results were found for your search...
+            </p>
+          ) : (
+            users.data.map((user, i) => (
+              <motion.button
+                initial={{ opacity: 0, x: -100 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
+                key={user.email}
+                onClick={() => navigate(`/users/${user.id}`)}
+                className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
+              >
+                <h2 className="text-5xl font-bold">
+                  {user.firstName} {user.lastName}
+                </h2>
+                <div className="flex flex-col">
+                  <h3 className="text-left text-2xl font-bold">{user.email}</h3>
+                  <div className="text-left text-sm capitalize text-slate-600">
+                    {user.role}
+                  </div>
                 </div>
-              </div>
-            </motion.button>
-          ))}
+              </motion.button>
+            ))
+          )}
+
+          <Pagination
+            meta={users?.meta}
+            changePage={handlePagination}
+            className="flex items-center justify-center gap-x-4"
+          />
 
           <Modal
             setIsVisible={setIsUserModalVisible}
@@ -173,18 +184,6 @@ const UsersPage: React.FC = () => {
                 value={password}
                 onChange={setPassword}
               />
-              <div className="flex items-center gap-x-2">
-                <input
-                  type="checkbox"
-                  onChange={(e) => setIsAgreed(e.target.checked)}
-                />
-                <label className="text-slate-600">
-                  The user agrees to the{" "}
-                  <Link to="/privacy-policy" className="text-primary underline">
-                    Privacy Policy
-                  </Link>
-                </label>
-              </div>
               <Button
                 type="confirm"
                 onClick={(e) => {
@@ -196,7 +195,6 @@ const UsersPage: React.FC = () => {
                   !isEmailValid ||
                   !password ||
                   !isPhoneNumberValid ||
-                  !isAgreed ||
                   (!isNifValid && role == "user")
                 }
                 className="mt-2 w-full"

@@ -1,5 +1,5 @@
+import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Role } from "@/model/Role";
-import { Session } from "@/model/Session";
 import { User } from "@/model/User";
 
 export interface UserSession {
@@ -12,7 +12,7 @@ export interface IUserService {
   deleteUser(): Promise<void>;
   updateUser(user: Partial<User>): Promise<User>;
   register(user: Omit<User, "id">): Promise<UserSession>;
-  getAllUsers(): Promise<User[]>;
+  getAllUsers(page?: number, limit?: number): Promise<IPaginationDTO<User>>;
   getAllRoles(): Promise<Role[]>;
   getRequests(): Promise<User[]>;
   acceptRequest(id: string): Promise<void>;

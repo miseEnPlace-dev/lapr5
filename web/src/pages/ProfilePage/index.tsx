@@ -184,7 +184,7 @@ const ProfilePage: React.FC = () => {
         >
           Save
         </Button>
-        <div className="mr-12 mt-4 flex flex-row gap-x-4">
+        <div className="mr-12 mt-2 flex flex-row gap-x-4">
           <Button
             type="default"
             name="save"

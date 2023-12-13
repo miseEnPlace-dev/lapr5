@@ -23,6 +23,8 @@ import { TYPES } from '@/loaders/inversify/types';
 import { inject, injectable } from 'inversify';
 import { Result } from '../core/logic/Result';
 import { UserNif } from '@/domain/user/userNif';
+import { IPaginationDTO } from '@/dto/IPaginationDTO';
+import { IDeviceModelDTO } from '@/dto/IDeviceModelDTO';
 
 @injectable()
 export default class UserService implements IUserService {
@@ -31,10 +33,25 @@ export default class UserService implements IUserService {
     @inject(TYPES.roleRepo) private roleRepo: IRoleRepo
   ) {}
 
-  async getAllUsers(): Promise<Result<IUserDTO[]>> {
-    const users = await this.userRepo.findActive();
+  async getAllUsers(
+    page: number = 1,
+    limit: number = 3
+  ): Promise<Result<IPaginationDTO<IUserDTO>>> {
+    const users = await this.userRepo.findActive(page - 1, limit);
     const usersDTO = users.map(user => UserMapper.toDTO(user) as IUserDTO);
-    return Result.ok<IUserDTO[]>(usersDTO);
+    const total = await this.userRepo.countActive();
+
+    const result: IPaginationDTO<IUserDTO> = {
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit)
+      },
+      data: usersDTO
+    };
+
+    return Result.ok<IPaginationDTO<IUserDTO>>(result);
   }
 
   async getPendingUsers(): Promise<Result<IUserDTO[]>> {

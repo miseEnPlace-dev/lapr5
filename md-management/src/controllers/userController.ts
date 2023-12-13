@@ -8,16 +8,29 @@ import IUserService from '@/services/IServices/IUserService';
 import IUserController from './IControllers/IUserController';
 import { Result } from '@/core/logic/Result';
 
+import { z } from 'zod';
+
+const querySchema = z.object({
+  page: z.string().optional(),
+  limit: z.string().optional()
+});
+
 @injectable()
 export default class UserController implements IUserController {
   constructor(@inject(TYPES.userService) private userService: IUserService) {}
 
   async getUsers(req: Request, res: Response, next: NextFunction) {
     try {
+      const query = querySchema.safeParse(req.query);
+      if (!query.success) return res.status(400).json({ message: query.error });
+
+      const page = Number(query.data.page) || undefined;
+      const limit = Number(query.data.limit) || undefined;
+
       const role = req.query.role as string;
       const usersOrError = role
         ? await this.userService.getUsersWithRole(role)
-        : await this.userService.getAllUsers();
+        : await this.userService.getAllUsers(page, limit);
 
       if (usersOrError.isFailure)
         return res.status(400).json({ message: usersOrError.errorValue() });

@@ -1,3 +1,4 @@
+import { IPaginationDTO } from '@/dto/IPaginationDTO';
 import { Result } from '../../core/logic/Result';
 import { IUserDTO } from '../../dto/IUserDTO';
 
@@ -11,6 +12,6 @@ export default interface IUserService {
   activateUser(userId: string): Promise<Result<void>>;
   rejectUser(userId: string): Promise<Result<void>>;
   getUsersWithRole(role: string): Promise<Result<IUserDTO[]>>;
-  getAllUsers(): Promise<Result<IUserDTO[]>>;
+  getAllUsers(page?: number, limit?: number): Promise<Result<IPaginationDTO<IUserDTO>>>;
   getPendingUsers(): Promise<Result<IUserDTO[]>>;
 }

@@ -1,4 +1,3 @@
-import { exit } from "process";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useInjection } from "inversify-react";
 
@@ -6,12 +5,13 @@ import { TYPES } from "@/inversify/types";
 import { useEmail } from "@/hooks/useEmail";
 import { useNif } from "@/hooks/useNif";
 import { usePhoneNumber } from "@/hooks/usePhoneNumber";
+import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Role } from "@/model/Role";
 import { User } from "@/model/User";
 import { IUserService } from "@/service/IService/IUserService";
 
 export const useListUsersModule = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<IPaginationDTO<User> | null>(null);
   const [roles, setRoles] = useState<
     {
       code: string;
@@ -29,19 +29,25 @@ export const useListUsersModule = () => {
   const lastNameInputRef = useRef<HTMLInputElement>(null);
   const roleInputRef = useRef<HTMLSelectElement>(null);
   const [role, setRole] = useState<string | null>(null);
-  const [isAgreed, setIsAgreed] = useState(false);
+  const [page, setPage] = useState<number>(1);
+
+  const itemsPerPage = 4;
 
   const fetchUsers = useCallback(async () => {
     try {
-      const res = await userService.getAllUsers();
+      const res = await userService.getAllUsers(page, itemsPerPage);
 
       setUsers(res);
     } catch (err) {
-      setUsers([]);
+      setUsers(null);
       console.log(err);
       throw err;
     }
-  }, [userService]);
+  }, [userService, page, itemsPerPage]);
+
+  const handlePagination = (page: number) => {
+    setPage(page);
+  };
 
   const fetchRoles = useCallback(async () => {
     try {
@@ -63,8 +69,7 @@ export const useListUsersModule = () => {
       !lastNameInputRef.current ||
       !isPhoneNumberValid ||
       !role ||
-      (role === "user" && !isNifValid) ||
-      !isAgreed
+      (role === "user" && !isNifValid)
     )
       return;
 
@@ -109,8 +114,7 @@ export const useListUsersModule = () => {
     firstNameInputRef,
     lastNameInputRef,
     roleInputRef,
-    isAgreed,
     handleCreateUser,
-    setIsAgreed,
+    handlePagination,
   };
 };

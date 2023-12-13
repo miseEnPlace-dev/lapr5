@@ -36,7 +36,7 @@ export const useListDeviceModelModule = () => {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const brandInputRef = useRef<HTMLInputElement>(null);
 
-  const itemsPerPage = 3;
+  const itemsPerPage = 4;
 
   const fetchDeviceModels = useCallback(async () => {
     const deviceModels = await deviceModelService.getDeviceModels(
