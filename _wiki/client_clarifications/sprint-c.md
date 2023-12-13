@@ -460,6 +460,138 @@ Assim, sugiro que analisem e concebam designs alternativos, e selecionem (justif
 Essa é uma excelente questão.
 Poderão propor uma metodologia para em caso de reposição de um backup validar os pedidos de apagamento que surgiram entretanto."
 
----
+## [Question 31](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26541)
 
-_LAST UPDATE: 08/12/2023 18:50H_
+### US30 Dar o meu consentimento ou não à recolha e tratamento dos meus dados pessoais
+
+> O que sucede caso o utente não consinta com a recolha e tratamento dos seus dados? Ficará impossibilitado de se registar?
+
+### Answer
+
+"se os consentimentos não forem dados, não será posisvel continuar o registo"
+
+## [Question 32](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26576)
+
+### US480
+
+> Neste requisito, o que é considerada uma requisição ainda não aprovada? As requisições recusadas também contam como ainda não aprovadas ou apenas as requisições pendentes de aprovação/recusacão;
+
+### Answer
+
+"esta opção deve mostrar ao utilizador as requisções que ainda não tiveram qualquer tipo de decisão: aprovação/recusa"
+
+## [Question 33](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26552)
+
+### US490
+
+> Neste requisito é suposto o utilizador filtrar uma lista de requisições de tarefas ou apenas escolher o tipo de listagem (estado,tipo de dispositivo ou utente) que quer ver e mostrar lhe apenas isso.
+
+### Answer
+
+"na listagem resultante deve ser possivel filtrar os dados pelos atributos indicados. Esta opção mostra todas as requisições do sistema, incluindo de datas passadas pelo que deverá também ser possivel filtrar por data de requisição.
+
+notem que o volume de dados pode ser muito grande pelo que devem avaliar tecnicamente como equilibrar este requisito funcional com a sua implementação tecnica. Por exemplo, ao fim de algum tempo o sistema poderá ter milhares (ou dezenas de milhares) de requisições. Embora seja aceitavel para efeitos de prototipo que existam limitações na vossa implementação, tais limitações devem ser devidamente e explicitamente documentadas bem como propostas de alternativas para contornar essas limitações."
+
+## [Question 34](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26547)
+
+### [US110] Cópia de segurança dos dados pessoais
+
+> Em que formato deve ser adquirida a cópia de segurança dos dados pessoais?
+
+### Answer
+
+"
+ver https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26357#p33451
+"
+
+## [Question 35](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26511)
+
+### US1320 - Validações de permissões pelos serviços do backend
+
+> Na US1320 é pedido para que todos os serviços do backend validem as permissões do utilizador para determinada operação.
+>
+> Gostaria de saber se o cliente já tem uma lista de permissões/cargos definidos (ex.: gestor de campus; gestor de frota; etc...) e quais as ações que são permitidas por cada permissão/cargo.
+> Gostaria também de saber quais as ações que são permitidas a todos os utilizadores, independentemente do cargo.
+
+### Answer
+
+"os requisitos indicam qual o tipo de utilizador que tem acesso a essa funcionalidade, ex., "como gestor de tarefas pretendo ..."
+se existirem situações em que tal informação não é indicada, coloquem aqui explicitamente qual o requisito em causa"
+
+> O módulo de visualização 3D é para todos os utilizadores ou para algum em específico?
+
+### Answer
+
+"para os utilizadores do tipo gestor de campus, gestor de frota e gestor de tarefas"
+
+## [Question 36](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26583)
+
+### ID490
+
+> To search for task requests by 'type of robot', at which point we should assign the robot type (or perhaps a robot?) to the task?
+
+### Answer
+
+"tasks are requested by users and approved by the task manager. the task manager will also trigger the planning module which will take the list of approved requests and generate the execution plan. The execution plan takes into account the robot fleet and as such the output of the planning module will be result in the assignment of task(s) to robot(s) in a sequence that minimizes the overall execution time"
+
+## [Question 37](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26588)
+
+### Autorização Utilizadores
+
+> Existe uma questão referente ao acesso ao módulo de visualização 3D, que utilizadores têm permissão para aceder a este módulo? Por outro lado gostávamos de saber se um utilizador pode ter múltiplas roles.
+
+### Answer
+
+"https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26511#p33780
+
+em relação a multiplos roles, nesta fase do projeto não é necessário suportar (será uma adição interessante para futuros sprints)"
+
+## [Question 38](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26611)
+
+### US110
+
+> Relativamente à US110 - como utente do sistema pretendo uma cópia dos meus dos meus dados pessoais - devemos considerar o utente como qualquer utilizador do sistema ou só mesmo os utentes (aluno, docente, funcionario)?
+
+### Answer
+
+"apenas os utentes"
+
+## [Question 39](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26653)
+
+### US100 - Como utente do sistema pretendo retificar/alterar os meus dados
+
+> Que dados pessoais é que o utente pode alterar?
+
+### Answer
+
+"todos à exceção do email que serve para identificar o cliente."
+
+## [Question 40](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26639)
+
+### US500
+
+> Nesta US é pretendido que um Gestor de Tarefas consiga obter a sequência de execução das tarefas aprovadas. Em que é que consiste essa sequência de execução? É suposto mostrar uma lista com todas as tarefas aprovadas com alguma ordem específica?
+
+### Answer
+
+"esse requisito corresponde a obter o resultado do módulo de planeamento."
+
+> Pode explicar de forma mais sucinta em que consiste a 𝘀𝗲𝗾𝘂𝗲̂𝗻𝗰𝗶𝗮 𝗱𝗲 𝗲𝘅𝗲𝗰𝘂𝗰̧𝗮̃𝗼 das tarefas aprovadas/𝗺𝗼́𝗱𝘂𝗹𝗼 𝗱𝗲 𝗽𝗹𝗮𝗻𝗲𝗮𝗺𝗲𝗻𝘁𝗼?
+
+### Answer
+
+_Ainda sem resposta_
+
+## [Question 41](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26663)
+
+### [20] - Como potencial utilizador do sistema pretendo registar-me no sistema.
+
+> No âmbito desta US o objetivo é realizar o registo de um utente no sistema. Este registo irá criar um pedido de registo que, mais tarde será, ou não, aceite por um administrador de sistema.
+>
+> Em relação a este pedido de registo, para além da informação do utilizador em questão, que outra informação será relevante guardar? (ex: timestamp)
+
+### Answer
+
+_Ainda sem resposta_
+
+_LAST UPDATE: 13/12/2023 12:30H_

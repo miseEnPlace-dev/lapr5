@@ -2,34 +2,37 @@ using System;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Tasks;
 
-public class SurveillanceTask
+namespace DDDSample1.Domain.Tasks.SurveillanceTask
 {
-  public string Description { get; private set; }
-
-  public bool Active { get; private set; }
-
-  public SurveillanceTask()
+  public class SurveillanceTask
   {
-    this.Active = true;
-  }
+    public string Description { get; private set; }
 
-  public SurveillanceTask(string description)
-  {
-    this.Description = description;
-    this.Active = true;
-  }
+    public bool Active { get; private set; }
 
-  public void ChangeDescription(string description)
-  {
-    if (!this.Active)
+    public SurveillanceTask()
     {
-      throw new BusinessRuleValidationException("Task is not active.");
+      this.Active = true;
     }
-    this.Description = description;
-  }
 
-  public void Deactivate()
-  {
-    this.Active = false;
+    public SurveillanceTask(string description)
+    {
+      this.Description = description;
+      this.Active = true;
+    }
+
+    public void ChangeDescription(string description)
+    {
+      if (!this.Active)
+      {
+        throw new BusinessRuleValidationException("Task is not active.");
+      }
+      this.Description = description;
+    }
+
+    public void Deactivate()
+    {
+      this.Active = false;
+    }
   }
 }
