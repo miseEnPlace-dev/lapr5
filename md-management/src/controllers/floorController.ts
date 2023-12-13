@@ -12,7 +12,7 @@ import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
 
 @injectable()
 export default class FloorController implements IFloorController {
-  constructor(@inject(TYPES.floorService) private floorServiceInstance: IFloorService) { }
+  constructor(@inject(TYPES.floorService) private floorServiceInstance: IFloorService) {}
 
   public async createFloor(req: Request, res: Response, next: NextFunction) {
     try {

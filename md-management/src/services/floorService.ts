@@ -38,7 +38,27 @@ export default class FloorService implements IFloorService {
   public async getAllFloors(): Promise<Result<IFloorDTO[]>> {
     try {
       const floors = await this.floorRepo.findAll();
-      const floorsDTO = floors.map(floor => FloorMapper.toDTO(floor) as IFloorDTO);
+
+      const floorsDTO = await Promise.all(
+        floors.map(async floor => {
+          const floorDTO = FloorMapper.toDTO(floor) as IFloorDTO;
+
+          const building = await this.buildingRepo.findByCode(floor.buildingCode);
+          if (!building) return floorDTO;
+          const elevator = building.elevator;
+          if (!elevator) return floorDTO;
+
+          if (elevator.floors.map(f => f.code.value).includes(floor.code.value) && floorDTO.map)
+            floorDTO.map.maze.elevator.floors = elevator.floors
+              .map(f => f.code.value)
+              .filter(f => f !== floor.code.value);
+
+          return floorDTO;
+        })
+      );
+
+      console.log(floorsDTO);
+
       return Result.ok<IFloorDTO[]>(floorsDTO);
     } catch (e) {
       throw e;

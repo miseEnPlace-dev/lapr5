@@ -6,7 +6,7 @@ export interface IFloorMapDTO {
     };
     map: number[][];
     exits: { x: number; y: number; floorCode: string }[];
-    elevator: { x: number; y: number };
+    elevator: { x: number; y: number; floors?: string[] };
     exitLocation: { x: number; y: number };
   };
   player: {
