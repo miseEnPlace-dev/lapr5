@@ -1,3 +1,5 @@
+:- use_module(planning).
+
 % geracoes(NGeracoes).
 geracoes(2).
 
@@ -10,18 +12,46 @@ prob_cruzamento(0.7).
 % prob_mutacao(ProbabilidadeMutacao).
 prob_mutacao(0.2).
 
-%lim_time(Tempo_segundos).
+%lim_time(Tempo_segundos). 
 lim_time(5).
 
 % tarefas(NTarefas).
 tarefas(5).
 
-% tarefa(Id,TempoProcessamento,TempConc).
-tarefa(t1,2,5).
-tarefa(t2,4,7).
-tarefa(t3,1,11).
-tarefa(t4,3,9).
-tarefa(t5,3,8).
+:- dynamic tarefas/3.
+
+% t(id_tarefa, inicio, fim).
+t(t1, cel("b1",7,20),cel("b2",6,21)).
+t(t2, cel("b1",7,20),cel("b2",6,20)).
+t(t3, cel("b3",6,18),cel("b3",7,21)).
+t(t4, cel("b2",6,19),cel("b2",9,18)).
+t(t5, cel("b3",9,18),cel("b3",8,17)).
+
+load_tarefas:-
+	findall(T,t(T,_,_),L),
+	load_tarefas(L).
+
+load_tarefas([]).
+
+load_tarefas([T|Resto]):-
+	load_tarefa(T,Resto),
+	load_tarefas(Resto).
+
+
+load_tarefa(_,[]).
+load_tarefa(Tarefa,[H|T]):-
+	load_tarefa2(Tarefa,H),
+	load_tarefa(Tarefa,T).
+
+load_tarefa2(T1,T2):-
+	t(T1,S1,F1), t(T2,S2,F2),
+	write('Tarefa '), write(T1), write(' e '), write(T2), write(': '), nl,
+	write('S1: '), write(S1), write(' F1: '), write(F1), write(' S2: '), write(S2), write(' F2: '), write(F2), nl,
+	planning:caminho_celulas_edificios(F1,S2,_,W1),
+	planning:caminho_celulas_edificios(F2,S1,_,W2),
+	asserta(tarefas(T1,T2,W1)),
+	asserta(tarefas(T2,T1,W2)).
+
 
 factorial(0, 1).
 factorial(N, F) :-
@@ -34,7 +64,7 @@ is_empty([]).
 
 gera_best_bruteforce:-
 	tarefas(NTarefas),
-	findall(Tarefa,tarefa(Tarefa,_,_),Tarefas),
+	findall(Tarefa,t(Tarefa,_,_),Tarefas),
 	factorial(NTarefas,NTotal),
 	gera_best_bruteforce(NTotal,NTarefas,Tarefas,Pop),
 	avalia_populacao(Pop,PopAv),
@@ -154,13 +184,14 @@ avalia_populacao([Ind|Resto],[Ind*V|Resto1]):-
 avalia(Seq,V):-
 	avalia(Seq,0,V).
 
-avalia([],_,0).
-avalia([T|Resto],Inst,V):-
-	tarefa(T,Dur,Prazo),
-	InstFim is Inst+Dur,
-	avalia(Resto,InstFim,VResto),
-	((InstFim =< Prazo,!, VT is 0);(VT is (InstFim-Prazo))),
-	V is VT+VResto.
+avalia(_,_,0).
+%avalia([],_,0).
+%avalia([T|Resto],Inst,V):-
+%	tarefa(T,Dur,Prazo),
+%	InstFim is Inst+Dur,
+%	avalia(Resto,InstFim,VResto),
+%	((InstFim =< Prazo,!, VT is 0);(VT is (InstFim-Prazo))),
+%	V is VT+VResto.
 
 
 ordena_populacao(PopAv,PopAvOrd):-
