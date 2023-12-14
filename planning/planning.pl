@@ -24,7 +24,9 @@
 
 peso_hv(1).
 peso_diagonal(W):- W is sqrt(2).
+
 debug_mode(0).
+
 peso_corr(5).
 peso_elev(30).
 
@@ -97,10 +99,10 @@ cria_grafo_lin(F,Col,Lin):-(m(F,Col,Lin,0);m(F,Col,Lin,11);m(F,Col,Lin,12);m(F,C
 			ColS is Col+1, ColA is Col-1, LinS is Lin+1,LinA is Lin-1,
 			peso_diagonal(D),
 			peso_hv(P),
-    ((m(F,ColS,Lin,0),m(F,Col,LinS,0),m(F,ColS,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinS),D));true)),
-    ((m(F,ColS,Lin,0),m(F,Col,LinA,0),m(F,ColS,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,LinA),D));true)),
-    ((m(F,ColA,Lin,0),m(F,Col,LinA,0),m(F,ColA,LinA,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinA),D));true)),
-    ((m(F,ColA,Lin,0),m(F,Col,LinS,0),m(F,ColA,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,LinS),D));true)),
+    ((m(F,ColS,Lin,0),m(F,Col,LinS,0),m(F,ColS,LinS,0),asserta(ligacel(cel(F,Col,Lin),cel(F,ColS,LinS),D));true)),
+    ((m(F,ColS,Lin,0),m(F,Col,LinA,0),m(F,ColS,LinA,0),asserta(ligacel(cel(F,Col,Lin),cel(F,ColS,LinA),D));true)),
+    ((m(F,ColA,Lin,0),m(F,Col,LinA,0),m(F,ColA,LinA,0),asserta(ligacel(cel(F,Col,Lin),cel(F,ColA,LinA),D));true)),
+    ((m(F,ColA,Lin,0),m(F,Col,LinS,0),m(F,ColA,LinS,0),asserta(ligacel(cel(F,Col,Lin),cel(F,ColA,LinS),D));true)),
     ((m(F,ColS,Lin,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColS,Lin),P));true)),
     ((m(F,ColA,Lin,0),assertz(ligacel(cel(F,Col,Lin),cel(F,ColA,Lin),P));true)),
     ((m(F,Col,LinS,0),assertz(ligacel(cel(F,Col,Lin),cel(F,Col,LinS),P));true)),
@@ -304,11 +306,14 @@ caminho_celulas_elevador(cel(F1,X1,Y1),cel(F2,X2,Y2),C,W) :-
 
 caminho_celulas_edificios(cel(F1,X1,Y1),cel(F2,X2,Y2),C,W) :-
 	melhor_caminho_pisos_edificios(F1,F2,L),
-	caminho_celulas(L,cel(F1,X1,Y1),cel(F2,X2,Y2),C,W).
+	caminho_celulas(L,cel(F1,X1,Y1),cel(F2,X2,Y2),C,W), !.
 
 caminho_celulas([H|T],C1,C2,L,W) :-
+	debug_mode(D),
 	H=..[cor,F1,F2],
+	((D==0,write("  Corredor -> "), write(F1), write(" - "), write(F2), nl);true),
 	exit(F1,F2,Ex,Ey),
+	((D==0,write("  aStar("), write("cel("), write(F1), write(","), write(Ex), write(","), write(Ey), write(")"), write(","), write(C1), write(")"), nl);true),
 	aStar(C1,cel(F1,Ex,Ey),L1,W1),
 	exit(F2,F1,E1x,E1y),
 	caminho_celulas(T,cel(F2,E1x,E1y),C2,L2, W2),
@@ -318,9 +323,13 @@ caminho_celulas([H|T],C1,C2,L,W) :-
 	append(L1,L3,L).
 
 caminho_celulas([H|T],C1,C2,L,W) :-
+	debug_mode(D),
 	H=..[_,F1,F2],
+	((D==0,write("  Elevador -> "), write(F1), write(" - "), write(F2), nl);true),
 	(m(F1,Ex,Ey,4);m(F1,Ex,Ey,5)),
+	((D==0,write("  aStar("), write("cel("), write(F1), write(","), write(Ex), write(","), write(Ey), write(")"), write(","), write(C1), write(")"), nl);true),
 	aStar(C1,cel(F1,Ex,Ey),L1,W1),
+	((D==0,write("  L -> "), write(L1), nl);true),
 	(m(F2,E1x,E1y,4);m(F2,E1x,E1y,5)),
 	caminho_celulas(T,cel(F2,E1x,E1y),C2,L2, W2),
 	peso_elev(We),

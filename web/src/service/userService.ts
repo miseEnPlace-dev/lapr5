@@ -2,6 +2,7 @@ import { inject, injectable } from "inversify";
 
 import { TYPES } from "@/inversify/types";
 import { localStorageConfig } from "@/config/localStorageConfig";
+import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Role } from "@/model/Role";
 import { User } from "@/model/User";
 
@@ -64,15 +65,25 @@ export class UserService implements IUserService {
     return res.data;
   }
 
-  async getAllUsers(): Promise<User[]> {
+  async getAllUsers(
+    page: number = 0,
+    limit: number = 2
+  ): Promise<IPaginationDTO<User>> {
     const token = this.localStorage.getItem(localStorageConfig.token);
-    const res = await this.http.get("/users", {
+
+    const params = {} as { [key: string]: string };
+
+    params["limit"] = limit.toString();
+    params["page"] = page.toString();
+
+    const res = await this.http.get<IPaginationDTO<User>>("/users", {
+      params,
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
-    return res.data as User[];
+    return res.data;
   }
 
   async getAllRoles(): Promise<Role[]> {

@@ -86,10 +86,12 @@ export default (app: Router) => {
       ctrl.updateFloor(req, res, next)
   );
 
+  const allowedRoles = [defaultRoles.campus.name, defaultRoles.task.name, defaultRoles.fleet.name];
+
   route.get(
     '/floors',
     isAuthenticated,
-    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.campus.name),
+    (req, res, next) => isAuthorizedAs(req, res, next, allowedRoles),
     (req, res, next) =>
       // #swagger.tags = ['Floors']
       ctrl.getAllFloors(req, res, next)
