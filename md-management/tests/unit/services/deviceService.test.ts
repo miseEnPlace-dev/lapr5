@@ -14,10 +14,15 @@ import { DeviceModelName } from '../../../src/domain/deviceModel/deviceModelName
 import { DeviceModelBrand } from '../../../src/domain/deviceModel/deviceModelBrand';
 import { DeviceModel } from '../../../src/domain/deviceModel/deviceModel';
 import { DeviceMapper } from '../../../src/mappers/DeviceMapper';
+import { Floor } from '../../../src/domain/floor/floor';
+import { FloorCode } from '../../../src/domain/floor/floorCode';
+import { BuildingCode } from '../../../src/domain/building/buildingCode';
+import { FloorDimensions } from '../../../src/domain/floor/floorDimensions';
 
 import { Task } from '../../../src/domain/shared/task';
 
 import { stub } from 'sinon';
+import IFloorRepo from '../../../src/services/IRepos/IFloorRepo';
 
 describe('Device  Service', () => {
   it('createDevice: should return error when code is invalid', async () => {
@@ -112,9 +117,10 @@ describe('Device  Service', () => {
 
     const deviceRepo = container.get<IDeviceRepo>(TYPES.deviceRepo);
     const deviceModelRepo = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
     stub(deviceModelRepo, 'findByCode').resolves(null);
 
-    const deviceService = new DeviceService(deviceRepo, deviceModelRepo);
+    const deviceService = new DeviceService(deviceRepo, deviceModelRepo, floorRepo);
     const result = await deviceService.createDevice(deviceDTO);
 
     expect(result.isFailure).toBe(true);
@@ -126,7 +132,12 @@ describe('Device  Service', () => {
       code: '12345',
       nickname: 'name',
       serialNumber: 'DeviceSerialNumber',
-      modelCode: 'DeviceModel'
+      modelCode: 'DeviceModel',
+      initialCoordinates: {
+        width: 1,
+        depth: 1,
+        floorCode: 'b1'
+      }
     };
 
     const deviceModel = DeviceModel.create({
@@ -143,16 +154,29 @@ describe('Device  Service', () => {
       description: undefined,
       serialNumber: 'DeviceSerialNumber',
       modelCode: 'DeviceModel',
-      isAvailable: true
+      isAvailable: true,
+      initialCoordinates: {
+        width: 1,
+        depth: 1,
+        floorCode: 'b1'
+      }
     };
+
+    const floor = Floor.create({
+      code: FloorCode.create('b1').getValue(),
+      buildingCode: BuildingCode.create('1').getValue(),
+      dimensions: FloorDimensions.create(1, 1).getValue()
+    }).getValue();
 
     const deviceRepo = container.get<IDeviceRepo>(TYPES.deviceRepo);
     const deviceModelRepo = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    stub(floorRepo, 'findByCode').resolves(floor);
     stub(deviceRepo, 'findByCode').resolves(null);
     stub(deviceModelRepo, 'findByCode').resolves(deviceModel);
     stub(deviceRepo, 'save').resolves(deviceDTO);
 
-    const deviceService = new DeviceService(deviceRepo, deviceModelRepo);
+    const deviceService = new DeviceService(deviceRepo, deviceModelRepo, floorRepo);
     const result = await deviceService.createDevice(deviceDTO);
 
     expect(result.isSuccess).toBe(true);
@@ -164,7 +188,12 @@ describe('Device  Service', () => {
       code: '12345',
       nickname: 'name',
       serialNumber: 'DeviceSerialNumber',
-      modelCode: 'DeviceModel'
+      modelCode: 'DeviceModel',
+      initialCoordinates: {
+        width: 1,
+        depth: 1,
+        floorCode: 'b1'
+      }
     };
 
     const deviceModel = DeviceModel.create({
@@ -175,13 +204,21 @@ describe('Device  Service', () => {
       type: 'drone'
     }).getValue();
 
+    const floor = Floor.create({
+      code: FloorCode.create('b1').getValue(),
+      buildingCode: BuildingCode.create('1').getValue(),
+      dimensions: FloorDimensions.create(1, 1).getValue()
+    }).getValue();
+
     const deviceRepo = container.get<IDeviceRepo>(TYPES.deviceRepo);
     const deviceModelRepo = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    stub(floorRepo, 'findByCode').resolves(floor);
     stub(deviceRepo, 'findByCode').resolves(null);
     stub(deviceModelRepo, 'findByCode').resolves(deviceModel);
     stub(deviceRepo, 'save').throws(new Error('Error'));
 
-    const deviceService = new DeviceService(deviceRepo, deviceModelRepo);
+    const deviceService = new DeviceService(deviceRepo, deviceModelRepo, floorRepo);
     expect(deviceService.createDevice(deviceDTO)).rejects.toThrow('Error');
   });
 
@@ -201,7 +238,12 @@ describe('Device  Service', () => {
       nickname: 'name',
       serialNumber: 'DeviceSerialNumber',
       model: deviceModel,
-      isAvailable: true
+      isAvailable: true,
+      initialCoordinates: {
+        width: 1,
+        depth: 1,
+        floorCode: 'b1'
+      }
     };
 
     const expected = {
@@ -209,17 +251,23 @@ describe('Device  Service', () => {
       nickname: 'name',
       serialNumber: 'DeviceSerialNumber',
       modelCode: 'DeviceModel',
-      isAvailable: false
+      isAvailable: false,
+      initialCoordinates: {
+        width: 1,
+        depth: 1,
+        floorCode: 'b1'
+      }
     };
+
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
+    const deviceModelRepo = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
+    const deviceService = new DeviceService(deviceRepo, deviceModelRepo, floorRepo);
 
     stub(deviceRepo, 'findByCode').resolves(device);
     stub(deviceRepo, 'save').resolves(device);
     stub(DeviceMapper, 'toDTO').returns(expected);
 
-    const deviceModelRepo = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
-    const deviceService = new DeviceService(deviceRepo, deviceModelRepo);
     const result = await deviceService.inhibitDevice(device.code);
-
     expect(result.isSuccess).toBe(true);
     expect(result.getValue()).toStrictEqual(expected);
   });
@@ -230,8 +278,9 @@ describe('Device  Service', () => {
     const deviceRepo = container.get<IDeviceRepo>(TYPES.deviceRepo);
     stub(deviceRepo, 'findByCode').throws(new Error('Error'));
 
+    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
     const deviceModelRepo = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
-    const deviceService = new DeviceService(deviceRepo, deviceModelRepo);
+    const deviceService = new DeviceService(deviceRepo, deviceModelRepo, floorRepo);
     expect(deviceService.inhibitDevice(deviceCode)).rejects.toThrow('Error');
   });
 

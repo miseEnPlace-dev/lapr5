@@ -16,14 +16,14 @@ import IDeviceService from './IServices/IDeviceService';
 import { IPaginationDTO } from '@/dto/IPaginationDTO';
 import { DeviceCoordinates } from '@/domain/device/deviceCoordinates';
 import { FloorCode } from '@/domain/floor/floorCode';
-import { container } from '@/loaders/inversify';
 import IFloorRepo from './IRepos/IFloorRepo';
 
 @injectable()
 export default class DeviceService implements IDeviceService {
   constructor(
     @inject(TYPES.deviceRepo) private deviceRepo: IDeviceRepo,
-    @inject(TYPES.deviceModelRepo) private deviceModelRepo: IDeviceModelRepo
+    @inject(TYPES.deviceModelRepo) private deviceModelRepo: IDeviceModelRepo,
+    @inject(TYPES.floorRepo) private floorRepo: IFloorRepo
   ) {}
 
   public async createDevice(deviceDTO: IDeviceDTO): Promise<Result<IDeviceDTO>> {
@@ -50,9 +50,8 @@ export default class DeviceService implements IDeviceService {
 
       if (!model) return Result.fail<IDeviceDTO>('Model not found');
 
-      const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
       const floorCode = FloorCode.create(deviceDTO.initialCoordinates.floorCode).getValue();
-      const floor = await floorRepo.findByCode(floorCode);
+      const floor = await this.floorRepo.findByCode(floorCode);
 
       if (!floor) return Result.fail<IDeviceDTO>('Floor not found');
 
