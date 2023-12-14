@@ -17,6 +17,12 @@ import { TYPES } from '../../../src/loaders/inversify/types';
 import IDeviceModelRepo from '../../../src/services/IRepos/IDeviceModelRepo';
 
 import { stub } from 'sinon';
+import { DeviceCoordinates } from '../../../src/domain/device/deviceCoordinates';
+import { FloorCode } from '../../../src/domain/floor/floorCode';
+import { Floor } from '../../../src/domain/floor/floor';
+import { BuildingCode } from '../../../src/domain/building/buildingCode';
+import { FloorDimensions } from '../../../src/domain/floor/floorDimensions';
+import IFloorRepo from '../../../src/services/IRepos/IFloorRepo';
 
 describe('Device Mapper', () => {
   beforeEach(() => {
@@ -33,7 +39,12 @@ describe('Device Mapper', () => {
       nickname: 'name',
       modelCode: '1',
       serialNumber: '1',
-      isAvailable: true
+      isAvailable: true,
+      initialCoordinates: {
+        width: 1,
+        depth: 1,
+        floorCode: 'b1'
+      }
     };
 
     const device = Device.create({
@@ -47,7 +58,12 @@ describe('Device Mapper', () => {
         capabilities: [Task.create('pick_delivery').getValue()]
       }).getValue(),
       serialNumber: DeviceCode.create('1').getValue(),
-      isAvailable: true
+      isAvailable: true,
+      initialCoordinates: DeviceCoordinates.create(
+        1,
+        1,
+        FloorCode.create('b1').getValue()
+      ).getValue()
     });
 
     const result = DeviceMapper.toDTO(device.getValue());
@@ -68,7 +84,12 @@ describe('Device Mapper', () => {
           capabilities: [Task.create('pick_delivery').getValue()]
         }).getValue(),
         serialNumber: DeviceCode.create('1').getValue(),
-        isAvailable: true
+        isAvailable: true,
+        initialCoordinates: DeviceCoordinates.create(
+          1,
+          1,
+          FloorCode.create('b1').getValue()
+        ).getValue()
       },
       UniqueEntityID.create('1')
     );
@@ -81,7 +102,12 @@ describe('Device Mapper', () => {
       nickname: 'name',
       modelCode: '1',
       serialNumber: '1',
-      isAvailable: true
+      isAvailable: true,
+      initialCoordinates: {
+        width: 1,
+        depth: 1,
+        floorCode: 'b1'
+      }
     });
   });
 
@@ -100,15 +126,30 @@ describe('Device Mapper', () => {
         nickname: DeviceNickname.create('name').getValue(),
         model: deviceModel,
         serialNumber: DeviceCode.create('1').getValue(),
-        isAvailable: true
+        isAvailable: true,
+        initialCoordinates: DeviceCoordinates.create(
+          1,
+          1,
+          FloorCode.create('b1').getValue()
+        ).getValue()
       },
       UniqueEntityID.create('1')
     );
 
+    const floor = Floor.create({
+      code: FloorCode.create('b1').getValue(),
+      buildingCode: BuildingCode.create('1').getValue(),
+      dimensions: FloorDimensions.create(1, 1).getValue()
+    }).getValue();
+
     const deviceModelStub = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
+    const floorStub = container.get<IFloorRepo>(TYPES.floorRepo);
     stub(deviceModelStub, 'findByCode').resolves(deviceModel);
+    stub(floorStub, 'findByCode').resolves(floor);
     container.unbind(TYPES.deviceModelRepo);
+    container.unbind(TYPES.floorRepo);
     container.bind<IDeviceModelRepo>(TYPES.deviceModelRepo).toConstantValue(deviceModelStub);
+    container.bind<IFloorRepo>(TYPES.floorRepo).toConstantValue(floorStub);
 
     const result = await DeviceMapper.toDomain({
       domainId: '1',
@@ -116,7 +157,12 @@ describe('Device Mapper', () => {
       nickname: 'name',
       modelCode: '1',
       serialNumber: '1',
-      isAvailable: true
+      isAvailable: true,
+      initialCoordinates: {
+        width: 1,
+        depth: 1,
+        floorCode: 'b1'
+      }
     });
 
     expect(result).toEqual(device.getValue());
