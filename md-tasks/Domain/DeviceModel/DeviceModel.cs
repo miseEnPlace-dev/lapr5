@@ -12,12 +12,20 @@ namespace DDDSample1.Domain.DeviceModel
 
     private DeviceModel()
     {
-      this.Active = true;
+      Active = true;
+    }
+
+    public DeviceModel(string id, DeviceModelCode code, DeviceModelName name)
+    {
+      Id = new DeviceModelId(id);
+      DeviceModelCode = new DeviceModelCode(code.AsString());
+      DeviceModelName = new DeviceModelName(name.AsString());
+      Active = true;
     }
 
     public void ChangeState()
     {
-      if (!this.Active)
+      if (!Active)
       {
         throw new BusinessRuleValidationException("Request is not active.");
       }
