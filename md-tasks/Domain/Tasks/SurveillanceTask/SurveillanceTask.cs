@@ -1,6 +1,7 @@
 using System;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Tasks;
+using DDDSample1.Domain.User;
 
 namespace DDDSample1.Domain.Tasks.SurveillanceTask
 {
@@ -10,29 +11,42 @@ namespace DDDSample1.Domain.Tasks.SurveillanceTask
 
     public bool Active { get; private set; }
 
+    public UserId UserContact { get; private set; }
+
     public SurveillanceTask()
     {
-      this.Active = true;
+      Active = true;
     }
 
-    public SurveillanceTask(string description)
+    public SurveillanceTask(string description, UserId userContact)
     {
-      this.Description = description;
-      this.Active = true;
+      Description = description;
+      UserContact = userContact;
+      Active = true;
     }
+
 
     public void ChangeDescription(string description)
     {
-      if (!this.Active)
+      if (!Active)
       {
         throw new BusinessRuleValidationException("Task is not active.");
       }
-      this.Description = description;
+      Description = description;
+    }
+
+    public void ChangeUserContact(UserId userContact)
+    {
+      if (!Active)
+      {
+        throw new BusinessRuleValidationException("Task is not active.");
+      }
+      UserContact = userContact;
     }
 
     public void Deactivate()
     {
-      this.Active = false;
+      Active = false;
     }
   }
 }
