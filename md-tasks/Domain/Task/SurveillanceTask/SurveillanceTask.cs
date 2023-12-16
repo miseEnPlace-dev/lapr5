@@ -1,4 +1,5 @@
 using System;
+using DDDSample1.Domain.Floor;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.Tasks;
 using DDDSample1.Domain.User;
@@ -12,6 +13,8 @@ namespace DDDSample1.Domain.Tasks.SurveillanceTask
     public bool Active { get; private set; }
 
     public UserId UserContact { get; private set; }
+
+    public FloorId TargetFloor { get; private set; }
 
     public SurveillanceTask()
     {
@@ -42,6 +45,15 @@ namespace DDDSample1.Domain.Tasks.SurveillanceTask
         throw new BusinessRuleValidationException("Task is not active.");
       }
       UserContact = userContact;
+    }
+
+    public void ChangeTargetFloor(FloorId targetFloor)
+    {
+      if (!Active)
+      {
+        throw new BusinessRuleValidationException("Task is not active.");
+      }
+      TargetFloor = targetFloor;
     }
 
     public void Deactivate()
