@@ -5,7 +5,9 @@ import swal from "sweetalert";
 
 import Button from "@/components/Button";
 import Dropdown from "@/components/Dropdown";
+import FloorMapVisualizer from "@/components/FloorMapVisualizer";
 import Input from "@/components/Input";
+import Modal from "@/components/Modal";
 import { ArrowLeftIcon } from "@/styles/Icons";
 
 import { usePathsPageModule } from "./module";
@@ -21,6 +23,7 @@ const PathsPage: React.FC = () => {
     building2Code,
     setBuilding1Code,
     setBuilding2Code,
+    setMapModelOpen,
     floor1Code,
     floor2Code,
     setFloor1Code,
@@ -35,6 +38,9 @@ const PathsPage: React.FC = () => {
     setFromCoords,
     setToCoords,
     toCoords,
+    activeMap,
+    mapModelOpen,
+    handleMapShow,
   } = usePathsPageModule();
 
   async function handleFindClick() {
@@ -76,26 +82,54 @@ const PathsPage: React.FC = () => {
               />
             </div>
             <div className="flex items-center justify-between gap-x-8">
-              <Dropdown
-                name="Floor 1"
-                disabled={building1Code === ""}
-                options={building1Floors.map((floor) => ({
-                  code: floor.code,
-                  name: floor.code,
-                }))}
-                className="w-full"
-                onChange={(e) => setFloor1Code(e.target?.value)}
-              />
-              <Dropdown
-                className="w-full"
-                name="Floor 2"
-                disabled={building2Code === ""}
-                options={building2Floors.map((floor) => ({
-                  code: floor.code,
-                  name: floor.code,
-                }))}
-                onChange={(e) => setFloor2Code(e.target?.value)}
-              />
+              <div className="flex w-full flex-col">
+                <Dropdown
+                  name="Floor 1"
+                  disabled={building1Code === ""}
+                  options={building1Floors.map((floor) => ({
+                    code: floor.code,
+                    name: floor.code,
+                  }))}
+                  className="w-full"
+                  onChange={(e) => setFloor1Code(e.target?.value)}
+                />
+                <span
+                  className={`-mb-4 ml-2 mt-1 w-max text-slate-600 underline hover:cursor-pointer hover:brightness-50 ${
+                    floor1Code ? "visible" : "invisible"
+                  }`}
+                  onClick={() => handleMapShow(building1Code, floor1Code)}
+                >
+                  Check floor map
+                </span>
+              </div>
+              <div className="flex w-full flex-col">
+                <Dropdown
+                  className="w-full"
+                  name="Floor 2"
+                  disabled={building2Code === ""}
+                  options={building2Floors.map((floor) => ({
+                    code: floor.code,
+                    name: floor.code,
+                  }))}
+                  onChange={(e) => setFloor2Code(e.target?.value)}
+                />
+                <span
+                  className={`-mb-4 ml-2 mt-1 w-max text-slate-600 underline hover:cursor-pointer hover:brightness-50 ${
+                    floor2Code ? "visible" : "invisible"
+                  }`}
+                  onClick={() => handleMapShow(building2Code, floor2Code)}
+                >
+                  Check floor map
+                </span>
+              </div>
+              <Modal
+                setIsVisible={setMapModelOpen}
+                title="Floor Map"
+                isVisible={mapModelOpen}
+                className="w-11/12"
+              >
+                <FloorMapVisualizer map={activeMap} />
+              </Modal>
             </div>
             <div className="flex items-center justify-between gap-x-8">
               <div className="flex w-full items-center justify-between gap-x-8">

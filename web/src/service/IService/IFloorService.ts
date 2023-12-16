@@ -1,5 +1,5 @@
+import { FloorMap } from "@/model/FloorMap";
 
-import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Floor } from "../../model/Floor";
 
 export interface IFloorService {
@@ -7,6 +7,10 @@ export interface IFloorService {
   createFloor(buildingId: string, floor: Floor): Promise<Floor>;
   updateFloor(buildingId: string, floor: Floor): Promise<Floor>;
   getFloor(buildingId: string, floorId: string): Promise<Floor>;
-  uploadFloor(buildingId: string, floorCode: string, map: string): Promise<any>;
+  uploadFloor(
+    buildingId: string,
+    floorCode: string,
+    map: string
+  ): Promise<FloorMap>;
   getAllFloors(): Promise<Floor[]>;
 }

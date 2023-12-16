@@ -36,6 +36,9 @@ export const usePathsPageModule = () => {
   const [floor1Code, setFloor1Code] = useState<string>("");
   const [floor2Code, setFloor2Code] = useState<string>("");
 
+  const [mapModelOpen, setMapModelOpen] = useState<boolean>(false);
+  const [activeMap, setActiveMap] = useState<number[][]>([]);
+
   const [fromCoords, setFromCoords] = useState<{ x: number; y: number }>({
     x: 0,
     y: 0,
@@ -98,8 +101,20 @@ export const usePathsPageModule = () => {
     fetchFloors();
   }, [building2Code, floorService]);
 
+  async function fetchFloorMap(buildingCode: string, floorCode: string) {
+    const floor = await floorService.getFloor(buildingCode, floorCode);
+    if (!floor.map) return;
+    setActiveMap(floor.map.maze.map);
+  }
+
+  function handleMapShow(buildingCode: string, floorCode: string) {
+    setMapModelOpen(true);
+    fetchFloorMap(buildingCode, floorCode);
+  }
+
   return {
     buildings,
+    handleMapShow,
     building1Floors,
     setBuilding1Code,
     setBuilding2Code,
@@ -120,5 +135,8 @@ export const usePathsPageModule = () => {
     toCoords,
     setFromCoords,
     setToCoords,
+    mapModelOpen,
+    setMapModelOpen,
+    activeMap,
   };
 };

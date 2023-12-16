@@ -6,12 +6,14 @@ interface ModalProps {
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
   title: string;
   children?: React.ReactNode;
+  className?: string;
 }
 const Modal: React.FC<ModalProps> = ({
   isVisible,
   setIsVisible,
   title,
   children,
+  className,
 }) => {
   useEffect(() => {
     const closeWithEsc = (e: KeyboardEvent) => {
@@ -35,7 +37,7 @@ const Modal: React.FC<ModalProps> = ({
             initial={{ bottom: 0, opacity: 0 }}
             animate={{ bottom: 150, opacity: 1 }}
             transition={{ duration: 0.2 }}
-            className="flex h-fit w-3/5 flex-col rounded-xl bg-slate-300 p-8"
+            className={`flex h-fit w-4/5 flex-col rounded-xl bg-slate-300 p-8 ${className}`}
           >
             <button
               onClick={() => setIsVisible(false)}

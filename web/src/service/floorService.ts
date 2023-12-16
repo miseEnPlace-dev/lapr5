@@ -103,9 +103,19 @@ export class FloorService implements IFloorService {
       { headers: { Authorization: `Bearer ${token}` } }
     );
 
-    if (response.status !== 200) {
-      throw new Error(response.statusText);
-    }
+    if (response.status !== 200) throw new Error(response.statusText);
+
+    const data = response.data;
+    return data;
+  }
+
+  async fetchFloorMap(buildingCode: string, floorCode: string) {
+    const token = this.localStorage.getItem(localStorageConfig.token);
+
+    const response = await this.http.get<FloorMap>(
+      `/buildings/${buildingCode}/floors/${floorCode}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
 
     const data = response.data;
     return data;
