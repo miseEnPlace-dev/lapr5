@@ -10,6 +10,7 @@ namespace DDDSample1.Domain.User
     [JsonConstructor]
     public UserId(Guid value) : base(value) { }
 
+    [JsonConstructor]
     public UserId(string value) : base(value) { }
   }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DDDSample1.Domain.DeviceModel;
@@ -21,7 +22,7 @@ namespace DDDSample1.Domain.Requests
     public async Task<List<RequestDto>> GetAllAsync()
     {
       var list = await _repo.GetAllAsync();
-      List<RequestDto> listDto = list.ConvertAll(r => new RequestDto(r.Id.AsGuid(), r.State.AsString(), r.UserId.AsString(), r.DeviceModelId.AsString()));
+      List<RequestDto> listDto = list.ConvertAll(r => new RequestDto(r.RequestId.AsGuid(), r.State.AsString(), r.UserId.AsString(), r.DeviceModelId.AsString()));
       return listDto;
     }
 
@@ -34,10 +35,14 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<RequestDto> AddAsync(CreatingRequestDto dto)
     {
-      var r = new Request(new RequestState(dto.State), new DeviceModelId(dto.DeviceModelId), new UserId(dto.UserId));
+      // print dto
+      Console.WriteLine(dto);
+
+
+      var r = new Request(dto.State, dto.DeviceModelId, dto.UserId);
       await _repo.AddAsync(r);
       await _unitOfWork.CommitAsync();
-      return new RequestDto(r.Id.AsGuid(), r.State.AsString(), r.UserId.AsString(), r.DeviceModelId.AsString());
+      return new RequestDto(r.RequestId.AsGuid(), r.State.AsString(), r.UserId.AsString(), r.DeviceModelId.AsString());
     }
 
     public async Task<RequestDto> UpdateAsync(RequestDto dto)

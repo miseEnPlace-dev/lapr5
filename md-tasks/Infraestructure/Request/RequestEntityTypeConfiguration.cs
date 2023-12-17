@@ -1,4 +1,5 @@
 using DDDSample1.Domain.Requests;
+using DDDSample1.Domain.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,7 +12,6 @@ internal class RequestEntityTypeConfiguration : IEntityTypeConfiguration<Request
     builder.HasKey(b => b.Id);
     builder.OwnsOne(b => b.State);
     builder.OwnsOne(b => b.DeviceModelId);
-    builder.OwnsOne(b => b.UserId);
-    builder.Property(b => b.Active).IsRequired();
+    builder.Property(b => b.UserId).HasConversion(b => b.AsGuid(), b => new UserId(b));
   }
 }
