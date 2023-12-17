@@ -11,5 +11,8 @@ namespace DDDSample1.Domain.Requests
     public RequestId(Guid value) : base(value) { }
 
     public RequestId(string value) : base(value) { }
+
+    public RequestId() : base(Guid.NewGuid()) { }
+
   }
 }

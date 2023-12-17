@@ -11,5 +11,7 @@ namespace DDDSample1.Domain.DeviceModel
     public DeviceModelId(Guid value) : base(value) { }
 
     public DeviceModelId(string value) : base(value) { }
+
+    public DeviceModelId() : base(Guid.NewGuid()) { }
   }
 }

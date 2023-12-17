@@ -6,7 +6,7 @@ using DDDSample1.Domain.User;
 
 namespace DDDSample1.Domain.Tasks.SurveillanceTask
 {
-  public class SurveillanceTask
+  public class SurveillanceTask : Task
   {
     public string Description { get; private set; }
 
@@ -59,6 +59,11 @@ namespace DDDSample1.Domain.Tasks.SurveillanceTask
     public void Deactivate()
     {
       Active = false;
+    }
+
+    public override void ExecuteTask()
+    {
+      throw new NotImplementedException();
     }
   }
 }
