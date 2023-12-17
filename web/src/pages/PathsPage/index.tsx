@@ -124,11 +124,14 @@ const PathsPage: React.FC = () => {
               </div>
               <Modal
                 setIsVisible={setMapModelOpen}
-                title="Floor Map"
+                title={`Floor Map - Floor ${activeMap.floorCode}`}
                 isVisible={mapModelOpen}
                 className="w-11/12"
               >
-                <FloorMapVisualizer map={activeMap} />
+                <FloorMapVisualizer
+                  map={activeMap.map}
+                  floorCode={activeMap.floorCode}
+                />
               </Modal>
             </div>
             <div className="flex items-center justify-between gap-x-8">

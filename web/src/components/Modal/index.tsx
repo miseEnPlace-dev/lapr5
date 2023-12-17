@@ -45,7 +45,7 @@ const Modal: React.FC<ModalProps> = ({
             >
               X
             </button>
-            <span className="-mt-9 mb-6 w-full text-center text-4xl font-black">
+            <span className="-mt-9 mb-6 w-full text-center text-4xl font-black capitalize">
               {title}
             </span>
             {children}

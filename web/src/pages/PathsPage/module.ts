@@ -37,7 +37,13 @@ export const usePathsPageModule = () => {
   const [floor2Code, setFloor2Code] = useState<string>("");
 
   const [mapModelOpen, setMapModelOpen] = useState<boolean>(false);
-  const [activeMap, setActiveMap] = useState<number[][]>([]);
+  const [activeMap, setActiveMap] = useState<{
+    floorCode: string;
+    map: number[][];
+  }>({
+    floorCode: "",
+    map: [],
+  });
 
   const [fromCoords, setFromCoords] = useState<{ x: number; y: number }>({
     x: 0,
@@ -104,7 +110,10 @@ export const usePathsPageModule = () => {
   async function fetchFloorMap(buildingCode: string, floorCode: string) {
     const floor = await floorService.getFloor(buildingCode, floorCode);
     if (!floor.map) return;
-    setActiveMap(floor.map.maze.map);
+    setActiveMap({
+      floorCode,
+      map: floor.map.maze.map,
+    });
   }
 
   function handleMapShow(buildingCode: string, floorCode: string) {
