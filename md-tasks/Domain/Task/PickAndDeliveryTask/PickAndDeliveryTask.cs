@@ -4,7 +4,7 @@ using DDDSample1.Domain.User;
 
 namespace DDDSample1.Domain.Tasks.PickAndDeliveryTask
 {
-    public class PickAndDeliveryTask
+    public class PickAndDeliveryTask : Task
     {
         public PickAndDeliveryDescription PickAndDeliveryDescription { get; private set; }
         public ConfirmationCode ConfirmationCode { get; private set; }
@@ -91,6 +91,11 @@ namespace DDDSample1.Domain.Tasks.PickAndDeliveryTask
         public void Deactivate()
         {
             this.Active = false;
+        }
+
+        public override void ExecuteTask()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
