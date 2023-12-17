@@ -4,7 +4,7 @@ using DDDSample1.Domain.User;
 
 namespace DDDSample1.Domain.Tasks.PickAndDeliveryTask
 {
-    public class PickAndDeliveryTask : Task
+    public class PickAndDeliveryTask : DeviceTask
     {
         public PickAndDeliveryDescription PickAndDeliveryDescription { get; private set; }
         public ConfirmationCode ConfirmationCode { get; private set; }

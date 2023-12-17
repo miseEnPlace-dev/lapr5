@@ -6,7 +6,7 @@ using DDDSample1.Domain.User;
 
 namespace DDDSample1.Domain.Tasks.SurveillanceTask
 {
-  public class SurveillanceTask : Task
+  public class SurveillanceTask : DeviceTask
   {
     public string Description { get; private set; }
 

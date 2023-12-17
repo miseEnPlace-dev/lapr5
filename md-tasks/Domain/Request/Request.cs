@@ -2,6 +2,7 @@ using System;
 using DDDSample1.Domain.DeviceModel;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.User;
+using DDDSample1.Domain.Tasks;
 
 namespace DDDSample1.Domain.Requests
 {
@@ -12,6 +13,8 @@ namespace DDDSample1.Domain.Requests
         public DeviceModelCode DeviceModelCode { get; private set; }
 
         public UserEmail UserEmail { get; private set; }
+
+        public DeviceTask RequestTask { get; private set; }
 
         public bool Active { get; private set; }
 
