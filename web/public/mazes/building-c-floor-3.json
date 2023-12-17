@@ -20,8 +20,8 @@
       [2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
     ],
     "exits": [
-      { "x": 7, "y": 2, "floorCode": "b2" },
-      { "x": 11, "y": 2, "floorCode": "d3" }
+      { "x": 8, "y": 1, "floorCode": "b2" },
+      { "x": 12, "y": 1, "floorCode": "d3" }
     ],
     "elevator": {
       "x": 10,

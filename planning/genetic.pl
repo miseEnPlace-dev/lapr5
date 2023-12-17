@@ -24,11 +24,11 @@ tarefas(5).
 :- dynamic tarefas/3.
 
 % t(id_tarefa, inicio, fim).
-t(t1, cel("b1",7,20),cel("b2",6,21)).
+t(t1, cel("b2",8,21),cel("c3",8,2)).
 t(t2, cel("b1",7,20),cel("b2",6,20)).
-t(t3, cel("b3",9,18),cel("b3",8,20)).
+t(t3, cel("b3",9,20),cel("b3",8,20)).
 t(t4, cel("b2",6,19),cel("b2",9,18)).
-t(t5, cel("b3",9,18),cel("b3",8,17)).
+t(t5, cel("b3",8,18),cel("b3",8,17)).
 
 load_tarefas:-
 	findall(T,t(T,_,_),L),
@@ -48,10 +48,13 @@ load_tarefa(Tarefa,[H|T]):-
 
 load_tarefa2(T1,T2):-
 	t(T1,S1,F1), t(T2,S2,F2),
-	write('Tarefa '), write(T1), write(' e '), write(T2), write(': '), nl,
-	write('S1: '), write(S1), write(' F1: '), write(F1), write(' S2: '), write(S2), write(' F2: '), write(F2), nl,
+	nl,write('Tarefa '), write(T1), write(' e '), write(T2), write(': '), nl,
+	write('F1: '), write(F1), write(' S2: '), write(S2),
 	planning:caminho_celulas_edificios(F1,S2,_,W1),
+	write('W1: '), write(W1), nl,
+	write('F2: '), write(F2), write(' S1: '), write(S1),nl,
 	planning:caminho_celulas_edificios(F2,S1,_,W2),
+	write('W2: '), write(W2), nl,
 	asserta(tarefas(T1,T2,W1)),
 	asserta(tarefas(T2,T1,W2)).
 
