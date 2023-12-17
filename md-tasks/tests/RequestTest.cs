@@ -17,16 +17,17 @@ public class RequestTest
     DeviceModelCode deviceModelCode = new("Code1");
     DeviceModelName deviceModelName = new("Name1");
     DeviceModel deviceModel = new(deviceModelCode, deviceModelName);
-    User user = new("john", "doe");
+    UserEmail userEmail = new("email@email.com");
+    User user = new("john", "doe", userEmail);
 
 
     // Act
-    Request request = new(state, deviceModel.Id, user.Id);
+    Request request = new(state, deviceModel.DeviceModelCode, user.UserEmail);
 
     // Assert
     Assert.Equal(state, request.State);
-    Assert.Equal(deviceModel.Id, request.DeviceModelId);
-    Assert.Equal(user.Id, request.UserId);
+    Assert.Equal(deviceModel.DeviceModelCode, request.DeviceModelCode);
+    Assert.Equal(user.UserEmail, request.UserEmail);
     Assert.True(request.Active);
 
   }
@@ -39,9 +40,10 @@ public class RequestTest
     DeviceModelCode deviceModelCode = new("Code1");
     DeviceModelName deviceModelName = new("Name1");
     DeviceModel deviceModel = new(deviceModelCode, deviceModelName);
-    User user = new("john", "doe");
+    UserEmail userEmail = new("email@email.com");
+    User user = new("john", "doe", userEmail);
 
-    Request request = new(state, deviceModel.Id, user.Id);
+    Request request = new(state, deviceModel.DeviceModelCode, user.UserEmail);
 
     RequestState newState = new("Completed");
 
@@ -60,9 +62,10 @@ public class RequestTest
     DeviceModelCode deviceModelCode = new("Code1");
     DeviceModelName deviceModelName = new("Name1");
     DeviceModel deviceModel = new(deviceModelCode, deviceModelName);
-    User user = new("john", "doe");
+    UserEmail userEmail = new("email@email.com");
+    User user = new("john", "doe", userEmail);
 
-    Request request = new(state, deviceModel.Id, user.Id);
+    Request request = new(state, deviceModel.DeviceModelCode, user.UserEmail);
 
     // Act
     bool newActiveState = request.ToggleActive();

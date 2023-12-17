@@ -36,7 +36,7 @@ public class RequestsController : ControllerBase
 
   // POST api/Requests
   [HttpPost]
-  public async Task<ActionResult<RequestDto>> Create(CreatingRequestDto dto)
+  public async Task<ActionResult<RequestDto>> Create(RequestDto dto)
   {
     try
     {

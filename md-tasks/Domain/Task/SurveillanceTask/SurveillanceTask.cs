@@ -12,7 +12,7 @@ namespace DDDSample1.Domain.Tasks.SurveillanceTask
 
     public bool Active { get; private set; }
 
-    public UserId UserContact { get; private set; }
+    public UserEmail UserContact { get; private set; }
 
     public FloorId TargetFloor { get; private set; }
 
@@ -21,7 +21,7 @@ namespace DDDSample1.Domain.Tasks.SurveillanceTask
       Active = true;
     }
 
-    public SurveillanceTask(string description, UserId userContact)
+    public SurveillanceTask(string description, UserEmail userContact)
     {
       Description = description;
       UserContact = userContact;
@@ -38,7 +38,7 @@ namespace DDDSample1.Domain.Tasks.SurveillanceTask
       Description = description;
     }
 
-    public void ChangeUserContact(UserId userContact)
+    public void ChangeUserContact(UserEmail userContact)
     {
       if (!Active)
       {

@@ -9,7 +9,6 @@ namespace DDDSample1.Domain.DeviceModel
     [JsonConstructor]
     public DeviceModelId(Guid value) : base(value) { }
 
-    [JsonConstructor]
     public DeviceModelId(string value) : base(ParseGuid(value)) { }
 
     public DeviceModelId() : base(Guid.NewGuid()) { }

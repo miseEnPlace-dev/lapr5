@@ -9,8 +9,8 @@ namespace DDDSample1.Domain.Tasks.PickAndDeliveryTask
         public PickAndDeliveryDescription PickAndDeliveryDescription { get; private set; }
         public ConfirmationCode ConfirmationCode { get; private set; }
 
-        public UserId PickupUserId { get; private set; }
-        public UserId DeliveryUserId { get; private set; }
+        public User.UserEmail PickupUserId { get; private set; }
+        public User.UserEmail DeliveryUserId { get; private set; }
 
         public RoomId PickupRoomId { get; private set; }
 
@@ -23,7 +23,7 @@ namespace DDDSample1.Domain.Tasks.PickAndDeliveryTask
             Active = true;
         }
 
-        public PickAndDeliveryTask(PickAndDeliveryDescription PickAndDeliveryDescription, UserId PickupUserId, UserId DeliveryUserId, RoomId PickupRoomId, RoomId DeliveryRoomId)
+        public PickAndDeliveryTask(PickAndDeliveryDescription PickAndDeliveryDescription, User.UserEmail PickupUserId, User.UserEmail DeliveryUserId, RoomId PickupRoomId, RoomId DeliveryRoomId)
         {
             this.PickAndDeliveryDescription = PickAndDeliveryDescription;
             ConfirmationCode = new ConfirmationCode("Pending");
@@ -52,7 +52,7 @@ namespace DDDSample1.Domain.Tasks.PickAndDeliveryTask
             this.ConfirmationCode = ConfirmationCode;
         }
 
-        public void ChangePickupUserId(UserId PickupUserId)
+        public void ChangePickupUserId(User.UserEmail PickupUserId)
         {
             if (!Active)
             {
@@ -61,7 +61,7 @@ namespace DDDSample1.Domain.Tasks.PickAndDeliveryTask
             this.PickupUserId = PickupUserId;
         }
 
-        public void ChangeDeliveryUserId(UserId DeliveryUserId)
+        public void ChangeDeliveryUserId(User.UserEmail DeliveryUserId)
         {
             if (!Active)
             {

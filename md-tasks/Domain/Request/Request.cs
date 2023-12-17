@@ -9,11 +9,9 @@ namespace DDDSample1.Domain.Requests
     {
         public RequestState State { get; private set; }
 
-        public DeviceModelId DeviceModelId { get; private set; }
+        public DeviceModelCode DeviceModelCode { get; private set; }
 
-        public UserId UserId { get; private set; }
-
-        public RequestId RequestId { get; private set; }
+        public UserEmail UserEmail { get; private set; }
 
         public bool Active { get; private set; }
 
@@ -22,13 +20,13 @@ namespace DDDSample1.Domain.Requests
             Active = true;
         }
 
-        public Request(RequestState state, DeviceModelId deviceModelId, UserId userId)
+        public Request(RequestState state, DeviceModelCode DeviceModelCode, UserEmail userEmail)
         {
             State = state;
-            DeviceModelId = deviceModelId;
-            UserId = userId;
+            this.DeviceModelCode = DeviceModelCode;
+            UserEmail = userEmail;
             Active = true;
-            this.RequestId = new RequestId(Guid.NewGuid());
+            Id = new RequestId(Guid.NewGuid());
         }
 
         public void ChangeState(RequestState state)
