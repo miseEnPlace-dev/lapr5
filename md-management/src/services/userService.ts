@@ -24,7 +24,6 @@ import { inject, injectable } from 'inversify';
 import { Result } from '../core/logic/Result';
 import { UserNif } from '@/domain/user/userNif';
 import { IPaginationDTO } from '@/dto/IPaginationDTO';
-import { IDeviceModelDTO } from '@/dto/IDeviceModelDTO';
 
 @injectable()
 export default class UserService implements IUserService {
