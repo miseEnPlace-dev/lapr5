@@ -1,10 +1,10 @@
 :- use_module(planning).
 
 % geracoes(NGeracoes).
-geracoes(2).
+geracoes(10).
 
 % populacao(TamanhoPopulacao).
-populacao(2).
+populacao(5).
 
 % prob_selecao(ProbabilidadeSelecaoAleatoria).
 prob_selecao(0.8).
@@ -19,9 +19,11 @@ prob_mutacao(0.2).
 lim_time(5).
 
 % tarefas(NTarefas).
-tarefas(5).
+n_tarefas(5).
 
 :- dynamic tarefas/3.
+
+debug_mode(1).
 
 % t(id_tarefa, inicio, fim).
 t(t1, cel("b2",8,21),cel("c3",8,2)).
@@ -47,14 +49,15 @@ load_tarefa(Tarefa,[H|T]):-
 	load_tarefa(Tarefa,T).
 
 load_tarefa2(T1,T2):-
+	debug_mode(D),
 	t(T1,S1,F1), t(T2,S2,F2),
-	nl,write('Tarefa '), write(T1), write(' e '), write(T2), write(': '), nl,
-	write('F1: '), write(F1), write(' S2: '), write(S2),
+	((D==1,nl,write('Tarefa '), write(T1), write(' e '), write(T2), write(': '), nl);true),
+	((D==1,write('F1: '), write(F1), write(' S2: '), write(S2));true),
 	planning:caminho_celulas_edificios(F1,S2,_,W1),
-	write('W1: '), write(W1), nl,
-	write('F2: '), write(F2), write(' S1: '), write(S1),nl,
+	((D==1,write(' W1: '), write(W1), nl);true),
+	((D==1,write('F2: '), write(F2), write(' S1: '), write(S1),nl);true),
 	planning:caminho_celulas_edificios(F2,S1,_,W2),
-	write('W2: '), write(W2), nl,
+	((D==1,write(' W2: '), write(W2), nl);true),
 	asserta(tarefas(T1,T2,W1)),
 	asserta(tarefas(T2,T1,W2)).
 
@@ -69,14 +72,15 @@ factorial(N, F) :-
 is_empty([]).
 
 gera_best_bruteforce:-
-	tarefas(NTarefas),
+	debug_mode(D),
+	n_tarefas(NTarefas),
 	findall(Tarefa,t(Tarefa,_,_),Tarefas),
 	factorial(NTarefas,NTotal),
 	gera_best_bruteforce(NTotal,NTarefas,Tarefas,Pop),
 	avalia_populacao(Pop,PopAv),
 	ordena_populacao(PopAv,PopOrd),
 	melhor_individuo(PopOrd,Ind),
-	write('Melhor individuo: '), write(Ind), nl, nl.
+	((D==1,write('Melhor individuo: '), write(Ind), nl, nl);true).
 
 gera_best_bruteforce(N, NT, T, P):-
 	!,
@@ -96,43 +100,47 @@ gera_best_bruteforce(TPop,NTarefas,Tarefas,Temp,Pop):-
 	gera_best_bruteforce(TPop,NTarefas,Tarefas,Temp,Pop).
 
 gera_lim_ger:-
+	debug_mode(D),
 	gera_populacao(Pop),
-	write('Pop='),write(Pop),nl,
+	((D==1,write('Pop='),write(Pop),nl);true),
 	avalia_populacao(Pop,PopAv),
-	write('PopAv='),write(PopAv),nl,
+	((D==1,write('PopAv='),write(PopAv),nl);true),
 	ordena_populacao(PopAv,PopOrd),
 	geracoes(NG),
 	gera_geracao_ger(0,NG,PopOrd).
 
 gera_lim_time:-
+	debug_mode(D),
 	gera_populacao(Pop),
-	write('Pop='),write(Pop),nl,
+	((D==1,write('Pop='),write(Pop),nl);true),
 	avalia_populacao(Pop,PopAv),
-	write('PopAv='),write(PopAv),nl,
+	((D==1,write('PopAv='),write(PopAv),nl);true),
 	ordena_populacao(PopAv,PopOrd),
 	get_time(Ti),
 	gera_geracao_time(Ti,0,PopOrd).
 
 gera_estab:-
-    gera_populacao(Pop),
-    write('Pop='), write(Pop), nl,
+    debug_mode(D),
+    gera_populacao(Pop), 
+    ((D==1,write('Pop='),write(Pop),nl);true),
     avalia_populacao(Pop, PopAv),
-    write('PopAv='), write(PopAv), nl,
+    ((D==1,write('PopAv='),write(PopAv),nl);true),
     ordena_populacao(PopAv, PopOrd),
     gera_estab_ger(0, PopOrd, 2, Pop).
 
 gera_estab_ger(_, _, 0, Pop):-
-    write('Condição de paragem atingida. População estável por duas gerações consecutivas.'), nl,
-    write('População final: '), write(Pop), nl.
+    debug_mode(D),
+    ((D==1,write('Condição de paragem atingida. População estável por duas gerações consecutivas.'), nl,write('População final: '), write(Pop), nl);true).
 
 gera_estab_ger(G, Pop, GerIguais, PopAnterior):-
-    write('Geração '), write(G), write(':'), nl, write(Pop), nl,
+    debug_mode(D),
+    ((D==1,write('Geração '), write(G), write(':'), nl, write(Pop), nl);true),
     cruzamento(Pop, NPop1),
     mutacao(NPop1, NPop),
     avalia_populacao(NPop, NPopAv),
     ordena_populacao(NPopAv, NPopOrd),
     melhor_individuo(NPopOrd, Ind),
-    write('Melhor individuo: '), write(Ind), nl, nl,
+    ((D==1,write('Melhor individuo: '), write(Ind), nl, nl);true),
 		(GerIguais > 0, avaliar_semelhanca_entre_pop(Pop, PopAnterior, GerIguais),
 				G1 is G + 1,
 				NovoGerIguais is GerIguais - 1,
@@ -143,33 +151,35 @@ gera_estab_ger(G, Pop, GerIguais, PopAnterior):-
 		).
 
 gera_nao_elit:-
+    debug_mode(D),
     gera_populacao(Pop),
-    write('Pop='), write(Pop), nl,
+    ((D==1,write('Pop='),write(Pop),nl);true),
     selecao_individuos(Pop, PopAv),
-    write('PopAv='), write(PopAv), nl,
+    ((D==1,write('PopAv='),write(PopAv),nl);true),
     ordena_populacao(PopAv, PopOrd),
     gera_estab_ger(0, PopOrd, 2, Pop).
 
 gera_nao_elit(_, _, 0, Pop):-
-	write('Condição de paragem atingida. População estável por duas gerações consecutivas.'), nl,
-	write('População final: '), write(Pop), nl.
+    debug_mode(D),
+    ((D==1,write('Condição de paragem atingida. População estável por duas gerações consecutivas.'), nl,write('População final: '), write(Pop), nl);true).
 	
 gera_nao_elit(G, Pop, GerIguais, PopAnterior):-
-		write('Geração '), write(G), write(':'), nl, write(Pop), nl,
-		cruzamento(Pop, NPop1),
-		mutacao(NPop1, NPop),
-		selecao_individuos(NPop, NPopAv),
-		ordena_populacao(NPopAv, NPopOrd),
-		melhor_individuo(NPopOrd, Ind),
-		write('Melhor individuo: '), write(Ind), nl, nl,
-		(GerIguais > 0, avaliar_semelhanca_entre_pop(Pop, PopAnterior, GerIguais),
-				G1 is G + 1,
-				NovoGerIguais is GerIguais - 1,
-				gera_estab_ger(G1, NPopOrd, NovoGerIguais, NPop)
-		; 
-				G1 is G + 1,
-				gera_estab_ger(G1, NPopOrd, GerIguais, NPop)
-		).
+	debug_mode(D),
+	((D==1,write('Geração '), write(G), write(':'), nl, write(Pop), nl);true),
+	cruzamento(Pop, NPop1),
+	mutacao(NPop1, NPop),
+	selecao_individuos(NPop, NPopAv),
+	ordena_populacao(NPopAv, NPopOrd),
+	melhor_individuo(NPopOrd, Ind),
+	((D==1,write('Melhor individuo: '), write(Ind), nl, nl);true),
+	(GerIguais > 0, avaliar_semelhanca_entre_pop(Pop, PopAnterior, GerIguais),
+			G1 is G + 1,
+			NovoGerIguais is GerIguais - 1,
+			gera_estab_ger(G1, NPopOrd, NovoGerIguais, NPop)
+	; 
+			G1 is G + 1,
+			gera_estab_ger(G1, NPopOrd, GerIguais, NPop)
+	).
 
 selecao_individuos(Pop, PopSelec):-
     populacao(TamPop),
@@ -178,14 +188,14 @@ selecao_individuos(Pop, PopSelec):-
 
 avaliar_semelhanca_entre_pop(_, _, 0):-!.
 avaliar_semelhanca_entre_pop([P1|Populacao],[P2|ProxGeracao], _):-
-    P1 = P2, 
+    P1=P2, 
     avaliar_semelhanca_entre_pop(Populacao, ProxGeracao, _).
 
 
 gera_populacao(Pop):-
 	populacao(TamPop),
-	tarefas(NumT),
-	findall(Tarefa,tarefa(Tarefa,_,_),ListaTarefas),
+	n_tarefas(NumT),
+	findall(Tarefa,t(Tarefa,_,_),ListaTarefas),
 	gera_populacao(TamPop,ListaTarefas,NumT,Pop).
 
 gera_populacao(0,_,_,[]):-!.
@@ -194,7 +204,7 @@ gera_populacao(TamPop,ListaTarefas,NumT,[Ind|Resto]):-
 	TamPop1 is TamPop-1,
 	gera_populacao(TamPop1,ListaTarefas,NumT,Resto),
 	gera_individuo(ListaTarefas,NumT,Ind),
-	not(member(Ind,Resto)).
+	\+member(Ind,Resto).
 
 gera_populacao(TamPop,ListaTarefas,NumT,L):-
 	gera_populacao(TamPop,ListaTarefas,NumT,L).
@@ -203,7 +213,7 @@ gera_populacao(TamPop,ListaTarefas,NumT,L):-
 gera_individuo([G],1,[G]):-!.
 
 gera_individuo(ListaTarefas,NumT,[G|Resto]):-
-	NumTemp is NumT + 1, % To use with random
+	NumTemp is NumT+1, % To use with random
 	random(1,NumTemp,N),
 	retira(N,ListaTarefas,G,NovaLista),
 	NumT1 is NumT-1,
@@ -215,23 +225,17 @@ retira(N,[G1|Resto],G,[G1|Resto1]):-
 	N1 is N-1,
 	retira(N1,Resto,G,Resto1).
 
-
 avalia_populacao([],[]).
-avalia_populacao([Ind|Resto],[Ind*V|Resto1]):-
-	avalia(Ind,V),
+avalia_populacao([H|Resto],[H*V|Resto1]):-
+	avalia(H,V),
 	avalia_populacao(Resto,Resto1).
 
-avalia(Seq,V):-
-	avalia(Seq,0,V).
-
-avalia(_,_,0).
-%avalia([],_,0).
-%avalia([T|Resto],Inst,V):-
-%	tarefa(T,Dur,Prazo),
-%	InstFim is Inst+Dur,
-%	avalia(Resto,InstFim,VResto),
-%	((InstFim =< Prazo,!, VT is 0);(VT is (InstFim-Prazo))),
-%	V is VT+VResto.
+avalia([T1,T2|Resto],V):-
+	tarefas(T1,T2,V1),
+	avalia([T2|Resto],V2),
+	V is V1 + V2.
+avalia([_],0).
+avalia([],0).
 
 
 ordena_populacao(PopAv,PopAvOrd):-
@@ -252,17 +256,19 @@ btroca([X*VX,Y*VY|L1],[Y*VY|L2]):-
 btroca([X|L1],[X|L2]):-btroca(L1,L2).
 
 
-gera_geracao_ger(G,G,Pop):-!,
-	write('Geração '), write(G), write(':'), nl, write(Pop), nl.
+gera_geracao_ger(G,G,Pop):-
+	debug_mode(D),
+	((D==1,write('Geração '), write(G), write(':'), nl, write(Pop), nl);true).
 
 gera_geracao_ger(N,G,Pop):-
-	write('Geração '), write(N), write(':'), nl, write(Pop), nl,
+	debug_mode(D),
+	((D==1,write('Geração '),write(N),write(':'),nl,write(Pop),nl);true),
 	cruzamento(Pop,NPop1),
 	mutacao(NPop1,NPop),
 	avalia_populacao(NPop,NPopAv),
 	ordena_populacao(NPopAv,NPopOrd),
-	melhor_individuo(NPopOrd,Ind),
-	write('Melhor individuo: '), write(Ind), nl, nl,
+	[Ind|_] = NPopOrd,
+	((D==1,write('Melhor individuo: '),write(Ind),nl,nl);true),
 	N1 is N+1,
 	gera_geracao_ger(N1,G,NPopOrd).
 
@@ -275,13 +281,14 @@ gera_geracao_time(T,G,Pop):-
 	write('Geração '), write(G), write(':'), nl, write(Pop), nl.
 
 gera_geracao_time(T,N,Pop):-
-	write('Geração '), write(N), write(':'), nl, write(Pop), nl,
+	debug_mode(D),
+	((D==1,write('Geração '), write(N), write(':'), nl, write(Pop), nl);true),
 	cruzamento(Pop,NPop1),
 	mutacao(NPop1,NPop),
 	avalia_populacao(NPop,NPopAv),
 	ordena_populacao(NPopAv,NPopOrd),
 	melhor_individuo(NPopOrd,Ind),
-	write('Melhor individuo: '), write(Ind), nl, nl,
+	((D==1,write('Melhor individuo: '), write(Ind), nl, nl);true),
 	N1 is N+1,
 	gera_geracao_time(T,N1,NPopOrd).
 
@@ -291,14 +298,14 @@ melhor_individuo([Ind*V|Resto],Ind1):-
 melhor_individuo([],Ind,Ind):-!.
 
 melhor_individuo([Ind*V|Resto],Ind1*V1,Ind2):-
-	(V < V1,! ,melhor_individuo(Resto,Ind*V,Ind2));
+	(V < V1,melhor_individuo(Resto,Ind*V,Ind2));
 	melhor_individuo(Resto,Ind1*V1,Ind2).
 
 gerar_pontos_cruzamento(P1,P2):-
 	gerar_pontos_cruzamento1(P1,P2).
 
 gerar_pontos_cruzamento1(P1,P2):-
-	tarefas(N),
+	n_tarefas(N),
 	NTemp is N+1,
 	random(1,NTemp,P11),
 	random(1,NTemp,P21),
@@ -348,7 +355,7 @@ sublista1([_|R1],N1,N2,[h|R2]):-
 
 
 rotate_right(L,K,L1):-
-	tarefas(N),
+	n_tarefas(N),
 	T is N - K,
 	rr(T,L,L1).
 
@@ -372,7 +379,7 @@ elimina([_|R1],L,R2):-
 
 insere([],L,_,L):-!.
 insere([X|R],L,N,L2):-
-	tarefas(T),
+	n_tarefas(T),
 	((N>T,!,N1 is N mod T);N1 = N),
 	insere1(X,N1,L,L1),
 	N2 is N + 1,
@@ -387,7 +394,7 @@ insere1(X,N,[Y|L],[Y|L1]):-
 
 cruzar(Ind1,Ind2,P1,P2,NInd11):-
 	sublista(Ind1,P1,P2,Sub1),
-	tarefas(NumT),
+	n_tarefas(NumT),
 	R is NumT-P2,
 	rotate_right(Ind2,R,Ind21),
 	elimina(Ind21,Sub1,Sub2),
@@ -409,7 +416,7 @@ mutacao([],[]).
 mutacao([Ind|Rest],[NInd|Rest1]):-
 	prob_mutacao(Pmut),
 	random(0.0,1.0,Pm),
-	((Pm < Pmut,!,mutacao1(Ind,NInd));NInd = Ind),
+	((Pm < Pmut,!,mutacao1(Ind,NInd));NInd=Ind),
 	mutacao(Rest,Rest1).
 
 mutacao1(Ind,NInd):-
@@ -428,3 +435,5 @@ mutacao23(G1,P,[G|Ind],G2,[G|NInd]):-
 	P1 is P-1,
 	mutacao23(G1,P1,Ind,G2,NInd).
 
+:- planning:load_data.
+:- load_tarefas.

@@ -25,7 +25,7 @@
 peso_hv(1).
 peso_diagonal(W):- W is sqrt(2).
 
-debug_mode(0).
+debug_mode(1).
 
 peso_corr(5).
 peso_elev(30).
@@ -202,17 +202,17 @@ estimativa(cel(F,X1,Y1),cel(F,X2,Y2),Estimativa):-
 load_data() :-
 	debug_mode(D),
 	server:authenticate(),
-	((D==0,write("Authenticated..."), nl);true),
+	((D==1,write("Authenticated..."), nl);true),
 	server:fetch_buildings(Buildings),
-	((D==0,write("Fetching buildings..."), nl);true),
+	((D==1,write("Fetching buildings..."), nl);true),
 	server:fetch_connectors(Connectors),
-	((D==0,write("Fetching connectors..."), nl);true),
+	((D==1,write("Fetching connectors..."), nl);true),
 	create_buildings(Buildings),
 	create_connectors(Connectors).
 
 create_buildings([H|T]) :-
 	debug_mode(D),
-	((D==0,write("Loading building "), write(H.code), write(" ..."), nl);true),
+	((D==1,write("Loading building "), write(H.code), write(" ..."), nl);true),
 	create_elevator(H),
 	create_floors(H),
 	create_buildings(T).
@@ -221,7 +221,7 @@ create_buildings([]).
 
 create_elevator(Building) :-
 	debug_mode(D),
-	((D==0,write("  Elevator -> "), write(Building.elevatorFloors), nl);true),
+	((D==1,write("  Elevator -> "), write(Building.elevatorFloors), nl);true),
 	asserta(elevador(Building.code, Building.elevatorFloors)).
 
 create_floors(Building) :-
@@ -236,7 +236,7 @@ create_floor_exits(Floor) :-
 
 create_exits([H|T], FloorCode) :-
 	debug_mode(D),
-	((D==0,write("      Exit -> "), write("X: "), write(H.x), write(" Y: "), write(H.y), nl);true),
+	((D==1,write("      Exit -> "), write("X: "), write(H.x), write(" Y: "), write(H.y), nl);true),
 	asserta(exit(FloorCode, H.floorCode, H.x, H.y)),
 	create_exits(T, FloorCode).
 
@@ -244,16 +244,16 @@ create_exits([], _).
 
 create_floors_matrix([H|T]):-
 	debug_mode(D),
-	((D==0,write("  Floor -> "), write(H.code), nl);true),
+	((D==1,write("  Floor -> "), write(H.code), nl);true),
 	is_dict(H.get(map)),
 	create_floor_exits(H),
-	((D==0,write("      Matrix "),  write(H.map.maze.size.width), write("x"), write(H.map.maze.size.depth), nl);true),
-	((D==0,write("      "), write(H.map.maze.map), nl);true),
+	((D==1,write("      Matrix "),  write(H.map.maze.size.width), write("x"), write(H.map.maze.size.depth), nl);true),
+	((D==1,write("      "), write(H.map.maze.map), nl);true),
 	W is H.map.maze.size.width+1,
 	L is H.map.maze.size.depth+1,
 	reverse(H.map.maze.map, H1),
 	create_floor_matrix(H.code, H1, W, L),
-	((D==0,write("       cria_grafo("), write(H.code), write(","), write(H.map.maze.size.depth), write(","), write(H.map.maze.size.width), write(")"), nl);true),
+	((D==1,write("       cria_grafo("), write(H.code), write(","), write(H.map.maze.size.depth), write(","), write(H.map.maze.size.width), write(")"), nl);true),
 	cria_grafo(H.code,H.map.maze.size.depth,H.map.maze.size.width),
 	create_floors_matrix(T).
 
@@ -262,7 +262,7 @@ create_floors_matrix([]).
 
 create_floors_matrix([_|T]) :-
 	debug_mode(D),
-	((D==0,write("     No Map"), nl);true),
+	((D==1,write("     No Map"), nl);true),
 	create_floors_matrix(T).
 
 
@@ -294,9 +294,9 @@ create_connectors([]).
 
 create_connector(Connector):-
 	debug_mode(D),
-	((D==0,write("Loading Connector "), write(Connector.code), write(" ..."), nl);true),
-	((D==0,write("  From -> "), write(Connector.floor1BuildingCode), write(" - "), write(Connector.floor1Code), nl);true),
-	((D==0,write("  To -> "), write(Connector.floor2BuildingCode), write(" - "), write(Connector.floor2Code), nl);true),
+	((D==1,write("Loading Connector "), write(Connector.code), write(" ..."), nl);true),
+	((D==1,write("  From -> "), write(Connector.floor1BuildingCode), write(" - "), write(Connector.floor1Code), nl);true),
+	((D==1,write("  To -> "), write(Connector.floor2BuildingCode), write(" - "), write(Connector.floor2Code), nl);true),
 	asserta(liga(Connector.floor1BuildingCode, Connector.floor2BuildingCode)),
 	asserta(corredor(Connector.floor1BuildingCode, Connector.floor2BuildingCode, Connector.floor1Code, Connector.floor2Code)).
 
@@ -311,9 +311,9 @@ caminho_celulas_edificios(cel(F1,X1,Y1),cel(F2,X2,Y2),C,W) :-
 caminho_celulas([H|T],C1,C2,L,W) :-
 	debug_mode(D),
 	H=..[cor,F1,F2],
-	((D==0,write("  Corredor -> "), write(F1), write(" - "), write(F2), nl);true),
+	((D==1,write("  Corredor -> "), write(F1), write(" - "), write(F2), nl);true),
 	exit(F1,F2,Ex,Ey),
-	((D==0,write("  aStar("), write("cel("), write(F1), write(","), write(Ex), write(","), write(Ey), write(")"), write(","), write(C1), write(")"), nl);true),
+	((D==1,write("  aStar("), write("cel("), write(F1), write(","), write(Ex), write(","), write(Ey), write(")"), write(","), write(C1), write(")"), nl);true),
 	aStar(C1,cel(F1,Ex,Ey),L1,W1),
 	exit(F2,F1,E1x,E1y),
 	caminho_celulas(T,cel(F2,E1x,E1y),C2,L2, W2),
@@ -325,11 +325,11 @@ caminho_celulas([H|T],C1,C2,L,W) :-
 caminho_celulas([H|T],C1,C2,L,W) :-
 	debug_mode(D),
 	H=..[_,F1,F2],
-	((D==0,write("  Elevador -> "), write(F1), write(" - "), write(F2), nl);true),
+	((D==1,write("  Elevador -> "), write(F1), write(" - "), write(F2), nl);true),
 	(m(F1,Ex,Ey,4);m(F1,Ex,Ey,5)),
-	((D==0,write("  aStar("), write("cel("), write(F1), write(","), write(Ex), write(","), write(Ey), write(")"), write(","), write(C1), write(")"), nl);true),
+	((D==1,write("  aStar("), write("cel("), write(F1), write(","), write(Ex), write(","), write(Ey), write(")"), write(","), write(C1), write(")"), nl);true),
 	aStar(C1,cel(F1,Ex,Ey),L1,W1),
-	((D==0,write("  L -> "), write(L1), nl);true),
+	((D==1,write("  L -> "), write(L1), nl);true),
 	(m(F2,E1x,E1y,4);m(F2,E1x,E1y,5)),
 	caminho_celulas(T,cel(F2,E1x,E1y),C2,L2, W2),
 	peso_elev(We),
