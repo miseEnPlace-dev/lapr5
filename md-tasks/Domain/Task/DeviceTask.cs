@@ -1,6 +1,6 @@
 using DDDSample1.Domain.Shared;
 
-namespace DDDSample1.Domain.Tasks
+namespace DDDSample1.Domain.DeviceTasks
 {
     public abstract class DeviceTask : Entity<TaskId>, IAggregateRoot
     {

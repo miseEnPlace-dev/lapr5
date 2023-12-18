@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Tasks;
+using DDDSample1.Domain.DeviceTasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DDDSample1.Controllers;
@@ -10,9 +10,9 @@ namespace DDDSample1.Controllers;
 [ApiController]
 public class TasksController : ControllerBase
 {
-    private readonly TaskService _svc;
+    private readonly DeviceTaskService _svc;
 
-    public TasksController(TaskService svc)
+    public TasksController(DeviceTaskService svc)
     {
         _svc = svc;
     }

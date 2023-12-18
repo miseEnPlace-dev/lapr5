@@ -10,8 +10,8 @@ using DDDSample1.Infrastructure.Shared;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Infrastructure.Requests;
 using DDDSample1.Domain.Requests;
-using DDDSample1.Domain.Tasks;
-using DDDSample1.Infrastructure.Tasks;
+using DDDSample1.Domain.DeviceTasks;
+using DDDSample1.Infrastructure.DeviceTasks;
 
 namespace DDDSample1
 {
@@ -72,8 +72,8 @@ namespace DDDSample1
             services.AddTransient<IRequestRepository, RequestRepository>();
             services.AddTransient<RequestService>();
 
-            services.AddTransient<ITaskRepository, TaskRepository>();
-            services.AddTransient<TaskService>();
+            //        services.AddTransient<IDeviceTaskRepository, DeviceTaskRepository>();
+            //      services.AddTransient<DeviceTaskService>();
         }
     }
 }

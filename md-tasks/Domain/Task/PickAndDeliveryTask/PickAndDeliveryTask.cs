@@ -1,3 +1,4 @@
+using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.Room;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.User;

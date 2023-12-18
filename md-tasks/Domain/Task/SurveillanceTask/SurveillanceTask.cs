@@ -1,10 +1,9 @@
 using System;
 using DDDSample1.Domain.Floor;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Tasks;
 using DDDSample1.Domain.User;
 
-namespace DDDSample1.Domain.Tasks.SurveillanceTask
+namespace DDDSample1.Domain.DeviceTasks.SurveillanceTask
 {
   public class SurveillanceTask : DeviceTask
   {

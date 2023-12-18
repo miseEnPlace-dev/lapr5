@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DDDSample1.Domain.Shared;
 
-namespace DDDSample1.Domain.Tasks
+namespace DDDSample1.Domain.DeviceTasks
 {
-  public class TaskService
+  public class DeviceTaskService
   {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ITaskRepository _repo;
 
-    public TaskService(IUnitOfWork unitOfWork, ITaskRepository repo)
+    public DeviceTaskService(IUnitOfWork unitOfWork, ITaskRepository repo)
     {
       _unitOfWork = unitOfWork;
       _repo = repo;

@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using DDDSample1.Domain.Requests;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DDDSample1.Controllers;

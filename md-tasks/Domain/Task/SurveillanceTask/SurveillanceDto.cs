@@ -1,7 +1,6 @@
 using System;
 
-namespace DDDSample1.Domain.Task;
-
+namespace DDDSample1.Domain.DeviceTasks.SurveillanceTask;
 public class SurveillanceTaskDto
 {
   public Guid Id { get; set; }

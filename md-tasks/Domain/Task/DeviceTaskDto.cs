@@ -1,6 +1,6 @@
 using System;
 
-namespace DDDSample1.Domain.Tasks
+namespace DDDSample1.Domain.DeviceTasks
 {
   public class TaskDto
   {
