@@ -22,7 +22,7 @@ namespace DDDSample1.Domain.DeviceTasks
     //   return listDto;
     // }
 
-    public async Task<TaskDto> GetByIdAsync(TaskId id)
+    public async Task<TaskDto> GetByIdAsync(DeviceTaskId id)
     {
       var task = await this._repo.GetByIdAsync(id);
 
@@ -45,7 +45,7 @@ namespace DDDSample1.Domain.DeviceTasks
 
     public async Task<TaskDto> UpdateAsync(TaskDto dto)
     {
-      var task = await this._repo.GetByIdAsync(new TaskId(dto.Id));
+      var task = await this._repo.GetByIdAsync(new DeviceTaskId(dto.Id));
 
       if (task == null)
         return null;
@@ -58,7 +58,7 @@ namespace DDDSample1.Domain.DeviceTasks
       return new TaskDto { Id = task.Id.AsString() };
     }
 
-    public async Task<TaskDto> InactivateAsync(TaskId id)
+    public async Task<TaskDto> InactivateAsync(DeviceTaskId id)
     {
       var task = await this._repo.GetByIdAsync(id);
 
@@ -73,7 +73,7 @@ namespace DDDSample1.Domain.DeviceTasks
       return new TaskDto { Id = task.Id.AsString() };
     }
 
-    public async Task<TaskDto> DeleteAsync(TaskId id)
+    public async Task<TaskDto> DeleteAsync(DeviceTaskId id)
     {
       var task = await this._repo.GetByIdAsync(id);
 

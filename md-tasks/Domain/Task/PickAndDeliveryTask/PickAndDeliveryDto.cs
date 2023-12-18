@@ -1,6 +1,6 @@
 using System;
 
-namespace DDDSample1.Domain.Task;
+namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
 
 public class PickAndDeliveryTaskDto
 {

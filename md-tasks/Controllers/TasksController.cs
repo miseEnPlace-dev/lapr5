@@ -29,7 +29,7 @@ public class TasksController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<TaskDto>> Get(string id)
     {
-        var t = await _svc.GetByIdAsync(new TaskId(id));
+        var t = await _svc.GetByIdAsync(new DeviceTaskId(id));
         if (t == null) return NotFound();
         return t;
     }
@@ -65,7 +65,7 @@ public class TasksController : ControllerBase
     {
         try
         {
-            var t = await _svc.DeleteAsync(new TaskId(id));
+            var t = await _svc.DeleteAsync(new DeviceTaskId(id));
             if (t == null) return NotFound();
             return Ok(t);
         }

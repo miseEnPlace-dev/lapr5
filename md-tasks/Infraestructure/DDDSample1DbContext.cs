@@ -1,5 +1,4 @@
 using DDDSample1.Domain.Requests;
-using DDDSample1.Domain.Tasks;
 using DDDSample1.Infrastructure.DeviceTasks;
 using DDDSample1.Infrastructure.Requests;
 using Microsoft.EntityFrameworkCore;

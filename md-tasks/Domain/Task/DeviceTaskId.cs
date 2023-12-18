@@ -3,9 +3,9 @@ using DDDSample1.Domain.Shared;
 
 namespace DDDSample1.Domain.DeviceTasks
 {
-  public class TaskId : EntityId
+  public class DeviceTaskId : EntityId
   {
-    public TaskId(String value) : base(value)
+    public DeviceTaskId(String value) : base(value)
     {
 
     }

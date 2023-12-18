@@ -3,16 +3,15 @@ using DDDSample1.Domain.Room;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.User;
 
-namespace DDDSample1.Domain.Tasks.PickAndDeliveryTask
+namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask
 {
     public class PickAndDeliveryTask : DeviceTask
     {
         public PickAndDeliveryDescription PickAndDeliveryDescription { get; private set; }
         public ConfirmationCode ConfirmationCode { get; private set; }
 
-        public User.UserEmail PickupUserId { get; private set; }
-        public User.UserEmail DeliveryUserId { get; private set; }
-
+        public UserEmail PickupUserId { get; private set; }
+        public UserEmail DeliveryUserId { get; private set; }
         public RoomId PickupRoomId { get; private set; }
 
         public RoomId DeliveryRoomId { get; private set; }
@@ -24,7 +23,7 @@ namespace DDDSample1.Domain.Tasks.PickAndDeliveryTask
             Active = true;
         }
 
-        public PickAndDeliveryTask(PickAndDeliveryDescription PickAndDeliveryDescription, User.UserEmail PickupUserId, User.UserEmail DeliveryUserId, RoomId PickupRoomId, RoomId DeliveryRoomId)
+        public PickAndDeliveryTask(PickAndDeliveryDescription PickAndDeliveryDescription, UserEmail PickupUserId, UserEmail DeliveryUserId, RoomId PickupRoomId, RoomId DeliveryRoomId)
         {
             this.PickAndDeliveryDescription = PickAndDeliveryDescription;
             ConfirmationCode = new ConfirmationCode("Pending");

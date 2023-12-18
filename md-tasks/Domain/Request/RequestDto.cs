@@ -12,11 +12,14 @@ public class RequestDto
 
   public string DeviceModelCode { get; set; }
 
-  public RequestDto(Guid Id, string State, string UserEmail, string DeviceModelCode)
+  public string DeviceTaskId { get; set; }
+
+  public RequestDto(Guid Id, string State, string UserEmail, string DeviceModelCode, string DeviceTaskId)
   {
     this.Id = Id;
     this.State = State;
     this.UserEmail = UserEmail;
     this.DeviceModelCode = DeviceModelCode;
+    this.DeviceTaskId = DeviceTaskId;
   }
 }

@@ -1,8 +1,8 @@
 using System;
 using DDDSample1.Domain.DeviceModel;
+using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.User;
-using DDDSample1.Domain.DeviceTasks;
 
 namespace DDDSample1.Domain.Requests
 {
@@ -14,6 +14,8 @@ namespace DDDSample1.Domain.Requests
 
         public UserEmail UserEmail { get; private set; }
 
+        public DeviceTask DeviceTask { get; private set; }
+
         public bool Active { get; private set; }
 
         private Request()
@@ -21,8 +23,9 @@ namespace DDDSample1.Domain.Requests
             Active = true;
         }
 
-        public Request(RequestState state, DeviceModelCode DeviceModelCode, UserEmail userEmail)
+        public Request(RequestState state, DeviceModelCode DeviceModelCode, UserEmail userEmail, DeviceTask DeviceTask)
         {
+            this.DeviceTask = DeviceTask;
             State = state;
             this.DeviceModelCode = DeviceModelCode;
             UserEmail = userEmail;
