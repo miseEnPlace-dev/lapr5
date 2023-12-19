@@ -357,8 +357,7 @@ const FloorEditor: React.FC = () => {
 
     initialize();
     animate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [floors]);
 
   const handleNavigateBack = () => {
     navigate("/");
