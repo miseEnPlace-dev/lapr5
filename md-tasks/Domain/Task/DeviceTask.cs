@@ -2,7 +2,7 @@ using DDDSample1.Domain.Shared;
 
 namespace DDDSample1.Domain.DeviceTasks
 {
-    public class DeviceTask : Entity<DeviceTaskId>, IAggregateRoot
+    public abstract class DeviceTask : Entity<DeviceTaskId>, IAggregateRoot
     {
         public DeviceTask() { }
 
@@ -11,6 +11,6 @@ namespace DDDSample1.Domain.DeviceTasks
             this.Id = new DeviceTaskId(code);
         }
 
-        // public abstract void ExecuteTask();
+        public abstract void ExecuteTask();
     }
 }
