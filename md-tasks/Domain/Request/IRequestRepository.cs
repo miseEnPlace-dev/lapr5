@@ -14,5 +14,4 @@ namespace DDDSample1.Infrastructure.Requests
 
     public Task<List<Request>> GetSurveillanceRequests();
   }
-
 }

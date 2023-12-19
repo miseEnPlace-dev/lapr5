@@ -258,7 +258,13 @@ btroca([X|L1],[X|L2]):-btroca(L1,L2).
 
 gera_geracao_ger(G,G,Pop):-
 	debug_mode(D),
-	((D==1,write('Geração '), write(G), write(':'), nl, write(Pop), nl);true).
+	((D==1,write('Geração '), write(G), write(':'), nl, write(Pop), nl);true),
+	cruzamento(Pop,NPop1),
+	mutacao(NPop1,NPop),
+	avalia_populacao(NPop,NPopAv),
+	ordena_populacao(NPopAv,NPopOrd),
+	[Ind|_] = NPopOrd,
+	((D==1,write('Melhor individuo: '),write(Ind),nl,nl);true), !.
 
 gera_geracao_ger(N,G,Pop):-
 	debug_mode(D),
@@ -277,8 +283,13 @@ gera_geracao_time(T,G,Pop):-
 	get_time(Ti),
 	Tf is Ti - T,
 	Tf > Lim,
-	!,
-	write('Geração '), write(G), write(':'), nl, write(Pop), nl.
+	write('Geração '), write(G), write(':'), nl, write(Pop), nl,
+	cruzamento(Pop,NPop1),
+	mutacao(NPop1,NPop),
+	avalia_populacao(NPop,NPopAv),
+	ordena_populacao(NPopAv,NPopOrd),
+	melhor_individuo(NPopOrd,Ind),
+	((D==1,write('Melhor individuo: '), write(Ind), nl, nl);true),!.
 
 gera_geracao_time(T, N, Pop) :-
 	debug_mode(D),

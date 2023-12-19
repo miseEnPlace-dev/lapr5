@@ -15,6 +15,12 @@ You can check the client clarifications throughout the project [here](./client_c
 - [C4 Model Views](./views/readme.md)
 - [Mapping between Views](./views/mapping/readme.md)
 
+## Visualization Module
+
+The visualization module is a module that allows the user to visualize the simulations in a 3D environment. It is a module that is not part of the core of the system, but it is a module that can be used to visualize the simulations in a more user-friendly way.
+
+The documentation of the visualization module can be found [here](./visualization/readme.md).
+
 ## Definition of Ready
 
 A User Story is considered **ready** when it matches the following criteria:

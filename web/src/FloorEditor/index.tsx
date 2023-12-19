@@ -357,8 +357,7 @@ const FloorEditor: React.FC = () => {
 
     initialize();
     animate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [floors]);
 
   const handleNavigateBack = () => {
     navigate("/");
@@ -427,13 +426,7 @@ const FloorEditor: React.FC = () => {
               <tr>
                 <td>
                   Map:
-                  <select id="maze">
-                    {floors.map((floor, i) => (
-                      <option key={floor.code} value={i}>
-                        {floor.code}
-                      </option>
-                    ))}
-                  </select>
+                  <select id="maze"></select>
                 </td>
               </tr>
             </tbody>

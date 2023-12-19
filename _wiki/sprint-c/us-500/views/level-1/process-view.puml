@@ -1,0 +1,19 @@
+@startuml process-view
+autonumber
+
+actor TM as "Task Manager"
+participant SYS as "RobDroneGo System" <<system (C4)>>
+participant SYS as "RobDroneGo System" <<system (C4)>>
+
+activate TM
+
+TM -> SYS : asks to get the sequence of execution of the approved tasks
+activate SYS
+
+TM <-- SYS : returns the sequence of tasks
+deactivate SYS
+
+deactivate TM
+
+@enduml
+
