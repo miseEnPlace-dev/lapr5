@@ -21,6 +21,8 @@ public class RequestsController : ControllerBase
   [HttpGet]
   public async Task<ActionResult<IEnumerable<RequestDto>>> GetAll()
   {
+    if (Request.Query.ContainsKey("State"))
+      return await _svc.GetTasksByState(Request.Query["State"].ToString());
     return await _svc.GetAllAsync();
   }
 
