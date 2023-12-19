@@ -170,7 +170,8 @@ gera_nao_elit(G, Pop, GerIguais, PopAnterior):-
 	mutacao(NPop1, NPop),
 	selecao_individuos(NPop, NPopAv),
 	ordena_populacao(NPopAv, NPopOrd),
-	melhor_individuo(NPopOrd, Ind),
+	melhor_individuo(Pop, Ind),
+	retira_pior(NPopOrd, Ind, NPopNova),
 	((D==1,write('Melhor individuo: '), write(Ind), nl, nl);true),
 	(GerIguais > 0, avaliar_semelhanca_entre_pop(Pop, PopAnterior, GerIguais),
 			G1 is G + 1,
@@ -263,20 +264,21 @@ gera_geracao_ger(G,G,Pop):-
 	mutacao(NPop1,NPop),
 	avalia_populacao(NPop,NPopAv),
 	ordena_populacao(NPopAv,NPopOrd),
-	[Ind|_] = NPopOrd,
-	((D==1,write('Melhor individuo: '),write(Ind),nl,nl);true), !.
+	melhor_individuo(Pop,Ind),
+	((D==1,write('Melhor individuo: '),write(Ind), nl, nl);true), !.
 
 gera_geracao_ger(N,G,Pop):-
 	debug_mode(D),
-	((D==1,write('Geração '),write(N),write(':'),nl,write(Pop),nl);true),
+	((D == 1,write('Geração '),write(N),write(':'),nl, write(Pop), nl);true),
 	cruzamento(Pop,NPop1),
 	mutacao(NPop1,NPop),
 	avalia_populacao(NPop,NPopAv),
 	ordena_populacao(NPopAv,NPopOrd),
-	[Ind|_] = NPopOrd,
-	((D==1,write('Melhor individuo: '),write(Ind),nl,nl);true),
+	melhor_individuo(Pop,Ind),
+	retira_pior(NPopOrd,Ind,NPopNova),
+	((D == 1,write('Melhor individuo: '),write(Ind), nl, nl);true),
 	N1 is N+1,
-	gera_geracao_ger(N1,G,NPopOrd).
+	gera_geracao_ger(N1,G,NPopNova).
 
 gera_geracao_time(T,G,Pop):-
 	lim_time(Lim),
@@ -288,7 +290,7 @@ gera_geracao_time(T,G,Pop):-
 	mutacao(NPop1,NPop),
 	avalia_populacao(NPop,NPopAv),
 	ordena_populacao(NPopAv,NPopOrd),
-	melhor_individuo(NPopOrd,Ind),
+	melhor_individuo(Pop,Ind),
 	((D==1,write('Melhor individuo: '), write(Ind), nl, nl);true),!.
 
 gera_geracao_time(T, N, Pop) :-
@@ -298,10 +300,13 @@ gera_geracao_time(T, N, Pop) :-
 	mutacao(NPop1, NPop),
 	avalia_populacao(NPop, NPopAv),
 	ordena_populacao(NPopAv, NPopOrd),
-	melhor_individuo(Pop, Ind),
-	((D == 1, write('Melhor individuo: '), write(Ind), nl, nl); true),
+	melhor_individuo(Pop, MelhorInd),
+	retira_pior(NPopOrd, MelhorInd, NPopNova),
+	((D == 1, write('Melhor individuo: '), write(MelhorInd), nl, nl); true),
 	N1 is N + 1,
-	gera_geracao_time(T, N1, NPopOrd).
+	gera_geracao_time(T, N1, NPopNova).
+
+retira_pior([_|Resto], Melhor, [Melhor|Resto]) :- !.
 
 melhor_individuo([Ind*V | Resto], Ind1) :-
     melhor_individuo(Resto, Ind*V, Ind1).
