@@ -8,7 +8,7 @@ internal class DeviceTaskEntityTypeConfiguration : IEntityTypeConfiguration<Devi
 {
   public void Configure(EntityTypeBuilder<DeviceTask> builder)
   {
-    builder.ToTable("Tasks", SchemaNames.DDDSample1);
+    // builder.ToTable("Tasks", SchemaNames.DDDSample1);
     builder.HasKey(b => b.Id);
     builder.Property<bool>("_active").HasColumnName("Active");
   }

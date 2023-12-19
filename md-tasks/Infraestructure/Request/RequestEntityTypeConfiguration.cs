@@ -8,7 +8,7 @@ internal class RequestEntityTypeConfiguration : IEntityTypeConfiguration<Request
 {
   public void Configure(EntityTypeBuilder<Request> builder)
   {
-    builder.ToTable("Requests", SchemaNames.DDDSample1);
+    // builder.ToTable("Requests", SchemaNames.DDDSample1);
     builder.HasKey(b => b.Id);
     builder.OwnsOne(b => b.State);
     builder.OwnsOne(b => b.DeviceModelCode);
