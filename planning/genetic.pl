@@ -280,26 +280,27 @@ gera_geracao_time(T,G,Pop):-
 	!,
 	write('Geração '), write(G), write(':'), nl, write(Pop), nl.
 
-gera_geracao_time(T,N,Pop):-
+gera_geracao_time(T, N, Pop) :-
 	debug_mode(D),
-	((D==1,write('Geração '), write(N), write(':'), nl, write(Pop), nl);true),
-	cruzamento(Pop,NPop1),
-	mutacao(NPop1,NPop),
-	avalia_populacao(NPop,NPopAv),
-	ordena_populacao(NPopAv,NPopOrd),
-	melhor_individuo(NPopOrd,Ind),
-	((D==1,write('Melhor individuo: '), write(Ind), nl, nl);true),
-	N1 is N+1,
-	gera_geracao_time(T,N1,NPopOrd).
+	((D == 1, write('Geração '), write(N), write(':'), nl, write(Pop), nl); true),
+	cruzamento(Pop, NPop1),
+	mutacao(NPop1, NPop),
+	avalia_populacao(NPop, NPopAv),
+	ordena_populacao(NPopAv, NPopOrd),
+	melhor_individuo(Pop, Ind),
+	((D == 1, write('Melhor individuo: '), write(Ind), nl, nl); true),
+	N1 is N + 1,
+	gera_geracao_time(T, N1, NPopOrd).
 
-melhor_individuo([Ind*V|Resto],Ind1):-
-	melhor_individuo(Resto,Ind*V,Ind1).
+melhor_individuo([Ind*V | Resto], Ind1) :-
+    melhor_individuo(Resto, Ind*V, Ind1).
 
-melhor_individuo([],Ind,Ind):-!.
+melhor_individuo([], Ind, Ind):- !.
 
-melhor_individuo([Ind*V|Resto],Ind1*V1,Ind2):-
-	(V < V1,melhor_individuo(Resto,Ind*V,Ind2));
-	melhor_individuo(Resto,Ind1*V1,Ind2).
+melhor_individuo([Ind*V | Resto], Ind1*V1, Ind2) :-
+    (V < V1, melhor_individuo(Resto, Ind*V, Ind2));
+    melhor_individuo(Resto, Ind1*V1, Ind2).
+
 
 gerar_pontos_cruzamento(P1,P2):-
 	gerar_pontos_cruzamento1(P1,P2).
