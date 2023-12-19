@@ -23,13 +23,9 @@ namespace DDDNetCore.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<bool>("_active")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("Active");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Tasks", "ddd");
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("DDDSample1.Domain.Requests.Request", b =>
@@ -43,17 +39,9 @@ namespace DDDNetCore.Migrations
                     b.Property<string>("DeviceTaskId")
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("_active")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("Active");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Requests", "ddd", t =>
-                        {
-                            t.Property("Active")
-                                .HasColumnName("Active1");
-                        });
+                    b.ToTable("Requests");
                 });
 
             modelBuilder.Entity("DDDSample1.Domain.Requests.Request", b =>
@@ -68,7 +56,7 @@ namespace DDDNetCore.Migrations
 
                             b1.HasKey("RequestId");
 
-                            b1.ToTable("Requests", "ddd");
+                            b1.ToTable("Requests");
 
                             b1.WithOwner()
                                 .HasForeignKey("RequestId");
@@ -84,7 +72,7 @@ namespace DDDNetCore.Migrations
 
                             b1.HasKey("RequestId");
 
-                            b1.ToTable("Requests", "ddd");
+                            b1.ToTable("Requests");
 
                             b1.WithOwner()
                                 .HasForeignKey("RequestId");
@@ -100,7 +88,7 @@ namespace DDDNetCore.Migrations
 
                             b1.HasKey("RequestId");
 
-                            b1.ToTable("Requests", "ddd");
+                            b1.ToTable("Requests");
 
                             b1.WithOwner()
                                 .HasForeignKey("RequestId");

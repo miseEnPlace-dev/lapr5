@@ -10,15 +10,11 @@ namespace DDDNetCore.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "ddd");
-
             migrationBuilder.AlterDatabase()
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Requests",
-                schema: "ddd",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false)
@@ -31,7 +27,6 @@ namespace DDDNetCore.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DeviceTaskId = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Active1 = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Active = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
@@ -42,12 +37,10 @@ namespace DDDNetCore.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Tasks",
-                schema: "ddd",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Active = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
@@ -60,12 +53,10 @@ namespace DDDNetCore.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Requests",
-                schema: "ddd");
+                name: "Requests");
 
             migrationBuilder.DropTable(
-                name: "Tasks",
-                schema: "ddd");
+                name: "Tasks");
         }
     }
 }
