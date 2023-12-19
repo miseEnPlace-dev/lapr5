@@ -1,0 +1,36 @@
+@startuml process-view
+autonumber
+actor TM as "Task Manager"
+participant UI as "Visualization" <<system (C4)>>
+participant TMD as "Tasks Master Data" <<system (C4)>>
+participant P as "Planning" <<system (C4)>>
+participant MDD as "MDD" <<system (C4)>>
+
+activate TM
+
+TM -> UI : asks to get the sequence of execution of the approved tasks
+activate UI
+
+UI -> TMD : GET /tasks/sequence
+activate TMD
+TMD -> P : GET /tasks/sequence
+activate P
+P -> TMD : GET /tasks?status=approved
+activate TMD
+TMD --> P : GET /tasks?status=approved
+deactivate TMD
+P -> P : runs algorithm to get the sequence of tasks
+activate P
+deactivate P
+P --> TMD : 200 (sequence of tasks)
+deactivate P
+TMD --> UI : 200 (sequence of tasks)
+deactivate TMD
+
+TM <-- UI : returns the sequence of tasks
+deactivate UI
+
+deactivate TM
+
+@enduml
+
