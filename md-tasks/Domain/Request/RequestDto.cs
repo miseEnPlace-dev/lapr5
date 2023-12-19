@@ -14,12 +14,12 @@ public class RequestDto
 
   public string DeviceTaskId { get; set; }
 
-  public RequestDto(Guid Id, string State, string UserEmail, string DeviceModelCode, string DeviceTaskId)
+  public RequestDto(Request req)
   {
-    this.Id = Id;
-    this.State = State;
-    this.UserEmail = UserEmail;
-    this.DeviceModelCode = DeviceModelCode;
-    this.DeviceTaskId = DeviceTaskId;
+    Id = req.Id.AsGuid();
+    State = req.State.AsString();
+    UserEmail = req.UserEmail.ToString();
+    DeviceModelCode = req.DeviceModelCode.AsString();
+    DeviceTaskId = req.DeviceTaskId.ToString();
   }
 }
