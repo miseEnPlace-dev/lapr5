@@ -5,9 +5,9 @@ namespace DDDSample1.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DDDSample1DbContext _context;
+        private readonly MySQLDbContext _context;
 
-        public UnitOfWork(DDDSample1DbContext context)
+        public UnitOfWork(MySQLDbContext context)
         {
             this._context = context;
         }

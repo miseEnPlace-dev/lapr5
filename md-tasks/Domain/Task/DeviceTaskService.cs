@@ -7,9 +7,9 @@ namespace DDDSample1.Domain.DeviceTasks
   public class DeviceTaskService
   {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ITaskRepository _repo;
+    private readonly IDeviceTaskRepository _repo;
 
-    public DeviceTaskService(IUnitOfWork unitOfWork, ITaskRepository repo)
+    public DeviceTaskService(IUnitOfWork unitOfWork, IDeviceTaskRepository repo)
     {
       _unitOfWork = unitOfWork;
       _repo = repo;

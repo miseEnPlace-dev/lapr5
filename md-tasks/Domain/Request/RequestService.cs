@@ -14,8 +14,6 @@ namespace DDDSample1.Domain.Requests
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRequestRepository _repo;
 
-    private readonly DeviceTaskRepository _deviceTaskRepository;
-
     public RequestService(IUnitOfWork unitOfWork, IRequestRepository repo)
     {
       _unitOfWork = unitOfWork;
@@ -26,7 +24,7 @@ namespace DDDSample1.Domain.Requests
     {
       var list = await _repo.GetAllAsync();
 
-      List<RequestDto> listDto = list.ConvertAll(r => new RequestDto(r.Id.AsGuid(), r.State.AsString(), r.UserEmail.ToString(), r.DeviceModelCode.AsString(), r.DeviceTask.Id.
+      List<RequestDto> listDto = list.ConvertAll(r => new RequestDto(r.Id.AsGuid(), r.State.AsString(), r.UserEmail.ToString(), r.DeviceModelCode.AsString(), r.DeviceTaskId.
       ToString()));
       return listDto;
     }
@@ -35,17 +33,15 @@ namespace DDDSample1.Domain.Requests
     {
       var r = await _repo.GetByIdAsync(id);
       if (r == null) return null;
-      return new RequestDto(r.Id.AsGuid(), r.State.AsString(), r.UserEmail.ToString(), r.DeviceModelCode.AsString(), r.DeviceTask.Id.ToString());
+      return new RequestDto(r.Id.AsGuid(), r.State.AsString(), r.UserEmail.ToString(), r.DeviceModelCode.AsString(), r.DeviceTaskId.ToString());
     }
 
     public async Task<RequestDto> AddAsync(RequestDto dto)
     {
-      var task = await _deviceTaskRepository.GetByIdAsync(new DeviceTaskId(dto.DeviceTaskId));
-
-      var r = new Request(new RequestState(dto.State), new DeviceModelCode(dto.DeviceModelCode), new UserEmail(dto.UserEmail), task);
+      var r = new Request(new RequestState(dto.State), new DeviceModelCode(dto.DeviceModelCode), new UserEmail(dto.UserEmail), new DeviceTaskId(dto.DeviceTaskId));
       await _repo.AddAsync(r);
       await _unitOfWork.CommitAsync();
-      return new RequestDto(r.Id.AsGuid(), r.State.AsString(), r.UserEmail.ToString(), r.DeviceModelCode.AsString(), r.DeviceTask.Id.ToString());
+      return new RequestDto(r.Id.AsGuid(), r.State.AsString(), r.UserEmail.ToString(), r.DeviceModelCode.AsString(), r.DeviceTaskId.ToString());
     }
 
     public async Task<RequestDto> UpdateAsync(RequestDto dto)
@@ -58,7 +54,7 @@ namespace DDDSample1.Domain.Requests
         task.ChangeState(new RequestState(dto.State));
 
       await _unitOfWork.CommitAsync();
-      return new RequestDto(task.Id.AsGuid(), task.State.AsString(), task.UserEmail.ToString(), task.DeviceModelCode.AsString(), task.DeviceTask.Id.ToString());
+      return new RequestDto(task.Id.AsGuid(), task.State.AsString(), task.UserEmail.ToString(), task.DeviceModelCode.AsString(), task.DeviceTaskId.ToString());
     }
 
     public async Task<RequestDto> PutAsync(RequestDto dto)
@@ -70,7 +66,7 @@ namespace DDDSample1.Domain.Requests
       task.ChangeState(new RequestState(dto.State));
 
       await _unitOfWork.CommitAsync();
-      return new RequestDto(task.Id.AsGuid(), task.State.AsString(), task.UserEmail.ToString(), task.DeviceModelCode.AsString(), task.DeviceTask.Id.ToString());
+      return new RequestDto(task.Id.AsGuid(), task.State.AsString(), task.UserEmail.ToString(), task.DeviceModelCode.AsString(), task.DeviceTaskId.ToString());
     }
 
     public async Task<RequestDto> InactivateAsync(RequestId id)
@@ -81,7 +77,7 @@ namespace DDDSample1.Domain.Requests
       if (task.Active) task.ToggleActive();
 
       await _unitOfWork.CommitAsync();
-      return new RequestDto(task.Id.AsGuid(), task.State.AsString(), task.UserEmail.ToString(), task.DeviceModelCode.AsString(), task.DeviceTask.Id.ToString());
+      return new RequestDto(task.Id.AsGuid(), task.State.AsString(), task.UserEmail.ToString(), task.DeviceModelCode.AsString(), task.DeviceTaskId.ToString());
     }
 
     public async Task<RequestDto> DeleteAsync(RequestId id)
@@ -94,7 +90,7 @@ namespace DDDSample1.Domain.Requests
       _repo.Remove(task);
       await _unitOfWork.CommitAsync();
 
-      return new RequestDto(task.Id.AsGuid(), task.State.AsString(), task.UserEmail.ToString(), task.DeviceModelCode.AsString(), task.DeviceTask.Id.ToString());
+      return new RequestDto(task.Id.AsGuid(), task.State.AsString(), task.UserEmail.ToString(), task.DeviceModelCode.AsString(), task.DeviceTaskId.ToString());
     }
   }
 }

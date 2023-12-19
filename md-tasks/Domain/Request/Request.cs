@@ -14,7 +14,7 @@ namespace DDDSample1.Domain.Requests
 
         public UserEmail UserEmail { get; private set; }
 
-        public DeviceTask DeviceTask { get; private set; }
+        public DeviceTaskId DeviceTaskId { get; private set; }
 
         public bool Active { get; private set; }
 
@@ -23,9 +23,9 @@ namespace DDDSample1.Domain.Requests
             Active = true;
         }
 
-        public Request(RequestState state, DeviceModelCode DeviceModelCode, UserEmail userEmail, DeviceTask DeviceTask)
+        public Request(RequestState state, DeviceModelCode DeviceModelCode, UserEmail userEmail, DeviceTaskId DeviceTaskId)
         {
-            this.DeviceTask = DeviceTask;
+            this.DeviceTaskId = DeviceTaskId;
             State = state;
             this.DeviceModelCode = DeviceModelCode;
             UserEmail = userEmail;

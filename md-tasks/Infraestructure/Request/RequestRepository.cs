@@ -5,5 +5,5 @@ namespace DDDSample1.Infrastructure.Requests;
 
 public class RequestRepository : BaseRepository<Request, RequestId>, IRequestRepository
 {
-  public RequestRepository(DDDSample1DbContext context) : base(context.Requests) { }
+  public RequestRepository(MySQLDbContext context) : base(context.Requests) { }
 }

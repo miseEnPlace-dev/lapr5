@@ -10,6 +10,11 @@ public class SqliteDatabaseContext : DbContext
   public DbSet<Task> Tasks { get; set; }
 
 
+  public SqliteDatabaseContext(DbContextOptions options) : base(options)
+  {
+
+  }
+
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
   {
     optionsBuilder.UseSqlite("Data Source=database.db");

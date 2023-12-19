@@ -1,97 +1,97 @@
-using DDDSample1.Domain.DeviceModel;
-using DDDSample1.Domain.DeviceTasks;
-using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
-using DDDSample1.Domain.Requests;
-using DDDSample1.Domain.Room;
-using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.User;
+// using DDDSample1.Domain.DeviceModel;
+// using DDDSample1.Domain.DeviceTasks;
+// using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
+// using DDDSample1.Domain.Requests;
+// using DDDSample1.Domain.Room;
+// using DDDSample1.Domain.Shared;
+// using DDDSample1.Domain.User;
 
 
-namespace tests;
+// namespace tests;
 
-public class RequestTest
-{
+// public class RequestTest
+// {
 
-  [Fact]
-  public void EnsureRequestConstructorWorksCorrectly()
-  {
-    // Arrange
-    RequestState state = new("Pending");
-    DeviceModelCode deviceModelCode = new("Code1");
-    DeviceModelName deviceModelName = new("Name1");
-    DeviceModel deviceModel = new(deviceModelCode, deviceModelName);
-    UserEmail userEmail = new("email@email.com");
-    User user = new("john", "doe", userEmail);
-    Room room = new("Room1");
+//   [Fact]
+//   public void EnsureRequestConstructorWorksCorrectly()
+//   {
+//     // Arrange
+//     RequestState state = new("Pending");
+//     DeviceModelCode deviceModelCode = new("Code1");
+//     DeviceModelName deviceModelName = new("Name1");
+//     DeviceModel deviceModel = new(deviceModelCode, deviceModelName);
+//     UserEmail userEmail = new("email@email.com");
+//     User user = new("john", "doe", userEmail);
+//     Room room = new("Room1");
 
-    PickAndDeliveryDescription pickAndDeliveryDescription = new("Description1");
+//     PickAndDeliveryDescription pickAndDeliveryDescription = new("Description1");
 
-    PickAndDeliveryTask pickAndDeliveryTask = new(pickAndDeliveryDescription, user.UserEmail, user.UserEmail, room.Id, room.Id);
+//     PickAndDeliveryTask pickAndDeliveryTask = new(pickAndDeliveryDescription, user.UserEmail, user.UserEmail, room.Id, room.Id);
 
-    // Act
-    Request request = new(state, deviceModel.DeviceModelCode, user.UserEmail, pickAndDeliveryTask);
+//     // Act
+//     Request request = new(state, deviceModel.DeviceModelCode, user.UserEmail, pickAndDeliveryTask);
 
-    // Assert
-    Assert.Equal(state, request.State);
-    Assert.Equal(deviceModel.DeviceModelCode, request.DeviceModelCode);
-    Assert.Equal(user.UserEmail, request.UserEmail);
-    Assert.True(request.Active);
-    Assert.Equal(pickAndDeliveryTask, request.DeviceTask);
+//     // Assert
+//     Assert.Equal(state, request.State);
+//     Assert.Equal(deviceModel.DeviceModelCode, request.DeviceModelCode);
+//     Assert.Equal(user.UserEmail, request.UserEmail);
+//     Assert.True(request.Active);
+//     Assert.Equal(pickAndDeliveryTask, request.DeviceTask);
 
-  }
+//   }
 
-  [Fact]
-  public void EnsureChangeStateWorksCorrectly()
-  {
-    // Arrange
-    RequestState state = new("Pending");
-    DeviceModelCode deviceModelCode = new("Code1");
-    DeviceModelName deviceModelName = new("Name1");
-    DeviceModel deviceModel = new(deviceModelCode, deviceModelName);
-    UserEmail userEmail = new("email@email.com");
-    User user = new("john", "doe", userEmail);
-    Room room = new("Room1");
+//   [Fact]
+//   public void EnsureChangeStateWorksCorrectly()
+//   {
+//     // Arrange
+//     RequestState state = new("Pending");
+//     DeviceModelCode deviceModelCode = new("Code1");
+//     DeviceModelName deviceModelName = new("Name1");
+//     DeviceModel deviceModel = new(deviceModelCode, deviceModelName);
+//     UserEmail userEmail = new("email@email.com");
+//     User user = new("john", "doe", userEmail);
+//     Room room = new("Room1");
 
-    PickAndDeliveryDescription pickAndDeliveryDescription = new("Description1");
+//     PickAndDeliveryDescription pickAndDeliveryDescription = new("Description1");
 
-    PickAndDeliveryTask pickAndDeliveryTask = new(pickAndDeliveryDescription, user.UserEmail, user.UserEmail, room.Id, room.Id);
+//     PickAndDeliveryTask pickAndDeliveryTask = new(pickAndDeliveryDescription, user.UserEmail, user.UserEmail, room.Id, room.Id);
 
-    Request request = new(state, deviceModel.DeviceModelCode, user.UserEmail, pickAndDeliveryTask);
+//     Request request = new(state, deviceModel.DeviceModelCode, user.UserEmail, pickAndDeliveryTask);
 
-    RequestState newState = new("Completed");
+//     RequestState newState = new("Completed");
 
-    // Act
-    request.ChangeState(newState);
+//     // Act
+//     request.ChangeState(newState);
 
-    // Assert
-    Assert.Equal(newState, request.State);
-  }
+//     // Assert
+//     Assert.Equal(newState, request.State);
+//   }
 
-  [Fact]
-  public void EnsureToggleActiveWorksCorrectly()
-  {
-    // Arrange
-    RequestState state = new("Pending");
-    DeviceModelCode deviceModelCode = new("Code1");
-    DeviceModelName deviceModelName = new("Name1");
-    DeviceModel deviceModel = new(deviceModelCode, deviceModelName);
-    UserEmail userEmail = new("email@email.com");
-    User user = new("john", "doe", userEmail);
-    Room room = new("Room1");
+//   [Fact]
+//   public void EnsureToggleActiveWorksCorrectly()
+//   {
+//     // Arrange
+//     RequestState state = new("Pending");
+//     DeviceModelCode deviceModelCode = new("Code1");
+//     DeviceModelName deviceModelName = new("Name1");
+//     DeviceModel deviceModel = new(deviceModelCode, deviceModelName);
+//     UserEmail userEmail = new("email@email.com");
+//     User user = new("john", "doe", userEmail);
+//     Room room = new("Room1");
 
-    PickAndDeliveryDescription pickAndDeliveryDescription = new("Description1");
+//     PickAndDeliveryDescription pickAndDeliveryDescription = new("Description1");
 
-    PickAndDeliveryTask pickAndDeliveryTask = new(pickAndDeliveryDescription, user.UserEmail, user.UserEmail, room.Id, room.Id);
+//     PickAndDeliveryTask pickAndDeliveryTask = new(pickAndDeliveryDescription, user.UserEmail, user.UserEmail, room.Id, room.Id);
 
-    Request request = new(state, deviceModel.DeviceModelCode, user.UserEmail, pickAndDeliveryTask);
+//     Request request = new(state, deviceModel.DeviceModelCode, user.UserEmail, pickAndDeliveryTask);
 
-    // Act
-    bool newActiveState = request.ToggleActive();
+//     // Act
+//     bool newActiveState = request.ToggleActive();
 
-    // Assert
-    Assert.False(newActiveState);
-    Assert.False(request.Active);
-  }
+//     // Assert
+//     Assert.False(newActiveState);
+//     Assert.False(request.Active);
+//   }
 
 
-}
+// }

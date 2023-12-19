@@ -3,7 +3,7 @@ using DDDSample1.Domain.DeviceTasks;
 
 namespace DDDSample1.Infrastructure.DeviceTasks;
 
-public class DeviceTaskRepository : BaseRepository<DeviceTask, DeviceTaskId>, ITaskRepository
+public class DeviceTaskRepository : BaseRepository<DeviceTask, DeviceTaskId>, IDeviceTaskRepository
 {
-  public DeviceTaskRepository(DDDSample1DbContext context) : base(null) { }
+  public DeviceTaskRepository(MySQLDbContext context) : base(context.Tasks) { }
 }

@@ -12,6 +12,7 @@ using DDDSample1.Infrastructure.Requests;
 using DDDSample1.Domain.Requests;
 using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Infrastructure.DeviceTasks;
+using System;
 
 namespace DDDSample1
 {
@@ -27,15 +28,18 @@ namespace DDDSample1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DDDSample1DbContext>(opt =>
-                opt.UseInMemoryDatabase("DDDSample1DB")
+            // services.AddDbContext<DDDSample1DbContext>(opt =>
+            //     opt.UseInMemoryDatabase("DDDSample1DB")
+            //     .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
+
+            // services.AddDbContext<SqliteDatabaseContext>(opt => opt.UseSqlite()
+            //      .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
+
+            services.AddDbContext<MySQLDbContext>(opt =>
+                opt.UseMySql(Configuration.GetConnectionString("DefaultConnection"), ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection")))
                 .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
 
-            //services.AddDbContext<SqliteDatabaseContext>(opt => opt.UseSqlite())
-            //      .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>();
-
             ConfigureMyServices(services);
-
 
             services.AddControllers().AddNewtonsoftJson();
         }
@@ -72,8 +76,8 @@ namespace DDDSample1
             services.AddTransient<IRequestRepository, RequestRepository>();
             services.AddTransient<RequestService>();
 
-            //        services.AddTransient<IDeviceTaskRepository, DeviceTaskRepository>();
-            //      services.AddTransient<DeviceTaskService>();
+            services.AddTransient<IDeviceTaskRepository, DeviceTaskRepository>();
+            services.AddTransient<DeviceTaskService>();
         }
     }
 }

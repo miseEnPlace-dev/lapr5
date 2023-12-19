@@ -1,16 +1,15 @@
-// using Microsoft.EntityFrameworkCore;
-// using Microsoft.EntityFrameworkCore.Metadata.Builders;
-// using DDDSample1.Domain.Tasks;
-// using DDDSample1.Domain.Tasks.SurveillanceTask;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using DDDSample1.Domain.DeviceTasks;
 
-// namespace DDDSample1.Infrastructure.Tasks;
+namespace DDDSample1.Infrastructure.Tasks;
 
-// internal class TaskEntityTypeConfiguration : IEntityTypeConfiguration<S>
-// {
-//   public void Configure(EntityTypeBuilder<SurveillanceTask> builder)
-//   {
-//     // builder.ToTable("Tasks", SchemaNames.DDDSample1);
-//     builder.HasKey(b => b.Id);
-//     // builder.Property<bool>("_active").HasColumnName("Active");
-//   }
-// }
+internal class DeviceTaskEntityTypeConfiguration : IEntityTypeConfiguration<DeviceTask>
+{
+  public void Configure(EntityTypeBuilder<DeviceTask> builder)
+  {
+    // builder.ToTable("Tasks", SchemaNames.DDDSample1);
+    builder.HasKey(b => b.Id);
+    // builder.Property<bool>("_active").HasColumnName("Active");
+  }
+}

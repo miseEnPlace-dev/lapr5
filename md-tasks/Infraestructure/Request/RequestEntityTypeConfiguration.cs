@@ -1,6 +1,4 @@
-using DDDSample1.Domain.DeviceModel;
 using DDDSample1.Domain.Requests;
-using DDDSample1.Domain.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
