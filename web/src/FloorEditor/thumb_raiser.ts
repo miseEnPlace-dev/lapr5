@@ -489,6 +489,16 @@ export default class ThumbRaiser {
       this.mazeParameters.mazes[this.mazeParameters.selected]
     );
 
+    const floors = this.mazeParameters.mazes[0].maze.maze.elevator.floors;
+    const mazeSelect = document.getElementById("maze") as HTMLSelectElement;
+    if (mazeSelect)
+      mazeSelect.innerHTML = floors.map(
+        (floor, i) =>
+          `<option key=${floor} value=${this.mazeParameters.mazes.findIndex(
+            (m) => m.name === floor
+          )}>${floor}</option>`
+      );
+
     // Create the player
     this.player = new Player(this.playerParameters);
 
@@ -556,8 +566,8 @@ export default class ThumbRaiser {
       LOCAL_STORAGE_PREFIX + "fixedViewCamera"
     )
       ? JSON.parse(
-        localStorage.getItem(LOCAL_STORAGE_PREFIX + "fixedViewCamera")
-      )
+          localStorage.getItem(LOCAL_STORAGE_PREFIX + "fixedViewCamera")
+        )
       : true;
     this.firstPersonViewCamera.checkBox =
       document.getElementById("first-person");
@@ -565,8 +575,8 @@ export default class ThumbRaiser {
       LOCAL_STORAGE_PREFIX + "firstPersonViewCamera"
     )
       ? JSON.parse(
-        localStorage.getItem(LOCAL_STORAGE_PREFIX + "firstPersonViewCamera")
-      )
+          localStorage.getItem(LOCAL_STORAGE_PREFIX + "firstPersonViewCamera")
+        )
       : true;
     this.thirdPersonViewCamera.checkBox =
       document.getElementById("third-person");
@@ -574,8 +584,8 @@ export default class ThumbRaiser {
       LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera"
     )
       ? JSON.parse(
-        localStorage.getItem(LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera")
-      )
+          localStorage.getItem(LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera")
+        )
       : true;
     this.topViewCamera.checkBox = document.getElementById("top");
     this.topViewCamera.checkBox.checked = localStorage.getItem(
@@ -661,6 +671,16 @@ export default class ThumbRaiser {
   }
 
   updateMaze(index: number) {
+    const floors = this.mazeParameters.mazes[index].maze.maze.elevator.floors;
+    const mazeSelect = document.getElementById("maze") as HTMLSelectElement;
+    if (mazeSelect)
+      mazeSelect.innerHTML = floors.map(
+        (floor, i) =>
+          `<option key=${floor} value=${this.mazeParameters.mazes.findIndex(
+            (m) => m.name === floor
+          )}>${floor}</option>`
+      );
+
     this.scene.remove(this.maze);
     this.maze = new Maze(this.mazeParameters.mazes[index]);
     // The cache must be enabled; additional information available at https://threejs.org/docs/api/en/loaders/FileLoader.html
@@ -1212,12 +1232,12 @@ export default class ThumbRaiser {
                   ((mouseIncrement.x / this.miniMapCamera.viewport.width) *
                     (this.miniMapCamera.orthographic.left -
                       this.miniMapCamera.orthographic.right)) /
-                  this.miniMapCamera.orthographic.zoom,
+                    this.miniMapCamera.orthographic.zoom,
                   0.0,
                   ((mouseIncrement.y / this.miniMapCamera.viewport.height) *
                     (this.miniMapCamera.orthographic.top -
                       this.miniMapCamera.orthographic.bottom)) /
-                  this.miniMapCamera.orthographic.zoom
+                    this.miniMapCamera.orthographic.zoom
                 );
                 this.miniMapCamera.updateTarget(targetIncrement);
               }
