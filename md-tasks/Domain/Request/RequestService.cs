@@ -38,7 +38,7 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<RequestDto> AddAsync(RequestDto dto)
     {
-      var r = new Request(new RequestState(dto.State), new DeviceModelCode(dto.DeviceModelCode), new UserEmail(dto.UserEmail), new DeviceTaskId(dto.DeviceTaskId));
+      var r = new Request(new DeviceModelCode(dto.DeviceModelCode), new UserEmail(dto.UserEmail), new DeviceTaskId(dto.DeviceTaskId));
       await _repo.AddAsync(r);
       await _unitOfWork.CommitAsync();
       return new RequestDto(r.Id.AsGuid(), r.State.AsString(), r.UserEmail.ToString(), r.DeviceModelCode.AsString(), r.DeviceTaskId.ToString());

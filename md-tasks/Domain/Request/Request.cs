@@ -23,10 +23,10 @@ namespace DDDSample1.Domain.Requests
             Active = true;
         }
 
-        public Request(RequestState state, DeviceModelCode DeviceModelCode, UserEmail userEmail, DeviceTaskId DeviceTaskId)
+        public Request(DeviceModelCode DeviceModelCode, UserEmail userEmail, DeviceTaskId DeviceTaskId)
         {
             this.DeviceTaskId = DeviceTaskId;
-            State = state;
+            State = new RequestState("Pending");
             this.DeviceModelCode = DeviceModelCode;
             UserEmail = userEmail;
             Active = true;
