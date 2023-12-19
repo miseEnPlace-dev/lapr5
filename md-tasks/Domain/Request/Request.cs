@@ -10,41 +10,25 @@ namespace DDDSample1.Domain.Requests
   {
     public RequestState State { get; private set; }
 
-    public DeviceModelCode DeviceModelCode { get; private set; }
-
     public UserEmail UserEmail { get; private set; }
 
     public DeviceTaskId DeviceTaskId { get; private set; }
 
-    public bool Active { get; private set; }
+    public DateTime RequestedAt { get; private set; }
 
-    private Request()
-    {
-      Active = true;
-    }
-
-    public Request(DeviceModelCode DeviceModelCode, UserEmail userEmail, DeviceTaskId DeviceTaskId)
+    public Request(UserEmail userEmail, DeviceTaskId DeviceTaskId)
     {
       this.DeviceTaskId = DeviceTaskId;
       State = new RequestState("Pending");
-      this.DeviceModelCode = DeviceModelCode;
       UserEmail = userEmail;
-      Active = true;
       Id = new RequestId(Guid.NewGuid());
+      RequestedAt = DateTime.Now;
     }
 
     public void ChangeState(RequestState state)
     {
-      if (!Active)
-      {
-        throw new BusinessRuleValidationException("Request is not active.");
-      }
-      State = state;
-    }
 
-    public bool ToggleActive()
-    {
-      return Active = !Active;
+      State = state;
     }
   }
 }

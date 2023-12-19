@@ -8,7 +8,7 @@ namespace DDDSample1.Domain.DeviceTasks
 
     public DeviceTask(string code)
     {
-      this.Id = new DeviceTaskId(code);
+      Id = new DeviceTaskId(code);
     }
 
     public abstract void ExecuteTask();

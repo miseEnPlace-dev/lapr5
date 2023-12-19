@@ -55,7 +55,7 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<RequestDTO> AddAsync(RequestDTO dto)
     {
-      //var r = new Request(new DeviceModelCode(dto), new UserEmail(dto.UserEmail), new DeviceTaskId(dto.DeviceTaskId));
+      //var r = new Request(new UserEmail(dto.UserEmail), new DeviceTaskId(dto.DeviceTaskId));
       await _repo.AddAsync(null);
       await _unitOfWork.CommitAsync();
       return null;
@@ -86,23 +86,10 @@ namespace DDDSample1.Domain.Requests
       return null;
     }
 
-    public async Task<RequestDTO> InactivateAsync(RequestId id)
-    {
-      var r = await _repo.GetByIdAsync(id);
-      if (r == null) return null;
-
-      if (r.Active) r.ToggleActive();
-
-      await _unitOfWork.CommitAsync();
-      return null;
-    }
-
     public async Task<RequestDTO> DeleteAsync(RequestId id)
     {
       var r = await _repo.GetByIdAsync(id);
       if (r == null) return null;
-
-      if (r.Active) throw new BusinessRuleValidationException("It is not possible to delete an active task.");
 
       _repo.Remove(r);
       await _unitOfWork.CommitAsync();

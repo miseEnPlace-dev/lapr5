@@ -19,7 +19,7 @@ public class TasksController : ControllerBase
 
   // GET api/Tasks
   [HttpGet]
-  public async Task<ActionResult<IEnumerable<TaskDto>>> GetAll()
+  public async Task<ActionResult<IEnumerable<DeviceTaskDto>>> GetAll()
   {
     return null;
     // TODO return await _svc.GetAllAsync();
@@ -27,7 +27,7 @@ public class TasksController : ControllerBase
 
   // GET api/Tasks/{id}
   [HttpGet("{id}")]
-  public async Task<ActionResult<TaskDto>> Get(string id)
+  public async Task<ActionResult<DeviceTaskDto>> Get(string id)
   {
     var t = await _svc.GetByIdAsync(new DeviceTaskId(id));
     if (t == null) return NotFound();
@@ -36,14 +36,14 @@ public class TasksController : ControllerBase
 
   // POST api/Tasks
   [HttpPost]
-  public void Create(TaskDto dto) // Task<ActionResult<TaskDto>>
+  public void Create(DeviceTaskDto dto) // Task<ActionResult<TaskDto>>
   {
     // var t = await _svc.AddAsync()
   }
 
   // PUT api/Tasks/5
   [HttpPut("{id}")]
-  public async Task<ActionResult<TaskDto>> Put(string id, TaskDto dto)
+  public async Task<ActionResult<DeviceTaskDto>> Put(string id, DeviceTaskDto dto)
   {
     if (id != dto.Id) return BadRequest();
 
@@ -61,7 +61,7 @@ public class TasksController : ControllerBase
 
   // DELETE api/Tasks/5
   [HttpDelete("{id}")]
-  public async Task<ActionResult<TaskDto>> Delete(string id)
+  public async Task<ActionResult<DeviceTaskDto>> Delete(string id)
   {
     try
     {
