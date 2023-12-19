@@ -13,6 +13,6 @@ internal class RequestEntityTypeConfiguration : IEntityTypeConfiguration<Request
     builder.OwnsOne(b => b.State);
     builder.OwnsOne(b => b.DeviceModelCode);
     builder.OwnsOne(b => b.UserEmail);
-    builder.Property<bool>("_active").HasColumnName("Active");
+    // builder.Property<bool>("_active").HasColumnName("Active");
   }
 }
