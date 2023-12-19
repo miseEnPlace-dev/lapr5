@@ -15,7 +15,7 @@ public class RequestRepository : BaseRepository<Request, RequestId>, IRequestRep
     _context = context;
   }
 
-  public async Task<List<Request>> GetTasksByState(string state)
+  public async Task<List<Request>> GetRequestsByState(string state)
   {
     return await _context.Requests.Where(r => r.State.AsString() == state).ToListAsync();
   }

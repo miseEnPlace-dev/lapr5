@@ -27,9 +27,9 @@ namespace DDDSample1.Domain.Requests
       return listDto;
     }
 
-    public async Task<List<RequestDto>> GetTasksByState(string state)
+    public async Task<List<RequestDto>> GetRequestsByState(string state)
     {
-      var list = await _repo.GetTasksByState(state);
+      var list = await _repo.GetRequestsByState(state);
 
       List<RequestDto> listDto = list.ConvertAll(r => new RequestDto(r));
       return listDto;
