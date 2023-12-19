@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDDNetCore.Migrations
 {
     [DbContext(typeof(MySQLDbContext))]
-    [Migration("20231219102416_init")]
+    [Migration("20231219103043_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -32,7 +32,7 @@ namespace DDDNetCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tasks", "ddd");
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("DDDSample1.Domain.Requests.Request", b =>
@@ -52,7 +52,7 @@ namespace DDDNetCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Requests", "ddd", t =>
+                    b.ToTable("Requests", t =>
                         {
                             t.Property("Active")
                                 .HasColumnName("Active1");
@@ -71,7 +71,7 @@ namespace DDDNetCore.Migrations
 
                             b1.HasKey("RequestId");
 
-                            b1.ToTable("Requests", "ddd");
+                            b1.ToTable("Requests");
 
                             b1.WithOwner()
                                 .HasForeignKey("RequestId");
@@ -87,7 +87,7 @@ namespace DDDNetCore.Migrations
 
                             b1.HasKey("RequestId");
 
-                            b1.ToTable("Requests", "ddd");
+                            b1.ToTable("Requests");
 
                             b1.WithOwner()
                                 .HasForeignKey("RequestId");
@@ -103,7 +103,7 @@ namespace DDDNetCore.Migrations
 
                             b1.HasKey("RequestId");
 
-                            b1.ToTable("Requests", "ddd");
+                            b1.ToTable("Requests");
 
                             b1.WithOwner()
                                 .HasForeignKey("RequestId");

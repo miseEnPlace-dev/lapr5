@@ -10,15 +10,11 @@ namespace DDDNetCore.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "ddd");
-
             migrationBuilder.AlterDatabase()
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Requests",
-                schema: "ddd",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false)
@@ -42,7 +38,6 @@ namespace DDDNetCore.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Tasks",
-                schema: "ddd",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false)
@@ -60,12 +55,10 @@ namespace DDDNetCore.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Requests",
-                schema: "ddd");
+                name: "Requests");
 
             migrationBuilder.DropTable(
-                name: "Tasks",
-                schema: "ddd");
+                name: "Tasks");
         }
     }
 }
