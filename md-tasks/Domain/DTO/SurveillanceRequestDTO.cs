@@ -15,7 +15,7 @@ public class SurveillanceRequestDTO : RequestDTO
     this.FloorCode = floorCode;
   }
 
-  public SurveillanceRequestDTO(string id, string userEmail, string requestedAt, string state, string contactEmail, string floorCode) : base(id, userEmail, requestedAt, state)
+  public SurveillanceRequestDTO(string id, string userEmail, string requestedAt, StateEnum state, string contactEmail, string floorCode) : base(id, userEmail, requestedAt, state)
   {
     this.ContactEmail = contactEmail;
     this.FloorCode = floorCode;

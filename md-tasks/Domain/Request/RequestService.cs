@@ -67,8 +67,7 @@ namespace DDDSample1.Domain.Requests
       if (r == null) return null;
 
       // update fields
-      if (dto.State is not null)
-        r.ChangeState(new RequestState(dto.State));
+      r.ChangeState(new RequestState(dto.State));
 
       await _unitOfWork.CommitAsync();
       return null;

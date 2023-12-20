@@ -1,5 +1,3 @@
-using System;
-
 namespace DDDSample1.Domain.DTO;
 
 public abstract class RequestDTO
@@ -10,7 +8,7 @@ public abstract class RequestDTO
 
   public string RequestedAt { get; set; }
 
-  public string State { get; set; }
+  public StateEnum State { get; set; }
 
   public RequestDTO(string userEmail, string requestedAt)
   {
@@ -18,7 +16,7 @@ public abstract class RequestDTO
     this.RequestedAt = requestedAt;
   }
 
-  public RequestDTO(string id, string userEmail, string requestedAt, string state)
+  public RequestDTO(string id, string userEmail, string requestedAt, StateEnum state)
   {
     this.Id = id;
     this.UserEmail = userEmail;

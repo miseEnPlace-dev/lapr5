@@ -1,5 +1,4 @@
 using System;
-using DDDSample1.Domain.DeviceModel;
 using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.User;
@@ -19,7 +18,7 @@ namespace DDDSample1.Domain.Requests
     public Request(UserId userId, DeviceTaskId DeviceTaskId)
     {
       this.DeviceTaskId = DeviceTaskId;
-      State = new RequestState("Pending");
+      State = new RequestState(StateEnum.Pending);
       UserId = userId;
       Id = new RequestId(Guid.NewGuid());
       RequestedAt = DateTime.Now;

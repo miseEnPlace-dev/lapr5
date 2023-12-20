@@ -24,7 +24,7 @@ public class PickDeliveryRequestDTO : RequestDTO
     this.ConfirmationCode = confirmationCode;
   }
 
-  public PickDeliveryRequestDTO(string id, string userEmail, string requestedAt, string state, string description, string pickupUserId, string deliveryUserId, string pickupRoomId, string deliveryRoomId, string confirmationCode) : base(id, userEmail, requestedAt, state)
+  public PickDeliveryRequestDTO(string id, string userEmail, string requestedAt, StateEnum state, string description, string pickupUserId, string deliveryUserId, string pickupRoomId, string deliveryRoomId, string confirmationCode) : base(id, userEmail, requestedAt, state)
   {
     this.Description = description;
     this.PickupUserId = pickupUserId;
