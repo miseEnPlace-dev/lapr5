@@ -521,6 +521,7 @@ export default class ThumbRaiser {
     this.statistics.dom.style.display = "none";
     this.statistics.dom.style.left = "0.5vw";
     this.statistics.dom.style.top = "1.0vh";
+    this.statistics.dom.id = "statistics";
     document.body.appendChild(this.statistics.dom);
 
     // Create a renderer and turn on shadows in the renderer
@@ -556,8 +557,8 @@ export default class ThumbRaiser {
       LOCAL_STORAGE_PREFIX + "fixedViewCamera"
     )
       ? JSON.parse(
-        localStorage.getItem(LOCAL_STORAGE_PREFIX + "fixedViewCamera")
-      )
+          localStorage.getItem(LOCAL_STORAGE_PREFIX + "fixedViewCamera")
+        )
       : true;
     this.firstPersonViewCamera.checkBox =
       document.getElementById("first-person");
@@ -565,8 +566,8 @@ export default class ThumbRaiser {
       LOCAL_STORAGE_PREFIX + "firstPersonViewCamera"
     )
       ? JSON.parse(
-        localStorage.getItem(LOCAL_STORAGE_PREFIX + "firstPersonViewCamera")
-      )
+          localStorage.getItem(LOCAL_STORAGE_PREFIX + "firstPersonViewCamera")
+        )
       : true;
     this.thirdPersonViewCamera.checkBox =
       document.getElementById("third-person");
@@ -574,8 +575,8 @@ export default class ThumbRaiser {
       LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera"
     )
       ? JSON.parse(
-        localStorage.getItem(LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera")
-      )
+          localStorage.getItem(LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera")
+        )
       : true;
     this.topViewCamera.checkBox = document.getElementById("top");
     this.topViewCamera.checkBox.checked = localStorage.getItem(
@@ -1212,12 +1213,12 @@ export default class ThumbRaiser {
                   ((mouseIncrement.x / this.miniMapCamera.viewport.width) *
                     (this.miniMapCamera.orthographic.left -
                       this.miniMapCamera.orthographic.right)) /
-                  this.miniMapCamera.orthographic.zoom,
+                    this.miniMapCamera.orthographic.zoom,
                   0.0,
                   ((mouseIncrement.y / this.miniMapCamera.viewport.height) *
                     (this.miniMapCamera.orthographic.top -
                       this.miniMapCamera.orthographic.bottom)) /
-                  this.miniMapCamera.orthographic.zoom
+                    this.miniMapCamera.orthographic.zoom
                 );
                 this.miniMapCamera.updateTarget(targetIncrement);
               }
@@ -1842,5 +1843,11 @@ export default class ThumbRaiser {
         this.renderer.render(this.frame, this.camera2D); // Render the frame
       }
     }
+  }
+
+  unmount() {
+    this.renderer.domElement.remove();
+    this.userInterface.destroy();
+    this.statistics.dom.remove();
   }
 }
