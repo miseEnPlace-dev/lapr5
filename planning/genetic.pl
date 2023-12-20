@@ -32,6 +32,12 @@ t(t3, cel("b3",9,20),cel("b3",8,20)).
 t(t4, cel("b2",6,19),cel("b2",9,18)).
 t(t5, cel("b3",8,18),cel("b3",8,17)).
 
+% t(t6,cel("c3",8,2),cel("b2",8,21)).
+% t(t7,cel("b2",6,20),cel("b1",7,20)).
+% t(t8,cel("b3",8,20),cel("b3",9,20)).
+% t(t9,cel("b2",9,18),cel("b2",6,19)).
+% t(t10,cel("b3",8,17),cel("b3",8,18)).
+
 load_tarefas:-
 	findall(T,t(T,_,_),L),
 	load_tarefas(L).
@@ -61,43 +67,18 @@ load_tarefa2(T1,T2):-
 	asserta(tarefas(T1,T2,W1)),
 	asserta(tarefas(T2,T1,W2)).
 
-
-factorial(0, 1).
-factorial(N, F) :-
-	N > 0,
-	N1 is N - 1,
-	factorial(N1, F1),
-	F is N * F1.
-
-is_empty([]).
-
 gera_best_bruteforce:-
 	debug_mode(D),
+	get_time(Ti),
 	n_tarefas(NTarefas),
 	findall(Tarefa,t(Tarefa,_,_),Tarefas),
-	factorial(NTarefas,NTotal),
-	gera_best_bruteforce(NTotal,NTarefas,Tarefas,Pop),
+	findall(P, permutation(Tarefas,P), Pop),
 	avalia_populacao(Pop,PopAv),
 	ordena_populacao(PopAv,PopOrd),
 	melhor_individuo(PopOrd,Ind),
-	((D==1,write('Melhor individuo: '), write(Ind), nl, nl);true).
-
-gera_best_bruteforce(N, NT, T, P):-
-	!,
-	gera_best_bruteforce(N, NT, T, [], P).
-
-gera_best_bruteforce(0,_,_,P1,P1):- !.
-
-gera_best_bruteforce(TPop,NTarefas,Tarefas,Temp,Pop):-
-	gera_individuo(Tarefas,NTarefas,Ind),
-	(not(member(Ind,Temp));is_empty(Temp)),
-	!,
-	TPop1 is TPop - 1,
-	append(Temp,[Ind],Temp1),
-	gera_best_bruteforce(TPop1,NTarefas,Tarefas,Temp1,Pop).
-
-gera_best_bruteforce(TPop,NTarefas,Tarefas,Temp,Pop):-
-	gera_best_bruteforce(TPop,NTarefas,Tarefas,Temp,Pop).
+	get_time(Tf),
+	((D==1,write('Melhor individuo: '), write(Ind), nl);true),
+	((D==1,write('Tempo de execução: '), T is Tf - Ti, write(T), nl, nl);true).
 
 gera_lim_ger:-
 	debug_mode(D),
