@@ -531,6 +531,7 @@ export default class ThumbRaiser {
     this.statistics.dom.style.display = "none";
     this.statistics.dom.style.left = "0.5vw";
     this.statistics.dom.style.top = "1.0vh";
+    this.statistics.dom.id = "statistics";
     document.body.appendChild(this.statistics.dom);
 
     // Create a renderer and turn on shadows in the renderer
@@ -1862,5 +1863,11 @@ export default class ThumbRaiser {
         this.renderer.render(this.frame, this.camera2D); // Render the frame
       }
     }
+  }
+
+  unmount() {
+    this.renderer.domElement.remove();
+    this.userInterface.destroy();
+    this.statistics.dom.remove();
   }
 }
