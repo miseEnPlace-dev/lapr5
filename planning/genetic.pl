@@ -281,6 +281,7 @@ gera_geracao_ger(N,G,Pop):-
 	gera_geracao_ger(N1,G,NPopNova).
 
 gera_geracao_time(T,G,Pop):-
+	debug_mode(D),
 	lim_time(Lim),
 	get_time(Ti),
 	Tf is Ti - T,
