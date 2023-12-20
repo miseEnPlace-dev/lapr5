@@ -20,7 +20,7 @@ cd web; pnpm dev
 
 After this, you can open the web application in your browser at the following address: `http://localhost:3000`.
 
-Then, authenticate with your user and password. After this, if you have a role that allows you to access the visualization module **(Admin & Campus)**, you will see a new button in the sidebar called `Floor Editor`. Click on it and you will be redirected to the visualization module. You can also access the visualization module directly by going to the following address: `http://localhost:3000/floor-editor`.
+Then, authenticate with your user and password. After this, if you have a role that allows you to access the visualization module **(Admin & Campus)**, you will see a new card in the main frame called `Campus Explorer`. Click on it and you will be redirected to the visualization module. You can also access the visualization module directly by going to the following address: `http://localhost:3000/floor-editor`.
 
 Other users will not be able to access the visualization module.
 
