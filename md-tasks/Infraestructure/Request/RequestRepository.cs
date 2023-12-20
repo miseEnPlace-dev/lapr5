@@ -30,6 +30,6 @@ public class RequestRepository : BaseRepository<Request, RequestId>, IRequestRep
 
   public async Task<List<Request>> GetSurveillanceRequests()
   {
-    return await _context.Requests.Where(r => r.DeviceTaskId.GetType().IsInstanceOfType("Surveillance")).ToListAsync();
+    return await GetRequestsByType("Surveillance");
   }
 }

@@ -73,9 +73,10 @@ public class RequestsController : ControllerBase
   [HttpDelete("{id}")]
   public async Task<ActionResult<RequestDTO>> SoftDelete(string id)
   {
-    var t = await _svc.InactivateAsync(new RequestId(id));
+    /* var t = await _svc.InactivateAsync(new RequestId(id));
     if (t == null) return NotFound();
-    return Ok(t);
+    return Ok(t); */
+    return BadRequest(new { Message = "Not implemented" });
   }
 
   // DELETE api/Requests/5/hard

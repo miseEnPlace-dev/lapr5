@@ -9,7 +9,7 @@ This project is based on the ONION architecture. The REST API is built using ASP
 Install package dotnet-ef
 
 ```bash
-dotnet tool install dotnet-ef --version 7.0.0`
+dotnet tool install dotnet-ef --version 7.0.0
 ```
 
 Creating a migration:

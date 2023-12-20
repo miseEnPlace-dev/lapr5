@@ -10,24 +10,23 @@ namespace DDDSample1.Domain.Requests
   {
     public RequestState State { get; private set; }
 
-    public UserEmail UserEmail { get; private set; }
+    public UserId UserId { get; private set; }
 
     public DeviceTaskId DeviceTaskId { get; private set; }
 
     public DateTime RequestedAt { get; private set; }
 
-    public Request(UserEmail userEmail, DeviceTaskId DeviceTaskId)
+    public Request(UserId userId, DeviceTaskId DeviceTaskId)
     {
       this.DeviceTaskId = DeviceTaskId;
       State = new RequestState("Pending");
-      UserEmail = userEmail;
+      UserId = userId;
       Id = new RequestId(Guid.NewGuid());
       RequestedAt = DateTime.Now;
     }
 
     public void ChangeState(RequestState state)
     {
-
       State = state;
     }
   }

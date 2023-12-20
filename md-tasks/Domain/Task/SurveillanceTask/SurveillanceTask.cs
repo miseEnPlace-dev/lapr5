@@ -19,7 +19,6 @@ namespace DDDSample1.Domain.DeviceTasks.SurveillanceTask
       UserContact = userContact;
     }
 
-
     public void ChangeDescription(string description)
     {
       Description = description;

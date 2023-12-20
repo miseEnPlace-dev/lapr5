@@ -11,8 +11,7 @@ internal class RequestEntityTypeConfiguration : IEntityTypeConfiguration<Request
     // builder.ToTable("Requests", SchemaNames.DDDSample1);
     builder.HasKey(b => b.Id);
     builder.OwnsOne(b => b.State);
-    builder.OwnsOne(b => b.DeviceModelCode);
-    builder.OwnsOne(b => b.UserEmail);
+    //builder.OwnsOne(b => b.UserId);
     // builder.Property<bool>("_active").HasColumnName("Active");
   }
 }
