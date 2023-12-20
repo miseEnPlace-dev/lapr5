@@ -6,8 +6,6 @@ public class PickAndDeliveryTaskDto
 {
   public Guid Id { get; set; }
 
-  public bool Active { get; set; }
-
   public string Description { get; set; }
   public string PickupUserId { get; set; }
   public string DeliveryUserId { get; set; }
@@ -17,10 +15,9 @@ public class PickAndDeliveryTaskDto
 
   public string ConfirmationCode { get; set; }
 
-  public PickAndDeliveryTaskDto(Guid Id, bool Active, string Description, string PickupUserId, string DeliveryUserId, string PickupRoomId, string DeliveryRoomId, string ConfirmationCode)
+  public PickAndDeliveryTaskDto(Guid Id, string Description, string PickupUserId, string DeliveryUserId, string PickupRoomId, string DeliveryRoomId, string ConfirmationCode)
   {
     this.Id = Id;
-    this.Active = Active;
     this.Description = Description;
     this.PickupUserId = PickupUserId;
     this.DeliveryUserId = DeliveryUserId;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using DDDSample1.Domain.DTO;
 using DDDSample1.Domain.Requests;
 using DDDSample1.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ public class RequestsController : ControllerBase
 
   // GET api/Requests
   [HttpGet]
-  public async Task<ActionResult<IEnumerable<RequestDto>>> GetAll()
+  public async Task<ActionResult<IEnumerable<RequestDTO>>> GetAll()
   {
     if (Request.Query.ContainsKey("State"))
       return await _svc.GetRequestsByState(Request.Query["State"].ToString());
@@ -28,7 +29,7 @@ public class RequestsController : ControllerBase
 
   // GET api/Requests/{id}
   [HttpGet("{id}")]
-  public async Task<ActionResult<RequestDto>> Get(string id)
+  public async Task<ActionResult<RequestDTO>> Get(string id)
   {
     var t = await _svc.GetByIdAsync(new RequestId(id));
     if (t == null) return NotFound();
@@ -37,7 +38,7 @@ public class RequestsController : ControllerBase
 
   // POST api/Requests
   [HttpPost]
-  public async Task<ActionResult<RequestDto>> Create(RequestDto dto)
+  public async Task<ActionResult<RequestDTO>> Create(RequestDTO dto)
   {
     try
     {
@@ -52,7 +53,7 @@ public class RequestsController : ControllerBase
 
   // PUT api/Requests/5
   [HttpPut("{id}")]
-  public async Task<ActionResult<RequestDto>> Put(string id, RequestDto dto)
+  public async Task<ActionResult<RequestDTO>> Put(string id, RequestDTO dto)
   {
     if (id != dto.Id.ToString()) return BadRequest();
 
@@ -70,16 +71,17 @@ public class RequestsController : ControllerBase
 
   // Inactivate api/Requests/5
   [HttpDelete("{id}")]
-  public async Task<ActionResult<RequestDto>> SoftDelete(string id)
+  public async Task<ActionResult<RequestDTO>> SoftDelete(string id)
   {
-    var t = await _svc.InactivateAsync(new RequestId(id));
+    /* var t = await _svc.InactivateAsync(new RequestId(id));
     if (t == null) return NotFound();
-    return Ok(t);
+    return Ok(t); */
+    return BadRequest(new { Message = "Not implemented" });
   }
 
   // DELETE api/Requests/5/hard
   [HttpDelete("{id}/hard")]
-  public async Task<ActionResult<RequestDto>> HardDelete(string id)
+  public async Task<ActionResult<RequestDTO>> HardDelete(string id)
   {
     try
     {

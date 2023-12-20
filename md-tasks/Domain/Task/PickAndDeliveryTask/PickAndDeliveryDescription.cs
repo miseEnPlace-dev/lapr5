@@ -7,24 +7,24 @@ namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask
   public class PickAndDeliveryDescription : ValueObject
   {
 
-    public string Description { get; private set; }
+    public string Value { get; private set; }
 
     private PickAndDeliveryDescription()
     {
-      Description = "";
+      Value = "";
     }
 
     public PickAndDeliveryDescription(string description)
     {
       ValidateDescription(description);
-      Description = description;
+      Value = description;
     }
 
     private static void ValidateDescription(string description)
     {
-      if (description.Length > 999)
+      if (description.Length > 255)
       {
-        throw new BusinessRuleValidationException("Description cannot be longer than 1000 characters.");
+        throw new BusinessRuleValidationException("Description cannot be longer than 256 characters.");
       }
 
       if (string.IsNullOrEmpty(description))
@@ -33,9 +33,14 @@ namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask
       }
     }
 
+    public override string ToString()
+    {
+      return Value;
+    }
+
     protected override IEnumerable<object> GetEqualityComponents()
     {
-      yield return Description;
+      yield return Value;
     }
   }
 }

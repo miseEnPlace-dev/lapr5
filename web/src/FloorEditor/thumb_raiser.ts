@@ -489,6 +489,16 @@ export default class ThumbRaiser {
       this.mazeParameters.mazes[this.mazeParameters.selected]
     );
 
+    const floors = this.mazeParameters.mazes[0].maze.maze.elevator.floors;
+    const mazeSelect = document.getElementById("maze") as HTMLSelectElement;
+    if (mazeSelect)
+      mazeSelect.innerHTML = floors.map(
+        (floor, i) =>
+          `<option key=${floor} value=${this.mazeParameters.mazes.findIndex(
+            (m) => m.name === floor
+          )}>${floor}</option>`
+      );
+
     // Create the player
     this.player = new Player(this.playerParameters);
 
@@ -662,6 +672,16 @@ export default class ThumbRaiser {
   }
 
   updateMaze(index: number) {
+    const floors = this.mazeParameters.mazes[index].maze.maze.elevator.floors;
+    const mazeSelect = document.getElementById("maze") as HTMLSelectElement;
+    if (mazeSelect)
+      mazeSelect.innerHTML = floors.map(
+        (floor, i) =>
+          `<option key=${floor} value=${this.mazeParameters.mazes.findIndex(
+            (m) => m.name === floor
+          )}>${floor}</option>`
+      );
+
     this.scene.remove(this.maze);
     this.maze = new Maze(this.mazeParameters.mazes[index]);
     // The cache must be enabled; additional information available at https://threejs.org/docs/api/en/loaders/FileLoader.html

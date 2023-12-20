@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using DDDSample1.Domain.DeviceTasks;
+using DDDSample1.Domain.DeviceTasks.SurveillanceTask;
+using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
 
 namespace DDDSample1.Infrastructure.Tasks;
 

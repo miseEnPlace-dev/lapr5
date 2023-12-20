@@ -1,24 +1,25 @@
-Projeto exemplo/template em ASP.NET Core 5.0 API para demonstrar como usar/aplicar (alguns conceitos de) DDD nesta tecnologia e usando também Entity Framework.
-Adota um estilo arquitetural Onion.
+# MD Tasks API
 
-Este exemplo compreende:
+## Architecture
 
-- um dominio com 3 aggregate roots (Category, Product e Family);
-- um relacionamento de N <— 1 entre Category e Product;
-- clara separação entre (i) API REST, (ii) Domínio e (iii) Infraestrutura (Persistência);
-- aplicação de algumas regras de negócio/validação.
+This project is based on the ONION architecture. The REST API is built using ASP.NET Core 5.0 and Entity Framework Core 5.0.
 
-O dominio contempla as Entidade do negócio, os Serviços (ou casos de uso) envolvendo essas entidades e DTOs (in/out para os serviços de dominio).
-Por simplicidade, empacotei fisicamente (packages) estas coisas por agregado.
-Como é óbvio, outras alternativas de empacotamento são aceitáveis e (se calhar) desejáveis.
+## For Developers
 
-Também reconheço que podem ser introduzidas algumas melhorias interessantes com relativamente pouco esforço (mas de momento não tenho tempo).
+Install package dotnet-ef
 
-## dev
+```bash
+dotnet tool install dotnet-ef --version 7.0.0
+```
 
-Install package dotnet-ef `dotnet tool install dotnet-ef --version 7.0.0`
+Creating a migration:
 
-Creating a migration: `dotnet ef migrations add NAME`
+```bash
+dotnet ef migrations add NAME
+```
 
-Updating the database: `dotnet ef database update`
+Updating the database:
 
+```bash
+dotnet ef database update
+```

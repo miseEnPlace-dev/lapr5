@@ -5,19 +5,19 @@ namespace DDDSample1.Domain.Requests
 {
   public class RequestState : ValueObject
   {
-    public string State { get; private set; }
+    public StateEnum State { get; private set; }
 
     private RequestState()
     {
-      State = "Pending";
+      State = StateEnum.Pending;
     }
 
-    public RequestState(string State)
+    public RequestState(StateEnum State)
     {
       this.State = State;
     }
 
-    public void ChangeState(string State)
+    public void ChangeState(StateEnum State)
     {
       this.State = State;
     }
@@ -29,7 +29,7 @@ namespace DDDSample1.Domain.Requests
 
     public string AsString()
     {
-      return State;
+      return State.ToString();
     }
   }
 }

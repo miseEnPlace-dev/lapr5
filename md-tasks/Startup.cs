@@ -13,71 +13,74 @@ using DDDSample1.Domain.Requests;
 using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Infrastructure.DeviceTasks;
 using System;
+using DDDSample1.Domain.DeviceTasks.SurveillanceTask;
+using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
 
 namespace DDDSample1
 {
-    public class Startup
+  public class Startup
+  {
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            // services.AddDbContext<DDDSample1DbContext>(opt =>
-            //     opt.UseInMemoryDatabase("DDDSample1DB")
-            //     .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
-
-            // services.AddDbContext<SqliteDatabaseContext>(opt => opt.UseSqlite()
-            //      .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
-
-            services.AddDbContext<MySQLDbContext>(opt =>
-                opt.UseMySql(Configuration.GetConnectionString("DefaultConnection"), ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection")))
-                .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
-
-            ConfigureMyServices(services);
-
-            services.AddControllers().AddNewtonsoftJson();
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
-            // app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
-
-        public void ConfigureMyServices(IServiceCollection services)
-        {
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
-
-            services.AddTransient<IRequestRepository, RequestRepository>();
-            services.AddTransient<RequestService>();
-
-            services.AddTransient<IDeviceTaskRepository, DeviceTaskRepository>();
-            services.AddTransient<DeviceTaskService>();
-        }
+      Configuration = configuration;
     }
+
+    public IConfiguration Configuration { get; }
+
+    // This method gets called by the runtime. Use this method to add services to the container.
+    public void ConfigureServices(IServiceCollection services)
+    {
+      // services.AddDbContext<DDDSample1DbContext>(opt =>
+      //     opt.UseInMemoryDatabase("DDDSample1DB")
+      //     .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
+
+      // services.AddDbContext<SqliteDatabaseContext>(opt => opt.UseSqlite()
+      //      .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
+
+      services.AddDbContext<MySQLDbContext>(opt =>
+          opt.UseMySql(Configuration.GetConnectionString("DefaultConnection"), ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection")))
+          .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
+
+      ConfigureMyServices(services);
+
+      services.AddControllers().AddNewtonsoftJson();
+    }
+
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+      if (env.IsDevelopment())
+      {
+        app.UseDeveloperExceptionPage();
+      }
+      else
+      {
+        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+        app.UseHsts();
+      }
+
+      // app.UseHttpsRedirection();
+
+      app.UseRouting();
+
+      app.UseAuthorization();
+
+      app.UseEndpoints(endpoints =>
+      {
+        endpoints.MapControllers();
+      });
+    }
+
+    public void ConfigureMyServices(IServiceCollection services)
+    {
+      services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+      services.AddTransient<IRequestRepository, RequestRepository>();
+      services.AddTransient<RequestService>();
+
+      services.AddTransient<ISurveillanceTaskRepository, SurveillanceTaskRepository>();
+      services.AddTransient<IPickAndDeliveryTaskRepository, PickAndDeliveryTaskRepository>();
+      services.AddTransient<DeviceTaskService>();
+    }
+  }
 }
