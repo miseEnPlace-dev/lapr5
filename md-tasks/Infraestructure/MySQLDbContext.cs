@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using DDDSample1.Domain.Requests;
-using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Infrastructure.Requests;
 using DDDSample1.Infrastructure.Tasks;
 using DDDSample1.Domain.DeviceTasks.SurveillanceTask;

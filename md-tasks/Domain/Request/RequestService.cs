@@ -1,10 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DDDSample1.Domain.DeviceModel;
-using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.DTO;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.User;
 using DDDSample1.Infrastructure.Requests;
 
 namespace DDDSample1.Domain.Requests
@@ -20,40 +17,40 @@ namespace DDDSample1.Domain.Requests
       _repo = repo;
     }
 
-    public async Task<List<RequestDTO>> GetAllAsync()
+    public async Task<List<IRequestDTO>> GetAllAsync()
     {
       var list = await _repo.GetAllAsync();
 
-      List<RequestDTO> listDto = new();
-      //list = list.ConvertAll(r => new RequestDTO(r));
+      List<IRequestDTO> listDto = new();
+      //list = list.ConvertAll(r => new IRequestDTO(r));
       return listDto;
     }
 
-    public async Task<List<RequestDTO>> GetAllSurveillanceAsync()
+    public async Task<List<IRequestDTO>> GetAllSurveillanceAsync()
     {
       var list = await _repo.GetSurveillanceRequests();
 
-      List<RequestDTO> listDto = new();
+      List<IRequestDTO> listDto = new();
       //list = list.ConvertAll(r => new SurveillanceRequestDTO(r));
       return listDto;
     }
 
-    public async Task<List<RequestDTO>> GetRequestsByState(string state)
+    public async Task<List<IRequestDTO>> GetRequestsByState(string state)
     {
       var list = await _repo.GetRequestsByState(state);
 
-      List<RequestDTO> listDto = new();
+      List<IRequestDTO> listDto = new();
       return listDto;
     }
 
-    public async Task<RequestDTO> GetByIdAsync(RequestId id)
+    public async Task<IRequestDTO> GetByIdAsync(RequestId id)
     {
       var r = await _repo.GetByIdAsync(id);
       if (r == null) return null;
       return null;
     }
 
-    public async Task<RequestDTO> AddAsync(RequestDTO dto)
+    public async Task<IRequestDTO> AddAsync(IRequestDTO dto)
     {
       //var r = new Request(new UserEmail(dto.UserEmail), new DeviceTaskId(dto.DeviceTaskId));
       await _repo.AddAsync(null);
@@ -61,7 +58,7 @@ namespace DDDSample1.Domain.Requests
       return null;
     }
 
-    public async Task<RequestDTO> UpdateAsync(RequestDTO dto)
+    public async Task<IRequestDTO> UpdateAsync(IRequestDTO dto)
     {
       var r = await _repo.GetByIdAsync(new RequestId(dto.Id));
       if (r == null) return null;
@@ -73,7 +70,7 @@ namespace DDDSample1.Domain.Requests
       return null;
     }
 
-    public async Task<RequestDTO> PutAsync(RequestDTO dto)
+    public async Task<IRequestDTO> PutAsync(IRequestDTO dto)
     {
       var r = await _repo.GetByIdAsync(new RequestId(dto.Id));
       if (r == null) return null;
@@ -85,7 +82,7 @@ namespace DDDSample1.Domain.Requests
       return null;
     }
 
-    public async Task<RequestDTO> DeleteAsync(RequestId id)
+    public async Task<IRequestDTO> DeleteAsync(RequestId id)
     {
       var r = await _repo.GetByIdAsync(id);
       if (r == null) return null;

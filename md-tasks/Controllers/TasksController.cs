@@ -10,11 +10,11 @@ namespace DDDSample1.Controllers;
 [ApiController]
 public class TasksController : ControllerBase
 {
-  private readonly DeviceTaskService _svc;
+  private readonly DeviceTaskService service;
 
   public TasksController(DeviceTaskService svc)
   {
-    _svc = svc;
+    service = svc;
   }
 
   // GET api/Tasks
@@ -22,14 +22,14 @@ public class TasksController : ControllerBase
   public async Task<ActionResult<IEnumerable<DeviceTaskDto>>> GetAll()
   {
     return null;
-    // TODO return await _svc.GetAllAsync();
+    // TODO return await service.GetAllAsync();
   }
 
   // GET api/Tasks/{id}
   [HttpGet("{id}")]
   public async Task<ActionResult<DeviceTaskDto>> Get(string id)
   {
-    var t = await _svc.GetByIdAsync(new DeviceTaskId(id));
+    var t = await service.GetByIdAsync(new DeviceTaskId(id));
     if (t == null) return NotFound();
     return t;
   }
@@ -49,7 +49,7 @@ public class TasksController : ControllerBase
 
     try
     {
-      var t = await _svc.UpdateAsync(dto);
+      var t = await service.UpdateAsync(dto);
       if (t == null) return NotFound();
       return Ok(t);
     }
@@ -65,7 +65,7 @@ public class TasksController : ControllerBase
   {
     try
     {
-      var t = await _svc.DeleteAsync(new DeviceTaskId(id));
+      var t = await service.DeleteAsync(new DeviceTaskId(id));
       if (t == null) return NotFound();
       return Ok(t);
     }

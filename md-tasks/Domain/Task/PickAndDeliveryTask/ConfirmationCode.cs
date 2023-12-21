@@ -19,7 +19,7 @@ namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask
       Code = code;
     }
 
-    private void ValidateCode(string code)
+    private static void ValidateCode(string code)
     {
       if (code.Length > 4 && code.Length < 6)
       {

@@ -20,7 +20,7 @@ public class RequestsController : ControllerBase
 
   // GET api/Requests
   [HttpGet]
-  public async Task<ActionResult<IEnumerable<RequestDTO>>> GetAll()
+  public async Task<ActionResult<IEnumerable<IRequestDTO>>> GetAll()
   {
     if (Request.Query.ContainsKey("State"))
       return await _svc.GetRequestsByState(Request.Query["State"].ToString());
@@ -29,16 +29,16 @@ public class RequestsController : ControllerBase
 
   // GET api/Requests/{id}
   [HttpGet("{id}")]
-  public async Task<ActionResult<RequestDTO>> Get(string id)
+  public async Task<ActionResult<IRequestDTO>> Get(string id)
   {
     var t = await _svc.GetByIdAsync(new RequestId(id));
     if (t == null) return NotFound();
-    return t;
+    return Ok(t);
   }
 
   // POST api/Requests
   [HttpPost]
-  public async Task<ActionResult<RequestDTO>> Create(RequestDTO dto)
+  public async Task<ActionResult<IRequestDTO>> Create(IRequestDTO dto)
   {
     try
     {
@@ -53,7 +53,7 @@ public class RequestsController : ControllerBase
 
   // PUT api/Requests/5
   [HttpPut("{id}")]
-  public async Task<ActionResult<RequestDTO>> Put(string id, RequestDTO dto)
+  public async Task<ActionResult<IRequestDTO>> Put(string id, IRequestDTO dto)
   {
     if (id != dto.Id.ToString()) return BadRequest();
 
@@ -71,7 +71,7 @@ public class RequestsController : ControllerBase
 
   // Inactivate api/Requests/5
   [HttpDelete("{id}")]
-  public async Task<ActionResult<RequestDTO>> SoftDelete(string id)
+  public async Task<ActionResult<IRequestDTO>> SoftDelete(string id)
   {
     /* var t = await _svc.InactivateAsync(new RequestId(id));
     if (t == null) return NotFound();
@@ -81,7 +81,7 @@ public class RequestsController : ControllerBase
 
   // DELETE api/Requests/5/hard
   [HttpDelete("{id}/hard")]
-  public async Task<ActionResult<RequestDTO>> HardDelete(string id)
+  public async Task<ActionResult<IRequestDTO>> HardDelete(string id)
   {
     try
     {

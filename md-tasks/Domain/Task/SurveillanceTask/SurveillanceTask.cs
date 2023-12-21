@@ -1,6 +1,5 @@
 using System;
 using DDDSample1.Domain.Floor;
-using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.User;
 
 namespace DDDSample1.Domain.DeviceTasks.SurveillanceTask

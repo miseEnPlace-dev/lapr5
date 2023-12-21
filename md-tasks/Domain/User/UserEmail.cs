@@ -19,7 +19,7 @@ namespace DDDSample1.Domain.User
       Email = email;
     }
 
-    private void ValidateEmail(string email)
+    private static void ValidateEmail(string email)
     {
       if (email.Length < 4)
       {
