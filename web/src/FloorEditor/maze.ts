@@ -276,6 +276,8 @@ export default class Maze extends THREE.Group {
                   mixer: new THREE.AnimationMixer(gltf.scene),
                   clips: gltf.animations,
                 };
+
+                gltf.scene.name = "elevator";
                 this.add(gltf.scene);
               },
               // called while loading is progressing
@@ -371,6 +373,7 @@ export default class Maze extends THREE.Group {
                   mixer: new THREE.AnimationMixer(gltf.scene),
                   clips: gltf.animations,
                 };
+                gltf.scene.name = "door" + i + "-" + j;
                 this.add(gltf.scene);
               },
               // called while loading is progressing
@@ -411,6 +414,8 @@ export default class Maze extends THREE.Group {
     THREE.Cache.enabled = true;
 
     this.onLoad(parameters);
+
+    console.log(this.children);
   }
 
   // Convert cell [row, column] coordinates to cartesian (x, y, z) coordinates

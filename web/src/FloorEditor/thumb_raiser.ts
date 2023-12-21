@@ -1194,7 +1194,7 @@ export default class ThumbRaiser {
       document.activeElement.blur();
       if (event.buttons === 0 || event.buttons === 1 || event.buttons === 2) {
         // Store current mouse position in window coordinates (mouse coordinate system: origin in the top-left corner; window coordinate system: origin in the bottom-left corner)
-        this.mouse.currentPosition = new THREE.VemazeSelectctor2(
+        this.mouse.currentPosition = new THREE.Vector2(
           event.clientX,
           window.innerHeight - event.clientY - 1
         );
@@ -1246,6 +1246,40 @@ export default class ThumbRaiser {
           }
         }
       }
+
+      const pos = { x: 0, y: 0 };
+      const rect = canvas.getBoundingClientRect();
+      pos.x =
+        (((event.clientX - rect.left) * canvas.width) /
+          rect.width /
+          canvas.width) *
+          2 -
+        1;
+      pos.y =
+        (((event.clientY - rect.top) * canvas.height) /
+          rect.height /
+          canvas.height) *
+          -2 +
+        1;
+
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(pos, this.activeViewCamera.activeProjection);
+
+      const groupsToCheck = this.maze.children.filter(
+        (child) => child.type === "Group"
+      );
+
+      groupsToCheck.forEach((group) => {
+        const name = group.name;
+        const intersectedObjects = raycaster.intersectObject(
+          group,
+          true
+        ) as THREE.Object3D[];
+
+        if (intersectedObjects.length > 0) {
+          console.log(name);
+        }
+      });
     } else {
       this.setCursor("auto");
     }
