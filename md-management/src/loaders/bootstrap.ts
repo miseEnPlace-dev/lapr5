@@ -361,6 +361,134 @@ export default class Bootstrapper {
       }
     });
 
+    await this.loadRoom({
+      name: 'C101',
+      buildingCode: 'c',
+      floorCode: 'c1',
+      description: 'Gabinete C101',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 2,
+        y: 4
+      }
+    });
+
+    await this.loadRoom({
+      name: 'C102',
+      buildingCode: 'c',
+      floorCode: 'c1',
+      description: 'Gabinete C102',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 2,
+        y: 6
+      }
+    });
+
+    await this.loadRoom({
+      name: 'C103',
+      buildingCode: 'c',
+      floorCode: 'c1',
+      description: 'Gabinete C103',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 5,
+        y: 4
+      }
+    });
+
+    await this.loadRoom({
+      name: 'C104',
+      buildingCode: 'c',
+      floorCode: 'c1',
+      description: 'Gabinete C104',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 5,
+        y: 6
+      }
+    });
+
+    await this.loadRoom({
+      name: 'C105',
+      buildingCode: 'c',
+      floorCode: 'c1',
+      description: 'Gabinete C105',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 8,
+        y: 6
+      }
+    });
+
+    await this.loadRoom({
+      name: 'C106',
+      buildingCode: 'c',
+      floorCode: 'c1',
+      description: 'Gabinete C106',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 11,
+        y: 6
+      }
+    });
+
+    await this.loadRoom({
+      name: 'C107',
+      buildingCode: 'c',
+      floorCode: 'c1',
+      description: 'Gabinete C107',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 14,
+        y: 4
+      }
+    });
+
+    await this.loadRoom({
+      name: 'C108',
+      buildingCode: 'c',
+      floorCode: 'c1',
+      description: 'Gabinete C108',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 14,
+        y: 6
+      }
+    });
+
     await this.loadDeviceModel({
       code: 'SRV',
       name: 'Surveillance Master',
