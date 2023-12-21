@@ -23,13 +23,18 @@ import {
 } from "react-icons/md";
 import { TbUserQuestion as RequestsIcon } from "react-icons/tb";
 
-import { BsFillBuildingFill as BuildingIcon } from "react-icons/bs";
+import {
+  BsFillBuildingFill as BuildingIcon,
+  BsClipboard as ClipboardIcon,
+  BsArrowRepeat as RepeatIcon,
+} from "react-icons/bs";
 
 export {
   ArrowLeftIcon,
   BridgeIcon,
   BuildingIcon,
   CheckIcon,
+  ClipboardIcon,
   DeviceModelIcon,
   ElevatorIcon,
   ErrorIcon,
@@ -38,6 +43,7 @@ export {
   InfoIcon,
   LogoutIcon,
   MapIcon,
+  RepeatIcon,
   RequestsIcon,
   RobotIcon,
   RoomIcon,
