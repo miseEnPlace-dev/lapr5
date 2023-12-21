@@ -1,33 +1,13 @@
-using System;
-using DDDSample1.Domain.Shared;
-using Newtonsoft.Json;
-
 namespace DDDSample1.Domain.User
 {
-  public class UserId : EntityId
+  public class UserId
   {
 
-    [JsonConstructor]
-    public UserId(Guid value) : base(value) { }
+    public string Value { get; private set; }
 
-    [JsonConstructor]
-    public UserId(string value) : base(ParseGuid(value)) { }
-
-    public UserId() : base(Guid.NewGuid()) { }
-
-    private static Guid ParseGuid(string value)
+    public UserId(string value)
     {
-      if (string.IsNullOrEmpty(value))
-      {
-        throw new ArgumentException("UserId string cannot be null or empty.");
-      }
-
-      if (Guid.TryParse(value, out var guidValue))
-      {
-        return guidValue;
-      }
-
-      throw new ArgumentException("Invalid UserId format. It should be a valid GUID string.");
+      Value = value;
     }
   }
 }

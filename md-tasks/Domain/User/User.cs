@@ -3,7 +3,7 @@ using DDDSample1.Domain.Shared;
 
 namespace DDDSample1.Domain.User
 {
-  public class User : Entity<UserId>, IAggregateRoot
+  public class User
   {
 
     public string FirstName { get; private set; }

@@ -36,9 +36,24 @@ public class RequestsController : ControllerBase
     return t;
   }
 
-  // POST api/Requests
-  [HttpPost]
-  public async Task<ActionResult<RequestDTO>> Create(RequestDTO dto)
+  // POST api/Requests/Surveillance
+  [HttpPost("Surveillance")]
+  public async Task<ActionResult<SurveillanceRequestDTO>> Create(SurveillanceRequestDTO dto)
+  {
+    try
+    {
+      var t = await _svc.AddAsync(dto);
+      return CreatedAtAction(nameof(Get), new { id = t.Id }, t);
+    }
+    catch (BusinessRuleValidationException ex)
+    {
+      return BadRequest(new { ex.Message });
+    }
+  }
+
+  // POST api/Requests/PickAndDelivery
+  [HttpPost("PickAndDelivery")]
+  public async Task<ActionResult<PickDeliveryRequestDTO>> Create(PickDeliveryRequestDTO dto)
   {
     try
     {

@@ -1,26 +1,32 @@
+using Newtonsoft.Json;
 namespace DDDSample1.Domain.DTO;
 
 public abstract class RequestDTO
 {
   public string Id { get; set; }
 
-  public string UserEmail { get; set; }
+  public string UserId { get; set; }
 
   public string RequestedAt { get; set; }
 
+  public string DeviceTaskId { get; set; }
+
   public StateEnum State { get; set; }
 
-  public RequestDTO(string userEmail, string requestedAt)
+  [JsonConstructor]
+  public RequestDTO(string userId, string requestedAt, string deviceTaskId)
   {
-    this.UserEmail = userEmail;
+    this.UserId = userId;
     this.RequestedAt = requestedAt;
+    this.DeviceTaskId = deviceTaskId;
   }
 
-  public RequestDTO(string id, string userEmail, string requestedAt, StateEnum state)
+  public RequestDTO(string id, string userId, string requestedAt, StateEnum state, string deviceTaskId)
   {
     this.Id = id;
-    this.UserEmail = userEmail;
+    this.UserId = userId;
     this.RequestedAt = requestedAt;
     this.State = state;
+    this.DeviceTaskId = deviceTaskId;
   }
 }

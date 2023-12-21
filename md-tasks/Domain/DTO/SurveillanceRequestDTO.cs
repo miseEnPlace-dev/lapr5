@@ -1,5 +1,4 @@
-using System;
-using DDDSample1.Domain.Requests;
+using Newtonsoft.Json;
 
 namespace DDDSample1.Domain.DTO;
 
@@ -9,13 +8,14 @@ public class SurveillanceRequestDTO : RequestDTO
 
   public string FloorCode { get; set; }
 
-  public SurveillanceRequestDTO(string userEmail, string requestedAt, string contactEmail, string floorCode) : base(userEmail, requestedAt)
+  [JsonConstructor]
+  public SurveillanceRequestDTO(string userId, string requestedAt, string contactEmail, string floorCode, string deviceTaskId) : base(userId, requestedAt, deviceTaskId)
   {
     this.ContactEmail = contactEmail;
     this.FloorCode = floorCode;
   }
 
-  public SurveillanceRequestDTO(string id, string userEmail, string requestedAt, StateEnum state, string contactEmail, string floorCode) : base(id, userEmail, requestedAt, state)
+  public SurveillanceRequestDTO(string id, string userId, string requestedAt, StateEnum state, string contactEmail, string floorCode, string deviceTaskId) : base(id, userId, requestedAt, state, deviceTaskId)
   {
     this.ContactEmail = contactEmail;
     this.FloorCode = floorCode;
