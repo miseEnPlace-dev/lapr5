@@ -106,10 +106,10 @@ api_get_route(Request):-
 
 get_path(FromX, FromY, FromFloor, ToX, ToY, ToFloor, Met, R):-
     Met=='elevators',
-    planning:caminho_celulas_elevador(cel(FromFloor, FromX, FromY), cel(ToFloor, ToX, ToY), R).
+    planning:caminho_celulas_elevador(cel(FromFloor, FromX, FromY), cel(ToFloor, ToX, ToY), R,_).
 get_path(FromX, FromY, FromFloor, ToX, ToY, ToFloor, Met, R):-
     Met=='connectors',
-    planning:caminho_celulas_edificios(cel(FromFloor, FromX, FromY), cel(ToFloor, ToX, ToY), R).
+    planning:caminho_celulas_edificios(cel(FromFloor, FromX, FromY), cel(ToFloor, ToX, ToY), R,_).
 
 
 cell_to_json(cel(Floor, X, Y), JsonOut):-

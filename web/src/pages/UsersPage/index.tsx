@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
 import { useMenuOptions } from "@/hooks/useMenuOptions";
@@ -9,6 +9,7 @@ import Dropdown from "@/components/Dropdown/index.tsx";
 import Input from "@/components/Input";
 import Modal from "@/components/Modal";
 import Pagination from "@/components/Pagination/index.tsx";
+import PasswordInput from "@/components/PasswordInput/index.tsx";
 import SideBar from "@/components/SideBar";
 
 import { useListUsersModule } from "./module.ts";
@@ -123,6 +124,7 @@ const UsersPage: React.FC = () => {
             setIsVisible={setIsUserModalVisible}
             isVisible={isUserModalVisible}
             title="Create User"
+            className="px-12 pb-12"
           >
             <div className="flex h-full flex-col justify-between gap-y-4">
               <div className="flex w-full items-center gap-x-4">
@@ -178,12 +180,7 @@ const UsersPage: React.FC = () => {
                 value={email}
                 onChange={setEmail}
               />
-              <Input
-                placeholder="Password"
-                type="password"
-                value={password}
-                onChange={setPassword}
-              />
+              <PasswordInput value={password} onChange={setPassword} />
               <Button
                 type="confirm"
                 onClick={(e) => {
@@ -197,7 +194,7 @@ const UsersPage: React.FC = () => {
                   !isPhoneNumberValid ||
                   (!isNifValid && role == "user")
                 }
-                className="mt-2 w-full"
+                className="mt-8 w-full"
               >
                 Register
               </Button>

@@ -9,12 +9,12 @@ namespace DDDSample1.Infrastructure
 
     public UnitOfWork(MySQLDbContext context)
     {
-      this._context = context;
+      _context = context;
     }
 
     public async Task<int> CommitAsync()
     {
-      return await this._context.SaveChangesAsync();
+      return await _context.SaveChangesAsync();
     }
   }
 }

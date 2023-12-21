@@ -25,7 +25,7 @@
 peso_hv(1).
 peso_diagonal(W):- W is sqrt(2).
 
-debug_mode(1).
+debug_mode(0).
 
 peso_corr(5).
 peso_elev(30).

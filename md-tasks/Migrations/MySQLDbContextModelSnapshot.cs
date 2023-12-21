@@ -3,7 +3,6 @@ using System;
 using DDDSample1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
@@ -46,7 +45,7 @@ namespace DDDNetCore.Migrations
 
             modelBuilder.Entity("DDDSample1.Domain.DeviceTasks.SurveillanceTask.SurveillanceTask", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("DeliveryRoomId")
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Description")
@@ -63,12 +62,21 @@ namespace DDDNetCore.Migrations
                     b.ToTable("SurveillanceTasks");
                 });
 
-            modelBuilder.Entity("DDDSample1.Domain.Requests.Request", b =>
+            modelBuilder.Entity("DDDSample1.Domain.DeviceTasks.SurveillanceTask.SurveillanceTask", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("DeviceTaskId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TargetFloor")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserContact")
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("RequestedAt")
@@ -79,7 +87,7 @@ namespace DDDNetCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Requests");
+                    b.ToTable("SurveillanceTasks");
                 });
 
             modelBuilder.Entity("DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask.PickAndDeliveryTask", b =>
@@ -107,18 +115,21 @@ namespace DDDNetCore.Migrations
                 {
                     b.OwnsOne("DDDSample1.Domain.Requests.RequestState", "State", b1 =>
                         {
-                            b1.Property<string>("RequestId")
-                                .HasColumnType("varchar(255)");
+                            b1.Property<DateTime>("RequestedAt")
+                                .HasColumnType("datetime(6)");
 
-                            b1.Property<int>("State")
-                                .HasColumnType("int");
+                            b1.Property<StateEnum>("State")
+                                .HasColumnType("enum MySQLDbContextModelSnapshot.StateEnum");
+                            {
+                                b1.HasAnnotation("MySql:ColumnType", "enum('Pending','Accepted','Rejected, Executed')");
+                            }
 
-                            b1.HasKey("RequestId");
+                            b1.HasKey("RequestedAt");
 
                             b1.ToTable("Requests");
 
                             b1.WithOwner()
-                                .HasForeignKey("RequestId");
+                                .HasForeignKey("RequestedAt");
                         });
 
                     b.Navigation("State");

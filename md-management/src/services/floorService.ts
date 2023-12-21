@@ -26,13 +26,16 @@ import { FloorMapDoor } from '@/domain/floor/floorMap/floorMapDoor';
 import { FloorMapElevator } from '@/domain/floor/floorMap/floorMapElevator';
 import { FloorMapWall } from '@/domain/floor/floorMap/floorMapWall';
 import { FloorMapGround } from '@/domain/floor/floorMap/floorMapGround';
+import IRoomRepo from './IRepos/IRoomRepo';
+import { RoomMapper } from '@/mappers/RoomMapper';
 
 @injectable()
 export default class FloorService implements IFloorService {
   constructor(
     @inject(TYPES.floorRepo) private floorRepo: IFloorRepo,
     @inject(TYPES.buildingRepo) private buildingRepo: IBuildingRepo,
-    @inject(TYPES.connectorRepo) private connectorRepo: IConnectorRepo
+    @inject(TYPES.connectorRepo) private connectorRepo: IConnectorRepo,
+    @inject(TYPES.roomRepo) private roomRepo: IRoomRepo
   ) {}
 
   public async getAllFloors(): Promise<Result<IFloorDTO[]>> {
@@ -52,6 +55,10 @@ export default class FloorService implements IFloorService {
             floorDTO.map.maze.elevator.floors = elevator.floors
               .map(f => f.code.value)
               .filter(f => f !== floor.code.value);
+
+          const rooms = await this.roomRepo.findAllRoomsByFloor(floor);
+
+          if (floorDTO.map && rooms) floorDTO.map.maze.rooms = rooms.map(r => RoomMapper.toDTO(r));
 
           return floorDTO;
         })

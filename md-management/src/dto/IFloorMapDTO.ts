@@ -1,3 +1,5 @@
+import { IRoomDTO } from './IRoomDTO';
+
 export interface IFloorMapDTO {
   maze: {
     size: {
@@ -8,6 +10,7 @@ export interface IFloorMapDTO {
     exits: { x: number; y: number; floorCode: string }[];
     elevator: { x: number; y: number; floors?: string[] };
     exitLocation: { x: number; y: number };
+    rooms?: IRoomDTO[];
   };
   player: {
     initialPosition: number[];

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DDDSample1.Domain.DeviceModel;
 using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
 using DDDSample1.Domain.DeviceTasks.SurveillanceTask;
@@ -26,11 +25,11 @@ namespace DDDSample1.Domain.Requests
       _repo = repo;
     }
 
-    public async Task<List<RequestDTO>> GetAllAsync()
+    public async Task<List<IRequestDTO>> GetAllAsync()
     {
       var list = await _repo.GetAllAsync();
 
-      List<RequestDTO> listDto = new();
+      List<IRequestDTO> listDto = new();
       //list = list.ConvertAll(r => new RequestDTO(r.));
       return listDto;
     }
@@ -51,19 +50,15 @@ namespace DDDSample1.Domain.Requests
       return listDto;
     }
 
-    public async Task<List<RequestDTO>> GetRequestsByState(string state)
+    public async Task<List<IRequestDTO>> GetRequestsByState(string state)
     {
       var list = await _repo.GetRequestsByState(state);
 
-      List<RequestDTO> listDto = new();
-
-      foreach (var r in list)
-      {
-      }
+      List<IRequestDTO> listDto = new();
       return listDto;
     }
 
-    public async Task<RequestDTO> GetByIdAsync(RequestId id)
+    public async Task<IRequestDTO> GetByIdAsync(RequestId id)
     {
       var r = await _repo.GetByIdAsync(id);
       if (r == null) return null;
@@ -104,7 +99,7 @@ namespace DDDSample1.Domain.Requests
       return await ConvertToDTO(dto);
     }
 
-    public async Task<RequestDTO> DeleteAsync(RequestId id)
+    public async Task<IRequestDTO> DeleteAsync(RequestId id)
     {
       var r = await _repo.GetByIdAsync(id);
       if (r == null) return null;
@@ -117,13 +112,13 @@ namespace DDDSample1.Domain.Requests
 
     private async Task<RequestDTO> ConvertToDTO(RequestDTO r)
     {
-      if (r is SurveillanceRequestDTO s)
+      if (r is ISurveillanceRequestDTO s)
       {
         SurveillanceTask task = await _surveillanceTaskRepository.GetByIdAsync(new DeviceTaskId(s.DeviceTaskId.ToString()));
         SurveillanceRequestDTO dto = new(r.UserId.ToString(), r.RequestedAt.ToString(), task.UserContact.ToString(), task.TargetFloor.ToString(), r.DeviceTaskId.ToString());
         return dto;
       }
-      else if (r is PickDeliveryRequestDTO pd)
+      else if (r is IPickDeliveryRequestDTO pd)
       {
         PickAndDeliveryTask task = await _pickAndDeliveryTaskRepository.GetByIdAsync(new DeviceTaskId(pd.DeviceTaskId.ToString()));
         PickDeliveryRequestDTO dto = new(r.UserId.ToString(), r.RequestedAt.ToString(), task.Description.ToString(), task.PickupUserId.ToString(), task.DeliveryUserId.ToString(), task.PickupRoomId.ToString(), task.DeliveryRoomId.ToString(), task.ConfirmationCode.ToString(), r.DeviceTaskId.ToString());

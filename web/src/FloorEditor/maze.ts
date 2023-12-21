@@ -56,6 +56,7 @@ export default class Maze extends THREE.Group {
       };
       this.map = description.maze.map;
       this.exits = description.maze.exits;
+      this.rooms = description.maze.rooms;
       this.exitLocation = this.cellToCartesian(description.maze.exitLocation);
 
       // Create the helpers
@@ -373,7 +374,14 @@ export default class Maze extends THREE.Group {
                   mixer: new THREE.AnimationMixer(gltf.scene),
                   clips: gltf.animations,
                 };
-                gltf.scene.name = "door" + i + "-" + j;
+
+                const room = this.rooms.find(
+                  (room) => room.roomDoor.x === i && room.roomDoor.y === j
+                );
+
+                if (room) gltf.scene.name = room.name;
+                else gltf.scene.name = "door" + i + "-" + j;
+
                 this.add(gltf.scene);
               },
               // called while loading is progressing

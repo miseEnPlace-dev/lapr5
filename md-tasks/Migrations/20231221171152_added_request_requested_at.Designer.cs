@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDDNetCore.Migrations
 {
     [DbContext(typeof(MySQLDbContext))]
-    [Migration("20231220162034_updatedRequests")]
-    partial class updatedRequests
+    [Migration("20231221171152_added_request_requested_at")]
+    partial class addedrequestrequestedat
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,19 +68,19 @@ namespace DDDNetCore.Migrations
 
             modelBuilder.Entity("DDDSample1.Domain.Requests.Request", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<DateTime>("RequestedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("DeviceTaskId")
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("RequestedAt")
-                        .HasColumnType("datetime(6)");
+                    b.Property<string>("Id")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("UserId")
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.HasKey("RequestedAt");
 
                     b.ToTable("Requests");
                 });
@@ -110,18 +110,18 @@ namespace DDDNetCore.Migrations
                 {
                     b.OwnsOne("DDDSample1.Domain.Requests.RequestState", "State", b1 =>
                         {
-                            b1.Property<string>("RequestId")
-                                .HasColumnType("varchar(255)");
+                            b1.Property<DateTime>("RequestedAt")
+                                .HasColumnType("datetime(6)");
 
                             b1.Property<int>("State")
                                 .HasColumnType("int");
 
-                            b1.HasKey("RequestId");
+                            b1.HasKey("RequestedAt");
 
                             b1.ToTable("Requests");
 
                             b1.WithOwner()
-                                .HasForeignKey("RequestId");
+                                .HasForeignKey("RequestedAt");
                         });
 
                     b.Navigation("State");
