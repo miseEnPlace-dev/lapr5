@@ -298,66 +298,130 @@ export default class Bootstrapper {
     });
 
     await this.loadRoom({
-      name: 'B201',
+      name: 'B101',
       buildingCode: 'b',
-      floorCode: 'b2',
-      description: 'Auditório B201',
+      floorCode: 'b1',
+      description: 'Sala B101',
       dimensions: {
-        width: 2,
-        length: 2
+        width: 4,
+        length: 4
       },
-      category: 'CLASSROOM',
+      category: 'OFFICE',
       roomDoor: {
-        x: 1,
-        y: 1
+        x: 4,
+        y: 2
       }
     });
 
     await this.loadRoom({
-      name: 'B203',
+      name: 'B102',
       buildingCode: 'b',
-      floorCode: 'b2',
-      description: 'Sala de Aula B203',
-      dimensions: {
-        width: 2,
-        length: 2
-      },
-      category: 'CLASSROOM',
-      roomDoor: {
-        x: 1,
-        y: 1
-      }
-    });
-
-    await this.loadRoom({
-      name: 'B306',
-      buildingCode: 'b',
-      floorCode: 'b3',
-      description: 'Sala de Aula B306',
-      dimensions: {
-        width: 2,
-        length: 2
-      },
-      category: 'CLASSROOM',
-      roomDoor: {
-        x: 1,
-        y: 1
-      }
-    });
-
-    await this.loadRoom({
-      name: 'B216',
-      buildingCode: 'b',
-      floorCode: 'b2',
-      description: 'Gabinete B216',
+      floorCode: 'b1',
+      description: 'Sala B102',
       dimensions: {
         width: 2,
         length: 2
       },
       category: 'OFFICE',
       roomDoor: {
-        x: 1,
-        y: 1
+        x: 6,
+        y: 2
+      }
+    });
+
+    await this.loadRoom({
+      name: 'B103',
+      buildingCode: 'b',
+      floorCode: 'b1',
+      description: 'Sala B103',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 4,
+        y: 5
+      }
+    });
+
+    await this.loadRoom({
+      name: 'B104',
+      buildingCode: 'b',
+      floorCode: 'b1',
+      description: 'Sala B104',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 8,
+        y: 6
+      }
+    });
+
+    await this.loadRoom({
+      name: 'B105',
+      buildingCode: 'b',
+      floorCode: 'b1',
+      description: 'Sala B105',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 4,
+        y: 12
+      }
+    });
+
+    await this.loadRoom({
+      name: 'B106',
+      buildingCode: 'b',
+      floorCode: 'b1',
+      description: 'Sala B106',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 6,
+        y: 16
+      }
+    });
+
+    await this.loadRoom({
+      name: 'B106b',
+      buildingCode: 'b',
+      floorCode: 'b1',
+      description: 'Sala B106b',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 8,
+        y: 20
+      }
+    });
+
+    await this.loadRoom({
+      name: 'B107',
+      buildingCode: 'b',
+      floorCode: 'b1',
+      description: 'Sala B107',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 4,
+        y: 19
       }
     });
 
