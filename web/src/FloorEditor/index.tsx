@@ -33,7 +33,7 @@ const FloorEditor: React.FC = () => {
 
   useEffect(() => {
     if (floors.length === 0) return;
-    let thumbRaiser: ThumbRaiser;
+    let thumbRaiser: ThumbRaiser | undefined;
 
     function initialize() {
       // Initialize the game
@@ -352,17 +352,19 @@ const FloorEditor: React.FC = () => {
     function animate() {
       requestAnimationFrame(animate);
       // Update the game
-      thumbRaiser.update();
+      if (thumbRaiser) thumbRaiser.update();
     }
 
     initialize();
     animate();
+
+    return () => {
+      if (thumbRaiser) thumbRaiser.unmount();
+      thumbRaiser = undefined;
+    };
   }, [floors]);
 
-  const handleNavigateBack = () => {
-    navigate("/");
-    window.location.reload();
-  };
+  const handleNavigateBack = () => navigate("/");
 
   return (
     <>
