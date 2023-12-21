@@ -1,17 +1,20 @@
 using DDDSample1.Domain.Requests;
+using DDDSample1.Domain.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DDDSample1.Infrastructure.Requests;
-
-internal class RequestEntityTypeConfiguration : IEntityTypeConfiguration<Request>
+namespace DDDSample1.Infrastructure.Requests
 {
-  public void Configure(EntityTypeBuilder<Request> builder)
+  internal class RequestEntityTypeConfiguration : IEntityTypeConfiguration<Request>
   {
-    // builder.ToTable("Requests", SchemaNames.DDDSample1);
-    builder.HasKey(b => b.Id);
-    builder.OwnsOne(b => b.State);
-    //builder.OwnsOne(b => b.UserId);
-    // builder.Property<bool>("_active").HasColumnName("Active");
+    public void Configure(EntityTypeBuilder<Request> builder)
+    {
+      // builder.ToTable("Requests", SchemaNames.DDDSample1);
+      builder.HasKey(b => new { b.Id, b.DeviceTaskId, b.RequestedAt });
+      builder.Property(b => b.State).HasConversion(b => b.State, b => new RequestState(b));
+      builder.Property(b => b.UserId).HasConversion(b => b.Value, b => new UserId(b));
+      // builder.OwnsOne(b => b.UserId);
+      // builder.Property<bool>("_active").HasColumnName("Active");
+    }
   }
 }

@@ -25,8 +25,8 @@ namespace DDDSample1.Infrastructure
       modelBuilder.ApplyConfiguration(new RequestEntityTypeConfiguration());
       modelBuilder.ApplyConfiguration(new PickAndDeliveryTaskEntityTypeConfiguration());
       modelBuilder.ApplyConfiguration(new SurveillanceTaskEntityTypeConfiguration());
-      /* modelBuilder.Entity<SurveillanceTask>().ToTable("SurveillanceTasks");
-      modelBuilder.Entity<PickAndDeliveryTask>().ToTable("PickAndDeliveryTasks"); */
+      modelBuilder.Entity<SurveillanceTask>().ToTable("SurveillanceTasks");
+      modelBuilder.Entity<PickAndDeliveryTask>().ToTable("PickAndDeliveryTasks");
     }
   }
 }

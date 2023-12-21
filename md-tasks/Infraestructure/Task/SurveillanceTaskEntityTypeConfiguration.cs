@@ -4,6 +4,7 @@ using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.DeviceTasks.SurveillanceTask;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
 using DDDSample1.Domain.User;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DDDSample1.Infrastructure.Tasks;
 
@@ -13,7 +14,16 @@ internal class SurveillanceTaskEntityTypeConfiguration : IEntityTypeConfiguratio
   {
     // builder.ToTable("Tasks", SchemaNames.DDDSample1);
     builder.HasKey(b => b.Id);
-    builder.Property(b => b.UserContact).HasConversion(b => b.Email, b => new UserEmail(b));
+    builder.HasKey(b => b.Description);
+    builder.HasKey(b => b.TargetFloor);
+    var userIdConverter = new ValueConverter<UserEmail, string>(
+                 v => v.Email,
+                 v => new UserEmail(v)
+             );
+
+    builder.Property(b => b.UserContact)
+        .HasConversion(userIdConverter);
+
     // builder.Property<bool>("_active").HasColumnName("Active");
   }
 }
