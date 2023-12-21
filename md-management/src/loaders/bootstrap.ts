@@ -490,6 +490,70 @@ export default class Bootstrapper {
     });
 
     await this.loadRoom({
+      name: 'B301',
+      buildingCode: 'b',
+      floorCode: 'b3',
+      description: 'Sala B301',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 1,
+        y: 4
+      }
+    });
+
+    await this.loadRoom({
+      name: 'B303',
+      buildingCode: 'b',
+      floorCode: 'b3',
+      description: 'Sala B303',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 1,
+        y: 6
+      }
+    });
+
+    await this.loadRoom({
+      name: 'B305',
+      buildingCode: 'b',
+      floorCode: 'b3',
+      description: 'Sala B305',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 1,
+        y: 12
+      }
+    });
+
+    await this.loadRoom({
+      name: 'B302',
+      buildingCode: 'b',
+      floorCode: 'b3',
+      description: 'Sala B302',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 9,
+        y: 12
+      }
+    });
+
+    await this.loadRoom({
       name: 'C101',
       buildingCode: 'c',
       floorCode: 'c1',
