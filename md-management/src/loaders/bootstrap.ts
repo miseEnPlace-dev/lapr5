@@ -297,6 +297,7 @@ export default class Bootstrapper {
       floor2BuildingCode: 'c'
     });
 
+    // Building B
     await this.loadRoom({
       name: 'B101',
       buildingCode: 'b',
@@ -553,6 +554,7 @@ export default class Bootstrapper {
       }
     });
 
+    // Building C
     await this.loadRoom({
       name: 'C101',
       buildingCode: 'c',
@@ -993,6 +995,295 @@ export default class Bootstrapper {
       dimensions: {
         width: 2,
         length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 12,
+        y: 5
+      }
+    });
+
+    // Building D
+    await this.loadRoom({
+      name: 'D101',
+      buildingCode: 'd',
+      floorCode: 'd1',
+      description: 'Gabinete D101',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 3,
+        y: 1
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D102',
+      buildingCode: 'd',
+      floorCode: 'd1',
+      description: 'Gabinete D102',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 2,
+        y: 7
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D103',
+      buildingCode: 'd',
+      floorCode: 'd1',
+      description: 'Gabinete D103',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 7,
+        y: 2
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D104',
+      buildingCode: 'd',
+      floorCode: 'd1',
+      description: 'Gabinete D104',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 6,
+        y: 5
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D105',
+      buildingCode: 'd',
+      floorCode: 'd1',
+      description: 'Gabinete D105',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 11,
+        y: 2
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D106',
+      buildingCode: 'd',
+      floorCode: 'd1',
+      description: 'Gabinete D106',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 8,
+        y: 5
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D108',
+      buildingCode: 'd',
+      floorCode: 'd1',
+      description: 'Gabinete D108',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 12,
+        y: 5
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D201',
+      buildingCode: 'd',
+      floorCode: 'd2',
+      description: 'Gabinete D201',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 3,
+        y: 2
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D202',
+      buildingCode: 'd',
+      floorCode: 'd2',
+      description: 'Gabinete D202',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 6,
+        y: 5
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D203',
+      buildingCode: 'd',
+      floorCode: 'd2',
+      description: 'Gabinete D203',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 6,
+        y: 2
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D204',
+      buildingCode: 'd',
+      floorCode: 'd2',
+      description: 'Gabinete D204',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 9,
+        y: 5
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D205',
+      buildingCode: 'd',
+      floorCode: 'd2',
+      description: 'Gabinete D205',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 10,
+        y: 2
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D206',
+      buildingCode: 'd',
+      floorCode: 'd2',
+      description: 'Gabinete D206',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 12,
+        y: 4
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D301',
+      buildingCode: 'd',
+      floorCode: 'd3',
+      description: 'Gabinete D301',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 5,
+        y: 3
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D302',
+      buildingCode: 'd',
+      floorCode: 'd3',
+      description: 'Gabinete D302',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 5,
+        y: 6
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D303',
+      buildingCode: 'd',
+      floorCode: 'd3',
+      description: 'Gabinete D303',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 8,
+        y: 3
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D304',
+      buildingCode: 'd',
+      floorCode: 'd3',
+      description: 'Gabinete D304',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 8,
+        y: 6
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D305',
+      buildingCode: 'd',
+      floorCode: 'd3',
+      description: 'Gabinete D305',
+      dimensions: {
+        width: 4,
+        length: 4
       },
       category: 'OFFICE',
       roomDoor: {
