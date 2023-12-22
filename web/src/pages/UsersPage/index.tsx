@@ -177,6 +177,7 @@ const UsersPage: React.FC = () => {
               <Input
                 placeholder="Email"
                 type="email"
+                autoComplete="off"
                 value={email}
                 onChange={setEmail}
               />

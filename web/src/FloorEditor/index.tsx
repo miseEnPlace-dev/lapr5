@@ -713,6 +713,7 @@ const FloorEditor: React.FC = () => {
           </table>
         </div>
       </div>
+      <div id="tooltip"></div>
     </>
   );
 };

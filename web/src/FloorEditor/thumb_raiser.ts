@@ -635,6 +635,8 @@ export default class ThumbRaiser {
 
     // Build the credits panel
     this.buildCreditsPanel();
+
+    this.tooltip = document.getElementById("tooltip");
   }
 
   buildHelpPanels() {
@@ -1199,7 +1201,7 @@ export default class ThumbRaiser {
           event.clientX,
           window.innerHeight - event.clientY - 1
         );
-        console.log("player", this.player.position);
+        // console.log("player", this.player.position);
 
         const raycaster = new THREE.Raycaster();
         const mouse2 = new THREE.Vector2();
@@ -1207,12 +1209,12 @@ export default class ThumbRaiser {
         mouse2.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse2.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-        console.log(this.mouse.camera);
+        // console.log(this.mouse.camera);
 
         // const projection = this.mouse.camera.projection;
-        raycaster.setFromCamera(mouse2.clone(), this.mouse.camera.perspective);
+        // raycaster.setFromCamera(mouse2.clone(), this.mouse.camera.perspective);
         const objects = raycaster.intersectObjects(this.scene.children);
-        console.log(objects);
+        // console.log(objects);
 
         if (event.buttons === 0) {
           // No button down
@@ -1286,17 +1288,28 @@ export default class ThumbRaiser {
         (child) => child.type === "Group"
       );
 
+      let showTooltip = false;
+      let name = "";
       groupsToCheck.forEach((group) => {
-        const name = group.name;
+        name = group.name;
         const intersectedObjects = raycaster.intersectObject(
           group,
           true
         ) as THREE.Object3D[];
 
         if (intersectedObjects.length > 0) {
-          console.log(name);
+          this.tooltip.innerText = name.toString();
+          showTooltip = true;
         }
       });
+
+      if (showTooltip) {
+        this.tooltip.style.left = (event.pageX + 5).toString() + "px";
+        this.tooltip.style.top = (event.pageY - 50).toString() + "px";
+        this.tooltip.style.setProperty("display", "block", "important");
+      } else {
+        this.tooltip.style.setProperty("display", "none", "important");
+      }
     } else {
       this.setCursor("auto");
     }

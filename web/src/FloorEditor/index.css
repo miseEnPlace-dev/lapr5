@@ -1,5 +1,11 @@
+@tailwind base;
+
 body {
   margin: 0;
+}
+
+#tooltip {
+  @apply bg-black bg-opacity-50 p-2 px-3 font-bold text-white text-center text-sm absolute hidden 
 }
 
 #container {

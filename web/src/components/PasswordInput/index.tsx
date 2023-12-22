@@ -64,18 +64,21 @@ const PasswordInput: React.FC<PasswordInputProps> = ({ value, onChange }) => {
       <Input
         placeholder="Password"
         type="password"
+        autoComplete="new-password"
         value={value}
         onChange={onChange}
       />
       <button
         onClick={handleGeneratePassword}
-        className="absolute right-12 top-1/2 translate-y-1"
+        title="Generate new password"
+        className="absolute right-6 top-1/2 translate-y-1"
       >
         <RepeatIcon className="h-6 w-6" />
       </button>
       <button
         onClick={handleCopyToClipboard}
-        className="absolute right-[5rem] top-1/2 translate-y-1"
+        title="Copy password to clipboard"
+        className="absolute right-[4rem] top-1/2 translate-y-1"
       >
         <ClipboardIcon className="h-6 w-6" />
       </button>
