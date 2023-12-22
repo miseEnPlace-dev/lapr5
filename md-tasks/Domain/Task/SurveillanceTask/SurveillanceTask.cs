@@ -1,4 +1,5 @@
 using System;
+using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
 using DDDSample1.Domain.Floor;
 using DDDSample1.Domain.User;
 
@@ -6,19 +7,18 @@ namespace DDDSample1.Domain.DeviceTasks.SurveillanceTask
 {
   public class SurveillanceTask : DeviceTask
   {
-    public string Description { get; private set; }
-
+    public TaskDescription Description { get; private set; }
     public UserEmail UserContact { get; private set; }
+    public FloorId FloorId { get; private set; }
 
-    public FloorId TargetFloor { get; private set; }
-
-    public SurveillanceTask(string description, UserEmail userContact)
+    public SurveillanceTask(DeviceTaskId Id, TaskDescription description, UserEmail userContact, FloorId floorId) : base(Id)
     {
       Description = description;
       UserContact = userContact;
+      FloorId = floorId;
     }
 
-    public void ChangeDescription(string description)
+    public void ChangeDescription(TaskDescription description)
     {
       Description = description;
     }
@@ -30,7 +30,7 @@ namespace DDDSample1.Domain.DeviceTasks.SurveillanceTask
 
     public void ChangeTargetFloor(FloorId targetFloor)
     {
-      TargetFloor = targetFloor;
+      FloorId = targetFloor;
     }
 
     public override void ExecuteTask()

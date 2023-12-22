@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
+using Microsoft.EntityFrameworkCore;
 
 namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask
 {
+  [Owned]
   public class ConfirmationCode : ValueObject
   {
 

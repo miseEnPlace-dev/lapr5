@@ -27,7 +27,7 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<List<IRequestDTO>> GetAllAsync()
     {
-      var list = await _repo.GetAllAsync();
+      List<Request> list = await _repo.GetAllAsync();
 
       List<IRequestDTO> listDto = new();
       //list = list.ConvertAll(r => new RequestDTO(r.));
@@ -36,14 +36,14 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<List<SurveillanceRequestDTO>> GetAllSurveillanceAsync()
     {
-      var list = await _repo.GetSurveillanceRequests();
+      List<Request> list = await _repo.GetSurveillanceRequests();
 
       List<SurveillanceRequestDTO> listDto = new();
 
-      foreach (var r in list)
+      foreach (Request r in list)
       {
         SurveillanceTask task = await _surveillanceTaskRepository.GetByIdAsync(new DeviceTaskId(r.DeviceTaskId.ToString()));
-        SurveillanceRequestDTO dto = new(r.UserId.ToString(), r.RequestedAt.ToString(), task.UserContact.ToString(), task.TargetFloor.ToString(), r.DeviceTaskId.ToString());
+        SurveillanceRequestDTO dto = new(r.UserId.ToString(), r.RequestedAt.ToString(), task.UserContact.ToString(), task.FloorId.ToString(), r.DeviceTaskId.ToString());
         listDto.Add(dto);
       }
 
@@ -52,7 +52,7 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<List<IRequestDTO>> GetRequestsByState(string state)
     {
-      var list = await _repo.GetRequestsByState(state);
+      List<Request> list = await _repo.GetRequestsByState(state);
 
       List<IRequestDTO> listDto = new();
       return listDto;
@@ -60,14 +60,15 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<IRequestDTO> GetByIdAsync(RequestId id)
     {
-      var r = await _repo.GetByIdAsync(id);
+      Request r = await _repo.GetByIdAsync(id);
       if (r == null) return null;
+
       return null;
     }
 
     public async Task<RequestDTO> AddAsync(RequestDTO dto)
     {
-      var r = new Request(new UserId(dto.UserId), new DeviceTaskId(dto.DeviceTaskId));
+      Request r = new(new UserId(dto.UserId), new DeviceTaskId(dto.DeviceTaskId));
       await _repo.AddAsync(r);
       await _unitOfWork.CommitAsync();
 
@@ -76,7 +77,7 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<RequestDTO> UpdateAsync(RequestDTO dto)
     {
-      var r = await _repo.GetByIdAsync(new RequestId(dto.Id));
+      Request r = await _repo.GetByIdAsync(new RequestId(dto.Id));
       if (r == null) return null;
 
       // update fields
@@ -89,7 +90,7 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<RequestDTO> PutAsync(RequestDTO dto)
     {
-      var r = await _repo.GetByIdAsync(new RequestId(dto.Id));
+      Request r = await _repo.GetByIdAsync(new RequestId(dto.Id));
       if (r == null) return null;
 
       // update fields
@@ -101,7 +102,7 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<IRequestDTO> DeleteAsync(RequestId id)
     {
-      var r = await _repo.GetByIdAsync(id);
+      Request r = await _repo.GetByIdAsync(id);
       if (r == null) return null;
 
       _repo.Remove(r);
@@ -112,22 +113,20 @@ namespace DDDSample1.Domain.Requests
 
     private async Task<RequestDTO> ConvertToDTO(RequestDTO r)
     {
-      if (r is ISurveillanceRequestDTO s)
+      if (r is ISurveillanceRequestDTO surveillanceReq)
       {
-        SurveillanceTask task = await _surveillanceTaskRepository.GetByIdAsync(new DeviceTaskId(s.DeviceTaskId.ToString()));
-        SurveillanceRequestDTO dto = new(r.UserId.ToString(), r.RequestedAt.ToString(), task.UserContact.ToString(), task.TargetFloor.ToString(), r.DeviceTaskId.ToString());
+        SurveillanceTask task = await _surveillanceTaskRepository.GetByIdAsync(new DeviceTaskId(surveillanceReq.DeviceTaskId.ToString()));
+        SurveillanceRequestDTO dto = new(r.UserId.ToString(), r.RequestedAt.ToString(), task.UserContact.ToString(), task.FloorId.ToString(), r.DeviceTaskId.ToString());
         return dto;
       }
-      else if (r is IPickDeliveryRequestDTO pd)
+      else if (r is IPickDeliveryRequestDTO pickDeliveryTask)
       {
-        PickAndDeliveryTask task = await _pickAndDeliveryTaskRepository.GetByIdAsync(new DeviceTaskId(pd.DeviceTaskId.ToString()));
+        PickAndDeliveryTask task = await _pickAndDeliveryTaskRepository.GetByIdAsync(new DeviceTaskId(pickDeliveryTask.DeviceTaskId.ToString()));
         PickDeliveryRequestDTO dto = new(r.UserId.ToString(), r.RequestedAt.ToString(), task.Description.ToString(), task.PickupUserId.ToString(), task.DeliveryUserId.ToString(), task.PickupRoomId.ToString(), task.DeliveryRoomId.ToString(), task.ConfirmationCode.ToString(), r.DeviceTaskId.ToString());
         return dto;
       }
-      else
-      {
-        return null;
-      }
+
+      return null;
     }
   }
 }

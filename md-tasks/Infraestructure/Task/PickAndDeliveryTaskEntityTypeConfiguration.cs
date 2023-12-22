@@ -10,21 +10,23 @@ internal class PickAndDeliveryTaskEntityTypeConfiguration : IEntityTypeConfigura
 {
   public void Configure(EntityTypeBuilder<PickAndDeliveryTask> builder)
   {
-    // builder.ToTable("Tasks", SchemaNames.DDDSample1);
-    builder.HasKey(b => b.Id);
+    builder.ToTable("PickAndDeliveryTasks", SchemaNames.DDDSample1);
+    //builder.Property(b => b.Id);
     builder.OwnsOne(b => b.ConfirmationCode);
-    builder.Property(b => b.Description).HasConversion(b => b.Value, b => new PickAndDeliveryDescription(b));
-    builder.HasKey(b => b.PickupRoomId);
-    builder.HasKey(b => b.DeliveryRoomId);
+    builder.Property(b => b.Description).HasConversion(b => b.Value, b => new TaskDescription(b));
+    builder.Property(b => b.PickupRoomId);
+    builder.Property(b => b.DeliveryRoomId);
     var userIdConverter = new ValueConverter<UserId, string>(
              v => v.Value,
              v => new UserId(v)
          );
 
     builder.Property(b => b.PickupUserId)
+        .HasColumnName("pickup_user_id")
         .HasConversion(userIdConverter);
 
     builder.Property(b => b.DeliveryUserId)
+        .HasColumnName("delivery_user_id")
         .HasConversion(userIdConverter);
     // builder.Property<bool>("_active").HasColumnName("Active");
   }

@@ -5,26 +5,24 @@ namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask
 {
   public class PickAndDeliveryTask : DeviceTask
   {
-    public PickAndDeliveryDescription Description { get; private set; }
+    public TaskDescription Description { get; private set; }
     public ConfirmationCode ConfirmationCode { get; private set; }
-
     public UserId PickupUserId { get; private set; }
     public UserId DeliveryUserId { get; private set; }
     public RoomId PickupRoomId { get; private set; }
-
     public RoomId DeliveryRoomId { get; private set; }
 
-    public PickAndDeliveryTask(PickAndDeliveryDescription description, UserId PickupUserId, UserId DeliveryUserId, RoomId PickupRoomId, RoomId DeliveryRoomId)
+    public PickAndDeliveryTask(DeviceTaskId Id, TaskDescription description, UserId pickupUserId, UserId deliveryUserId, RoomId pickupRoomId, RoomId deliveryRoomId) : base(Id)
     {
       Description = description;
       ConfirmationCode = new ConfirmationCode("Pending");
-      this.PickupUserId = PickupUserId;
-      this.DeliveryUserId = DeliveryUserId;
-      this.PickupRoomId = PickupRoomId;
-      this.DeliveryRoomId = DeliveryRoomId;
+      PickupUserId = pickupUserId;
+      DeliveryUserId = deliveryUserId;
+      PickupRoomId = pickupRoomId;
+      DeliveryRoomId = deliveryRoomId;
     }
 
-    public void ChangeDescription(PickAndDeliveryDescription description)
+    public void ChangeDescription(TaskDescription description)
     {
       Description = description;
     }

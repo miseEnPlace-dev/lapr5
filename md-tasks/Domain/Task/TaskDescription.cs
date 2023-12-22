@@ -1,19 +1,21 @@
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
+using Microsoft.EntityFrameworkCore;
 
 namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask
 {
-  public class PickAndDeliveryDescription : ValueObject
+  [Owned]
+  public class TaskDescription : ValueObject
   {
 
     public string Value { get; private set; }
 
-    private PickAndDeliveryDescription()
+    private TaskDescription()
     {
       Value = "";
     }
 
-    public PickAndDeliveryDescription(string description)
+    public TaskDescription(string description)
     {
       ValidateDescription(description);
       Value = description;

@@ -4,11 +4,9 @@ namespace DDDSample1.Domain.DeviceTasks
 {
   public abstract class DeviceTask : Entity<DeviceTaskId>, IAggregateRoot
   {
-    public DeviceTask() { }
-
-    public DeviceTask(string code)
+    public DeviceTask(DeviceTaskId id)
     {
-      Id = new DeviceTaskId(code);
+      Id = id;
     }
 
     public abstract void ExecuteTask();

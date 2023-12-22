@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using DDDSample1.Domain.Shared;
+using Microsoft.EntityFrameworkCore;
 
 namespace DDDSample1.Domain.Requests
 {
+  [Owned]
   public class RequestState : ValueObject
   {
     public StateEnum State { get; private set; }

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDDNetCore.Migrations
 {
     [DbContext(typeof(MySQLDbContext))]
-    [Migration("20231221171152_added_request_requested_at")]
-    partial class addedrequestrequestedat
+    [Migration("20231222183028_add_base_tables")]
+    partial class addbasetables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,25 +24,27 @@ namespace DDDNetCore.Migrations
 
             modelBuilder.Entity("DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask.PickAndDeliveryTask", b =>
                 {
-                    b.Property<string>("DeliveryRoomId")
+                    b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("DeliveryUserId")
+                    b.Property<string>("DeliveryRoomId")
                         .HasColumnType("longtext");
+
+                    b.Property<string>("DeliveryUserId")
+                        .HasColumnType("longtext")
+                        .HasColumnName("delivery_user_id");
 
                     b.Property<string>("Description")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Id")
                         .HasColumnType("longtext");
 
                     b.Property<string>("PickupRoomId")
                         .HasColumnType("longtext");
 
                     b.Property<string>("PickupUserId")
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("pickup_user_id");
 
-                    b.HasKey("DeliveryRoomId");
+                    b.HasKey("Id");
 
                     b.ToTable("PickAndDeliveryTasks");
                 });
@@ -55,11 +57,13 @@ namespace DDDNetCore.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("TargetFloor")
-                        .HasColumnType("longtext");
+                    b.Property<string>("FloorId")
+                        .HasColumnType("longtext")
+                        .HasColumnName("floor_id");
 
                     b.Property<string>("UserContact")
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("user_email");
 
                     b.HasKey("Id");
 
@@ -68,19 +72,23 @@ namespace DDDNetCore.Migrations
 
             modelBuilder.Entity("DDDSample1.Domain.Requests.Request", b =>
                 {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("DeviceTaskId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<DateTime>("RequestedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("DeviceTaskId")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Id")
-                        .HasColumnType("longtext");
+                    b.Property<StateEnum?>("State")
+                        .HasColumnType("int")
+                        .HasColumnName("State");
 
                     b.Property<string>("UserId")
                         .HasColumnType("longtext");
 
-                    b.HasKey("RequestedAt");
+                    b.HasKey("Id", "DeviceTaskId", "RequestedAt");
 
                     b.ToTable("Requests");
                 });
@@ -89,42 +97,21 @@ namespace DDDNetCore.Migrations
                 {
                     b.OwnsOne("DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask.ConfirmationCode", "ConfirmationCode", b1 =>
                         {
-                            b1.Property<string>("PickAndDeliveryTaskDeliveryRoomId")
+                            b1.Property<string>("PickAndDeliveryTaskId")
                                 .HasColumnType("varchar(255)");
 
                             b1.Property<string>("Code")
                                 .HasColumnType("longtext");
 
-                            b1.HasKey("PickAndDeliveryTaskDeliveryRoomId");
+                            b1.HasKey("PickAndDeliveryTaskId");
 
                             b1.ToTable("PickAndDeliveryTasks");
 
                             b1.WithOwner()
-                                .HasForeignKey("PickAndDeliveryTaskDeliveryRoomId");
+                                .HasForeignKey("PickAndDeliveryTaskId");
                         });
 
                     b.Navigation("ConfirmationCode");
-                });
-
-            modelBuilder.Entity("DDDSample1.Domain.Requests.Request", b =>
-                {
-                    b.OwnsOne("DDDSample1.Domain.Requests.RequestState", "State", b1 =>
-                        {
-                            b1.Property<DateTime>("RequestedAt")
-                                .HasColumnType("datetime(6)");
-
-                            b1.Property<int>("State")
-                                .HasColumnType("int");
-
-                            b1.HasKey("RequestedAt");
-
-                            b1.ToTable("Requests");
-
-                            b1.WithOwner()
-                                .HasForeignKey("RequestedAt");
-                        });
-
-                    b.Navigation("State");
                 });
 #pragma warning restore 612, 618
         }
