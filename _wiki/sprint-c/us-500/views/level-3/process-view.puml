@@ -1,0 +1,39 @@
+@startuml process-view
+autonumber
+participant ROUTE as ":Route"
+participant CTRL as ":Controller"
+participant SRV as ":Service"
+participant BUILD as "task:Task"
+participant REPO as ":Repo"
+participant MAP as ":Mapper"
+participant DTO as "dto:TaskDTO"
+
+box "<<container (C4)>>\nPlanning" <<center>>#LightYellow
+  participant P as "Planning" <<component>>
+end box
+
+?o-> ROUTE : GET /tasks/sequence
+activate ROUTE
+
+ROUTE -> CTRL : getTaskSequence()
+activate CTRL
+CTRL -> SRV : getTaskSequence()
+activate SRV
+SRV ->P : GET /sequence
+activate P
+SRV <--P : sequence
+deactivate P
+loop foreach task
+  SRV -> MAP : toDto(task)
+  activate MAP
+  MAP -> DTO** : create()
+  deactivate MAP
+end
+SRV --> CTRL : sucess(tasks)
+deactivate SRV
+CTRL --> ROUTE : sucess(tasks)
+deactivate CTRL
+<-- ROUTE : 200 OK
+deactivate ROUTE
+
+@enduml
