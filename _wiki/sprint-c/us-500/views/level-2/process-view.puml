@@ -13,7 +13,7 @@ activate UI
 
 UI -> TMD : GET /tasks/sequence
 activate TMD
-TMD -> P : GET /tasks/sequence
+TMD -> P : GET /sequence
 activate P
 P -> TMD : GET /tasks?status=approved
 activate TMD
