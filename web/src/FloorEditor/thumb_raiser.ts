@@ -493,7 +493,7 @@ export default class ThumbRaiser {
     const mazeSelect = document.getElementById("maze") as HTMLSelectElement;
     if (mazeSelect)
       mazeSelect.innerHTML = floors.map(
-        (floor, i) =>
+        (floor) =>
           `<option key=${floor} value=${this.mazeParameters.mazes.findIndex(
             (m) => m.name === floor
           )}>${floor}</option>`
@@ -676,7 +676,7 @@ export default class ThumbRaiser {
     const mazeSelect = document.getElementById("maze") as HTMLSelectElement;
     if (mazeSelect)
       mazeSelect.innerHTML = floors.map(
-        (floor, i) =>
+        (floor) =>
           `<option key=${floor} value=${this.mazeParameters.mazes.findIndex(
             (m) => m.name === floor
           )}>${floor}</option>`
@@ -1199,6 +1199,21 @@ export default class ThumbRaiser {
           event.clientX,
           window.innerHeight - event.clientY - 1
         );
+        console.log("player", this.player.position);
+
+        const raycaster = new THREE.Raycaster();
+        const mouse2 = new THREE.Vector2();
+
+        mouse2.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse2.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        console.log(this.mouse.camera);
+
+        // const projection = this.mouse.camera.projection;
+        raycaster.setFromCamera(mouse2.clone(), this.mouse.camera.perspective);
+        const objects = raycaster.intersectObjects(this.scene.children);
+        console.log(objects);
+
         if (event.buttons === 0) {
           // No button down
           this.getPointedViewport(this.mouse);
@@ -1210,6 +1225,7 @@ export default class ThumbRaiser {
             const mouseIncrement = this.mouse.currentPosition
               .clone()
               .sub(this.mouse.previousPosition);
+
             if (event.buttons === 1) {
               // Primary button down
               if (this.mouse.frame === "none") {

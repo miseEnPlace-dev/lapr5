@@ -82,9 +82,9 @@ input {
 }
 
 #subwindows-panel {
-  position: absolute;
-  left: -49.5vw;
-  bottom: -49vh;
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
   font-size: 1.5vmin;
   color: white;
 }
