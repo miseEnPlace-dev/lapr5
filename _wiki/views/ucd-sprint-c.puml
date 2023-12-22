@@ -1,0 +1,69 @@
+@startuml ucd-sprint-a
+
+skinparam usecase {
+    BackgroundColor LightBlue
+    BorderColor DarkBlue
+    ArrowColor DarkBlue
+    FontStyle Bold
+}
+
+:Task Manager: as Task
+:Adminstrator: as Admin
+:User: as User
+
+left to right direction
+
+rectangle "Task Manager" as task {
+  usecase "460. Request a task" as requestTask
+  usecase "470. Approve or deny a request" as approveOrDenyRequest
+  usecase "480. Consult all request pending" as consultAllRequestPending
+  usecase "490. List request by User, State or device type" as listRequestByUserStateOrDeviceType
+  usecase "500. Obtain sequence of tasks" as obtainSequenceOfTasks
+
+
+}
+
+rectangle "Administrator" as admin {
+  usecase "10. Create a new system user" as createUser
+  usecase "20. Add possibility to (students, teachers) to register" as addPossibilityToRegister
+  usecase "1300. Change menu according to user type" as changeMenuAccordingToUserType
+  usecase "1310. Backend services needs to be authenticated" as backendServicesNeedsToBeAuthenticated
+  usecase "1320. Backend services need to validate user permissions" as backendServicesNeedToValidateUserPermissions
+}
+
+rectangle "User" as user {
+  usecase "30. Consent to the use of personal data" as consentToTheUseOfPersonalData
+  usecase "40. Inform about the use of personal data" as informAboutTheUseOfPersonalData
+  usecase "50. Know and have access to the person responsible" as knowAndHaveAccessToThePersonResponsible
+  usecase "60. Know how long the data will be stored" as knowHowLongTheDataWillBeStored
+  usecase "70. Know my rights" as knowMyRights
+  usecase "80. Approve or deny a user" as approveOrDenyUser
+  usecase "100. Modify my personal data" as modifyMyPersonalData
+  usecase "110. Copy my personal data" as consultMyPersonalData
+  usecase "120. Delete my personal data" as deleteMyPersonalData
+
+}
+
+Task --> requestTask
+Task --> approveOrDenyRequest
+Task --> consultAllRequestPending
+Task --> listRequestByUserStateOrDeviceType
+Task --> obtainSequenceOfTasks
+
+Admin --> createUser
+Admin --> addPossibilityToRegister
+Admin --> changeMenuAccordingToUserType
+Admin --> backendServicesNeedsToBeAuthenticated
+Admin --> backendServicesNeedToValidateUserPermissions
+
+User --> consentToTheUseOfPersonalData
+User --> informAboutTheUseOfPersonalData
+User --> knowAndHaveAccessToThePersonResponsible
+User --> knowHowLongTheDataWillBeStored
+User --> knowMyRights
+User --> approveOrDenyUser
+User --> modifyMyPersonalData
+User --> consultMyPersonalData
+User --> deleteMyPersonalData
+
+@enduml
