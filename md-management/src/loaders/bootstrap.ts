@@ -297,6 +297,151 @@ export default class Bootstrapper {
       floor2BuildingCode: 'c'
     });
 
+    // Building A
+    await this.loadRoom({
+      name: 'A101',
+      buildingCode: 'a',
+      floorCode: 'a1',
+      description: 'Sala A101',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 5,
+        y: 10
+      }
+    });
+
+    await this.loadRoom({
+      name: 'A201',
+      buildingCode: 'a',
+      floorCode: 'a2',
+      description: 'Sala A201',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 5,
+        y: 3
+      }
+    });
+
+    await this.loadRoom({
+      name: 'A202',
+      buildingCode: 'a',
+      floorCode: 'a2',
+      description: 'Sala A202',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 6,
+        y: 7
+      }
+    });
+
+    await this.loadRoom({
+      name: 'A204',
+      buildingCode: 'a',
+      floorCode: 'a2',
+      description: 'Sala A204',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 6,
+        y: 11
+      }
+    });
+
+    await this.loadRoom({
+      name: 'A203',
+      buildingCode: 'a',
+      floorCode: 'a2',
+      description: 'Sala A203',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 3,
+        y: 6
+      }
+    });
+
+    await this.loadRoom({
+      name: 'A205',
+      buildingCode: 'a',
+      floorCode: 'a2',
+      description: 'Sala A205',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 3,
+        y: 8
+      }
+    });
+
+    await this.loadRoom({
+      name: 'A206',
+      buildingCode: 'a',
+      floorCode: 'a2',
+      description: 'Sala A206',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 6,
+        y: 13
+      }
+    });
+
+    await this.loadRoom({
+      name: 'A207',
+      buildingCode: 'a',
+      floorCode: 'a2',
+      description: 'Sala A207',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 8,
+        y: 17
+      }
+    });
+
+    await this.loadRoom({
+      name: 'A209',
+      buildingCode: 'a',
+      floorCode: 'a2',
+      description: 'Sala A209',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 2,
+        y: 16
+      }
+    });
+
     // Building B
     await this.loadRoom({
       name: 'B101',
