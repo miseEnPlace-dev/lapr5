@@ -1202,20 +1202,20 @@ export default class ThumbRaiser {
           window.innerHeight - event.clientY - 1
         );
 
-        const raycaster = new THREE.Raycaster();
-        const mouseCoords = new THREE.Vector2();
-
-        mouseCoords.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouseCoords.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
         if (this.mouse.camera) {
-          // const projection = this.mouse.camera.projection;
+          const raycaster = new THREE.Raycaster();
+          const mouseCoords = new THREE.Vector2();
+
+          mouseCoords.x = (event.clientX / window.innerWidth) * 2 - 1;
+          mouseCoords.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+          const projection = this.mouse.camera.projection;
           raycaster.setFromCamera(
             mouseCoords.clone(),
-            this.mouse.camera.perspective
+            this.mouse.camera[projection]
           );
-          const objects = raycaster.intersectObjects(this.scene.children);
-          console.log(objects);
+          // const objects = raycaster.intersectObjects(this.scene.children);
+          // console.log(objects);
         }
 
         if (event.buttons === 0) {
