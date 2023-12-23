@@ -32,12 +32,12 @@ const Modal: React.FC<ModalProps> = ({
           onClick={() => setIsVisible((cur) => !cur)}
           className="fixed left-0 top-0 h-screen w-screen bg-slate-300 p-6 opacity-70 shadow-lg"
         ></section>
-        <div className="fixed left-0 top-0 z-20 flex h-screen w-screen items-center justify-center overflow-y-auto">
+        <div className="fixed left-0 top-0 z-20 flex h-screen w-screen items-center justify-center">
           <motion.div
             initial={{ bottom: 0, opacity: 0 }}
             animate={{ bottom: 150, opacity: 1 }}
             transition={{ duration: 0.2 }}
-            className={`flex h-fit w-4/5 flex-col rounded-xl bg-slate-300 p-8 ${className}`}
+            className={`flex h-fit w-4/5 flex-col rounded-xl bg-slate-300 p-8 ${className} `}
           >
             <button
               onClick={() => setIsVisible(false)}
@@ -48,7 +48,7 @@ const Modal: React.FC<ModalProps> = ({
             <span className="-mt-9 mb-6 w-full text-center text-4xl font-black capitalize">
               {title}
             </span>
-            {children}
+            <div className="max-h-[75vh] overflow-y-auto">{children}</div>
           </motion.div>
         </div>
       </>

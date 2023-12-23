@@ -10,8 +10,8 @@ const InputGroup: React.FC<InputGroupProps> = ({
   children,
 }) => {
   return (
-    <div>
-      <div className="mb-2 ml-1 mt-4 text-slate-500">
+    <div className="w-full">
+      <div className="mb-2 ml-1 text-slate-500">
         <p className="-mb-1 font-bold ">{title}</p>
         <p className="text-sm ">{description}</p>
       </div>

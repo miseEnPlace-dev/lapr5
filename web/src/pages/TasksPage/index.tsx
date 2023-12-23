@@ -10,6 +10,7 @@ import InputGroup from "@/components/InputGroup";
 import Modal from "@/components/Modal";
 import Pagination from "@/components/Pagination";
 import SideBar from "@/components/SideBar";
+import TextArea from "@/components/TextArea";
 
 import { useTasksModule } from "./module";
 
@@ -105,7 +106,7 @@ const TasksPage: React.FC = () => {
             title="Create Task Request"
           >
             <div className="flex h-full flex-col justify-between gap-y-4">
-              <div className="flex w-full flex-col gap-y-2">
+              <div className="flex w-full flex-col gap-y-5">
                 <Dropdown
                   options={taskTypes}
                   placeholder="Select Task Type"
@@ -115,7 +116,94 @@ const TasksPage: React.FC = () => {
                   onChange={(e) => setType(e.target.value)}
                 />
                 {type == "pick_delivery" ? (
-                  <p>Pila</p>
+                  <>
+                    <div className="flex w-full items-center gap-x-4">
+                      <InputGroup
+                        title="Pickup Location"
+                        description="Select the room from which the robot will pick up the object."
+                      >
+                        <Dropdown
+                          name="Building"
+                          options={buildings}
+                          onChange={(e) => setBuilding1Code(e.target?.value)}
+                          className="w-full"
+                        />
+                        <Dropdown
+                          className="w-full"
+                          name="Room"
+                          disabled={building1Code === ""}
+                          options={building1Floors.map((floor) => ({
+                            code: floor.code,
+                            name: floor.code,
+                          }))}
+                        />
+                      </InputGroup>
+                      <InputGroup
+                        title="Delivery Location"
+                        description="Select the room to which the robot will deliver the object."
+                      >
+                        <Dropdown
+                          name="Building"
+                          options={buildings}
+                          onChange={(e) => setBuilding1Code(e.target?.value)}
+                          className="w-full"
+                        />
+                        <Dropdown
+                          className="w-full"
+                          name="Room"
+                          disabled={building1Code === ""}
+                          options={building1Floors.map((floor) => ({
+                            code: floor.code,
+                            name: floor.code,
+                          }))}
+                        />
+                      </InputGroup>
+                    </div>
+                    <div className="flex w-full items-center gap-x-4">
+                      <InputGroup
+                        title="Pickup Contact"
+                        description="Provide the information about the person that will deliver the object to the robot."
+                      >
+                        <Input
+                          placeholder="Name"
+                          type="text"
+                          className="w-full"
+                        />
+                        <Input
+                          placeholder="Phone Number"
+                          type="text"
+                          className="w-2/3"
+                        />
+                      </InputGroup>
+                      <InputGroup
+                        title="Delivery Contact"
+                        description="Provide the information about the person that will receive the object from the robot."
+                      >
+                        <Input
+                          placeholder="Name"
+                          type="text"
+                          className="w-full"
+                        />
+                        <Input
+                          placeholder="Phone Number"
+                          type="text"
+                          className="w-2/3"
+                        />
+                      </InputGroup>
+                    </div>
+                    <Input
+                      name="Confirmation Code"
+                      description="This code will be asked to the recipient to confirm the delivery."
+                      placeholder="Maximum of 6 digits"
+                      type="text"
+                      className="w-full"
+                    />
+                    <TextArea
+                      placeholder="Object Description"
+                      description="Provide a meanfull description of the object that will be transported."
+                      className="w-full"
+                    />
+                  </>
                 ) : type == "surveillance" ? (
                   <>
                     <InputGroup
