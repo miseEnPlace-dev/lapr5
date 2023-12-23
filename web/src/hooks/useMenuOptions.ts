@@ -11,6 +11,7 @@ import {
   MapIcon,
   RequestsIcon,
   RobotIcon,
+  TasksIcon,
   UsersIcon,
 } from "../styles/Icons";
 
@@ -68,6 +69,14 @@ export const useMenuOptions = () => {
         label: "Devices",
         icon: RobotIcon,
         onClick: () => navigation("/devices"),
+      });
+    }
+
+    if (role === "user") {
+      options.push({
+        label: "Tasks",
+        icon: TasksIcon,
+        onClick: () => navigation("/tasks"),
       });
     }
 

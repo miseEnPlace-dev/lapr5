@@ -45,7 +45,8 @@ export default (app: Router) => {
   route.get(
     '/buildings/:building/floors',
     isAuthenticated,
-    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.campus.name),
+    (req, res, next) =>
+      isAuthorizedAs(req, res, next, [defaultRoles.campus.name, defaultRoles.user.name]),
     (req, res, next) =>
       // #swagger.tags = ['Floors']
       ctrl.getFloors(req, res, next)

@@ -37,8 +37,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         ref={inputRef}
         defaultValue={selected ? selected : ""}
         key={`${options.length}-${selected}`}
-        className={`w-full rounded-lg border border-slate-500 bg-slate-100 px-4 py-2.5 text-left
-        disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500 ${className}`}
+        className={`w-full rounded-lg border border-slate-500 bg-slate-100 px-4 py-2.5 text-left disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500 ${className}`}
         {...rest}
       >
         <option value="" disabled>

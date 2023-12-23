@@ -25,6 +25,7 @@ import ProfilePage from "./pages/ProfilePage";
 import RegisterPage from "./pages/RegisterPage";
 import RequestsPage from "./pages/RequestsPage";
 import RoomsPage from "./pages/RoomsPage";
+import TasksPage from "./pages/TasksPage";
 import UsersPage from "./pages/UsersPage";
 import { RequireAuth } from "./utils/RequireAuth";
 import { RequireRole } from "./utils/RequireRole";
@@ -50,6 +51,16 @@ function App() {
                 <RequireAuth>
                   <RequireRole role="campus">
                     <BuildingsPage />
+                  </RequireRole>
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/tasks"
+              element={
+                <RequireAuth>
+                  <RequireRole role="user">
+                    <TasksPage />
                   </RequireRole>
                 </RequireAuth>
               }

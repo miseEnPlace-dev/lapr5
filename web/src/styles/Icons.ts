@@ -28,6 +28,7 @@ import {
   BsClipboard as ClipboardIcon,
   BsArrowRepeat as RepeatIcon,
 } from "react-icons/bs";
+import { VscTools as TasksIcon } from "react-icons/vsc";
 
 export {
   ArrowLeftIcon,
@@ -51,4 +52,5 @@ export {
   UserIcon,
   UsersIcon,
   WarningIcon,
+  TasksIcon,
 };
