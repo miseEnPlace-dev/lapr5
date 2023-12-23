@@ -19,8 +19,8 @@ export class BuildingService implements IBuildingService {
 
   async getBuildings(
     filters?: string[],
-    page: number = 0,
-    limit: number = 2
+    page?: number,
+    limit?: number
   ): Promise<IPaginationDTO<Building>> {
     const params = {} as { [key: string]: string };
     if (filters) {

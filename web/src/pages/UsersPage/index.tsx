@@ -98,8 +98,8 @@ const UsersPage: React.FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
                 key={user.email}
-                onClick={() => navigate(`/users/${user.id}`)}
-                className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
+                // onClick={() => navigate(`/users/${user.id}`)}
+                className="flex w-full cursor-auto items-center gap-x-10 bg-slate-200 px-12 py-8"
               >
                 <h2 className="text-5xl font-bold">
                   {user.firstName} {user.lastName}

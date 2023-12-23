@@ -30,14 +30,21 @@ export default class BuildingRepo implements IBuildingRepo {
     return await buildingSchema.count();
   }
 
-  public async findAll(page: number, limit: number): Promise<Building[]> {
-    const buildingRecords = await buildingSchema
-      .find()
-      .limit(limit)
-      .skip(page * limit)
-      .sort({
+  public async findAll(page?: number, limit?: number): Promise<Building[]> {
+    let buildingRecords: IBuildingPersistence[] = [];
+    if (page && limit) {
+      buildingRecords = await buildingSchema
+        .find()
+        .limit(limit)
+        .skip(page * limit)
+        .sort({
+          code: 1
+        });
+    } else {
+      buildingRecords = await buildingSchema.find().sort({
         code: 1
       });
+    }
     const buildings: Building[] = [];
 
     for (const b of buildingRecords) {

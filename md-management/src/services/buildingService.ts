@@ -121,8 +121,8 @@ export default class BuildingService implements IBuildingService {
   public async getBuildingsWithMinMaxFloors(
     min: number,
     max: number,
-    page: number = 1,
-    limit: number = 3
+    page?: number,
+    limit?: number
   ): Promise<Result<IPaginationDTO<IBuildingDTO>>> {
     try {
       const buildingCodes = await this.floorRepo.findBuildingCodesWithMinMaxFloors(min, max);
@@ -133,19 +133,29 @@ export default class BuildingService implements IBuildingService {
         buildings.push(building);
       }
       const buildingsDTO = buildings.map(b => BuildingMapper.toDTO(b));
-
-      const start = (page - 1) * limit;
+      const start = page && limit ? (page - 1) * limit : 0;
       const total = buildingsDTO.length;
 
-      const result: IPaginationDTO<IBuildingDTO> = {
-        meta: {
-          limit,
-          page,
-          total,
-          totalPages: Math.ceil(total / limit)
-        },
-        data: buildingsDTO.slice(start, start + limit)
-      };
+      const result =
+        page && limit
+          ? {
+              meta: {
+                limit,
+                page,
+                total,
+                totalPages: Math.ceil(total / limit)
+              },
+              data: buildingsDTO.slice(start, start + limit)
+            }
+          : {
+              meta: {
+                limit: buildingsDTO.length,
+                page: 1,
+                total: buildingsDTO.length,
+                totalPages: 1
+              },
+              data: buildingsDTO
+            };
 
       return Result.ok(result);
     } catch (e) {
@@ -154,23 +164,38 @@ export default class BuildingService implements IBuildingService {
   }
 
   public async getBuildings(
-    page: number = 1,
-    limit: number = 3
+    page?: number,
+    limit?: number
   ): Promise<Result<IPaginationDTO<IBuildingDTO>>> {
     try {
-      const buildings = await this.buildingRepo.findAll(page - 1, limit);
+      const buildings =
+        page && limit
+          ? await this.buildingRepo.findAll(page - 1, limit)
+          : await this.buildingRepo.findAll();
       const buildingDTOs = buildings.map(b => BuildingMapper.toDTO(b));
       const total = await this.buildingRepo.count();
+      const start = page && limit ? (page - 1) * limit : 0;
 
-      const result: IPaginationDTO<IBuildingDTO> = {
-        meta: {
-          total,
-          limit,
-          page,
-          totalPages: Math.ceil(total / limit)
-        },
-        data: buildingDTOs
-      };
+      const result =
+        page && limit
+          ? {
+              meta: {
+                limit,
+                page,
+                total,
+                totalPages: Math.ceil(total / limit)
+              },
+              data: buildingDTOs.slice(start, start + limit)
+            }
+          : {
+              meta: {
+                limit: buildingDTOs.length,
+                page: 1,
+                total: buildingDTOs.length,
+                totalPages: 1
+              },
+              data: buildingDTOs
+            };
 
       return Result.ok(result);
     } catch (e) {
