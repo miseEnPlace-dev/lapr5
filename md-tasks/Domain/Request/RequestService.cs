@@ -74,7 +74,14 @@ namespace DDDSample1.Domain.Requests
 
       foreach (Request r in list)
       {
-        listDto.Add(await ConvertToDTO(r, r.GetType().Name));
+        if (await _surveillanceTaskRepository.GetByIdAsync(r.DeviceTaskId) != null)
+        {
+          listDto.Add(await ConvertToDTO(r, "SurveillanceRequestDTO"));
+        }
+        else if (await _pickAndDeliveryTaskRepository.GetByIdAsync(r.DeviceTaskId) != null)
+        {
+          listDto.Add(await ConvertToDTO(r, "PickDeliveryRequestDTO"));
+        }
       }
 
       return listDto;
