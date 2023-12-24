@@ -1,0 +1,34 @@
+@startuml process-view
+autonumber
+actor TM as "Task Manager"
+participant UI as "Visualization" <<system (C4)>>
+participant TMD as "Tasks Master Data" <<system (C4)>>
+participant P as "Planning" <<system (C4)>>
+participant MDD as "MDD" <<system (C4)>>
+
+activate TM
+
+TM -> UI : requests a new task
+activate UI
+
+alt request is surveillance then
+
+  UI -> TMD : POST /requests/surveillance
+  activate TMD
+
+else request is pickAndDelivery then
+
+  UI -> TMD : POST /requests/pickAndDelivery
+end
+
+
+TMD --> UI : 201 (returns the request)
+deactivate TMD
+
+TM <-- UI : 201 (returns the request)
+deactivate UI
+
+deactivate TM
+
+@enduml
+
