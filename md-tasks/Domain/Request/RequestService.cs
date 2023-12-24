@@ -29,12 +29,24 @@ namespace DDDSample1.Domain.Requests
       _pickAndDeliveryTaskRepository = pickAndDeliveryTaskRepository;
     }
 
-    public async Task<List<IRequestDTO>> GetAllAsync()
+    public async Task<List<RequestDTO>> GetAllAsync()
     {
       List<Request> list = await _repo.GetAllAsync();
 
-      List<IRequestDTO> listDto = new();
-      //list = list.ConvertAll(r => new RequestDTO(r.));
+      List<RequestDTO> listDto = new();
+
+      foreach (Request r in list)
+      {
+        if (await _surveillanceTaskRepository.GetByIdAsync(r.DeviceTaskId) != null)
+        {
+          listDto.Add(await ConvertToDTO(r, "SurveillanceRequestDTO"));
+        }
+        else if (await _pickAndDeliveryTaskRepository.GetByIdAsync(r.DeviceTaskId) != null)
+        {
+          listDto.Add(await ConvertToDTO(r, "PickDeliveryRequestDTO"));
+        }
+      }
+
       return listDto;
     }
 
@@ -54,19 +66,33 @@ namespace DDDSample1.Domain.Requests
       return listDto;
     }
 
-    public async Task<List<IRequestDTO>> GetRequestsByState(string state)
+    public async Task<List<RequestDTO>> GetRequestsByState(string state)
     {
       List<Request> list = await _repo.GetRequestsByState(state);
 
-      List<IRequestDTO> listDto = new();
+      List<RequestDTO> listDto = new();
+
+      foreach (Request r in list)
+      {
+        listDto.Add(await ConvertToDTO(r, r.GetType().Name));
+      }
+
       return listDto;
     }
 
-    public async Task<IRequestDTO> GetByIdAsync(RequestId id)
+    public async Task<RequestDTO> GetByIdAsync(RequestId id)
     {
       Request r = await _repo.GetByIdAsync(id);
       if (r == null) return null;
 
+      if (await _surveillanceTaskRepository.GetByIdAsync(r.DeviceTaskId) != null)
+      {
+        return await ConvertToDTO(r, "SurveillanceRequestDTO");
+      }
+      else if (await _pickAndDeliveryTaskRepository.GetByIdAsync(r.DeviceTaskId) != null)
+      {
+        return await ConvertToDTO(r, "PickDeliveryRequestDTO");
+      }
       return null;
     }
 

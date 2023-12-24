@@ -24,7 +24,7 @@ public class RequestsController : ControllerBase
 
   // GET api/Requests
   [HttpGet]
-  public async Task<ActionResult<IEnumerable<IRequestDTO>>> GetAll()
+  public async Task<ActionResult<IEnumerable<RequestDTO>>> GetAll()
   {
     if (Request.Query.ContainsKey("state"))
       return await _svc.GetRequestsByState(Request.Query["state"].ToString());
@@ -33,7 +33,7 @@ public class RequestsController : ControllerBase
 
   // GET api/Requests/{id}
   [HttpGet("{id}")]
-  public async Task<ActionResult<IRequestDTO>> Get(string id)
+  public async Task<ActionResult<RequestDTO>> Get(string id)
   {
     var t = await _svc.GetByIdAsync(new RequestId(id));
     if (t == null) return NotFound();
