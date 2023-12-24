@@ -4,12 +4,14 @@ using Newtonsoft.Json;
 
 namespace DDDSample1.Domain.Room
 {
-  public class RoomId : EntityId
+  public class RoomId
   {
 
-    [JsonConstructor]
-    public RoomId(Guid value) : base(value) { }
+    public string Value { get; private set; }
 
-    public RoomId(string value) : base(value) { }
+    public RoomId(string value)
+    {
+      Value = value;
+    }
   }
 }

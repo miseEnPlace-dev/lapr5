@@ -2,7 +2,7 @@ using DDDSample1.Domain.Shared;
 
 namespace DDDSample1.Domain.Room
 {
-  public class Room : Entity<RoomId>, IAggregateRoot
+  public class Room
   {
 
     public string RoomName { get; private set; }
