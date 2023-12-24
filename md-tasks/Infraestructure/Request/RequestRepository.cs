@@ -31,4 +31,11 @@ public class RequestRepository : BaseRepository<Request, RequestId>, IRequestRep
   {
     return await GetRequestsByType("Surveillance");
   }
+
+  public async Task<List<Request>> GetRequestsByUserId(string userId)
+  {
+    var requests = await _context.Requests.ToListAsync();
+
+    return requests.Where(r => r.UserId.ToString() == userId).ToList();
+  }
 }

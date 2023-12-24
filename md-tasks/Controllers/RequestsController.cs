@@ -28,6 +28,8 @@ public class RequestsController : ControllerBase
   {
     if (Request.Query.ContainsKey("state"))
       return await _svc.GetRequestsByState(Request.Query["state"].ToString());
+    if (Request.Query.ContainsKey("userId"))
+      return await _svc.GetRequestsByUserId(Request.Query["userId"].ToString());
     return await _svc.GetAllAsync();
   }
 

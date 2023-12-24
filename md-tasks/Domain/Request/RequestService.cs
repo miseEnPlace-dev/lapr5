@@ -87,6 +87,27 @@ namespace DDDSample1.Domain.Requests
       return listDto;
     }
 
+    public async Task<List<RequestDTO>> GetRequestsByUserId(string userId)
+    {
+      List<Request> list = await _repo.GetRequestsByUserId(userId);
+
+      List<RequestDTO> listDto = new();
+
+      foreach (Request r in list)
+      {
+        if (await _surveillanceTaskRepository.GetByIdAsync(r.DeviceTaskId) != null)
+        {
+          listDto.Add(await ConvertToDTO(r, "SurveillanceRequestDTO"));
+        }
+        else if (await _pickAndDeliveryTaskRepository.GetByIdAsync(r.DeviceTaskId) != null)
+        {
+          listDto.Add(await ConvertToDTO(r, "PickDeliveryRequestDTO"));
+        }
+      }
+
+      return listDto;
+    }
+
     public async Task<RequestDTO> GetByIdAsync(RequestId id)
     {
       Request r = await _repo.GetByIdAsync(id);
