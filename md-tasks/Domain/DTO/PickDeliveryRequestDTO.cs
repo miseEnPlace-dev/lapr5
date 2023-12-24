@@ -1,4 +1,4 @@
-using System;
+using Newtonsoft.Json;
 
 namespace DDDSample1.Domain.DTO;
 
@@ -14,7 +14,8 @@ public class PickDeliveryRequestDTO : RequestDTO
 
   public string ConfirmationCode { get; set; }
 
-  public PickDeliveryRequestDTO(string userId, string requestedAt, string description, string pickupUserId, string deliveryUserId, string pickupRoomId, string deliveryRoomId, string confirmationCode, string deviceTaskId) : base(userId, requestedAt, deviceTaskId)
+  [JsonConstructor]
+  public PickDeliveryRequestDTO(string userId, string requestedAt, string description, string pickupUserId, string deliveryUserId, string pickupRoomId, string deliveryRoomId, string confirmationCode) : base(userId, requestedAt)
   {
     this.Description = description;
     this.PickupUserId = pickupUserId;

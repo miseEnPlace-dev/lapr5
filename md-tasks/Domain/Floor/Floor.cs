@@ -2,7 +2,7 @@ using DDDSample1.Domain.Shared;
 
 namespace DDDSample1.Domain.Floor
 {
-  public class Floor : Entity<FloorId>, IAggregateRoot
+  public class Floor
   {
 
     public string FloorCode { get; private set; }

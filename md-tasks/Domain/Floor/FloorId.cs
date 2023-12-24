@@ -4,8 +4,14 @@ using Microsoft.EntityFrameworkCore;
 namespace DDDSample1.Domain.Floor
 {
   [Owned]
-  public class FloorId : EntityId
+  public class FloorId
   {
-    public FloorId(string value) : base(value) { }
+
+    public string Value { get; private set; }
+
+    public FloorId(string value)
+    {
+      this.Value = value;
+    }
   }
 }

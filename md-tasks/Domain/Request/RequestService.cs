@@ -5,6 +5,8 @@ using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
 using DDDSample1.Domain.DeviceTasks.SurveillanceTask;
 using DDDSample1.Domain.DTO;
+using DDDSample1.Domain.Floor;
+using DDDSample1.Domain.Room;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.User;
 using DDDSample1.Infrastructure.Requests;
@@ -19,10 +21,12 @@ namespace DDDSample1.Domain.Requests
 
     private readonly IPickAndDeliveryTaskRepository _pickAndDeliveryTaskRepository;
 
-    public RequestService(IUnitOfWork unitOfWork, IRequestRepository repo)
+    public RequestService(IUnitOfWork unitOfWork, IRequestRepository repo, ISurveillanceTaskRepository surveillanceTaskRepository, IPickAndDeliveryTaskRepository pickAndDeliveryTaskRepository)
     {
       _unitOfWork = unitOfWork;
       _repo = repo;
+      _surveillanceTaskRepository = surveillanceTaskRepository;
+      _pickAndDeliveryTaskRepository = pickAndDeliveryTaskRepository;
     }
 
     public async Task<List<IRequestDTO>> GetAllAsync()
@@ -43,7 +47,7 @@ namespace DDDSample1.Domain.Requests
       foreach (Request r in list)
       {
         SurveillanceTask task = await _surveillanceTaskRepository.GetByIdAsync(new DeviceTaskId(r.DeviceTaskId.ToString()));
-        SurveillanceRequestDTO dto = new(r.UserId.ToString(), r.RequestedAt.ToString(), task.UserContact.ToString(), task.FloorId.ToString(), r.DeviceTaskId.ToString());
+        SurveillanceRequestDTO dto = new(r.UserId.ToString(), r.RequestedAt.ToString(), task.UserContact.ToString(), task.FloorId.ToString());
         listDto.Add(dto);
       }
 
@@ -66,13 +70,46 @@ namespace DDDSample1.Domain.Requests
       return null;
     }
 
-    public async Task<RequestDTO> AddAsync(RequestDTO dto)
+    public async Task<RequestDTO> AddAsyncSurveillanceRequest(SurveillanceRequestDTO dto)
     {
-      Request r = new(new UserId(dto.UserId), new DeviceTaskId(dto.DeviceTaskId));
-      await _repo.AddAsync(r);
-      await _unitOfWork.CommitAsync();
+      try
+      {
+        SurveillanceTask task = new(new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description), new UserEmail(dto.ContactEmail), new FloorId(dto.FloorId));
+        await _surveillanceTaskRepository.AddAsync(task);
+        await _unitOfWork.CommitAsync();
 
-      return await ConvertToDTO(dto);
+        Request r = new(new UserId(dto.UserId), task.Id);
+        await _repo.AddAsync(r);
+        await _unitOfWork.CommitAsync();
+
+        return await ConvertToDTO(r, dto.GetType().Name);
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine($"Exception: {e.Message}");
+        throw;
+      }
+    }
+
+    public async Task<RequestDTO> AddAsyncPickAndDeliveryRequest(PickDeliveryRequestDTO dto)
+    {
+      try
+      {
+        PickAndDeliveryTask task = new(new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description), new UserId(dto.PickupUserId), new UserId(dto.DeliveryUserId), new RoomId(dto.PickupRoomId), new RoomId(dto.DeliveryRoomId));
+        await _pickAndDeliveryTaskRepository.AddAsync(task);
+        await _unitOfWork.CommitAsync();
+
+        Request r = new(new UserId(dto.UserId), task.Id);
+        await _repo.AddAsync(r);
+        await _unitOfWork.CommitAsync();
+
+        return await ConvertToDTO(r, dto.GetType().Name);
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine($"Exception: {e.Message}");
+        throw;
+      }
     }
 
     public async Task<RequestDTO> UpdateAsync(RequestDTO dto)
@@ -85,7 +122,7 @@ namespace DDDSample1.Domain.Requests
 
       await _unitOfWork.CommitAsync();
 
-      return await ConvertToDTO(dto);
+      return await ConvertToDTO(r, dto.GetType().Name);
     }
 
     public async Task<RequestDTO> PutAsync(RequestDTO dto)
@@ -97,7 +134,7 @@ namespace DDDSample1.Domain.Requests
       r.ChangeState(new RequestState(dto.State));
 
       await _unitOfWork.CommitAsync();
-      return await ConvertToDTO(dto);
+      return await ConvertToDTO(r, dto.GetType().Name);
     }
 
     public async Task<IRequestDTO> DeleteAsync(RequestId id)
@@ -111,18 +148,18 @@ namespace DDDSample1.Domain.Requests
       return null;
     }
 
-    private async Task<RequestDTO> ConvertToDTO(RequestDTO r)
+    private async Task<RequestDTO> ConvertToDTO(Request r, string type)
     {
-      if (r is ISurveillanceRequestDTO surveillanceReq)
+      if (type.Equals("SurveillanceRequestDTO"))
       {
-        SurveillanceTask task = await _surveillanceTaskRepository.GetByIdAsync(new DeviceTaskId(surveillanceReq.DeviceTaskId.ToString()));
-        SurveillanceRequestDTO dto = new(r.UserId.ToString(), r.RequestedAt.ToString(), task.UserContact.ToString(), task.FloorId.ToString(), r.DeviceTaskId.ToString());
+        SurveillanceTask task = await _surveillanceTaskRepository.GetByIdAsync(r.DeviceTaskId);
+        SurveillanceRequestDTO dto = new(r.Id.ToString(), task.Description.Value, r.UserId.ToString(), r.RequestedAt.ToString(), StateEnum.Pending, task.UserContact.ToString(), task.FloorId.ToString(), task.Id.ToString());
         return dto;
       }
-      else if (r is IPickDeliveryRequestDTO pickDeliveryTask)
+      else if (type.Equals("PickDeliveryRequestDTO"))
       {
-        PickAndDeliveryTask task = await _pickAndDeliveryTaskRepository.GetByIdAsync(new DeviceTaskId(pickDeliveryTask.DeviceTaskId.ToString()));
-        PickDeliveryRequestDTO dto = new(r.UserId.ToString(), r.RequestedAt.ToString(), task.Description.ToString(), task.PickupUserId.ToString(), task.DeliveryUserId.ToString(), task.PickupRoomId.ToString(), task.DeliveryRoomId.ToString(), task.ConfirmationCode.ToString(), r.DeviceTaskId.ToString());
+        PickAndDeliveryTask task = await _pickAndDeliveryTaskRepository.GetByIdAsync(r.DeviceTaskId);
+        PickDeliveryRequestDTO dto = new(r.Id.ToString(), r.UserId.ToString(), r.RequestedAt.ToString(), StateEnum.Pending, task.Description.ToString(), task.PickupUserId.ToString(), task.DeliveryUserId.ToString(), task.PickupRoomId.ToString(), task.DeliveryRoomId.ToString(), task.ConfirmationCode.ToString(), task.Id.ToString());
         return dto;
       }
 

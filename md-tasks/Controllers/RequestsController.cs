@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.DTO;
 using DDDSample1.Domain.Requests;
 using DDDSample1.Domain.Shared;
@@ -12,6 +14,8 @@ namespace DDDSample1.Controllers;
 public class RequestsController : ControllerBase
 {
   private readonly RequestService _svc;
+
+  private readonly DeviceTaskService _svcTask;
 
   public RequestsController(RequestService svc)
   {
@@ -42,8 +46,26 @@ public class RequestsController : ControllerBase
   {
     try
     {
-      var t = await _svc.AddAsync(dto);
-      return CreatedAtAction(nameof(Get), new { id = t.Id }, t);
+      if (dto == null)
+      {
+        return BadRequest("Request DTO is null");
+      }
+
+      var t = await _svc.AddAsyncSurveillanceRequest(dto);
+
+      if (t == null)
+      {
+        return BadRequest("Failed to create surveillance request");
+      }
+
+      if (t.Id != null)
+      {
+        return CreatedAtAction(nameof(Get), new { id = t.Id }, t);
+      }
+      else
+      {
+        return BadRequest("Surveillance request Id is null");
+      }
     }
     catch (BusinessRuleValidationException ex)
     {
@@ -57,15 +79,32 @@ public class RequestsController : ControllerBase
   {
     try
     {
-      var t = await _svc.AddAsync(dto);
-      return CreatedAtAction(nameof(Get), new { id = t.Id }, t);
+      if (dto == null)
+      {
+        return BadRequest("Request DTO is null");
+      }
+
+      var t = await _svc.AddAsyncPickAndDeliveryRequest(dto);
+
+      if (t == null)
+      {
+        return BadRequest("Failed to create pick and delivery request");
+      }
+
+      if (t.Id != null)
+      {
+        return CreatedAtAction(nameof(Get), new { id = t.Id }, t);
+      }
+      else
+      {
+        return BadRequest("Pick and Delivery request Id is null");
+      }
     }
     catch (BusinessRuleValidationException ex)
     {
       return BadRequest(new { ex.Message });
     }
   }
-
   // PUT api/Requests/5
   [HttpPut("{id}")]
   public async Task<ActionResult<IRequestDTO>> Put(string id, RequestDTO dto)

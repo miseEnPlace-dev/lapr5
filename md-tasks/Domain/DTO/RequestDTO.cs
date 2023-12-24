@@ -14,11 +14,10 @@ public abstract class RequestDTO
   public StateEnum State { get; set; }
 
   [JsonConstructor]
-  public RequestDTO(string userId, string requestedAt, string deviceTaskId)
+  public RequestDTO(string userId, string requestedAt)
   {
     this.UserId = userId;
     this.RequestedAt = requestedAt;
-    this.DeviceTaskId = deviceTaskId;
   }
 
   public RequestDTO(string id, string userId, string requestedAt, StateEnum state, string deviceTaskId)
