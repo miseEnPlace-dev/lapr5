@@ -207,14 +207,33 @@ namespace DDDSample1.Domain.Requests
       if (type.Equals("SurveillanceRequestDTO"))
       {
         SurveillanceTask task = await _surveillanceTaskRepository.GetByIdAsync(r.DeviceTaskId);
-        SurveillanceRequestDTO dto = new(r.Id.ToString(), task.Description.Value, r.UserId.ToString(), r.RequestedAt.ToString(), StateEnum.Pending, task.UserContact.ToString(), task.FloorId.ToString(), task.Id.ToString());
-        return dto;
+        return new SurveillanceRequestDTO(
+            r.Id.Value,
+            r.UserId.Value,
+            task.Description.Value,
+            r.RequestedAt.ToString(),
+            StateEnum.Pending,
+            task.UserContact.Email,
+            task.FloorId.Value,
+            task.Id.Value
+        );
       }
       else if (type.Equals("PickDeliveryRequestDTO"))
       {
         PickAndDeliveryTask task = await _pickAndDeliveryTaskRepository.GetByIdAsync(r.DeviceTaskId);
-        PickDeliveryRequestDTO dto = new(r.Id.ToString(), r.UserId.ToString(), r.RequestedAt.ToString(), StateEnum.Pending, task.Description.ToString(), task.PickupUserId.ToString(), task.DeliveryUserId.ToString(), task.PickupRoomId.ToString(), task.DeliveryRoomId.ToString(), task.ConfirmationCode.ToString(), task.Id.ToString());
-        return dto;
+        return new PickDeliveryRequestDTO(
+            r.Id.Value,
+            r.UserId.Value,
+            r.RequestedAt.ToString(),
+            StateEnum.Pending,
+            task.Description.Value,
+            task.PickupUserId.Value,
+            task.DeliveryUserId.Value,
+            task.PickupRoomId.Value,
+            task.DeliveryRoomId.Value,
+            task.ConfirmationCode.Code,
+            task.Id.Value
+        );
       }
 
       return null;
