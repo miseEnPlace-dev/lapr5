@@ -1,0 +1,39 @@
+@startuml process-view
+autonumber
+box "<<container (C4)>>\nMD Management" <<center>>#LightYellow
+  participant ROUTE as ":Route"
+  participant CTRL as ":Controller"
+  participant SRV as ":Service"
+  participant BUILD as "request:Request"
+  participant DTO as "dto:RequestDTO"
+  participant REPO as ":Repo"
+end box
+
+
+?o-> ROUTE : POST /requests
+activate ROUTE
+
+ROUTE -> CTRL : create(request)
+activate CTRL
+
+CTRL -> SRV : create(request)
+activate SRV
+
+SRV -> DTO** : create(request)
+activate DTO
+
+DTO -> REPO : create(request)
+activate REPO
+deactivate DTO
+
+REPO --> SRV : sucess(request)
+deactivate REPO
+
+SRV --> CTRL : sucess(request)
+deactivate SRV
+CTRL --> ROUTE : sucess(request)
+deactivate CTRL
+<-- ROUTE : 201 OK
+deactivate ROUTE
+
+@enduml
