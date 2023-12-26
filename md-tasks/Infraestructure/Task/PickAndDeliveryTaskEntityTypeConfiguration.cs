@@ -11,7 +11,7 @@ internal class PickAndDeliveryTaskEntityTypeConfiguration : IEntityTypeConfigura
 {
   public void Configure(EntityTypeBuilder<PickAndDeliveryTask> builder)
   {
-    builder.ToTable("PickAndDeliveryTasks", SchemaNames.DDDSample1);
+    //builder.ToTable("PickAndDeliveryTasks", SchemaNames.DDDSample1);
     //builder.Property(b => b.Id);
     builder.OwnsOne(b => b.ConfirmationCode);
     builder.Property(b => b.Description).HasConversion(b => b.Value, b => new TaskDescription(b));

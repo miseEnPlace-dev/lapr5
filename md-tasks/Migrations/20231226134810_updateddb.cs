@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DDDNetCore.Migrations
 {
     /// <inheritdoc />
-    public partial class addbasetables : Migration
+    public partial class updateddb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -66,7 +66,9 @@ namespace DDDNetCore.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    useremail = table.Column<string>(name: "user_email", type: "longtext", nullable: true)
+                    UserName = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UserPhoneNumber = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     floorid = table.Column<string>(name: "floor_id", type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")

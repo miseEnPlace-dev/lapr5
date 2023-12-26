@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDDNetCore.Migrations
 {
     [DbContext(typeof(MySQLDbContext))]
-    [Migration("20231222183028_add_base_tables")]
-    partial class addbasetables
+    [Migration("20231226134810_updateddb")]
+    partial class updateddb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,9 +61,11 @@ namespace DDDNetCore.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("floor_id");
 
-                    b.Property<string>("UserContact")
-                        .HasColumnType("longtext")
-                        .HasColumnName("user_email");
+                    b.Property<string>("UserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserPhoneNumber")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 

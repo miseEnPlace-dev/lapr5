@@ -43,7 +43,7 @@ namespace DDDNetCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PickAndDeliveryTasks", "ddd");
+                    b.ToTable("PickAndDeliveryTasks");
                 });
 
             modelBuilder.Entity("DDDSample1.Domain.DeviceTasks.SurveillanceTask.SurveillanceTask", b =>
@@ -58,13 +58,15 @@ namespace DDDNetCore.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("floor_id");
 
-                    b.Property<string>("UserContact")
-                        .HasColumnType("longtext")
-                        .HasColumnName("user_email");
+                    b.Property<string>("UserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserPhoneNumber")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.ToTable("SurveillanceTasks", "ddd");
+                    b.ToTable("SurveillanceTasks");
                 });
 
             modelBuilder.Entity("DDDSample1.Domain.Requests.Request", b =>
@@ -102,7 +104,7 @@ namespace DDDNetCore.Migrations
 
                             b1.HasKey("PickAndDeliveryTaskId");
 
-                            b1.ToTable("PickAndDeliveryTasks", "ddd");
+                            b1.ToTable("PickAndDeliveryTasks");
 
                             b1.WithOwner()
                                 .HasForeignKey("PickAndDeliveryTaskId");
