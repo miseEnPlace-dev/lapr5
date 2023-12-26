@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDDNetCore.Migrations
 {
     [DbContext(typeof(MySQLDbContext))]
-    [Migration("20231222183028_add_base_tables")]
-    partial class addbasetables
+    [Migration("20231226145740_updatedpickanddeliverytable")]
+    partial class updatedpickanddeliverytable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,9 +30,11 @@ namespace DDDNetCore.Migrations
                     b.Property<string>("DeliveryRoomId")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("DeliveryUserId")
-                        .HasColumnType("longtext")
-                        .HasColumnName("delivery_user_id");
+                    b.Property<string>("DeliveryUserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DeliveryUserPhoneNumber")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
@@ -40,9 +42,11 @@ namespace DDDNetCore.Migrations
                     b.Property<string>("PickupRoomId")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("PickupUserId")
-                        .HasColumnType("longtext")
-                        .HasColumnName("pickup_user_id");
+                    b.Property<string>("PickupUserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PickupUserPhoneNumber")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -61,9 +65,11 @@ namespace DDDNetCore.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("floor_id");
 
-                    b.Property<string>("UserContact")
-                        .HasColumnType("longtext")
-                        .HasColumnName("user_email");
+                    b.Property<string>("UserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserPhoneNumber")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 

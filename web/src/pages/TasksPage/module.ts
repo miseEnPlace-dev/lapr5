@@ -51,6 +51,17 @@ export const useTasksModule = () => {
     setPage(page);
   };
 
+  async function handleCreate() {
+    if (type) {
+      const task = {
+        type,
+        building1Code,
+        building2Code,
+      };
+      console.log(task);
+    }
+  }
+
   useEffect(() => {
     async function fetchBuildings() {
       const b = await buildingService.getBuildings();
@@ -108,5 +119,6 @@ export const useTasksModule = () => {
     buildings,
     building1Rooms,
     building2Rooms,
+    handleCreate,
   };
 };

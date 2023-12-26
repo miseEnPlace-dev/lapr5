@@ -580,7 +580,16 @@ em relação a multiplos roles, nesta fase do projeto não é necessário suport
 
 ### Answer
 
-_Ainda sem resposta_
+módulo de planeamento é o módulo do sistema responsavel pelas funcionalidades de (i) calcular trajetos entre pontos, e (ii) calcular a melhor organização para os robots executarem as tarefas aprovadas.
+
+concetualmente e de forma simplificada, a sequencia de execução vai ser:
+
+t1 t2 t3 t4 t5 t6 t7 t8 t9 t10 t11 t12 t13 t14 t15 t16 t17 t18 t19
+R1 Tk12 Tk12
+R2 TK45 Tk45 TK45 Tk45 Tk389 Tk389
+R3 Tk67 Tk110 Tk110 Tk34 Tk34
+
+em que cada linha representa cada robot da frota e quais as tarefas que vai executar por ordem, e as colunas representam o tempo
 
 ## [Question 41](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26663)
 
@@ -592,6 +601,90 @@ _Ainda sem resposta_
 
 ### Answer
 
-_Ainda sem resposta_
+"no caso do pedido de registo apenas a data do pedido. se de um ponto de vista tecnico entenderem necessário guardar outra informação não haverá problema.
+no caso das aprovações/recusas dos pedidos de registo deve obviamente ser guardada informação sobre que utilizador e quando (data e hora) tomou a decisão"
 
-_LAST UPDATE: 13/12/2023 12:30H_
+## [Question 42](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26666)
+
+### US10 - Como administrador pretendo criar um utilizador de sistema indicando as suas permissões
+
+> Em relação a este requisito, podemos presumir que já houve consentimento por parte do utilizador que vai ser registado?
+
+### Answer
+
+"esta funcionalidade apenas permite criar utilizadores de tipo "não utente" para os funcionários da instituição pelo que a aplicação do RGPD e restantes questões de privacidade estão abrangidas pela relação laboral existente"
+
+## [Question 43](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26695)
+
+### US1410
+
+> Relativamente ao caso de uso definido por "seja gerado um plano de atendimento das tarefas indicadas, que indique uma sequência de execução das tarefas, que seja criada através da geração de todas as sequências e escolha a que durar menos tempo.", que tipo de utilizador é designado para operar com esta funcionalidade?
+
+### Answer
+
+"gestor de tarefas"
+
+## [Question 44](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26717)
+
+### US470 / US480 / US490
+
+> Queríamos esclarecer as diferenças entre US470, US480 e US490.
+> Na US480 é pedido para consultar as requisições de tarefas ainda não aprovadas
+> Na US490 é pedido para pesquisar as requisições de tarefas por estado, por tipo de dispositivo, ou utente.
+> A partir desta informação, podem haver diferentes interpretações. Uma das interpretações possíveis é que a listagem da US490 engloba a listagem que precisa de ser desenvolvida na US480, já que na tabela da US490 é possível filtrar os requisitos de tarefas por tarefas ainda não aprovadas. Essa filtragem daria a tabela que é pedida na US480.
+>
+> Com base nesta resposta (https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26304#p33367) entendemos que irão haver duas tabelas. Uma exclusiva para aprovar ou reprovar tarefas que ainda não foram aprovadas, com os botões "aprovar" e "não aprovar" para cada tarefa, e outra apenas para listar e filtrar todas as tarefas e os vários conceitos relacionados.
+>
+> Pedíamos que esclarecesse o número de tabelas que pretende que existam, as suas diferenças, e quais permitem a aprovação ou reprovação das tarefas.
+
+### Answer
+
+"Sao duas opções distintas. Uma apenas para aprovar ou recusar as tarefas pendentes de decisão.
+A outra opção é para consulta de todas as tarefas do sistema, inclusive histórico."
+
+## [Question 45](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26718)
+
+### US20 e sub US's
+
+> Na Us de registo de um utente na aplicação deve ser apresentado a este a política de privacidade antes ou depois de ele preencher a sua informação? E caso o mesmo não a aceite como devo proceder, aviso que o registo não é possível sem aceitar a política de privacidade e retorno à home page ou pergunto se se quer registar de novo?
+
+### Answer
+
+"No formulário de registo deve ser pedida toda a informação e apresentada uma checkbox para aceitação da política de privacidade. No texto dessa checkbox deve existir um link para a política de privacidade.
+O preenchimento da checkbox é obrigatório e se não for preenchido deve ser apresentada uma mensagem"
+
+## [Question 46](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26722)
+
+### US460 - Tarefa de vigilancia
+
+> Foi-nos dito, no contexto de ALGAV (modulo de planeamento), que "Nas tarefas do tipo vigilância ou desinfeção os pontos iniciais e finais de cada tarefa estão sempre no mesmo corredor interno de um piso de um edifício". No entanto, numa resposta anterior "As tarefas de vigilância caracterizam-se por indicar qual o edifício e piso(s)" (https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=25045#p31683).
+>
+> O que é expectável que aconteça?
+>
+> Podemos considerar a vigilância de vários pisos como tarefas diferentes?
+
+### Answer
+
+" Sim podem considerar as tarefas de vigilância apenas para um piso e o utilizador terá que criar uma requisição para cada piso."
+
+## [Question 47](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26739)
+
+### US609
+
+> Gostaria de saber o que deverá acontecer após ser terminada a visualização da tarefa. Será exibida uma mensagem que chegou ao fim, ou deverá ficar a fazer a mesma tarefa em ciclo?
+
+### Answer
+
+"deverá ser mostrada uma mensagem e o módulo deve voltar ao modo de movimento interativo"
+
+## [Question 48](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=26767)
+
+### US612
+
+> Nesta US o pretendido é que apareça a tip flutuante quando o utilizador aponta o cursor do rato para o chão ou é quando este aponta o cursor do rato para a porta que dá acesso à sala, gabinete ou elevador? Além disso, queria saber se é necessário mostrar várias câmaras ao mesmo tempo e se é utilizado o mesmo método em qualquer câmara para exibir a tip flutuante.
+
+### Answer
+
+"a tooltip deve ser mostrada quando o cursor do rato aponta para a porta da sala/elevador. a tooltip deve aparecer no viewport ativo (mas não há problema se aparecer em todos os viewports em simultaneo). se mostrarem a tooltip em mais que um viewport, devem usar o mesmo método em todos"
+
+> _LAST UPDATE: 26/12/2023 12:30H_

@@ -59,7 +59,7 @@ namespace DDDSample1.Domain.Requests
       foreach (Request r in list)
       {
         SurveillanceTask task = await _surveillanceTaskRepository.GetByIdAsync(new DeviceTaskId(r.DeviceTaskId.ToString()));
-        SurveillanceRequestDTO dto = new(r.UserId.ToString(), r.RequestedAt.ToString(), task.UserContact.ToString(), task.FloorId.ToString());
+        SurveillanceRequestDTO dto = new(r.UserId.ToString(), r.RequestedAt.ToString(), task.UserName.Name, task.UserPhoneNumber.PhoneNumber, task.FloorId.Value);
         listDto.Add(dto);
       }
 
@@ -128,7 +128,12 @@ namespace DDDSample1.Domain.Requests
     {
       try
       {
-        SurveillanceTask task = new(new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description), new UserEmail(dto.ContactEmail), new FloorId(dto.FloorId));
+        if (dto.UserId == null || dto.Description == null || dto.UserName == null || dto.PhoneNumber == null || dto.FloorId == null)
+        {
+          throw new Exception("Invalid Request");
+        }
+
+        SurveillanceTask task = new(new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description), new UserName(dto.UserName), new UserPhoneNumber(dto.PhoneNumber), new FloorId(dto.FloorId));
         await _surveillanceTaskRepository.AddAsync(task);
         await _unitOfWork.CommitAsync();
 
@@ -149,7 +154,23 @@ namespace DDDSample1.Domain.Requests
     {
       try
       {
-        PickAndDeliveryTask task = new(new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description), new UserId(dto.PickupUserId), new UserId(dto.DeliveryUserId), new RoomId(dto.PickupRoomId), new RoomId(dto.DeliveryRoomId));
+        if (dto.UserId == null ||
+        dto.Description == null ||
+        dto.PickupUserName == null ||
+        dto.DeliveryUserName == null ||
+        dto.PickupRoomId == null ||
+        dto.DeliveryRoomId == null ||
+        dto.PickupUserPhoneNumber == null ||
+        dto.DeliveryUserPhoneNumber == null)
+        {
+          throw new Exception("Invalid Request");
+        }
+
+        PickAndDeliveryTask task = new(new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description),
+        new UserName(dto.PickupUserName), new(dto.DeliveryUserName),
+        new UserPhoneNumber(dto.PickupUserPhoneNumber), new UserPhoneNumber(dto.DeliveryUserPhoneNumber),
+        new RoomId(dto.PickupRoomId), new RoomId(dto.DeliveryRoomId), new ConfirmationCode(dto.ConfirmationCode));
+
         await _pickAndDeliveryTaskRepository.AddAsync(task);
         await _unitOfWork.CommitAsync();
 
@@ -207,14 +228,36 @@ namespace DDDSample1.Domain.Requests
       if (type.Equals("SurveillanceRequestDTO"))
       {
         SurveillanceTask task = await _surveillanceTaskRepository.GetByIdAsync(r.DeviceTaskId);
-        SurveillanceRequestDTO dto = new(r.Id.ToString(), task.Description.Value, r.UserId.ToString(), r.RequestedAt.ToString(), StateEnum.Pending, task.UserContact.ToString(), task.FloorId.ToString(), task.Id.ToString());
-        return dto;
+        return new SurveillanceRequestDTO(
+            r.Id.Value,
+            r.UserId.Value,
+            task.Description.Value,
+            r.RequestedAt.ToString(),
+            StateEnum.Pending,
+            task.UserName.Name,
+            task.UserPhoneNumber.PhoneNumber,
+            task.FloorId.Value,
+            task.Id.Value
+        );
       }
       else if (type.Equals("PickDeliveryRequestDTO"))
       {
         PickAndDeliveryTask task = await _pickAndDeliveryTaskRepository.GetByIdAsync(r.DeviceTaskId);
-        PickDeliveryRequestDTO dto = new(r.Id.ToString(), r.UserId.ToString(), r.RequestedAt.ToString(), StateEnum.Pending, task.Description.ToString(), task.PickupUserId.ToString(), task.DeliveryUserId.ToString(), task.PickupRoomId.ToString(), task.DeliveryRoomId.ToString(), task.ConfirmationCode.ToString(), task.Id.ToString());
-        return dto;
+        return new PickDeliveryRequestDTO(
+            r.Id.Value,
+            r.UserId.Value,
+            task.Description.Value,
+            r.RequestedAt.ToString(),
+            StateEnum.Pending,
+            task.PickupUserName.Name,
+            task.DeliveryUserName.Name,
+            task.PickupUserPhoneNumber.PhoneNumber,
+            task.DeliveryUserPhoneNumber.PhoneNumber,
+            task.PickupRoomId.Value,
+            task.DeliveryRoomId.Value,
+            task.Id.Value,
+            task.ConfirmationCode.Code
+        );
       }
 
       return null;

@@ -23,7 +23,7 @@ namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask
 
     private static void ValidateCode(string code)
     {
-      if (code.Length > 4 && code.Length < 6)
+      if (code.Length < 4 || code.Length > 6 || string.IsNullOrEmpty(code))
       {
         throw new BusinessRuleValidationException("Confirmation code must at least 4 characters and at most 6 characters.");
       }

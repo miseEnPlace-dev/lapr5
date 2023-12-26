@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDDNetCore.Migrations
 {
     [DbContext(typeof(MySQLDbContext))]
-    [Migration("20231222183143_renamed_task_tables")]
-    partial class renamedtasktables
+    [Migration("20231226150559_updatedconfirmationcodefield")]
+    partial class updatedconfirmationcodefield
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,12 +27,17 @@ namespace DDDNetCore.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
+                    b.Property<string>("ConfirmationCode")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("DeliveryRoomId")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("DeliveryUserId")
-                        .HasColumnType("longtext")
-                        .HasColumnName("delivery_user_id");
+                    b.Property<string>("DeliveryUserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DeliveryUserPhoneNumber")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
@@ -40,13 +45,15 @@ namespace DDDNetCore.Migrations
                     b.Property<string>("PickupRoomId")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("PickupUserId")
-                        .HasColumnType("longtext")
-                        .HasColumnName("pickup_user_id");
+                    b.Property<string>("PickupUserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PickupUserPhoneNumber")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.ToTable("PickAndDeliveryTasks", "ddd");
+                    b.ToTable("PickAndDeliveryTasks");
                 });
 
             modelBuilder.Entity("DDDSample1.Domain.DeviceTasks.SurveillanceTask.SurveillanceTask", b =>
@@ -61,13 +68,15 @@ namespace DDDNetCore.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("floor_id");
 
-                    b.Property<string>("UserContact")
-                        .HasColumnType("longtext")
-                        .HasColumnName("user_email");
+                    b.Property<string>("UserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserPhoneNumber")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.ToTable("SurveillanceTasks", "ddd");
+                    b.ToTable("SurveillanceTasks");
                 });
 
             modelBuilder.Entity("DDDSample1.Domain.Requests.Request", b =>
@@ -91,27 +100,6 @@ namespace DDDNetCore.Migrations
                     b.HasKey("Id", "DeviceTaskId", "RequestedAt");
 
                     b.ToTable("Requests");
-                });
-
-            modelBuilder.Entity("DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask.PickAndDeliveryTask", b =>
-                {
-                    b.OwnsOne("DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask.ConfirmationCode", "ConfirmationCode", b1 =>
-                        {
-                            b1.Property<string>("PickAndDeliveryTaskId")
-                                .HasColumnType("varchar(255)");
-
-                            b1.Property<string>("Code")
-                                .HasColumnType("longtext");
-
-                            b1.HasKey("PickAndDeliveryTaskId");
-
-                            b1.ToTable("PickAndDeliveryTasks", "ddd");
-
-                            b1.WithOwner()
-                                .HasForeignKey("PickAndDeliveryTaskId");
-                        });
-
-                    b.Navigation("ConfirmationCode");
                 });
 #pragma warning restore 612, 618
         }
