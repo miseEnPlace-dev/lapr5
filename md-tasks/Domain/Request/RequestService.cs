@@ -128,6 +128,11 @@ namespace DDDSample1.Domain.Requests
     {
       try
       {
+        if (dto.UserId == null || dto.Description == null || dto.ContactEmail == null || dto.FloorId == null)
+        {
+          throw new Exception("Invalid Request");
+        }
+
         SurveillanceTask task = new(new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description), new UserEmail(dto.ContactEmail), new FloorId(dto.FloorId));
         await _surveillanceTaskRepository.AddAsync(task);
         await _unitOfWork.CommitAsync();
@@ -149,6 +154,11 @@ namespace DDDSample1.Domain.Requests
     {
       try
       {
+        if (dto.UserId == null || dto.Description == null || dto.PickupUserId == null || dto.DeliveryUserId == null || dto.PickupRoomId == null || dto.DeliveryRoomId == null)
+        {
+          throw new Exception("Invalid Request");
+        }
+
         PickAndDeliveryTask task = new(new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description), new UserId(dto.PickupUserId), new UserId(dto.DeliveryUserId), new RoomId(dto.PickupRoomId), new RoomId(dto.DeliveryRoomId));
         await _pickAndDeliveryTaskRepository.AddAsync(task);
         await _unitOfWork.CommitAsync();
