@@ -1,13 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
+import Dropdown from "@/components/Dropdown";
+import InputGroup from "@/components/InputGroup";
+
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { ArrowLeftIcon } from "../../styles/Icons";
 import { useConnectorPageModule } from "./module";
 
 const ConnectorPage: React.FC = () => {
-  const { connector, handleUpdate, floor1InputRef, floor2InputRef } =
+  const { connector, handleUpdate, floor1InputRef, floor2InputRef, floors } =
     useConnectorPageModule();
 
   const navigate = useNavigate();
@@ -39,18 +42,34 @@ const ConnectorPage: React.FC = () => {
       <div className="flex h-full w-full flex-col gap-x-8 gap-y-12 md:flex-row">
         <main className="flex h-full w-full flex-col gap-y-6 rounded-xl bg-slate-200 p-8 md:w-3/4">
           <div className="flex items-center justify-between gap-x-12">
-            <Input
-              defaultValue={connector?.floor1Code}
-              className="w-full"
-              placeholder="Floor 1 Code"
-              inputRef={floor1InputRef}
-            />
-            <Input
-              defaultValue={connector?.floor2Code}
-              className="w-full"
-              placeholder="Floor 2 Code"
-              inputRef={floor2InputRef}
-            />
+            <InputGroup
+              title="Floors"
+              description="This floors are connected by this connector."
+              bgAlt
+            >
+              <Dropdown
+                className="w-full"
+                name="Floor 1"
+                placeholder="Floor 1"
+                defaultValue={connector?.floor1Code}
+                inputRef={floor1InputRef}
+                options={floors.map((floor) => ({
+                  code: floor.code,
+                  name: floor.code,
+                }))}
+              />
+              <Dropdown
+                className="w-full"
+                name="Floor 2"
+                placeholder="Floor 2"
+                inputRef={floor2InputRef}
+                defaultValue={connector?.floor2Code}
+                options={floors.map((floor) => ({
+                  code: floor.code,
+                  name: floor.code,
+                }))}
+              />
+            </InputGroup>
           </div>
         </main>
 

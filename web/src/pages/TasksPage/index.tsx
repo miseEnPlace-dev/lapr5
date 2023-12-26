@@ -34,6 +34,8 @@ const TasksPage: React.FC = () => {
     building2Code,
     building1Code,
     buildings,
+    building1Rooms,
+    building2Rooms,
     handleCreate,
   } = useTasksModule();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
@@ -133,9 +135,9 @@ const TasksPage: React.FC = () => {
                           className="w-full"
                           name="Room"
                           disabled={building1Code === ""}
-                          options={building1Floors.map((floor) => ({
-                            code: floor.code,
-                            name: floor.code,
+                          options={building1Rooms.map((room) => ({
+                            code: room.name,
+                            name: room.name,
                           }))}
                         />
                       </InputGroup>
@@ -146,16 +148,16 @@ const TasksPage: React.FC = () => {
                         <Dropdown
                           name="Building"
                           options={buildings}
-                          onChange={(e) => setBuilding1Code(e.target?.value)}
+                          onChange={(e) => setBuilding2Code(e.target?.value)}
                           className="w-full"
                         />
                         <Dropdown
                           className="w-full"
                           name="Room"
-                          disabled={building1Code === ""}
-                          options={building1Floors.map((floor) => ({
-                            code: floor.code,
-                            name: floor.code,
+                          disabled={building2Code === ""}
+                          options={building2Rooms.map((room) => ({
+                            code: room.name,
+                            name: room.name,
                           }))}
                         />
                       </InputGroup>
@@ -163,7 +165,7 @@ const TasksPage: React.FC = () => {
                     <div className="flex w-full items-center gap-x-4">
                       <InputGroup
                         title="Pickup Contact"
-                        description="Provide the information about the person that will deliver the object to the robot."
+                        description="Provide information about the person that will deliver the object to the robot."
                       >
                         <Input
                           placeholder="Name"
@@ -178,7 +180,7 @@ const TasksPage: React.FC = () => {
                       </InputGroup>
                       <InputGroup
                         title="Delivery Contact"
-                        description="Provide the information about the person that will receive the object from the robot."
+                        description="Provide information about the person that will receive the object from the robot."
                       >
                         <Input
                           placeholder="Name"

@@ -7,6 +7,7 @@ import { useMenuOptions } from "@/hooks/useMenuOptions";
 import Button from "@/components/Button";
 import Dropdown from "@/components/Dropdown";
 import Input from "@/components/Input";
+import InputGroup from "@/components/InputGroup";
 import Modal from "@/components/Modal";
 import Pagination from "@/components/Pagination";
 import SideBar from "@/components/SideBar";
@@ -246,24 +247,31 @@ const DevicesPage: React.FC = () => {
                   placeholder="Serial Number"
                   inputRef={serialNumberInputRef}
                 />
-                <div className="flex flex-row gap-x-4">
+                <InputGroup
+                  title="Initial Position"
+                  description="Specify the initial position of the device."
+                >
+                  <Dropdown
+                    className="w-full"
+                    name="Floor"
+                    placeholder="Floor"
+                    inputRef={floorCodeInputRef}
+                    options={floors.map((floor) => ({
+                      code: floor.code,
+                      name: floor.code,
+                    }))}
+                  />
                   <Input
                     className="w-full"
-                    placeholder="X-axis initial position of the device"
+                    placeholder="X-axis Coordinate"
                     inputRef={widthInputRef}
                   />
                   <Input
                     className="w-full"
-                    placeholder="Y-axis initial position of the device"
+                    placeholder="Y-axis Coordinate"
                     inputRef={depthInputRef}
                   />
-                  <Input
-                    className="w-full"
-                    name="Floor code"
-                    placeholder="Floor code"
-                    inputRef={floorCodeInputRef}
-                  />
-                </div>
+                </InputGroup>
                 <TextArea
                   className="w-full"
                   placeholder="Description"

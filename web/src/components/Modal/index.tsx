@@ -7,6 +7,7 @@ interface ModalProps {
   title: string;
   children?: React.ReactNode;
   className?: string;
+  onClose?: () => void;
 }
 const Modal: React.FC<ModalProps> = ({
   isVisible,

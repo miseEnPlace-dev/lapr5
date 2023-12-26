@@ -7,6 +7,7 @@ import { useMenuOptions } from "@/hooks/useMenuOptions";
 import Button from "@/components/Button";
 import Dropdown from "@/components/Dropdown";
 import Input from "@/components/Input";
+import InputGroup from "@/components/InputGroup";
 import Modal from "@/components/Modal";
 import Pagination from "@/components/Pagination";
 import SideBar from "@/components/SideBar";
@@ -28,6 +29,7 @@ const ConnectorsPage: React.FC = () => {
     filters,
     setFilters,
     handlePagination,
+    floors,
   } = useListConnectorsModule();
 
   const [isConnectorModalVisible, setIsConnectorModalVisible] = useState(false);
@@ -166,21 +168,34 @@ const ConnectorsPage: React.FC = () => {
                 className="w-full"
                 placeholder="Code"
                 inputRef={codeInputRef}
-                name="code"
+                name="Code"
               />
               <div className="flex w-full flex-col items-center gap-x-8 gap-y-4 md:flex-row">
-                <Input
-                  className="w-full"
-                  placeholder="Floor 1 Code"
-                  inputRef={floor1InputRef}
-                  name="floor1code"
-                />
-                <Input
-                  className="w-full"
-                  placeholder="Floor 2 Code"
-                  inputRef={floor2InputRef}
-                  name="floor2code"
-                />
+                <InputGroup
+                  title="Floors"
+                  description="Select the floors connected by this connector."
+                >
+                  <Dropdown
+                    className="w-full"
+                    name="Floor 1"
+                    placeholder="Floor 1"
+                    inputRef={floor1InputRef}
+                    options={floors.map((floor) => ({
+                      code: floor.code,
+                      name: floor.code,
+                    }))}
+                  />
+                  <Dropdown
+                    className="w-full"
+                    name="Floor 2"
+                    placeholder="Floor 2"
+                    inputRef={floor2InputRef}
+                    options={floors.map((floor) => ({
+                      code: floor.code,
+                      name: floor.code,
+                    }))}
+                  />
+                </InputGroup>
               </div>
             </div>
             <Button name="save" onClick={handleSaveClick} type="confirm">
@@ -197,22 +212,28 @@ const ConnectorsPage: React.FC = () => {
           <div className="flex h-full flex-col justify-between gap-y-4">
             <div className="flex w-full flex-col gap-y-4">
               <div className="flex w-full flex-col gap-x-8 gap-y-4">
-                <Dropdown
-                  className="w-full"
-                  placeholder="Building 1"
-                  inputRef={building1FilterInputRef}
-                  selected={filters ? filters[0] : undefined}
-                  name="Building 1"
-                  options={buildings}
-                />
-                <Dropdown
-                  className="w-full"
-                  placeholder="Building 2"
-                  inputRef={building2FilterInputRef}
-                  selected={filters ? filters[1] : undefined}
-                  name="Building 2"
-                  options={buildings}
-                />
+                <InputGroup
+                  title="Buildings"
+                  description="Select the buildings to filter the connectors."
+                >
+                  <Dropdown
+                    className="w-full"
+                    placeholder="Building 1"
+                    inputRef={building1FilterInputRef}
+                    selected={filters ? filters[0] : undefined}
+                    name="Building 1"
+                    options={buildings}
+                  />
+                  <Dropdown
+                    className="w-full"
+                    placeholder="Building 2"
+                    inputRef={building2FilterInputRef}
+                    selected={filters ? filters[1] : undefined}
+                    name="Building 2"
+                    options={buildings}
+                  />
+                </InputGroup>
+
                 {filters && (
                   <Button
                     name="removeFilter"

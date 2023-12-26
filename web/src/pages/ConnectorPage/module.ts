@@ -4,18 +4,22 @@ import { useParams } from "react-router-dom";
 
 import { TYPES } from "../../inversify/types";
 import { Connector } from "@/model/Connector";
+import { Floor } from "@/model/Floor";
 import { IConnectorService } from "@/service/IService/IConnectorService";
+import { IFloorService } from "@/service/IService/IFloorService";
 
 export const useConnectorPageModule = () => {
   const connectorSvc = useInjection<IConnectorService>(TYPES.connectorService);
+  const floorService = useInjection<IFloorService>(TYPES.floorService);
 
   const { code } = useParams();
 
   const [connector, setConnector] = useState<Connector>();
+  const [floors, setFloors] = useState<Floor[]>([]);
 
   const codeInputRef = useRef<HTMLInputElement>(null);
-  const floor1InputRef = useRef<HTMLInputElement>(null);
-  const floor2InputRef = useRef<HTMLInputElement>(null);
+  const floor1InputRef = useRef<HTMLSelectElement>(null);
+  const floor2InputRef = useRef<HTMLSelectElement>(null);
 
   const fetchConnector = useCallback(
     async (code: string) => {
@@ -25,6 +29,16 @@ export const useConnectorPageModule = () => {
     [connectorSvc]
   );
 
+  const fetchFloors = useCallback(async () => {
+    try {
+      const floors = await floorService.getAllFloors();
+
+      setFloors(floors);
+    } catch (e) {
+      setFloors([]);
+    }
+  }, [floorService]);
+
   useEffect(() => {
     async function fetchData() {
       if (!code) return;
@@ -32,7 +46,8 @@ export const useConnectorPageModule = () => {
     }
 
     fetchData();
-  }, [code, fetchConnector, connectorSvc]);
+    fetchFloors();
+  }, [code, fetchConnector, connectorSvc, fetchFloors, floorService]);
 
   async function handleCreate() {
     if (
@@ -71,5 +86,6 @@ export const useConnectorPageModule = () => {
     handleUpdate,
     floor1InputRef,
     floor2InputRef,
+    floors,
   };
 };

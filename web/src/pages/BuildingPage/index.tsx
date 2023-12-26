@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
+import InputGroup from "@/components/InputGroup";
 import Selector from "@/components/Selector";
 
 import Button from "../../components/Button";
@@ -75,7 +76,7 @@ const BuildingPage: React.FC = () => {
             defaultValue={building?.name}
             inputRef={nameInputRef}
           />
-          <div className="flex items-center justify-between gap-x-12">
+          <InputGroup title="Dimensions" bgAlt>
             <Input
               className="w-full"
               placeholder="Width (m)"
@@ -92,7 +93,7 @@ const BuildingPage: React.FC = () => {
               type="number"
               inputRef={lengthInputRef}
             />
-          </div>
+          </InputGroup>
           <TextArea
             className="w-full"
             placeholder="Description"

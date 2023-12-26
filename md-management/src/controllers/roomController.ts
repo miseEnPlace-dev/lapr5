@@ -65,4 +65,20 @@ export default class RoomController implements IRoomController {
       return next(e);
     }
   }
+
+  public async getBuildingRooms(req: Request, res: Response, next: NextFunction) {
+    try {
+      const buildingCode = req.params.building;
+
+      const roomsOrError = await this.roomServiceInstance.getBuildingRooms(buildingCode);
+
+      if (roomsOrError.isFailure)
+        return res.status(400).json({ message: roomsOrError.errorValue() });
+
+      const roomsDTO = roomsOrError.getValue();
+      return res.status(200).json(roomsDTO);
+    } catch (e) {
+      return next(e);
+    }
+  }
 }
