@@ -3,6 +3,7 @@ using System;
 using DDDSample1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDDNetCore.Migrations
 {
     [DbContext(typeof(MySQLDbContext))]
-    partial class MySQLDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231226145740_updatedpickanddeliverytable")]
+    partial class updatedpickanddeliverytable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,9 +26,6 @@ namespace DDDNetCore.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
-
-                    b.Property<string>("ConfirmationCode")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("DeliveryRoomId")
                         .HasColumnType("longtext");
@@ -97,6 +97,27 @@ namespace DDDNetCore.Migrations
                     b.HasKey("Id", "DeviceTaskId", "RequestedAt");
 
                     b.ToTable("Requests");
+                });
+
+            modelBuilder.Entity("DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask.PickAndDeliveryTask", b =>
+                {
+                    b.OwnsOne("DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask.ConfirmationCode", "ConfirmationCode", b1 =>
+                        {
+                            b1.Property<string>("PickAndDeliveryTaskId")
+                                .HasColumnType("varchar(255)");
+
+                            b1.Property<string>("Code")
+                                .HasColumnType("longtext");
+
+                            b1.HasKey("PickAndDeliveryTaskId");
+
+                            b1.ToTable("PickAndDeliveryTasks");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PickAndDeliveryTaskId");
+                        });
+
+                    b.Navigation("ConfirmationCode");
                 });
 #pragma warning restore 612, 618
         }
