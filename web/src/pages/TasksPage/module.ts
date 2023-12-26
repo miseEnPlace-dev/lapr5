@@ -10,6 +10,8 @@ import { IRoomService } from "@/service/IService/IRoomService";
 
 import { Building } from "../../model/Building";
 import { IBuildingService } from "../../service/IService/IBuildingService";
+import { Request } from "@/model/Request";
+import { RequestService } from "@/service/requestService";
 
 const taskTypes = [
   {
@@ -26,10 +28,10 @@ export const useTasksModule = () => {
   const buildingService = useInjection<IBuildingService>(TYPES.buildingService);
   const floorService = useInjection<IFloorService>(TYPES.floorService);
   const roomService = useInjection<IRoomService>(TYPES.roomService);
+  const requestService = useInjection<RequestService>(TYPES.requestService);
 
-  const [requests, setRequests] = useState<IPaginationDTO<Building> | null>(
-    null
-  );
+  const [requests, setRequests] = useState<Request[]>([]);
+
   const [page, setPage] = useState<number>(1);
   const [type, setType] = useState<string | null>(null);
 
@@ -44,6 +46,16 @@ export const useTasksModule = () => {
   const [building2Code, setBuilding2Code] = useState<string | null>("");
 
   const typeInputRef = useRef<HTMLSelectElement>(null);
+  const pickupUserNameInputRef = useRef<HTMLInputElement>(null);
+  const pickupUserPhoneInputRef = useRef<HTMLInputElement>(null);
+  const deliveryUserNameInputRef = useRef<HTMLInputElement>(null);
+  const deliveryUserPhoneInputRef = useRef<HTMLInputElement>(null);
+
+  const emergencyNameInputRef = useRef<HTMLInputElement>(null);
+  const emergencyPhoneInputRef = useRef<HTMLInputElement>(null);
+
+  const confirmationCodeInputRef = useRef<HTMLInputElement>(null);
+  const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
   const itemsPerPage = 3;
 
@@ -52,13 +64,57 @@ export const useTasksModule = () => {
   };
 
   async function handleCreate() {
-    if (type) {
-      const task = {
-        type,
-        building1Code,
-        building2Code,
-      };
-      console.log(task);
+    if (!typeInputRef.current) throw new Error("Type input is not defined");
+
+    switch (typeInputRef.current.value) {
+      case "pick_delivery":
+        if (
+          !pickupUserNameInputRef.current ||
+          !pickupUserPhoneInputRef.current ||
+          !deliveryUserNameInputRef.current ||
+          !deliveryUserPhoneInputRef.current ||
+          !building1Code ||
+          !building2Code ||
+          !confirmationCodeInputRef.current ||
+          !descriptionInputRef.current
+        )
+          throw new Error("Some fields are not defined");
+
+        /*await requestService.createPickupAndDeliveryRequest({
+          pickupUser: {
+            name: pickupUserNameInputRef.current.value,
+            phone: pickupUserPhoneInputRef.current.value,
+          },
+          deliveryUser: {
+            name: deliveryUserNameInputRef.current.value,
+            phone: deliveryUserPhoneInputRef.current.value,
+          },
+          building1Code: building1Code,
+          building2Code: building2Code,
+          confirmationCode: confirmationCodeInputRef.current.value,
+          description: descriptionInputRef.current.value,
+        });*/
+        break;
+      case "surveillance":
+        if (
+          !emergencyNameInputRef.current ||
+          !emergencyPhoneInputRef.current ||
+          !building1Code ||
+          !confirmationCodeInputRef.current ||
+          !descriptionInputRef.current
+        )
+          throw new Error("Some fields are not defined");
+
+        /*await requestService.createSurveillanceRequest({
+          emergencyUser: {
+            name: emergencyNameInputRef.current.value,
+            phone: emergencyPhoneInputRef.current.value,
+          },
+          buildingCode: building1Code,
+          confirmationCode: confirmationCodeInputRef.current.value,
+          description: descriptionInputRef.current.value,
+        });*/
+        break;
     }
   }
 
@@ -101,6 +157,16 @@ export const useTasksModule = () => {
     fetchRooms2();
   }, [building2Code, roomService]);
 
+  useEffect(() => {
+    async function fetchRequests() {
+      const r = await requestService.getAllRequests();
+      console.log(r);
+      setRequests(r);
+    }
+
+    fetchRequests();
+  }, [requestService]);
+
   return {
     requests,
     page,
@@ -120,5 +186,13 @@ export const useTasksModule = () => {
     building1Rooms,
     building2Rooms,
     handleCreate,
+    pickupUserNameInputRef,
+    pickupUserPhoneInputRef,
+    deliveryUserNameInputRef,
+    deliveryUserPhoneInputRef,
+    emergencyNameInputRef,
+    emergencyPhoneInputRef,
+    confirmationCodeInputRef,
+    descriptionInputRef,
   };
 };

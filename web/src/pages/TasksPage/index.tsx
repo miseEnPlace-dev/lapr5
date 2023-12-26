@@ -37,6 +37,14 @@ const TasksPage: React.FC = () => {
     building1Rooms,
     building2Rooms,
     handleCreate,
+    pickupUserNameInputRef,
+    pickupUserPhoneInputRef,
+    deliveryUserNameInputRef,
+    deliveryUserPhoneInputRef,
+    confirmationCodeInputRef,
+    descriptionInputRef,
+    emergencyNameInputRef,
+    emergencyPhoneInputRef,
   } = useTasksModule();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
 
@@ -58,39 +66,35 @@ const TasksPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.2,
-              delay: requests?.data.length || 0 * ANIMATION_DELAY,
+              delay: requests?.length || 0 * ANIMATION_DELAY,
             }}
             onClick={() => setIsTaskModalVisible(true)}
             className="flex w-full items-center justify-center bg-secondary px-12 py-4 text-center text-5xl font-bold"
           >
             +
           </motion.button>
-          {!requests ? null : requests.data.length == 0 ? ( // TODO: skeleton component // TODO: skeleton component
+          {!requests ? null : requests.length == 0 ? ( // TODO: skeleton component // TODO: skeleton component
             <p className="text-slate-500">
               Seems like you didn't request any task yet. Click the button above
               to request a new task.
             </p>
           ) : (
-            requests.data.map((building, i) => (
+            requests.map((request, i) => (
               <motion.button
                 initial={{ opacity: 0, x: -100 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
-                key={building.code}
-                onClick={() => navigate(`/buildings/${building.code}`)}
+                key={request.id}
+                //onClick={() => navigate(`/buildings/${building.code}`)}
                 className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
               >
-                <h2 className="text-6xl font-bold">{building.code}</h2>
+                <h2 className="text-3xl font-bold">{request.userName}</h2>
                 <div className="flex flex-col">
                   <h3 className="text-left text-2xl font-bold">
-                    {building.name}
+                    {request.phoneNumber}
                   </h3>
                   <div className="text-left text-sm text-slate-600">
-                    {building.maxDimensions.length} x{" "}
-                    {building.maxDimensions.width}
-                    {building.description && (
-                      <span>&nbsp;&middot; {building.description}</span>
-                    )}
+                    <span>&nbsp;&middot; {request.description}</span>
                   </div>
                 </div>
               </motion.button>
@@ -98,7 +102,6 @@ const TasksPage: React.FC = () => {
           )}
 
           <Pagination
-            meta={requests?.meta}
             changePage={handlePagination}
             className="flex items-center justify-center gap-x-4"
           />
@@ -171,11 +174,13 @@ const TasksPage: React.FC = () => {
                           placeholder="Name"
                           type="text"
                           className="w-full"
+                          inputRef={pickupUserNameInputRef}
                         />
                         <Input
                           placeholder="Phone Number"
                           type="text"
                           className="w-2/3"
+                          inputRef={pickupUserPhoneInputRef}
                         />
                       </InputGroup>
                       <InputGroup
@@ -186,11 +191,13 @@ const TasksPage: React.FC = () => {
                           placeholder="Name"
                           type="text"
                           className="w-full"
+                          inputRef={deliveryUserNameInputRef}
                         />
                         <Input
                           placeholder="Phone Number"
                           type="text"
                           className="w-2/3"
+                          inputRef={deliveryUserPhoneInputRef}
                         />
                       </InputGroup>
                     </div>
@@ -200,11 +207,13 @@ const TasksPage: React.FC = () => {
                       placeholder="Maximum of 6 digits"
                       type="text"
                       className="w-full"
+                      inputRef={confirmationCodeInputRef}
                     />
                     <TextArea
                       placeholder="Object Description"
                       description="Provide a meanfull description of the object that will be transported."
                       className="w-full"
+                      inputRef={descriptionInputRef}
                     />
                   </>
                 ) : type == "surveillance" ? (
@@ -237,11 +246,13 @@ const TasksPage: React.FC = () => {
                         placeholder="Name"
                         type="text"
                         className="w-full"
+                        inputRef={emergencyNameInputRef}
                       />
                       <Input
                         placeholder="Phone Number"
                         type="text"
                         className="w-2/3"
+                        inputRef={emergencyPhoneInputRef}
                       />
                     </InputGroup>
                   </>
