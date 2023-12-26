@@ -154,6 +154,21 @@ export default class RoomService implements IRoomService {
     }
   }
 
+  public async getBuildingRooms(bgCode: string): Promise<Result<IRoomDTO[]>> {
+    try {
+      const buildingCode = BuildingCode.create(bgCode).getValue();
+
+      const rooms = await this.roomRepo.findAllRoomsByBuildingCode(buildingCode);
+
+      if (!rooms) return Result.fail<IRoomDTO[]>('Rooms does not exist');
+
+      const roomsDTO = rooms.map(room => RoomMapper.toDTO(room) as IRoomDTO);
+      return Result.ok<IRoomDTO[]>(roomsDTO);
+    } catch (e) {
+      throw e;
+    }
+  }
+
   public async getRoom(
     buildingCode: string,
     floorCode: string,

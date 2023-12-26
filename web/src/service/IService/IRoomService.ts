@@ -12,4 +12,5 @@ export interface IRoomService {
     floorCode: string,
     roomName: string
   ): Promise<Room>;
+  getBuildingRooms(buildingCode: string): Promise<Room[]>;
 }

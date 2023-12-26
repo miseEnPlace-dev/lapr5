@@ -5,9 +5,9 @@ import { TYPES } from "../../inversify/types";
 import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Device } from "@/model/Device";
 import { DeviceModel } from "@/model/DeviceModel";
+import { Floor } from "@/model/Floor";
 import { IDeviceModelService } from "@/service/IService/IDeviceModelService";
 import { IDeviceService } from "@/service/IService/IDeviceService";
-import { Floor } from "@/model/Floor";
 import { IFloorService } from "@/service/IService/IFloorService";
 
 export const useListDeviceModule = () => {
@@ -15,16 +15,14 @@ export const useListDeviceModule = () => {
   const deviceModelService = useInjection<IDeviceModelService>(
     TYPES.deviceModelService
   );
-  const floorService = useInjection<IFloorService>(
-    TYPES.floorService
-  );
+  const floorService = useInjection<IFloorService>(TYPES.floorService);
 
   const [devices, setDevices] = useState<IPaginationDTO<Device> | null>(null);
   const [deviceModels, setDeviceModels] =
     useState<IPaginationDTO<DeviceModel> | null>(null);
   const [modelFilter, setModelFilter] = useState<string | null>(null);
   const [taskFilter, setTaskFilter] = useState<string | null>(null);
-  const [floors, setFloors] = useState<Floor[] | null>(null);
+  const [floors, setFloors] = useState<Floor[]>([]);
 
   const [page, setPage] = useState<number>(1);
 
@@ -35,7 +33,7 @@ export const useListDeviceModule = () => {
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
   const widthInputRef = useRef<HTMLInputElement>(null);
   const depthInputRef = useRef<HTMLInputElement>(null);
-  const floorCodeInputRef = useRef<HTMLInputElement>(null);
+  const floorCodeInputRef = useRef<HTMLSelectElement>(null);
 
   const taskFilterInputRef = useRef<HTMLSelectElement>(null);
   const modelFilterInputRef = useRef<HTMLSelectElement>(null);
@@ -69,7 +67,6 @@ export const useListDeviceModule = () => {
     } catch (e) {
       setFloors([]);
     }
-    setFloors(floors);
   }, [floorService, page, itemsPerPage]);
 
   const fetchDeviceModels = useCallback(async () => {
@@ -84,7 +81,14 @@ export const useListDeviceModule = () => {
     fetchDevices();
     fetchDeviceModels();
     fetchFloors();
-  }, [fetchDevices, deviceModelService, fetchDeviceModels, deviceService, fetchFloors, floorService]);
+  }, [
+    fetchDevices,
+    deviceModelService,
+    fetchDeviceModels,
+    deviceService,
+    fetchFloors,
+    floorService,
+  ]);
 
   const handleSave = async () => {
     if (!codeInputRef.current) {
@@ -126,7 +130,7 @@ export const useListDeviceModule = () => {
         width: parseFloat(widthInputRef.current?.value || "0"),
         depth: parseFloat(depthInputRef.current?.value || "0"),
         floorCode: floorCodeInputRef.current?.value || "",
-      }
+      },
     };
     await deviceService.createDevice(device);
     fetchDevices();
@@ -163,6 +167,6 @@ export const useListDeviceModule = () => {
     widthInputRef,
     depthInputRef,
     floorCodeInputRef,
-    floors
+    floors,
   };
 };

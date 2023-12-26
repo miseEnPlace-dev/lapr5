@@ -91,7 +91,7 @@ export default class FloorRepo implements IFloorRepo {
   }
 
   public async findAll(): Promise<Floor[]> {
-    const floorRecords = await floorSchema.find();
+    const floorRecords = await floorSchema.find().sort({ code: 1 });
 
     const floors: Floor[] = [];
 

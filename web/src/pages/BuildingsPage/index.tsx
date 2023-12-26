@@ -6,6 +6,7 @@ import swal from "sweetalert";
 import { useMenuOptions } from "@/hooks/useMenuOptions";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
+import InputGroup from "@/components/InputGroup";
 import Modal from "@/components/Modal";
 import Pagination from "@/components/Pagination";
 import SideBar from "@/components/SideBar";
@@ -188,7 +189,10 @@ const BuildingsPage: React.FC = () => {
                   placeholder="Name"
                   inputRef={nameInputRef}
                 />
-                <div className="flex w-full flex-col items-center gap-x-8 gap-y-4 md:flex-row">
+                <InputGroup
+                  title="Dimensions"
+                  description="Specify the dimensions of the building."
+                >
                   <Input
                     className="w-full"
                     placeholder="Width"
@@ -203,7 +207,7 @@ const BuildingsPage: React.FC = () => {
                     step={0.1}
                     inputRef={lengthInputRef}
                   />
-                </div>
+                </InputGroup>
                 <TextArea
                   placeholder="Description"
                   inputRef={descriptionInputRef}
@@ -223,20 +227,26 @@ const BuildingsPage: React.FC = () => {
             <div className="flex h-full flex-col justify-between gap-y-4">
               <div className="flex w-full flex-col gap-y-4">
                 <div className="flex w-full flex-col gap-x-8 gap-y-4">
-                  <Input
-                    className="w-full"
-                    placeholder="Minimum Number of Floors"
-                    type="number"
-                    inputRef={minFloorsFilterInputRef}
-                    defaultValue={filters ? filters[0] : undefined}
-                  />
-                  <Input
-                    className="w-full"
-                    placeholder="Maximum Number of Floors"
-                    type="number"
-                    inputRef={maxFloorsFilterInputRef}
-                    defaultValue={filters ? filters[1] : undefined}
-                  />
+                  <InputGroup
+                    title="Floor's Interval"
+                    description="Select the Minimum and Maximum number of floors of the buildings you want to filter."
+                  >
+                    <Input
+                      className="w-full"
+                      placeholder="Minimum"
+                      type="number"
+                      inputRef={minFloorsFilterInputRef}
+                      defaultValue={filters ? filters[0] : undefined}
+                    />
+                    <Input
+                      className="w-full"
+                      placeholder="Maximum"
+                      type="number"
+                      inputRef={maxFloorsFilterInputRef}
+                      defaultValue={filters ? filters[1] : undefined}
+                    />
+                  </InputGroup>
+
                   {filters && (
                     <Button
                       name="removeFilter"

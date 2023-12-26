@@ -67,4 +67,15 @@ export class RoomService implements IRoomService {
     const data = response.data;
     return data;
   }
+  async getBuildingRooms(buildingCode: string): Promise<Room[]> {
+    const token = this.localStorage.getItem(localStorageConfig.token);
+
+    const response = await this.http.get<Room[]>(
+      `/buildings/${buildingCode}/rooms`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    const data = response.data;
+    return data;
+  }
 }

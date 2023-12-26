@@ -1,13 +1,16 @@
 import { IRoomPersistence } from '@/dataschema/IRoomPersistence';
+import { BuildingCode } from '@/domain/building/buildingCode';
 import { Floor } from '@/domain/floor/floor';
 import { FloorCode } from '@/domain/floor/floorCode';
 import { Room } from '@/domain/room/room';
 import { RoomName } from '@/domain/room/roomName';
 import { RoomMapper } from '@/mappers/RoomMapper';
 import roomSchema from '@/persistence/schemas/roomSchema';
+import floorSchema from '@/persistence/schemas/floorSchema';
 import IRoomRepo from '@/services/IRepos/IRoomRepo';
 import { injectable } from 'inversify';
 import { Document, FilterQuery } from 'mongoose';
+import { IFloorPersistence } from '@/dataschema/IFloorPersistence';
 
 @injectable()
 export default class RoomRepo implements IRoomRepo {
@@ -42,19 +45,6 @@ export default class RoomRepo implements IRoomRepo {
     return await roomSchema.count();
   }
 
-  public async findAll(): Promise<Room[]> {
-    const roomRecords = await roomSchema.find();
-
-    const rooms: Room[] = [];
-
-    for (const roomRecord of roomRecords) {
-      const room = await RoomMapper.toDomain(roomRecord);
-      if (room) rooms.push(room);
-    }
-
-    return rooms;
-  }
-
   public async exists(room: Room): Promise<boolean> {
     const query = { domainId: room.id } as FilterQuery<IRoomPersistence & Document>;
 
@@ -86,6 +76,25 @@ export default class RoomRepo implements IRoomRepo {
     const rooms: Room[] = [];
 
     for (const roomRecord of roomRecords) {
+      const room = await RoomMapper.toDomain(roomRecord);
+      if (room) rooms.push(room);
+    }
+
+    return rooms;
+  }
+
+  public async findAllRoomsByBuildingCode(buildingCode: BuildingCode): Promise<Room[] | null> {
+    // TODO: Cagada do caralho
+    const query: FilterQuery<IFloorPersistence & Document> = {
+      buildingCode: buildingCode.value
+    };
+
+    const floorRecords = await floorSchema.find(query);
+    const result = await roomSchema.find({ floorCode: { $in: floorRecords.map(f => f.code) } });
+
+    const rooms: Room[] = [];
+
+    for (const roomRecord of result) {
       const room = await RoomMapper.toDomain(roomRecord);
       if (room) rooms.push(room);
     }

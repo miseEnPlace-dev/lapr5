@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
 import Dropdown from "@/components/Dropdown";
+import InputGroup from "@/components/InputGroup";
 
 import Button from "../../components/Button";
 import Input from "../../components/Input";
@@ -77,28 +78,30 @@ const DevicePage: React.FC = () => {
               inputRef={serialNumberInputRef}
             />
           </div>
-          <Input
-            disabled
-            className="w-full"
-            placeholder="X-axis initial position of the device"
-            defaultValue={device?.initialCoordinates.width}
-            inputRef={widthInputRef}
-          />
-          <Input
-            disabled
-            className="w-full"
-            placeholder="Y-axis initial position of the device"
-            defaultValue={device?.initialCoordinates.depth}
-            inputRef={depthInputRef}
-          />
-          <Input
-            disabled
-            className="w-full"
-            name="Floor code"
-            placeholder="Floor code"
-            defaultValue={device?.initialCoordinates.floorCode}
-            inputRef={floorCodeInputRef}
-          />
+          <InputGroup title="Initial Position" bgAlt>
+            <Input
+              disabled
+              className="w-full"
+              name="Floor"
+              placeholder="Floor"
+              defaultValue={device?.initialCoordinates.floorCode}
+              inputRef={floorCodeInputRef}
+            />
+            <Input
+              disabled
+              className="w-full"
+              placeholder="X-axis Coordinate"
+              defaultValue={device?.initialCoordinates.width}
+              inputRef={widthInputRef}
+            />
+            <Input
+              disabled
+              className="w-full"
+              placeholder="Y-axis Coordinate"
+              defaultValue={device?.initialCoordinates.depth}
+              inputRef={depthInputRef}
+            />
+          </InputGroup>
           <TextArea
             disabled
             className="w-full"

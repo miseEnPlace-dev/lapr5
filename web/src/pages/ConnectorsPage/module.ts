@@ -5,24 +5,29 @@ import { TYPES } from "../../inversify/types";
 import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Building } from "@/model/Building";
 import { Connector } from "@/model/Connector";
+import { Floor } from "@/model/Floor";
 import { IBuildingService } from "@/service/IService/IBuildingService";
 import { IConnectorService } from "@/service/IService/IConnectorService";
+import { IFloorService } from "@/service/IService/IFloorService";
 
 export const useListConnectorsModule = () => {
   const connectorSvc = useInjection<IConnectorService>(TYPES.connectorService);
   const buildingsService = useInjection<IBuildingService>(
     TYPES.buildingService
   );
+  const floorService = useInjection<IFloorService>(TYPES.floorService);
+
   const [connectors, setConnectors] =
     useState<IPaginationDTO<Connector> | null>(null);
   const [buildings, setBuildings] = useState<Building[]>([]);
 
   const [filters, setFilters] = useState<string[] | null>(null);
   const [page, setPage] = useState<number>(1);
+  const [floors, setFloors] = useState<Floor[]>([]);
 
   const codeInputRef = useRef<HTMLInputElement>(null);
-  const floor1InputRef = useRef<HTMLInputElement>(null);
-  const floor2InputRef = useRef<HTMLInputElement>(null);
+  const floor1InputRef = useRef<HTMLSelectElement>(null);
+  const floor2InputRef = useRef<HTMLSelectElement>(null);
 
   const itemsPerPage = 3;
 
@@ -44,6 +49,16 @@ export const useListConnectorsModule = () => {
     setPage(page);
   };
 
+  const fetchFloors = useCallback(async () => {
+    try {
+      const floors = await floorService.getAllFloors();
+
+      setFloors(floors);
+    } catch (e) {
+      setFloors([]);
+    }
+  }, [floorService, page, itemsPerPage]);
+
   const fetchBuildings = useCallback(async () => {
     const buildings = await buildingsService.getBuildings();
     setBuildings(buildings.data);
@@ -52,7 +67,15 @@ export const useListConnectorsModule = () => {
   useEffect(() => {
     fetchConnectors();
     fetchBuildings();
-  }, [connectorSvc, buildingsService, fetchBuildings, fetchConnectors]);
+    fetchFloors();
+  }, [
+    connectorSvc,
+    buildingsService,
+    fetchBuildings,
+    fetchConnectors,
+    fetchFloors,
+    floorService,
+  ]);
 
   const handleSave = async () => {
     if (
@@ -81,5 +104,6 @@ export const useListConnectorsModule = () => {
     setFilters,
     handleSave,
     handlePagination,
+    floors,
   };
 };
