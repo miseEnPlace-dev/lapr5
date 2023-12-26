@@ -34,6 +34,7 @@ const TasksPage: React.FC = () => {
     building2Code,
     building1Code,
     buildings,
+    handleCreate,
   } = useTasksModule();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
 
@@ -246,7 +247,7 @@ const TasksPage: React.FC = () => {
                   ""
                 )}
               </div>
-              <Button name="save" type="confirm">
+              <Button name="save" type="confirm" onClick={handleCreate}>
                 Request
               </Button>
             </div>
