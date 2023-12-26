@@ -7,19 +7,24 @@ namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask
   {
     public TaskDescription Description { get; private set; }
     public ConfirmationCode ConfirmationCode { get; private set; }
-    public UserId PickupUserId { get; private set; }
-    public UserId DeliveryUserId { get; private set; }
+    public UserName PickupUserName { get; private set; }
+    public UserName DeliveryUserName { get; private set; }
+
+    public UserPhoneNumber PickupUserPhoneNumber { get; private set; }
+    public UserPhoneNumber DeliveryUserPhoneNumber { get; private set; }
     public RoomId PickupRoomId { get; private set; }
     public RoomId DeliveryRoomId { get; private set; }
 
-    public PickAndDeliveryTask(DeviceTaskId Id, TaskDescription description, UserId pickupUserId, UserId deliveryUserId, RoomId pickupRoomId, RoomId deliveryRoomId) : base(Id)
+    public PickAndDeliveryTask(DeviceTaskId Id, TaskDescription description, UserName pickupUserName, UserName deliveryUserName, UserPhoneNumber pickupUserPhoneNumber, UserPhoneNumber deliveryUserPhoneNumber, RoomId pickupRoomId, RoomId deliveryRoomId, ConfirmationCode confirmationCode) : base(Id)
     {
       Description = description;
-      ConfirmationCode = new ConfirmationCode("Pending");
-      PickupUserId = pickupUserId;
-      DeliveryUserId = deliveryUserId;
+      ConfirmationCode = confirmationCode;
+      PickupUserName = pickupUserName;
+      DeliveryUserName = deliveryUserName;
       PickupRoomId = pickupRoomId;
       DeliveryRoomId = deliveryRoomId;
+      PickupUserPhoneNumber = pickupUserPhoneNumber;
+      DeliveryUserPhoneNumber = deliveryUserPhoneNumber;
     }
 
     public void ChangeDescription(TaskDescription description)
@@ -32,14 +37,24 @@ namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask
       this.ConfirmationCode = ConfirmationCode;
     }
 
-    public void ChangePickupUserId(User.UserId PickupUserId)
+    public void ChangePickupUserName(UserName PickupUserName)
     {
-      this.PickupUserId = PickupUserId;
+      this.PickupUserName = PickupUserName;
     }
 
-    public void ChangeDeliveryUserId(User.UserId DeliveryUserId)
+    public void ChangeDeliveryUserName(UserName DeliveryUserName)
     {
-      this.DeliveryUserId = DeliveryUserId;
+      this.DeliveryUserName = DeliveryUserName;
+    }
+
+    public void ChangePickupUserPhoneNumber(UserPhoneNumber PickupUserPhoneNumber)
+    {
+      this.PickupUserPhoneNumber = PickupUserPhoneNumber;
+    }
+
+    public void ChangeDeliveryUserPhoneNumber(UserPhoneNumber DeliveryUserPhoneNumber)
+    {
+      this.DeliveryUserPhoneNumber = DeliveryUserPhoneNumber;
     }
 
     public void ChangePickupRoomId(RoomId PickupRoomId)

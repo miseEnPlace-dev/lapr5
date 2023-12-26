@@ -154,12 +154,23 @@ namespace DDDSample1.Domain.Requests
     {
       try
       {
-        if (dto.UserId == null || dto.Description == null || dto.PickupUserId == null || dto.DeliveryUserId == null || dto.PickupRoomId == null || dto.DeliveryRoomId == null)
+        if (dto.UserId == null ||
+        dto.Description == null ||
+        dto.PickupUserName == null ||
+        dto.DeliveryUserName == null ||
+        dto.PickupRoomId == null ||
+        dto.DeliveryRoomId == null ||
+        dto.PickupUserPhoneNumber == null ||
+        dto.DeliveryUserPhoneNumber == null)
         {
           throw new Exception("Invalid Request");
         }
 
-        PickAndDeliveryTask task = new(new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description), new UserId(dto.PickupUserId), new UserId(dto.DeliveryUserId), new RoomId(dto.PickupRoomId), new RoomId(dto.DeliveryRoomId));
+        PickAndDeliveryTask task = new(new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description),
+        new UserName(dto.PickupUserName), new(dto.DeliveryUserName),
+        new UserPhoneNumber(dto.PickupUserPhoneNumber), new UserPhoneNumber(dto.DeliveryUserPhoneNumber),
+        new RoomId(dto.PickupRoomId), new RoomId(dto.DeliveryRoomId), new ConfirmationCode(dto.ConfirmationCode));
+
         await _pickAndDeliveryTaskRepository.AddAsync(task);
         await _unitOfWork.CommitAsync();
 
@@ -235,15 +246,17 @@ namespace DDDSample1.Domain.Requests
         return new PickDeliveryRequestDTO(
             r.Id.Value,
             r.UserId.Value,
+            task.Description.Value,
             r.RequestedAt.ToString(),
             StateEnum.Pending,
-            task.Description.Value,
-            task.PickupUserId.Value,
-            task.DeliveryUserId.Value,
+            task.PickupUserName.Name,
+            task.DeliveryUserName.Name,
+            task.PickupUserPhoneNumber.PhoneNumber,
+            task.DeliveryUserPhoneNumber.PhoneNumber,
             task.PickupRoomId.Value,
             task.DeliveryRoomId.Value,
-            task.ConfirmationCode.Code,
-            task.Id.Value
+            task.Id.Value,
+            task.ConfirmationCode.Code
         );
       }
 
