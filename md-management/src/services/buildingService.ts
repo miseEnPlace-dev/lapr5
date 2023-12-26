@@ -169,12 +169,11 @@ export default class BuildingService implements IBuildingService {
   ): Promise<Result<IPaginationDTO<IBuildingDTO>>> {
     try {
       const buildings =
-        page && limit
+        page != undefined && limit != undefined
           ? await this.buildingRepo.findAll(page - 1, limit)
           : await this.buildingRepo.findAll();
       const buildingDTOs = buildings.map(b => BuildingMapper.toDTO(b));
       const total = await this.buildingRepo.count();
-      const start = page && limit ? (page - 1) * limit : 0;
 
       const result =
         page && limit
@@ -185,7 +184,7 @@ export default class BuildingService implements IBuildingService {
                 total,
                 totalPages: Math.ceil(total / limit)
               },
-              data: buildingDTOs.slice(start, start + limit)
+              data: buildingDTOs
             }
           : {
               meta: {

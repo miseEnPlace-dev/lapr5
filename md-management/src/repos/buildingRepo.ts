@@ -32,7 +32,8 @@ export default class BuildingRepo implements IBuildingRepo {
 
   public async findAll(page?: number, limit?: number): Promise<Building[]> {
     let buildingRecords: IBuildingPersistence[] = [];
-    if (page && limit) {
+    if (page != undefined && limit != undefined) {
+      console.log('page: ', page);
       buildingRecords = await buildingSchema
         .find()
         .limit(limit)
