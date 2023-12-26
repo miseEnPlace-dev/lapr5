@@ -41,8 +41,17 @@ namespace DDDSample1
           opt.UseMySql(Configuration.GetConnectionString("DefaultConnection"), ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection")))
           .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
 
-      ConfigureMyServices(services);
 
+      services.AddCors(options =>
+            {
+              options.AddPolicy("AllowAnyOrigin",
+                  builder => builder
+                      .AllowAnyMethod()
+                      .AllowAnyHeader()
+                      .AllowAnyOrigin());
+            });
+
+      ConfigureMyServices(services);
       services.AddControllers().AddNewtonsoftJson();
     }
 
@@ -58,6 +67,8 @@ namespace DDDSample1
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
       }
+
+      app.UseCors("AllowAnyOrigin");
 
       // app.UseHttpsRedirection();
 
