@@ -5,11 +5,8 @@ namespace DDDSample1.Domain.DTO;
 public class SurveillanceRequestDTO : RequestDTO
 {
   public string UserName { get; set; }
-
   public string PhoneNumber { get; set; }
-
   public string FloorId { get; set; }
-
   public string Description { get; set; }
 
   [JsonConstructor]

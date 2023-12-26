@@ -22,7 +22,7 @@ public class RequestsController : ControllerBase
     _svc = svc;
   }
 
-  // GET api/Requests
+  // GET api/requests
   [HttpGet]
   public async Task<ActionResult<IEnumerable<RequestDTO>>> GetAll()
   {
@@ -30,10 +30,11 @@ public class RequestsController : ControllerBase
       return await _svc.GetRequestsByState(Request.Query["state"].ToString());
     if (Request.Query.ContainsKey("userId"))
       return await _svc.GetRequestsByUserId(Request.Query["userId"].ToString());
+
     return await _svc.GetAllAsync();
   }
 
-  // GET api/Requests/{id}
+  // GET api/requests/{id}
   [HttpGet("{id}")]
   public async Task<ActionResult<RequestDTO>> Get(string id)
   {
@@ -42,32 +43,24 @@ public class RequestsController : ControllerBase
     return Ok(t);
   }
 
-  // POST api/Requests/Surveillance
-  [HttpPost("Surveillance")]
-  public async Task<ActionResult<SurveillanceRequestDTO>> Create(SurveillanceRequestDTO dto)
+  // POST api/requests/surveillance
+  [HttpPost("surveillance")]
+  public async Task<ActionResult<ISurveillanceRequestDTO>> Create(ISurveillanceRequestDTO dto)
   {
     try
     {
       if (dto == null)
-      {
-        return BadRequest("Request DTO is null");
-      }
+        return BadRequest("Request is null");
 
       var t = await _svc.AddAsyncSurveillanceRequest(dto);
 
       if (t == null)
-      {
         return BadRequest("Failed to create surveillance request");
-      }
 
-      if (t.Id != null)
-      {
-        return CreatedAtAction(nameof(Get), new { id = t.Id }, t);
-      }
-      else
-      {
+      if (t.Id == null)
         return BadRequest("Surveillance request Id is null");
-      }
+
+      return CreatedAtAction(nameof(Get), new { id = t.Id }, t);
     }
     catch (BusinessRuleValidationException ex)
     {
@@ -75,39 +68,32 @@ public class RequestsController : ControllerBase
     }
   }
 
-  // POST api/Requests/PickAndDelivery
-  [HttpPost("PickAndDelivery")]
+  // POST api/requests/pick-delivery
+  [HttpPost("pick-delivery")]
   public async Task<ActionResult<PickDeliveryRequestDTO>> Create(PickDeliveryRequestDTO dto)
   {
     try
     {
       if (dto == null)
-      {
         return BadRequest("Request DTO is null");
-      }
 
       var t = await _svc.AddAsyncPickAndDeliveryRequest(dto);
 
       if (t == null)
-      {
         return BadRequest("Failed to create pick and delivery request");
-      }
 
-      if (t.Id != null)
-      {
-        return CreatedAtAction(nameof(Get), new { id = t.Id }, t);
-      }
-      else
-      {
+
+      if (t.Id == null)
         return BadRequest("Pick and Delivery request Id is null");
-      }
+
+      return CreatedAtAction(nameof(Get), new { id = t.Id }, t);
     }
     catch (BusinessRuleValidationException ex)
     {
       return BadRequest(new { ex.Message });
     }
   }
-  // PUT api/Requests/5
+  // PUT api/requests/5
   [HttpPut("{id}")]
   public async Task<ActionResult<IRequestDTO>> Put(string id, RequestDTO dto)
   {
@@ -125,7 +111,7 @@ public class RequestsController : ControllerBase
     }
   }
 
-  // Inactivate api/Requests/5
+  // Inactivate api/requests/5
   [HttpDelete("{id}")]
   public async Task<ActionResult<IRequestDTO>> SoftDelete(string id)
   {
@@ -135,7 +121,7 @@ public class RequestsController : ControllerBase
     return BadRequest(new { Message = "Not implemented" });
   }
 
-  // DELETE api/Requests/5/hard
+  // DELETE api/requests/5/hard
   [HttpDelete("{id}/hard")]
   public async Task<ActionResult<IRequestDTO>> HardDelete(string id)
   {

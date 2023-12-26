@@ -77,11 +77,11 @@ namespace DDDSample1.Domain.Requests
         if (await _surveillanceTaskRepository.GetByIdAsync(r.DeviceTaskId) != null)
         {
           listDto.Add(await ConvertToDTO(r, "SurveillanceRequestDTO"));
+          continue;
         }
-        else if (await _pickAndDeliveryTaskRepository.GetByIdAsync(r.DeviceTaskId) != null)
-        {
+
+        if (await _pickAndDeliveryTaskRepository.GetByIdAsync(r.DeviceTaskId) != null)
           listDto.Add(await ConvertToDTO(r, "PickDeliveryRequestDTO"));
-        }
       }
 
       return listDto;
@@ -98,11 +98,11 @@ namespace DDDSample1.Domain.Requests
         if (await _surveillanceTaskRepository.GetByIdAsync(r.DeviceTaskId) != null)
         {
           listDto.Add(await ConvertToDTO(r, "SurveillanceRequestDTO"));
+          continue;
         }
-        else if (await _pickAndDeliveryTaskRepository.GetByIdAsync(r.DeviceTaskId) != null)
-        {
+
+        if (await _pickAndDeliveryTaskRepository.GetByIdAsync(r.DeviceTaskId) != null)
           listDto.Add(await ConvertToDTO(r, "PickDeliveryRequestDTO"));
-        }
       }
 
       return listDto;
@@ -114,13 +114,12 @@ namespace DDDSample1.Domain.Requests
       if (r == null) return null;
 
       if (await _surveillanceTaskRepository.GetByIdAsync(r.DeviceTaskId) != null)
-      {
         return await ConvertToDTO(r, "SurveillanceRequestDTO");
-      }
-      else if (await _pickAndDeliveryTaskRepository.GetByIdAsync(r.DeviceTaskId) != null)
-      {
+
+
+      if (await _pickAndDeliveryTaskRepository.GetByIdAsync(r.DeviceTaskId) != null)
         return await ConvertToDTO(r, "PickDeliveryRequestDTO");
-      }
+
       return null;
     }
 
@@ -128,10 +127,7 @@ namespace DDDSample1.Domain.Requests
     {
       try
       {
-        if (dto.UserId == null || dto.Description == null || dto.UserName == null || dto.PhoneNumber == null || dto.FloorId == null)
-        {
-          throw new Exception("Invalid Request");
-        }
+        Guard.AgainstNullBulk("Invalid Request", dto.UserId == null || dto.Description == null || dto.UserName == null || dto.PhoneNumber == null || dto.FloorId == null);
 
         SurveillanceTask task = new(new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description), new UserName(dto.UserName), new UserPhoneNumber(dto.PhoneNumber), new FloorId(dto.FloorId));
         await _surveillanceTaskRepository.AddAsync(task);
@@ -154,17 +150,7 @@ namespace DDDSample1.Domain.Requests
     {
       try
       {
-        if (dto.UserId == null ||
-        dto.Description == null ||
-        dto.PickupUserName == null ||
-        dto.DeliveryUserName == null ||
-        dto.PickupRoomId == null ||
-        dto.DeliveryRoomId == null ||
-        dto.PickupUserPhoneNumber == null ||
-        dto.DeliveryUserPhoneNumber == null)
-        {
-          throw new Exception("Invalid Request");
-        }
+        Guard.AgainstNullBulk("cannot be null.", dto.UserId, dto.Description, dto.PickupUserName, dto.DeliveryUserName, dto.PickupRoomId, dto.DeliveryRoomId, dto.PickupUserPhoneNumber, dto.DeliveryUserPhoneNumber, dto.ConfirmationCode);
 
         PickAndDeliveryTask task = new(new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description),
         new UserName(dto.PickupUserName), new(dto.DeliveryUserName),
@@ -212,7 +198,7 @@ namespace DDDSample1.Domain.Requests
       return await ConvertToDTO(r, dto.GetType().Name);
     }
 
-    public async Task<IRequestDTO> DeleteAsync(RequestId id)
+    public async Task<RequestDTO> DeleteAsync(RequestId id)
     {
       Request r = await _repo.GetByIdAsync(id);
       if (r == null) return null;
@@ -240,7 +226,8 @@ namespace DDDSample1.Domain.Requests
             task.Id.Value
         );
       }
-      else if (type.Equals("PickDeliveryRequestDTO"))
+
+      if (type.Equals("PickDeliveryRequestDTO"))
       {
         PickAndDeliveryTask task = await _pickAndDeliveryTaskRepository.GetByIdAsync(r.DeviceTaskId);
         return new PickDeliveryRequestDTO(
