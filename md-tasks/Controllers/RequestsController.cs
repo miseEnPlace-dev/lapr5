@@ -45,7 +45,7 @@ public class RequestsController : ControllerBase
 
   // POST api/requests/surveillance
   [HttpPost("surveillance")]
-  public async Task<ActionResult<ISurveillanceRequestDTO>> Create(ISurveillanceRequestDTO dto)
+  public async Task<ActionResult<SurveillanceRequestDTO>> Create(SurveillanceRequestDTO dto)
   {
     try
     {
@@ -95,7 +95,7 @@ public class RequestsController : ControllerBase
   }
   // PUT api/requests/5
   [HttpPut("{id}")]
-  public async Task<ActionResult<IRequestDTO>> Put(string id, RequestDTO dto)
+  public async Task<ActionResult<RequestDTO>> Put(string id, RequestDTO dto)
   {
     if (id != dto.Id.ToString()) return BadRequest();
 
@@ -113,7 +113,7 @@ public class RequestsController : ControllerBase
 
   // Inactivate api/requests/5
   [HttpDelete("{id}")]
-  public async Task<ActionResult<IRequestDTO>> SoftDelete(string id)
+  public async Task<ActionResult<RequestDTO>> SoftDelete(string id)
   {
     /* var t = await _svc.InactivateAsync(new RequestId(id));
     if (t == null) return NotFound();
@@ -123,7 +123,7 @@ public class RequestsController : ControllerBase
 
   // DELETE api/requests/5/hard
   [HttpDelete("{id}/hard")]
-  public async Task<ActionResult<IRequestDTO>> HardDelete(string id)
+  public async Task<ActionResult<RequestDTO>> HardDelete(string id)
   {
     try
     {
