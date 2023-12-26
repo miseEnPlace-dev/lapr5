@@ -8,13 +8,17 @@ namespace DDDSample1.Domain.DeviceTasks.SurveillanceTask
   public class SurveillanceTask : DeviceTask
   {
     public TaskDescription Description { get; private set; }
-    public UserEmail UserContact { get; private set; }
+    public UserName UserName { get; private set; }
+
+    public UserPhoneNumber UserPhoneNumber { get; private set; }
+
     public FloorId FloorId { get; private set; }
 
-    public SurveillanceTask(DeviceTaskId Id, TaskDescription description, UserEmail userContact, FloorId floorId) : base(Id)
+    public SurveillanceTask(DeviceTaskId Id, TaskDescription description, UserName userName, UserPhoneNumber userPhoneNumber, FloorId floorId) : base(Id)
     {
       Description = description;
-      UserContact = userContact;
+      UserName = userName;
+      UserPhoneNumber = userPhoneNumber;
       FloorId = floorId;
     }
 
@@ -23,9 +27,14 @@ namespace DDDSample1.Domain.DeviceTasks.SurveillanceTask
       Description = description;
     }
 
-    public void ChangeUserContact(UserEmail userContact)
+    public void ChangeUserName(UserName userName)
     {
-      UserContact = userContact;
+      UserName = userName;
+    }
+
+    public void ChangeUserPhoneNumber(UserPhoneNumber userPhoneNumber)
+    {
+      UserPhoneNumber = userPhoneNumber;
     }
 
     public void ChangeTargetFloor(FloorId targetFloor)
