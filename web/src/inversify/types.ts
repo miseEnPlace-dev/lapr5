@@ -8,8 +8,10 @@ export const TYPES = {
   roomService: Symbol.for("RoomService"),
   routeService: Symbol.for("RouteService"),
   userService: Symbol.for("UserService"),
+  requestService: Symbol.for("RequestService"),
 
   localStorage: Symbol.for("LocalStorage"),
 
   api: Symbol.for("Api"),
+  mdTasksApi: Symbol.for("MdTasksApi"),
 };

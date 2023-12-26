@@ -46,5 +46,5 @@ export default {
    */
   cors: process.env.ALLOWED_DOMAINS
     ? (JSON.parse(process.env.ALLOWED_DOMAINS as string) as string[])
-    : ['http://localhost:5173']
+    : ['http://localhost:5173', 'http://127.0.0.1:7000']
 };

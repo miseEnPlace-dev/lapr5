@@ -6,7 +6,7 @@ import { Session } from "@/model/Session";
 import { HttpService } from "@/service/IService/HttpService";
 
 import { localStorageConfig } from "../config/localStorageConfig";
-import api from "../service/api";
+import { api } from "../service/api";
 
 export function useAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState(

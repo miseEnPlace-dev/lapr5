@@ -1,18 +1,14 @@
 import axios from "axios";
 
-interface IGetOptions {
-  headers?: {
-    [key: string]: string;
-  };
-  query?: {
-    [key: string]: string;
-  };
-}
-
-const BASE_URL = import.meta.env.VITE_API_URL;
+const MDL_URL = import.meta.env.VITE_API_URL;
+const MDTASK_URL = import.meta.env.VITE_MDTASK_API_URL;
 
 const api = axios.create({
-  baseURL: BASE_URL,
+  baseURL: MDL_URL,
 });
 
-export default api;
+const mdTasksApi = axios.create({
+  baseURL: MDTASK_URL,
+});
+
+export { api, mdTasksApi };

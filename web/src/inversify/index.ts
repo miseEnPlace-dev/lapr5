@@ -8,10 +8,11 @@ import { RoomService } from "@/service/roomService";
 import { RouteService } from "@/service/routeService";
 import { UserService } from "@/service/userService";
 
-import api from "../service/api";
+import { api, mdTasksApi } from "../service/api";
 import { BuildingService } from "../service/buildingsService";
 import { ElevatorService } from "../service/elevatorService";
 import { FloorService } from "../service/floorService";
+import { RequestService } from "@/service/requestService";
 
 const container = new Container();
 
@@ -24,13 +25,15 @@ container.bind(TYPES.roomService).to(RoomService);
 container.bind(TYPES.deviceService).to(DeviceService);
 container.bind(TYPES.routeService).to(RouteService);
 container.bind(TYPES.userService).to(UserService);
+container.bind(TYPES.requestService).to(RequestService);
 container.bind(TYPES.localStorage).toConstantValue(
   import.meta.env.MODE !== "staging"
     ? window.localStorage
     : {
-        getItem: () => null,
-      }
+      getItem: () => null,
+    }
 );
 container.bind(TYPES.api).toConstantValue(api);
+container.bind(TYPES.mdTasksApi).toConstantValue(mdTasksApi);
 
 export { container };
