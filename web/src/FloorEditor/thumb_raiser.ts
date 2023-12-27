@@ -491,8 +491,11 @@ export default class ThumbRaiser {
 
     const floors = this.mazeParameters.mazes[0].maze.maze.elevator.floors;
     const mazeSelect = document.getElementById("maze") as HTMLSelectElement;
+    const floorName = this.mazeParameters.mazes[0].name;
     if (mazeSelect)
-      mazeSelect.innerHTML = floors.map(
+      mazeSelect.innerHTML = `<option key=${floorName} value=${this.mazeParameters.mazes.findIndex(
+        (m) => m.name === floorName
+      )}>${floorName}</option>` + floors.map(
         (floor) =>
           `<option key=${floor} value=${this.mazeParameters.mazes.findIndex(
             (m) => m.name === floor
@@ -567,8 +570,8 @@ export default class ThumbRaiser {
       LOCAL_STORAGE_PREFIX + "fixedViewCamera"
     )
       ? JSON.parse(
-          localStorage.getItem(LOCAL_STORAGE_PREFIX + "fixedViewCamera")
-        )
+        localStorage.getItem(LOCAL_STORAGE_PREFIX + "fixedViewCamera")
+      )
       : true;
     this.firstPersonViewCamera.checkBox =
       document.getElementById("first-person");
@@ -576,8 +579,8 @@ export default class ThumbRaiser {
       LOCAL_STORAGE_PREFIX + "firstPersonViewCamera"
     )
       ? JSON.parse(
-          localStorage.getItem(LOCAL_STORAGE_PREFIX + "firstPersonViewCamera")
-        )
+        localStorage.getItem(LOCAL_STORAGE_PREFIX + "firstPersonViewCamera")
+      )
       : true;
     this.thirdPersonViewCamera.checkBox =
       document.getElementById("third-person");
@@ -585,8 +588,8 @@ export default class ThumbRaiser {
       LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera"
     )
       ? JSON.parse(
-          localStorage.getItem(LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera")
-        )
+        localStorage.getItem(LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera")
+      )
       : true;
     this.topViewCamera.checkBox = document.getElementById("top");
     this.topViewCamera.checkBox.checked = localStorage.getItem(
@@ -676,8 +679,11 @@ export default class ThumbRaiser {
   updateMaze(index: number) {
     const floors = this.mazeParameters.mazes[index].maze.maze.elevator.floors;
     const mazeSelect = document.getElementById("maze") as HTMLSelectElement;
+    const floorName = this.mazeParameters.mazes[index].name;
     if (mazeSelect)
-      mazeSelect.innerHTML = floors.map(
+      mazeSelect.innerHTML = `<option key=${floorName} value=${this.mazeParameters.mazes.findIndex(
+        (m) => m.name === floorName
+      )}>${floorName}</option>` + floors.map(
         (floor) =>
           `<option key=${floor} value=${this.mazeParameters.mazes.findIndex(
             (m) => m.name === floor
@@ -1253,12 +1259,12 @@ export default class ThumbRaiser {
                   ((mouseIncrement.x / this.miniMapCamera.viewport.width) *
                     (this.miniMapCamera.orthographic.left -
                       this.miniMapCamera.orthographic.right)) /
-                    this.miniMapCamera.orthographic.zoom,
+                  this.miniMapCamera.orthographic.zoom,
                   0.0,
                   ((mouseIncrement.y / this.miniMapCamera.viewport.height) *
                     (this.miniMapCamera.orthographic.top -
                       this.miniMapCamera.orthographic.bottom)) /
-                    this.miniMapCamera.orthographic.zoom
+                  this.miniMapCamera.orthographic.zoom
                 );
                 this.miniMapCamera.updateTarget(targetIncrement);
               }
@@ -1274,13 +1280,13 @@ export default class ThumbRaiser {
         (((event.clientX - rect.left) * canvas.width) /
           rect.width /
           canvas.width) *
-          2 -
+        2 -
         1;
       pos.y =
         (((event.clientY - rect.top) * canvas.height) /
           rect.height /
           canvas.height) *
-          -2 +
+        -2 +
         1;
 
       const raycaster = new THREE.Raycaster();
