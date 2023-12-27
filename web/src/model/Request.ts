@@ -1,4 +1,5 @@
 export interface Request {
+  id?: string;
   userId: string;
   userName?: string;
   description: string;

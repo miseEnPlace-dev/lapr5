@@ -13,6 +13,7 @@ import Pagination from "@/components/Pagination";
 import SideBar from "@/components/SideBar";
 import TextArea from "@/components/TextArea";
 import { FilterIcon } from "@/styles/Icons";
+import { formatDate } from "@/utils/formatDate";
 
 import { useTasksModule } from "./module";
 
@@ -165,16 +166,21 @@ const TasksPage: React.FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
                 key={i}
-                //onClick={() => navigate(`/buildings/${building.code}`)}
+                onClick={() => navigate(`/requests/${request.id}`)}
                 className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
               >
-                <h2 className="text-3xl font-bold">{request.userName}</h2>
+                <h2 className="text-3xl font-bold">
+                  {request.userName || request.pickupUserName}
+                </h2>
                 <div className="flex flex-col">
                   <h3 className="text-left text-2xl font-bold">
                     {request.state}
                   </h3>
                   <div className="text-left text-sm text-slate-600">
                     <span>&nbsp;&middot; {request.description}</span>
+                    <span>
+                      &nbsp;&middot; {formatDate(request.requestedAt)}
+                    </span>
                   </div>
                 </div>
               </motion.button>
