@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.DTO;
@@ -13,13 +12,13 @@ namespace DDDSample1.Controllers;
 [ApiController]
 public class RequestsController : ControllerBase
 {
-  private readonly RequestService _svc;
+  private readonly IRequestService requestsService;
 
-  private readonly DeviceTaskService _svcTask;
+  private readonly DeviceTaskService deviceTaskService;
 
-  public RequestsController(RequestService svc)
+  public RequestsController(RequestService requestsService)
   {
-    _svc = svc;
+    this.requestsService = requestsService;
   }
 
   // GET api/requests
@@ -27,18 +26,25 @@ public class RequestsController : ControllerBase
   public async Task<ActionResult<IEnumerable<RequestDTO>>> GetAll()
   {
     if (Request.Query.ContainsKey("state"))
-      return await _svc.GetRequestsByState(Request.Query["state"].ToString());
+      return await requestsService.GetRequestsByState(Request.Query["state"].ToString());
     if (Request.Query.ContainsKey("userId"))
-      return await _svc.GetRequestsByUserId(Request.Query["userId"].ToString());
+      return await requestsService.GetRequestsByUserId(Request.Query["userId"].ToString());
 
-    return await _svc.GetAllAsync();
+    return await requestsService.GetAll();
+  }
+
+  // GET api/requests/pick-delivery
+  [HttpGet("pick-delivery")]
+  public async Task<ActionResult<IEnumerable<RequestDTO>>> GetPickAndDelivery(string state)
+  {
+    return await requestsService.GetAllPickAndDelivery();
   }
 
   // GET api/requests/{id}
   [HttpGet("{id}")]
   public async Task<ActionResult<RequestDTO>> Get(string id)
   {
-    var t = await _svc.GetByIdAsync(new RequestId(id));
+    var t = await requestsService.GetById(new RequestId(id));
     if (t == null) return NotFound();
     return Ok(t);
   }
@@ -52,7 +58,7 @@ public class RequestsController : ControllerBase
       if (dto == null)
         return BadRequest("Request is null");
 
-      var t = await _svc.AddAsyncSurveillanceRequest(dto);
+      var t = await requestsService.AddSurveillanceRequest(dto);
 
       if (t == null)
         return BadRequest("Failed to create surveillance request");
@@ -77,7 +83,7 @@ public class RequestsController : ControllerBase
       if (dto == null)
         return BadRequest("Request DTO is null");
 
-      var t = await _svc.AddAsyncPickAndDeliveryRequest(dto);
+      var t = await requestsService.AddPickAndDeliveryRequest(dto);
 
       if (t == null)
         return BadRequest("Failed to create pick and delivery request");
@@ -101,7 +107,7 @@ public class RequestsController : ControllerBase
 
     try
     {
-      var t = await _svc.UpdateAsync(dto);
+      var t = await requestsService.Update(dto);
       if (t == null) return NotFound();
       return Ok(t);
     }
@@ -127,7 +133,7 @@ public class RequestsController : ControllerBase
   {
     try
     {
-      var t = await _svc.DeleteAsync(new RequestId(id));
+      var t = await requestsService.Delete(new RequestId(id));
       if (t == null) return NotFound();
       return Ok(t);
     }

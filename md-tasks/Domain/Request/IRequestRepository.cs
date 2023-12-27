@@ -11,6 +11,5 @@ namespace DDDSample1.Infrastructure.Requests
     public Task<List<Request>> GetRequestsByType(string type);
 
     public Task<List<Request>> GetRequestsByUserId(string deviceId);
-    public Task<List<Request>> GetSurveillanceRequests();
   }
 }

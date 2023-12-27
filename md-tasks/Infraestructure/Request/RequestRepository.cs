@@ -27,11 +27,6 @@ public class RequestRepository : BaseRepository<Request, RequestId>, IRequestRep
     return await _context.Requests.Where(r => r.DeviceTaskId.GetType().IsInstanceOfType(type)).ToListAsync();
   }
 
-  public async Task<List<Request>> GetSurveillanceRequests()
-  {
-    return await GetRequestsByType("Surveillance");
-  }
-
   public async Task<List<Request>> GetRequestsByUserId(string userId)
   {
     var requests = await _context.Requests.ToListAsync();
