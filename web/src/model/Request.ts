@@ -1,5 +1,6 @@
 export interface Request {
   id?: string;
+  type?: string;
   userId: string;
   userName?: string;
   description: string;

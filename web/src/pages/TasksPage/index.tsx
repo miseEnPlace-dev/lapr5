@@ -156,8 +156,8 @@ const TasksPage: React.FC = () => {
           </motion.button>
           {!requests ? null : requests.length == 0 ? ( // TODO: skeleton component // TODO: skeleton component
             <p className="text-slate-500">
-              Seems like you didn't request any task yet. Click the button above
-              to request a new task.
+              No results were found for your search... Create your first request
+              or try to change or remove the filters.
             </p>
           ) : (
             requests.map((request, i) => (
@@ -166,23 +166,65 @@ const TasksPage: React.FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
                 key={i}
-                onClick={() => navigate(`/requests/${request.id}`)}
-                className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
+                //onClick={() => navigate(`/requests/${request.id}`)}
+                className="w-full items-center bg-slate-200 px-12 py-8"
               >
-                <h2 className="text-3xl font-bold">
-                  {request.userName || request.pickupUserName}
-                </h2>
-                <div className="flex flex-col">
-                  <h3 className="text-left text-2xl font-bold">
-                    {request.state}
-                  </h3>
-                  <div className="text-left text-sm text-slate-600">
-                    <span>&nbsp;&middot; {request.description}</span>
-                    <span>
-                      &nbsp;&middot; {formatDate(request.requestedAt)}
-                    </span>
+                {request.type == "surveillance" ? (
+                  <div className="flex gap-x-10">
+                    <h3 className="text-4xl font-bold capitalize">
+                      Floor {request.floorId}
+                    </h3>
+                    <div className="flex flex-col text-start text-sm text-slate-600">
+                      <div className="font-bold uppercase">
+                        Surveillance &nbsp;&middot;&nbsp;&nbsp;
+                        {request.requestedAt && formatDate(request.requestedAt)}
+                        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+                        <span className="text-yellow-800">{request.state}</span>
+                      </div>
+                      <div className="text-sm">{request.description}</div>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <>
+                    <div className="mb-4 flex gap-x-10">
+                      <h3 className="text-4xl font-bold">
+                        {request.pickupRoomId}&nbsp; to &nbsp;
+                        {request.deliveryRoomId}
+                      </h3>
+                      <div className="flex flex-col text-start text-sm text-slate-600">
+                        <div className="font-bold uppercase">
+                          Pick and Delivery &nbsp;&middot;&nbsp;&nbsp;
+                          {request.requestedAt &&
+                            formatDate(request.requestedAt)}
+                          &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+                          <span className=" text-yellow-800">
+                            {request.state}
+                          </span>
+                        </div>
+                        {request.description}
+                      </div>
+                    </div>
+                    <div className="text-start text-slate-600">
+                      <div className="text-sm">
+                        From{" "}
+                        <span className="font-bold">
+                          {request.pickupUserName}
+                        </span>{" "}
+                        ({request.pickupUserPhoneNumber}) to{" "}
+                        <span className="font-bold">
+                          {request.deliveryUserName}
+                        </span>{" "}
+                        ({request.deliveryUserPhoneNumber})
+                      </div>
+                      <div className="text-sm">
+                        Confirmation Code:{" "}
+                        <span className="font-bold">
+                          {request.confirmationCode}
+                        </span>
+                      </div>
+                    </div>
+                  </>
+                )}
               </motion.button>
             ))
           )}
@@ -294,7 +336,7 @@ const TasksPage: React.FC = () => {
                     <Input
                       name="Confirmation Code"
                       description="This code will be asked to the recipient to confirm the delivery."
-                      placeholder="Maximum of 6 digits"
+                      placeholder="Numerical code between 4 and 6 digits"
                       type="text"
                       className="w-full"
                       inputRef={confirmationCodeInputRef}
@@ -349,8 +391,8 @@ const TasksPage: React.FC = () => {
                       />
                     </InputGroup>
                     <TextArea
-                      placeholder="Object Description"
-                      description="Provide a meaningful description of the object that will be transported."
+                      placeholder="Additional Information"
+                      description="Provide any additional information that you consider relevant."
                       className="w-full"
                       inputRef={descriptionInputRef}
                     />
