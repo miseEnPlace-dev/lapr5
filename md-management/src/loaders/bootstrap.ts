@@ -79,6 +79,15 @@ export default class Bootstrapper {
       phoneNumber: '912345678',
       role: defaultRoles.admin.name
     });
+    await this.loadUser({
+      firstName: 'User',
+      lastName: 'Example',
+      email: 'user@isep.ipp.pt',
+      password: 'user',
+      phoneNumber: '912345678',
+      nif: '123456789',
+      role: defaultRoles.user.name
+    });
 
     await this.loadBuilding({
       code: 'a',
@@ -1565,6 +1574,7 @@ export default class Bootstrapper {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
+        nif: user.nif,
         password: user.password,
         phoneNumber: user.phoneNumber,
         role: user.role,
@@ -1572,6 +1582,8 @@ export default class Bootstrapper {
       });
 
       if (res.isFailure) throw new Error(res.errorValue());
+
+      if (user.role == 'user') this.userService.activateUser(res.getValue().user.id);
     }
   }
 
