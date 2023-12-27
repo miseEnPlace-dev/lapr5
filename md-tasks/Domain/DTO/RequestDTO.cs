@@ -7,7 +7,7 @@ public abstract class RequestDTO
   public string UserId { get; set; }
   public string RequestedAt { get; set; }
   public string DeviceTaskId { get; set; }
-  public StateEnum State { get; set; }
+  public string State { get; set; }
 
   [JsonConstructor]
   public RequestDTO(string userId, string requestedAt)
@@ -16,7 +16,7 @@ public abstract class RequestDTO
     RequestedAt = requestedAt;
   }
 
-  public RequestDTO(string id, string userId, string requestedAt, StateEnum state, string deviceTaskId)
+  public RequestDTO(string id, string userId, string requestedAt, string state, string deviceTaskId)
   {
     Id = id;
     UserId = userId;

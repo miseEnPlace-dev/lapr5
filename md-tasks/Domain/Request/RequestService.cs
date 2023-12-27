@@ -185,7 +185,9 @@ namespace DDDSample1.Domain.Requests
       if (request == null) return null;
 
       // update fields
-      request.ChangeState(new RequestState(dto.State));
+      request.ChangeState(
+        dto.State == "Pending" ? new RequestState(StateEnum.Pending) : dto.State == "Accepted" ? new RequestState(StateEnum.Accepted) : new RequestState(StateEnum.Rejected)
+      );
 
       await unitOfWork.CommitAsync();
 
@@ -198,7 +200,9 @@ namespace DDDSample1.Domain.Requests
       if (request == null) return null;
 
       // update fields
-      request.ChangeState(new RequestState(dto.State));
+      request.ChangeState(
+        dto.State == "Pending" ? new RequestState(StateEnum.Pending) : dto.State == "Accepted" ? new RequestState(StateEnum.Accepted) : new RequestState(StateEnum.Rejected)
+      );
 
       await unitOfWork.CommitAsync();
       return await ConvertToDTO(request, dto.GetType().Name);
@@ -225,7 +229,7 @@ namespace DDDSample1.Domain.Requests
             r.UserId.Value,
             task.Description.Value,
             r.RequestedAt.ToString(),
-            StateEnum.Pending,
+            r.State.State.ToString(),
             task.UserName.Name,
             task.UserPhoneNumber.PhoneNumber,
             task.FloorId.Value,
@@ -241,7 +245,7 @@ namespace DDDSample1.Domain.Requests
             r.UserId.Value,
             task.Description.Value,
             r.RequestedAt.ToString(),
-            StateEnum.Pending,
+            r.State.State.ToString(),
             task.PickupUserName.Name,
             task.DeliveryUserName.Name,
             task.PickupUserPhoneNumber.PhoneNumber,
