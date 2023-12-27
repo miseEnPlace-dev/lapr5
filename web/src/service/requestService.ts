@@ -10,6 +10,8 @@ import { Request } from "@/model/Request";
 import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { mdTasksApi } from "./api";
 import { capitalize } from "lodash";
+import { RequestSurveillance } from "@/model/RequestSurveillance";
+import { RequestPickAndDelivery } from "@/model/RequestPickAndDelivery";
 
 @injectable()
 export class RequestService implements IRequestService {
@@ -29,8 +31,8 @@ export class RequestService implements IRequestService {
     return data;
   }
 
-  async createSurveillanceRequest(request: Request): Promise<Request> {
-    const response = await this.http.post<Request>("/Requests/Surveillance", request, {
+  async createSurveillanceRequest(request: RequestSurveillance): Promise<RequestSurveillance> {
+    const response = await this.http.post<RequestSurveillance>("/Requests/Surveillance", request, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -40,8 +42,8 @@ export class RequestService implements IRequestService {
     return data;
   }
 
-  async createPickAndDeliveryRequest(request: Request): Promise<Request> {
-    const response = await this.http.post<Request>("/Requests/Pick-Delivery", request, {
+  async createPickAndDeliveryRequest(request: RequestPickAndDelivery): Promise<RequestPickAndDelivery> {
+    const response = await this.http.post<RequestPickAndDelivery>("/Requests/Pick-Delivery", request, {
       headers: {
         "Content-Type": "application/json",
       },

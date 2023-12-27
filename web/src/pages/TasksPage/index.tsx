@@ -12,6 +12,8 @@ import Modal from "@/components/Modal";
 import Pagination from "@/components/Pagination";
 import SideBar from "@/components/SideBar";
 import TextArea from "@/components/TextArea";
+import { RequestPickAndDelivery } from "@/model/RequestPickAndDelivery";
+import { RequestSurveillance } from "@/model/RequestSurveillance";
 import { FilterIcon } from "@/styles/Icons";
 import { formatDate } from "@/utils/formatDate";
 
@@ -61,6 +63,8 @@ const TasksPage: React.FC = () => {
     setUserFilter,
     stateInputRef,
     states,
+    setRoom1Name,
+    setRoom2Name,
   } = useTasksModule();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isFilterByStateModalVisible, setIsFilterByStateModalVisible] =
@@ -172,7 +176,7 @@ const TasksPage: React.FC = () => {
                 {request.type == "surveillance" ? (
                   <div className="flex gap-x-10">
                     <h3 className="text-4xl font-bold capitalize">
-                      Floor {request.floorId}
+                      Floor {(request as RequestSurveillance).floorId}
                     </h3>
                     <div className="flex flex-col text-start text-sm text-slate-600">
                       <div className="font-bold uppercase">
@@ -188,8 +192,9 @@ const TasksPage: React.FC = () => {
                   <>
                     <div className="mb-4 flex gap-x-10">
                       <h3 className="text-4xl font-bold">
-                        {request.pickupRoomId}&nbsp; to &nbsp;
-                        {request.deliveryRoomId}
+                        {(request as RequestPickAndDelivery).pickupRoomId}&nbsp;
+                        to &nbsp;
+                        {(request as RequestPickAndDelivery).deliveryRoomId}
                       </h3>
                       <div className="flex flex-col text-start text-sm text-slate-600">
                         <div className="font-bold uppercase">
@@ -208,18 +213,28 @@ const TasksPage: React.FC = () => {
                       <div className="text-sm">
                         From{" "}
                         <span className="font-bold">
-                          {request.pickupUserName}
+                          {(request as RequestPickAndDelivery).pickupUserName}
                         </span>{" "}
-                        ({request.pickupUserPhoneNumber}) to{" "}
+                        (
+                        {
+                          (request as RequestPickAndDelivery)
+                            .pickupUserPhoneNumber
+                        }
+                        ) to{" "}
                         <span className="font-bold">
-                          {request.deliveryUserName}
+                          {(request as RequestPickAndDelivery).deliveryUserName}
                         </span>{" "}
-                        ({request.deliveryUserPhoneNumber})
+                        (
+                        {
+                          (request as RequestPickAndDelivery)
+                            .deliveryUserPhoneNumber
+                        }
+                        )
                       </div>
                       <div className="text-sm">
                         Confirmation Code:{" "}
                         <span className="font-bold">
-                          {request.confirmationCode}
+                          {(request as RequestPickAndDelivery).confirmationCode}
                         </span>
                       </div>
                     </div>
@@ -270,7 +285,7 @@ const TasksPage: React.FC = () => {
                             code: room.name,
                             name: room.name,
                           }))}
-                          inputRef={room1InputRef}
+                          onChange={(e) => setRoom1Name(e.target.value)}
                         />
                       </InputGroup>
                       <InputGroup
@@ -291,7 +306,7 @@ const TasksPage: React.FC = () => {
                             code: room.name,
                             name: room.name,
                           }))}
-                          inputRef={room2InputRef}
+                          onChange={(e) => setRoom2Name(e.target.value)}
                         />
                       </InputGroup>
                     </div>
