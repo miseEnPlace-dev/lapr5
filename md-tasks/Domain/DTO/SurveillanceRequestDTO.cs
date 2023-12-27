@@ -12,16 +12,16 @@ public class SurveillanceRequestDTO : RequestDTO
   [JsonConstructor]
   public SurveillanceRequestDTO(string userId, string requestedAt, string userName, string phoneNumber, string floorId) : base(userId, requestedAt)
   {
-    this.UserName = userName;
-    this.FloorId = floorId;
-    this.PhoneNumber = phoneNumber;
+    UserName = userName;
+    FloorId = floorId;
+    PhoneNumber = phoneNumber;
   }
 
   public SurveillanceRequestDTO(string id, string userId, string description, string requestedAt, string state, string userName, string phoneNumber, string floorId, string deviceTaskId) : base(id, userId, requestedAt, state, deviceTaskId)
   {
-    this.UserName = userName;
-    this.PhoneNumber = phoneNumber;
-    this.FloorId = floorId;
-    this.Description = description;
+    UserName = userName;
+    PhoneNumber = phoneNumber;
+    FloorId = floorId;
+    Description = description;
   }
 }

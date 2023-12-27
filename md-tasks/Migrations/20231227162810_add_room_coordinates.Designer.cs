@@ -3,6 +3,7 @@ using System;
 using DDDSample1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDDNetCore.Migrations
 {
     [DbContext(typeof(MySQLDbContext))]
-    partial class MySQLDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231227162810_add_room_coordinates")]
+    partial class addroomcoordinates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,9 +48,6 @@ namespace DDDNetCore.Migrations
                     b.Property<double>("EndCoordinateY")
                         .HasColumnType("double");
 
-                    b.Property<string>("EndFloorCode")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("PickupRoomId")
                         .HasColumnType("longtext");
 
@@ -62,9 +62,6 @@ namespace DDDNetCore.Migrations
 
                     b.Property<double>("StartCoordinateY")
                         .HasColumnType("double");
-
-                    b.Property<string>("StartFloorCode")
-                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 

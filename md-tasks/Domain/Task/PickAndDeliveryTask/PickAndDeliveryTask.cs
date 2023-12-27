@@ -15,7 +15,15 @@ namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask
     public RoomId PickupRoomId { get; private set; }
     public RoomId DeliveryRoomId { get; private set; }
 
-    public PickAndDeliveryTask(DeviceTaskId Id, TaskDescription description, UserName pickupUserName, UserName deliveryUserName, UserPhoneNumber pickupUserPhoneNumber, UserPhoneNumber deliveryUserPhoneNumber, RoomId pickupRoomId, RoomId deliveryRoomId, ConfirmationCode confirmationCode) : base(Id)
+    public double StartCoordinateX { get; private set; }
+    public double StartCoordinateY { get; private set; }
+    public double EndCoordinateX { get; private set; }
+    public double EndCoordinateY { get; private set; }
+
+    public string StartFloorCode { get; private set; }
+    public string EndFloorCode { get; private set; }
+
+    public PickAndDeliveryTask(DeviceTaskId Id, TaskDescription description, UserName pickupUserName, UserName deliveryUserName, UserPhoneNumber pickupUserPhoneNumber, UserPhoneNumber deliveryUserPhoneNumber, RoomId pickupRoomId, RoomId deliveryRoomId, ConfirmationCode confirmationCode, double StartCoordinateX, double StartCoordinateY, double EndCoordinateX, double EndCoordinateY, string startFloorCode, string endFloorCode) : base(Id)
     {
       Description = description;
       ConfirmationCode = confirmationCode;
@@ -25,6 +33,12 @@ namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask
       DeliveryRoomId = deliveryRoomId;
       PickupUserPhoneNumber = pickupUserPhoneNumber;
       DeliveryUserPhoneNumber = deliveryUserPhoneNumber;
+      this.StartCoordinateX = StartCoordinateX;
+      this.StartCoordinateY = StartCoordinateY;
+      this.EndCoordinateX = EndCoordinateX;
+      this.EndCoordinateY = EndCoordinateY;
+      this.StartFloorCode = startFloorCode;
+      this.EndFloorCode = endFloorCode;
     }
 
     public void ChangeDescription(TaskDescription description)

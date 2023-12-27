@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
@@ -19,6 +22,11 @@ namespace DDDSample1.Domain.Requests
     private readonly IRequestRepository repo;
     private readonly ISurveillanceTaskRepository surveillanceTaskRepository;
     private readonly IPickAndDeliveryTaskRepository pickAndDeliveryTaskRepository;
+
+    private static HttpClient httpClient = new()
+    {
+      BaseAddress = new Uri("http://localhost:3000/api")
+    };
 
     public RequestService(IUnitOfWork unitOfWork, IRequestRepository repo, ISurveillanceTaskRepository surveillanceTaskRepository, IPickAndDeliveryTaskRepository pickAndDeliveryTaskRepository)
     {
@@ -57,7 +65,6 @@ namespace DDDSample1.Domain.Requests
         if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
           result.Add((SurveillanceRequestDTO)await ConvertToDTO(request, "SurveillanceRequestDTO"));
 
-
       return result;
     }
 
@@ -70,7 +77,6 @@ namespace DDDSample1.Domain.Requests
       foreach (Request request in requests)
         if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
           result.Add((PickDeliveryRequestDTO)await ConvertToDTO(request, "PickDeliveryRequestDTO"));
-
 
       return result;
     }
@@ -102,10 +108,7 @@ namespace DDDSample1.Domain.Requests
       foreach (Request request in requests)
       {
         if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
-        {
           result.Add(await ConvertToDTO(request, "SurveillanceRequestDTO"));
-          continue;
-        }
 
         if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
           result.Add(await ConvertToDTO(request, "PickDeliveryRequestDTO"));
@@ -158,10 +161,13 @@ namespace DDDSample1.Domain.Requests
       {
         Guard.AgainstNullBulk("cannot be null.", dto.UserId, dto.Description, dto.PickupUserName, dto.DeliveryUserName, dto.PickupRoomId, dto.DeliveryRoomId, dto.PickupUserPhoneNumber, dto.DeliveryUserPhoneNumber, dto.ConfirmationCode);
 
-        PickAndDeliveryTask task = new(new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description),
-        new UserName(dto.PickupUserName), new(dto.DeliveryUserName),
-        new UserPhoneNumber(dto.PickupUserPhoneNumber), new UserPhoneNumber(dto.DeliveryUserPhoneNumber),
-        new RoomId(dto.PickupRoomId), new RoomId(dto.DeliveryRoomId), new ConfirmationCode(dto.ConfirmationCode));
+        PickAndDeliveryTask task = new(
+          new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description),
+          new UserName(dto.PickupUserName), new(dto.DeliveryUserName),
+          new UserPhoneNumber(dto.PickupUserPhoneNumber), new UserPhoneNumber(dto.DeliveryUserPhoneNumber),
+          new RoomId(dto.PickupRoomId), new RoomId(dto.DeliveryRoomId), new ConfirmationCode(dto.ConfirmationCode),
+          dto.StartCoordinateX, dto.StartCoordinateY, dto.EndCoordinateX, dto.EndCoordinateY, dto.StartFloorCode, dto.EndFloorCode
+        );
 
         await pickAndDeliveryTaskRepository.AddAsync(task);
         await unitOfWork.CommitAsync();
@@ -240,6 +246,7 @@ namespace DDDSample1.Domain.Requests
       if (type.Equals("PickDeliveryRequestDTO"))
       {
         PickAndDeliveryTask task = await pickAndDeliveryTaskRepository.GetByIdAsync(r.DeviceTaskId);
+
         return new PickDeliveryRequestDTO(
             r.Id.Value,
             r.UserId.Value,
@@ -253,7 +260,13 @@ namespace DDDSample1.Domain.Requests
             task.PickupRoomId.Value,
             task.DeliveryRoomId.Value,
             task.Id.Value,
-            task.ConfirmationCode.Code
+            task.ConfirmationCode.Code,
+            task.StartCoordinateX,
+            task.StartCoordinateY,
+            task.EndCoordinateX,
+            task.EndCoordinateY,
+            task.StartFloorCode,
+            task.EndFloorCode
         );
       }
 

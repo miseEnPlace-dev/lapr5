@@ -21,6 +21,12 @@ internal class PickAndDeliveryTaskEntityTypeConfiguration : IEntityTypeConfigura
     builder.Property(b => b.DeliveryUserName).HasConversion(b => b.Name, b => new UserName(b));
     builder.Property(b => b.PickupUserPhoneNumber).HasConversion(b => b.PhoneNumber, b => new UserPhoneNumber(b));
     builder.Property(b => b.DeliveryUserPhoneNumber).HasConversion(b => b.PhoneNumber, b => new UserPhoneNumber(b));
+    builder.Property(b => b.StartCoordinateX);
+    builder.Property(b => b.StartCoordinateY);
+    builder.Property(b => b.EndCoordinateX);
+    builder.Property(b => b.EndCoordinateY);
+    builder.Property(b => b.StartFloorCode);
+    builder.Property(b => b.EndFloorCode);
     // builder.Property<bool>("_active").HasColumnName("Active");
   }
 }

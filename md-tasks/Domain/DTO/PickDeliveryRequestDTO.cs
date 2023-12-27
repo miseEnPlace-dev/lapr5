@@ -13,6 +13,12 @@ public class PickDeliveryRequestDTO : RequestDTO
   public string PickupRoomId { get; set; }
   public string DeliveryRoomId { get; set; }
   public string ConfirmationCode { get; set; }
+  public double StartCoordinateX { get; set; }
+  public double StartCoordinateY { get; set; }
+  public double EndCoordinateX { get; set; }
+  public double EndCoordinateY { get; set; }
+  public string StartFloorCode { get; set; }
+  public string EndFloorCode { get; set; }
 
   [JsonConstructor]
   public PickDeliveryRequestDTO(string userId, string requestedAt, string description, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string confirmationCode) : base(userId, requestedAt)
@@ -27,7 +33,7 @@ public class PickDeliveryRequestDTO : RequestDTO
     ConfirmationCode = confirmationCode;
   }
 
-  public PickDeliveryRequestDTO(string id, string userId, string description, string requestedAt, string state, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string deviceTaskId, string confirmationCode) : base(id, userId, requestedAt, state, deviceTaskId)
+  public PickDeliveryRequestDTO(string id, string userId, string description, string requestedAt, string state, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string deviceTaskId, string confirmationCode, double startCoordinateX, double startCoordinateY, double endCoordinateX, double endCoordinateY, string startFloorCode, string endFloorCode) : base(id, userId, requestedAt, state, deviceTaskId)
   {
     Description = description;
     PickupUserName = pickupUserName;
@@ -37,5 +43,11 @@ public class PickDeliveryRequestDTO : RequestDTO
     PickupRoomId = pickupRoomId;
     DeliveryRoomId = deliveryRoomId;
     ConfirmationCode = confirmationCode;
+    StartCoordinateX = startCoordinateX;
+    StartCoordinateY = startCoordinateY;
+    EndCoordinateX = endCoordinateX;
+    EndCoordinateY = endCoordinateY;
+    StartFloorCode = startFloorCode;
+    EndFloorCode = endFloorCode;
   }
 }

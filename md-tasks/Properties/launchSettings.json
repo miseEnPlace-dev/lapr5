@@ -26,5 +26,8 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
+  },
+  "mdm": {
+    "baseUrl": "http://localhost:3000"
   }
 }
