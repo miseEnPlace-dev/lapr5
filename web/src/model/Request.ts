@@ -2,7 +2,7 @@ export interface Request {
   userId: string;
   userName?: string;
   description: string;
-  status?: string;
+  state?: string;
   requestedAt?: string;
   phoneNumber?: string;
   floorId?: string;

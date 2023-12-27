@@ -113,7 +113,7 @@ const TasksPage: React.FC = () => {
                 <h2 className="text-3xl font-bold">{request.userName}</h2>
                 <div className="flex flex-col">
                   <h3 className="text-left text-2xl font-bold">
-                    {request.phoneNumber}
+                    {request.state}
                   </h3>
                   <div className="text-left text-sm text-slate-600">
                     <span>&nbsp;&middot; {request.description}</span>
