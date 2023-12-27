@@ -94,7 +94,8 @@ api_get_requests(Request):-
     authenticate(),
     fetch_requests(Requests),
     genetic:load_tasks(Requests),
-    reply_json(Requests, [json_object(dict)]).
+    genetic:gera_lim_time(B*_),
+    reply_json(B, [json_object(dict)]).
 
 api_get_route(Request):-
     retractall(planning:m(_,_,_,_)),

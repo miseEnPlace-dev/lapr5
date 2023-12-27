@@ -281,7 +281,7 @@ gera_geracao_time(T,G,Pop,Ind):-
 	get_time(Ti),
 	Tf is Ti - T,
 	Tf > Lim,
-	write('Geração '), write(G), write(':'), nl, write(Pop), nl,
+	((D==1,write('Geração '), write(G), write(':'), nl, write(Pop), nl);true),
 	cruzamento(Pop,NPop1),
 	mutacao(NPop1,NPop),
 	avalia_populacao(NPop,NPopAv),
