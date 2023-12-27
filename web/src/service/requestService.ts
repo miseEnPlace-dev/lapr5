@@ -22,4 +22,17 @@ export class RequestService implements IRequestService {
     const data = response.data;
     return data;
   }
+
+  async createSurveillanceRequest(request: Request): Promise<Request> {
+    console.log(request);
+
+    const response = await this.http.post<Request>("/Requests/Surveillance", request, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = response.data;
+    return data;
+  }
 }

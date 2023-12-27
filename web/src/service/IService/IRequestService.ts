@@ -3,4 +3,5 @@ import { Request } from "@/model/Request";
 
 export interface IRequestService {
   getAllRequests(): Promise<Request[]>;
+  createSurveillanceRequest(request: Request): Promise<Request>;
 }

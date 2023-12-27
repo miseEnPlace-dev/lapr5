@@ -1,10 +1,9 @@
 export interface Request {
-  id: string;
   userId: string;
   userName: string;
   description: string;
-  status: string;
-  createdAt: string;
+  status?: string;
+  createdAt?: string;
   phoneNumber: string;
   floorId?: string;
   pickupUser?: {

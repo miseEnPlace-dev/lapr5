@@ -12,6 +12,8 @@ import { Building } from "../../model/Building";
 import { IBuildingService } from "../../service/IService/IBuildingService";
 import { Request } from "@/model/Request";
 import { RequestService } from "@/service/requestService";
+import { useAuth } from "@/hooks/useAuth";
+import { User } from "@/model/User";
 
 const taskTypes = [
   {
@@ -29,6 +31,7 @@ export const useTasksModule = () => {
   const floorService = useInjection<IFloorService>(TYPES.floorService);
   const roomService = useInjection<IRoomService>(TYPES.roomService);
   const requestService = useInjection<RequestService>(TYPES.requestService);
+  const { id } = useAuth();
 
   const [requests, setRequests] = useState<Request[]>([]);
 
@@ -46,6 +49,11 @@ export const useTasksModule = () => {
   const [building2Code, setBuilding2Code] = useState<string | null>("");
 
   const typeInputRef = useRef<HTMLSelectElement>(null);
+
+  const floorInputRef = useRef<HTMLSelectElement>(null);
+  const room1InputRef = useRef<HTMLSelectElement>(null);
+  const room2InputRef = useRef<HTMLSelectElement>(null);
+
   const pickupUserNameInputRef = useRef<HTMLInputElement>(null);
   const pickupUserPhoneInputRef = useRef<HTMLInputElement>(null);
   const deliveryUserNameInputRef = useRef<HTMLInputElement>(null);
@@ -99,21 +107,19 @@ export const useTasksModule = () => {
         if (
           !emergencyNameInputRef.current ||
           !emergencyPhoneInputRef.current ||
-          !building1Code ||
-          !confirmationCodeInputRef.current ||
-          !descriptionInputRef.current
+          !descriptionInputRef.current ||
+          !floorInputRef.current ||
+          !id
         )
           throw new Error("Some fields are not defined");
 
-        /*await requestService.createSurveillanceRequest({
-          emergencyUser: {
-            name: emergencyNameInputRef.current.value,
-            phone: emergencyPhoneInputRef.current.value,
-          },
-          buildingCode: building1Code,
-          confirmationCode: confirmationCodeInputRef.current.value,
+        await requestService.createSurveillanceRequest({
+          userName: emergencyNameInputRef.current.value,
+          phoneNumber: emergencyPhoneInputRef.current.value,
           description: descriptionInputRef.current.value,
-        });*/
+          userId: id,
+          floorId: floorInputRef.current?.value,
+        });
         break;
     }
   }
@@ -194,5 +200,8 @@ export const useTasksModule = () => {
     emergencyPhoneInputRef,
     confirmationCodeInputRef,
     descriptionInputRef,
+    floorInputRef,
+    room1InputRef,
+    room2InputRef,
   };
 };

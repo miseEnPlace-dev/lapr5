@@ -45,6 +45,7 @@ const TasksPage: React.FC = () => {
     descriptionInputRef,
     emergencyNameInputRef,
     emergencyPhoneInputRef,
+    floorInputRef,
   } = useTasksModule();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
 
@@ -84,7 +85,7 @@ const TasksPage: React.FC = () => {
                 initial={{ opacity: 0, x: -100 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
-                key={request.id}
+                key={i}
                 //onClick={() => navigate(`/buildings/${building.code}`)}
                 className="flex w-full items-center gap-x-10 bg-slate-200 px-12 py-8"
               >
@@ -211,7 +212,7 @@ const TasksPage: React.FC = () => {
                     />
                     <TextArea
                       placeholder="Object Description"
-                      description="Provide a meanfull description of the object that will be transported."
+                      description="Provide a meaningful description of the object that will be transported."
                       className="w-full"
                       inputRef={descriptionInputRef}
                     />
@@ -236,6 +237,7 @@ const TasksPage: React.FC = () => {
                           code: floor.code,
                           name: floor.code,
                         }))}
+                        inputRef={floorInputRef}
                       />
                     </InputGroup>
                     <InputGroup
@@ -255,6 +257,12 @@ const TasksPage: React.FC = () => {
                         inputRef={emergencyPhoneInputRef}
                       />
                     </InputGroup>
+                    <TextArea
+                      placeholder="Object Description"
+                      description="Provide a meaningful description of the object that will be transported."
+                      className="w-full"
+                      inputRef={descriptionInputRef}
+                    />
                   </>
                 ) : (
                   ""
