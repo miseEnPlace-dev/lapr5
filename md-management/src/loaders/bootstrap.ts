@@ -1654,7 +1654,11 @@ export default class Bootstrapper {
   private async loadRoom(room: IRoomDTO) {
     let roomExists;
     if (room.buildingCode)
-      roomExists = await this.roomService.getRoom(room.buildingCode, room.floorCode, room.name);
+      roomExists = await this.roomService.getRoomWithName(
+        room.buildingCode,
+        room.floorCode,
+        room.name
+      );
 
     if (roomExists && roomExists.isFailure) {
       const res = await this.roomService.createRoom({

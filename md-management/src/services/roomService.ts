@@ -172,7 +172,7 @@ export default class RoomService implements IRoomService {
     }
   }
 
-  public async getRoom(
+  public async getRoomWithName(
     buildingCode: string,
     floorCode: string,
     roomName: string

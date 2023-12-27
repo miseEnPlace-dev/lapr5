@@ -11,5 +11,9 @@ export default interface IRoomService {
     floorCode: FloorCode
   ): Promise<Result<number>>;
   getBuildingRooms(buildingCode: string): Promise<Result<IRoomDTO[]>>;
-  getRoom(buildingCode: string, floorCode: string, roomName: string): Promise<Result<IRoomDTO>>;
+  getRoomWithName(
+    buildingCode: string,
+    floorCode: string,
+    roomName: string
+  ): Promise<Result<IRoomDTO>>;
 }
