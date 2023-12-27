@@ -1,7 +1,7 @@
 :- module(server, []).
 
 :- use_module(planning).
-
+:- use_module(genetic).
 
 :- use_module(library(http/thread_httpd)).
 :- use_module(library(http/http_dispatch)).
@@ -23,12 +23,14 @@
 :- json_object student(student_name:string).
 
 api_url('http://localhost:4000/api').
+tasks_api_url('http://localhost:7000/api').
 
 % define route aliases
 http:location(api, root(api), []). % /api
 
 % define your routes here
 :- http_handler(api(route), api_get_route, []). % /api/route?from=abc&to=xyz&method=elevators
+:- http_handler(api(requests), api_get_requests, []). % /api/requests
 
 :- dynamic bearer_token/1.
 
@@ -71,6 +73,11 @@ fetch_floors(BuildingCode, Floors) :-
     atom_concat(FloorsUrl2, '/floors', FloorsUrl3),
     read_api(FloorsUrl3, Floors).
 
+fetch_requests(Requests) :-
+    tasks_api_url(Url),
+    atom_concat(Url, '/requests/pick-delivery', PickDeliveryUrl),
+    read_api(PickDeliveryUrl, Requests).
+
 password('campus').
 email('campus@isep.ipp.pt').
 
@@ -82,6 +89,13 @@ authenticate():-
     JsonData = json([email=Email, password=Pass]),
     post_api(AuthUrl, JsonData, Out),
     (retract(bearer_token(_));true), assertz(bearer_token(Out.token)), !.
+
+api_get_requests(Request):-
+    authenticate(),
+    fetch_requests(Requests),
+    genetic:load_tasks(Requests),
+    genetic:gera_lim_time(B*_),
+    reply_json(B, [json_object(dict)]).
 
 api_get_route(Request):-
     retractall(planning:m(_,_,_,_)),

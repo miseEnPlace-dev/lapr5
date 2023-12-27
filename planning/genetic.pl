@@ -16,27 +16,41 @@ prob_cruzamento(0.7).
 prob_mutacao(0.2).
 
 %lim_time(Tempo_segundos). 
-lim_time(5).
+lim_time(2).
 
 % tarefas(NTarefas).
 n_tarefas(5).
 
 :- dynamic tarefas/3.
+:- dynamic t/3.
 
-debug_mode(1).
+debug_mode(0).
 
 % t(id_tarefa, inicio, fim).
-t(t1, cel("b2",8,21),cel("c3",8,2)).
-t(t2, cel("b1",7,20),cel("b2",6,20)).
-t(t3, cel("b3",9,20),cel("b3",8,20)).
-t(t4, cel("b2",6,19),cel("b2",9,18)).
-t(t5, cel("b3",8,18),cel("b3",8,17)).
+% t(t1, cel("b2",8,21),cel("c3",8,2)).
+% t(t2, cel("b1",7,20),cel("b2",6,20)).
+% t(t3, cel("b3",9,20),cel("b3",8,20)).
+% t(t4, cel("b2",6,19),cel("b2",9,18)).
+% t(t5, cel("b3",8,18),cel("b3",8,17)).
 
 % t(t6,cel("c3",8,2),cel("b2",8,21)).
 % t(t7,cel("b2",6,20),cel("b1",7,20)).
 % t(t8,cel("b3",8,20),cel("b3",9,20)).
 % t(t9,cel("b2",9,18),cel("b2",6,19)).
 % t(t10,cel("b3",8,17),cel("b3",8,18)).
+
+load_tasks([H|T]):-
+	asserta(
+		t(
+			H.id,
+			cel(H.startFloorCode,H.startCoordinateX,H.startCoordinateY),
+			cel(H.endFloorCode,H.endCoordinateX,H.endCoordinateY)
+		)
+	),
+	load_tasks(T).
+
+load_tasks([]):-load_tarefas().
+
 
 load_tarefas:-
 	findall(T,t(T,_,_),L),
@@ -80,7 +94,7 @@ gera_best_bruteforce:-
 	((D==1,write('Melhor individuo: '), write(Ind), nl);true),
 	((D==1,write('Tempo de execução: '), T is Tf - Ti, write(T), nl, nl);true).
 
-gera_lim_ger:-
+gera_lim_ger(Melhor):-
 	debug_mode(D),
 	gera_populacao(Pop),
 	((D==1,write('Pop='),write(Pop),nl);true),
@@ -88,9 +102,9 @@ gera_lim_ger:-
 	((D==1,write('PopAv='),write(PopAv),nl);true),
 	ordena_populacao(PopAv,PopOrd),
 	geracoes(NG),
-	gera_geracao_ger(0,NG,PopOrd).
+	gera_geracao_ger(0,NG,PopOrd,Melhor),!.
 
-gera_lim_time:-
+gera_lim_time(Melhor):-
 	debug_mode(D),
 	gera_populacao(Pop),
 	((D==1,write('Pop='),write(Pop),nl);true),
@@ -98,7 +112,7 @@ gera_lim_time:-
 	((D==1,write('PopAv='),write(PopAv),nl);true),
 	ordena_populacao(PopAv,PopOrd),
 	get_time(Ti),
-	gera_geracao_time(Ti,0,PopOrd).
+	gera_geracao_time(Ti,0,PopOrd,Melhor), !.
 
 gera_estab:-
     debug_mode(D),
@@ -238,7 +252,7 @@ btroca([X*VX,Y*VY|L1],[Y*VY|L2]):-
 btroca([X|L1],[X|L2]):-btroca(L1,L2).
 
 
-gera_geracao_ger(G,G,Pop):-
+gera_geracao_ger(G,G,Pop,Ind):-
 	debug_mode(D),
 	((D==1,write('Geração '), write(G), write(':'), nl, write(Pop), nl);true),
 	cruzamento(Pop,NPop1),
@@ -248,7 +262,7 @@ gera_geracao_ger(G,G,Pop):-
 	melhor_individuo(Pop,Ind),
 	((D==1,write('Melhor individuo: '),write(Ind), nl, nl);true), !.
 
-gera_geracao_ger(N,G,Pop):-
+gera_geracao_ger(N,G,Pop,Melhor):-
 	debug_mode(D),
 	((D == 1,write('Geração '),write(N),write(':'),nl, write(Pop), nl);true),
 	cruzamento(Pop,NPop1),
@@ -259,15 +273,15 @@ gera_geracao_ger(N,G,Pop):-
 	retira_pior(NPopOrd,Ind,NPopNova),
 	((D == 1,write('Melhor individuo: '),write(Ind), nl, nl);true),
 	N1 is N+1,
-	gera_geracao_ger(N1,G,NPopNova).
+	gera_geracao_ger(N1,G,NPopNova,Melhor).
 
-gera_geracao_time(T,G,Pop):-
+gera_geracao_time(T,G,Pop,Ind):-
 	debug_mode(D),
 	lim_time(Lim),
 	get_time(Ti),
 	Tf is Ti - T,
 	Tf > Lim,
-	write('Geração '), write(G), write(':'), nl, write(Pop), nl,
+	((D==1,write('Geração '), write(G), write(':'), nl, write(Pop), nl);true),
 	cruzamento(Pop,NPop1),
 	mutacao(NPop1,NPop),
 	avalia_populacao(NPop,NPopAv),
@@ -275,7 +289,7 @@ gera_geracao_time(T,G,Pop):-
 	melhor_individuo(Pop,Ind),
 	((D==1,write('Melhor individuo: '), write(Ind), nl, nl);true),!.
 
-gera_geracao_time(T, N, Pop) :-
+gera_geracao_time(T, N, Pop,Melhor) :-
 	debug_mode(D),
 	((D == 1, write('Geração '), write(N), write(':'), nl, write(Pop), nl); true),
 	cruzamento(Pop, NPop1),
@@ -286,7 +300,7 @@ gera_geracao_time(T, N, Pop) :-
 	retira_pior(NPopOrd, MelhorInd, NPopNova),
 	((D == 1, write('Melhor individuo: '), write(MelhorInd), nl, nl); true),
 	N1 is N + 1,
-	gera_geracao_time(T, N1, NPopNova).
+	gera_geracao_time(T, N1, NPopNova,Melhor).
 
 retira_pior([_|Resto], Melhor, [Melhor|Resto]) :- !.
 

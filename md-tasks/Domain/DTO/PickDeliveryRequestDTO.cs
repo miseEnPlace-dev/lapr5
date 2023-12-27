@@ -13,10 +13,10 @@ public class PickDeliveryRequestDTO : RequestDTO
   public string PickupRoomId { get; set; }
   public string DeliveryRoomId { get; set; }
   public string ConfirmationCode { get; set; }
-  public double StartCoordinateX { get; set; }
-  public double StartCoordinateY { get; set; }
-  public double EndCoordinateX { get; set; }
-  public double EndCoordinateY { get; set; }
+  public int StartCoordinateX { get; set; }
+  public int StartCoordinateY { get; set; }
+  public int EndCoordinateX { get; set; }
+  public int EndCoordinateY { get; set; }
   public string StartFloorCode { get; set; }
   public string EndFloorCode { get; set; }
 
@@ -33,7 +33,7 @@ public class PickDeliveryRequestDTO : RequestDTO
     ConfirmationCode = confirmationCode;
   }
 
-  public PickDeliveryRequestDTO(string id, string userId, string description, string requestedAt, string state, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string deviceTaskId, string confirmationCode, double startCoordinateX, double startCoordinateY, double endCoordinateX, double endCoordinateY, string startFloorCode, string endFloorCode) : base(id, "pick_delivery", userId, requestedAt, state, deviceTaskId)
+  public PickDeliveryRequestDTO(string id, string userId, string description, string requestedAt, string state, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string deviceTaskId, string confirmationCode, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, string startFloorCode, string endFloorCode) : base(id, "pick_delivery", userId, requestedAt, state, deviceTaskId)
   {
     Description = description;
     PickupUserName = pickupUserName;
