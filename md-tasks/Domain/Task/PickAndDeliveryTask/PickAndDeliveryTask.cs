@@ -15,15 +15,15 @@ namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask
     public RoomId PickupRoomId { get; private set; }
     public RoomId DeliveryRoomId { get; private set; }
 
-    public double StartCoordinateX { get; private set; }
-    public double StartCoordinateY { get; private set; }
-    public double EndCoordinateX { get; private set; }
-    public double EndCoordinateY { get; private set; }
+    public int StartCoordinateX { get; private set; }
+    public int StartCoordinateY { get; private set; }
+    public int EndCoordinateX { get; private set; }
+    public int EndCoordinateY { get; private set; }
 
     public string StartFloorCode { get; private set; }
     public string EndFloorCode { get; private set; }
 
-    public PickAndDeliveryTask(DeviceTaskId Id, TaskDescription description, UserName pickupUserName, UserName deliveryUserName, UserPhoneNumber pickupUserPhoneNumber, UserPhoneNumber deliveryUserPhoneNumber, RoomId pickupRoomId, RoomId deliveryRoomId, ConfirmationCode confirmationCode, double StartCoordinateX, double StartCoordinateY, double EndCoordinateX, double EndCoordinateY, string startFloorCode, string endFloorCode) : base(Id)
+    public PickAndDeliveryTask(DeviceTaskId Id, TaskDescription description, UserName pickupUserName, UserName deliveryUserName, UserPhoneNumber pickupUserPhoneNumber, UserPhoneNumber deliveryUserPhoneNumber, RoomId pickupRoomId, RoomId deliveryRoomId, ConfirmationCode confirmationCode, int StartCoordinateX, int StartCoordinateY, int EndCoordinateX, int EndCoordinateY, string startFloorCode, string endFloorCode) : base(Id)
     {
       Description = description;
       ConfirmationCode = confirmationCode;
