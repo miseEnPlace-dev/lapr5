@@ -12,8 +12,11 @@ import Modal from "@/components/Modal";
 import Pagination from "@/components/Pagination";
 import SideBar from "@/components/SideBar";
 import TextArea from "@/components/TextArea";
+import { FilterIcon } from "@/styles/Icons";
 
 import { useTasksModule } from "./module";
+
+import { AxiosError } from "axios";
 
 const ANIMATION_DELAY = 0.1;
 
@@ -51,8 +54,35 @@ const TasksPage: React.FC = () => {
     room2InputRef,
     username,
     phoneNumber,
+    setStateFilter,
+    stateFilter,
+    userFilter,
+    setUserFilter,
+    stateInputRef,
+    states,
   } = useTasksModule();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
+  const [isFilterByStateModalVisible, setIsFilterByStateModalVisible] =
+    useState(false);
+  const [isFilterByUserModalVisible, setIsFilterByUserModalVisible] =
+    useState(false);
+
+  async function handleRequestFilterByStateClick() {
+    try {
+      if (!stateInputRef.current?.value) setStateFilter(null);
+      else setStateFilter(stateInputRef.current.value);
+
+      // Only one filter is valid, remove the other
+      setUserFilter(null);
+
+      setIsFilterByStateModalVisible(false);
+    } catch (err: unknown) {
+      if (err instanceof AxiosError && err.response)
+        swal("Error", err.response.data.errors as string, "error");
+
+      swal("Error", err as string, "error");
+    }
+  }
 
   const { menuOptions } = useMenuOptions();
 
@@ -72,6 +102,14 @@ const TasksPage: React.FC = () => {
     }
   }
 
+  async function handleRemoveFilter() {
+    setStateFilter(null);
+    setUserFilter(null);
+
+    setIsFilterByStateModalVisible(false);
+    setIsFilterByUserModalVisible(false);
+  }
+
   return (
     <div className="flex">
       <SideBar menuOptions={menuOptions} />
@@ -82,6 +120,26 @@ const TasksPage: React.FC = () => {
           aria-label="tasks-container"
           className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left text-lg"
         >
+          <div className="flex flex-row gap-x-4">
+            <motion.button
+              name="filterByTask"
+              initial={{ opacity: 0, y: -100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.2,
+                delay: requests?.length || 0 * ANIMATION_DELAY,
+              }}
+              onClick={() => setIsFilterByStateModalVisible(true)}
+              className={`flex w-full items-center justify-center gap-x-10 ${
+                stateFilter ? "bg-slate-400" : "bg-slate-300"
+              } py-4 text-gray-500`}
+            >
+              <div className="flex flex-row items-center gap-x-4 text-lg font-bold text-slate-600">
+                {stateFilter ? <FilterIcon /> : ""}
+                Filter Requests By State
+              </div>
+            </motion.button>
+          </div>
           <motion.button
             name="create-task"
             initial={{ opacity: 0, y: -100 }}
@@ -297,6 +355,42 @@ const TasksPage: React.FC = () => {
               </div>
               <Button name="save" type="confirm" onClick={handleSaveClick}>
                 Request
+              </Button>
+            </div>
+          </Modal>
+          <Modal
+            setIsVisible={setIsFilterByStateModalVisible}
+            isVisible={isFilterByStateModalVisible}
+            title="Filter Requests by State"
+          >
+            <div className="flex h-full flex-col justify-between gap-y-4">
+              <div className="flex w-full flex-col gap-y-4">
+                <div className="flex w-full flex-col gap-x-8 gap-y-4">
+                  <Dropdown
+                    className="w-full"
+                    name="Task"
+                    placeholder="Task"
+                    inputRef={stateInputRef}
+                    options={states}
+                    selected={stateFilter ? stateFilter : undefined}
+                  />
+                  {stateFilter && (
+                    <Button
+                      name="removeFilter"
+                      onClick={handleRemoveFilter}
+                      type="reset"
+                    >
+                      Remove Filter
+                    </Button>
+                  )}
+                </div>
+              </div>
+              <Button
+                name="listfilter"
+                onClick={handleRequestFilterByStateClick}
+                type="confirm"
+              >
+                List
               </Button>
             </div>
           </Modal>

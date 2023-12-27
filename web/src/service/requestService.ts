@@ -9,6 +9,7 @@ import { IRequestService } from "./IService/IRequestService";
 import { Request } from "@/model/Request";
 import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { mdTasksApi } from "./api";
+import { capitalize } from "lodash";
 
 @injectable()
 export class RequestService implements IRequestService {
@@ -16,8 +17,13 @@ export class RequestService implements IRequestService {
     @inject(TYPES.mdTasksApi) private http: HttpService
   ) { }
 
-  async getAllRequests(): Promise<Request[]> {
-    const response = await this.http.get<Request[]>("/Requests", {});
+  async getAllRequests(
+    filter?: "state" | "userId",
+    value?: string,
+  ): Promise<Request[]> {
+    console.log(filter, value);
+    console.log("Request url: " + "/Requests?" + filter + "=" + value)
+    const response = await this.http.get<Request[]>("/Requests?" + filter + "=" + capitalize(value), {});
 
     const data = response.data;
     return data;
@@ -35,7 +41,6 @@ export class RequestService implements IRequestService {
   }
 
   async createPickAndDeliveryRequest(request: Request): Promise<Request> {
-    console.log(request)
     const response = await this.http.post<Request>("/Requests/Pick-Delivery", request, {
       headers: {
         "Content-Type": "application/json",

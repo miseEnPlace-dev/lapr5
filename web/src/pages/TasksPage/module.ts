@@ -47,6 +47,12 @@ export const useTasksModule = () => {
   const [building1Code, setBuilding1Code] = useState<string | null>("");
   const [building2Code, setBuilding2Code] = useState<string | null>("");
 
+  const [stateFilter, setStateFilter] = useState<string | null>("");
+  const stateInputRef = useRef<HTMLSelectElement>(null);
+
+  const [userFilter, setUserFilter] = useState<string | null>("");
+  const userInputRef = useRef<HTMLSelectElement>(null);
+
   const typeInputRef = useRef<HTMLSelectElement>(null);
 
   const floorInputRef = useRef<HTMLSelectElement>(null);
@@ -167,13 +173,13 @@ export const useTasksModule = () => {
 
   const fetchRequests = useCallback(async () => {
     try {
-      const r = await requestService.getAllRequests();
+      const r = await requestService.getAllRequests(stateFilter ? "state" : userFilter ? "userId" : undefined, stateFilter || userFilter || undefined);
       setRequests(r);
 
     } catch (error) {
       setRequests([]);
     }
-  }, [requestService]);
+  }, [requestService, stateFilter, userFilter]);
 
   useEffect(() => {
     fetchBuildings();
@@ -192,6 +198,25 @@ export const useTasksModule = () => {
     fetchRequests,
     requestService
   ]);
+
+  const states = [
+    {
+      name: "Pending",
+      code: "pending",
+    },
+    {
+      name: "Accepted",
+      code: "accepted",
+    },
+    {
+      name: "Rejected",
+      code: "rejected",
+    },
+    {
+      name: "Executed",
+      code: "executed",
+    },
+  ];
 
   return {
     requests,
@@ -225,5 +250,12 @@ export const useTasksModule = () => {
     room2InputRef,
     username,
     phoneNumber,
+    stateFilter,
+    setStateFilter,
+    userFilter,
+    setUserFilter,
+    stateInputRef,
+    userInputRef,
+    states
   };
 };
