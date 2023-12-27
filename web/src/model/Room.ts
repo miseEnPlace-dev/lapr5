@@ -7,4 +7,8 @@ export interface Room {
   };
   floorCode: string;
   category: string;
+  roomDoor: {
+    x: number;
+    y: number;
+  };
 }

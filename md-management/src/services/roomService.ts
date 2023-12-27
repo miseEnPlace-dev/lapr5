@@ -26,6 +26,8 @@ export default class RoomService implements IRoomService {
 
   public async createRoom(roomDTO: IRoomDTO): Promise<Result<IRoomDTO>> {
     try {
+      console.log(roomDTO);
+
       if (!roomDTO.buildingCode) return Result.fail<IRoomDTO>('Building code not defined');
       const buildingCode = BuildingCode.create(roomDTO.buildingCode).getValue();
       const building = await this.buildingRepo.findByCode(buildingCode);
@@ -74,6 +76,7 @@ export default class RoomService implements IRoomService {
 
         if (category.isFailure) return Result.fail<IRoomDTO>(category.error as string);
 
+        console.log(roomDTO.roomDoor);
         const roomDoor = RoomDoor.create(roomDTO.roomDoor.x, roomDTO.roomDoor.y);
 
         if (roomDoor.isFailure) return Result.fail<IRoomDTO>(roomDoor.error as string);

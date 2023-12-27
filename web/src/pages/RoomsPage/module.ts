@@ -28,6 +28,8 @@ export const useRoomPageModule = () => {
   const roomCategoryInputRef = useRef<HTMLSelectElement>(null);
   const roomWidthInputRef = useRef<HTMLInputElement>(null);
   const roomLengthInputRef = useRef<HTMLInputElement>(null);
+  const doorXInputRef = useRef<HTMLInputElement>(null);
+  const doorYInputRef = useRef<HTMLInputElement>(null);
 
   const fetchRoom = useCallback(
     async (buildingCode: string, floorCode: string, roomName: string) => {
@@ -73,6 +75,8 @@ export const useRoomPageModule = () => {
     if (!roomCategoryInputRef.current?.value)
       throw new Error("No floor category provided");
     if (!floorCode) throw new Error("No floor code provided");
+    if (!doorXInputRef.current?.value) throw new Error("No door x provided");
+    if (!doorYInputRef.current?.value) throw new Error("No door y provided");
 
     const r: Room = {
       name: roomNameInputRef.current.value,
@@ -83,6 +87,10 @@ export const useRoomPageModule = () => {
         length: Number(roomLengthInputRef.current.value),
       },
       floorCode: floorCode,
+      roomDoor: {
+        x: Number(doorXInputRef.current.value),
+        y: Number(doorYInputRef.current.value),
+      },
     };
 
     await roomService.createRoom(buildingCode, floorCode, r);
@@ -155,5 +163,7 @@ export const useRoomPageModule = () => {
     roomLengthInputRef,
     room,
     rooms,
+    doorXInputRef,
+    doorYInputRef,
   };
 };

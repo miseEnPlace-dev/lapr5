@@ -24,6 +24,8 @@ const RoomsPage: React.FC = () => {
     roomWidthInputRef,
     roomDescriptionInputRef,
     roomLengthInputRef,
+    doorXInputRef,
+    doorYInputRef,
   } = useRoomPageModule();
   const navigate = useNavigate();
   const [isRoomModalVisible, setIsRoomModalVisible] = useState(false);
@@ -97,16 +99,30 @@ const RoomsPage: React.FC = () => {
                     placeholder="Width (m)"
                     type="number"
                     step={1}
-                    defaultValue={room?.dimensions.width}
                     inputRef={roomWidthInputRef}
                   />
                   <Input
-                    defaultValue={room?.dimensions.length}
                     className="w-full"
                     placeholder="Length (m)"
                     step={1}
                     type="number"
                     inputRef={roomLengthInputRef}
+                  />
+                </div>
+                <div className="flex w-full items-center justify-between gap-x-12">
+                  <Input
+                    className="w-full"
+                    placeholder="Door X coordinate"
+                    type="number"
+                    step={1}
+                    inputRef={doorXInputRef}
+                  />
+                  <Input
+                    className="w-full"
+                    placeholder="Door Y coordinate (m)"
+                    step={1}
+                    type="number"
+                    inputRef={doorYInputRef}
                   />
                 </div>
                 <Dropdown
