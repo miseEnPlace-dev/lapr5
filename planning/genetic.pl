@@ -27,11 +27,11 @@ n_tarefas(5).
 debug_mode(0).
 
 % t(id_tarefa, inicio, fim).
-t(t1, cel("b2",8,21),cel("c3",8,2)).
-t(t2, cel("b1",7,20),cel("b2",6,20)).
-t(t3, cel("b3",9,20),cel("b3",8,20)).
-t(t4, cel("b2",6,19),cel("b2",9,18)).
-t(t5, cel("b3",8,18),cel("b3",8,17)).
+% t(t1, cel("b2",8,21),cel("c3",8,2)).
+% t(t2, cel("b1",7,20),cel("b2",6,20)).
+% t(t3, cel("b3",9,20),cel("b3",8,20)).
+% t(t4, cel("b2",6,19),cel("b2",9,18)).
+% t(t5, cel("b3",8,18),cel("b3",8,17)).
 
 % t(t6,cel("c3",8,2),cel("b2",8,21)).
 % t(t7,cel("b2",6,20),cel("b1",7,20)).
@@ -49,7 +49,7 @@ load_tasks([H|T]):-
 	),
 	load_tasks(T).
 
-load_tasks([]).
+load_tasks([]):-load_tarefas().
 
 
 load_tarefas:-
