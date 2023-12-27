@@ -2,17 +2,17 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useInjection } from "inversify-react";
 
 import { TYPES } from "../../inversify/types";
+import { useAuth } from "@/hooks/useAuth";
 import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Floor } from "@/model/Floor";
+import { Request } from "@/model/Request";
 import { Room } from "@/model/Room";
 import { IFloorService } from "@/service/IService/IFloorService";
 import { IRoomService } from "@/service/IService/IRoomService";
+import { RequestService } from "@/service/requestService";
 
 import { Building } from "../../model/Building";
 import { IBuildingService } from "../../service/IService/IBuildingService";
-import { Request } from "@/model/Request";
-import { RequestService } from "@/service/requestService";
-import { useAuth } from "@/hooks/useAuth";
 
 const taskTypes = [
   {
@@ -125,6 +125,8 @@ export const useTasksModule = () => {
         });
         break;
     }
+
+    fetchRequests();
   }
 
   const fetchBuildings = useCallback(async () => {
@@ -160,7 +162,6 @@ export const useTasksModule = () => {
 
   const fetchRooms2 = useCallback(async () => {
     try {
-
       if (building2Code) {
         const rooms = await roomService.getBuildingRooms(building2Code);
         setBuilding2Rooms(rooms);
@@ -168,14 +169,15 @@ export const useTasksModule = () => {
     } catch (error) {
       setBuilding2Rooms([]);
     }
-
   }, [building2Code, roomService]);
 
   const fetchRequests = useCallback(async () => {
     try {
-      const r = await requestService.getAllRequests(stateFilter ? "state" : userFilter ? "userId" : undefined, stateFilter || userFilter || undefined);
+      const r = await requestService.getAllRequests(
+        stateFilter ? "state" : userFilter ? "userId" : undefined,
+        stateFilter || userFilter || undefined
+      );
       setRequests(r);
-
     } catch (error) {
       setRequests([]);
     }
@@ -183,21 +185,23 @@ export const useTasksModule = () => {
 
   useEffect(() => {
     fetchBuildings();
+  }, [fetchBuildings, buildingService]);
+
+  useEffect(() => {
     fetchFloors();
+  }, [fetchFloors, floorService]);
+
+  useEffect(() => {
     fetchRooms1();
+  }, [fetchRooms1, roomService]);
+
+  useEffect(() => {
     fetchRooms2();
+  }, [roomService, fetchRooms2]);
+
+  useEffect(() => {
     fetchRequests();
-  }, [
-    fetchBuildings,
-    buildingService,
-    fetchFloors,
-    floorService,
-    fetchRooms1,
-    roomService,
-    fetchRooms2,
-    fetchRequests,
-    requestService
-  ]);
+  }, [fetchRequests, requestService]);
 
   const states = [
     {
@@ -256,6 +260,6 @@ export const useTasksModule = () => {
     setUserFilter,
     stateInputRef,
     userInputRef,
-    states
+    states,
   };
 };

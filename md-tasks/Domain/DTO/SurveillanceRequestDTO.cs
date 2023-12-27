@@ -17,7 +17,7 @@ public class SurveillanceRequestDTO : RequestDTO
     PhoneNumber = phoneNumber;
   }
 
-  public SurveillanceRequestDTO(string id, string userId, string description, string requestedAt, string state, string userName, string phoneNumber, string floorId, string deviceTaskId) : base(id, userId, requestedAt, state, deviceTaskId)
+  public SurveillanceRequestDTO(string id, string userId, string description, string requestedAt, string state, string userName, string phoneNumber, string floorId, string deviceTaskId) : base(id, "surveillance", userId, requestedAt, state, deviceTaskId)
   {
     UserName = userName;
     PhoneNumber = phoneNumber;
