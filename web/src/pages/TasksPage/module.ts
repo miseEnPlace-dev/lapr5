@@ -13,7 +13,6 @@ import { IBuildingService } from "../../service/IService/IBuildingService";
 import { Request } from "@/model/Request";
 import { RequestService } from "@/service/requestService";
 import { useAuth } from "@/hooks/useAuth";
-import { User } from "@/model/User";
 
 const taskTypes = [
   {
@@ -31,7 +30,7 @@ export const useTasksModule = () => {
   const floorService = useInjection<IFloorService>(TYPES.floorService);
   const roomService = useInjection<IRoomService>(TYPES.roomService);
   const requestService = useInjection<RequestService>(TYPES.requestService);
-  const { id } = useAuth();
+  const { id, username, phoneNumber } = useAuth();
 
   const [requests, setRequests] = useState<Request[]>([]);
 
@@ -81,27 +80,25 @@ export const useTasksModule = () => {
           !pickupUserPhoneInputRef.current ||
           !deliveryUserNameInputRef.current ||
           !deliveryUserPhoneInputRef.current ||
-          !building1Code ||
-          !building2Code ||
+          !room1InputRef.current ||
+          !room2InputRef.current ||
           !confirmationCodeInputRef.current ||
-          !descriptionInputRef.current
+          !descriptionInputRef.current ||
+          !id
         )
           throw new Error("Some fields are not defined");
 
-        /*await requestService.createPickupAndDeliveryRequest({
-          pickupUser: {
-            name: pickupUserNameInputRef.current.value,
-            phone: pickupUserPhoneInputRef.current.value,
-          },
-          deliveryUser: {
-            name: deliveryUserNameInputRef.current.value,
-            phone: deliveryUserPhoneInputRef.current.value,
-          },
-          building1Code: building1Code,
-          building2Code: building2Code,
+        await requestService.createPickAndDeliveryRequest({
+          pickupUserName: pickupUserNameInputRef.current.value,
+          pickupUserPhoneNumber: pickupUserPhoneInputRef.current.value,
+          deliveryUserName: deliveryUserNameInputRef.current.value,
+          deliveryUserPhoneNumber: deliveryUserPhoneInputRef.current.value,
+          userId: id,
           confirmationCode: confirmationCodeInputRef.current.value,
           description: descriptionInputRef.current.value,
-        });*/
+          pickupRoomId: room1InputRef.current?.value,
+          deliveryRoomId: room2InputRef.current?.value,
+        });
         break;
       case "surveillance":
         if (
@@ -124,54 +121,77 @@ export const useTasksModule = () => {
     }
   }
 
-  useEffect(() => {
-    async function fetchBuildings() {
-      const b = await buildingService.getBuildings();
-      setBuildings(b.data);
+  const fetchBuildings = useCallback(async () => {
+    try {
+      const buildings = await buildingService.getBuildings();
+      setBuildings(buildings.data);
+    } catch (error) {
+      setBuildings([]);
     }
-
-    fetchBuildings();
   }, [buildingService]);
 
-  useEffect(() => {
-    async function fetchFloors() {
+  const fetchFloors = useCallback(async () => {
+    try {
       if (building1Code) {
         const floors = await floorService.getBuildingFloors(building1Code);
         setBuilding1Floors(floors);
       }
+    } catch (error) {
+      setBuilding1Floors([]);
     }
-    fetchFloors();
   }, [building1Code, floorService]);
 
-  useEffect(() => {
-    async function fetchRooms1() {
+  const fetchRooms1 = useCallback(async () => {
+    try {
       if (building1Code) {
         const rooms = await roomService.getBuildingRooms(building1Code);
         setBuilding1Rooms(rooms);
       }
+    } catch (error) {
+      setBuilding1Rooms([]);
     }
-    fetchRooms1();
   }, [building1Code, roomService]);
 
-  useEffect(() => {
-    async function fetchRooms2() {
+  const fetchRooms2 = useCallback(async () => {
+    try {
+
       if (building2Code) {
         const rooms = await roomService.getBuildingRooms(building2Code);
         setBuilding2Rooms(rooms);
       }
+    } catch (error) {
+      setBuilding2Rooms([]);
     }
-    fetchRooms2();
+
   }, [building2Code, roomService]);
 
-  useEffect(() => {
-    async function fetchRequests() {
+  const fetchRequests = useCallback(async () => {
+    try {
       const r = await requestService.getAllRequests();
-      console.log(r);
       setRequests(r);
-    }
 
-    fetchRequests();
+    } catch (error) {
+      setRequests([]);
+    }
   }, [requestService]);
+
+  useEffect(() => {
+    fetchBuildings();
+    fetchFloors();
+    fetchRooms1();
+    fetchRooms2();
+    fetchRequests();
+  }, [
+    fetchBuildings,
+    buildingService,
+    fetchFloors,
+    floorService,
+    fetchRooms1,
+    roomService,
+    fetchRooms2,
+    fetchRequests,
+    requestService
+  ]);
 
   return {
     requests,
@@ -203,5 +223,7 @@ export const useTasksModule = () => {
     floorInputRef,
     room1InputRef,
     room2InputRef,
+    username,
+    phoneNumber,
   };
 };

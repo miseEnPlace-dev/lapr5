@@ -109,9 +109,6 @@ const DevicesPage: React.FC = () => {
 
   const ANIMATION_DELAY = 0.1;
 
-  console.log(deviceModels);
-  console.log("DEVICES!! = ", devices);
-
   const { menuOptions } = useMenuOptions();
 
   return (

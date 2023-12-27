@@ -24,9 +24,19 @@ export class RequestService implements IRequestService {
   }
 
   async createSurveillanceRequest(request: Request): Promise<Request> {
-    console.log(request);
-
     const response = await this.http.post<Request>("/Requests/Surveillance", request, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = response.data;
+    return data;
+  }
+
+  async createPickAndDeliveryRequest(request: Request): Promise<Request> {
+    console.log(request)
+    const response = await this.http.post<Request>("/Requests/Pick-Delivery", request, {
       headers: {
         "Content-Type": "application/json",
       },

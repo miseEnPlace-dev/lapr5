@@ -15,6 +15,7 @@ export function useAuth() {
   const [role, setRole] = useState<string | null>(null);
   const [username, setUsername] = useState<string | null>(null);
   const [id, setId] = useState<string | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
   const http = useInjection<HttpService>(TYPES.api);
 
   useEffect(() => {
@@ -30,6 +31,7 @@ export function useAuth() {
         setRole(res.data.role);
         setUsername(`${res.data.firstName} ${res.data.lastName}`);
         setId(res.data.id);
+        setPhoneNumber(res.data.phoneNumber);
         return;
       }
 
@@ -80,6 +82,7 @@ export function useAuth() {
     role,
     username,
     logout,
-    id
+    id,
+    phoneNumber,
   };
 }

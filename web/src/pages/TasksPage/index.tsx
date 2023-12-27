@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 
 import { useMenuOptions } from "@/hooks/useMenuOptions";
 import Button from "@/components/Button";
@@ -46,10 +47,30 @@ const TasksPage: React.FC = () => {
     emergencyNameInputRef,
     emergencyPhoneInputRef,
     floorInputRef,
+    room1InputRef,
+    room2InputRef,
+    username,
+    phoneNumber,
   } = useTasksModule();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
 
   const { menuOptions } = useMenuOptions();
+
+  async function handleSaveClick() {
+    try {
+      await handleCreate();
+
+      swal("Success", "Request created successfully", "success");
+      setIsTaskModalVisible(false);
+    } catch (err: unknown) {
+      console.error(err);
+      swal(
+        "Error",
+        "An error occurred. Check the console for details.",
+        "error"
+      );
+    }
+  }
 
   return (
     <div className="flex">
@@ -143,6 +164,7 @@ const TasksPage: React.FC = () => {
                             code: room.name,
                             name: room.name,
                           }))}
+                          inputRef={room1InputRef}
                         />
                       </InputGroup>
                       <InputGroup
@@ -163,6 +185,7 @@ const TasksPage: React.FC = () => {
                             code: room.name,
                             name: room.name,
                           }))}
+                          inputRef={room2InputRef}
                         />
                       </InputGroup>
                     </div>
@@ -175,12 +198,14 @@ const TasksPage: React.FC = () => {
                           placeholder="Name"
                           type="text"
                           className="w-full"
+                          defaultValue={username || ""}
                           inputRef={pickupUserNameInputRef}
                         />
                         <Input
                           placeholder="Phone Number"
                           type="text"
                           className="w-2/3"
+                          defaultValue={phoneNumber || ""}
                           inputRef={pickupUserPhoneInputRef}
                         />
                       </InputGroup>
@@ -248,12 +273,14 @@ const TasksPage: React.FC = () => {
                         placeholder="Name"
                         type="text"
                         className="w-full"
+                        defaultValue={username || ""}
                         inputRef={emergencyNameInputRef}
                       />
                       <Input
                         placeholder="Phone Number"
                         type="text"
                         className="w-2/3"
+                        defaultValue={phoneNumber || ""}
                         inputRef={emergencyPhoneInputRef}
                       />
                     </InputGroup>
@@ -268,7 +295,7 @@ const TasksPage: React.FC = () => {
                   ""
                 )}
               </div>
-              <Button name="save" type="confirm" onClick={handleCreate}>
+              <Button name="save" type="confirm" onClick={handleSaveClick}>
                 Request
               </Button>
             </div>

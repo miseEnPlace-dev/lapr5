@@ -1,19 +1,15 @@
 export interface Request {
   userId: string;
-  userName: string;
+  userName?: string;
   description: string;
   status?: string;
-  createdAt?: string;
-  phoneNumber: string;
+  requestedAt?: string;
+  phoneNumber?: string;
   floorId?: string;
-  pickupUser?: {
-    name: string;
-    phone: string;
-  };
-  deliveryUser?: {
-    name: string;
-    phone: string;
-  };
+  pickupUserName?: string;
+  pickupUserPhoneNumber?: string;
+  deliveryUserName?: string;
+  deliveryUserPhoneNumber?: string;
   pickupRoomId?: string;
   deliveryRoomId?: string;
   confirmationCode?: string;
