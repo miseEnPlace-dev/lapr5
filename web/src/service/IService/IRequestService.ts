@@ -18,4 +18,9 @@ export interface IRequestService {
   ): Promise<RequestPickAndDelivery>;
   acceptRequest(id: string): Promise<void>;
   rejectRequest(id: string): Promise<void>;
+  getRequestsByType(
+    capability: string,
+    page?: number,
+    limit?: number
+  ): Promise<IPaginationDTO<Request>>;
 }

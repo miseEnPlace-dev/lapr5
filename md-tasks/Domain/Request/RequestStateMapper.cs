@@ -6,17 +6,13 @@ namespace DDDNetCore.Domain.Request
   {
     public static RequestState ToRequestState(string state)
     {
-      switch (state.ToLower())
+      return state.ToLower() switch
       {
-        case "pending":
-          return new RequestState(StateEnum.Pending);
-        case "accepted":
-          return new RequestState(StateEnum.Accepted);
-        case "rejected":
-          return new RequestState(StateEnum.Rejected);
-        default:
-          return new RequestState(StateEnum.Pending);
-      }
+        "pending" => new RequestState(StateEnum.Pending),
+        "accepted" => new RequestState(StateEnum.Accepted),
+        "rejected" => new RequestState(StateEnum.Rejected),
+        _ => new RequestState(StateEnum.Pending),
+      };
     }
   }
 }

@@ -20,9 +20,10 @@ prob_mutacao(0.2).
 %lim_time(Tempo_segundos). 
 lim_time(2).
 
-% tarefas(NTarefas).
-n_tarefas(5).
+% n_tarefas(NTarefas).
+% n_tarefas(5).
 
+:- dynamic n_tarefas/1.
 :- dynamic tarefas/3.
 :- dynamic t/3.
 
@@ -41,7 +42,12 @@ debug_mode(0).
 % t(t9,cel("b2",9,18),cel("b2",6,19)).
 % t(t10,cel("b3",8,17),cel("b3",8,18)).
 
-load_tasks([H|T]):-
+count([],N,N):-!.
+count([_|T],N1,N):-
+	N2 is N1+1,
+	count(T,N2,N).
+
+load_tasks([H|T],N):-
 	asserta(
 		t(
 			H.id,
@@ -49,9 +55,12 @@ load_tasks([H|T]):-
 			cel(H.endFloorCode,H.endCoordinateX,H.endCoordinateY)
 		)
 	),
-	load_tasks(T).
+	N1 is N+1,
+	load_tasks(T,N1).
 
-load_tasks([]):-load_tarefas().
+load_tasks([],N):-
+	load_tarefas(),
+	asserta(n_tarefas(N)).
 
 
 load_tarefas:-

@@ -76,6 +76,9 @@ fetch_floors(BuildingCode, Floors) :-
 fetch_requests(Requests) :-
     tasks_api_url(Url),
     atom_concat(Url, '/requests/pick-delivery?state=accepted', PickDeliveryUrl),
+    (retractall(genetic:t(_,_,_));true),
+    (retractall(genetic:tarefas(_,_,_));true),
+    (retract(genetic:n_tarefas(_));true),
     read_api(PickDeliveryUrl, Requests).
 
 password('campus').
@@ -93,17 +96,17 @@ authenticate():-
 api_get_requests(_):-
     authenticate(),
     fetch_requests(Requests),
-    genetic:load_tasks(Requests),
+    genetic:load_tasks(Requests.data,0),
     genetic:gera_lim_time(B*_),
     reply_json(B, [json_object(dict)]).
 
 api_get_route(Request):-
-    retractall(planning:m(_,_,_,_)),
-    retractall(planning:liga(_,_)),
-    retractall(planning:pisos(_,_)),
-    retractall(planning:elevador(_,_)),
-    retractall(planning:corredor(_,_,_,_)),
-    retractall(planning:exit(_,_,_,_)),
+    (retractall(planning:m(_,_,_,_));true),
+    (retractall(planning:liga(_,_));true),
+    (retractall(planning:pisos(_,_));true),
+    (retractall(planning:elevador(_,_));true),
+    (retractall(planning:corredor(_,_,_,_));true),
+    (retractall(planning:exit(_,_,_,_));true),
     planning:load_data(),
     http_parameters(Request, [ fromX(FromX, [ integer ]) ]),
     http_parameters(Request, [ fromY(FromY, [ integer ]) ]),

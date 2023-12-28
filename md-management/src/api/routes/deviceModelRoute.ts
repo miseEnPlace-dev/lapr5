@@ -34,7 +34,8 @@ export default (app: Router) => {
   route.get(
     '/device-models',
     isAuthenticated,
-    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.fleet.name),
+    (req, res, next) =>
+      isAuthorizedAs(req, res, next, [defaultRoles.fleet.name, defaultRoles.user.name]),
     (req, res, next) =>
       // #swagger.tags = ['DeviceModel']
       // #swagger.summary = 'Get device-model'
@@ -47,7 +48,8 @@ export default (app: Router) => {
   route.get(
     '/device-models/:code',
     isAuthenticated,
-    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.fleet.name),
+    (req, res, next) =>
+      isAuthorizedAs(req, res, next, [defaultRoles.fleet.name, defaultRoles.user.name]),
     (req, res, next) =>
       // #swagger.tags = ['DeviceModel']
       // #swagger.summary = 'Get building for given code'

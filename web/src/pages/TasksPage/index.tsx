@@ -12,6 +12,8 @@ import Modal from "@/components/Modal";
 import Pagination from "@/components/Pagination";
 import SideBar from "@/components/SideBar";
 import TextArea from "@/components/TextArea";
+import { IPaginationDTO } from "@/dto/IPaginationDTO";
+import { DeviceModel } from "@/model/DeviceModel";
 import { RequestPickAndDelivery } from "@/model/RequestPickAndDelivery";
 import { RequestSurveillance } from "@/model/RequestSurveillance";
 import { CheckIcon, FilterIcon } from "@/styles/Icons";
@@ -57,16 +59,24 @@ const TasksPage: React.FC = () => {
     phoneNumber,
     setStateFilter,
     stateFilter,
+    deviceModelFilter,
+    setDeviceModelFilter,
     userFilter,
     setUserFilter,
     stateInputRef,
+    deviceModelInputRef,
     states,
+    deviceModels,
     room1InputRef,
     room2InputRef,
   } = useTasksModule();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isFilterByStateModalVisible, setIsFilterByStateModalVisible] =
     useState(false);
+  const [
+    isFilterByDeviceModelModalVisible,
+    setIsFilterByDeviceModelModalVisible,
+  ] = useState(false);
   const [isFilterByUserModalVisible, setIsFilterByUserModalVisible] =
     useState(false);
 
@@ -77,8 +87,27 @@ const TasksPage: React.FC = () => {
 
       // Only one filter is valid, remove the other
       setUserFilter(null);
+      setDeviceModelFilter(null);
 
       setIsFilterByStateModalVisible(false);
+    } catch (err: unknown) {
+      if (err instanceof AxiosError && err.response)
+        swal("Error", err.response.data.errors as string, "error");
+
+      swal("Error", err as string, "error");
+    }
+  }
+
+  async function handleRequestFilterByDeviceModelClick() {
+    try {
+      if (!deviceModelInputRef.current?.value) setDeviceModelFilter(null);
+      else setDeviceModelFilter(deviceModelInputRef.current.value);
+
+      // Only one filter is valid, remove the other
+      setUserFilter(null);
+      setStateFilter(null);
+
+      setIsFilterByDeviceModelModalVisible(false);
     } catch (err: unknown) {
       if (err instanceof AxiosError && err.response)
         swal("Error", err.response.data.errors as string, "error");
@@ -106,9 +135,11 @@ const TasksPage: React.FC = () => {
   async function handleRemoveFilter() {
     setStateFilter(null);
     setUserFilter(null);
+    setDeviceModelFilter(null);
 
     setIsFilterByStateModalVisible(false);
     setIsFilterByUserModalVisible(false);
+    setIsFilterByDeviceModelModalVisible(false);
   }
 
   return (
@@ -123,7 +154,7 @@ const TasksPage: React.FC = () => {
         >
           <div className="flex flex-row gap-x-4">
             <motion.button
-              name="filterByTask"
+              name="filterByState"
               initial={{ opacity: 0, y: -100 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
@@ -140,6 +171,26 @@ const TasksPage: React.FC = () => {
                 Filter Requests By State
               </div>
             </motion.button>
+            {deviceModels && deviceModels.length > 0 && (
+              <motion.button
+                name="filterByDeviceModel"
+                initial={{ opacity: 0, y: -100 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.2,
+                  delay: requests?.data.length || 0 * ANIMATION_DELAY,
+                }}
+                onClick={() => setIsFilterByDeviceModelModalVisible(true)}
+                className={`flex w-full items-center justify-center gap-x-10 ${
+                  stateFilter ? "bg-slate-400" : "bg-slate-300"
+                } py-4 text-gray-500`}
+              >
+                <div className="flex flex-row items-center gap-x-4 text-lg font-bold text-slate-600">
+                  {stateFilter ? <FilterIcon /> : ""}
+                  Filter Requests By Device Model
+                </div>
+              </motion.button>
+            )}
           </div>
           <motion.button
             name="create-task"
@@ -454,6 +505,48 @@ const TasksPage: React.FC = () => {
               </Button>
             </div>
           </Modal>
+
+          {deviceModels && deviceModels.length && (
+            <Modal
+              setIsVisible={setIsFilterByDeviceModelModalVisible}
+              isVisible={isFilterByDeviceModelModalVisible}
+              title="Filter Requests by Device Model"
+            >
+              <div className="flex h-full flex-col justify-between gap-y-4">
+                <div className="flex w-full flex-col gap-y-4">
+                  <div className="flex w-full flex-col gap-x-8 gap-y-4">
+                    <Dropdown
+                      className="w-full"
+                      name="Task"
+                      placeholder="Task"
+                      inputRef={deviceModelInputRef}
+                      options={deviceModels.map((deviceModel) => ({
+                        code: deviceModel.code,
+                        name: deviceModel.name,
+                      }))}
+                      selected={stateFilter ? stateFilter : undefined}
+                    />
+                    {deviceModelFilter && (
+                      <Button
+                        name="removeFilter"
+                        onClick={handleRemoveFilter}
+                        type="reset"
+                      >
+                        Remove Filter
+                      </Button>
+                    )}
+                  </div>
+                </div>
+                <Button
+                  name="listfilter"
+                  onClick={handleRequestFilterByDeviceModelClick}
+                  type="confirm"
+                >
+                  List
+                </Button>
+              </div>
+            </Modal>
+          )}
         </div>
       </main>
     </div>

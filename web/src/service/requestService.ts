@@ -39,6 +39,30 @@ export class RequestService implements IRequestService {
     return data;
   }
 
+  async getRequestsByType(
+    capability: string,
+    page?: number,
+    limit?: number
+  ): Promise<IPaginationDTO<Request>> {
+    const params = {} as { [key: string]: string };
+    if (page && limit) {
+      params["limit"] = limit.toString();
+      params["page"] = page.toString();
+    }
+
+    const type =
+      capability === "surveillance" ? "surveillance" : "pick-delivery";
+    const response = await this.http.get<IPaginationDTO<Request>>(
+      "/Requests/" + type,
+      {
+        params,
+      }
+    );
+
+    const data = response.data;
+    return data;
+  }
+
   async createSurveillanceRequest(
     request: RequestSurveillance
   ): Promise<RequestSurveillance> {
