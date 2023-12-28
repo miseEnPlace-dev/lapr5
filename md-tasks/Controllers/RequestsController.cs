@@ -68,7 +68,7 @@ public class RequestsController : ControllerBase
 
   // GET api/requests/sequence
   [HttpGet("sequence")]
-  public async Task<ActionResult<SequenceResponseDTO>> GetSequence()
+  public async Task<ActionResult<SequenceDTO>> GetSequence()
   {
     return Ok(await requestsService.GetApprovedTasksSequence());
   }

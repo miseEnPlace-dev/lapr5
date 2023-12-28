@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using DDDNetCore.Domain.Request;
 using DDDNetCore.Services;
 using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
@@ -44,7 +46,6 @@ namespace DDDSample1.Domain.Requests
       {
         if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
           result.Add(await ConvertToDTO(request, "SurveillanceRequestDTO"));
-
 
         if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
           result.Add(await ConvertToDTO(request, "PickDeliveryRequestDTO"));
@@ -139,7 +140,6 @@ namespace DDDSample1.Domain.Requests
 
       if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
         return await ConvertToDTO(request, "SurveillanceRequestDTO");
-
 
       if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
         return await ConvertToDTO(request, "PickDeliveryRequestDTO");
@@ -327,20 +327,48 @@ namespace DDDSample1.Domain.Requests
       if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
         return await ConvertToDTO(request, "SurveillanceRequestDTO");
 
-
       if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
         return await ConvertToDTO(request, "PickDeliveryRequestDTO");
 
       return null;
     }
 
-    public async Task<SequenceResponseDTO> GetApprovedTasksSequence()
+    public async Task<SequenceDTO> GetApprovedTasksSequence()
     {
       using HttpResponseMessage response = await httpClient.GetAsync(BASE_URL + "/sequence");
 
       response.EnsureSuccessStatusCode();
-      var jsonResponse = await response.Content.ReadFromJsonAsync<SequenceResponseDTO>();
-      return jsonResponse;
+      var jsonResponse = await response.Content.ReadFromJsonAsync<SequenceResponseDTO>() ?? throw new Exception("Error getting sequence");
+      List<PickAndDeliveryTask> tasks = new();
+
+      foreach (string taskId in jsonResponse.tasks)
+      {
+        PickAndDeliveryTask task = await pickAndDeliveryTaskRepository.GetByIdAsync(new DeviceTaskId(taskId));
+
+        tasks.Add(task);
+      }
+
+      PathDTO fullPath = new();
+      for (int i = 0; i < tasks.Count - 1; i++)
+      {
+        string url = $"{BASE_URL}/route?fromX={tasks[i].StartCoordinateX}&fromY={tasks[i].StartCoordinateY}&toX={tasks[i].EndCoordinateX}&toY={tasks[i].EndCoordinateY}&fromFloor={tasks[i].StartFloorCode}&toFloor={tasks[i].EndFloorCode}&method=elevators";
+        using HttpResponseMessage res = await httpClient.GetAsync(url);
+
+        res.EnsureSuccessStatusCode();
+
+        PathDTO path = PathJsonParser.Parse(await res.Content.ReadAsStringAsync());
+        fullPath.AppendRoute(path);
+        url = $"{BASE_URL}/route?fromX={tasks[i].EndCoordinateX}&fromY={tasks[i].EndCoordinateY}&toX={tasks[i + 1].StartCoordinateX}&toY={tasks[i + 1].StartCoordinateY}&fromFloor={tasks[i].EndFloorCode}&toFloor={tasks[i + 1].StartFloorCode}&method=elevators";
+        using HttpResponseMessage secondResponse = await httpClient.GetAsync(url);
+
+        secondResponse.EnsureSuccessStatusCode();
+
+        path = PathJsonParser.Parse(await secondResponse.Content.ReadAsStringAsync());
+        fullPath.AppendRoute(path);
+      }
+
+      SequenceDTO result = new(tasks, jsonResponse.time, fullPath);
+      return result;
     }
   }
 }
