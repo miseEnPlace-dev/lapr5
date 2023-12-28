@@ -5,16 +5,12 @@ import swal from "sweetalert";
 import { TYPES } from "../../inversify/types";
 import { useAuth } from "@/hooks/useAuth";
 import { IPaginationDTO } from "@/dto/IPaginationDTO";
-import { DeviceModel } from "@/model/DeviceModel";
 import { Floor } from "@/model/Floor";
 import { Request } from "@/model/Request";
 import { Room } from "@/model/Room";
-import { DeviceModelService } from "@/service/deviceModelService";
-import { IDeviceModelService } from "@/service/IService/IDeviceModelService";
 import { IFloorService } from "@/service/IService/IFloorService";
 import { IRequestService } from "@/service/IService/IRequestService";
 import { IRoomService } from "@/service/IService/IRoomService";
-import { RequestService } from "@/service/requestService";
 
 import { Building } from "../../model/Building";
 import { IBuildingService } from "../../service/IService/IBuildingService";
@@ -35,19 +31,6 @@ export const useTasksModule = () => {
   const floorService = useInjection<IFloorService>(TYPES.floorService);
   const roomService = useInjection<IRoomService>(TYPES.roomService);
   const requestService = useInjection<IRequestService>(TYPES.requestService);
-  const deviceModelService = useInjection<IDeviceModelService>(
-    TYPES.deviceModelService
-  );
-  const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]);
-
-  const fetchDeviceModels = useCallback(async () => {
-    const deviceModels = await deviceModelService.getDeviceModels(1, 1000);
-    setDeviceModels(deviceModels.data);
-  }, [deviceModelService]);
-
-  useEffect(() => {
-    fetchDeviceModels();
-  }, [fetchDeviceModels]);
 
   const { id, username, phoneNumber } = useAuth();
 
@@ -68,15 +51,6 @@ export const useTasksModule = () => {
   const [building1Code, setBuilding1Code] = useState<string | null>("");
   const [building2Code, setBuilding2Code] = useState<string | null>("");
 
-  const [stateFilter, setStateFilter] = useState<string | null>("");
-  const stateInputRef = useRef<HTMLSelectElement>(null);
-
-  const [deviceModelFilter, setDeviceModelFilter] = useState<string | null>("");
-  const deviceModelInputRef = useRef<HTMLSelectElement>(null);
-
-  const [userFilter, setUserFilter] = useState<string | null>("");
-  const userInputRef = useRef<HTMLSelectElement>(null);
-
   const typeInputRef = useRef<HTMLSelectElement>(null);
 
   const floorInputRef = useRef<HTMLSelectElement>(null);
@@ -94,7 +68,7 @@ export const useTasksModule = () => {
   const confirmationCodeInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
-  const itemsPerPage = 2;
+  const itemsPerPage = 3;
 
   const handlePagination = (page: number) => {
     setPage(page);
@@ -230,44 +204,9 @@ export const useTasksModule = () => {
 
   const fetchRequests = useCallback(async () => {
     try {
-      if (deviceModelFilter) {
-        const deviceModel =
-          await deviceModelService.getDeviceModelWithCode(deviceModelFilter);
-
-        if (deviceModel.capabilities.length == 2) {
-          const r = await requestService.getAllRequests(
-            undefined,
-            undefined,
-            page,
-            itemsPerPage
-          );
-          setRequests(r);
-          return;
-        }
-
-        if (deviceModel.capabilities[0] == "surveillance") {
-          const r = await requestService.getRequestsByType(
-            "surveillance",
-            page,
-            itemsPerPage
-          );
-          setRequests(r);
-          return;
-        }
-
-        if (deviceModel.capabilities[0] == "pick_delivery") {
-          const r = await requestService.getRequestsByType(
-            "pick_delivery",
-            page,
-            itemsPerPage
-          );
-          setRequests(r);
-          return;
-        }
-      }
       const r = await requestService.getAllRequests(
-        stateFilter ? "state" : userFilter ? "userId" : undefined,
-        stateFilter || userFilter || undefined,
+        undefined,
+        undefined,
         page,
         itemsPerPage
       );
@@ -275,7 +214,7 @@ export const useTasksModule = () => {
     } catch (error) {
       setRequests({ data: [] });
     }
-  }, [requestService, stateFilter, userFilter, page, itemsPerPage]);
+  }, [requestService, page, itemsPerPage]);
 
   useEffect(() => {
     fetchBuildings();
@@ -297,35 +236,13 @@ export const useTasksModule = () => {
     fetchRequests();
   }, [fetchRequests, requestService]);
 
-  const states = [
-    {
-      name: "Pending",
-      code: "pending",
-    },
-    {
-      name: "Accepted",
-      code: "accepted",
-    },
-    {
-      name: "Rejected",
-      code: "rejected",
-    },
-    {
-      name: "Executed",
-      code: "executed",
-    },
-  ];
-
   return {
     requests,
-    page,
-    setPage,
-    itemsPerPage,
     handlePagination,
     taskTypes,
     typeInputRef,
-    type,
     setType,
+    type,
     building1Floors,
     setBuilding1Code,
     setBuilding2Code,
@@ -339,24 +256,13 @@ export const useTasksModule = () => {
     pickupUserPhoneInputRef,
     deliveryUserNameInputRef,
     deliveryUserPhoneInputRef,
-    emergencyNameInputRef,
-    emergencyPhoneInputRef,
     confirmationCodeInputRef,
     descriptionInputRef,
+    emergencyNameInputRef,
+    emergencyPhoneInputRef,
     floorInputRef,
     username,
     phoneNumber,
-    stateFilter,
-    setStateFilter,
-    deviceModelFilter,
-    setDeviceModelFilter,
-    userFilter,
-    setUserFilter,
-    stateInputRef,
-    deviceModelInputRef,
-    userInputRef,
-    states,
-    deviceModels,
     room1InputRef,
     room2InputRef,
   };

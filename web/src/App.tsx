@@ -213,7 +213,7 @@ function App() {
               }
             />
             <Route
-              path="/taskRequests"
+              path="/task-requests"
               element={
                 <RequireAuth>
                   <RequireRole role="task">

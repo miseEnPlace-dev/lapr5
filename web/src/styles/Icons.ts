@@ -17,6 +17,7 @@ import {
   MdMap as MapIcon,
   MdMeetingRoom as RoomIcon,
   MdDone as SuccessIcon,
+  MdChecklist as TaskRequestsIcon,
   MdPerson as UserIcon,
   MdGroup as UsersIcon,
   MdWarning as WarningIcon,
@@ -53,4 +54,5 @@ export {
   UsersIcon,
   WarningIcon,
   TasksIcon,
+  TaskRequestsIcon,
 };

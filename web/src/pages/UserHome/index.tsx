@@ -14,7 +14,13 @@ const UserHome: React.FC = () => {
           title="Tasks"
           description="Request and manage tasks to be done by one of our robots."
           link="/tasks"
-          action="Go to Task Requests"
+          action="Go to Tasks"
+        />
+        <Card
+          title="RGPD"
+          description="Read the RGPD of the application."
+          link="/rgpd"
+          action="Go to RGPD"
         />
       </CardContainer>
     </div>

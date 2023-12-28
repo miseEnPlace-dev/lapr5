@@ -2,16 +2,38 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useInjection } from "inversify-react";
 
 import { TYPES } from "@/inversify/types";
-import { useAuth } from "@/hooks/useAuth";
 import { IPaginationDTO } from "@/dto/IPaginationDTO";
+import { DeviceModel } from "@/model/DeviceModel";
 import { Request } from "@/model/Request";
-import { IUserService } from "@/service/IService/IUserService";
-import { RequestService } from "@/service/requestService";
+import { IDeviceModelService } from "@/service/IService/IDeviceModelService";
+import { IRequestService } from "@/service/IService/IRequestService";
+
+const states = [
+  {
+    name: "Pending",
+    code: "pending",
+  },
+  {
+    name: "Accepted",
+    code: "accepted",
+  },
+  {
+    name: "Rejected",
+    code: "rejected",
+  },
+  {
+    name: "Executed",
+    code: "executed",
+  },
+];
 
 export const useListTaskRequestsModule = () => {
-  const userService = useInjection<IUserService>(TYPES.userService);
-  const requestService = useInjection<RequestService>(TYPES.requestService);
-  const { id, username, phoneNumber } = useAuth();
+  // const userService = useInjection<IUserService>(TYPES.userService);
+  const requestService = useInjection<IRequestService>(TYPES.requestService);
+  const deviceModelService = useInjection<IDeviceModelService>(
+    TYPES.deviceModelService
+  );
+  // const { id, username, phoneNumber } = useAuth();
 
   const [requests, setRequests] = useState<IPaginationDTO<Request> | null>(
     null
@@ -24,14 +46,63 @@ export const useListTaskRequestsModule = () => {
   const [userFilter, setUserFilter] = useState<string | null>("");
   const userInputRef = useRef<HTMLSelectElement>(null);
 
+  const [deviceModelFilter, setDeviceModelFilter] = useState<string | null>("");
+  const deviceModelInputRef = useRef<HTMLSelectElement>(null);
+
+  const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]);
+
   const itemsPerPage = 2;
 
   const handlePagination = (page: number) => {
     setPage(page);
   };
 
+  const fetchDeviceModels = useCallback(async () => {
+    const deviceModels = await deviceModelService.getDeviceModels(1, 1000);
+    setDeviceModels(deviceModels.data);
+  }, [deviceModelService]);
+
+  useEffect(() => {
+    fetchDeviceModels();
+  }, [fetchDeviceModels]);
+
   const fetchRequests = useCallback(async () => {
     try {
+      if (deviceModelFilter) {
+        const deviceModel =
+          await deviceModelService.getDeviceModelWithCode(deviceModelFilter);
+
+        if (deviceModel.capabilities.length == 2) {
+          const r = await requestService.getAllRequests(
+            undefined,
+            undefined,
+            page,
+            itemsPerPage
+          );
+          setRequests(r);
+          return;
+        }
+
+        if (deviceModel.capabilities[0] == "surveillance") {
+          const r = await requestService.getRequestsByType(
+            "surveillance",
+            page,
+            itemsPerPage
+          );
+          setRequests(r);
+          return;
+        }
+
+        if (deviceModel.capabilities[0] == "pick_delivery") {
+          const r = await requestService.getRequestsByType(
+            "pick_delivery",
+            page,
+            itemsPerPage
+          );
+          setRequests(r);
+          return;
+        }
+      }
       const r = await requestService.getAllRequests(
         stateFilter ? "state" : userFilter ? "userId" : undefined,
         stateFilter || userFilter || undefined,
@@ -73,7 +144,9 @@ export const useListTaskRequestsModule = () => {
   }, [fetchRequests]);
 
   return {
+    states,
     requests,
+    stateInputRef,
     stateFilter,
     setStateFilter,
     handleAcceptRequest,
@@ -82,5 +155,12 @@ export const useListTaskRequestsModule = () => {
     setPage,
     itemsPerPage,
     handlePagination,
+    userInputRef,
+    userFilter,
+    setUserFilter,
+    deviceModelInputRef,
+    deviceModelFilter,
+    setDeviceModelFilter,
+    deviceModels,
   };
 };

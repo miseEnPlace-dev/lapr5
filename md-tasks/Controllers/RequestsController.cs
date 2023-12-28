@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DDDNetCore.Domain.Request;
 using DDDNetCore.Services;
 using DDDSample1.Domain.DeviceTasks;
@@ -136,7 +135,7 @@ public class RequestsController : ControllerBase
     }
   }
 
-  // POST api/requests/pick-delivery
+  // POST api/requests/pick-delivery 
   [HttpPost("pick-delivery")]
   public async Task<ActionResult<PickDeliveryRequestDTO>> Create(PickDeliveryRequestDTO dto)
   {
