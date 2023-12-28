@@ -93,7 +93,7 @@ authenticate():-
 api_get_requests(_):-
     authenticate(),
     fetch_requests(Requests),
-    genetic:load_tasks(Requests),
+    genetic:load_tasks(Requests.data,0),
     genetic:gera_lim_time(B*_),
     reply_json(B, [json_object(dict)]).
 

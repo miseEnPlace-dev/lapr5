@@ -28,22 +28,28 @@ public class RequestsController : ControllerBase
   {
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit") && Request.Query.ContainsKey("state"))
       return await requestsService.GetRequestsByState(RequestStateMapper.ToRequestState(Request.Query["state"].ToString()), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
-    else if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
+
+    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
       return await requestsService.GetAll(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
-    else
-      return await requestsService.GetAll(-1, -1);
+
+    return await requestsService.GetAll(-1, -1);
   }
 
   // GET api/requests/pick-delivery
   [HttpGet("pick-delivery")]
-  public async Task<ActionResult<PaginationDTO<PickDeliveryRequestDTO>>> GetPickAndDelivery(string state)
+  public async Task<ActionResult<PaginationDTO<PickDeliveryRequestDTO>>> GetPickAndDelivery()
   {
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit") && Request.Query.ContainsKey("state"))
       return await requestsService.GetAllPickAndDeliveryByState(RequestStateMapper.ToRequestState(Request.Query["state"].ToString()), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
-    else if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
+
+    if (Request.Query.ContainsKey("state"))
+      return await requestsService.GetAllPickAndDeliveryByState(RequestStateMapper.ToRequestState(Request.Query["state"].ToString()), -1, -1);
+
+    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
       return await requestsService.GetAllPickAndDelivery(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
-    else
-      return await requestsService.GetAllPickAndDelivery(-1, -1);
+
+
+    return await requestsService.GetAllPickAndDelivery(-1, -1);
   }
 
   // GET api/requests/{id}
