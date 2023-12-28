@@ -9,6 +9,7 @@ namespace DDDSample1.Domain.Shared
     Task<TEntity> GetByIdAsync(TEntityId id);
     Task<List<TEntity>> GetByIdsAsync(List<TEntityId> ids);
     Task<TEntity> AddAsync(TEntity obj);
+    Task<int> CountAsync();
     void Remove(TEntity obj);
   }
 }

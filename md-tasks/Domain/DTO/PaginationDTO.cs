@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 public class PaginationDTO<T>
@@ -11,18 +14,28 @@ public class PaginationDTO<T>
   }
 
   public Meta meta { get; set; }
-  public T[] data { get; set; }
+  public List<T> data { get; set; }
 
   [JsonConstructor]
-  public PaginationDTO(T[] data, int page, int limit, int total)
+  public PaginationDTO(List<T> data, int page, int limit, int total)
   {
     this.data = data;
     this.meta = new Meta
     {
-      Page = page,
-      Limit = limit,
+      Page = Math.Abs(page),
+      Limit = Math.Abs(limit),
       Total = total,
-      TotalPages = (int)System.Math.Ceiling((double)total / limit)
+      TotalPages = Math.Abs((int)Math.Ceiling((double)total / limit))
     };
   }
+
+  // public IEnumerator<T> GetEnumerator()
+  // {
+  //   return data.GetEnumerator();
+  // }
+
+  // IEnumerator IEnumerable.GetEnumerator()
+  // {
+  //   return ((IEnumerable)data).GetEnumerator();
+  // }
 }

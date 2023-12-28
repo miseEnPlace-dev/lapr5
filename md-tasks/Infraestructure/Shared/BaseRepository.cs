@@ -43,6 +43,11 @@ namespace DDDSample1.Infrastructure.Shared
       return ret.Entity;
     }
 
+    public async Task<int> CountAsync()
+    {
+      return await _objs.CountAsync();
+    }
+
     public void Remove(TEntity obj)
     {
       _objs.Remove(obj);
