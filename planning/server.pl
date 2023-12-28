@@ -30,7 +30,7 @@ http:location(api, root(api), []). % /api
 
 % define your routes here
 :- http_handler(api(route), api_get_route, []). % /api/route?from=abc&to=xyz&method=elevators
-:- http_handler(api(requests), api_get_requests, []). % /api/requests
+:- http_handler(api(sequence), api_get_requests, []). % /api/sequence
 
 :- dynamic bearer_token/1.
 

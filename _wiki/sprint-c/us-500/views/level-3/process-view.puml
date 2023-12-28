@@ -12,7 +12,7 @@ box "<<container (C4)>>\nPlanning" <<center>>#LightYellow
   participant P as "Planning" <<component>>
 end box
 
-?o-> ROUTE : GET /tasks/sequence
+?o-> ROUTE : GET /requests/sequence
 activate ROUTE
 
 ROUTE -> CTRL : getTaskSequence()

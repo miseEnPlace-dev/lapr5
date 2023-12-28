@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
+using DDDNetCore.Services;
 using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
 using DDDSample1.Domain.DeviceTasks.SurveillanceTask;
@@ -21,10 +23,8 @@ namespace DDDSample1.Domain.Requests
     private readonly ISurveillanceTaskRepository surveillanceTaskRepository;
     private readonly IPickAndDeliveryTaskRepository pickAndDeliveryTaskRepository;
 
-    private static HttpClient httpClient = new()
-    {
-      BaseAddress = new Uri("http://localhost:3000/api")
-    };
+    private static readonly HttpClient httpClient = new();
+    private static readonly string BASE_URL = "http://localhost:5000/api";
 
     public RequestService(IUnitOfWork unitOfWork, IRequestRepository repo, ISurveillanceTaskRepository surveillanceTaskRepository, IPickAndDeliveryTaskRepository pickAndDeliveryTaskRepository)
     {
@@ -328,6 +328,15 @@ namespace DDDSample1.Domain.Requests
         return await ConvertToDTO(request, "PickDeliveryRequestDTO");
 
       return null;
+    }
+
+    public async Task<SequenceResponseDTO> GetApprovedTasksSequence()
+    {
+      using HttpResponseMessage response = await httpClient.GetAsync(BASE_URL + "/sequence");
+
+      response.EnsureSuccessStatusCode();
+      var jsonResponse = await response.Content.ReadFromJsonAsync<SequenceResponseDTO>();
+      return jsonResponse;
     }
   }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using DDDNetCore.Domain.Request;
+using DDDNetCore.Services;
 using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.DTO;
 using DDDSample1.Domain.Requests;
@@ -14,7 +15,6 @@ namespace DDDSample1.Controllers;
 public class RequestsController : ControllerBase
 {
   private readonly IRequestService requestsService;
-
   private readonly DeviceTaskService deviceTaskService;
 
   public RequestsController(RequestService requestsService)
@@ -50,6 +50,13 @@ public class RequestsController : ControllerBase
 
 
     return await requestsService.GetAllPickAndDelivery(-1, -1);
+  }
+
+  // GET api/requests/sequence
+  [HttpGet("sequence")]
+  public async Task<ActionResult<SequenceResponseDTO>> GetSequence()
+  {
+    return Ok(await requestsService.GetApprovedTasksSequence());
   }
 
   // GET api/requests/{id}
