@@ -51,7 +51,7 @@ export const useListTaskRequestsModule = () => {
 
   const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]);
 
-  const itemsPerPage = 2;
+  const itemsPerPage = 3;
 
   const handlePagination = (page: number) => {
     setPage(page);
