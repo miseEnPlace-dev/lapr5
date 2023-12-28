@@ -9,6 +9,7 @@ public interface IRequestService
   Task<PaginationDTO<RequestDTO>> GetRequestsByUserId(string userId, int page, int limit);
   Task<PaginationDTO<SurveillanceRequestDTO>> GetAllSurveillance(int page, int limit);
   Task<PaginationDTO<PickDeliveryRequestDTO>> GetAllPickAndDelivery(int page, int limit);
+  Task<PaginationDTO<PickDeliveryRequestDTO>> GetAllPickAndDeliveryByState(RequestState state, int page, int limit);
   Task<RequestDTO> GetById(RequestId id);
   Task<RequestDTO> AddSurveillanceRequest(SurveillanceRequestDTO dto);
   Task<RequestDTO> AddPickAndDeliveryRequest(PickDeliveryRequestDTO dto);

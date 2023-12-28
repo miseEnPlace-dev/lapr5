@@ -38,7 +38,9 @@ public class RequestsController : ControllerBase
   [HttpGet("pick-delivery")]
   public async Task<ActionResult<PaginationDTO<PickDeliveryRequestDTO>>> GetPickAndDelivery(string state)
   {
-    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
+    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit") && Request.Query.ContainsKey("state"))
+      return await requestsService.GetAllPickAndDeliveryByState(RequestStateMapper.ToRequestState(Request.Query["state"].ToString()), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+    else if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
       return await requestsService.GetAllPickAndDelivery(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
     else
       return await requestsService.GetAllPickAndDelivery(-1, -1);
