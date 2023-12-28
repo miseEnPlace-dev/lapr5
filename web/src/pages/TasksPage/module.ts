@@ -1,19 +1,23 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { use } from "chai";
 import { useInjection } from "inversify-react";
+import { data } from "node_modules/cypress/types/jquery";
+import swal from "sweetalert";
 
 import { TYPES } from "../../inversify/types";
 import { useAuth } from "@/hooks/useAuth";
 import { IPaginationDTO } from "@/dto/IPaginationDTO";
+import { DeviceModel } from "@/model/DeviceModel";
 import { Floor } from "@/model/Floor";
 import { Request } from "@/model/Request";
 import { Room } from "@/model/Room";
+import { DeviceModelService } from "@/service/deviceModelService";
 import { IFloorService } from "@/service/IService/IFloorService";
 import { IRoomService } from "@/service/IService/IRoomService";
 import { RequestService } from "@/service/requestService";
 
 import { Building } from "../../model/Building";
 import { IBuildingService } from "../../service/IService/IBuildingService";
-import swal from "sweetalert";
 
 const taskTypes = [
   {
@@ -31,6 +35,20 @@ export const useTasksModule = () => {
   const floorService = useInjection<IFloorService>(TYPES.floorService);
   const roomService = useInjection<IRoomService>(TYPES.roomService);
   const requestService = useInjection<RequestService>(TYPES.requestService);
+  const deviceModelService = useInjection<DeviceModelService>(
+    TYPES.deviceModelService
+  );
+  const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]);
+
+  const fetchDeviceModels = useCallback(async () => {
+    const deviceModels = await deviceModelService.getDeviceModels();
+    setDeviceModels(deviceModels.data);
+  }, [deviceModelService]);
+
+  useEffect(() => {
+    fetchDeviceModels();
+  }, [fetchDeviceModels]);
+
   const { id, username, phoneNumber } = useAuth();
 
   const [requests, setRequests] = useState<Request[]>([]);
@@ -53,6 +71,9 @@ export const useTasksModule = () => {
 
   const [stateFilter, setStateFilter] = useState<string | null>("");
   const stateInputRef = useRef<HTMLSelectElement>(null);
+
+  const [deviceModelFilter, setDeviceModelFilter] = useState<string | null>("");
+  const deviceModelInputRef = useRef<HTMLSelectElement>(null);
 
   const [userFilter, setUserFilter] = useState<string | null>("");
   const userInputRef = useRef<HTMLSelectElement>(null);
@@ -85,13 +106,11 @@ export const useTasksModule = () => {
   };
 
   async function handleCreate() {
-    console.log(typeInputRef.current?.value)
+    console.log(typeInputRef.current?.value);
     if (!typeInputRef.current || !typeInputRef.current.value) {
       swal("Error", "Type input is not defined", "error");
       return;
-
     } else {
-
       fetchRoom1();
       fetchRoom2();
 
@@ -222,9 +241,31 @@ export const useTasksModule = () => {
 
   const fetchRequests = useCallback(async () => {
     try {
+      if (deviceModelFilter) {
+        const deviceModel =
+          await deviceModelService.getDeviceModelWithCode(deviceModelFilter);
+
+        if (deviceModel.capabilities.length == 2) {
+          const r = await requestService.getAllRequests();
+          setRequests(r);
+          return;
+        }
+
+        if (deviceModel.capabilities[0] == "surveillance") {
+          const r = await requestService.getRequestsByType("surveillance");
+          setRequests(r);
+          return;
+        }
+
+        if (deviceModel.capabilities[0] == "pick_delivery") {
+          const r = await requestService.getRequestsByType("pick_delivery");
+          setRequests(r);
+          return;
+        }
+      }
       const r = await requestService.getAllRequests(
         stateFilter ? "state" : userFilter ? "userId" : undefined,
-        stateFilter || userFilter || undefined
+        stateFilter || userFilter || deviceModelFilter || undefined
       );
       setRequests(r);
     } catch (error) {
@@ -251,7 +292,6 @@ export const useTasksModule = () => {
   useEffect(() => {
     fetchRequests();
   }, [fetchRequests, requestService]);
-
 
   const states = [
     {
@@ -304,11 +344,15 @@ export const useTasksModule = () => {
     phoneNumber,
     stateFilter,
     setStateFilter,
+    deviceModelFilter,
+    setDeviceModelFilter,
     userFilter,
     setUserFilter,
     stateInputRef,
+    deviceModelInputRef,
     userInputRef,
     states,
+    deviceModels,
     setRoom1Name,
     setRoom2Name,
   };
