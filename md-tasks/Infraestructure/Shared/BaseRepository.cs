@@ -18,9 +18,12 @@ namespace DDDSample1.Infrastructure.Shared
       _objs = objs ?? throw new ArgumentNullException(nameof(objs));
     }
 
-    public async Task<List<TEntity>> GetAllAsync()
+    public async Task<List<TEntity>> GetAllAsync(int page, int limit)
     {
-      return await _objs.ToListAsync();
+      if (page != -1 && limit != -1)
+        return await _objs.Skip(page * limit).Take(limit).ToListAsync();
+      else
+        return await _objs.ToListAsync();
     }
 
     public async Task<TEntity> GetByIdAsync(TEntityId id)

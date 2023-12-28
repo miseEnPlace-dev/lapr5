@@ -15,22 +15,27 @@ public class RequestRepository : BaseRepository<Request, RequestId>, IRequestRep
     _context = context;
   }
 
-  public async Task<List<Request>> GetRequestsByState(string state)
+  public async Task<List<Request>> GetRequestsByState(string state, int page, int limit)
   {
-    var requests = await _context.Requests.ToListAsync();
-
-    return requests.Where(r => r.State.AsString() == state).ToList();
+    if (page != -1 && limit != -1)
+      return await _context.Requests.Where(r => r.State.AsString() == state).Skip(page * limit).Take(limit).ToListAsync();
+    else
+      return await _context.Requests.Where(r => r.State.AsString() == state).ToListAsync();
   }
 
-  public async Task<List<Request>> GetRequestsByType(string type)
+  public async Task<List<Request>> GetRequestsByType(string type, int page, int limit)
   {
-    return await _context.Requests.Where(r => r.DeviceTaskId.GetType().IsInstanceOfType(type)).ToListAsync();
+    if (page != -1 && limit != -1)
+      return await _context.Requests.Where(r => r.DeviceTaskId.GetType().IsInstanceOfType(type)).Skip(page * limit).Take(limit).ToListAsync();
+    else
+      return await _context.Requests.Where(r => r.DeviceTaskId.GetType().IsInstanceOfType(type)).ToListAsync();
   }
 
-  public async Task<List<Request>> GetRequestsByUserId(string userId)
+  public async Task<List<Request>> GetRequestsByUserId(string userId, int page, int limit)
   {
-    var requests = await _context.Requests.ToListAsync();
-
-    return requests.Where(r => r.UserId.ToString() == userId).ToList();
+    if (page != -1 && limit != -1)
+      return await _context.Requests.Where(r => r.UserId.ToString() == userId).Skip(page * limit).Take(limit).ToListAsync();
+    else
+      return await _context.Requests.Where(r => r.UserId.ToString() == userId).ToListAsync();
   }
 }

@@ -90,7 +90,7 @@ authenticate():-
     post_api(AuthUrl, JsonData, Out),
     (retract(bearer_token(_));true), assertz(bearer_token(Out.token)), !.
 
-api_get_requests(Request):-
+api_get_requests(_):-
     authenticate(),
     fetch_requests(Requests),
     genetic:load_tasks(Requests),

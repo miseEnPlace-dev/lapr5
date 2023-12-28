@@ -61,8 +61,8 @@ const TasksPage: React.FC = () => {
     setUserFilter,
     stateInputRef,
     states,
-    setRoom1Name,
-    setRoom2Name,
+    room1InputRef,
+    room2InputRef,
   } = useTasksModule();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isFilterByStateModalVisible, setIsFilterByStateModalVisible] =
@@ -97,11 +97,9 @@ const TasksPage: React.FC = () => {
       setIsTaskModalVisible(false);
     } catch (err: unknown) {
       console.error(err);
-      swal(
-        "Error",
-        "An error occurred. Check the console for details.",
-        "error"
-      );
+      if (err instanceof AxiosError && err.response?.data.message)
+        swal("Error", err.response.data.message, "error");
+      else swal("Error", "Error creating request", "error");
     }
   }
 
@@ -278,12 +276,12 @@ const TasksPage: React.FC = () => {
                         <Dropdown
                           className="w-full"
                           name="Room"
+                          inputRef={room1InputRef}
                           disabled={building1Code === ""}
                           options={building1Rooms.map((room) => ({
                             code: room.name,
                             name: room.name,
                           }))}
-                          onChange={(e) => setRoom1Name(e.target.value)}
                         />
                       </InputGroup>
                       <InputGroup
@@ -299,12 +297,12 @@ const TasksPage: React.FC = () => {
                         <Dropdown
                           className="w-full"
                           name="Room"
+                          inputRef={room2InputRef}
                           disabled={building2Code === ""}
                           options={building2Rooms.map((room) => ({
                             code: room.name,
                             name: room.name,
                           }))}
-                          onChange={(e) => setRoom2Name(e.target.value)}
                         />
                       </InputGroup>
                     </div>

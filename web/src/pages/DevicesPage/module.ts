@@ -70,10 +70,7 @@ export const useListDeviceModule = () => {
   }, [floorService, page, itemsPerPage]);
 
   const fetchDeviceModels = useCallback(async () => {
-    const deviceModels = await deviceModelService.getDeviceModels(
-      page,
-      itemsPerPage
-    );
+    const deviceModels = await deviceModelService.getDeviceModels();
     setDeviceModels(deviceModels);
   }, [deviceModelService]);
 

@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
@@ -36,9 +34,9 @@ namespace DDDSample1.Domain.Requests
       this.pickAndDeliveryTaskRepository = pickAndDeliveryTaskRepository;
     }
 
-    public async Task<List<RequestDTO>> GetAll()
+    public async Task<List<RequestDTO>> GetAll(int page, int limit)
     {
-      List<Request> requests = await repo.GetAllAsync();
+      List<Request> requests = await repo.GetAllAsync(page, limit);
 
       List<RequestDTO> result = new();
 
@@ -55,9 +53,9 @@ namespace DDDSample1.Domain.Requests
       return result;
     }
 
-    public async Task<List<SurveillanceRequestDTO>> GetAllSurveillance()
+    public async Task<List<SurveillanceRequestDTO>> GetAllSurveillance(int page, int limit)
     {
-      List<Request> requests = await repo.GetAllAsync();
+      List<Request> requests = await repo.GetAllAsync(page, limit);
 
       List<SurveillanceRequestDTO> result = new();
 
@@ -68,9 +66,9 @@ namespace DDDSample1.Domain.Requests
       return result;
     }
 
-    public async Task<List<PickDeliveryRequestDTO>> GetAllPickAndDelivery()
+    public async Task<List<PickDeliveryRequestDTO>> GetAllPickAndDelivery(int page, int limit)
     {
-      List<Request> requests = await repo.GetAllAsync();
+      List<Request> requests = await repo.GetAllAsync(page, limit);
 
       List<PickDeliveryRequestDTO> result = new();
 
@@ -81,9 +79,9 @@ namespace DDDSample1.Domain.Requests
       return result;
     }
 
-    public async Task<List<RequestDTO>> GetRequestsByState(string state)
+    public async Task<List<RequestDTO>> GetRequestsByState(string state, int page, int limit)
     {
-      List<Request> requests = await repo.GetRequestsByState(state);
+      List<Request> requests = await repo.GetRequestsByState(state, page, limit);
 
       List<RequestDTO> result = new();
 
@@ -99,9 +97,9 @@ namespace DDDSample1.Domain.Requests
       return result;
     }
 
-    public async Task<List<RequestDTO>> GetRequestsByUserId(string userId)
+    public async Task<List<RequestDTO>> GetRequestsByUserId(string userId, int page, int limit)
     {
-      List<Request> requests = await repo.GetRequestsByUserId(userId);
+      List<Request> requests = await repo.GetRequestsByUserId(userId, page, limit);
 
       List<RequestDTO> result = new();
 
