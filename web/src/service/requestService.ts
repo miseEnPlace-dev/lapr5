@@ -4,6 +4,7 @@ import { inject, injectable } from "inversify";
 import { capitalize } from "lodash";
 
 import { TYPES } from "../inversify/types";
+import { localStorageConfig } from "@/config/localStorageConfig";
 import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Request } from "@/model/Request";
 import { RequestPickAndDelivery } from "@/model/RequestPickAndDelivery";
@@ -11,14 +12,13 @@ import { RequestSurveillance } from "@/model/RequestSurveillance";
 
 import { HttpService } from "./IService/HttpService";
 import { IRequestService } from "./IService/IRequestService";
-import { localStorageConfig } from "@/config/localStorageConfig";
 
 @injectable()
 export class RequestService implements IRequestService {
   constructor(
     @inject(TYPES.api) private http: HttpService,
     @inject(TYPES.localStorage) private localStorage: Storage
-  ) { }
+  ) {}
 
   async getAllRequests(
     filter?: "state" | "userId",
@@ -37,10 +37,13 @@ export class RequestService implements IRequestService {
 
     const token = this.localStorage.getItem(localStorageConfig.token);
 
-    const response = await this.http.get<IPaginationDTO<Request>>("/task-requests", {
-      params,
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await this.http.get<IPaginationDTO<Request>>(
+      "/task-requests",
+      {
+        params,
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     const data = response.data;
     return data;
   }
@@ -67,7 +70,7 @@ export class RequestService implements IRequestService {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
-        }
+        },
       }
     );
 
@@ -119,7 +122,7 @@ export class RequestService implements IRequestService {
     const token = this.localStorage.getItem(localStorageConfig.token);
 
     await this.http.patch("/task-requests/" + id + "/accept", {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
   }
 
@@ -127,7 +130,7 @@ export class RequestService implements IRequestService {
     const token = this.localStorage.getItem(localStorageConfig.token);
 
     await this.http.patch("/task-requests/" + id + "/reject", {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
-  };
+  }
 }

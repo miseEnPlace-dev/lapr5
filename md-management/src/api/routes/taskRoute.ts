@@ -41,7 +41,7 @@ export default (app: Router) => {
     (req, res, next) =>
       // #swagger.tags = ['Tasks']
       // #swagger.summary = 'Get Task Requests'
-      ctrl.createSurveillance(req, res, next)
+      ctrl.createPickDelivery(req, res, next)
   );
 
   route.patch(
