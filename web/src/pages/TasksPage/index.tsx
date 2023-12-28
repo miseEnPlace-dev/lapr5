@@ -53,8 +53,6 @@ const TasksPage: React.FC = () => {
     emergencyNameInputRef,
     emergencyPhoneInputRef,
     floorInputRef,
-    room1InputRef,
-    room2InputRef,
     username,
     phoneNumber,
     setStateFilter,

@@ -23,9 +23,16 @@ export class RequestService implements IRequestService {
     filter?: "state" | "userId",
     value?: string,
   ): Promise<Request[]> {
-    console.log(filter, value);
-    console.log("Request url: " + "/Requests?" + filter + "=" + value)
     const response = await this.http.get<Request[]>("/Requests?" + filter + "=" + capitalize(value), {});
+
+    const data = response.data;
+    return data;
+  }
+
+  async getRequest(
+    id: string,
+  ): Promise<Request> {
+    const response = await this.http.get<Request>("Requests/" + id, {});
 
     const data = response.data;
     return data;
