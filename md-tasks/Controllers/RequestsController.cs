@@ -23,21 +23,24 @@ public class RequestsController : ControllerBase
 
   // GET api/requests
   [HttpGet]
-  public async Task<ActionResult<IEnumerable<RequestDTO>>> GetAll()
+  public async Task<ActionResult<PaginationDTO<RequestDTO>>> GetAll()
   {
-    if (Request.Query.ContainsKey("state"))
-      return await requestsService.GetRequestsByState(Request.Query["state"].ToString(), 0, 10);
-    if (Request.Query.ContainsKey("userId"))
-      return await requestsService.GetRequestsByUserId(Request.Query["userId"].ToString(), 0, 10);
-
-    return await requestsService.GetAll(0, 10);
+    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit") && Request.Query.ContainsKey("state"))
+      return await requestsService.GetRequestsByState(Request.Query["state"].ToString(), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+    else if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
+      return await requestsService.GetAll(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+    else
+      return await requestsService.GetAll(-1, -1);
   }
 
   // GET api/requests/pick-delivery
   [HttpGet("pick-delivery")]
-  public async Task<ActionResult<IEnumerable<RequestDTO>>> GetPickAndDelivery(string state)
+  public async Task<ActionResult<PaginationDTO<PickDeliveryRequestDTO>>> GetPickAndDelivery(string state)
   {
-    return await requestsService.GetAllPickAndDelivery(0, 10);
+    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
+      return await requestsService.GetAllPickAndDelivery(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+    else
+      return await requestsService.GetAllPickAndDelivery(-1, -1);
   }
 
   // GET api/requests/{id}
