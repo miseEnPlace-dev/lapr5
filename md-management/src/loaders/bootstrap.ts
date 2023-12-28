@@ -94,7 +94,6 @@ export default class Bootstrapper {
       email: 'task@isep.ipp.pt',
       password: 'task',
       phoneNumber: '912345678',
-      nif: '123456789',
       role: defaultRoles.task.name
     });
 

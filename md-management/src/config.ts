@@ -18,6 +18,8 @@ export default {
 
   planningApiUrl: process.env.PLANNING_API_URL || 'http://127.0.0.1:5000',
 
+  tasksApiUrl: process.env.TASKS_API_URL || 'http://127.0.0.1:7000',
+
   databaseURL: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/test',
 
   allowedEmailDomain: process.env.ALLOWED_EMAIL_DOMAIN || null,
