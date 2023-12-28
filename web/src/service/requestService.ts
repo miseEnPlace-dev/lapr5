@@ -118,7 +118,7 @@ export class RequestService implements IRequestService {
   async acceptRequest(id: string): Promise<void> {
     const token = this.localStorage.getItem(localStorageConfig.token);
 
-    await this.http.patch("/task-requests/" + id + "/accept", {
+    await this.http.patch("/task-requests/" + id + "/accept", {}, {
       headers: { Authorization: `Bearer ${token}` }
     });
   }
@@ -126,7 +126,7 @@ export class RequestService implements IRequestService {
   async rejectRequest(id: string): Promise<void> {
     const token = this.localStorage.getItem(localStorageConfig.token);
 
-    await this.http.patch("/task-requests/" + id + "/reject", {
+    await this.http.patch("/task-requests/" + id + "/reject", {}, {
       headers: { Authorization: `Bearer ${token}` }
     });
   };

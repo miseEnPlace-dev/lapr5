@@ -46,8 +46,8 @@ export default (app: Router) => {
 
   route.patch(
     '/task-requests/:id/accept',
-    //isAuthenticated,
-    //(req, res, next) => isAuthorizedAs(req, res, next, [defaultRoles.task.name]),
+    isAuthenticated,
+    (req, res, next) => isAuthorizedAs(req, res, next, [defaultRoles.task.name]),
     (req, res, next) =>
       // #swagger.tags = ['Tasks']
       // #swagger.summary = 'Get Task Requests'
