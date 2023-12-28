@@ -49,6 +49,38 @@ public class RequestsController : ControllerBase
     return Ok(t);
   }
 
+  // Patch api/requests/{id}/accept
+  [HttpPatch("{id}/accept")]
+  public async Task<ActionResult<RequestDTO>> AcceptRequest(string id)
+  {
+    try
+    {
+      var t = await requestsService.AcceptRequest(new RequestId(id));
+      if (t == null) return NotFound();
+      return Ok(t);
+    }
+    catch (BusinessRuleValidationException ex)
+    {
+      return BadRequest(new { ex.Message });
+    }
+  }
+
+  // Patch api/requests/{id}/accept
+  [HttpPatch("{id}/reject")]
+  public async Task<ActionResult<RequestDTO>> RejectRequest(string id)
+  {
+    try
+    {
+      var t = await requestsService.RejectRequest(new RequestId(id));
+      if (t == null) return NotFound();
+      return Ok(t);
+    }
+    catch (BusinessRuleValidationException ex)
+    {
+      return BadRequest(new { ex.Message });
+    }
+  }
+
   // POST api/requests/surveillance
   [HttpPost("surveillance")]
   public async Task<ActionResult<SurveillanceRequestDTO>> Create(SurveillanceRequestDTO dto)

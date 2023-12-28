@@ -17,4 +17,6 @@ public interface IRequestService
   Task<RequestDTO> Update(RequestDTO dto);
   Task<RequestDTO> Put(RequestDTO dto);
   Task<RequestDTO> Delete(RequestId id);
+  Task<RequestDTO> AcceptRequest(RequestId id);
+  Task<RequestDTO> RejectRequest(RequestId id);
 }

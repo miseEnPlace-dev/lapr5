@@ -272,5 +272,51 @@ namespace DDDSample1.Domain.Requests
 
       return null;
     }
+
+    public async Task<RequestDTO> AcceptRequest(RequestId id)
+    {
+      Request request = await repo.GetByIdAsync(id);
+      if (request == null) return null;
+
+      // update fields
+      request.ChangeState(
+        new RequestState(StateEnum.Accepted)
+      );
+
+      await unitOfWork.CommitAsync();
+
+
+      if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
+        return await ConvertToDTO(request, "SurveillanceRequestDTO");
+
+
+      if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
+        return await ConvertToDTO(request, "PickDeliveryRequestDTO");
+
+      return null;
+    }
+
+    public async Task<RequestDTO> RejectRequest(RequestId id)
+    {
+      Request request = await repo.GetByIdAsync(id);
+      if (request == null) return null;
+
+      // update fields
+      request.ChangeState(
+        new RequestState(StateEnum.Rejected)
+      );
+
+      await unitOfWork.CommitAsync();
+
+
+      if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
+        return await ConvertToDTO(request, "SurveillanceRequestDTO");
+
+
+      if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
+        return await ConvertToDTO(request, "PickDeliveryRequestDTO");
+
+      return null;
+    }
   }
 }
