@@ -10,7 +10,9 @@ import { Floor } from "@/model/Floor";
 import { Request } from "@/model/Request";
 import { Room } from "@/model/Room";
 import { DeviceModelService } from "@/service/deviceModelService";
+import { IDeviceModelService } from "@/service/IService/IDeviceModelService";
 import { IFloorService } from "@/service/IService/IFloorService";
+import { IRequestService } from "@/service/IService/IRequestService";
 import { IRoomService } from "@/service/IService/IRoomService";
 import { RequestService } from "@/service/requestService";
 
@@ -32,8 +34,8 @@ export const useTasksModule = () => {
   const buildingService = useInjection<IBuildingService>(TYPES.buildingService);
   const floorService = useInjection<IFloorService>(TYPES.floorService);
   const roomService = useInjection<IRoomService>(TYPES.roomService);
-  const requestService = useInjection<RequestService>(TYPES.requestService);
-  const deviceModelService = useInjection<DeviceModelService>(
+  const requestService = useInjection<IRequestService>(TYPES.requestService);
+  const deviceModelService = useInjection<IDeviceModelService>(
     TYPES.deviceModelService
   );
   const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]);
