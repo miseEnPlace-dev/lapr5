@@ -57,8 +57,6 @@ export const useTasksModule = () => {
   const typeInputRef = useRef<HTMLSelectElement>(null);
 
   const floorInputRef = useRef<HTMLSelectElement>(null);
-  const room1InputRef = useRef<HTMLSelectElement>(null);
-  const room2InputRef = useRef<HTMLSelectElement>(null);
 
   const pickupUserNameInputRef = useRef<HTMLInputElement>(null);
   const pickupUserPhoneInputRef = useRef<HTMLInputElement>(null);
@@ -284,8 +282,6 @@ export const useTasksModule = () => {
     confirmationCodeInputRef,
     descriptionInputRef,
     floorInputRef,
-    room1InputRef,
-    room2InputRef,
     username,
     phoneNumber,
     stateFilter,
