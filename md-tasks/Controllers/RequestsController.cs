@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using DDDNetCore.Domain.Request;
 using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.DTO;
 using DDDSample1.Domain.Requests;
@@ -26,7 +27,11 @@ public class RequestsController : ControllerBase
   public async Task<ActionResult<IEnumerable<RequestDTO>>> GetAll()
   {
     if (Request.Query.ContainsKey("state"))
-      return await requestsService.GetRequestsByState(Request.Query["state"].ToString(), 0, 10);
+    {
+      var state = RequestStateMapper.ToRequestState(Request.Query["state"].ToString());
+      return await requestsService.GetRequestsByState(state, 0, 10);
+    }
+
     if (Request.Query.ContainsKey("userId"))
       return await requestsService.GetRequestsByUserId(Request.Query["userId"].ToString(), 0, 10);
 

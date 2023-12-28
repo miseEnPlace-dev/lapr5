@@ -79,7 +79,7 @@ namespace DDDSample1.Domain.Requests
       return result;
     }
 
-    public async Task<List<RequestDTO>> GetRequestsByState(string state, int page, int limit)
+    public async Task<List<RequestDTO>> GetRequestsByState(RequestState state, int page, int limit)
     {
       List<Request> requests = await repo.GetRequestsByState(state, page, limit);
 
