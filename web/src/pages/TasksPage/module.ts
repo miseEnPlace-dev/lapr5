@@ -13,6 +13,7 @@ import { RequestService } from "@/service/requestService";
 
 import { Building } from "../../model/Building";
 import { IBuildingService } from "../../service/IService/IBuildingService";
+import swal from "sweetalert";
 
 const taskTypes = [
   {
@@ -40,6 +41,9 @@ export const useTasksModule = () => {
   const [buildings, setBuildings] = useState<Building[]>([]);
 
   const [building1Floors, setBuilding1Floors] = useState<Floor[]>([]);
+
+  const [floor1Code, setFloor1Code] = useState<string | null>("");
+  const [floor2Code, setFloor2Code] = useState<string | null>("");
 
   const [building1Rooms, setBuilding1Rooms] = useState<Room[]>([]);
   const [building2Rooms, setBuilding2Rooms] = useState<Room[]>([]);
@@ -72,61 +76,108 @@ export const useTasksModule = () => {
 
   const itemsPerPage = 3;
 
+  const [room1Name, setRoom1Name] = useState<string | null>("");
+  const [room2Name, setRoom2Name] = useState<string | null>("");
+
+  const [room1, setRoom1] = useState<Room | null>(null);
+  const [room2, setRoom2] = useState<Room | null>(null);
+
   const handlePagination = (page: number) => {
     setPage(page);
   };
 
   async function handleCreate() {
-    if (!typeInputRef.current) throw new Error("Type input is not defined");
+    console.log(typeInputRef.current?.value)
+    if (!typeInputRef.current || !typeInputRef.current.value) {
+      swal("Error", "Type input is not defined", "error");
+      return;
 
-    switch (typeInputRef.current.value) {
-      case "pick_delivery":
-        if (
-          !pickupUserNameInputRef.current ||
-          !pickupUserPhoneInputRef.current ||
-          !deliveryUserNameInputRef.current ||
-          !deliveryUserPhoneInputRef.current ||
-          !room1InputRef.current ||
-          !room2InputRef.current ||
-          !confirmationCodeInputRef.current ||
-          !descriptionInputRef.current ||
-          !id
-        )
-          throw new Error("Some fields are not defined");
+    } else {
 
-        await requestService.createPickAndDeliveryRequest({
-          pickupUserName: pickupUserNameInputRef.current.value,
-          pickupUserPhoneNumber: pickupUserPhoneInputRef.current.value,
-          deliveryUserName: deliveryUserNameInputRef.current.value,
-          deliveryUserPhoneNumber: deliveryUserPhoneInputRef.current.value,
-          userId: id,
-          confirmationCode: confirmationCodeInputRef.current.value,
-          description: descriptionInputRef.current.value,
-          pickupRoomId: room1InputRef.current?.value,
-          deliveryRoomId: room2InputRef.current?.value,
-        });
-        break;
-      case "surveillance":
-        if (
-          !emergencyNameInputRef.current ||
-          !emergencyPhoneInputRef.current ||
-          !descriptionInputRef.current ||
-          !floorInputRef.current ||
-          !id
-        )
-          throw new Error("Some fields are not defined");
+      fetchRoom1();
+      fetchRoom2();
 
-        await requestService.createSurveillanceRequest({
-          userName: emergencyNameInputRef.current.value,
-          phoneNumber: emergencyPhoneInputRef.current.value,
-          description: descriptionInputRef.current.value,
-          userId: id,
-          floorId: floorInputRef.current?.value,
-        });
-        break;
+      switch (typeInputRef.current.value) {
+        case "pick_delivery":
+          if (
+            !pickupUserNameInputRef.current ||
+            !pickupUserPhoneInputRef.current ||
+            !deliveryUserNameInputRef.current ||
+            !deliveryUserPhoneInputRef.current ||
+            !confirmationCodeInputRef.current ||
+            !descriptionInputRef.current ||
+            !id ||
+            !room1 ||
+            !room2 ||
+            !floor1Code ||
+            !floor2Code
+          )
+            throw new Error("Some fields are not defined");
+
+          await requestService.createPickAndDeliveryRequest({
+            pickupUserName: pickupUserNameInputRef.current.value,
+            pickupUserPhoneNumber: pickupUserPhoneInputRef.current.value,
+            deliveryUserName: deliveryUserNameInputRef.current.value,
+            deliveryUserPhoneNumber: deliveryUserPhoneInputRef.current.value,
+            userId: id,
+            confirmationCode: confirmationCodeInputRef.current.value,
+            description: descriptionInputRef.current.value,
+            pickupRoomId: room1.name,
+            deliveryRoomId: room2.name,
+            startCoordinateX: room1.roomDoor.x,
+            startCoordinateY: room1.roomDoor.y,
+            endCoordinateX: room2.roomDoor.x,
+            endCoordinateY: room2.roomDoor.y,
+            type: "pick_delivery",
+            startFloorCode: floor1Code,
+            endFloorCode: floor2Code,
+          });
+          break;
+        case "surveillance":
+          if (
+            !emergencyNameInputRef.current ||
+            !emergencyPhoneInputRef.current ||
+            !descriptionInputRef.current ||
+            !floorInputRef.current ||
+            !id
+          )
+            throw new Error("Some fields are not defined");
+
+          await requestService.createSurveillanceRequest({
+            userName: emergencyNameInputRef.current.value,
+            phoneNumber: emergencyPhoneInputRef.current.value,
+            description: descriptionInputRef.current.value,
+            userId: id,
+            floorId: floorInputRef.current?.value,
+            type: "surveillance",
+          });
+          break;
+      }
     }
 
     fetchRequests();
+  }
+
+  async function fetchRoom1() {
+    if (room1Name) {
+      const foundRoom = building1Rooms.find((room) => room.name === room1Name);
+
+      if (foundRoom) {
+        setRoom1(foundRoom);
+        setFloor1Code(foundRoom.floorCode);
+      }
+    }
+  }
+
+  async function fetchRoom2() {
+    if (room2Name) {
+      const foundRoom = building2Rooms.find((room) => room.name === room2Name);
+
+      if (foundRoom) {
+        setRoom2(foundRoom);
+        setFloor2Code(foundRoom.floorCode);
+      }
+    }
   }
 
   const fetchBuildings = useCallback(async () => {
@@ -203,6 +254,7 @@ export const useTasksModule = () => {
     fetchRequests();
   }, [fetchRequests, requestService]);
 
+
   const states = [
     {
       name: "Pending",
@@ -261,5 +313,7 @@ export const useTasksModule = () => {
     stateInputRef,
     userInputRef,
     states,
+    setRoom1Name,
+    setRoom2Name,
   };
 };

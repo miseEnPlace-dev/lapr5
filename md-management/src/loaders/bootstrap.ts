@@ -308,10 +308,10 @@ export default class Bootstrapper {
 
     // Building A
     await this.loadRoom({
-      name: 'A101',
+      name: 'Auditório Prof Nunes',
       buildingCode: 'a',
       floorCode: 'a1',
-      description: 'Sala A101',
+      description: 'Auditório Prof Nunes',
       dimensions: {
         width: 4,
         length: 4
@@ -424,6 +424,22 @@ export default class Bootstrapper {
       buildingCode: 'a',
       floorCode: 'a2',
       description: 'Sala A207',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 3,
+        y: 12
+      }
+    });
+
+    await this.loadRoom({
+      name: 'A208',
+      buildingCode: 'a',
+      floorCode: 'a2',
+      description: 'Sala A208',
       dimensions: {
         width: 4,
         length: 4
@@ -560,7 +576,7 @@ export default class Bootstrapper {
       category: 'OFFICE',
       roomDoor: {
         x: 8,
-        y: 20
+        y: 19
       }
     });
 
@@ -640,7 +656,7 @@ export default class Bootstrapper {
       category: 'OFFICE',
       roomDoor: {
         x: 4,
-        y: 19
+        y: 20
       }
     });
 
@@ -703,8 +719,8 @@ export default class Bootstrapper {
       },
       category: 'OFFICE',
       roomDoor: {
-        x: 9,
-        y: 12
+        x: 8,
+        y: 13
       }
     });
 
@@ -774,10 +790,10 @@ export default class Bootstrapper {
     });
 
     await this.loadRoom({
-      name: 'C105',
+      name: 'C106',
       buildingCode: 'c',
       floorCode: 'c1',
-      description: 'Gabinete C105',
+      description: 'Gabinete C106',
       dimensions: {
         width: 2,
         length: 2
@@ -790,10 +806,10 @@ export default class Bootstrapper {
     });
 
     await this.loadRoom({
-      name: 'C106',
+      name: 'C108',
       buildingCode: 'c',
       floorCode: 'c1',
-      description: 'Gabinete C106',
+      description: 'Gabinete C108',
       dimensions: {
         width: 2,
         length: 2
@@ -806,10 +822,10 @@ export default class Bootstrapper {
     });
 
     await this.loadRoom({
-      name: 'C107',
+      name: 'C105',
       buildingCode: 'c',
       floorCode: 'c1',
-      description: 'Gabinete C107',
+      description: 'Gabinete C108',
       dimensions: {
         width: 2,
         length: 2
@@ -822,10 +838,10 @@ export default class Bootstrapper {
     });
 
     await this.loadRoom({
-      name: 'C108',
+      name: 'C110',
       buildingCode: 'c',
       floorCode: 'c1',
-      description: 'Gabinete C108',
+      description: 'Gabinete C110',
       dimensions: {
         width: 2,
         length: 2
@@ -886,10 +902,10 @@ export default class Bootstrapper {
     });
 
     await this.loadRoom({
-      name: 'C204',
+      name: 'C205',
       buildingCode: 'c',
       floorCode: 'c2',
-      description: 'Gabinete C204',
+      description: 'Gabinete C205',
       dimensions: {
         width: 2,
         length: 2
@@ -902,10 +918,10 @@ export default class Bootstrapper {
     });
 
     await this.loadRoom({
-      name: 'C205',
+      name: 'C207',
       buildingCode: 'c',
       floorCode: 'c2',
-      description: 'Gabinete C205',
+      description: 'Gabinete C207',
       dimensions: {
         width: 2,
         length: 2
@@ -934,10 +950,10 @@ export default class Bootstrapper {
     });
 
     await this.loadRoom({
-      name: 'C207',
+      name: 'C204',
       buildingCode: 'c',
       floorCode: 'c2',
-      description: 'Gabinete C207',
+      description: 'Gabinete C204',
       dimensions: {
         width: 2,
         length: 2
@@ -950,10 +966,10 @@ export default class Bootstrapper {
     });
 
     await this.loadRoom({
-      name: 'C208',
+      name: 'C209',
       buildingCode: 'c',
       floorCode: 'c2',
-      description: 'Gabinete C208',
+      description: 'Gabinete C209',
       dimensions: {
         width: 2,
         length: 2
@@ -962,22 +978,6 @@ export default class Bootstrapper {
       roomDoor: {
         x: 12,
         y: 2
-      }
-    });
-
-    await this.loadRoom({
-      name: 'C301',
-      buildingCode: 'c',
-      floorCode: 'c3',
-      description: 'Gabinete C301',
-      dimensions: {
-        width: 2,
-        length: 2
-      },
-      category: 'OFFICE',
-      roomDoor: {
-        x: 3,
-        y: 4
       }
     });
 
@@ -992,16 +992,16 @@ export default class Bootstrapper {
       },
       category: 'OFFICE',
       roomDoor: {
-        x: 5,
-        y: 3
+        x: 3,
+        y: 4
       }
     });
 
     await this.loadRoom({
-      name: 'C303',
+      name: 'C301',
       buildingCode: 'c',
       floorCode: 'c3',
-      description: 'Gabinete C303',
+      description: 'Gabinete C301',
       dimensions: {
         width: 2,
         length: 2
@@ -1009,7 +1009,7 @@ export default class Bootstrapper {
       category: 'OFFICE',
       roomDoor: {
         x: 5,
-        y: 5
+        y: 3
       }
     });
 
@@ -1024,24 +1024,8 @@ export default class Bootstrapper {
       },
       category: 'OFFICE',
       roomDoor: {
-        x: 8,
-        y: 7
-      }
-    });
-
-    await this.loadRoom({
-      name: 'C305',
-      buildingCode: 'c',
-      floorCode: 'c3',
-      description: 'Gabinete C305',
-      dimensions: {
-        width: 2,
-        length: 2
-      },
-      category: 'OFFICE',
-      roomDoor: {
-        x: 10,
-        y: 7
+        x: 5,
+        y: 5
       }
     });
 
@@ -1056,24 +1040,8 @@ export default class Bootstrapper {
       },
       category: 'OFFICE',
       roomDoor: {
-        x: 12,
-        y: 2
-      }
-    });
-
-    await this.loadRoom({
-      name: 'C307',
-      buildingCode: 'c',
-      floorCode: 'c3',
-      description: 'Gabinete C307',
-      dimensions: {
-        width: 2,
-        length: 2
-      },
-      category: 'OFFICE',
-      roomDoor: {
-        x: 12,
-        y: 5
+        x: 8,
+        y: 7
       }
     });
 
@@ -1088,23 +1056,55 @@ export default class Bootstrapper {
       },
       category: 'OFFICE',
       roomDoor: {
-        x: 12,
+        x: 10,
         y: 7
       }
     });
 
     await this.loadRoom({
-      name: 'C401',
+      name: 'C303',
       buildingCode: 'c',
-      floorCode: 'c4',
-      description: 'Gabinete C401',
+      floorCode: 'c3',
+      description: 'Gabinete C303',
       dimensions: {
         width: 2,
         length: 2
       },
       category: 'OFFICE',
       roomDoor: {
-        x: 6,
+        x: 12,
+        y: 2
+      }
+    });
+
+    await this.loadRoom({
+      name: 'C305',
+      buildingCode: 'c',
+      floorCode: 'c3',
+      description: 'Gabinete C305',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 12,
+        y: 5
+      }
+    });
+
+    await this.loadRoom({
+      name: 'C310',
+      buildingCode: 'c',
+      floorCode: 'c3',
+      description: 'Gabinete C310',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 12,
         y: 7
       }
     });
@@ -1120,16 +1120,32 @@ export default class Bootstrapper {
       },
       category: 'OFFICE',
       roomDoor: {
+        x: 6,
+        y: 7
+      }
+    });
+
+    await this.loadRoom({
+      name: 'C401',
+      buildingCode: 'c',
+      floorCode: 'c4',
+      description: 'Gabinete C401',
+      dimensions: {
+        width: 2,
+        length: 2
+      },
+      category: 'OFFICE',
+      roomDoor: {
         x: 7,
         y: 5
       }
     });
 
     await this.loadRoom({
-      name: 'C403',
+      name: 'C404',
       buildingCode: 'c',
       floorCode: 'c4',
-      description: 'Gabinete C403',
+      description: 'Gabinete C404',
       dimensions: {
         width: 2,
         length: 2
@@ -1142,10 +1158,10 @@ export default class Bootstrapper {
     });
 
     await this.loadRoom({
-      name: 'C404',
+      name: 'C403',
       buildingCode: 'c',
       floorCode: 'c4',
-      description: 'Gabinete C404',
+      description: 'Gabinete C403',
       dimensions: {
         width: 2,
         length: 2
@@ -1207,17 +1223,17 @@ export default class Bootstrapper {
     });
 
     await this.loadRoom({
-      name: 'D104',
+      name: 'D106',
       buildingCode: 'd',
       floorCode: 'd1',
-      description: 'Gabinete D104',
+      description: 'Gabinete D106',
       dimensions: {
         width: 4,
         length: 4
       },
       category: 'OFFICE',
       roomDoor: {
-        x: 6,
+        x: 9,
         y: 5
       }
     });
@@ -1239,17 +1255,17 @@ export default class Bootstrapper {
     });
 
     await this.loadRoom({
-      name: 'D106',
+      name: 'D104',
       buildingCode: 'd',
       floorCode: 'd1',
-      description: 'Gabinete D106',
+      description: 'Gabinete D104',
       dimensions: {
         width: 4,
         length: 4
       },
       category: 'OFFICE',
       roomDoor: {
-        x: 8,
+        x: 6,
         y: 5
       }
     });
@@ -1287,22 +1303,6 @@ export default class Bootstrapper {
     });
 
     await this.loadRoom({
-      name: 'D202',
-      buildingCode: 'd',
-      floorCode: 'd2',
-      description: 'Gabinete D202',
-      dimensions: {
-        width: 4,
-        length: 4
-      },
-      category: 'OFFICE',
-      roomDoor: {
-        x: 6,
-        y: 5
-      }
-    });
-
-    await this.loadRoom({
       name: 'D203',
       buildingCode: 'd',
       floorCode: 'd2',
@@ -1313,8 +1313,24 @@ export default class Bootstrapper {
       },
       category: 'OFFICE',
       roomDoor: {
-        x: 6,
+        x: 7,
         y: 2
+      }
+    });
+
+    await this.loadRoom({
+      name: 'D202',
+      buildingCode: 'd',
+      floorCode: 'd2',
+      description: 'Gabinete D202',
+      dimensions: {
+        width: 4,
+        length: 4
+      },
+      category: 'OFFICE',
+      roomDoor: {
+        x: 7,
+        y: 5
       }
     });
 
@@ -1329,8 +1345,8 @@ export default class Bootstrapper {
       },
       category: 'OFFICE',
       roomDoor: {
-        x: 9,
-        y: 5
+        x: 10,
+        y: 6
       }
     });
 
@@ -1345,7 +1361,7 @@ export default class Bootstrapper {
       },
       category: 'OFFICE',
       roomDoor: {
-        x: 10,
+        x: 11,
         y: 2
       }
     });
@@ -1638,7 +1654,11 @@ export default class Bootstrapper {
   private async loadRoom(room: IRoomDTO) {
     let roomExists;
     if (room.buildingCode)
-      roomExists = await this.roomService.getRoom(room.buildingCode, room.floorCode, room.name);
+      roomExists = await this.roomService.getRoomWithName(
+        room.buildingCode,
+        room.floorCode,
+        room.name
+      );
 
     if (roomExists && roomExists.isFailure) {
       const res = await this.roomService.createRoom({

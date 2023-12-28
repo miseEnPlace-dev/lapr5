@@ -14,7 +14,7 @@ export class RoomService implements IRoomService {
   constructor(
     @inject(TYPES.api) private http: HttpService,
     @inject(TYPES.localStorage) private localStorage: Storage
-  ) {}
+  ) { }
 
   async getFloorRooms(
     buildingCode: string,
@@ -52,6 +52,7 @@ export class RoomService implements IRoomService {
     const data = response.data;
     return data;
   }
+
   async getRoomWithName(
     buildingCode: string,
     floorCode: string,
@@ -67,6 +68,7 @@ export class RoomService implements IRoomService {
     const data = response.data;
     return data;
   }
+
   async getBuildingRooms(buildingCode: string): Promise<Room[]> {
     const token = this.localStorage.getItem(localStorageConfig.token);
 
