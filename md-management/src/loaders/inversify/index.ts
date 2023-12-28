@@ -11,6 +11,7 @@ import IFloorController from '@/controllers/IControllers/IFloorController';
 import IRoleController from '@/controllers/IControllers/IRoleController';
 import IRoomController from '@/controllers/IControllers/IRoomController';
 import IUserController from '@/controllers/IControllers/IUserController';
+import ITaskController from '@/controllers/IControllers/ITaskController';
 import BuildingController from '@/controllers/buildingController';
 import ConnectorController from '@/controllers/connectorController';
 import DeviceController from '@/controllers/deviceController';
@@ -21,6 +22,7 @@ import PlanningController from '@/controllers/planningController';
 import RoleController from '@/controllers/roleController';
 import RoomController from '@/controllers/roomController';
 import UserController from '@/controllers/userController';
+import TaskController from '@/controllers/taskController';
 import BuildingSchema from '@/persistence/schemas/buildingSchema';
 import ConnectorSchema from '@/persistence/schemas/connectorSchema';
 import DeviceModelSchema from '@/persistence/schemas/deviceModelSchema';
@@ -88,6 +90,8 @@ container.bind<IUserController>(TYPES.userController).to(UserController);
 container.bind<IUserService>(TYPES.userService).to(UserService);
 container.bind<IUserRepo>(TYPES.userRepo).to(UserRepo);
 container.bind(TYPES.userSchema).to(UserSchema);
+
+container.bind<ITaskController>(TYPES.taskController).to(TaskController);
 
 container.bind<IElevatorController>(TYPES.elevatorController).to(ElevatorController);
 container.bind<IElevatorService>(TYPES.elevatorService).to(ElevatorService);
