@@ -11,6 +11,7 @@ import {
   MapIcon,
   RequestsIcon,
   RobotIcon,
+  TaskRequestsIcon,
   TasksIcon,
   UsersIcon,
 } from "../styles/Icons";
@@ -82,9 +83,9 @@ export const useMenuOptions = () => {
 
     if (role === "task") {
       options.push({
-        label: "Tasks Requests",
-        icon: TasksIcon,
-        onClick: () => navigation("/taskRequests"),
+        label: "Task Requests",
+        icon: TaskRequestsIcon,
+        onClick: () => navigation("/task-requests"),
       });
     }
 

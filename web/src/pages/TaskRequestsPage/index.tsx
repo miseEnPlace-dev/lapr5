@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import swal from "sweetalert";
 
 import { useMenuOptions } from "@/hooks/useMenuOptions";
 import Button from "@/components/Button";
-import Input from "@/components/Input";
+import Dropdown from "@/components/Dropdown/index.tsx";
 import Modal from "@/components/Modal";
 import SideBar from "@/components/SideBar";
 import { RequestPickAndDelivery } from "@/model/RequestPickAndDelivery.ts";
@@ -13,23 +14,92 @@ import { formatDate } from "@/utils/formatDate.ts";
 
 import { useListTaskRequestsModule } from "./module.ts";
 
+import { AxiosError } from "axios";
+
 const ANIMATION_DELAY = 0.1;
 
 const TaskRequestsPage: React.FC = () => {
   const {
+    states,
     requests,
+    stateInputRef,
     stateFilter,
+    setStateFilter,
     handleAcceptRequest,
     handleRejectRequest,
-    page,
-    setPage,
-    itemsPerPage,
     handlePagination,
+    userInputRef,
+    userFilter,
+    setUserFilter,
+    deviceModelInputRef,
+    deviceModelFilter,
+    setDeviceModelFilter,
+    deviceModels,
   } = useListTaskRequestsModule();
 
-  const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isFilterByStateModalVisible, setIsFilterByStateModalVisible] =
     useState(false);
+  const [isFilterByModelModalVisible, setIsFilterByModelModalVisible] =
+    useState(false);
+
+  async function handleRemoveFilter() {
+    setStateFilter(null);
+    setUserFilter(null);
+    setDeviceModelFilter(null);
+
+    setIsFilterByStateModalVisible(false);
+    // setIsFilterByUserModalVisible(false);
+    setIsFilterByModelModalVisible(false);
+  }
+
+  async function handleFilterByDeviceModelClick() {
+    try {
+      if (!deviceModelInputRef.current?.value) setDeviceModelFilter(null);
+      else setDeviceModelFilter(deviceModelInputRef.current.value);
+
+      // Only one filter is valid, remove the other
+      setUserFilter(null);
+      setStateFilter(null);
+
+      setIsFilterByModelModalVisible(false);
+    } catch (err: unknown) {
+      if (err instanceof AxiosError && err.response)
+        swal("Error", err.response.data.errors as string, "error");
+
+      swal("Error", err as string, "error");
+    }
+  }
+
+  async function handleFilterByStateClick() {
+    try {
+      if (!stateInputRef.current?.value) setStateFilter(null);
+      else setStateFilter(stateInputRef.current.value);
+
+      // Only one filter is valid, remove the other
+      setUserFilter(null);
+      setDeviceModelFilter(null);
+
+      setIsFilterByStateModalVisible(false);
+    } catch (err: unknown) {
+      if (err instanceof AxiosError && err.response)
+        swal("Error", err.response.data.errors as string, "error");
+
+      swal("Error", err as string, "error");
+    }
+  }
+
+  function getStateTextColor(state: string | undefined) {
+    switch (state) {
+      case "Pending":
+        return "text-yellow-700";
+      case "Accepted":
+        return "text-green-800";
+      case "Rejected":
+        return "text-red-800";
+      default:
+        return "text-slate-600";
+    }
+  }
 
   const { menuOptions } = useMenuOptions();
 
@@ -47,7 +117,7 @@ const TaskRequestsPage: React.FC = () => {
         >
           <div className="flex flex-row gap-x-4">
             <motion.button
-              name="filterByTask"
+              name="filterByState"
               initial={{ opacity: 0, y: -100 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
@@ -64,34 +134,38 @@ const TaskRequestsPage: React.FC = () => {
                 Filter Requests By State
               </div>
             </motion.button>
+            <motion.button
+              name="filterByDeviceModel"
+              initial={{ opacity: 0, y: -100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.2,
+                delay: requests?.data.length || 0 * ANIMATION_DELAY,
+              }}
+              onClick={() => setIsFilterByModelModalVisible(true)}
+              className={`flex w-full items-center justify-center gap-x-10 ${
+                deviceModelFilter ? "bg-slate-400" : "bg-slate-300"
+              } py-4 text-gray-500`}
+            >
+              <div className="flex flex-row items-center gap-x-4 text-lg font-bold text-slate-600">
+                {deviceModelFilter ? <FilterIcon /> : ""}
+                Filter Requests By Device Model
+              </div>
+            </motion.button>
           </div>
-          <motion.button
-            name="create-task"
-            initial={{ opacity: 0, y: -100 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.2,
-              delay: requests?.data.length || 0 * ANIMATION_DELAY,
-            }}
-            onClick={() => setIsTaskModalVisible(true)}
-            className="flex w-full items-center justify-center bg-secondary px-12 py-4 text-center text-5xl font-bold"
-          >
-            +
-          </motion.button>
           {!requests ? null : requests.data.length == 0 ? ( // TODO: skeleton component // TODO: skeleton component
             <p className="text-slate-500">
-              No results were found for your search... Create your first request
-              or try to change or remove the filters.
+              No results were found for your search... Try to change or remove
+              the filters.
             </p>
           ) : (
             requests.data.map((request, i) => (
-              <motion.button
+              <motion.div
                 initial={{ opacity: 0, x: -100 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
                 key={i}
-                //onClick={() => navigate(`/requests/${request.id}`)}
-                className="w-full items-center bg-slate-200 px-12 py-8"
+                className="relative flex w-full items-center bg-slate-200 px-12 py-8"
               >
                 {request.type == "surveillance" ? (
                   <div className="flex gap-x-10">
@@ -103,13 +177,21 @@ const TaskRequestsPage: React.FC = () => {
                         Surveillance &nbsp;&middot;&nbsp;&nbsp;
                         {request.requestedAt && formatDate(request.requestedAt)}
                         &nbsp;&nbsp;&middot;&nbsp;&nbsp;
-                        <span className="text-yellow-800">{request.state}</span>
+                        <span className={`${getStateTextColor(request.state)}`}>
+                          {request.state}
+                        </span>
                       </div>
-                      <div className="text-sm">{request.description}</div>
+                      <div className="text-sm">
+                        Requested by{" "}
+                        <span className="font-bold">
+                          {(request as RequestSurveillance).userName}
+                        </span>
+                        &nbsp;&middot;&nbsp;{request.description}
+                      </div>
                     </div>
                   </div>
                 ) : (
-                  <>
+                  <div className="flex flex-col">
                     <div className="mb-4 flex gap-x-10">
                       <h3 className="text-4xl font-bold">
                         {(request as RequestPickAndDelivery).pickupRoomId}&nbsp;
@@ -122,11 +204,19 @@ const TaskRequestsPage: React.FC = () => {
                           {request.requestedAt &&
                             formatDate(request.requestedAt)}
                           &nbsp;&nbsp;&middot;&nbsp;&nbsp;
-                          <span className="text-yellow-800">
+                          <span
+                            className={`${getStateTextColor(request.state)}`}
+                          >
                             {request.state}
                           </span>
                         </div>
-                        <div className="text-sm">{request.description}</div>
+                        <div className="text-sm">
+                          Requested by{" "}
+                          <span className="font-bold">
+                            {(request as RequestPickAndDelivery).pickupUserName}
+                          </span>
+                          &nbsp;&middot;&nbsp;{request.description}
+                        </div>
                       </div>
                     </div>
                     <div className="text-start text-slate-600">
@@ -158,35 +248,110 @@ const TaskRequestsPage: React.FC = () => {
                         </span>
                       </div>
                     </div>
-                  </>
+                  </div>
                 )}
-                <div className="right-16 flex items-center gap-x-6">
-                  {request.state === "Pending" ? (
-                    <>
-                      <Button
-                        className="relative h-12 w-12 items-center justify-center"
-                        name="confirm"
-                        type="confirm"
-                        onClick={() => handleAcceptRequest(request.id || "")}
-                      >
-                        <CheckIcon className="absolute left-1/2 top-1/2 z-10 h-6 w-6 flex-1 -translate-x-1/2 -translate-y-1/2" />
-                      </Button>
-                      <Button
-                        className="flex h-12 w-12 items-center justify-center text-center font-semibold"
-                        name="delete"
-                        type="destroy"
-                        onClick={() => handleRejectRequest(request.id || "")}
-                      >
-                        X
-                      </Button>
-                    </>
-                  ) : null}
-                </div>
-              </motion.button>
+                {request.state === "Pending" ? (
+                  <div className="absolute right-8 flex items-center gap-x-6">
+                    <Button
+                      className="relative h-12 w-12 items-center justify-center"
+                      name="confirm"
+                      type="confirm"
+                      onClick={() => handleAcceptRequest(request.id || "")}
+                    >
+                      <CheckIcon className="absolute left-1/2 top-1/2 z-10 h-6 w-6 flex-1 -translate-x-1/2 -translate-y-1/2" />
+                    </Button>
+                    <Button
+                      className="flex h-12 w-12 items-center justify-center text-center font-semibold"
+                      name="delete"
+                      type="destroy"
+                      onClick={() => handleRejectRequest(request.id || "")}
+                    >
+                      X
+                    </Button>
+                  </div>
+                ) : null}
+              </motion.div>
             ))
           )}
+
+          <Modal
+            setIsVisible={setIsFilterByStateModalVisible}
+            isVisible={isFilterByStateModalVisible}
+            title="Filter Requests by State"
+          >
+            <div className="flex h-full flex-col justify-between gap-y-4">
+              <div className="flex w-full flex-col gap-y-4">
+                <div className="flex w-full flex-col gap-x-8 gap-y-4">
+                  <Dropdown
+                    className="w-full"
+                    name="State"
+                    placeholder="State"
+                    inputRef={stateInputRef}
+                    options={states}
+                    selected={stateFilter ? stateFilter : undefined}
+                  />
+                  {stateFilter && (
+                    <Button
+                      name="removeFilter"
+                      onClick={handleRemoveFilter}
+                      type="reset"
+                    >
+                      Remove Filter
+                    </Button>
+                  )}
+                </div>
+              </div>
+              <Button
+                name="listfilter"
+                onClick={handleFilterByStateClick}
+                type="confirm"
+              >
+                List
+              </Button>
+            </div>
+          </Modal>
+
+          <Modal
+            setIsVisible={setIsFilterByModelModalVisible}
+            isVisible={isFilterByModelModalVisible}
+            title="Filter Requests by Device Model"
+          >
+            <div className="flex h-full flex-col justify-between gap-y-4">
+              <div className="flex w-full flex-col gap-y-4">
+                <div className="flex w-full flex-col gap-x-8 gap-y-4">
+                  <Dropdown
+                    className="w-full"
+                    name="Task"
+                    placeholder="Task"
+                    inputRef={deviceModelInputRef}
+                    options={deviceModels.map((deviceModel) => ({
+                      code: deviceModel.code,
+                      name: deviceModel.name,
+                    }))}
+                    selected={deviceModelFilter ? deviceModelFilter : undefined}
+                  />
+                  {deviceModelFilter && (
+                    <Button
+                      name="removeFilter"
+                      onClick={handleRemoveFilter}
+                      type="reset"
+                    >
+                      Remove Filter
+                    </Button>
+                  )}
+                </div>
+              </div>
+              <Button
+                name="listfilter"
+                onClick={handleFilterByDeviceModelClick}
+                type="confirm"
+              >
+                List
+              </Button>
+            </div>
+          </Modal>
         </div>
-      </main>{" "}
+      </main>
     </div>
   );
 };

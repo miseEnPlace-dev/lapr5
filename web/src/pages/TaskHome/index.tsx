@@ -21,7 +21,7 @@ const TaskHome: React.FC = () => {
         <Card
           title="Task Requests"
           description="Manage all the task requests of the system."
-          link="/taskRequests"
+          link="/task-requests"
           action="Go to Task Requests"
         />
         <Card
