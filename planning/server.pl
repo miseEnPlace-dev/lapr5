@@ -75,7 +75,7 @@ fetch_floors(BuildingCode, Floors) :-
 
 fetch_requests(Requests) :-
     tasks_api_url(Url),
-    atom_concat(Url, '/requests/pick-delivery', PickDeliveryUrl),
+    atom_concat(Url, '/requests/pick-delivery?state=accepted', PickDeliveryUrl),
     read_api(PickDeliveryUrl, Requests).
 
 password('campus').
