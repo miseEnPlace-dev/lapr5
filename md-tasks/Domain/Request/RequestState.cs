@@ -33,5 +33,10 @@ namespace DDDSample1.Domain.Requests
     {
       return State.ToString();
     }
+
+    public bool Equals(RequestState other)
+    {
+      return State == other.State;
+    }
   }
 }

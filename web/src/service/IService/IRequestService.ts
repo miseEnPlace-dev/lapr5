@@ -16,4 +16,6 @@ export interface IRequestService {
   createPickAndDeliveryRequest(
     request: RequestPickAndDelivery
   ): Promise<RequestPickAndDelivery>;
+  acceptRequest(id: string): Promise<void>;
+  rejectRequest(id: string): Promise<void>;
 }

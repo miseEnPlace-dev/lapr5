@@ -1,3 +1,5 @@
+:- module(genetic, []).
+
 :- use_module(planning).
 
 % geracoes(NGeracoes).
@@ -84,7 +86,6 @@ load_tarefa2(T1,T2):-
 gera_best_bruteforce:-
 	debug_mode(D),
 	get_time(Ti),
-	n_tarefas(NTarefas),
 	findall(Tarefa,t(Tarefa,_,_),Tarefas),
 	findall(P, permutation(Tarefas,P), Pop),
 	avalia_populacao(Pop,PopAv),
@@ -171,10 +172,10 @@ gera_nao_elit(G, Pop, GerIguais, PopAnterior):-
 	(GerIguais > 0, avaliar_semelhanca_entre_pop(Pop, PopAnterior, GerIguais),
 			G1 is G + 1,
 			NovoGerIguais is GerIguais - 1,
-			gera_estab_ger(G1, NPopOrd, NovoGerIguais, NPop)
+			gera_estab_ger(G1, NPopNova, NovoGerIguais, NPop)
 	; 
 			G1 is G + 1,
-			gera_estab_ger(G1, NPopOrd, GerIguais, NPop)
+			gera_estab_ger(G1, NPopNova, GerIguais, NPop)
 	).
 
 selecao_individuos(Pop, PopSelec):-
@@ -259,7 +260,7 @@ gera_geracao_ger(G,G,Pop,Ind):-
 	mutacao(NPop1,NPop),
 	avalia_populacao(NPop,NPopAv),
 	ordena_populacao(NPopAv,NPopOrd),
-	melhor_individuo(Pop,Ind),
+	melhor_individuo(NPopOrd,Ind),
 	((D==1,write('Melhor individuo: '),write(Ind), nl, nl);true), !.
 
 gera_geracao_ger(N,G,Pop,Melhor):-
@@ -286,7 +287,7 @@ gera_geracao_time(T,G,Pop,Ind):-
 	mutacao(NPop1,NPop),
 	avalia_populacao(NPop,NPopAv),
 	ordena_populacao(NPopAv,NPopOrd),
-	melhor_individuo(Pop,Ind),
+	melhor_individuo(NPopOrd,Ind),
 	((D==1,write('Melhor individuo: '), write(Ind), nl, nl);true),!.
 
 gera_geracao_time(T, N, Pop,Melhor) :-

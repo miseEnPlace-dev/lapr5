@@ -80,6 +80,14 @@ export const useMenuOptions = () => {
       });
     }
 
+    if (role === "task") {
+      options.push({
+        label: "Tasks Requests",
+        icon: TasksIcon,
+        onClick: () => navigation("/taskRequests"),
+      });
+    }
+
     options.push({
       label: "Logout",
       icon: LogoutIcon,

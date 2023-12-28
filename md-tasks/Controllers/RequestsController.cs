@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using DDDNetCore.Domain.Request;
 using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.DTO;
 using DDDSample1.Domain.Requests;
@@ -26,7 +27,7 @@ public class RequestsController : ControllerBase
   public async Task<ActionResult<PaginationDTO<RequestDTO>>> GetAll()
   {
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit") && Request.Query.ContainsKey("state"))
-      return await requestsService.GetRequestsByState(Request.Query["state"].ToString(), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+      return await requestsService.GetRequestsByState(RequestStateMapper.ToRequestState(Request.Query["state"].ToString()), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
     else if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
       return await requestsService.GetAll(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
     else
@@ -50,6 +51,38 @@ public class RequestsController : ControllerBase
     var t = await requestsService.GetById(new RequestId(id));
     if (t == null) return NotFound();
     return Ok(t);
+  }
+
+  // Patch api/requests/{id}/accept
+  [HttpPatch("{id}/accept")]
+  public async Task<ActionResult<RequestDTO>> AcceptRequest(string id)
+  {
+    try
+    {
+      var t = await requestsService.AcceptRequest(new RequestId(id));
+      if (t == null) return NotFound();
+      return Ok(t);
+    }
+    catch (BusinessRuleValidationException ex)
+    {
+      return BadRequest(new { ex.Message });
+    }
+  }
+
+  // Patch api/requests/{id}/accept
+  [HttpPatch("{id}/reject")]
+  public async Task<ActionResult<RequestDTO>> RejectRequest(string id)
+  {
+    try
+    {
+      var t = await requestsService.RejectRequest(new RequestId(id));
+      if (t == null) return NotFound();
+      return Ok(t);
+    }
+    catch (BusinessRuleValidationException ex)
+    {
+      return BadRequest(new { ex.Message });
+    }
   }
 
   // POST api/requests/surveillance

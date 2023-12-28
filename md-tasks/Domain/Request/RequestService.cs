@@ -79,7 +79,7 @@ namespace DDDSample1.Domain.Requests
       return new PaginationDTO<PickDeliveryRequestDTO>(result, page, limit, await repo.CountAsync());
     }
 
-    public async Task<PaginationDTO<RequestDTO>> GetRequestsByState(string state, int page, int limit)
+    public async Task<PaginationDTO<RequestDTO>> GetRequestsByState(RequestState state, int page, int limit)
     {
       List<Request> requests = await repo.GetRequestsByState(state, page - 1, limit);
 
@@ -267,6 +267,52 @@ namespace DDDSample1.Domain.Requests
             task.EndFloorCode
         );
       }
+
+      return null;
+    }
+
+    public async Task<RequestDTO> AcceptRequest(RequestId id)
+    {
+      Request request = await repo.GetByIdAsync(id);
+      if (request == null) return null;
+
+      // update fields
+      request.ChangeState(
+        new RequestState(StateEnum.Accepted)
+      );
+
+      await unitOfWork.CommitAsync();
+
+
+      if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
+        return await ConvertToDTO(request, "SurveillanceRequestDTO");
+
+
+      if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
+        return await ConvertToDTO(request, "PickDeliveryRequestDTO");
+
+      return null;
+    }
+
+    public async Task<RequestDTO> RejectRequest(RequestId id)
+    {
+      Request request = await repo.GetByIdAsync(id);
+      if (request == null) return null;
+
+      // update fields
+      request.ChangeState(
+        new RequestState(StateEnum.Rejected)
+      );
+
+      await unitOfWork.CommitAsync();
+
+
+      if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
+        return await ConvertToDTO(request, "SurveillanceRequestDTO");
+
+
+      if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
+        return await ConvertToDTO(request, "PickDeliveryRequestDTO");
 
       return null;
     }
