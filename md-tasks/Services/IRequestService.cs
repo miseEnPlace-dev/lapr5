@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 
 public interface IRequestService
 {
-  Task<List<RequestDTO>> GetAll();
-  Task<List<RequestDTO>> GetRequestsByState(string state);
-  Task<List<RequestDTO>> GetRequestsByUserId(string userId);
-  Task<List<SurveillanceRequestDTO>> GetAllSurveillance();
-  Task<List<PickDeliveryRequestDTO>> GetAllPickAndDelivery();
+  Task<List<RequestDTO>> GetAll(int page, int limit);
+  Task<List<RequestDTO>> GetRequestsByState(string state, int page, int limit);
+  Task<List<RequestDTO>> GetRequestsByUserId(string userId, int page, int limit);
+  Task<List<SurveillanceRequestDTO>> GetAllSurveillance(int page, int limit);
+  Task<List<PickDeliveryRequestDTO>> GetAllPickAndDelivery(int page, int limit);
   Task<RequestDTO> GetById(RequestId id);
   Task<RequestDTO> AddSurveillanceRequest(SurveillanceRequestDTO dto);
   Task<RequestDTO> AddPickAndDeliveryRequest(PickDeliveryRequestDTO dto);

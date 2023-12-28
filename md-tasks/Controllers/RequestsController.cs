@@ -26,18 +26,18 @@ public class RequestsController : ControllerBase
   public async Task<ActionResult<IEnumerable<RequestDTO>>> GetAll()
   {
     if (Request.Query.ContainsKey("state"))
-      return await requestsService.GetRequestsByState(Request.Query["state"].ToString());
+      return await requestsService.GetRequestsByState(Request.Query["state"].ToString(), 0, 10);
     if (Request.Query.ContainsKey("userId"))
-      return await requestsService.GetRequestsByUserId(Request.Query["userId"].ToString());
+      return await requestsService.GetRequestsByUserId(Request.Query["userId"].ToString(), 0, 10);
 
-    return await requestsService.GetAll();
+    return await requestsService.GetAll(0, 10);
   }
 
   // GET api/requests/pick-delivery
   [HttpGet("pick-delivery")]
   public async Task<ActionResult<IEnumerable<RequestDTO>>> GetPickAndDelivery(string state)
   {
-    return await requestsService.GetAllPickAndDelivery();
+    return await requestsService.GetAllPickAndDelivery(0, 10);
   }
 
   // GET api/requests/{id}

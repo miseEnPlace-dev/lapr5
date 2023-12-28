@@ -61,6 +61,8 @@ const TasksPage: React.FC = () => {
     setUserFilter,
     stateInputRef,
     states,
+    room1InputRef,
+    room2InputRef,
   } = useTasksModule();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isFilterByStateModalVisible, setIsFilterByStateModalVisible] =
