@@ -170,11 +170,11 @@ const TasksPage: React.FC = () => {
                 className="w-full items-center bg-slate-200 px-12 py-8"
               >
                 {request.type == "surveillance" ? (
-                  <div className="flex gap-x-10">
-                    <h3 className="text-4xl font-bold capitalize">
+                  <div className="flex items-center gap-x-10">
+                    <h3 className="text-5xl font-bold capitalize">
                       Floor {request.floorId}
                     </h3>
-                    <div className="flex flex-col text-start text-sm text-slate-600">
+                    <div className="flex flex-col text-start text-base text-slate-500">
                       <div className="font-bold uppercase">
                         Surveillance &nbsp;&middot;&nbsp;&nbsp;
                         {request.requestedAt && formatDate(request.requestedAt)}
@@ -186,22 +186,22 @@ const TasksPage: React.FC = () => {
                   </div>
                 ) : (
                   <>
-                    <div className="mb-4 flex gap-x-10">
-                      <h3 className="text-4xl font-bold">
+                    <div className="mb-4 flex items-center gap-x-10">
+                      <h3 className="text-5xl font-bold">
                         {request.pickupRoomId}&nbsp; to &nbsp;
                         {request.deliveryRoomId}
                       </h3>
-                      <div className="flex flex-col text-start text-sm text-slate-600">
-                        <div className="font-bold uppercase">
+                      <div className="flex flex-col text-start text-slate-500">
+                        <div className="text-base font-bold uppercase">
                           Pick and Delivery &nbsp;&middot;&nbsp;&nbsp;
                           {request.requestedAt &&
                             formatDate(request.requestedAt)}
                           &nbsp;&nbsp;&middot;&nbsp;&nbsp;
-                          <span className=" text-yellow-800">
+                          <span className="text-yellow-800">
                             {request.state}
                           </span>
                         </div>
-                        {request.description}
+                        <div className="text-sm">{request.description}</div>
                       </div>
                     </div>
                     <div className="text-start text-slate-600">
