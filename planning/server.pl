@@ -75,7 +75,7 @@ fetch_floors(BuildingCode, Floors) :-
 
 fetch_requests(Requests) :-
     tasks_api_url(Url),
-    atom_concat(Url, '/requests/pick-delivery', PickDeliveryUrl),
+    atom_concat(Url, '/requests/pick-delivery?state=accepted', PickDeliveryUrl),
     read_api(PickDeliveryUrl, Requests).
 
 password('campus').
@@ -90,7 +90,7 @@ authenticate():-
     post_api(AuthUrl, JsonData, Out),
     (retract(bearer_token(_));true), assertz(bearer_token(Out.token)), !.
 
-api_get_requests(Request):-
+api_get_requests(_):-
     authenticate(),
     fetch_requests(Requests),
     genetic:load_tasks(Requests),

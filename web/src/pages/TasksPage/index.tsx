@@ -16,7 +16,7 @@ import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { DeviceModel } from "@/model/DeviceModel";
 import { RequestPickAndDelivery } from "@/model/RequestPickAndDelivery";
 import { RequestSurveillance } from "@/model/RequestSurveillance";
-import { FilterIcon } from "@/styles/Icons";
+import { CheckIcon, FilterIcon } from "@/styles/Icons";
 import { formatDate } from "@/utils/formatDate";
 
 import { useTasksModule } from "./module";
@@ -67,8 +67,8 @@ const TasksPage: React.FC = () => {
     deviceModelInputRef,
     states,
     deviceModels,
-    setRoom1Name,
-    setRoom2Name,
+    room1InputRef,
+    room2InputRef,
   } = useTasksModule();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isFilterByStateModalVisible, setIsFilterByStateModalVisible] =
@@ -126,11 +126,9 @@ const TasksPage: React.FC = () => {
       setIsTaskModalVisible(false);
     } catch (err: unknown) {
       console.error(err);
-      swal(
-        "Error",
-        "An error occurred. Check the console for details.",
-        "error"
-      );
+      if (err instanceof AxiosError && err.response?.data.message)
+        swal("Error", err.response.data.message, "error");
+      else swal("Error", "Error creating request", "error");
     }
   }
 
@@ -161,7 +159,7 @@ const TasksPage: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.2,
-                delay: requests?.length || 0 * ANIMATION_DELAY,
+                delay: requests?.data.length || 0 * ANIMATION_DELAY,
               }}
               onClick={() => setIsFilterByStateModalVisible(true)}
               className={`flex w-full items-center justify-center gap-x-10 ${
@@ -180,7 +178,7 @@ const TasksPage: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
                   duration: 0.2,
-                  delay: requests?.length || 0 * ANIMATION_DELAY,
+                  delay: requests?.data.length || 0 * ANIMATION_DELAY,
                 }}
                 onClick={() => setIsFilterByDeviceModelModalVisible(true)}
                 className={`flex w-full items-center justify-center gap-x-10 ${
@@ -200,20 +198,20 @@ const TasksPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.2,
-              delay: requests?.length || 0 * ANIMATION_DELAY,
+              delay: requests?.data.length || 0 * ANIMATION_DELAY,
             }}
             onClick={() => setIsTaskModalVisible(true)}
             className="flex w-full items-center justify-center bg-secondary px-12 py-4 text-center text-5xl font-bold"
           >
             +
           </motion.button>
-          {!requests ? null : requests.length == 0 ? ( // TODO: skeleton component // TODO: skeleton component
+          {!requests ? null : requests.data.length == 0 ? ( // TODO: skeleton component // TODO: skeleton component
             <p className="text-slate-500">
               No results were found for your search... Create your first request
               or try to change or remove the filters.
             </p>
           ) : (
-            requests.map((request, i) => (
+            requests.data.map((request, i) => (
               <motion.button
                 initial={{ opacity: 0, x: -100 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -294,6 +292,7 @@ const TasksPage: React.FC = () => {
           )}
 
           <Pagination
+            meta={requests?.meta}
             changePage={handlePagination}
             className="flex items-center justify-center gap-x-4"
           />
@@ -329,12 +328,12 @@ const TasksPage: React.FC = () => {
                         <Dropdown
                           className="w-full"
                           name="Room"
+                          inputRef={room1InputRef}
                           disabled={building1Code === ""}
                           options={building1Rooms.map((room) => ({
                             code: room.name,
                             name: room.name,
                           }))}
-                          onChange={(e) => setRoom1Name(e.target.value)}
                         />
                       </InputGroup>
                       <InputGroup
@@ -350,12 +349,12 @@ const TasksPage: React.FC = () => {
                         <Dropdown
                           className="w-full"
                           name="Room"
+                          inputRef={room2InputRef}
                           disabled={building2Code === ""}
                           options={building2Rooms.map((room) => ({
                             code: room.name,
                             name: room.name,
                           }))}
-                          onChange={(e) => setRoom2Name(e.target.value)}
                         />
                       </InputGroup>
                     </div>

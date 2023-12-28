@@ -4,10 +4,12 @@ import { inject, injectable } from "inversify";
 import { capitalize } from "lodash";
 
 import { TYPES } from "../inversify/types";
+import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Request } from "@/model/Request";
 import { RequestPickAndDelivery } from "@/model/RequestPickAndDelivery";
 import { RequestSurveillance } from "@/model/RequestSurveillance";
 
+import { mdTasksApi } from "./api";
 import { HttpService } from "./IService/HttpService";
 import { IRequestService } from "./IService/IRequestService";
 
@@ -17,28 +19,45 @@ export class RequestService implements IRequestService {
 
   async getAllRequests(
     filter?: "state" | "userId",
-    value?: string
-  ): Promise<Request[]> {
-    const response = await this.http.get<Request[]>(
-      "/Requests?" + filter + "=" + capitalize(value),
-      {}
-    );
+    value?: string,
+    page?: number,
+    limit?: number
+  ): Promise<IPaginationDTO<Request>> {
+    const params = {} as { [key: string]: string };
+    if (filter && value) {
+      params[filter] = capitalize(value);
+    }
+    if (page && limit) {
+      params["limit"] = limit.toString();
+      params["page"] = page.toString();
+    }
 
+    const response = await this.http.get<IPaginationDTO<Request>>("/Requests", {
+      params,
+    });
     const data = response.data;
     return data;
   }
 
-  async getRequestsByType(capability: string): Promise<Request[]> {
+  async getRequestsByType(
+    capability: string,
+    page?: number,
+    limit?: number
+  ): Promise<IPaginationDTO<Request>> {
+    const params = {} as { [key: string]: string };
+    if (page && limit) {
+      params["limit"] = limit.toString();
+      params["page"] = page.toString();
+    }
+
     const type =
       capability === "surveillance" ? "surveillance" : "pick-delivery";
-    const response = await this.http.get<Request[]>("/Requests/" + type, {});
-
-    const data = response.data;
-    return data;
-  }
-
-  async getRequest(id: string): Promise<Request> {
-    const response = await this.http.get<Request>("Requests/" + id, {});
+    const response = await this.http.get<IPaginationDTO<Request>>(
+      "/Requests/" + type,
+      {
+        params,
+      }
+    );
 
     const data = response.data;
     return data;
@@ -76,5 +95,13 @@ export class RequestService implements IRequestService {
 
     const data = response.data;
     return data;
+  }
+
+  async acceptRequest(id: string): Promise<void> {
+    await this.http.patch("/Requests/" + id + "/accept", {});
+  }
+
+  async rejectRequest(id: string): Promise<void> {
+    await this.http.patch("/Requests/" + id + "/reject", {});
   }
 }

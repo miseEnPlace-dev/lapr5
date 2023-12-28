@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
@@ -36,9 +34,9 @@ namespace DDDSample1.Domain.Requests
       this.pickAndDeliveryTaskRepository = pickAndDeliveryTaskRepository;
     }
 
-    public async Task<List<RequestDTO>> GetAll()
+    public async Task<PaginationDTO<RequestDTO>> GetAll(int page, int limit)
     {
-      List<Request> requests = await repo.GetAllAsync();
+      List<Request> requests = await repo.GetAllAsync(page - 1, limit);
 
       List<RequestDTO> result = new();
 
@@ -52,12 +50,12 @@ namespace DDDSample1.Domain.Requests
           result.Add(await ConvertToDTO(request, "PickDeliveryRequestDTO"));
       }
 
-      return result;
+      return new PaginationDTO<RequestDTO>(result, page, limit, await repo.CountAsync());
     }
 
-    public async Task<List<SurveillanceRequestDTO>> GetAllSurveillance()
+    public async Task<PaginationDTO<SurveillanceRequestDTO>> GetAllSurveillance(int page, int limit)
     {
-      List<Request> requests = await repo.GetAllAsync();
+      List<Request> requests = await repo.GetAllAsync(page - 1, limit);
 
       List<SurveillanceRequestDTO> result = new();
 
@@ -65,12 +63,12 @@ namespace DDDSample1.Domain.Requests
         if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
           result.Add((SurveillanceRequestDTO)await ConvertToDTO(request, "SurveillanceRequestDTO"));
 
-      return result;
+      return new PaginationDTO<SurveillanceRequestDTO>(result, page, limit, await repo.CountAsync());
     }
 
-    public async Task<List<PickDeliveryRequestDTO>> GetAllPickAndDelivery()
+    public async Task<PaginationDTO<PickDeliveryRequestDTO>> GetAllPickAndDelivery(int page, int limit)
     {
-      List<Request> requests = await repo.GetAllAsync();
+      List<Request> requests = await repo.GetAllAsync(page - 1, limit);
 
       List<PickDeliveryRequestDTO> result = new();
 
@@ -78,12 +76,12 @@ namespace DDDSample1.Domain.Requests
         if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
           result.Add((PickDeliveryRequestDTO)await ConvertToDTO(request, "PickDeliveryRequestDTO"));
 
-      return result;
+      return new PaginationDTO<PickDeliveryRequestDTO>(result, page, limit, await repo.CountAsync());
     }
 
-    public async Task<List<RequestDTO>> GetRequestsByState(string state)
+    public async Task<PaginationDTO<RequestDTO>> GetRequestsByState(RequestState state, int page, int limit)
     {
-      List<Request> requests = await repo.GetRequestsByState(state);
+      List<Request> requests = await repo.GetRequestsByState(state, page - 1, limit);
 
       List<RequestDTO> result = new();
 
@@ -96,12 +94,12 @@ namespace DDDSample1.Domain.Requests
           result.Add(await ConvertToDTO(request, "PickDeliveryRequestDTO"));
       }
 
-      return result;
+      return new PaginationDTO<RequestDTO>(result, page, limit, await repo.CountAsync());
     }
 
-    public async Task<List<RequestDTO>> GetRequestsByUserId(string userId)
+    public async Task<PaginationDTO<RequestDTO>> GetRequestsByUserId(string userId, int page, int limit)
     {
-      List<Request> requests = await repo.GetRequestsByUserId(userId);
+      List<Request> requests = await repo.GetRequestsByUserId(userId, page - 1, limit);
 
       List<RequestDTO> result = new();
 
@@ -114,7 +112,7 @@ namespace DDDSample1.Domain.Requests
           result.Add(await ConvertToDTO(request, "PickDeliveryRequestDTO"));
       }
 
-      return result;
+      return new PaginationDTO<RequestDTO>(result, page, limit, await repo.CountAsync());
     }
 
     public async Task<RequestDTO> GetById(RequestId id)
@@ -269,6 +267,52 @@ namespace DDDSample1.Domain.Requests
             task.EndFloorCode
         );
       }
+
+      return null;
+    }
+
+    public async Task<RequestDTO> AcceptRequest(RequestId id)
+    {
+      Request request = await repo.GetByIdAsync(id);
+      if (request == null) return null;
+
+      // update fields
+      request.ChangeState(
+        new RequestState(StateEnum.Accepted)
+      );
+
+      await unitOfWork.CommitAsync();
+
+
+      if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
+        return await ConvertToDTO(request, "SurveillanceRequestDTO");
+
+
+      if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
+        return await ConvertToDTO(request, "PickDeliveryRequestDTO");
+
+      return null;
+    }
+
+    public async Task<RequestDTO> RejectRequest(RequestId id)
+    {
+      Request request = await repo.GetByIdAsync(id);
+      if (request == null) return null;
+
+      // update fields
+      request.ChangeState(
+        new RequestState(StateEnum.Rejected)
+      );
+
+      await unitOfWork.CommitAsync();
+
+
+      if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
+        return await ConvertToDTO(request, "SurveillanceRequestDTO");
+
+
+      if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
+        return await ConvertToDTO(request, "PickDeliveryRequestDTO");
 
       return null;
     }

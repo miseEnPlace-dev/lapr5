@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { use } from "chai";
 import { useInjection } from "inversify-react";
-import { data } from "node_modules/cypress/types/jquery";
 import swal from "sweetalert";
 
 import { TYPES } from "../../inversify/types";
@@ -51,7 +49,9 @@ export const useTasksModule = () => {
 
   const { id, username, phoneNumber } = useAuth();
 
-  const [requests, setRequests] = useState<Request[]>([]);
+  const [requests, setRequests] = useState<IPaginationDTO<Request> | null>(
+    null
+  );
 
   const [page, setPage] = useState<number>(1);
   const [type, setType] = useState<string | null>(null);
@@ -59,9 +59,6 @@ export const useTasksModule = () => {
   const [buildings, setBuildings] = useState<Building[]>([]);
 
   const [building1Floors, setBuilding1Floors] = useState<Floor[]>([]);
-
-  const [floor1Code, setFloor1Code] = useState<string | null>("");
-  const [floor2Code, setFloor2Code] = useState<string | null>("");
 
   const [building1Rooms, setBuilding1Rooms] = useState<Room[]>([]);
   const [building2Rooms, setBuilding2Rooms] = useState<Room[]>([]);
@@ -81,6 +78,8 @@ export const useTasksModule = () => {
   const typeInputRef = useRef<HTMLSelectElement>(null);
 
   const floorInputRef = useRef<HTMLSelectElement>(null);
+  const room1InputRef = useRef<HTMLSelectElement>(null);
+  const room2InputRef = useRef<HTMLSelectElement>(null);
 
   const pickupUserNameInputRef = useRef<HTMLInputElement>(null);
   const pickupUserPhoneInputRef = useRef<HTMLInputElement>(null);
@@ -93,27 +92,17 @@ export const useTasksModule = () => {
   const confirmationCodeInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
-  const itemsPerPage = 3;
-
-  const [room1Name, setRoom1Name] = useState<string | null>("");
-  const [room2Name, setRoom2Name] = useState<string | null>("");
-
-  const [room1, setRoom1] = useState<Room | null>(null);
-  const [room2, setRoom2] = useState<Room | null>(null);
+  const itemsPerPage = 2;
 
   const handlePagination = (page: number) => {
     setPage(page);
   };
 
   async function handleCreate() {
-    console.log(typeInputRef.current?.value);
     if (!typeInputRef.current || !typeInputRef.current.value) {
       swal("Error", "Type input is not defined", "error");
       return;
     } else {
-      fetchRoom1();
-      fetchRoom2();
-
       switch (typeInputRef.current.value) {
         case "pick_delivery":
           if (
@@ -124,12 +113,18 @@ export const useTasksModule = () => {
             !confirmationCodeInputRef.current ||
             !descriptionInputRef.current ||
             !id ||
-            !room1 ||
-            !room2 ||
-            !floor1Code ||
-            !floor2Code
+            !room1InputRef.current ||
+            !room2InputRef.current
           )
             throw new Error("Some fields are not defined");
+
+          const room1 = getRoom1();
+          const room2 = getRoom2();
+
+          if (!room1 || !room2) {
+            swal("Error", "Rooms are not defined", "error");
+            return;
+          }
 
           await requestService.createPickAndDeliveryRequest({
             pickupUserName: pickupUserNameInputRef.current.value,
@@ -146,8 +141,8 @@ export const useTasksModule = () => {
             endCoordinateX: room2.roomDoor.x,
             endCoordinateY: room2.roomDoor.y,
             type: "pick_delivery",
-            startFloorCode: floor1Code,
-            endFloorCode: floor2Code,
+            startFloorCode: room1.floorCode,
+            endFloorCode: room2.floorCode,
           });
           break;
         case "surveillance":
@@ -175,26 +170,18 @@ export const useTasksModule = () => {
     fetchRequests();
   }
 
-  async function fetchRoom1() {
-    if (room1Name) {
-      const foundRoom = building1Rooms.find((room) => room.name === room1Name);
-
-      if (foundRoom) {
-        setRoom1(foundRoom);
-        setFloor1Code(foundRoom.floorCode);
-      }
-    }
+  function getRoom1(): Room | undefined {
+    if (room1InputRef.current && room1InputRef.current.value)
+      return building1Rooms.find(
+        (room) => room.name === room1InputRef.current!.value
+      );
   }
 
-  async function fetchRoom2() {
-    if (room2Name) {
-      const foundRoom = building2Rooms.find((room) => room.name === room2Name);
-
-      if (foundRoom) {
-        setRoom2(foundRoom);
-        setFloor2Code(foundRoom.floorCode);
-      }
-    }
+  function getRoom2(): Room | undefined {
+    if (room2InputRef.current && room2InputRef.current.value)
+      return building2Rooms.find(
+        (room) => room.name === room2InputRef.current!.value
+      );
   }
 
   const fetchBuildings = useCallback(async () => {
@@ -265,13 +252,15 @@ export const useTasksModule = () => {
       }
       const r = await requestService.getAllRequests(
         stateFilter ? "state" : userFilter ? "userId" : undefined,
-        stateFilter || userFilter || deviceModelFilter || undefined
+        stateFilter || userFilter || undefined,
+        page,
+        itemsPerPage
       );
       setRequests(r);
     } catch (error) {
-      setRequests([]);
+      setRequests({ data: [] });
     }
-  }, [requestService, stateFilter, userFilter]);
+  }, [requestService, stateFilter, userFilter, page, itemsPerPage]);
 
   useEffect(() => {
     fetchBuildings();
@@ -353,7 +342,7 @@ export const useTasksModule = () => {
     userInputRef,
     states,
     deviceModels,
-    setRoom1Name,
-    setRoom2Name,
+    room1InputRef,
+    room2InputRef,
   };
 };
