@@ -50,7 +50,7 @@ count([_|T],N1,N):-
 load_tasks([H|T],N):-
 	asserta(
 		t(
-			H.id,
+			H.deviceTaskId,
 			cel(H.startFloorCode,H.startCoordinateX,H.startCoordinateY),
 			cel(H.endFloorCode,H.endCoordinateX,H.endCoordinateY)
 		)
