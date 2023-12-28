@@ -41,6 +41,16 @@ export default class TaskController implements ITaskController {
         return res.status(200).json(data);
       }
 
+      if (page && limit) {
+        const response = await fetch(
+          config.tasksApiUrl + `/api/Requests?limit=${limit}&page=${page}`
+        );
+
+        const data = await response.json();
+
+        return res.status(200).json(data);
+      }
+
       const response = await fetch(config.tasksApiUrl + '/api/Requests');
 
       const data = await response.json();
