@@ -41,7 +41,7 @@ export const useTasksModule = () => {
   const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]);
 
   const fetchDeviceModels = useCallback(async () => {
-    const deviceModels = await deviceModelService.getDeviceModels();
+    const deviceModels = await deviceModelService.getDeviceModels(1, 1000);
     setDeviceModels(deviceModels.data);
   }, [deviceModelService]);
 
@@ -235,19 +235,32 @@ export const useTasksModule = () => {
           await deviceModelService.getDeviceModelWithCode(deviceModelFilter);
 
         if (deviceModel.capabilities.length == 2) {
-          const r = await requestService.getAllRequests();
+          const r = await requestService.getAllRequests(
+            undefined,
+            undefined,
+            page,
+            itemsPerPage
+          );
           setRequests(r);
           return;
         }
 
         if (deviceModel.capabilities[0] == "surveillance") {
-          const r = await requestService.getRequestsByType("surveillance");
+          const r = await requestService.getRequestsByType(
+            "surveillance",
+            page,
+            itemsPerPage
+          );
           setRequests(r);
           return;
         }
 
         if (deviceModel.capabilities[0] == "pick_delivery") {
-          const r = await requestService.getRequestsByType("pick_delivery");
+          const r = await requestService.getRequestsByType(
+            "pick_delivery",
+            page,
+            itemsPerPage
+          );
           setRequests(r);
           return;
         }

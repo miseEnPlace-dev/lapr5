@@ -52,6 +52,17 @@ public class RequestsController : ControllerBase
     return await requestsService.GetAllPickAndDelivery(-1, -1);
   }
 
+  // GET api/requests/surveillance
+  [HttpGet("surveillance")]
+  public async Task<ActionResult<PaginationDTO<SurveillanceRequestDTO>>> GetSurveillance()
+  {
+    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
+      return await requestsService.GetAllSurveillance(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+
+
+    return await requestsService.GetAllSurveillance(-1, -1);
+  }
+
   // GET api/requests/{id}
   [HttpGet("{id}")]
   public async Task<ActionResult<RequestDTO>> Get(string id)

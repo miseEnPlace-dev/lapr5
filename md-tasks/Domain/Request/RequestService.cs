@@ -63,7 +63,9 @@ namespace DDDSample1.Domain.Requests
         if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
           result.Add((SurveillanceRequestDTO)await ConvertToDTO(request, "SurveillanceRequestDTO"));
 
-      return new PaginationDTO<SurveillanceRequestDTO>(result, page, limit, await repo.CountAsync());
+      int count = await surveillanceTaskRepository.CountAsync();
+
+      return new PaginationDTO<SurveillanceRequestDTO>(result, page, limit, count);
     }
 
     public async Task<PaginationDTO<PickDeliveryRequestDTO>> GetAllPickAndDelivery(int page, int limit)
@@ -76,7 +78,9 @@ namespace DDDSample1.Domain.Requests
         if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
           result.Add((PickDeliveryRequestDTO)await ConvertToDTO(request, "PickDeliveryRequestDTO"));
 
-      return new PaginationDTO<PickDeliveryRequestDTO>(result, page, limit, await repo.CountAsync());
+      int count = await pickAndDeliveryTaskRepository.CountAsync();
+
+      return new PaginationDTO<PickDeliveryRequestDTO>(result, page, limit, count);
     }
 
     public async Task<PaginationDTO<RequestDTO>> GetRequestsByState(RequestState state, int page, int limit)
