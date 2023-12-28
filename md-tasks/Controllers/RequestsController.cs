@@ -25,8 +25,12 @@ public class RequestsController : ControllerBase
   [HttpGet]
   public async Task<ActionResult<PaginationDTO<RequestDTO>>> GetAll()
   {
-    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit") && Request.Query.ContainsKey("state"))
-      return await requestsService.GetRequestsByState(RequestStateMapper.ToRequestState(Request.Query["state"].ToString()), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit") && Request.Query.ContainsKey("filter") && Request.Query.ContainsKey("value"))
+    {
+      if (Request.Query["filter"].ToString() == "state")
+        return await requestsService.GetRequestsByState(RequestStateMapper.ToRequestState(Request.Query["value"].ToString()), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+    }
+
 
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
       return await requestsService.GetAll(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));

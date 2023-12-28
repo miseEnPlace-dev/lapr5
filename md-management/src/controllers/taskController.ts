@@ -6,7 +6,8 @@ import config from '@/config';
 import { z } from 'zod';
 
 const querySchema = z.object({
-  id: z.string().optional(),
+  filter: z.string().optional(),
+  value: z.string().optional(),
   page: z.string().optional(),
   limit: z.string().optional()
 });
@@ -21,14 +22,18 @@ export default class TaskController implements ITaskController {
     next: NextFunction
   ): Promise<Response | void> {
     try {
-      const query = querySchema.parse(req.query);
+      const query = querySchema.safeParse(req.query);
+      if (!query.success) return res.status(400).json({ message: query.error });
 
-      const page = Number(query.page) || undefined;
-      const limit = Number(query.limit) || undefined;
+      const filter = query.data.filter || undefined;
+      const value = query.data.value || undefined;
+      const page = Number(query.data.page) || undefined;
+      const limit = Number(query.data.limit) || undefined;
 
-      if (page && limit) {
+      if (filter && value && page && limit) {
         const response = await fetch(
-          config.tasksApiUrl + `/api/Requests?page=${page}&limit=${limit}`
+          config.tasksApiUrl +
+            `/api/Requests?filter=${filter}&value=${value}&limit=${limit}&page=${page}`
         );
 
         const data = await response.json();

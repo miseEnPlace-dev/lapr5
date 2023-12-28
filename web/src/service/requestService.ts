@@ -18,7 +18,7 @@ export class RequestService implements IRequestService {
   constructor(
     @inject(TYPES.api) private http: HttpService,
     @inject(TYPES.localStorage) private localStorage: Storage
-  ) {}
+  ) { }
 
   async getAllRequests(
     filter?: "state" | "userId",
@@ -28,7 +28,8 @@ export class RequestService implements IRequestService {
   ): Promise<IPaginationDTO<Request>> {
     const params = {} as { [key: string]: string };
     if (filter && value) {
-      params[filter] = capitalize(value);
+      params["filter"] = filter.toString();
+      params["value"] = capitalize(value.toString());
     }
     if (page && limit) {
       params["limit"] = limit.toString();
