@@ -19,15 +19,22 @@ export class RequestService implements IRequestService {
 
   async getAllRequests(
     filter?: "state" | "userId",
-    value?: string
-  ): Promise<Request[]> {
-    console.log(filter, value);
-    console.log("Request url: " + "/Requests?" + filter + "=" + value);
-    const response = await this.http.get<Request[]>(
-      "/Requests?" + filter + "=" + capitalize(value),
-      {}
-    );
+    value?: string,
+    page?: number,
+    limit?: number
+  ): Promise<IPaginationDTO<Request>> {
+    const params = {} as { [key: string]: string };
+    if (filter && value) {
+      params[filter] = capitalize(value);
+    }
+    if (page && limit) {
+      params["limit"] = limit.toString();
+      params["page"] = page.toString();
+    }
 
+    const response = await this.http.get<IPaginationDTO<Request>>("/Requests", {
+      params,
+    });
     const data = response.data;
     return data;
   }

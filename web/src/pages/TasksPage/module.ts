@@ -33,7 +33,9 @@ export const useTasksModule = () => {
   const requestService = useInjection<RequestService>(TYPES.requestService);
   const { id, username, phoneNumber } = useAuth();
 
-  const [requests, setRequests] = useState<Request[]>([]);
+  const [requests, setRequests] = useState<IPaginationDTO<Request> | null>(
+    null
+  );
 
   const [page, setPage] = useState<number>(1);
   const [type, setType] = useState<string | null>(null);
@@ -71,7 +73,7 @@ export const useTasksModule = () => {
   const confirmationCodeInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
-  const itemsPerPage = 3;
+  const itemsPerPage = 2;
 
   const handlePagination = (page: number) => {
     setPage(page);
@@ -209,13 +211,15 @@ export const useTasksModule = () => {
     try {
       const r = await requestService.getAllRequests(
         stateFilter ? "state" : userFilter ? "userId" : undefined,
-        stateFilter || userFilter || undefined
+        stateFilter || userFilter || undefined,
+        page,
+        itemsPerPage
       );
       setRequests(r);
     } catch (error) {
-      setRequests([]);
+      setRequests({ data: [] });
     }
-  }, [requestService, stateFilter, userFilter]);
+  }, [requestService, stateFilter, userFilter, page, itemsPerPage]);
 
   useEffect(() => {
     fetchBuildings();

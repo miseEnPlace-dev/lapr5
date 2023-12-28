@@ -36,7 +36,7 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<PaginationDTO<RequestDTO>> GetAll(int page, int limit)
     {
-      List<Request> requests = await repo.GetAllAsync(page, limit);
+      List<Request> requests = await repo.GetAllAsync(page - 1, limit);
 
       List<RequestDTO> result = new();
 
@@ -55,7 +55,7 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<PaginationDTO<SurveillanceRequestDTO>> GetAllSurveillance(int page, int limit)
     {
-      List<Request> requests = await repo.GetAllAsync(page, limit);
+      List<Request> requests = await repo.GetAllAsync(page - 1, limit);
 
       List<SurveillanceRequestDTO> result = new();
 
@@ -68,7 +68,7 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<PaginationDTO<PickDeliveryRequestDTO>> GetAllPickAndDelivery(int page, int limit)
     {
-      List<Request> requests = await repo.GetAllAsync(page, limit);
+      List<Request> requests = await repo.GetAllAsync(page - 1, limit);
 
       List<PickDeliveryRequestDTO> result = new();
 
@@ -81,7 +81,7 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<PaginationDTO<RequestDTO>> GetRequestsByState(string state, int page, int limit)
     {
-      List<Request> requests = await repo.GetRequestsByState(state, page, limit);
+      List<Request> requests = await repo.GetRequestsByState(state, page - 1, limit);
 
       List<RequestDTO> result = new();
 
@@ -99,7 +99,7 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<PaginationDTO<RequestDTO>> GetRequestsByUserId(string userId, int page, int limit)
     {
-      List<Request> requests = await repo.GetRequestsByUserId(userId, page, limit);
+      List<Request> requests = await repo.GetRequestsByUserId(userId, page - 1, limit);
 
       List<RequestDTO> result = new();
 

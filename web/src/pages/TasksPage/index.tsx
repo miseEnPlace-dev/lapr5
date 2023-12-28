@@ -128,7 +128,7 @@ const TasksPage: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.2,
-                delay: requests?.length || 0 * ANIMATION_DELAY,
+                delay: requests?.data.length || 0 * ANIMATION_DELAY,
               }}
               onClick={() => setIsFilterByStateModalVisible(true)}
               className={`flex w-full items-center justify-center gap-x-10 ${
@@ -147,20 +147,20 @@ const TasksPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.2,
-              delay: requests?.length || 0 * ANIMATION_DELAY,
+              delay: requests?.data.length || 0 * ANIMATION_DELAY,
             }}
             onClick={() => setIsTaskModalVisible(true)}
             className="flex w-full items-center justify-center bg-secondary px-12 py-4 text-center text-5xl font-bold"
           >
             +
           </motion.button>
-          {!requests ? null : requests.length == 0 ? ( // TODO: skeleton component // TODO: skeleton component
+          {!requests ? null : requests.data.length == 0 ? ( // TODO: skeleton component // TODO: skeleton component
             <p className="text-slate-500">
               No results were found for your search... Create your first request
               or try to change or remove the filters.
             </p>
           ) : (
-            requests.map((request, i) => (
+            requests.data.map((request, i) => (
               <motion.button
                 initial={{ opacity: 0, x: -100 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -241,6 +241,7 @@ const TasksPage: React.FC = () => {
           )}
 
           <Pagination
+            meta={requests?.meta}
             changePage={handlePagination}
             className="flex items-center justify-center gap-x-4"
           />
