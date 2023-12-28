@@ -30,7 +30,7 @@ http:location(api, root(api), []). % /api
 
 % define your routes here
 :- http_handler(api(route), api_get_route, []). % /api/route?from=abc&to=xyz&method=elevators
-:- http_handler(api(requests), api_get_requests, []). % /api/requests
+:- http_handler(api(sequence), api_get_requests, []). % /api/sequence
 
 :- dynamic bearer_token/1.
 
@@ -97,8 +97,10 @@ api_get_requests(_):-
     authenticate(),
     fetch_requests(Requests),
     genetic:load_tasks(Requests.data,0),
-    genetic:gera_lim_time(B*_),
-    reply_json(B, [json_object(dict)]).
+    genetic:gera_lim_time(B*X),
+    % B = List, X = Time, return json with both
+    prolog_to_json(json([tasks=B, time=X]), JsonOut),
+    reply_json(JsonOut, [json_object(dict)]).
 
 api_get_route(Request):-
     (retractall(planning:m(_,_,_,_));true),

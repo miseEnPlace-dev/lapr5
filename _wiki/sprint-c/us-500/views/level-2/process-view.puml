@@ -11,13 +11,13 @@ activate TM
 TM -> UI : asks to get the sequence of execution of the approved tasks
 activate UI
 
-UI -> TMD : GET /tasks/sequence
+UI -> TMD : GET /requests/sequence
 activate TMD
 TMD -> P : GET /sequence
 activate P
-P -> TMD : GET /tasks?status=approved
+P -> TMD : GET /requests/pick-delivery?status=approved
 activate TMD
-TMD --> P : GET /tasks?status=approved
+TMD --> P : GET /requests/pick-delivery?status=approved
 deactivate TMD
 P -> P : runs algorithm to get the sequence of tasks
 activate P
