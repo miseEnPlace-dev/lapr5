@@ -14,7 +14,7 @@ import SideBar from "@/components/SideBar";
 import TextArea from "@/components/TextArea";
 import { RequestPickAndDelivery } from "@/model/RequestPickAndDelivery";
 import { RequestSurveillance } from "@/model/RequestSurveillance";
-import { FilterIcon } from "@/styles/Icons";
+import { CheckIcon, FilterIcon } from "@/styles/Icons";
 import { formatDate } from "@/utils/formatDate";
 
 import { useTasksModule } from "./module";

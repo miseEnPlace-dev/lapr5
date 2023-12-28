@@ -59,4 +59,12 @@ export class RequestService implements IRequestService {
     const data = response.data;
     return data;
   }
+
+  async acceptRequest(id: string): Promise<void> {
+    await this.http.patch("/Requests/" + id + "/accept", {});
+  }
+
+  async rejectRequest(id: string): Promise<void> {
+    await this.http.patch("/Requests/" + id + "/reject", {});
+  }
 }
