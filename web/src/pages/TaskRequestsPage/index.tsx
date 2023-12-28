@@ -6,6 +6,7 @@ import { useMenuOptions } from "@/hooks/useMenuOptions";
 import Button from "@/components/Button";
 import Dropdown from "@/components/Dropdown/index.tsx";
 import Modal from "@/components/Modal";
+import Pagination from "@/components/Pagination/index.tsx";
 import SideBar from "@/components/SideBar";
 import { RequestPickAndDelivery } from "@/model/RequestPickAndDelivery.ts";
 import { RequestSurveillance } from "@/model/RequestSurveillance.ts";
@@ -273,6 +274,12 @@ const TaskRequestsPage: React.FC = () => {
               </motion.div>
             ))
           )}
+
+          <Pagination
+            meta={requests?.meta}
+            changePage={handlePagination}
+            className="flex items-center justify-center gap-x-4"
+          />
 
           <Modal
             setIsVisible={setIsFilterByStateModalVisible}
