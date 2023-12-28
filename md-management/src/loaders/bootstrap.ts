@@ -88,6 +88,15 @@ export default class Bootstrapper {
       nif: '123456789',
       role: defaultRoles.user.name
     });
+    await this.loadUser({
+      firstName: 'Task',
+      lastName: 'Manager',
+      email: 'task@isep.ipp.pt',
+      password: 'task',
+      phoneNumber: '912345678',
+      nif: '123456789',
+      role: defaultRoles.task.name
+    });
 
     await this.loadBuilding({
       code: 'a',
