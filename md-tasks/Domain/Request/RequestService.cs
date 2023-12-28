@@ -97,6 +97,22 @@ namespace DDDSample1.Domain.Requests
       return new PaginationDTO<RequestDTO>(result, page, limit, await repo.CountAsync());
     }
 
+    public async Task<PaginationDTO<PickDeliveryRequestDTO>> GetAllPickAndDeliveryByState(RequestState state, int page, int limit)
+    {
+      List<Request> requests = await repo.GetRequestsByTypeAndByState(state, "pick_delivery", page - 1, limit);
+
+      List<PickDeliveryRequestDTO> result = new();
+
+      foreach (Request request in requests)
+      {
+
+        if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
+          result.Add((PickDeliveryRequestDTO)await ConvertToDTO(request, "PickDeliveryRequestDTO"));
+      }
+
+      return new PaginationDTO<PickDeliveryRequestDTO>(result, page, limit, await repo.CountAsync());
+    }
+
     public async Task<PaginationDTO<RequestDTO>> GetRequestsByUserId(string userId, int page, int limit)
     {
       List<Request> requests = await repo.GetRequestsByUserId(userId, page - 1, limit);

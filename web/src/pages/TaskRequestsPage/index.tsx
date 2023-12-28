@@ -16,16 +16,22 @@ import { useListTaskRequestsModule } from "./module.ts";
 const ANIMATION_DELAY = 0.1;
 
 const TaskRequestsPage: React.FC = () => {
-  const { requests, stateFilter, handleAcceptRequest, handleRejectRequest } =
-    useListTaskRequestsModule();
+  const {
+    requests,
+    stateFilter,
+    handleAcceptRequest,
+    handleRejectRequest,
+    page,
+    setPage,
+    itemsPerPage,
+    handlePagination,
+  } = useListTaskRequestsModule();
 
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isFilterByStateModalVisible, setIsFilterByStateModalVisible] =
     useState(false);
 
   const { menuOptions } = useMenuOptions();
-
-  console.log(requests.map((request) => request.state));
 
   return (
     <div className="flex">
@@ -46,7 +52,7 @@ const TaskRequestsPage: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.2,
-                delay: requests?.length || 0 * ANIMATION_DELAY,
+                delay: requests?.data.length || 0 * ANIMATION_DELAY,
               }}
               onClick={() => setIsFilterByStateModalVisible(true)}
               className={`flex w-full items-center justify-center gap-x-10 ${
@@ -65,20 +71,20 @@ const TaskRequestsPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.2,
-              delay: requests?.length || 0 * ANIMATION_DELAY,
+              delay: requests?.data.length || 0 * ANIMATION_DELAY,
             }}
             onClick={() => setIsTaskModalVisible(true)}
             className="flex w-full items-center justify-center bg-secondary px-12 py-4 text-center text-5xl font-bold"
           >
             +
           </motion.button>
-          {!requests ? null : requests.length == 0 ? ( // TODO: skeleton component // TODO: skeleton component
+          {!requests ? null : requests.data.length == 0 ? ( // TODO: skeleton component // TODO: skeleton component
             <p className="text-slate-500">
               No results were found for your search... Create your first request
               or try to change or remove the filters.
             </p>
           ) : (
-            requests.map((request, i) => (
+            requests.data.map((request, i) => (
               <motion.button
                 initial={{ opacity: 0, x: -100 }}
                 animate={{ opacity: 1, x: 0 }}
