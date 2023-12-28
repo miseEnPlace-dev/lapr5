@@ -176,7 +176,7 @@ const TasksPage: React.FC = () => {
                     <h3 className="text-4xl font-bold capitalize">
                       Floor {(request as RequestSurveillance).floorId}
                     </h3>
-                    <div className="flex flex-col text-start text-sm text-slate-600">
+                    <div className="flex flex-col text-start text-base text-slate-500">
                       <div className="font-bold uppercase">
                         Surveillance &nbsp;&middot;&nbsp;&nbsp;
                         {request.requestedAt && formatDate(request.requestedAt)}
@@ -194,17 +194,17 @@ const TasksPage: React.FC = () => {
                         to &nbsp;
                         {(request as RequestPickAndDelivery).deliveryRoomId}
                       </h3>
-                      <div className="flex flex-col text-start text-sm text-slate-600">
-                        <div className="font-bold uppercase">
+                      <div className="flex flex-col text-start text-slate-500">
+                        <div className="text-base font-bold uppercase">
                           Pick and Delivery &nbsp;&middot;&nbsp;&nbsp;
                           {request.requestedAt &&
                             formatDate(request.requestedAt)}
                           &nbsp;&nbsp;&middot;&nbsp;&nbsp;
-                          <span className=" text-yellow-800">
+                          <span className="text-yellow-800">
                             {request.state}
                           </span>
                         </div>
-                        {request.description}
+                        <div className="text-sm">{request.description}</div>
                       </div>
                     </div>
                     <div className="text-start text-slate-600">
