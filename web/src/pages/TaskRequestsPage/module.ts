@@ -7,6 +7,8 @@ import { DeviceModel } from "@/model/DeviceModel";
 import { Request } from "@/model/Request";
 import { IDeviceModelService } from "@/service/IService/IDeviceModelService";
 import { IRequestService } from "@/service/IService/IRequestService";
+import { Device } from "@/model/Device";
+import { IDeviceService } from "@/service/IService/IDeviceService";
 
 const states = [
   {
@@ -33,6 +35,7 @@ export const useListTaskRequestsModule = () => {
   const deviceModelService = useInjection<IDeviceModelService>(
     TYPES.deviceModelService
   );
+  const deviceService = useInjection<IDeviceService>(TYPES.deviceService);
   // const { id, username, phoneNumber } = useAuth();
 
   const [requests, setRequests] = useState<IPaginationDTO<Request> | null>(
@@ -51,6 +54,10 @@ export const useListTaskRequestsModule = () => {
 
   const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]);
 
+  const [devices, setDevices] = useState<Device[]>([]);
+
+  const deviceInputRef = useRef<HTMLSelectElement>(null);
+
   const itemsPerPage = 3;
 
   const handlePagination = (page: number) => {
@@ -62,9 +69,15 @@ export const useListTaskRequestsModule = () => {
     setDeviceModels(deviceModels.data);
   }, [deviceModelService]);
 
+  const fetchDevices = useCallback(async () => {
+    const devices = await deviceService.getDevicesRobots("model", "", 1, 1000);
+    setDevices(devices.data);
+  }, [deviceService]);
+
   useEffect(() => {
     fetchDeviceModels();
-  }, [fetchDeviceModels]);
+    fetchDevices();
+  }, [fetchDeviceModels, fetchDevices]);
 
   const fetchRequests = useCallback(async () => {
     try {
@@ -162,5 +175,7 @@ export const useListTaskRequestsModule = () => {
     deviceModelFilter,
     setDeviceModelFilter,
     deviceModels,
+    devices,
+    deviceInputRef,
   };
 };
