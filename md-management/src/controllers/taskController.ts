@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import { injectable } from 'inversify';
 
-import ITaskController from './IControllers/ITaskController';
 import config from '@/config';
 import { z } from 'zod';
+import ITaskController from './IControllers/ITaskController';
 
 const querySchema = z.object({
   filter: z.string().optional(),
@@ -29,11 +29,11 @@ export default class TaskController implements ITaskController {
       const value = query.data.value || undefined;
       const page = Number(query.data.page) || undefined;
       const limit = Number(query.data.limit) || undefined;
+      const state = req.query.state || undefined;
 
       if (filter && value && page && limit) {
         const response = await fetch(
-          config.tasksApiUrl +
-            `/api/Requests?filter=${filter}&value=${value}&limit=${limit}&page=${page}`
+          `${config.tasksApiUrl}/api/requests?filter=${filter}&value=${value}&limit=${limit}&page=${page}`
         );
 
         const data = await response.json();
@@ -43,7 +43,7 @@ export default class TaskController implements ITaskController {
 
       if (page && limit) {
         const response = await fetch(
-          config.tasksApiUrl + `/api/Requests?limit=${limit}&page=${page}`
+          `${config.tasksApiUrl}/api/requests?limit=${limit}&page=${page}`
         );
 
         const data = await response.json();
@@ -51,7 +51,31 @@ export default class TaskController implements ITaskController {
         return res.status(200).json(data);
       }
 
-      const response = await fetch(config.tasksApiUrl + '/api/Requests');
+      if (state) {
+        const response = await fetch(`${config.tasksApiUrl}/api/requests?state=${state}`);
+
+        const data = await response.json();
+
+        return res.status(200).json(data);
+      }
+
+      const response = await fetch(`${config.tasksApiUrl}/api/requests`);
+
+      const data = await response.json();
+
+      return res.status(200).json(data);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  public async getTaskSequence(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
+    try {
+      const response = await fetch(`${config.tasksApiUrl}/api/requests/sequence`);
 
       const data = await response.json();
 
@@ -67,7 +91,7 @@ export default class TaskController implements ITaskController {
     next: NextFunction
   ): Promise<Response | void> {
     try {
-      const response = await fetch(config.tasksApiUrl + '/api/Requests/surveillance', {
+      const response = await fetch(config.tasksApiUrl + '/api/requests/surveillance', {
         method: 'POST',
         body: JSON.stringify(req.body),
         headers: { 'Content-Type': 'application/json' }
@@ -87,7 +111,7 @@ export default class TaskController implements ITaskController {
     next: NextFunction
   ): Promise<Response | void> {
     try {
-      const response = await fetch(config.tasksApiUrl + '/api/Requests/pick-delivery', {
+      const response = await fetch(config.tasksApiUrl + '/api/requests/pick-delivery', {
         method: 'POST',
         body: JSON.stringify(req.body),
         headers: { 'Content-Type': 'application/json' }
@@ -107,7 +131,7 @@ export default class TaskController implements ITaskController {
     next: NextFunction
   ): Promise<Response | void> {
     try {
-      const response = await fetch(config.tasksApiUrl + `/api/Requests/${req.params.id}/accept`, {
+      const response = await fetch(config.tasksApiUrl + `/api/requests/${req.params.id}/accept`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' }
       });
@@ -126,8 +150,7 @@ export default class TaskController implements ITaskController {
     next: NextFunction
   ): Promise<Response | void> {
     try {
-      console.log(req.params.id);
-      const response = await fetch(config.tasksApiUrl + `/api/Requests/${req.params.id}/reject`, {
+      const response = await fetch(config.tasksApiUrl + `/api/requests/${req.params.id}/reject`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' }
       });

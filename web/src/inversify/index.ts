@@ -4,15 +4,15 @@ import { TYPES } from "./types";
 import { ConnectorService } from "@/service/connectorService";
 import { DeviceModelService } from "@/service/deviceModelService";
 import { DeviceService } from "@/service/deviceService";
+import { RequestService } from "@/service/requestService";
 import { RoomService } from "@/service/roomService";
 import { RouteService } from "@/service/routeService";
 import { UserService } from "@/service/userService";
 
-import { api, mdTasksApi } from "../service/api";
+import { api } from "../service/api";
 import { BuildingService } from "../service/buildingsService";
 import { ElevatorService } from "../service/elevatorService";
 import { FloorService } from "../service/floorService";
-import { RequestService } from "@/service/requestService";
 
 const container = new Container();
 
@@ -30,10 +30,9 @@ container.bind(TYPES.localStorage).toConstantValue(
   import.meta.env.MODE !== "staging"
     ? window.localStorage
     : {
-      getItem: () => null,
-    }
+        getItem: () => null,
+      }
 );
 container.bind(TYPES.api).toConstantValue(api);
-container.bind(TYPES.mdTasksApi).toConstantValue(mdTasksApi);
 
 export { container };

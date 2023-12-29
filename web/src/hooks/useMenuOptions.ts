@@ -87,6 +87,11 @@ export const useMenuOptions = () => {
         icon: TaskRequestsIcon,
         onClick: () => navigation("/task-requests"),
       });
+      options.push({
+        label: "Task Sequence",
+        icon: MapIcon,
+        onClick: () => navigation("/task-sequence"),
+      });
     }
 
     options.push({

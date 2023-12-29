@@ -25,6 +25,12 @@ const TaskHome: React.FC = () => {
           action="Go to Task Requests"
         />
         <Card
+          title="Task Sequence"
+          description="Check the task sequence for all the approved task requests."
+          link="/task-sequence"
+          action="Go to Task Sequence"
+        />
+        <Card
           title="RGPD"
           description="Read the RGPD of the application."
           link="/rgpd"

@@ -1,14 +1,9 @@
 import axios from "axios";
 
 const MDL_URL = import.meta.env.VITE_API_URL;
-const MDTASK_URL = import.meta.env.VITE_MDTASK_API_URL;
 
 const api = axios.create({
-  baseURL: MDL_URL,
+  baseURL: MDL_URL || "http://localhost:4000",
 });
 
-const mdTasksApi = axios.create({
-  baseURL: MDTASK_URL,
-});
-
-export { api, mdTasksApi };
+export { api };

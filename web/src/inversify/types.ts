@@ -13,5 +13,4 @@ export const TYPES = {
   localStorage: Symbol.for("LocalStorage"),
 
   api: Symbol.for("Api"),
-  mdTasksApi: Symbol.for("MdTasksApi"),
 };

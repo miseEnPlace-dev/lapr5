@@ -18,7 +18,7 @@ export class RequestService implements IRequestService {
   constructor(
     @inject(TYPES.api) private http: HttpService,
     @inject(TYPES.localStorage) private localStorage: Storage
-  ) { }
+  ) {}
 
   async getAllRequests(
     filter?: "state" | "userId",
@@ -70,7 +70,22 @@ export class RequestService implements IRequestService {
         params,
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = response.data;
+    return data;
+  }
+
+  async getAcceptedRequests(): Promise<IPaginationDTO<Request>> {
+    const token = this.localStorage.getItem(localStorageConfig.token);
+
+    const response = await this.http.get<IPaginationDTO<Request>>(
+      "/task-requests",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
       }
     );

@@ -6,4 +6,5 @@ export default interface ITaskController {
   createPickDelivery(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
   acceptRequest(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
   rejectRequest(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
+  getTaskSequence(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
 }

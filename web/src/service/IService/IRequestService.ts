@@ -17,6 +17,7 @@ export interface IRequestService {
     request: RequestPickAndDelivery
   ): Promise<RequestPickAndDelivery>;
   acceptRequest(id: string): Promise<void>;
+  getAcceptedRequests(): Promise<IPaginationDTO<Request>>;
   rejectRequest(id: string): Promise<void>;
   getRequestsByType(
     capability: string,

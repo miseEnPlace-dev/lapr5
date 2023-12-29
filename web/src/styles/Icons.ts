@@ -50,9 +50,9 @@ export {
   RobotIcon,
   RoomIcon,
   SuccessIcon,
+  TaskRequestsIcon,
+  TasksIcon,
   UserIcon,
   UsersIcon,
   WarningIcon,
-  TasksIcon,
-  TaskRequestsIcon,
 };

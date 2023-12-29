@@ -22,6 +22,16 @@ export default (app: Router) => {
       ctrl.getTaskRequests(req, res, next)
   );
 
+  route.get(
+    '/task-requests/sequence',
+    isAuthenticated,
+    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.task.name),
+    (req, res, next) =>
+      // #swagger.tags = ['Tasks']
+      // #swagger.summary = 'Get Tasks Sequence'
+      ctrl.getTaskSequence(req, res, next)
+  );
+
   route.post(
     '/task-requests/surveillance',
     isAuthenticated,
