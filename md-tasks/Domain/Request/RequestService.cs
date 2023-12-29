@@ -153,7 +153,12 @@ namespace DDDSample1.Domain.Requests
       {
         Guard.AgainstNullBulk("Invalid Request", dto.UserId == null || dto.Description == null || dto.UserName == null || dto.PhoneNumber == null || dto.FloorId == null);
 
-        SurveillanceTask task = new(new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description), new UserName(dto.UserName), new UserPhoneNumber(dto.PhoneNumber), new FloorId(dto.FloorId));
+        SurveillanceTask task = new(
+          new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description),
+          new UserName(dto.UserName), new UserPhoneNumber(dto.PhoneNumber),
+          new FloorId(dto.FloorId), new RoomId(dto.StartRoomId), new RoomId(dto.EndRoomId),
+          dto.StartCoordinateX, dto.StartCoordinateY, dto.EndCoordinateX, dto.EndCoordinateY
+        );
         await surveillanceTaskRepository.AddAsync(task);
         await unitOfWork.CommitAsync();
 
@@ -254,7 +259,13 @@ namespace DDDSample1.Domain.Requests
             task.UserName.Name,
             task.UserPhoneNumber.PhoneNumber,
             task.FloorId.Value,
-            task.Id.Value
+            task.Id.Value,
+            task.StartCoordinateX,
+            task.StartCoordinateY,
+            task.EndCoordinateX,
+            task.EndCoordinateY,
+            task.StartRoomId.Value,
+            task.EndRoomId.Value
         );
       }
 
