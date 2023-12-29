@@ -29,37 +29,20 @@ export default class TaskController implements ITaskController {
       const value = query.data.value || undefined;
       const page = Number(query.data.page) || undefined;
       const limit = Number(query.data.limit) || undefined;
-      const state = req.query.state || undefined;
 
-      if (filter && value && page && limit) {
-        const response = await fetch(
-          `${config.tasksApiUrl}/api/requests?filter=${filter}&value=${value}&limit=${limit}&page=${page}`
-        );
+      if (!filter && !value && !page && !limit) {
+        const response = await fetch(`${config.tasksApiUrl}/api/requests`);
 
         const data = await response.json();
 
         return res.status(200).json(data);
       }
 
-      if (page && limit) {
-        const response = await fetch(
-          `${config.tasksApiUrl}/api/requests?limit=${limit}&page=${page}`
-        );
-
-        const data = await response.json();
-
-        return res.status(200).json(data);
-      }
-
-      if (state) {
-        const response = await fetch(`${config.tasksApiUrl}/api/requests?state=${state}`);
-
-        const data = await response.json();
-
-        return res.status(200).json(data);
-      }
-
-      const response = await fetch(`${config.tasksApiUrl}/api/requests`);
+      const response = await fetch(
+        `${config.tasksApiUrl}/api/requests?${filter ? `filter=${filter}` : ''}${
+          value ? `&value=${value}` : ''
+        }${page ? `&page=${page}` : ''}${limit ? `&limit=${limit}` : ''}`
+      );
 
       const data = await response.json();
 

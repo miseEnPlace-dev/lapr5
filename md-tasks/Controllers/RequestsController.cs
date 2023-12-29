@@ -30,7 +30,8 @@ public class RequestsController : ControllerBase
       if (Request.Query["filter"].ToString() == "state")
         return await requestsService.GetRequestsByState(RequestStateMapper.ToRequestState(Request.Query["value"].ToString()), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
     }
-
+    if (Request.Query["filter"].ToString() == "state")
+      return await requestsService.GetRequestsByState(RequestStateMapper.ToRequestState(Request.Query["value"].ToString()), -1, -1);
 
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
       return await requestsService.GetAll(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
