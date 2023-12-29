@@ -15,20 +15,13 @@ namespace DDDSample1.Domain.DeviceTasks.SurveillanceTask
 
     public FloorId FloorId { get; private set; }
 
-    public int StartCoordinateX { get; private set; }
-    public int StartCoordinateY { get; private set; }
-    public int EndCoordinateX { get; private set; }
-    public int EndCoordinateY { get; private set; }
 
-    public SurveillanceTask(DeviceTaskId Id, TaskDescription description, UserName UserName, UserPhoneNumber userPhoneNumber, FloorId floorId, int StartCoordinateX, int StartCoordinateY, int EndCoordinateX, int EndCoordinateY) : base(Id)
+
+    public SurveillanceTask(DeviceTaskId Id, TaskDescription description, UserName UserName, UserPhoneNumber userPhoneNumber, FloorId floorId, int StartCoordinateX, int StartCoordinateY, int EndCoordinateX, int EndCoordinateY) : base(Id, StartCoordinateX, StartCoordinateY, EndCoordinateX, EndCoordinateY)
     {
       Description = description;
       this.UserName = UserName;
       UserPhoneNumber = userPhoneNumber;
-      this.StartCoordinateX = StartCoordinateX;
-      this.StartCoordinateY = StartCoordinateY;
-      this.EndCoordinateX = EndCoordinateX;
-      this.EndCoordinateY = EndCoordinateY;
       FloorId = floorId;
     }
 

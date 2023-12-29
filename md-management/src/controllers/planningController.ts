@@ -13,7 +13,6 @@ export default class PlanningController implements IPlanningController {
       const { fromX, fromY, toX, toY, fromFloor, toFloor, method } = req.body;
       const url = `${config.planningApiUrl}/api/route?fromX=${fromX}&fromY=${fromY}&toX=${toX}&toY=${toY}&fromFloor=${fromFloor}&toFloor=${toFloor}&method=${method}`;
 
-      console.log(url);
       const response = await fetch(url);
 
       const data = await response.json();

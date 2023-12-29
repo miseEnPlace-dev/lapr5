@@ -157,4 +157,14 @@ export class RequestService implements IRequestService {
       }
     );
   }
+
+  async getSequence(): Promise<Request[]> {
+    const token = this.localStorage.getItem(localStorageConfig.token);
+
+    const res = await this.http.get<Request[]>("/task-requests/sequence", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return res.data;
+  }
 }

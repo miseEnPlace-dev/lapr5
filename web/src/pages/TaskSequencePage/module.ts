@@ -8,6 +8,7 @@ import { IRequestService } from "@/service/IService/IRequestService";
 export const useModule = () => {
   const requestService = useInjection<IRequestService>(TYPES.requestService);
   const [requests, setRequests] = useState<Request[]>([]);
+  const [sequence, setSequence] = useState<Request[]>([]);
 
   const sanitizeTaskType = (taskType: string) => {
     switch (taskType) {
@@ -20,8 +21,9 @@ export const useModule = () => {
     }
   };
 
-  const generateSequence = () => {
-    console.log("generateSequence");
+  const generateSequence = async () => {
+    const s = await requestService.getSequence();
+    setSequence(s);
   };
 
   const sanitizeDate = (date: string) => {
@@ -73,5 +75,6 @@ export const useModule = () => {
     sanitizeTaskType,
     sanitizeDate,
     generateSequence,
+    sequence,
   };
 };

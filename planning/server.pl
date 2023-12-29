@@ -74,15 +74,15 @@ fetch_floors(BuildingCode, Floors) :-
     read_api(FloorsUrl3, Floors).
 
 fetch_requests(Requests) :-
-    tasks_api_url(Url),
-    atom_concat(Url, '/requests/pick-delivery?state=accepted', PickDeliveryUrl),
+    api_url(Url),
+    atom_concat(Url, '/task-requests?filter=state&value=accepted', PickDeliveryUrl),
     (retractall(genetic:t(_,_,_));true),
     (retractall(genetic:tarefas(_,_,_));true),
     (retract(genetic:n_tarefas(_));true),
     read_api(PickDeliveryUrl, Requests).
 
-password('campus').
-email('campus@isep.ipp.pt').
+password('admin').
+email('admin@isep.ipp.pt').
 
 authenticate():-
     api_url(Url),
@@ -98,11 +98,11 @@ api_get_requests(_):-
     fetch_requests(Requests),
     genetic:load_tasks(Requests.data,0),
     genetic:gera_lim_time(B*X),
-    % B = List, X = Time, return json with both
     prolog_to_json(json([tasks=B, time=X]), JsonOut),
     reply_json(JsonOut, [json_object(dict)]).
 
 api_get_route(Request):-
+    authenticate(),
     (retractall(planning:m(_,_,_,_));true),
     (retractall(planning:liga(_,_));true),
     (retractall(planning:pisos(_,_));true),

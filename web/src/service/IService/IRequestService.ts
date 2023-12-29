@@ -13,6 +13,7 @@ export interface IRequestService {
   createSurveillanceRequest(
     request: RequestSurveillance
   ): Promise<RequestSurveillance>;
+  getSequence(): Promise<Request[]>;
   createPickAndDeliveryRequest(
     request: RequestPickAndDelivery
   ): Promise<RequestPickAndDelivery>;
