@@ -14,7 +14,7 @@ public class SurveillanceRequestDTO : RequestDTO
   public int EndCoordinateY { get; set; }
 
   [JsonConstructor]
-  public SurveillanceRequestDTO(string userId, string requestedAt, string description, string userName, string phoneNumber, string floorId) : base(userId, requestedAt)
+  public SurveillanceRequestDTO(string requestedAt, string description, string userName, string phoneNumber, string floorId, string deviceId) : base(requestedAt, deviceId)
   {
     UserName = userName;
     PhoneNumber = phoneNumber;
@@ -22,7 +22,7 @@ public class SurveillanceRequestDTO : RequestDTO
     Description = description;
   }
 
-  public SurveillanceRequestDTO(string id, string userId, string description, string requestedAt, string state, string userName, string phoneNumber, string floorId, string deviceTaskId, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY) : base(id, "surveillance", userId, requestedAt, state, deviceTaskId)
+  public SurveillanceRequestDTO(string id, string description, string requestedAt, string state, string userName, string phoneNumber, string floorId, string deviceTaskId, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, string deviceId) : base(id, "surveillance", requestedAt, state, deviceTaskId, deviceId)
   {
     UserName = userName;
     PhoneNumber = phoneNumber;

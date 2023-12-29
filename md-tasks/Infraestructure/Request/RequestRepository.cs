@@ -23,11 +23,4 @@ public class RequestRepository : BaseRepository<Request, RequestId>, IRequestRep
     return await _context.Requests.Where(r => r.State.Equals(state)).ToListAsync();
   }
 
-  public async Task<List<Request>> GetRequestsByUserId(string userId, int page, int limit)
-  {
-    if (page != -1 && limit != -1)
-      return await _context.Requests.Where(r => r.UserId.ToString() == userId).Skip(page * limit).Take(limit).ToListAsync();
-
-    return await _context.Requests.Where(r => r.UserId.ToString() == userId).ToListAsync();
-  }
 }

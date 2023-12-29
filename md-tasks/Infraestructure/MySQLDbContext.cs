@@ -4,7 +4,6 @@ using DDDSample1.Infrastructure.Requests;
 using DDDSample1.Infrastructure.Tasks;
 using DDDSample1.Domain.DeviceTasks.SurveillanceTask;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
-using DDDSample1.Domain.DeviceTasks;
 
 namespace DDDSample1.Infrastructure
 {

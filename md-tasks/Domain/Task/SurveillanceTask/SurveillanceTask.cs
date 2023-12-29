@@ -20,7 +20,7 @@ namespace DDDSample1.Domain.DeviceTasks.SurveillanceTask
     public int EndCoordinateX { get; private set; }
     public int EndCoordinateY { get; private set; }
 
-    public SurveillanceTask(DeviceTaskId Id, TaskDescription description, UserName UserName, UserPhoneNumber userPhoneNumber, FloorId floorId, int StartCoordinateX, int StartCoordinateY, int EndCoordinateX, int EndCoordinateY) : base(Id)
+    public SurveillanceTask(DeviceTaskId Id, TaskDescription description, UserName UserName, UserPhoneNumber userPhoneNumber, FloorId floorId, int StartCoordinateX, int StartCoordinateY, int EndCoordinateX, int EndCoordinateY, UserId userId) : base(Id, userId)
     {
       Description = description;
       this.UserName = UserName;

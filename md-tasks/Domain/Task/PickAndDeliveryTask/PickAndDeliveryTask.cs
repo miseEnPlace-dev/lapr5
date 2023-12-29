@@ -23,7 +23,7 @@ namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask
     public string StartFloorCode { get; private set; }
     public string EndFloorCode { get; private set; }
 
-    public PickAndDeliveryTask(DeviceTaskId Id, TaskDescription description, UserName pickupUserName, UserName deliveryUserName, UserPhoneNumber pickupUserPhoneNumber, UserPhoneNumber deliveryUserPhoneNumber, RoomId pickupRoomId, RoomId deliveryRoomId, ConfirmationCode confirmationCode, int StartCoordinateX, int StartCoordinateY, int EndCoordinateX, int EndCoordinateY, string startFloorCode, string endFloorCode) : base(Id)
+    public PickAndDeliveryTask(DeviceTaskId Id, TaskDescription description, UserName pickupUserName, UserName deliveryUserName, UserPhoneNumber pickupUserPhoneNumber, UserPhoneNumber deliveryUserPhoneNumber, RoomId pickupRoomId, RoomId deliveryRoomId, ConfirmationCode confirmationCode, int StartCoordinateX, int StartCoordinateY, int EndCoordinateX, int EndCoordinateY, string startFloorCode, string endFloorCode, UserId userId) : base(Id, userId)
     {
       Description = description;
       ConfirmationCode = confirmationCode;

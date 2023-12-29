@@ -21,6 +21,7 @@ internal class SurveillanceTaskEntityTypeConfiguration : IEntityTypeConfiguratio
     builder.Property(b => b.StartCoordinateY);
     builder.Property(b => b.EndCoordinateX);
     builder.Property(b => b.EndCoordinateY);
+    builder.Property(b => b.UserId).HasConversion(b => b.Value, b => new UserId(b));
     // builder.Property<bool>("_active").HasColumnName("Active");
   }
 }

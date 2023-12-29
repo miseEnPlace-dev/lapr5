@@ -9,7 +9,6 @@ namespace DDDNetCore.Services
   {
     Task<PaginationDTO<RequestDTO>> GetAll(int page, int limit);
     Task<PaginationDTO<RequestDTO>> GetRequestsByState(RequestState state, int page, int limit);
-    Task<PaginationDTO<RequestDTO>> GetRequestsByUserId(string userId, int page, int limit);
     Task<PaginationDTO<SurveillanceRequestDTO>> GetAllSurveillance(int page, int limit);
     Task<PaginationDTO<PickDeliveryRequestDTO>> GetAllPickAndDelivery(int page, int limit);
     Task<PaginationDTO<PickDeliveryRequestDTO>> GetAllPickAndDeliveryByState(RequestState state, int page, int limit);

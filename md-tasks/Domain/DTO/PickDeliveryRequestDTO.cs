@@ -21,7 +21,7 @@ public class PickDeliveryRequestDTO : RequestDTO
   public string EndFloorCode { get; set; }
 
   [JsonConstructor]
-  public PickDeliveryRequestDTO(string userId, string requestedAt, string description, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string confirmationCode) : base(userId, requestedAt)
+  public PickDeliveryRequestDTO(string requestedAt, string description, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string confirmationCode, string deviceId) : base(requestedAt, deviceId)
   {
     Description = description;
     PickupUserName = pickupUserName;
@@ -33,7 +33,7 @@ public class PickDeliveryRequestDTO : RequestDTO
     ConfirmationCode = confirmationCode;
   }
 
-  public PickDeliveryRequestDTO(string id, string userId, string description, string requestedAt, string state, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string deviceTaskId, string confirmationCode, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, string startFloorCode, string endFloorCode) : base(id, "pick_delivery", userId, requestedAt, state, deviceTaskId)
+  public PickDeliveryRequestDTO(string id, string description, string requestedAt, string state, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string deviceTaskId, string confirmationCode, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, string startFloorCode, string endFloorCode, string deviceId) : base(id, "pick_delivery", requestedAt, state, deviceTaskId, deviceId)
   {
     Description = description;
     PickupUserName = pickupUserName;

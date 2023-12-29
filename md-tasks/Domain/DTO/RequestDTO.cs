@@ -4,27 +4,26 @@ namespace DDDSample1.Domain.DTO;
 public abstract class RequestDTO
 {
   public string Id { get; set; }
-  public string UserId { get; set; }
   public string RequestedAt { get; set; }
   public string DeviceTaskId { get; set; }
   public string State { get; set; }
-
+  public string DeviceId { get; set; }
   public string Type { get; set; }
 
   [JsonConstructor]
-  public RequestDTO(string userId, string requestedAt)
+  public RequestDTO(string requestedAt, string deviceId)
   {
-    UserId = userId;
     RequestedAt = requestedAt;
+    DeviceId = deviceId;
   }
 
-  public RequestDTO(string id, string type, string userId, string requestedAt, string state, string deviceTaskId)
+  public RequestDTO(string id, string type, string requestedAt, string state, string deviceTaskId, string deviceId)
   {
     Id = id;
-    UserId = userId;
     RequestedAt = requestedAt;
     State = state;
     DeviceTaskId = deviceTaskId;
     Type = type;
+    DeviceId = deviceId;
   }
 }

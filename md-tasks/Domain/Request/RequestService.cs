@@ -10,10 +10,7 @@ using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
 using DDDSample1.Domain.DeviceTasks.SurveillanceTask;
 using DDDSample1.Domain.DTO;
-using DDDSample1.Domain.Floor;
-using DDDSample1.Domain.Room;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.User;
 using DDDSample1.Infrastructure.Requests;
 
 namespace DDDSample1.Domain.Requests
@@ -115,23 +112,7 @@ namespace DDDSample1.Domain.Requests
       return new PaginationDTO<PickDeliveryRequestDTO>(result, page, limit, await repo.CountAsync());
     }
 
-    public async Task<PaginationDTO<RequestDTO>> GetRequestsByUserId(string userId, int page, int limit)
-    {
-      List<Request> requests = await repo.GetRequestsByUserId(userId, page - 1, limit);
 
-      List<RequestDTO> result = new();
-
-      foreach (Request request in requests)
-      {
-        if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
-          result.Add(await ConvertToDTO(request, "SurveillanceRequestDTO"));
-
-        if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
-          result.Add(await ConvertToDTO(request, "PickDeliveryRequestDTO"));
-      }
-
-      return new PaginationDTO<RequestDTO>(result, page, limit, await repo.CountAsync());
-    }
 
     public async Task<RequestDTO> GetById(RequestId id)
     {
@@ -151,58 +132,42 @@ namespace DDDSample1.Domain.Requests
     {
       try
       {
-        Guard.AgainstNullBulk("Invalid Request", dto.UserId == null || dto.Description == null || dto.UserName == null || dto.PhoneNumber == null || dto.FloorId == null);
+        //SurveillanceTask task = await surveillanceTaskRepository.GetByIdAsync(new DeviceTaskId(dto.DeviceTaskId));
+        //if (task == null) return null;
 
-        SurveillanceTask task = new(
-          new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description),
-          new UserName(dto.UserName), new UserPhoneNumber(dto.PhoneNumber),
-          new FloorId(dto.FloorId),
-          dto.StartCoordinateX, dto.StartCoordinateY, dto.EndCoordinateX, dto.EndCoordinateY
-        );
-        await surveillanceTaskRepository.AddAsync(task);
-        await unitOfWork.CommitAsync();
-
-        Request r = new(new UserId(dto.UserId), task.Id);
+        Request r = new(new DeviceTaskId(dto.DeviceTaskId), dto.DeviceId);
         await repo.AddAsync(r);
         await unitOfWork.CommitAsync();
 
-        return await ConvertToDTO(r, dto.GetType().Name);
+        return await ConvertToDTO(r, "SurveillanceRequestDTO");
       }
       catch (Exception e)
       {
         Console.WriteLine($"Exception: {e.Message}");
         throw;
       }
+
     }
 
     public async Task<RequestDTO> AddPickAndDeliveryRequest(PickDeliveryRequestDTO dto)
     {
       try
       {
-        Guard.AgainstNullBulk("cannot be null.", dto.UserId, dto.Description, dto.PickupUserName, dto.DeliveryUserName, dto.PickupRoomId, dto.DeliveryRoomId, dto.PickupUserPhoneNumber, dto.DeliveryUserPhoneNumber, dto.ConfirmationCode);
+        //PickAndDeliveryTask task = await pickAndDeliveryTaskRepository.GetByIdAsync(new DeviceTaskId(dto.DeviceTaskId));
+        //if (task == null) return null;
 
-        PickAndDeliveryTask task = new(
-          new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description),
-          new UserName(dto.PickupUserName), new(dto.DeliveryUserName),
-          new UserPhoneNumber(dto.PickupUserPhoneNumber), new UserPhoneNumber(dto.DeliveryUserPhoneNumber),
-          new RoomId(dto.PickupRoomId), new RoomId(dto.DeliveryRoomId), new ConfirmationCode(dto.ConfirmationCode),
-          dto.StartCoordinateX, dto.StartCoordinateY, dto.EndCoordinateX, dto.EndCoordinateY, dto.StartFloorCode, dto.EndFloorCode
-        );
-
-        await pickAndDeliveryTaskRepository.AddAsync(task);
-        await unitOfWork.CommitAsync();
-
-        Request r = new(new UserId(dto.UserId), task.Id);
+        Request r = new(new DeviceTaskId(dto.DeviceTaskId), dto.DeviceId);
         await repo.AddAsync(r);
         await unitOfWork.CommitAsync();
 
-        return await ConvertToDTO(r, dto.GetType().Name);
+        return await ConvertToDTO(r, "PickDeliveryRequestDTO");
       }
       catch (Exception e)
       {
         Console.WriteLine($"Exception: {e.Message}");
         throw;
       }
+
     }
 
     public async Task<RequestDTO> Update(RequestDTO dto)
@@ -252,7 +217,6 @@ namespace DDDSample1.Domain.Requests
         SurveillanceTask task = await surveillanceTaskRepository.GetByIdAsync(r.DeviceTaskId);
         return new SurveillanceRequestDTO(
             r.Id.Value,
-            r.UserId.Value,
             task.Description.Value,
             r.RequestedAt.ToString(),
             r.State.State.ToString(),
@@ -263,7 +227,8 @@ namespace DDDSample1.Domain.Requests
             task.StartCoordinateX,
             task.StartCoordinateY,
             task.EndCoordinateX,
-            task.EndCoordinateY
+            task.EndCoordinateY,
+            r.DeviceId
         );
       }
 
@@ -273,7 +238,6 @@ namespace DDDSample1.Domain.Requests
 
         return new PickDeliveryRequestDTO(
             r.Id.Value,
-            r.UserId.Value,
             task.Description.Value,
             r.RequestedAt.ToString(),
             r.State.State.ToString(),
@@ -290,7 +254,8 @@ namespace DDDSample1.Domain.Requests
             task.EndCoordinateX,
             task.EndCoordinateY,
             task.StartFloorCode,
-            task.EndFloorCode
+            task.EndFloorCode,
+            r.DeviceId
         );
       }
 
