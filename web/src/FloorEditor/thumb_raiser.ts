@@ -677,36 +677,57 @@ export default class ThumbRaiser {
   }
 
   updateMaze(index: number) {
-    const floors = this.mazeParameters.mazes[index].maze.maze.elevator.floors;
-    const mazeSelect = document.getElementById("maze") as HTMLSelectElement;
-    const floorName = this.mazeParameters.mazes[index].name;
-    if (mazeSelect)
-      mazeSelect.innerHTML = `<option key=${floorName} value=${this.mazeParameters.mazes.findIndex(
-        (m) => m.name === floorName
-      )}>${floorName}</option>` + floors.map(
-        (floor) =>
-          `<option key=${floor} value=${this.mazeParameters.mazes.findIndex(
-            (m) => m.name === floor
-          )}>${floor}</option>`
+    // Add transition overlay
+    const transitionOverlay = document.createElement("div");
+    transitionOverlay.classList.add("transition-overlay");
+    document.body.appendChild(transitionOverlay);
+
+    setTimeout(() => {
+      transitionOverlay.style.opacity = "1";
+    }, 0);
+
+    // Wait for the duration of the transition
+    setTimeout(() => {
+
+      // Proceed with changing the maze
+      const floors = this.mazeParameters.mazes[index].maze.maze.elevator.floors;
+      const mazeSelect = document.getElementById("maze") as HTMLSelectElement;
+      const floorName = this.mazeParameters.mazes[index].name;
+      if (mazeSelect)
+        mazeSelect.innerHTML = `<option key=${floorName} value=${this.mazeParameters.mazes.findIndex(
+          (m) => m.name === floorName
+        )}>${floorName}</option>` + floors.map(
+          (floor) =>
+            `<option key=${floor} value=${this.mazeParameters.mazes.findIndex(
+              (m) => m.name === floor
+            )}>${floor}</option>`
+        );
+
+      this.scene.remove(this.maze);
+      // The cache must be enabled; additional information available at https://threejs.org/docs/api/en/loaders/FileLoader.html
+      THREE.Cache.enabled = true;
+
+      this.maze = new Maze(this.mazeParameters.mazes[index]);
+
+      const cellPos = this.maze.cellToCartesian(
+        this.mazeParameters.mazes[index].maze.player.initialPosition
       );
+      this.player.position.set(cellPos.x, cellPos.y, cellPos.z);
+      this.player.direction =
+        this.mazeParameters.mazes[index].maze.player.initialDirection;
 
-    this.scene.remove(this.maze);
-    this.maze = new Maze(this.mazeParameters.mazes[index]);
-    // The cache must be enabled; additional information available at https://threejs.org/docs/api/en/loaders/FileLoader.html
-    THREE.Cache.enabled = true;
+      this.scene.add(this.maze);
 
-    const cellPos = this.maze.cellToCartesian(
-      this.mazeParameters.mazes[index].maze.player.initialPosition
-    );
-    this.player.position.set(cellPos.x, cellPos.y, cellPos.z);
-    this.player.direction =
-      this.mazeParameters.mazes[index].maze.player.initialDirection;
+      document
+        .getElementById("maps-panel")
+        ?.setAttribute("style", "display:none");
 
-    this.scene.add(this.maze);
+    }, 5000);
 
-    document
-      .getElementById("maps-panel")
-      ?.setAttribute("style", "display:none");
+    setTimeout(() => {
+      transitionOverlay.style.opacity = "0";
+      document.body.removeChild(transitionOverlay);
+    }, 7000);
   }
 
   updateViewsPanel() {
