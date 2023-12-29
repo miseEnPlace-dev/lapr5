@@ -12,7 +12,7 @@ export interface ISequenceDTO {
   }[];
   time: number;
   path: {
-    route: [
+    [key: string]: [
       | {
           floor: string;
           x: number;

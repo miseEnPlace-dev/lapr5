@@ -45,6 +45,7 @@ export interface ISequenceResponseDTO {
   }[];
   time: number;
   path: {
+    taskId: string;
     route: [
       | {
           floor: string;
@@ -57,5 +58,5 @@ export interface ISequenceResponseDTO {
           type: string;
         }
     ];
-  };
+  }[];
 }

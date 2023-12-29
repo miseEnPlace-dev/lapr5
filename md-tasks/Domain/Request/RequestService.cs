@@ -358,27 +358,21 @@ namespace DDDSample1.Domain.Requests
         tasks.Add(task);
       }
 
-      PathDTO fullPath = new();
-      for (int i = 0; i < tasks.Count - 1; i++)
-      {
-        string StartFloorCode = tasks[i] is PickAndDeliveryTask ? ((PickAndDeliveryTask)tasks[i]).StartFloorCode : ((SurveillanceTask)tasks[i]).FloorId.Value;
-        string EndFloorCode = tasks[i] is PickAndDeliveryTask ? ((PickAndDeliveryTask)tasks[i]).EndFloorCode : ((SurveillanceTask)tasks[i]).FloorId.Value;
-        string NextFloorCode = tasks[i + 1] is PickAndDeliveryTask ? ((PickAndDeliveryTask)tasks[i + 1]).StartFloorCode : ((SurveillanceTask)tasks[i + 1]).FloorId.Value;
 
-        string url = $"{BASE_URL}/route?fromX={tasks[i].StartCoordinateX}&fromY={tasks[i].StartCoordinateY}&toX={tasks[i].EndCoordinateX}&toY={tasks[i].EndCoordinateY}&fromFloor={StartFloorCode}&toFloor={EndFloorCode}&method=elevators";
+      List<PathDTO> fullPath = new();
+      foreach (DeviceTask task in tasks)
+      {
+        string StartFloorCode = task is PickAndDeliveryTask ? ((PickAndDeliveryTask)task).StartFloorCode : ((SurveillanceTask)task).FloorId.Value;
+        string EndFloorCode = task is PickAndDeliveryTask ? ((PickAndDeliveryTask)task).EndFloorCode : ((SurveillanceTask)task).FloorId.Value;
+
+        string url = $"{BASE_URL}/route?fromX={task.StartCoordinateX}&fromY={task.StartCoordinateY}&toX={task.EndCoordinateX}&toY={task.EndCoordinateY}&fromFloor={StartFloorCode}&toFloor={EndFloorCode}&method=elevators";
         using HttpResponseMessage res = await httpClient.GetAsync(url);
 
         res.EnsureSuccessStatusCode();
 
         PathDTO path = PathJsonParser.Parse(await res.Content.ReadAsStringAsync());
-        fullPath.AppendRoute(path);
-        url = $"{BASE_URL}/route?fromX={tasks[i].EndCoordinateX}&fromY={tasks[i].EndCoordinateY}&toX={tasks[i + 1].StartCoordinateX}&toY={tasks[i + 1].StartCoordinateY}&fromFloor={EndFloorCode}&toFloor={NextFloorCode}&method=elevators";
-        using HttpResponseMessage secondResponse = await httpClient.GetAsync(url);
-
-        secondResponse.EnsureSuccessStatusCode();
-
-        path = PathJsonParser.Parse(await secondResponse.Content.ReadAsStringAsync());
-        fullPath.AppendRoute(path);
+        path.taskId = task.Id.Value;
+        fullPath.Add(path);
       }
 
       SequenceDTO result = new(tasks, jsonResponse.time, fullPath);

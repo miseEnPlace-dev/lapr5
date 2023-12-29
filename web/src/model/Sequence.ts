@@ -12,7 +12,7 @@ export interface Sequence {
   }[];
   time: number;
   path: {
-    route: [
+    [key: string]: [
       | {
           floor: string;
           x: number;
