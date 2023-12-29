@@ -1,11 +1,12 @@
 import { useMenuOptions } from "@/hooks/useMenuOptions";
+import Button from "@/components/Button";
 import SideBar from "@/components/SideBar";
 
 import { useModule } from "./module";
 
 const TaskSequencePage: React.FC = () => {
   const { menuOptions } = useMenuOptions();
-  const { requests } = useModule();
+  const { requests, sanitizeTaskType, sanitizeDate } = useModule();
 
   return (
     <div className="flex">
@@ -15,15 +16,36 @@ const TaskSequencePage: React.FC = () => {
         <p className="text-slate-500">
           Check the task sequence for all the approved task requests.
         </p>
-        <section>
+        <section className="my-8 flex flex-wrap items-center gap-x-8">
           {requests.map((request) => (
-            <article key={request.id}>
-              <h2 className="text-2xl font-bold">{request.userId}</h2>
-              <h2 className="text-2xl font-bold">{request.type}</h2>
-              <p className="text-slate-500">{request.description}</p>
+            <article
+              className="relative flex w-full max-w-[320px] flex-col rounded-lg border border-slate-200 px-12 py-8 hover:brightness-90"
+              key={request.id}
+            >
+              <h2 className="text-2xl font-bold">
+                {request.user.firstName} {request.user.lastName}
+              </h2>
+              <span className="absolute right-2 top-2 text-slate-600">
+                {sanitizeDate(request.requestedAt)}
+              </span>
+              <h2 className="text-base">
+                Type: {sanitizeTaskType(request.type)}
+              </h2>
+              <p className="mt-4 text-sm text-slate-600">
+                Details: {request.description}
+              </p>
             </article>
           ))}
         </section>
+        <div>
+          <Button
+            name="generate"
+            type="confirm"
+            onClick={() => alert("Percurso gerado com sucesso!")}
+          >
+            Generate Task Sequence
+          </Button>
+        </div>
       </main>
     </div>
   );

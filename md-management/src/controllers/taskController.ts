@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 
 import config from '@/config';
+import { TYPES } from '@/loaders/inversify/types';
+import IUserService from '@/services/IServices/IUserService';
 import { z } from 'zod';
 import ITaskController from './IControllers/ITaskController';
 
@@ -14,7 +16,7 @@ const querySchema = z.object({
 
 @injectable()
 export default class TaskController implements ITaskController {
-  constructor() {}
+  constructor(@inject(TYPES.userService) private userService: IUserService) {}
 
   public async getTaskRequests(
     req: Request,
@@ -45,6 +47,12 @@ export default class TaskController implements ITaskController {
       );
 
       const data = await response.json();
+
+      for (const request of data.data) {
+        console.log(request);
+        const user = (await this.userService.findUserById(request.userId)).getValue();
+        request.user = user;
+      }
 
       return res.status(200).json(data);
     } catch (e) {
