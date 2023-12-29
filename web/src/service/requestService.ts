@@ -9,6 +9,7 @@ import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Request } from "@/model/Request";
 import { RequestPickAndDelivery } from "@/model/RequestPickAndDelivery";
 import { RequestSurveillance } from "@/model/RequestSurveillance";
+import { Sequence } from "@/model/Sequence";
 
 import { HttpService } from "./IService/HttpService";
 import { IRequestService } from "./IService/IRequestService";
@@ -158,10 +159,10 @@ export class RequestService implements IRequestService {
     );
   }
 
-  async getSequence(): Promise<Request[]> {
+  async getSequence(): Promise<Sequence> {
     const token = this.localStorage.getItem(localStorageConfig.token);
 
-    const res = await this.http.get<Request[]>("/task-requests/sequence", {
+    const res = await this.http.get<Sequence>("/task-requests/sequence", {
       headers: { Authorization: `Bearer ${token}` },
     });
 

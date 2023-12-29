@@ -3,12 +3,14 @@ import { useInjection } from "inversify-react";
 
 import { TYPES } from "@/inversify/types";
 import { Request } from "@/model/Request";
+import { Sequence } from "@/model/Sequence";
 import { IRequestService } from "@/service/IService/IRequestService";
 
 export const useModule = () => {
   const requestService = useInjection<IRequestService>(TYPES.requestService);
   const [requests, setRequests] = useState<Request[]>([]);
-  const [sequence, setSequence] = useState<Request[]>([]);
+  const [sequence, setSequence] = useState<Sequence>();
+  const [loading, setLoading] = useState(false);
 
   const sanitizeTaskType = (taskType: string) => {
     switch (taskType) {
@@ -22,7 +24,9 @@ export const useModule = () => {
   };
 
   const generateSequence = async () => {
+    setLoading(true);
     const s = await requestService.getSequence();
+    setLoading(false);
     setSequence(s);
   };
 
@@ -76,5 +80,6 @@ export const useModule = () => {
     sanitizeDate,
     generateSequence,
     sequence,
+    loading,
   };
 };

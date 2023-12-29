@@ -1,7 +1,9 @@
+import { motion } from "framer-motion";
 import swal from "sweetalert";
 
 import { useMenuOptions } from "@/hooks/useMenuOptions";
 import Button from "@/components/Button";
+import Loading from "@/components/Loading";
 import SideBar from "@/components/SideBar";
 
 import { useModule } from "./module";
@@ -14,6 +16,7 @@ const TaskSequencePage: React.FC = () => {
     sanitizeDate,
     generateSequence,
     sequence,
+    loading,
   } = useModule();
 
   const handleGeneratePath = () => {
@@ -28,13 +31,13 @@ const TaskSequencePage: React.FC = () => {
         generateSequence();
         swal("Task Sequence generated!", {
           icon: "success",
-          timer: 2000,
+          timer: 1500,
         });
       } else {
         swal({
           title: "Task Sequence not generated!",
           icon: "info",
-          timer: 2000,
+          timer: 1500,
         });
       }
     });
@@ -74,24 +77,50 @@ const TaskSequencePage: React.FC = () => {
             Generate Task Sequence
           </Button>
         </div>
+        {loading && <Loading />}
         {sequence && (
-          <section className="flex w-full items-center gap-y-4">
-            {sequence.map((request, i) => (
-              <article
+          <section className="mt-6 flex w-full flex-col items-center gap-y-8 pr-12">
+            {sequence.tasks.map((request, i) => (
+              <motion.article
                 key={request.id}
-                className="flex h-24 w-full items-center rounded-lg bg-slate-400"
+                initial={{ opacity: 0, x: -100 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2 * i }}
+                className="flex h-28 w-full items-center justify-between rounded-lg bg-slate-100 px-8"
               >
-                <h2 className="text-3xl font-bold">#{i + 1}</h2>
-                <div className="flex flex-col items-center">
-                  <span>
-                    {request.user.firstName} {request.user.lastName}
-                  </span>
-                  <p className="mt-4 text-sm text-slate-600">
-                    Details: {request.description}
-                  </p>
+                <div className="flex items-center">
+                  <h2 className="text-5xl font-bold">#{i + 1}</h2>
+                  <div className="ml-8 flex flex-col">
+                    <span className="text-base font-bold">
+                      From: {request.startCoordinateX} x{" "}
+                      {request.startCoordinateY}
+                    </span>
+                    <span className="text-base font-bold">
+                      To: {request.endCoordinateX} x {request.endCoordinateY}
+                    </span>
+                    <p className="mt-4 text-base text-slate-600">
+                      Details: {request.description}
+                    </p>
+                  </div>
                 </div>
-              </article>
+                <div className="flex items-center gap-x-4">
+                  <Button type="reset" name="animation">
+                    Go to Animation
+                  </Button>
+                  <Button type="confirm" name="execute">
+                    Execute
+                  </Button>
+                </div>
+              </motion.article>
             ))}
+            <Button
+              name="execute-all"
+              type="destroy"
+              onClick={handleGeneratePath}
+              className="px-24"
+            >
+              Execute All
+            </Button>
           </section>
         )}
       </main>
