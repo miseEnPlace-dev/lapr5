@@ -20,6 +20,10 @@ export const useModule = () => {
     }
   };
 
+  const generateSequence = () => {
+    console.log("generateSequence");
+  };
+
   const sanitizeDate = (date: string) => {
     const dateArray = date.split(" ");
     const datePart = dateArray[0].split("/");
@@ -68,5 +72,6 @@ export const useModule = () => {
     requests,
     sanitizeTaskType,
     sanitizeDate,
+    generateSequence,
   };
 };

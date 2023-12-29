@@ -1,3 +1,5 @@
+import swal from "sweetalert";
+
 import { useMenuOptions } from "@/hooks/useMenuOptions";
 import Button from "@/components/Button";
 import SideBar from "@/components/SideBar";
@@ -6,7 +8,32 @@ import { useModule } from "./module";
 
 const TaskSequencePage: React.FC = () => {
   const { menuOptions } = useMenuOptions();
-  const { requests, sanitizeTaskType, sanitizeDate } = useModule();
+  const { requests, sanitizeTaskType, sanitizeDate, generateSequence } =
+    useModule();
+
+  const handleGeneratePath = () => {
+    swal({
+      title: "Are you sure?",
+      text: "Once generated, the tasks will be executed in the order of the sequence.",
+      icon: "warning",
+      buttons: ["Cancel", "Generate"],
+      dangerMode: true,
+    }).then((willGenerate) => {
+      if (willGenerate) {
+        generateSequence();
+        swal("Task Sequence generated!", {
+          icon: "success",
+          timer: 2000,
+        });
+      } else {
+        swal({
+          title: "Task Sequence not generated!",
+          icon: "info",
+          timer: 2000,
+        });
+      }
+    });
+  };
 
   return (
     <div className="flex">
@@ -38,11 +65,7 @@ const TaskSequencePage: React.FC = () => {
           ))}
         </section>
         <div>
-          <Button
-            name="generate"
-            type="confirm"
-            onClick={() => alert("Percurso gerado com sucesso!")}
-          >
+          <Button name="generate" type="confirm" onClick={handleGeneratePath}>
             Generate Task Sequence
           </Button>
         </div>
