@@ -1,6 +1,7 @@
 using System;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
 using DDDSample1.Domain.Floor;
+using DDDSample1.Domain.Room;
 using DDDSample1.Domain.User;
 
 namespace DDDSample1.Domain.DeviceTasks.SurveillanceTask
@@ -14,11 +15,25 @@ namespace DDDSample1.Domain.DeviceTasks.SurveillanceTask
 
     public FloorId FloorId { get; private set; }
 
-    public SurveillanceTask(DeviceTaskId Id, TaskDescription description, UserName userName, UserPhoneNumber userPhoneNumber, FloorId floorId) : base(Id)
+    public RoomId StartRoomId { get; private set; }
+    public RoomId EndRoomId { get; private set; }
+
+    public int StartCoordinateX { get; private set; }
+    public int StartCoordinateY { get; private set; }
+    public int EndCoordinateX { get; private set; }
+    public int EndCoordinateY { get; private set; }
+
+    public SurveillanceTask(DeviceTaskId Id, TaskDescription description, UserName UserName, UserPhoneNumber userPhoneNumber, FloorId floorId, RoomId startRoomId, RoomId endRoomId, int StartCoordinateX, int StartCoordinateY, int EndCoordinateX, int EndCoordinateY) : base(Id)
     {
       Description = description;
-      UserName = userName;
+      this.UserName = UserName;
+      StartRoomId = startRoomId;
+      EndRoomId = endRoomId;
       UserPhoneNumber = userPhoneNumber;
+      this.StartCoordinateX = StartCoordinateX;
+      this.StartCoordinateY = StartCoordinateY;
+      this.EndCoordinateX = EndCoordinateX;
+      this.EndCoordinateY = EndCoordinateY;
       FloorId = floorId;
     }
 
