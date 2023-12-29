@@ -156,7 +156,7 @@ namespace DDDSample1.Domain.Requests
         SurveillanceTask task = new(
           new DeviceTaskId(Guid.NewGuid().ToString()), new TaskDescription(dto.Description),
           new UserName(dto.UserName), new UserPhoneNumber(dto.PhoneNumber),
-          new FloorId(dto.FloorId), new RoomId(dto.StartRoomId), new RoomId(dto.EndRoomId),
+          new FloorId(dto.FloorId),
           dto.StartCoordinateX, dto.StartCoordinateY, dto.EndCoordinateX, dto.EndCoordinateY
         );
         await surveillanceTaskRepository.AddAsync(task);
@@ -263,9 +263,7 @@ namespace DDDSample1.Domain.Requests
             task.StartCoordinateX,
             task.StartCoordinateY,
             task.EndCoordinateX,
-            task.EndCoordinateY,
-            task.StartRoomId.Value,
-            task.EndRoomId.Value
+            task.EndCoordinateY
         );
       }
 

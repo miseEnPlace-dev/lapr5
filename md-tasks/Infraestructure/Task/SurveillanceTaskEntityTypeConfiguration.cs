@@ -4,7 +4,6 @@ using DDDSample1.Domain.DeviceTasks.SurveillanceTask;
 using DDDSample1.Domain.User;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
 using DDDSample1.Domain.Floor;
-using DDDSample1.Domain.Room;
 
 namespace DDDSample1.Infrastructure.Tasks;
 
@@ -18,8 +17,6 @@ internal class SurveillanceTaskEntityTypeConfiguration : IEntityTypeConfiguratio
     builder.Property(b => b.FloorId).HasColumnName("floor_id").HasConversion(b => b.Value, b => new FloorId(b));
     builder.Property(b => b.UserName).HasConversion(b => b.Name, b => new UserName(b));
     builder.Property(b => b.UserPhoneNumber).HasConversion(b => b.PhoneNumber, b => new UserPhoneNumber(b));
-    builder.Property(b => b.StartRoomId).HasConversion(b => b.Value, b => new RoomId(b));
-    builder.Property(b => b.EndRoomId).HasConversion(b => b.Value, b => new RoomId(b));
     builder.Property(b => b.StartCoordinateX);
     builder.Property(b => b.StartCoordinateY);
     builder.Property(b => b.EndCoordinateX);
