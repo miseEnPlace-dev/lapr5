@@ -6,5 +6,9 @@ namespace DDDSample1.Infrastructure.DeviceTasks;
 
 public class SurveillanceTaskRepository : BaseRepository<SurveillanceTask, DeviceTaskId>, ISurveillanceTaskRepository
 {
-  public SurveillanceTaskRepository(MySQLDbContext context) : base(context.SurveillanceTasks) { }
+  readonly MySQLDbContext _context;
+  public SurveillanceTaskRepository(MySQLDbContext context) : base(context.SurveillanceTasks)
+  {
+    _context = context;
+  }
 }
