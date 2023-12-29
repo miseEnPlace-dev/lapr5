@@ -69,6 +69,70 @@ export default class TaskController implements ITaskController {
     }
   }
 
+  public async getTaskRequestsPD(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
+    try {
+      const query = querySchema.safeParse(req.query);
+      if (!query.success) return res.status(400).json({ message: query.error });
+
+      const page = Number(query.data.page) || undefined;
+      const limit = Number(query.data.limit) || undefined;
+
+      if (page && limit) {
+        const response = await fetch(
+          `${config.tasksApiUrl}/api/Requests/pick-delivery?limit=${limit}&page=${page}`
+        );
+
+        const data = await response.json();
+
+        return res.status(200).json(data);
+      }
+
+      const response = await fetch(`${config.tasksApiUrl}/api/requests/pick-delivery`);
+
+      const data = await response.json();
+
+      return res.status(200).json(data);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  public async getTaskRequestsSV(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
+    try {
+      const query = querySchema.safeParse(req.query);
+      if (!query.success) return res.status(400).json({ message: query.error });
+
+      const page = Number(query.data.page) || undefined;
+      const limit = Number(query.data.limit) || undefined;
+
+      if (page && limit) {
+        const response = await fetch(
+          `${config.tasksApiUrl}/api/Requests/surveillance?limit=${limit}&page=${page}`
+        );
+
+        const data = await response.json();
+
+        return res.status(200).json(data);
+      }
+
+      const response = await fetch(`${config.tasksApiUrl}/api/requests/surveillance`);
+
+      const data = await response.json();
+
+      return res.status(200).json(data);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
   public async getTaskSequence(
     req: Request,
     res: Response,

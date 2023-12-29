@@ -23,6 +23,20 @@ export default (app: Router) => {
   );
 
   route.get(
+    '/task-requests/pick-delivery',
+    isAuthenticated,
+    (req, res, next) => isAuthorizedAs(req, res, next, [defaultRoles.task.name]),
+    (req, res, next) => ctrl.getTaskRequestsPD(req, res, next)
+  );
+
+  route.get(
+    '/task-requests/surveillance',
+    isAuthenticated,
+    (req, res, next) => isAuthorizedAs(req, res, next, [defaultRoles.task.name]),
+    (req, res, next) => ctrl.getTaskRequestsSV(req, res, next)
+  );
+
+  route.get(
     '/task-requests/sequence',
     isAuthenticated,
     (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.task.name),
