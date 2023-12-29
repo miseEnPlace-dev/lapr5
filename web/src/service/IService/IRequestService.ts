@@ -2,6 +2,7 @@ import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Request } from "@/model/Request";
 import { RequestPickAndDelivery } from "@/model/RequestPickAndDelivery";
 import { RequestSurveillance } from "@/model/RequestSurveillance";
+import { Sequence } from "@/model/Sequence";
 
 export interface IRequestService {
   getAllRequests(
@@ -13,6 +14,7 @@ export interface IRequestService {
   createSurveillanceRequest(
     request: RequestSurveillance
   ): Promise<RequestSurveillance>;
+  getSequence(): Promise<Sequence>;
   createPickAndDeliveryRequest(
     request: RequestPickAndDelivery
   ): Promise<RequestPickAndDelivery>;

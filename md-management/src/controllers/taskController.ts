@@ -3,6 +3,7 @@ import { inject, injectable } from 'inversify';
 
 import config from '@/config';
 import { TYPES } from '@/loaders/inversify/types';
+import { SequenceMapper } from '@/mappers/SequenceMapper';
 import IUserService from '@/services/IServices/IUserService';
 import { z } from 'zod';
 import ITaskController from './IControllers/ITaskController';
@@ -49,7 +50,6 @@ export default class TaskController implements ITaskController {
       const data = await response.json();
 
       for (const request of data.data) {
-        console.log(request);
         const user = (await this.userService.findUserById(request.userId)).getValue();
         request.user = user;
       }
@@ -134,7 +134,7 @@ export default class TaskController implements ITaskController {
 
       const data = await response.json();
 
-      return res.status(200).json(data);
+      return res.status(200).json(SequenceMapper.map(data));
     } catch (e) {
       return next(e);
     }

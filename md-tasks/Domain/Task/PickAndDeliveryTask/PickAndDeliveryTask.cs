@@ -15,15 +15,10 @@ namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask
     public RoomId PickupRoomId { get; private set; }
     public RoomId DeliveryRoomId { get; private set; }
 
-    public int StartCoordinateX { get; private set; }
-    public int StartCoordinateY { get; private set; }
-    public int EndCoordinateX { get; private set; }
-    public int EndCoordinateY { get; private set; }
-
     public string StartFloorCode { get; private set; }
     public string EndFloorCode { get; private set; }
 
-    public PickAndDeliveryTask(DeviceTaskId Id, TaskDescription description, UserName pickupUserName, UserName deliveryUserName, UserPhoneNumber pickupUserPhoneNumber, UserPhoneNumber deliveryUserPhoneNumber, RoomId pickupRoomId, RoomId deliveryRoomId, ConfirmationCode confirmationCode, int StartCoordinateX, int StartCoordinateY, int EndCoordinateX, int EndCoordinateY, string startFloorCode, string endFloorCode, UserId userId) : base(Id, userId)
+    public PickAndDeliveryTask(DeviceTaskId Id, TaskDescription description, UserName pickupUserName, UserName deliveryUserName, UserPhoneNumber pickupUserPhoneNumber, UserPhoneNumber deliveryUserPhoneNumber, RoomId pickupRoomId, RoomId deliveryRoomId, ConfirmationCode confirmationCode, int StartCoordinateX, int StartCoordinateY, int EndCoordinateX, int EndCoordinateY, string startFloorCode, string endFloorCode, UserId UserId) : base(Id, StartCoordinateX, StartCoordinateY, EndCoordinateX, EndCoordinateY, UserId)
     {
       Description = description;
       ConfirmationCode = confirmationCode;
@@ -33,12 +28,8 @@ namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask
       DeliveryRoomId = deliveryRoomId;
       PickupUserPhoneNumber = pickupUserPhoneNumber;
       DeliveryUserPhoneNumber = deliveryUserPhoneNumber;
-      this.StartCoordinateX = StartCoordinateX;
-      this.StartCoordinateY = StartCoordinateY;
-      this.EndCoordinateX = EndCoordinateX;
-      this.EndCoordinateY = EndCoordinateY;
-      this.StartFloorCode = startFloorCode;
-      this.EndFloorCode = endFloorCode;
+      StartFloorCode = startFloorCode;
+      EndFloorCode = endFloorCode;
     }
 
     public void ChangeDescription(TaskDescription description)

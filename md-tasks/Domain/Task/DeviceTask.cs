@@ -6,14 +6,21 @@ namespace DDDSample1.Domain.DeviceTasks
 {
   public abstract class DeviceTask : Entity<DeviceTaskId>, IAggregateRoot
   {
-    public UserId UserId { get; private set; }
-    public DateTime RequestedAt { get; private set; }
+    public int StartCoordinateX { get; private set; }
+    public int StartCoordinateY { get; private set; }
+    public int EndCoordinateX { get; private set; }
+    public int EndCoordinateY { get; private set; }
 
-    public DeviceTask(DeviceTaskId id, UserId userId)
+    public UserId UserId { get; private set; }
+
+    public DeviceTask(DeviceTaskId Id, int StartCoordinateX, int StartCoordinateY, int EndCoordinateX, int EndCoordinateY, UserId UserId)
     {
-      Id = id;
-      UserId = userId;
-      RequestedAt = DateTime.Now;
+      this.StartCoordinateX = StartCoordinateX;
+      this.StartCoordinateY = StartCoordinateY;
+      this.EndCoordinateX = EndCoordinateX;
+      this.EndCoordinateY = EndCoordinateY;
+      this.UserId = UserId;
+      this.Id = Id;
     }
 
     public abstract void ExecuteTask();

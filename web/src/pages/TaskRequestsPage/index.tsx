@@ -36,12 +36,19 @@ const TaskRequestsPage: React.FC = () => {
     deviceModelFilter,
     setDeviceModelFilter,
     deviceModels,
+    devices,
+    deviceInputRef,
   } = useListTaskRequestsModule();
 
   const [isFilterByStateModalVisible, setIsFilterByStateModalVisible] =
     useState(false);
   const [isFilterByModelModalVisible, setIsFilterByModelModalVisible] =
     useState(false);
+  const [isAddRobotModalVisible, setIsAddRobotModalVisible] = useState(false);
+
+  async function handleAddRobotClick() {
+    setIsAddRobotModalVisible(true);
+  }
 
   async function handleRemoveFilter() {
     setStateFilter(null);
@@ -330,7 +337,7 @@ const TaskRequestsPage: React.FC = () => {
                     className="w-full"
                     name="Task"
                     placeholder="Task"
-                    inputRef={deviceModelInputRef}
+                    inputRef={deviceInputRef}
                     options={deviceModels.map((deviceModel) => ({
                       code: deviceModel.code,
                       name: deviceModel.name,
@@ -354,6 +361,37 @@ const TaskRequestsPage: React.FC = () => {
                 type="confirm"
               >
                 List
+              </Button>
+            </div>
+          </Modal>
+
+          <Modal
+            setIsVisible={setIsAddRobotModalVisible}
+            isVisible={isAddRobotModalVisible}
+            title="Add robot to this task"
+          >
+            <div className="flex h-full flex-col justify-between gap-y-4">
+              <div className="flex w-full flex-col gap-y-4">
+                <div className="flex w-full flex-col gap-x-8 gap-y-4">
+                  <Dropdown
+                    className="w-full"
+                    name="Robot"
+                    placeholder="Ro"
+                    inputRef={deviceModelInputRef}
+                    options={devices.map((device) => ({
+                      code: device.code,
+                      name: device.nickname,
+                    }))}
+                    selected={deviceModelFilter ? deviceModelFilter : undefined}
+                  />
+                </div>
+              </div>
+              <Button
+                name="AddRobot"
+                onClick={handleAddRobotClick}
+                type="confirm"
+              >
+                Add
               </Button>
             </div>
           </Modal>

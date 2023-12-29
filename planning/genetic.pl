@@ -47,13 +47,22 @@ count([_|T],N1,N):-
 	N2 is N1+1,
 	count(T,N2,N).
 
+
 load_tasks([H|T],N):-
-	asserta(
+	((H.type=="pick_delivery",
+		asserta(
 		t(
 			H.deviceTaskId,
 			cel(H.startFloorCode,H.startCoordinateX,H.startCoordinateY),
 			cel(H.endFloorCode,H.endCoordinateX,H.endCoordinateY)
-		)
+		))
+	);
+		asserta(
+		t(
+			H.deviceTaskId,
+			cel(H.floorId,H.startCoordinateX,H.startCoordinateY),
+			cel(H.floorId,H.endCoordinateX,H.endCoordinateY)
+		))
 	),
 	N1 is N+1,
 	load_tasks(T,N1).

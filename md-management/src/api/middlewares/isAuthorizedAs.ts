@@ -14,12 +14,6 @@ const isAuthorizedAs = async (
   const session = jwt.decode(req.headers.authorization?.split(' ')[1] as string) as ISessionDTO;
   if (!session) return res.status(401).json({ message: 'Token not found' });
 
-  console.log(
-    session.role !== defaultRoles.admin.name &&
-      session.role !== role &&
-      !role.includes(session.role)
-  );
-
   if (
     session.role !== defaultRoles.admin.name &&
     session.role !== role &&
