@@ -25,10 +25,10 @@ const FleetHome: React.FC = () => {
           action="Go to Devices"
         />
         <Card
-          title="RGPD"
-          description="Read the RGPD of the application."
-          link="/rgpd"
-          action="Go to RGPD"
+          title="Privacy Policy"
+          description="Read the Privacy Policy of the application."
+          link="/privacy-policy"
+          action="Go to Privacy Policy"
         />
       </CardContainer>
     </div>
