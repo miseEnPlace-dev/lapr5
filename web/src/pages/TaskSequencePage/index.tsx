@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import swal from "sweetalert";
 
 import { useMenuOptions } from "@/hooks/useMenuOptions";
@@ -89,11 +90,27 @@ const TaskSequencePage: React.FC = () => {
             </article>
           ))}
         </section>
-        <div className="flex w-full items-center justify-center">
-          <Button name="generate" type="confirm" onClick={handleGeneratePath}>
-            Generate Task Sequence
-          </Button>
-        </div>
+        {requests.length > 0 ? (
+          <div className="flex w-full items-center justify-center">
+            <Button name="generate" type="confirm" onClick={handleGeneratePath}>
+              Generate Task Sequence
+            </Button>
+          </div>
+        ) : (
+          <div className="flex w-full flex-col items-center justify-center gap-y-2">
+            <p className="text-2xl">
+              There are no approved tasks to generate a valid sequence...
+            </p>
+
+            <span className="text-slate-600">
+              Try to{" "}
+              <Link className="underline" to="/task-requests">
+                go back
+              </Link>{" "}
+              and approve some tasks first.
+            </span>
+          </div>
+        )}
         {loading && <Loading />}
         {sequence && (
           <section className="my-6 flex w-full flex-col items-center gap-y-8 pr-12">
