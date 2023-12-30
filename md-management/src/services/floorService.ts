@@ -5,6 +5,12 @@ import { FloorCode } from '@/domain/floor/floorCode';
 import { FloorDescription } from '@/domain/floor/floorDescription';
 import { FloorDimensions } from '@/domain/floor/floorDimensions';
 import { FloorMap } from '@/domain/floor/floorMap/floorMap';
+import { FloorMapDoor } from '@/domain/floor/floorMap/floorMapDoor';
+import { FloorMapElevator } from '@/domain/floor/floorMap/floorMapElevator';
+import { FloorMapGround } from '@/domain/floor/floorMap/floorMapGround';
+import { FloorMapPlayer } from '@/domain/floor/floorMap/floorMapPlayer';
+import { FloorMapWall } from '@/domain/floor/floorMap/floorMapWall';
+import { FloorMaze } from '@/domain/floor/floorMap/floorMaze/floorMaze';
 import { FloorMazeElevator } from '@/domain/floor/floorMap/floorMaze/floorMazeElevator';
 import { FloorMazeExitLocation } from '@/domain/floor/floorMap/floorMaze/floorMazeExitLocation';
 import { FloorMazeExits } from '@/domain/floor/floorMap/floorMaze/floorMazeExits';
@@ -15,19 +21,13 @@ import { IFloorMapDTO } from '@/dto/IFloorMapDTO';
 import { TYPES } from '@/loaders/inversify/types';
 import { FloorMapMapper } from '@/mappers/FloorMapMapper';
 import { FloorMapper } from '@/mappers/FloorMapper';
+import { RoomMapper } from '@/mappers/RoomMapper';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import IFloorService from '@/services/IServices/IFloorService';
 import { inject, injectable } from 'inversify';
 import IBuildingRepo from './IRepos/IBuildingRepo';
 import IConnectorRepo from './IRepos/IConnectorRepo';
-import { FloorMaze } from '@/domain/floor/floorMap/floorMaze/floorMaze';
-import { FloorMapPlayer } from '@/domain/floor/floorMap/floorMapPlayer';
-import { FloorMapDoor } from '@/domain/floor/floorMap/floorMapDoor';
-import { FloorMapElevator } from '@/domain/floor/floorMap/floorMapElevator';
-import { FloorMapWall } from '@/domain/floor/floorMap/floorMapWall';
-import { FloorMapGround } from '@/domain/floor/floorMap/floorMapGround';
 import IRoomRepo from './IRepos/IRoomRepo';
-import { RoomMapper } from '@/mappers/RoomMapper';
 
 @injectable()
 export default class FloorService implements IFloorService {
@@ -63,8 +63,6 @@ export default class FloorService implements IFloorService {
           return floorDTO;
         })
       );
-
-      console.log(floorsDTO);
 
       return Result.ok<IFloorDTO[]>(floorsDTO);
     } catch (e) {

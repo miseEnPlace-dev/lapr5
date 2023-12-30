@@ -11,14 +11,12 @@ describe('DeviceCode', () => {
   it('should create new code with 25 characters', () => {
     const result = DeviceModelCode.create([...Array(25)].map(() => 'a').join(''));
     expect(result.isSuccess).toBe(true);
-    console.log(result.getValue());
     expect(result.getValue().value).toBe([...Array(25)].map(() => 'a').join(''));
   });
 
   it('should allow spaces', () => {
     const result = DeviceModelCode.create('12 a');
     expect(result.isSuccess).toBe(true);
-    console.log(result.getValue());
     expect(result.getValue().value).toBe('12 a');
   });
 
