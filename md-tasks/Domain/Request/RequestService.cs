@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DDDNetCore.Services;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks;
 using DDDSample1.Domain.DeviceTasks.SurveillanceTasks;
 using DDDSample1.Domain.DTO;
 using DDDSample1.Domain.Floor;
+using DDDSample1.Domain.Requests;
 using DDDSample1.Domain.Room;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.User;
@@ -103,7 +105,7 @@ namespace DDDSample1.Domain.DeviceTasks
       }
     }
 
-    public async Task<RequestDto> UpdateAsync(RequestDTO dto)
+    public async Task<RequestDTO> UpdateAsync(RequestDTO dto)
     {
       RequestDTO task = null;
       // var task = await repo.GetByIdAsync(new DeviceTaskId(dto.Id));
@@ -119,9 +121,9 @@ namespace DDDSample1.Domain.DeviceTasks
       return null;
     }
 
-    public async Task<RequestDto> InactivateAsync(RequestId id)
+    public async Task<RequestDTO> InactivateAsync(RequestId id)
     {
-      RequestDto task = null;
+      RequestDTO task = null;
       // var task = await repo.GetByIdAsync(id);
 
       if (task == null)
@@ -132,12 +134,12 @@ namespace DDDSample1.Domain.DeviceTasks
 
       await this.unitOfWork.CommitAsync();
 
-      return new RequestDto { Id = task.Id };
+      return null;
     }
 
-    public async Task<RequestDto> DeleteAsync(RequestId id)
+    public async Task<RequestDTO> DeleteAsync(RequestId id)
     {
-      RequestDto task = null;
+      RequestDTO task = null;
       // var task = await repo.GetByIdAsync(id);
 
       if (task == null)
@@ -149,7 +151,7 @@ namespace DDDSample1.Domain.DeviceTasks
       // repo.Remove(task);
       await unitOfWork.CommitAsync();
 
-      return new RequestDto { Id = task.Id };
+      return null;
     }
 
     private async Task<RequestDTO> ConvertToDTO(Request t, string type)
@@ -197,6 +199,51 @@ namespace DDDSample1.Domain.DeviceTasks
             task.State.State.ToString(),
             t.RequestedAt.ToString()
         );
+      }
+
+      return null;
+    }
+
+    public async Task<RequestDTO> AcceptRequest(RequestId id)
+    {
+      Request req = await surveillanceTaskRepository.GetByIdAsync(id);
+
+      if (req != null)
+      {
+        req.State.ChangeState(StateEnum.Accepted);
+        await unitOfWork.CommitAsync();
+        return await ConvertToDTO(req, "SurveillanceRequestDTO");
+      }
+
+      req = await pickAndDeliveryTaskRepository.GetByIdAsync(id);
+      if (req != null)
+      {
+        req.State.ChangeState(StateEnum.Accepted);
+        await unitOfWork.CommitAsync();
+        return await ConvertToDTO(req, "PickAndDeliveryRequestDTO");
+      }
+
+
+      return null;
+    }
+
+    public async Task<RequestDTO> RejectRequest(RequestId id)
+    {
+      Request req = await surveillanceTaskRepository.GetByIdAsync(id);
+
+      if (req != null)
+      {
+        req.State.ChangeState(StateEnum.Rejected);
+        await unitOfWork.CommitAsync();
+        return await ConvertToDTO(req, "SurveillanceRequestDTO");
+      }
+
+      req = await pickAndDeliveryTaskRepository.GetByIdAsync(id);
+      if (req != null)
+      {
+        req.State.ChangeState(StateEnum.Rejected);
+        await unitOfWork.CommitAsync();
+        return await ConvertToDTO(req, "PickAndDeliveryRequestDTO");
       }
 
       return null;

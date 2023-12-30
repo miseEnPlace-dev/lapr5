@@ -106,7 +106,7 @@ public class RequestsController : ControllerBase
 
   // DELETE api/Request/5
   [HttpDelete("{id}")]
-  public async Task<ActionResult<RequestDto>> Delete(string id)
+  public async Task<ActionResult<RequestDTO>> Delete(string id)
   {
     try
     {
@@ -119,4 +119,37 @@ public class RequestsController : ControllerBase
       return BadRequest(new { ex.Message });
     }
   }
+
+  // Patch api/requests/{id}/accept
+  [HttpPatch("{id}/accept")]
+  public async Task<ActionResult<RequestDTO>> AcceptRequest(string id)
+  {
+    try
+    {
+      var t = await service.AcceptRequest(new RequestId(id));
+      if (t == null) return NotFound();
+      return Ok(t);
+    }
+    catch (BusinessRuleValidationException ex)
+    {
+      return BadRequest(new { ex.Message });
+    }
+  }
+
+  // Patch api/requests/{id}/reject
+  [HttpPatch("{id}/reject")]
+  public async Task<ActionResult<RequestDTO>> RejectRequest(string id)
+  {
+    try
+    {
+      var t = await service.RejectRequest(new RequestId(id));
+      if (t == null) return NotFound();
+      return Ok(t);
+    }
+    catch (BusinessRuleValidationException ex)
+    {
+      return BadRequest(new { ex.Message });
+    }
+  }
+
 }

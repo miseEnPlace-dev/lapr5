@@ -67,38 +67,6 @@ public class TasksController : ControllerBase
     return Ok(t);
   }
 
-  // Patch api/requests/{id}/accept
-  [HttpPatch("{id}/accept")]
-  public async Task<ActionResult<TaskDTO>> AcceptRequest(string id)
-  {
-    try
-    {
-      var t = await requestsService.AcceptRequest(new TaskId(id));
-      if (t == null) return NotFound();
-      return Ok(t);
-    }
-    catch (BusinessRuleValidationException ex)
-    {
-      return BadRequest(new { ex.Message });
-    }
-  }
-
-  // Patch api/requests/{id}/reject
-  [HttpPatch("{id}/reject")]
-  public async Task<ActionResult<TaskDTO>> RejectRequest(string id)
-  {
-    try
-    {
-      var t = await requestsService.RejectRequest(new TaskId(id));
-      if (t == null) return NotFound();
-      return Ok(t);
-    }
-    catch (BusinessRuleValidationException ex)
-    {
-      return BadRequest(new { ex.Message });
-    }
-  }
-
   // POST api/requests/surveillance
   [HttpPost("surveillance")]
   public async Task<ActionResult<TaskDTO>> CreateSurveillance(TaskDTO dto)
