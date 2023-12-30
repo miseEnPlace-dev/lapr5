@@ -149,7 +149,14 @@ export const useListTaskRequestsModule = () => {
     } catch (error) {
       setRequests({ data: [] });
     }
-  }, [requestService, stateFilter, userFilter, page, itemsPerPage]);
+  }, [
+    requestService,
+    stateFilter,
+    deviceModelFilter,
+    userFilter,
+    page,
+    itemsPerPage,
+  ]);
 
   async function handleAcceptRequest() {
     try {
