@@ -6,5 +6,9 @@ namespace DDDSample1.Infrastructure.DeviceTasks;
 
 public class PickAndDeliveryTaskRepository : BaseRepository<PickAndDeliveryTask, DeviceTaskId>, IPickAndDeliveryTaskRepository
 {
-  public PickAndDeliveryTaskRepository(MySQLDbContext context) : base(context.PickAndDeliveryTasks) { }
+  readonly MySQLDbContext _context;
+  public PickAndDeliveryTaskRepository(MySQLDbContext context) : base(context.PickAndDeliveryTasks)
+  {
+    _context = context;
+  }
 }

@@ -1,26 +1,19 @@
 using System.Collections.Generic;
+using DDDSample1.Domain.DeviceTasks;
 
 public class PathDTO
 {
+  public string taskId { get; set; }
   public List<object> Route { get; set; }
 
-  public PathDTO(List<object> route)
+  public PathDTO(string taskId, List<object> route)
   {
+    this.taskId = taskId;
     Route = route;
-
-  }
-  public PathDTO(object[] route)
-  {
-    Route = new List<object>(route);
   }
 
   public PathDTO()
   {
     Route = new List<object>();
-  }
-
-  public void AppendRoute(PathDTO route)
-  {
-    Route.AddRange(route.Route);
   }
 }

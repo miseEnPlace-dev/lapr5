@@ -43,6 +43,23 @@ const TaskSequencePage: React.FC = () => {
     });
   };
 
+  const handleGoToAnimation = (
+    route: [
+      | {
+          floor: string;
+          x: number;
+          y: number;
+        }
+      | {
+          floor1: string;
+          floor2: string;
+          type: string;
+        },
+    ]
+  ) => {
+    console.log("route ", route);
+  };
+
   return (
     <div className="flex">
       <SideBar menuOptions={menuOptions} />
@@ -104,7 +121,13 @@ const TaskSequencePage: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-x-4">
-                  <Button type="reset" name="animation">
+                  <Button
+                    type="reset"
+                    name="animation"
+                    onClick={() =>
+                      handleGoToAnimation(sequence.path[request.id])
+                    }
+                  >
                     Go to Animation
                   </Button>
                   <Button type="confirm" name="execute">

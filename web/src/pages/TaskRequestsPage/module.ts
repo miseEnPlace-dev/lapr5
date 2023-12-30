@@ -70,7 +70,7 @@ export const useListTaskRequestsModule = () => {
   }, [deviceModelService]);
 
   const fetchDevices = useCallback(async () => {
-    const devices = await deviceService.getDevicesRobots("model", "", 1, 1000);
+    const devices = await deviceService.getDevicesRobots(undefined, undefined, 1, 1000);
     setDevices(devices.data);
   }, [deviceService]);
 

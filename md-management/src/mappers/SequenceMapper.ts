@@ -3,6 +3,25 @@ import { ISequenceResponseDTO } from '@/dto/ISequenceResponseDTO';
 
 export class SequenceMapper {
   static map(sequence: ISequenceResponseDTO): ISequenceDTO {
+    const path: {
+      [key: string]: [
+        | {
+            floor: string;
+            x: number;
+            y: number;
+          }
+        | {
+            floor1: string;
+            floor2: string;
+            type: string;
+          }
+      ];
+    } = {};
+
+    for (const task of sequence.path) {
+      path[task.taskId] = task.route;
+    }
+
     return {
       tasks: sequence.tasks.map(task => ({
         id: task.id.value,
@@ -16,7 +35,7 @@ export class SequenceMapper {
         startFloorCode: task.floorId ? task.floorId.value : task.endFloorCode!
       })),
       time: sequence.time,
-      path: sequence.path
+      path
     };
   }
 }

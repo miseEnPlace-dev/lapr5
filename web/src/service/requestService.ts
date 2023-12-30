@@ -153,9 +153,7 @@ export class RequestService implements IRequestService {
     await this.http.patch(
       "/task-requests/" + id + "/reject",
       {},
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
+      { headers: { Authorization: `Bearer ${token}` } }
     );
   }
 

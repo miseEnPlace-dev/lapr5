@@ -153,19 +153,18 @@ export default class Maze extends THREE.Group {
       geometries[1] = [];
       this.aabb = [];
 
-      if (description.maze.exits)
+      if (description.maze.exits) {
         for (const exit of description.maze.exits) {
           const i = exit.x;
-
           const j = exit.y;
 
           for (let k = 0; k < 2; k++) {
-            geometry = wall.geometries[k].clone();
+            let geometry = wall.geometries[k].clone();
             geometry.applyMatrix4(
               new THREE.Matrix4().makeTranslation(
-                j - this.halfSize.width + 0.5,
-                1,
-                i - this.halfSize.depth
+                j - this.halfSize.width - 0.5,
+                0.5,
+                i - this.halfSize.depth - 0.5
               )
             );
 
@@ -180,6 +179,7 @@ export default class Maze extends THREE.Group {
             geometries[k].push(geometry);
           }
         }
+      }
 
       for (let i = 0; i <= this.size.depth; i++) {
         // In order to represent the southmost walls, the map depth is one row greater than the actual maze depth
@@ -490,7 +490,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.x -
-              (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
+            (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
@@ -500,7 +500,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.z -
-              (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
+            (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
@@ -514,7 +514,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.z -
-              (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
+            (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
           ) < radius
         ) {
           document
@@ -532,7 +532,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.x -
-              (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
+            (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
@@ -547,7 +547,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.z -
-              (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
+            (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
           ) < radius
         ) {
           this.playOpenDoorAnimation(row, column);
