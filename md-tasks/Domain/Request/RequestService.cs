@@ -14,7 +14,7 @@ using DDDSample1.Domain.User;
 
 namespace DDDSample1.Domain.DeviceTasks
 {
-  public class RequestService
+  public class RequestService : IRequestService
   {
     private readonly IUnitOfWork unitOfWork;
     private readonly ISurveillanceRequestRepository surveillanceTaskRepository;
