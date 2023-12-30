@@ -1,10 +1,10 @@
 using System;
-using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
+using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks;
 using DDDSample1.Domain.Floor;
 using DDDSample1.Domain.Room;
 using DDDSample1.Domain.User;
 
-namespace DDDSample1.Domain.DeviceTasks.SurveillanceTask
+namespace DDDSample1.Domain.DeviceTasks.SurveillanceTasks
 {
   public class SurveillanceTask : DeviceTask
   {

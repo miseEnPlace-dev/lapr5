@@ -99,7 +99,7 @@ public class RequestsController : ControllerBase
     }
   }
 
-  // Patch api/requests/{id}/accept
+  // Patch api/requests/{id}/reject
   [HttpPatch("{id}/reject")]
   public async Task<ActionResult<RequestDTO>> RejectRequest(string id)
   {

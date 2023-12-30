@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.DeviceTasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http.HttpResults;
+using DDDSample1.Domain.DTO;
 
 namespace DDDSample1.Controllers;
 
@@ -34,11 +36,52 @@ public class TasksController : ControllerBase
     return t;
   }
 
-  // POST api/Tasks
-  [HttpPost]
-  public void Create(DeviceTaskDto dto) // Task<ActionResult<TaskDto>>
+  // POST api/Tasks/surveillance
+  [HttpPost("surveillance")]
+  public async Task<ActionResult<SurveillanceTaskDTO>> Create(SurveillanceTaskDTO dto)
   {
-    // var t = await _svc.AddAsync()
+    try
+    {
+      if (dto == null) return BadRequest("Task cannot be null");
+
+      var t = await service.AddSurveillanceTask(dto);
+
+      if (t == null)
+        return BadRequest(new { message = "Could not create surveillance task" });
+
+      if (t.Id == null)
+        return BadRequest(new { message = "Surveillance task Id is null" });
+
+      return CreatedAtAction(nameof(Get), new { id = t.Id }, t);
+    }
+    catch (BusinessRuleValidationException ex)
+    {
+      return BadRequest(new { ex.Message });
+    }
+  }
+
+  // POST api/Tasks/pick-delivery
+  [HttpPost("pick-delivery")]
+  public async Task<ActionResult<PickAndDeliveryTaskDTO>> CreatePickDelivery(PickAndDeliveryTaskDTO dto)
+  {
+    try
+    {
+      if (dto == null) return BadRequest("Task cannot be null");
+
+      var t = await service.AddPickAndDeliveryTask(dto);
+
+      if (t == null)
+        return BadRequest(new { message = "Could not create pick and delivery task" });
+
+      if (t.Id == null)
+        return BadRequest(new { message = "Pick and delivery task Id is null" });
+
+      return CreatedAtAction(nameof(Get), new { id = t.Id }, t);
+    }
+    catch (BusinessRuleValidationException ex)
+    {
+      return BadRequest(new { ex.Message });
+    }
   }
 
   // PUT api/Tasks/5

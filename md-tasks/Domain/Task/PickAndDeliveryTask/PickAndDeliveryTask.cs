@@ -1,7 +1,7 @@
 using DDDSample1.Domain.Room;
 using DDDSample1.Domain.User;
 
-namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask
+namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks
 {
   public class PickAndDeliveryTask : DeviceTask
   {
