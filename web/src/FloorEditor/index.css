@@ -194,7 +194,7 @@ canvas {
   height: 100%;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 4s ease-in-out;
+  transition: opacity 6s ease-in-out;
   background-color: white;
   z-index: 9999;
 }

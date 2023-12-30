@@ -502,6 +502,9 @@ export default class ThumbRaiser {
           )}>${floor}</option>`
       );
 
+    const currentMaze = document.getElementById("mazeSelected");
+    if (currentMaze) currentMaze.innerHTML = floorName;
+
     // Create the player
     this.player = new Player(this.playerParameters);
 
@@ -688,7 +691,6 @@ export default class ThumbRaiser {
 
     // Wait for the duration of the transition
     setTimeout(() => {
-
       // Proceed with changing the maze
       const floors = this.mazeParameters.mazes[index].maze.maze.elevator.floors;
       const mazeSelect = document.getElementById("maze") as HTMLSelectElement;
@@ -702,6 +704,9 @@ export default class ThumbRaiser {
               (m) => m.name === floor
             )}>${floor}</option>`
         );
+
+      const currentMaze = document.getElementById("mazeSelected");
+      if (currentMaze) currentMaze.innerHTML = floorName;
 
       this.scene.remove(this.maze);
       // The cache must be enabled; additional information available at https://threejs.org/docs/api/en/loaders/FileLoader.html
@@ -725,9 +730,11 @@ export default class ThumbRaiser {
     }, 5000);
 
     setTimeout(() => {
-      transitionOverlay.style.opacity = "0";
-      document.body.removeChild(transitionOverlay);
-    }, 7000);
+      if (document.body.contains(transitionOverlay)) {
+        transitionOverlay.style.opacity = "0";
+        document.body.removeChild(transitionOverlay);
+      }
+    }, 6000);
   }
 
   updateViewsPanel() {
@@ -1765,6 +1772,7 @@ export default class ThumbRaiser {
           const mazeIndex = this.mazeParameters.mazes.findIndex(
             (maze) => maze.name === f
           );
+          console.log("mazeIndex", mazeIndex);
           this.updateMaze(mazeIndex);
         } else {
           let coveredDistance = this.player.walkingSpeed * deltaT;
