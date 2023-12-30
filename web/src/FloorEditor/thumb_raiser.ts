@@ -679,62 +679,70 @@ export default class ThumbRaiser {
     });
   }
 
-  updateMaze(index: number) {
-    // Add transition overlay
-    const transitionOverlay = document.createElement("div");
-    transitionOverlay.classList.add("transition-overlay");
-    document.body.appendChild(transitionOverlay);
+  updateMaze(index: number, exit: boolean) {
+    console.log(exit);
+    if (!exit) {
+      // Add transition overlay
+      const transitionOverlay = document.createElement("div");
+      transitionOverlay.classList.add("transition-overlay");
+      document.body.appendChild(transitionOverlay);
 
-    setTimeout(() => {
-      transitionOverlay.style.opacity = "1";
-    }, 0);
+      setTimeout(() => {
+        transitionOverlay.style.opacity = "1";
+      }, 0);
 
-    // Wait for the duration of the transition
-    setTimeout(() => {
-      // Proceed with changing the maze
-      const floors = this.mazeParameters.mazes[index].maze.maze.elevator.floors;
-      const mazeSelect = document.getElementById("maze") as HTMLSelectElement;
-      const floorName = this.mazeParameters.mazes[index].name;
-      if (mazeSelect)
-        mazeSelect.innerHTML = `<option key=${floorName} value=${this.mazeParameters.mazes.findIndex(
-          (m) => m.name === floorName
-        )}>${floorName}</option>` + floors.map(
-          (floor) =>
-            `<option key=${floor} value=${this.mazeParameters.mazes.findIndex(
-              (m) => m.name === floor
-            )}>${floor}</option>`
-        );
+      // Wait for the duration of the transition
+      setTimeout(() => {
+        this.changeMaze(index);
+      }, 5000);
 
-      const currentMaze = document.getElementById("mazeSelected");
-      if (currentMaze) currentMaze.innerHTML = floorName;
+      setTimeout(() => {
+        if (document.body.contains(transitionOverlay)) {
+          transitionOverlay.style.opacity = "0";
+          document.body.removeChild(transitionOverlay);
+        }
+      }, 5000);
 
-      this.scene.remove(this.maze);
-      // The cache must be enabled; additional information available at https://threejs.org/docs/api/en/loaders/FileLoader.html
-      THREE.Cache.enabled = true;
+    } else {
+      this.changeMaze(index);
+    }
+  }
 
-      this.maze = new Maze(this.mazeParameters.mazes[index]);
-
-      const cellPos = this.maze.cellToCartesian(
-        this.mazeParameters.mazes[index].maze.player.initialPosition
+  changeMaze(index: number) {
+    const floors = this.mazeParameters.mazes[index].maze.maze.elevator.floors;
+    const mazeSelect = document.getElementById("maze") as HTMLSelectElement;
+    const floorName = this.mazeParameters.mazes[index].name;
+    if (mazeSelect)
+      mazeSelect.innerHTML = `<option key=${floorName} value=${this.mazeParameters.mazes.findIndex(
+        (m) => m.name === floorName
+      )}>${floorName}</option>` + floors.map(
+        (floor) =>
+          `<option key=${floor} value=${this.mazeParameters.mazes.findIndex(
+            (m) => m.name === floor
+          )}>${floor}</option>`
       );
-      this.player.position.set(cellPos.x, cellPos.y, cellPos.z);
-      this.player.direction =
-        this.mazeParameters.mazes[index].maze.player.initialDirection;
 
-      this.scene.add(this.maze);
+    const currentMaze = document.getElementById("mazeSelected");
+    if (currentMaze) currentMaze.innerHTML = floorName;
 
-      document
-        .getElementById("maps-panel")
-        ?.setAttribute("style", "display:none");
+    this.scene.remove(this.maze);
+    // The cache must be enabled; additional information available at https://threejs.org/docs/api/en/loaders/FileLoader.html
+    THREE.Cache.enabled = true;
 
-    }, 5000);
+    this.maze = new Maze(this.mazeParameters.mazes[index]);
 
-    setTimeout(() => {
-      if (document.body.contains(transitionOverlay)) {
-        transitionOverlay.style.opacity = "0";
-        document.body.removeChild(transitionOverlay);
-      }
-    }, 6000);
+    const cellPos = this.maze.cellToCartesian(
+      this.mazeParameters.mazes[index].maze.player.initialPosition
+    );
+    this.player.position.set(cellPos.x, cellPos.y, cellPos.z);
+    this.player.direction =
+      this.mazeParameters.mazes[index].maze.player.initialDirection;
+
+    this.scene.add(this.maze);
+
+    document
+      .getElementById("maps-panel")
+      ?.setAttribute("style", "display:none");
   }
 
   updateViewsPanel() {
@@ -1475,7 +1483,7 @@ export default class ThumbRaiser {
         this.setHelpVisibility(event.target.checked);
         break;
       case "maze":
-        this.updateMaze(event.target.value);
+        this.updateMaze(event.target.value, false);
         break;
     }
   }
@@ -1772,8 +1780,7 @@ export default class ThumbRaiser {
           const mazeIndex = this.mazeParameters.mazes.findIndex(
             (maze) => maze.name === f
           );
-          console.log("mazeIndex", mazeIndex);
-          this.updateMaze(mazeIndex);
+          this.updateMaze(mazeIndex, true);
         } else {
           let coveredDistance = this.player.walkingSpeed * deltaT;
           let directionIncrement = this.player.turningSpeed * deltaT;
