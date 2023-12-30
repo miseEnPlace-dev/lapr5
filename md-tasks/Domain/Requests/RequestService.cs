@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 using MDTasks.Domain.DTO;
 using MDTasks.Domain.Floor;
-using MDTasks.Domain.Path;
 using MDTasks.Domain.Room;
 using MDTasks.Domain.Shared;
 using MDTasks.Domain.User;
@@ -57,6 +54,77 @@ public class RequestService : IRequestService
     }
 
     return new PaginationDTO<RequestDTO>(result, page, limit, await svReqRepo.CountAsync() + await pdReqRepo.CountAsync());
+  }
+
+  public async Task<PaginationDTO<RequestDTO>> GetAllSurveillance(int page, int limit)
+  {
+    List<Request> surTasks = (await svReqRepo.GetAllAsync(-1, -1)).Cast<Request>().ToList();
+
+    List<Request> tasks = new();
+    tasks.AddRange(surTasks);
+
+    // with page and limit, cut the list
+    if (page > 0 && limit > 0)
+    {
+      int offset = (page - 1) * limit;
+      tasks = tasks.Skip(offset).Take(limit).ToList();
+    }
+
+    List<RequestDTO> result = new();
+
+    foreach (Request task in tasks)
+    {
+      if (await svReqRepo.GetByIdAsync(task.Id) != null)
+        result.Add(SurveillanceRequestMapper.ToDTO((SurveillanceRequest)task));
+
+      if (await pdReqRepo.GetByIdAsync(task.Id) != null)
+        result.Add(PickAndDeliveryRequestMapper.ToDTO((PickAndDeliveryRequest)task));
+    }
+
+    return new PaginationDTO<RequestDTO>(result, page, limit, await svReqRepo.CountAsync() + await pdReqRepo.CountAsync());
+  }
+
+  public async Task<PaginationDTO<RequestDTO>> GetAllPickAndDelivery(int page, int limit)
+  {
+    List<Request> pdTasks = (await pdReqRepo.GetAllAsync(-1, -1)).Cast<Request>().ToList();
+
+    List<Request> tasks = new();
+    tasks.AddRange(pdTasks);
+
+    // with page and limit, cut the list
+    if (page > 0 && limit > 0)
+    {
+      int offset = (page - 1) * limit;
+      tasks = tasks.Skip(offset).Take(limit).ToList();
+    }
+
+    List<RequestDTO> result = new();
+
+    foreach (Request task in tasks)
+    {
+      if (await svReqRepo.GetByIdAsync(task.Id) != null)
+        result.Add(SurveillanceRequestMapper.ToDTO((SurveillanceRequest)task));
+
+      if (await pdReqRepo.GetByIdAsync(task.Id) != null)
+        result.Add(PickAndDeliveryRequestMapper.ToDTO((PickAndDeliveryRequest)task));
+    }
+
+    return new PaginationDTO<RequestDTO>(result, page, limit, await svReqRepo.CountAsync() + await pdReqRepo.CountAsync());
+  }
+
+  public async Task<PaginationDTO<RequestDTO>> GetByState(RequestState state, int page, int limit)
+  {
+    List<SurveillanceRequest> sv = await svReqRepo.GetRequestsByState(state, page - 1, limit);
+    List<PickAndDeliveryRequest> pd = await pdReqRepo.GetRequestsByState(state, page - 1, limit);
+
+    List<RequestDTO> requests = new();
+
+    foreach (SurveillanceRequest s in sv)
+      requests.Add(SurveillanceRequestMapper.ToDTO(s));
+    foreach (PickAndDeliveryRequest p in pd)
+      requests.Add(PickAndDeliveryRequestMapper.ToDTO(p));
+
+    return new PaginationDTO<RequestDTO>(requests, page, limit, await svReqRepo.CountAsync() + await pdReqRepo.CountAsync());
   }
 
   public async Task<RequestDTO> GetById(RequestId id)

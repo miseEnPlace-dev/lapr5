@@ -9,7 +9,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/bin/Debug/net7.0/DDDNetCore.dll",
+      "program": "${workspaceFolder}/bin/Debug/net7.0/MDTasks.dll",
       "args": [],
       "cwd": "${workspaceFolder}",
       "stopAtEntry": false,

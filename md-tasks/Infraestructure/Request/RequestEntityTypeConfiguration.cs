@@ -1,7 +1,6 @@
+using MDTasks.Domain.Requests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using DDDSample1.Domain.DeviceTasks;
-using DDDSample1.Domain.Requests;
 
 namespace DDDSample1.Infrastructure.Tasks;
 

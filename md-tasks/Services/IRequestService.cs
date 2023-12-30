@@ -7,9 +7,9 @@ namespace MDTasks.Services;
 public interface IRequestService
 {
   Task<PaginationDTO<RequestDTO>> GetAll(int page, int limit);
-  // getAllSurveillance
-  // getAllPickAndDelivery
-  // getRequestsByState
+  Task<PaginationDTO<RequestDTO>> GetAllSurveillance(int page, int limit);
+  Task<PaginationDTO<RequestDTO>> GetAllPickAndDelivery(int page, int limit);
+  Task<PaginationDTO<RequestDTO>> GetByState(RequestState state, int page, int limit);
   Task<RequestDTO> GetById(RequestId id);
   Task<RequestDTO> AddSurveillanceRequest(SurveillanceRequestDTO dto);
   Task<RequestDTO> AddPickAndDeliveryRequest(PickAndDeliveryRequestDTO dto);
