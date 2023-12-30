@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using DDDNetCore.Domain.Request;
 using DDDNetCore.Services;
-using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.DTO;
 using DDDSample1.Domain.Requests;
 using DDDSample1.Domain.Shared;
@@ -13,12 +12,12 @@ namespace DDDSample1.Controllers;
 [ApiController]
 public class TasksController : ControllerBase
 {
-  private readonly ITaskService requestsService;
-  private readonly Domain.DeviceTasks.RequestService deviceTaskService;
+  private readonly ITaskService taskSvc;
+  private readonly IRequestService reqSvc;
 
-  public TasksController(Domain.Requests.TaskService requestsService)
+  public TasksController(ITaskService taskSvc)
   {
-    this.requestsService = requestsService;
+    this.taskSvc = taskSvc;
   }
 
   // GET api/requests
@@ -26,9 +25,9 @@ public class TasksController : ControllerBase
   public async Task<ActionResult<PaginationDTO<TaskDTO>>> GetAll()
   {
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
-      return await requestsService.GetAll(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+      return await taskSvc.GetAll(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
 
-    return await requestsService.GetAll(-1, -1);
+    return await taskSvc.GetAll(-1, -1);
   }
 
   // GET api/requests/pick-delivery
@@ -36,9 +35,9 @@ public class TasksController : ControllerBase
   public async Task<ActionResult<PaginationDTO<PickDeliveryTaskDTO>>> GetPickAndDelivery()
   {
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
-      return await requestsService.GetAllPickAndDelivery(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+      return await taskSvc.GetAllPickAndDelivery(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
 
-    return await requestsService.GetAllPickAndDelivery(-1, -1);
+    return await taskSvc.GetAllPickAndDelivery(-1, -1);
   }
 
   // GET api/requests/surveillance
@@ -46,23 +45,23 @@ public class TasksController : ControllerBase
   public async Task<ActionResult<PaginationDTO<SurveillanceTaskDTO>>> GetSurveillance()
   {
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
-      return await requestsService.GetAllSurveillance(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+      return await taskSvc.GetAllSurveillance(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
 
-    return await requestsService.GetAllSurveillance(-1, -1);
+    return await taskSvc.GetAllSurveillance(-1, -1);
   }
 
   // GET api/requests/sequence
   [HttpGet("sequence")]
   public async Task<ActionResult<SequenceDTO>> GetSequence()
   {
-    return Ok(await requestsService.GetApprovedTasksSequence());
+    return Ok(await taskSvc.GetApprovedTasksSequence());
   }
 
   // GET api/requests/{id}
   [HttpGet("{id}")]
   public async Task<ActionResult<TaskDTO>> Get(string id)
   {
-    var t = await requestsService.GetById(new TaskId(id));
+    var t = await taskSvc.GetById(new TaskId(id));
     if (t == null) return NotFound();
     return Ok(t);
   }
@@ -76,7 +75,7 @@ public class TasksController : ControllerBase
       if (dto == null)
         return BadRequest("Request is null");
 
-      var t = await requestsService.AddSurveillanceRequest(dto);
+      var t = await taskSvc.AddSurveillanceRequest(dto);
 
       if (t == null)
         return BadRequest("Failed to create surveillance request");
@@ -101,7 +100,7 @@ public class TasksController : ControllerBase
       if (dto == null)
         return BadRequest("Request DTO is null");
 
-      var t = await requestsService.AddPickAndDeliveryRequest(dto);
+      var t = await taskSvc.AddPickAndDeliveryRequest(dto);
 
       if (t == null)
         return BadRequest("Failed to create pick and delivery request");
@@ -125,7 +124,7 @@ public class TasksController : ControllerBase
 
     try
     {
-      var t = await requestsService.Update(dto);
+      var t = await taskSvc.Update(dto);
       if (t == null) return NotFound();
       return Ok(t);
     }
@@ -151,7 +150,7 @@ public class TasksController : ControllerBase
   {
     try
     {
-      var t = await requestsService.Delete(new TaskId(id));
+      var t = await taskSvc.Delete(new TaskId(id));
       if (t == null) return NotFound();
       return Ok(t);
     }
