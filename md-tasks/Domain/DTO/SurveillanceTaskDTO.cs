@@ -20,10 +20,9 @@ public class SurveillanceTaskDTO : TaskDTO
     PhoneNumber = phoneNumber;
     FloorId = floorId;
     Description = description;
-
   }
 
-  public SurveillanceTaskDTO(string id, string description, string userName, string phoneNumber, string floorId, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, string userId) : base(id, "surveillance", userId)
+  public SurveillanceTaskDTO(string id, string description, string userName, string phoneNumber, string floorId, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, string userId, string state, string requestedAt) : base(id, "surveillance", userId, state, requestedAt)
   {
     UserName = userName;
     PhoneNumber = phoneNumber;

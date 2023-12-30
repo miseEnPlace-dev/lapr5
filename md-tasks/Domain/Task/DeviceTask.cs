@@ -1,4 +1,5 @@
 using System;
+using DDDSample1.Domain.Requests;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.User;
 
@@ -11,6 +12,10 @@ namespace DDDSample1.Domain.DeviceTasks
     public int EndCoordinateX { get; private set; }
     public int EndCoordinateY { get; private set; }
 
+    public DateTime RequestedAt { get; private set; }
+
+    public RequestState State { get; private set; }
+
     public UserId UserId { get; private set; }
 
     public DeviceTask(DeviceTaskId Id, int StartCoordinateX, int StartCoordinateY, int EndCoordinateX, int EndCoordinateY, UserId UserId)
@@ -21,6 +26,8 @@ namespace DDDSample1.Domain.DeviceTasks
       this.EndCoordinateY = EndCoordinateY;
       this.UserId = UserId;
       this.Id = Id;
+      RequestedAt = DateTime.Now;
+      State = new RequestState(StateEnum.Pending);
     }
 
     public abstract void ExecuteTask();

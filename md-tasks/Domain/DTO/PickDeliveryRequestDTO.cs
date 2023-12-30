@@ -33,7 +33,7 @@ public class PickDeliveryRequestDTO : RequestDTO
     ConfirmationCode = confirmationCode;
   }
 
-  public PickDeliveryRequestDTO(string id, string description, string requestedAt, string state, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string deviceTaskId, string confirmationCode, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, string startFloorCode, string endFloorCode, string deviceId) : base(id, "pick_delivery", requestedAt, state, deviceTaskId, deviceId)
+  public PickDeliveryRequestDTO(string id, string description, string requestedAt, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string deviceTaskId, string confirmationCode, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, string startFloorCode, string endFloorCode, string deviceId) : base(id, "pick_delivery", requestedAt, deviceTaskId, deviceId)
   {
     Description = description;
     PickupUserName = pickupUserName;

@@ -6,6 +6,5 @@ namespace DDDSample1.Domain.Requests
 {
   public interface IRequestRepository : IRepository<Request, RequestId>
   {
-    public Task<List<Request>> GetRequestsByState(RequestState state, int page, int limit);
   }
 }

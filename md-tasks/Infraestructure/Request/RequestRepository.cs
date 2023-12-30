@@ -15,12 +15,4 @@ public class RequestRepository : BaseRepository<Request, RequestId>, IRequestRep
     _context = context;
   }
 
-  public async Task<List<Request>> GetRequestsByState(RequestState state, int page, int limit)
-  {
-    if (page != -1 && limit != -1)
-      return await _context.Requests.Where(r => r.State.Equals(state)).Skip(page * limit).Take(limit).ToListAsync();
-
-    return await _context.Requests.Where(r => r.State.Equals(state)).ToListAsync();
-  }
-
 }

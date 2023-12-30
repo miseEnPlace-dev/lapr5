@@ -22,7 +22,7 @@ public class SurveillanceRequestDTO : RequestDTO
     Description = description;
   }
 
-  public SurveillanceRequestDTO(string id, string description, string requestedAt, string state, string userName, string phoneNumber, string floorId, string deviceTaskId, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, string deviceId) : base(id, "surveillance", requestedAt, state, deviceTaskId, deviceId)
+  public SurveillanceRequestDTO(string id, string description, string requestedAt, string userName, string phoneNumber, string floorId, string deviceTaskId, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, string deviceId) : base(id, "surveillance", requestedAt, deviceTaskId, deviceId)
   {
     UserName = userName;
     PhoneNumber = phoneNumber;

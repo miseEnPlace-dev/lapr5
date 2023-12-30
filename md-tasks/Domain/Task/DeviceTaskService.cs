@@ -6,6 +6,7 @@ using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks;
 using DDDSample1.Domain.DeviceTasks.SurveillanceTasks;
 using DDDSample1.Domain.DTO;
 using DDDSample1.Domain.Floor;
+using DDDSample1.Domain.Requests;
 using DDDSample1.Domain.Room;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.User;
@@ -157,7 +158,9 @@ namespace DDDSample1.Domain.DeviceTasks
             task.StartCoordinateY,
             task.EndCoordinateX,
             task.EndCoordinateY,
-            t.UserId.Value
+            t.UserId.Value,
+            task.State.State.ToString(),
+            t.RequestedAt.ToString()
         );
       }
 
@@ -181,7 +184,9 @@ namespace DDDSample1.Domain.DeviceTasks
             task.EndCoordinateY,
             task.StartFloorCode,
             task.EndFloorCode,
-            t.UserId.Value
+            t.UserId.Value,
+            task.State.State.ToString(),
+            t.RequestedAt.ToString()
         );
       }
 
