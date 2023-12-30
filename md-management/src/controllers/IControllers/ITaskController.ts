@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-export default interface ITaskController {
+export default interface IRequestController {
   getTaskRequests(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
   getTaskRequestsPD(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
   getTaskRequestsSV(req: Request, res: Response, next: NextFunction): Promise<Response | void>;

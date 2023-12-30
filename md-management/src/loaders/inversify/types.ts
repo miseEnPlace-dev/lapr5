@@ -42,7 +42,7 @@ const TYPES = {
   connectorRepo: Symbol.for('ConnectorRepo'),
   connectorSchema: Symbol.for('ConnectorSchema'),
 
-  taskController: Symbol.for('TaskController'),
+  requestController: Symbol.for('RequestController'),
   taskService: Symbol.for('TaskService'),
 
   planningController: Symbol.for('PlanningController'),

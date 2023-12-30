@@ -10,7 +10,7 @@ import IElevatorController from '@/controllers/IControllers/IElevatorController'
 import IFloorController from '@/controllers/IControllers/IFloorController';
 import IRoleController from '@/controllers/IControllers/IRoleController';
 import IRoomController from '@/controllers/IControllers/IRoomController';
-import ITaskController from '@/controllers/IControllers/ITaskController';
+import IRequestController from '@/controllers/IControllers/ITaskController';
 import IUserController from '@/controllers/IControllers/IUserController';
 import BuildingController from '@/controllers/buildingController';
 import ConnectorController from '@/controllers/connectorController';
@@ -21,7 +21,7 @@ import FloorController from '@/controllers/floorController';
 import PlanningController from '@/controllers/planningController';
 import RoleController from '@/controllers/roleController';
 import RoomController from '@/controllers/roomController';
-import TaskController from '@/controllers/taskController';
+import RequestController from '@/controllers/requestController';
 import UserController from '@/controllers/userController';
 import BuildingSchema from '@/persistence/schemas/buildingSchema';
 import ConnectorSchema from '@/persistence/schemas/connectorSchema';
@@ -66,7 +66,7 @@ import ElevatorService from '@/services/elevatorService';
 import FloorService from '@/services/floorService';
 import RoleService from '@/services/roleService';
 import RoomService from '@/services/roomService';
-import TaskService from '@/services/taskService';
+import TaskService from '@/services/requestService';
 import UserService from '@/services/userService';
 import { Logger } from 'winston';
 import Bootstrapper from '../bootstrap';
@@ -94,7 +94,7 @@ container.bind<IUserService>(TYPES.userService).to(UserService);
 container.bind<IUserRepo>(TYPES.userRepo).to(UserRepo);
 container.bind(TYPES.userSchema).to(UserSchema);
 
-container.bind<ITaskController>(TYPES.taskController).to(TaskController);
+container.bind<IRequestController>(TYPES.requestController).to(RequestController);
 container.bind<ITaskService>(TYPES.taskService).to(TaskService);
 
 container.bind<IElevatorController>(TYPES.elevatorController).to(ElevatorController);

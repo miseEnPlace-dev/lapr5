@@ -6,7 +6,7 @@ import { TYPES } from '@/loaders/inversify/types';
 import { ITaskService } from '@/services/IServices/ITaskService';
 import IUserService from '@/services/IServices/IUserService';
 import { z } from 'zod';
-import ITaskController from './IControllers/ITaskController';
+import IRequestController from './IControllers/ITaskController';
 
 const querySchema = z.object({
   filter: z.string().optional(),
@@ -16,7 +16,7 @@ const querySchema = z.object({
 });
 
 @injectable()
-export default class TaskController implements ITaskController {
+export default class RequestController implements IRequestController {
   constructor(
     @inject(TYPES.taskService) private taskService: ITaskService,
     @inject(TYPES.userService) private userService: IUserService

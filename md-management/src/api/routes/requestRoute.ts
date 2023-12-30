@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import ITaskController from '@/controllers/IControllers/ITaskController';
+import IRequestController from '@/controllers/IControllers/ITaskController';
 
 import { defaultRoles } from '@/domain/role/defaultRoles';
 import { container } from '@/loaders/inversify';
@@ -9,7 +9,7 @@ import { isAuthenticated, isAuthorizedAs } from '../middlewares';
 
 export default (app: Router) => {
   const route = Router();
-  const ctrl = container.get<ITaskController>(TYPES.taskController);
+  const ctrl = container.get<IRequestController>(TYPES.requestController);
 
   route.get(
     '/task-requests',
