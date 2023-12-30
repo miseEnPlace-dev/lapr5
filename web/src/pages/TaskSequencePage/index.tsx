@@ -96,7 +96,7 @@ const TaskSequencePage: React.FC = () => {
         </div>
         {loading && <Loading />}
         {sequence && (
-          <section className="mt-6 flex w-full flex-col items-center gap-y-8 pr-12">
+          <section className="my-6 flex w-full flex-col items-center gap-y-8 pr-12">
             {sequence.tasks.map((request, i) => (
               <motion.article
                 key={request.id}
@@ -108,12 +108,13 @@ const TaskSequencePage: React.FC = () => {
                 <div className="flex items-center">
                   <h2 className="text-5xl font-bold">#{i + 1}</h2>
                   <div className="ml-8 flex flex-col">
-                    <span className="text-base font-bold">
-                      From: {request.startCoordinateX} x{" "}
-                      {request.startCoordinateY}
+                    <span className="text-base capitalize">
+                      <b>From</b> {request.startFloorCode}:{" "}
+                      {request.startCoordinateX}, {request.startCoordinateY}
                     </span>
-                    <span className="text-base font-bold">
-                      To: {request.endCoordinateX} x {request.endCoordinateY}
+                    <span className="text-base capitalize">
+                      <b>To</b> {request.endFloorCode}: {request.endCoordinateX}
+                      , {request.endCoordinateY}{" "}
                     </span>
                     <p className="mt-4 text-base text-slate-600">
                       Details: {request.description}
