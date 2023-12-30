@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace DDDNetCore.Migrations
+namespace MDTasks.Migrations
 {
     /// <inheritdoc />
     public partial class updateddb : Migration

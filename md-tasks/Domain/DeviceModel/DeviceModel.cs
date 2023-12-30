@@ -1,38 +1,37 @@
-using DDDSample1.Domain.Shared;
+using MDTasks.Domain.Shared;
 
-namespace DDDSample1.Domain.DeviceModel
+namespace MDTasks.Domain.DeviceModel;
+
+public class DeviceModel : Entity<DeviceModelId>, IAggregateRoot
 {
-  public class DeviceModel : Entity<DeviceModelId>, IAggregateRoot
+
+  public DeviceModelCode DeviceModelCode { get; private set; }
+  public DeviceModelName DeviceModelName { get; private set; }
+
+  public bool Active { get; private set; }
+
+  private DeviceModel()
   {
+    Active = true;
+  }
 
-    public DeviceModelCode DeviceModelCode { get; private set; }
-    public DeviceModelName DeviceModelName { get; private set; }
+  public DeviceModel(DeviceModelCode code, DeviceModelName name)
+  {
+    DeviceModelCode = new DeviceModelCode(code.AsString());
+    DeviceModelName = new DeviceModelName(name.AsString());
+    Active = true;
+  }
 
-    public bool Active { get; private set; }
-
-    private DeviceModel()
+  public void ChangeState()
+  {
+    if (!Active)
     {
-      Active = true;
+      throw new BusinessRuleValidationException("Request is not active.");
     }
+  }
 
-    public DeviceModel(DeviceModelCode code, DeviceModelName name)
-    {
-      DeviceModelCode = new DeviceModelCode(code.AsString());
-      DeviceModelName = new DeviceModelName(name.AsString());
-      Active = true;
-    }
-
-    public void ChangeState()
-    {
-      if (!Active)
-      {
-        throw new BusinessRuleValidationException("Request is not active.");
-      }
-    }
-
-    public bool ToggleActive()
-    {
-      return Active = !Active;
-    }
+  public bool ToggleActive()
+  {
+    return Active = !Active;
   }
 }

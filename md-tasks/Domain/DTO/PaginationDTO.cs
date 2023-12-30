@@ -1,7 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+
+namespace MDTasks.Domain.DTO;
 
 public class PaginationDTO<T>
 {
@@ -19,8 +20,13 @@ public class PaginationDTO<T>
   [JsonConstructor]
   public PaginationDTO(List<T> data, int page, int limit, int total)
   {
+    if (page < 0)
+      page = 1;
+    if (limit < 0)
+      limit = data.Count;
+
     this.data = data;
-    this.meta = new Meta
+    meta = new Meta
     {
       Page = Math.Abs(page),
       Limit = Math.Abs(limit),

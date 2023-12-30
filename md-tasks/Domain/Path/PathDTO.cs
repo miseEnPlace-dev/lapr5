@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using DDDSample1.Domain.DeviceTasks;
+
+namespace MDTasks.Domain.Path;
 
 public class PathDTO
 {

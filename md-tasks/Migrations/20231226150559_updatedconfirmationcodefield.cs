@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace DDDNetCore.Migrations
+namespace MDTasks.Migrations
 {
     /// <inheritdoc />
     public partial class updatedconfirmationcodefield : Migration

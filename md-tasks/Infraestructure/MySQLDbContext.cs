@@ -1,31 +1,25 @@
 using Microsoft.EntityFrameworkCore;
-using DDDSample1.Domain.Requests;
-using DDDSample1.Infrastructure.Requests;
-using DDDSample1.Infrastructure.Tasks;
-using DDDSample1.Domain.DeviceTasks.SurveillanceTasks;
-using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks;
+using MDTasks.Domain.Requests;
+using MDTasks.Infrastructure.Task;
+using MDTasks.Infrastructure.Request;
+using MDTasks.Domain.Tasks;
 
-namespace DDDSample1.Infrastructure
+namespace MDTasks.Infrastructure;
+
+public class MySQLDbContext : DbContext
 {
-  public class MySQLDbContext : DbContext
+  public DbSet<DeviceTask> Requests { get; set; }
+
+  public DbSet<SurveillanceRequest> SurveillanceRequests { get; set; }
+  public DbSet<PickAndDeliveryRequest> PickAndDeliveryRequests { get; set; }
+
+  public string ConnectionString { get; set; }
+  public MySQLDbContext(DbContextOptions<MySQLDbContext> options) : base(options) { }
+
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    public DbSet<DeviceTask> Requests { get; set; }
-
-    public DbSet<SurveillanceRequest> SurveillanceRequests { get; set; }
-    public DbSet<PickAndDeliveryRequest> PickAndDeliveryRequests { get; set; }
-
-    public string ConnectionString { get; set; }
-    public MySQLDbContext(DbContextOptions<MySQLDbContext> options) : base(options)
-    {
-
-    }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-      //modelBuilder.ApplyConfiguration(new DeviceTaskEntityTypeConfiguration());
-      modelBuilder.ApplyConfiguration(new TaskEntityTypeConfiguration());
-      modelBuilder.ApplyConfiguration(new PickAndDeliveryRequestEntityTypeConfiguration());
-      modelBuilder.ApplyConfiguration(new SurveillanceRequestEntityTypeConfiguration());
-    }
+    modelBuilder.ApplyConfiguration(new TaskEntityTypeConfiguration());
+    modelBuilder.ApplyConfiguration(new PickAndDeliveryRequestEntityTypeConfiguration());
+    modelBuilder.ApplyConfiguration(new SurveillanceRequestEntityTypeConfiguration());
   }
 }

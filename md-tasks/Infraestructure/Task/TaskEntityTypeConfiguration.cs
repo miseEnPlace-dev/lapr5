@@ -1,18 +1,16 @@
-using DDDSample1.Domain.Requests;
-using DDDSample1.Domain.User;
+using MDTasks.Domain.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DDDSample1.Infrastructure.Requests
+namespace MDTasks.Infrastructure.Task;
+
+internal class TaskEntityTypeConfiguration : IEntityTypeConfiguration<DeviceTask>
 {
-  internal class TaskEntityTypeConfiguration : IEntityTypeConfiguration<DeviceTask>
+  public void Configure(EntityTypeBuilder<DeviceTask> builder)
   {
-    public void Configure(EntityTypeBuilder<DeviceTask> builder)
-    {
-      // builder.ToTable("Requests", SchemaNames.DDDSample1);
-      builder.HasKey(b => new { b.Id, b.DeviceTaskId, b.CreatedAt });
-      // builder.OwnsOne(b => b.UserId);
-      // builder.Property<bool>("_active").HasColumnName("Active");
-    }
+    // builder.ToTable("Tasks", SchemaNames.DDDSample1);
+    builder.HasKey(b => new { b.Id, b.RequestId, b.CreatedAt });
+    // builder.OwnsOne(b => b.UserId);
+    // builder.Property<bool>("_active").HasColumnName("Active");
   }
 }

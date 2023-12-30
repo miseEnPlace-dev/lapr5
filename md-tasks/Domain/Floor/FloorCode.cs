@@ -1,8 +1,9 @@
 using System.Collections.Generic;
-using DDDSample1.Domain.Shared;
+using MDTasks.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 
-namespace DDDSample1.Domain.Floor;
+namespace MDTasks.Domain.Floor;
+
 [Owned]
 public class FloorCode : ValueObject
 {

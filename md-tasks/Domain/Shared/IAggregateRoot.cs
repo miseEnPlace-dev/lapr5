@@ -1,7 +1,3 @@
-namespace DDDSample1.Domain.Shared
-{
-  public interface IAggregateRoot
-  {
+namespace MDTasks.Domain.Shared;
 
-  }
-}
+public interface IAggregateRoot { }

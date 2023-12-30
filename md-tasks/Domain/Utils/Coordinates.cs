@@ -1,9 +1,11 @@
+namespace MDTasks.Domain.Utils;
+
 public class Coordinates
 {
-  public double X { get; set; }
-  public double Y { get; set; }
+  public int X { get; private set; }
+  public int Y { get; private set; }
 
-  public Coordinates(double x, double y)
+  public Coordinates(int x, int y)
   {
     X = x;
     Y = y;

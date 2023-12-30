@@ -1,5 +1,7 @@
 using System;
 
+namespace MDTasks.Domain.Shared;
+
 public class Guard
 {
   // create a guard class with static methods to handle common validation

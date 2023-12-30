@@ -1,11 +1,10 @@
-namespace DDDSample1.Domain.Shared
+namespace MDTasks.Domain.Shared;
+
+/// <summary>
+/// Base class for entities.
+/// </summary>
+public abstract class Entity<TEntityId>
+where TEntityId : EntityId
 {
-  /// <summary>
-  /// Base class for entities.
-  /// </summary>
-  public abstract class Entity<TEntityId>
-  where TEntityId : EntityId
-  {
-    public TEntityId Id { get; protected set; }
-  }
+  public TEntityId Id { get; protected set; }
 }

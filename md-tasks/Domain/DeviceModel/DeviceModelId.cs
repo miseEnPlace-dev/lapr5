@@ -1,31 +1,30 @@
 using System;
-using DDDSample1.Domain.Shared;
+using MDTasks.Domain.Shared;
 using Newtonsoft.Json;
 
-namespace DDDSample1.Domain.DeviceModel
+namespace MDTasks.Domain.DeviceModel;
+
+public class DeviceModelId : EntityId
 {
-  public class DeviceModelId : EntityId
+  [JsonConstructor]
+  public DeviceModelId(Guid value) : base(value) { }
+
+  public DeviceModelId(string value) : base(ParseGuid(value)) { }
+
+  public DeviceModelId() : base(Guid.NewGuid()) { }
+
+  private static Guid ParseGuid(string value)
   {
-    [JsonConstructor]
-    public DeviceModelId(Guid value) : base(value) { }
-
-    public DeviceModelId(string value) : base(ParseGuid(value)) { }
-
-    public DeviceModelId() : base(Guid.NewGuid()) { }
-
-    private static Guid ParseGuid(string value)
+    if (string.IsNullOrEmpty(value))
     {
-      if (string.IsNullOrEmpty(value))
-      {
-        throw new ArgumentException("DeviceModelId string cannot be null or empty.");
-      }
-
-      if (Guid.TryParse(value, out var guidValue))
-      {
-        return guidValue;
-      }
-
-      throw new ArgumentException("Invalid DeviceModelId format. It should be a valid GUID string.");
+      throw new ArgumentException("DeviceModelId string cannot be null or empty.");
     }
+
+    if (Guid.TryParse(value, out var guidValue))
+    {
+      return guidValue;
+    }
+
+    throw new ArgumentException("Invalid DeviceModelId format. It should be a valid GUID string.");
   }
 }

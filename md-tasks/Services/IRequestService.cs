@@ -1,23 +1,17 @@
 using System.Threading.Tasks;
-using DDDNetCore.Domain.Request;
-using DDDSample1.Domain.DTO;
-using DDDSample1.Domain.Requests;
+using MDTasks.Domain.DTO;
+using MDTasks.Domain.Requests;
 
-namespace DDDNetCore.Services
+namespace MDTasks.Services;
+
+public interface IRequestService
 {
-  public interface IRequestService
-  {
-    Task<PaginationDTO<TaskDTO>> GetAll(int page, int limit);
-    Task<PaginationDTO<SurveillanceTaskDTO>> GetAllSurveillance(int page, int limit);
-    Task<PaginationDTO<PickDeliveryTaskDTO>> GetAllPickAndDelivery(int page, int limit);
-    Task<TaskDTO> GetById(TaskId id);
-    Task<SequenceDTO> GetApprovedTasksSequence();
-    Task<TaskDTO> AddSurveillanceRequest(TaskDTO dto);
-    Task<TaskDTO> AddPickAndDeliveryRequest(TaskDTO dto);
-    Task<TaskDTO> Update(TaskDTO dto);
-    Task<TaskDTO> Put(TaskDTO dto);
-    Task<TaskDTO> Delete(TaskId id);
-    Task<TaskDTO> AcceptRequest(TaskId id);
-    Task<TaskDTO> RejectRequest(TaskId id);
-  }
+  Task<PaginationDTO<RequestDTO>> GetAll(int page, int limit);
+  Task<RequestDTO> GetById(RequestId id);
+  Task<RequestDTO> AddSurveillanceRequest(SurveillanceRequestDTO dto);
+  Task<RequestDTO> AddPickAndDeliveryRequest(PickAndDeliveryRequestDTO dto);
+  Task<RequestDTO> AcceptRequest(RequestId id);
+  Task<RequestDTO> RejectRequest(RequestId id);
+  Task<RequestDTO> Update(RequestDTO dto);
+  Task<RequestDTO> Delete(RequestId dto);
 }

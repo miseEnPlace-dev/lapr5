@@ -1,39 +1,38 @@
 using System.Collections.Generic;
-using DDDSample1.Domain.Shared;
+using MDTasks.Domain.Shared;
 
-namespace DDDSample1.Domain.DeviceModel
+namespace MDTasks.Domain.DeviceModel;
+
+public class DeviceModelName : ValueObject
 {
-  public class DeviceModelName : ValueObject
+  public string Name { get; private set; }
+
+  private DeviceModelName()
   {
-    public string Name { get; private set; }
+    Name = "default";
+  }
 
-    private DeviceModelName()
+  public DeviceModelName(string Name)
+  {
+    if (Name.Length < 1)
     {
-      Name = "default";
+      throw new BusinessRuleValidationException("Name cannot be shorter than 1 characters.");
     }
+    this.Name = Name;
+  }
 
-    public DeviceModelName(string Name)
-    {
-      if (Name.Length < 1)
-      {
-        throw new BusinessRuleValidationException("Name cannot be shorter than 1 characters.");
-      }
-      this.Name = Name;
-    }
+  public void ChangeName(string Name)
+  {
+    this.Name = Name;
+  }
 
-    public void ChangeName(string Name)
-    {
-      this.Name = Name;
-    }
+  protected override IEnumerable<object> GetEqualityComponents()
+  {
+    yield return Name;
+  }
 
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-      yield return Name;
-    }
-
-    public string AsString()
-    {
-      return Name;
-    }
+  public string AsString()
+  {
+    return Name;
   }
 }
