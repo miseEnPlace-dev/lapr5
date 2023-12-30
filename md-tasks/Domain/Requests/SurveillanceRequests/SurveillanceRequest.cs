@@ -10,7 +10,7 @@ public class SurveillanceRequest : Request
   public UserPhoneNumber UserPhoneNumber { get; private set; }
   public FloorId FloorId { get; private set; }
 
-  public SurveillanceRequest(RequestId id, RequestDescription description, UserName userName, UserPhoneNumber userPhoneNumber, FloorId floorId, int startCoordinatesX, int startCoordinatesY, int endCoordinatesX, int endCoordinatesY, UserId userId) : base(id, startCoordinatesX, startCoordinatesY, endCoordinatesX, endCoordinatesY, userId, description)
+  public SurveillanceRequest(RequestId id, RequestDescription description, UserName userName, UserPhoneNumber userPhoneNumber, FloorId floorId, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, UserId userId) : base(id, startCoordinateX, startCoordinateY, endCoordinateX, endCoordinateY, userId, description)
   {
     UserName = userName;
     UserPhoneNumber = userPhoneNumber;

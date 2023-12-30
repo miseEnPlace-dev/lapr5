@@ -16,10 +16,10 @@ internal class SurveillanceRequestEntityTypeConfiguration : IEntityTypeConfigura
     builder.Property(b => b.FloorId).HasColumnName("floor_id").HasConversion(b => b.Value, b => new FloorId(b));
     builder.Property(b => b.UserName).HasConversion(b => b.Name, b => new UserName(b));
     builder.Property(b => b.UserPhoneNumber).HasConversion(b => b.PhoneNumber, b => new UserPhoneNumber(b));
-    builder.Property(b => b.StartCoordinatesX);
-    builder.Property(b => b.StartCoordinatesY);
-    builder.Property(b => b.EndCoordinatesX);
-    builder.Property(b => b.EndCoordinatesY);
+    builder.Property(b => b.StartCoordinateX);
+    builder.Property(b => b.StartCoordinateY);
+    builder.Property(b => b.EndCoordinateX);
+    builder.Property(b => b.EndCoordinateY);
     builder.Property(b => b.UserId).HasConversion(b => b.Value, b => new UserId(b));
     // builder.Property<bool>("_active").HasColumnName("Active");
   }

@@ -16,7 +16,7 @@ public class PickAndDeliveryRequest : Request
   public string StartFloorCode { get; private set; }
   public string EndFloorCode { get; private set; }
 
-  public PickAndDeliveryRequest(RequestId id, RequestDescription description, UserName pickupUserName, UserName deliveryUserName, UserPhoneNumber pickupUserPhoneNumber, UserPhoneNumber deliveryUserPhoneNumber, RoomId pickupRoomId, RoomId deliveryRoomId, ConfirmationCode confirmationCode, int startCoordinatesX, int startCoordinatesY, int endCoordinatesX, int endCoordinatesY, string startFloorCode, string endFloorCode, UserId userId) : base(id, startCoordinatesX, startCoordinatesY, endCoordinatesX, endCoordinatesY, userId, description)
+  public PickAndDeliveryRequest(RequestId id, RequestDescription description, UserName pickupUserName, UserName deliveryUserName, UserPhoneNumber pickupUserPhoneNumber, UserPhoneNumber deliveryUserPhoneNumber, RoomId pickupRoomId, RoomId deliveryRoomId, ConfirmationCode confirmationCode, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, string startFloorCode, string endFloorCode, UserId userId) : base(id, startCoordinateX, startCoordinateY, endCoordinateX, endCoordinateY, userId, description)
   {
     ConfirmationCode = confirmationCode;
     PickupUserName = pickupUserName;

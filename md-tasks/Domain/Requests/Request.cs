@@ -7,10 +7,10 @@ namespace MDTasks.Domain.Requests;
 
 public abstract class Request : Entity<RequestId>, IAggregateRoot
 {
-  public int StartCoordinatesX { get; private set; }
-  public int StartCoordinatesY { get; private set; }
-  public int EndCoordinatesX { get; private set; }
-  public int EndCoordinatesY { get; private set; }
+  public int StartCoordinateX { get; private set; }
+  public int StartCoordinateY { get; private set; }
+  public int EndCoordinateX { get; private set; }
+  public int EndCoordinateY { get; private set; }
 
   public UserId UserId { get; private set; }
   public RequestDescription Description { get; private set; }
@@ -18,13 +18,13 @@ public abstract class Request : Entity<RequestId>, IAggregateRoot
   public DateTime RequestedAt { get; private set; }
   public RequestState State { get; private set; }
 
-  public Request(RequestId id, int startCoordinatesX, int startCoordinatesY, int endCoordinatesX, int endCoordinatesY, UserId userId, RequestDescription description)
+  public Request(RequestId id, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, UserId userId, RequestDescription description)
   {
     Id = id;
-    StartCoordinatesX = startCoordinatesX;
-    StartCoordinatesY = startCoordinatesY;
-    EndCoordinatesX = endCoordinatesX;
-    EndCoordinatesY = endCoordinatesY;
+    StartCoordinateX = startCoordinateX;
+    StartCoordinateY = startCoordinateY;
+    EndCoordinateX = endCoordinateX;
+    EndCoordinateY = endCoordinateY;
     UserId = userId;
     Description = description;
     RequestedAt = DateTime.Now;
@@ -40,11 +40,11 @@ public abstract class Request : Entity<RequestId>, IAggregateRoot
 
   public Coordinates GetStartCoordinates()
   {
-    return new Coordinates(StartCoordinatesX, StartCoordinatesY);
+    return new Coordinates(StartCoordinateX, StartCoordinateY);
   }
 
   public Coordinates GetEndCoordinates()
   {
-    return new Coordinates(EndCoordinatesX, EndCoordinatesY);
+    return new Coordinates(EndCoordinateX, EndCoordinateY);
   }
 }

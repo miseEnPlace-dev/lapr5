@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MDTasks.Migrations
 {
     [DbContext(typeof(MySQLDbContext))]
-    [Migration("20231230204133_refactor-tasks-requests")]
+    [Migration("20231230222009_refactor-tasks-requests")]
     partial class refactortasksrequests
     {
         /// <inheritdoc />
@@ -42,10 +42,10 @@ namespace MDTasks.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("EndCoordinatesX")
+                    b.Property<int>("EndCoordinateX")
                         .HasColumnType("int");
 
-                    b.Property<int>("EndCoordinatesY")
+                    b.Property<int>("EndCoordinateY")
                         .HasColumnType("int");
 
                     b.Property<string>("EndFloorCode")
@@ -63,10 +63,10 @@ namespace MDTasks.Migrations
                     b.Property<DateTime>("RequestedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("StartCoordinatesX")
+                    b.Property<int>("StartCoordinateX")
                         .HasColumnType("int");
 
-                    b.Property<int>("StartCoordinatesY")
+                    b.Property<int>("StartCoordinateY")
                         .HasColumnType("int");
 
                     b.Property<string>("StartFloorCode")
@@ -88,10 +88,10 @@ namespace MDTasks.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("EndCoordinatesX")
+                    b.Property<int>("EndCoordinateX")
                         .HasColumnType("int");
 
-                    b.Property<int>("EndCoordinatesY")
+                    b.Property<int>("EndCoordinateY")
                         .HasColumnType("int");
 
                     b.Property<string>("FloorId")
@@ -101,10 +101,10 @@ namespace MDTasks.Migrations
                     b.Property<DateTime>("RequestedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("StartCoordinatesX")
+                    b.Property<int>("StartCoordinateX")
                         .HasColumnType("int");
 
-                    b.Property<int>("StartCoordinatesY")
+                    b.Property<int>("StartCoordinateY")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
