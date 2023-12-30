@@ -51,8 +51,8 @@ export default class TaskController implements ITaskController {
       const data = await response.json();
 
       for (const request of data) {
-        const user = (await this.userService.findUserById(request.userId)).getValue();
-        request.user = user;
+        const user = await this.userService.findUserById(request.userId);
+        request.user = user.isSuccess ? user.getValue() : null;
       }
 
       return res.status(200).json(data);
