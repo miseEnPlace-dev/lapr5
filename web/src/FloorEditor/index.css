@@ -17,8 +17,8 @@ body {
 }
 
 #navigate-button {
-  position: relative;
-  left: -90svh;
+  position: absolute;
+  left: -80svh;
   top: -45svh;
   width: 50vsh;
   height: 50vsh;
@@ -35,14 +35,14 @@ body {
 }
 
 #current-floor {
-  position: relative;
-  left: -75svh;
-  top: -54svh;
+  position: absolute;
+  left: -65svh;
+  top: -48svh;
   width: 50vsh;
   height: 50vsh;
   background-color: #06060654;
   color: white;
-  font-size: 5.5vmin;
+  font-size: 3.5vmin;
   line-height: 10vmin;
   cursor: default;
 }
@@ -66,7 +66,7 @@ input {
 
 #maps-panel {
   position: absolute;
-  right: -15vmin;
+  right: -50vmin;
   top: -3vh;
   width: 100vmin;
   font-size: 1.5vmin;
