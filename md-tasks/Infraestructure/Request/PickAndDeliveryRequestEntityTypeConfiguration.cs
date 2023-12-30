@@ -4,6 +4,7 @@ using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using DDDSample1.Domain.User;
 using DDDSample1.Domain.Room;
+using DDDSample1.Domain.Requests;
 
 namespace DDDSample1.Infrastructure.Tasks;
 
@@ -27,6 +28,7 @@ internal class PickAndDeliveryRequestEntityTypeConfiguration : IEntityTypeConfig
     builder.Property(b => b.EndCoordinateY);
     builder.Property(b => b.StartFloorCode);
     builder.Property(b => b.EndFloorCode);
+    builder.Property(b => b.State).HasConversion(s => s.State, s => new RequestState(s)).HasColumnName("State");
     builder.Property(b => b.UserId).HasConversion(b => b.Value, b => new UserId(b));
     // builder.Property<bool>("_active").HasColumnName("Active");
   }

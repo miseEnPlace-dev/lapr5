@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DDDSample1.Domain.Shared;
 using DDDSample1.Domain.DeviceTasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http.HttpResults;
 using DDDSample1.Domain.DTO;
+using DDDNetCore.Domain.Request;
 
 namespace DDDSample1.Controllers;
 
@@ -23,6 +22,13 @@ public class RequestsController : ControllerBase
   [HttpGet]
   public async Task<ActionResult<PaginationDTO<RequestDTO>>> GetAll()
   {
+    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit") && Request.Query.ContainsKey("filter") && Request.Query.ContainsKey("value"))
+      if (Request.Query["filter"].ToString() == "state")
+        return await service.GetRequestsByState(RequestStateMapper.ToRequestState(Request.Query["value"].ToString()), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+
+    if (Request.Query["filter"].ToString() == "state" && Request.Query.ContainsKey("value"))
+      return await service.GetRequestsByState(RequestStateMapper.ToRequestState(Request.Query["value"].ToString()), -1, -1);
+
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
       return await service.GetAllAsync(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
 

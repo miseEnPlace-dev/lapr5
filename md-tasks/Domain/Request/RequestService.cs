@@ -248,5 +248,20 @@ namespace DDDSample1.Domain.DeviceTasks
 
       return null;
     }
+
+    public async Task<PaginationDTO<RequestDTO>> GetRequestsByState(RequestState state, int page, int limit)
+    {
+      List<SurveillanceRequest> sv = await surveillanceTaskRepository.GetRequestsByState(state, page - 1, limit);
+      List<PickAndDeliveryRequest> pd = await pickAndDeliveryTaskRepository.GetRequestsByState(state, page - 1, limit);
+
+      List<RequestDTO> requests = new();
+
+      foreach (SurveillanceRequest s in sv)
+        requests.Add(await ConvertToDTO(s, "SurveillanceRequestDTO"));
+      foreach (PickAndDeliveryRequest p in pd)
+        requests.Add(await ConvertToDTO(p, "PickAndDeliveryRequestDTO"));
+
+      return new PaginationDTO<RequestDTO>(requests, page, limit, await surveillanceTaskRepository.CountAsync() + await pickAndDeliveryTaskRepository.CountAsync());
+    }
   }
 }

@@ -14,7 +14,6 @@ internal class RequestEntityTypeConfiguration : IEntityTypeConfiguration<Request
     builder.OwnsOne(b => b.UserId);
     builder.Property(b => b.State).HasConversion(s => s.State, s => new RequestState(s)).HasColumnName("State");
 
-
     // builder.Property<bool>("_active").HasColumnName("Active");
   }
 }

@@ -5,6 +5,7 @@ using DDDSample1.Domain.User;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks;
 using DDDSample1.Domain.Floor;
 using DDDSample1.Domain.DeviceTasks;
+using DDDSample1.Domain.Requests;
 
 namespace DDDSample1.Infrastructure.Tasks;
 
@@ -22,6 +23,7 @@ internal class SurveillanceRequestEntityTypeConfiguration : IEntityTypeConfigura
     builder.Property(b => b.StartCoordinateY);
     builder.Property(b => b.EndCoordinateX);
     builder.Property(b => b.EndCoordinateY);
+    builder.Property(b => b.State).HasConversion(s => s.State, s => new RequestState(s)).HasColumnName("State");
     builder.Property(b => b.UserId).HasConversion(b => b.Value, b => new UserId(b));
     // builder.Property<bool>("_active").HasColumnName("Active");
   }
