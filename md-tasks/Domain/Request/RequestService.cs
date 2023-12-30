@@ -57,6 +57,36 @@ namespace DDDSample1.Domain.DeviceTasks
       return new PaginationDTO<RequestDTO>(result, page, limit, await surveillanceTaskRepository.CountAsync() + await pickAndDeliveryTaskRepository.CountAsync());
     }
 
+    public async Task<PaginationDTO<RequestDTO>> GetRequestsByUserIdAsync(UserId id, int page, int limit)
+    {
+      List<Request> surTasks = (await surveillanceTaskRepository.GetRequestsByUserIdAsync(id, -1, -1)).Cast<Request>().ToList();
+      List<Request> pickTasks = (await pickAndDeliveryTaskRepository.GetRequestsByUserIdAsync(id, -1, -1)).Cast<Request>().ToList();
+
+      List<Request> tasks = new();
+      tasks.AddRange(surTasks);
+      tasks.AddRange(pickTasks);
+
+      // with page and limit, cut the list
+      if (page > 0 && limit > 0)
+      {
+        int offset = (page - 1) * limit;
+        tasks = tasks.Skip(offset).Take(limit).ToList();
+      }
+
+      List<RequestDTO> result = new();
+
+      foreach (Request task in tasks)
+      {
+        if (await surveillanceTaskRepository.GetByIdAsync(task.Id) != null)
+          result.Add(await ConvertToDTO(task, "SurveillanceRequestDTO"));
+
+        if (await pickAndDeliveryTaskRepository.GetByIdAsync(task.Id) != null)
+          result.Add(await ConvertToDTO(task, "PickAndDeliveryRequestDTO"));
+      }
+
+      return new PaginationDTO<RequestDTO>(result, page, limit, surTasks.Count + pickTasks.Count);
+    }
+
     public async Task<PaginationDTO<RequestDTO>> GetAllSurveillanceAsync(int page, int limit)
     {
       List<Request> surTasks = (await surveillanceTaskRepository.GetAllAsync(page - 1, limit)).Cast<Request>().ToList();

@@ -5,15 +5,17 @@ import IRequestController from '@/controllers/IControllers/IRequestController';
 import { defaultRoles } from '@/domain/role/defaultRoles';
 import { container } from '@/loaders/inversify';
 import { TYPES } from '@/loaders/inversify/types';
-import { isAuthenticated, isAuthorizedAs } from '../middlewares';
+import { attachCurrentSession, isAuthenticated, isAuthorizedAs } from '../middlewares';
 
 export default (app: Router) => {
   const route = Router();
   const ctrl = container.get<IRequestController>(TYPES.requestController);
 
+  // IGNORAR O ERRO
   route.get(
     '/task-requests',
     isAuthenticated,
+    attachCurrentSession,
     (req, res, next) =>
       isAuthorizedAs(req, res, next, [defaultRoles.task.name, defaultRoles.user.name]),
     (req, res, next) =>
