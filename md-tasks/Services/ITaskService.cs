@@ -7,8 +7,8 @@ namespace DDDNetCore.Services
 {
   public interface ITaskService
   {
-    Task<PaginationDTO<RequestDTO>> GetAll(int page, int limit);
-    Task<RequestDTO> AddSurveillanceTask(SurveillanceRequestDTO dto);
-    Task<RequestDTO> AddPickAndDeliveryTask(PickDeliveryRequestDTO dto);
+    Task<PaginationDTO<TaskDTO>> GetAll(int page, int limit);
+    Task<TaskDTO> AddSurveillanceTask(SurveillanceTaskDTO dto);
+    Task<TaskDTO> AddPickAndDeliveryTask(PickAndDeliveryTaskDTO dto);
   }
 }

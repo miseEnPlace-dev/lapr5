@@ -13,15 +13,12 @@ namespace DDDSample1.Domain.DeviceTasks
   public class DeviceTaskService
   {
     private readonly IUnitOfWork unitOfWork;
-    private readonly IDeviceTaskRepository repo;
-
     private readonly ISurveillanceTaskRepository surveillanceTaskRepository;
     private readonly IPickAndDeliveryTaskRepository pickAndDeliveryTaskRepository;
 
-    public DeviceTaskService(IUnitOfWork unitOfWork, IDeviceTaskRepository repo, ISurveillanceTaskRepository surveillanceTaskRepository, IPickAndDeliveryTaskRepository pickAndDeliveryTaskRepository)
+    public DeviceTaskService(IUnitOfWork unitOfWork, ISurveillanceTaskRepository surveillanceTaskRepository, IPickAndDeliveryTaskRepository pickAndDeliveryTaskRepository)
     {
       this.unitOfWork = unitOfWork;
-      this.repo = repo;
       this.surveillanceTaskRepository = surveillanceTaskRepository;
       this.pickAndDeliveryTaskRepository = pickAndDeliveryTaskRepository;
     }
@@ -35,12 +32,13 @@ namespace DDDSample1.Domain.DeviceTasks
 
     public async Task<DeviceTaskDto> GetByIdAsync(DeviceTaskId id)
     {
-      var task = await repo.GetByIdAsync(id);
+      DeviceTaskDto task = null;
+      // var task = await repo.GetByIdAsync(id);
 
       if (task == null)
         return null;
 
-      return new DeviceTaskDto { Id = task.Id.AsString() };
+      return new DeviceTaskDto { Id = task.Id };
     }
 
     public async Task<TaskDTO> AddSurveillanceTask(SurveillanceTaskDTO dto)
@@ -79,7 +77,8 @@ namespace DDDSample1.Domain.DeviceTasks
 
     public async Task<DeviceTaskDto> UpdateAsync(DeviceTaskDto dto)
     {
-      var task = await repo.GetByIdAsync(new DeviceTaskId(dto.Id));
+      DeviceTaskDto task = null;
+      // var task = await repo.GetByIdAsync(new DeviceTaskId(dto.Id));
 
       if (task == null)
         return null;
@@ -89,12 +88,13 @@ namespace DDDSample1.Domain.DeviceTasks
 
       await this.unitOfWork.CommitAsync();
 
-      return new DeviceTaskDto { Id = task.Id.AsString() };
+      return new DeviceTaskDto { Id = task.Id };
     }
 
     public async Task<DeviceTaskDto> InactivateAsync(DeviceTaskId id)
     {
-      var task = await repo.GetByIdAsync(id);
+      DeviceTaskDto task = null;
+      // var task = await repo.GetByIdAsync(id);
 
       if (task == null)
         return null;
@@ -104,12 +104,13 @@ namespace DDDSample1.Domain.DeviceTasks
 
       await this.unitOfWork.CommitAsync();
 
-      return new DeviceTaskDto { Id = task.Id.AsString() };
+      return new DeviceTaskDto { Id = task.Id };
     }
 
     public async Task<DeviceTaskDto> DeleteAsync(DeviceTaskId id)
     {
-      var task = await repo.GetByIdAsync(id);
+      DeviceTaskDto task = null;
+      // var task = await repo.GetByIdAsync(id);
 
       if (task == null)
         return null;
@@ -117,10 +118,10 @@ namespace DDDSample1.Domain.DeviceTasks
       // if (task.Active)
       //   throw new BusinessRuleValidationException("It is not possible to delete an active task.");
 
-      repo.Remove(task);
+      // repo.Remove(task);
       await unitOfWork.CommitAsync();
 
-      return new DeviceTaskDto { Id = task.Id.AsString() };
+      return new DeviceTaskDto { Id = task.Id };
     }
 
     private async Task<TaskDTO> ConvertToDTO(DeviceTask t, string type)
