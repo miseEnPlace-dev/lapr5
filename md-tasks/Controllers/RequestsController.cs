@@ -4,6 +4,7 @@ using DDDSample1.Domain.DeviceTasks;
 using Microsoft.AspNetCore.Mvc;
 using DDDSample1.Domain.DTO;
 using DDDNetCore.Domain.Request;
+using DDDNetCore.Services;
 
 namespace DDDSample1.Controllers;
 
@@ -11,9 +12,9 @@ namespace DDDSample1.Controllers;
 [ApiController]
 public class RequestsController : ControllerBase
 {
-  private readonly RequestService service;
+  private readonly IRequestService service;
 
-  public RequestsController(RequestService svc)
+  public RequestsController(IRequestService svc)
   {
     service = svc;
   }
