@@ -9,10 +9,10 @@ namespace DDDSample1.Infrastructure
 {
   public class MySQLDbContext : DbContext
   {
-    public DbSet<Request> Requests { get; set; }
+    public DbSet<DeviceTask> Requests { get; set; }
 
-    public DbSet<SurveillanceTask> SurveillanceTasks { get; set; }
-    public DbSet<PickAndDeliveryTask> PickAndDeliveryTasks { get; set; }
+    public DbSet<SurveillanceRequest> SurveillanceRequests { get; set; }
+    public DbSet<PickAndDeliveryRequest> PickAndDeliveryRequests { get; set; }
 
     public string ConnectionString { get; set; }
     public MySQLDbContext(DbContextOptions<MySQLDbContext> options) : base(options)
@@ -23,9 +23,9 @@ namespace DDDSample1.Infrastructure
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       //modelBuilder.ApplyConfiguration(new DeviceTaskEntityTypeConfiguration());
-      modelBuilder.ApplyConfiguration(new RequestEntityTypeConfiguration());
-      modelBuilder.ApplyConfiguration(new PickAndDeliveryTaskEntityTypeConfiguration());
-      modelBuilder.ApplyConfiguration(new SurveillanceTaskEntityTypeConfiguration());
+      modelBuilder.ApplyConfiguration(new TaskEntityTypeConfiguration());
+      modelBuilder.ApplyConfiguration(new PickAndDeliveryRequestEntityTypeConfiguration());
+      modelBuilder.ApplyConfiguration(new SurveillanceRequestEntityTypeConfiguration());
     }
   }
 }

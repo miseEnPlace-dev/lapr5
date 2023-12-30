@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace DDDSample1.Domain.DTO;
 
-public class PickAndDeliveryTaskDTO : TaskDTO
+public class PickDeliveryTaskDTO : TaskDTO
 {
 
   public string Description { get; set; }
@@ -21,7 +21,7 @@ public class PickAndDeliveryTaskDTO : TaskDTO
   public string EndFloorCode { get; set; }
 
   [JsonConstructor]
-  public PickAndDeliveryTaskDTO(string description, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string confirmationCode, string userId) : base(userId)
+  public PickDeliveryTaskDTO(string requestedAt, string description, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string confirmationCode, string deviceId, string deviceTaskId) : base(requestedAt, deviceId, deviceTaskId)
   {
     Description = description;
     PickupUserName = pickupUserName;
@@ -33,7 +33,7 @@ public class PickAndDeliveryTaskDTO : TaskDTO
     ConfirmationCode = confirmationCode;
   }
 
-  public PickAndDeliveryTaskDTO(string id, string description, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string confirmationCode, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, string startFloorCode, string endFloorCode, string userId, string state, string requestedAt) : base(id, "pick_delivery", userId, state, requestedAt)
+  public PickDeliveryTaskDTO(string id, string description, string requestedAt, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string deviceTaskId, string confirmationCode, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, string startFloorCode, string endFloorCode, string deviceId) : base(id, "pick_delivery", requestedAt, deviceTaskId, deviceId)
   {
     Description = description;
     PickupUserName = pickupUserName;

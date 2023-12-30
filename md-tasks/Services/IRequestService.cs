@@ -7,17 +7,17 @@ namespace DDDNetCore.Services
 {
   public interface IRequestService
   {
-    Task<PaginationDTO<RequestDTO>> GetAll(int page, int limit);
-    Task<PaginationDTO<SurveillanceRequestDTO>> GetAllSurveillance(int page, int limit);
-    Task<PaginationDTO<PickDeliveryRequestDTO>> GetAllPickAndDelivery(int page, int limit);
-    Task<RequestDTO> GetById(RequestId id);
+    Task<PaginationDTO<TaskDTO>> GetAll(int page, int limit);
+    Task<PaginationDTO<SurveillanceTaskDTO>> GetAllSurveillance(int page, int limit);
+    Task<PaginationDTO<PickDeliveryTaskDTO>> GetAllPickAndDelivery(int page, int limit);
+    Task<TaskDTO> GetById(TaskId id);
     Task<SequenceDTO> GetApprovedTasksSequence();
-    Task<RequestDTO> AddSurveillanceRequest(RequestDTO dto);
-    Task<RequestDTO> AddPickAndDeliveryRequest(RequestDTO dto);
-    Task<RequestDTO> Update(RequestDTO dto);
-    Task<RequestDTO> Put(RequestDTO dto);
-    Task<RequestDTO> Delete(RequestId id);
-    Task<RequestDTO> AcceptRequest(RequestId id);
-    Task<RequestDTO> RejectRequest(RequestId id);
+    Task<TaskDTO> AddSurveillanceRequest(TaskDTO dto);
+    Task<TaskDTO> AddPickAndDeliveryRequest(TaskDTO dto);
+    Task<TaskDTO> Update(TaskDTO dto);
+    Task<TaskDTO> Put(TaskDTO dto);
+    Task<TaskDTO> Delete(TaskId id);
+    Task<TaskDTO> AcceptRequest(TaskId id);
+    Task<TaskDTO> RejectRequest(TaskId id);
   }
 }

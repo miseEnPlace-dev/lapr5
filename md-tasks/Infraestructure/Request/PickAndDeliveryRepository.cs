@@ -4,10 +4,10 @@ using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks;
 
 namespace DDDSample1.Infrastructure.DeviceTasks;
 
-public class PickAndDeliveryTaskRepository : BaseRepository<PickAndDeliveryTask, DeviceTaskId>, IPickAndDeliveryTaskRepository
+public class PickAndDeliveryRequestRepository : BaseRepository<PickAndDeliveryRequest, RequestId>, IPickAndDeliveryRequestRepository
 {
   readonly MySQLDbContext _context;
-  public PickAndDeliveryTaskRepository(MySQLDbContext context) : base(context.PickAndDeliveryTasks)
+  public PickAndDeliveryRequestRepository(MySQLDbContext context) : base(context.PickAndDeliveryRequests)
   {
     _context = context;
   }

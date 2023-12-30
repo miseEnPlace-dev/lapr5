@@ -6,9 +6,9 @@ using DDDSample1.Domain.User;
 
 namespace DDDSample1.Domain.DeviceTasks.SurveillanceTasks
 {
-  public class SurveillanceTask : DeviceTask
+  public class SurveillanceRequest : Request
   {
-    public TaskDescription Description { get; private set; }
+    public RequestDescription Description { get; private set; }
     public UserName UserName { get; private set; }
 
     public UserPhoneNumber UserPhoneNumber { get; private set; }
@@ -16,7 +16,7 @@ namespace DDDSample1.Domain.DeviceTasks.SurveillanceTasks
     public FloorId FloorId { get; private set; }
 
 
-    public SurveillanceTask(DeviceTaskId Id, TaskDescription description, UserName UserName, UserPhoneNumber userPhoneNumber, FloorId floorId, int StartCoordinateX, int StartCoordinateY, int EndCoordinateX, int EndCoordinateY, UserId UserId) : base(Id, StartCoordinateX, StartCoordinateY, EndCoordinateX, EndCoordinateY, UserId)
+    public SurveillanceRequest(RequestId Id, RequestDescription description, UserName UserName, UserPhoneNumber userPhoneNumber, FloorId floorId, int StartCoordinateX, int StartCoordinateY, int EndCoordinateX, int EndCoordinateY, UserId UserId) : base(Id, StartCoordinateX, StartCoordinateY, EndCoordinateX, EndCoordinateY, UserId)
     {
       Description = description;
       this.UserName = UserName;
@@ -24,7 +24,7 @@ namespace DDDSample1.Domain.DeviceTasks.SurveillanceTasks
       FloorId = floorId;
     }
 
-    public void ChangeDescription(TaskDescription description)
+    public void ChangeDescription(RequestDescription description)
     {
       Description = description;
     }

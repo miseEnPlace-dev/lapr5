@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using DDDSample1.Domain.Shared;
+﻿using System.Threading.Tasks;
+using DDDNetCore.Domain.Request;
+using DDDNetCore.Services;
 using DDDSample1.Domain.DeviceTasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http.HttpResults;
 using DDDSample1.Domain.DTO;
+using DDDSample1.Domain.Requests;
+using DDDSample1.Domain.Shared;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DDDSample1.Controllers;
 
@@ -12,87 +13,67 @@ namespace DDDSample1.Controllers;
 [ApiController]
 public class TasksController : ControllerBase
 {
-  private readonly DeviceTaskService service;
+  private readonly IRequestService requestsService;
+  private readonly Domain.DeviceTasks.RequestService deviceTaskService;
 
-  public TasksController(DeviceTaskService svc)
+  public TasksController(Domain.Requests.RequestService requestsService)
   {
-    service = svc;
+    this.requestsService = requestsService;
   }
 
-  // GET api/Tasks
+  // GET api/requests
   [HttpGet]
-  public async Task<ActionResult<IEnumerable<TaskDTO>>> GetAll()
+  public async Task<ActionResult<PaginationDTO<TaskDTO>>> GetAll()
   {
+    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
+      return await requestsService.GetAll(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
 
-    return await service.GetAllAsync();
+    return await requestsService.GetAll(-1, -1);
   }
 
-  // GET api/Tasks/{id}
+  // GET api/requests/pick-delivery
+  [HttpGet("pick-delivery")]
+  public async Task<ActionResult<PaginationDTO<PickDeliveryTaskDTO>>> GetPickAndDelivery()
+  {
+    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
+      return await requestsService.GetAllPickAndDelivery(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+
+    return await requestsService.GetAllPickAndDelivery(-1, -1);
+  }
+
+  // GET api/requests/surveillance
+  [HttpGet("surveillance")]
+  public async Task<ActionResult<PaginationDTO<SurveillanceTaskDTO>>> GetSurveillance()
+  {
+    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
+      return await requestsService.GetAllSurveillance(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+
+    return await requestsService.GetAllSurveillance(-1, -1);
+  }
+
+  // GET api/requests/sequence
+  [HttpGet("sequence")]
+  public async Task<ActionResult<SequenceDTO>> GetSequence()
+  {
+    return Ok(await requestsService.GetApprovedTasksSequence());
+  }
+
+  // GET api/requests/{id}
   [HttpGet("{id}")]
   public async Task<ActionResult<TaskDTO>> Get(string id)
   {
-    var t = await service.GetByIdAsync(new DeviceTaskId(id));
+    var t = await requestsService.GetById(new TaskId(id));
     if (t == null) return NotFound();
-    return t;
+    return Ok(t);
   }
 
-  // POST api/Tasks/surveillance
-  [HttpPost("surveillance")]
-  public async Task<ActionResult<SurveillanceTaskDTO>> Create(SurveillanceTaskDTO dto)
+  // Patch api/requests/{id}/accept
+  [HttpPatch("{id}/accept")]
+  public async Task<ActionResult<TaskDTO>> AcceptRequest(string id)
   {
     try
     {
-      if (dto == null) return BadRequest("Task cannot be null");
-
-      var t = await service.AddSurveillanceTask(dto);
-
-      if (t == null)
-        return BadRequest(new { message = "Could not create surveillance task" });
-
-      if (t.Id == null)
-        return BadRequest(new { message = "Surveillance task Id is null" });
-
-      return CreatedAtAction(nameof(Get), new { id = t.Id }, t);
-    }
-    catch (BusinessRuleValidationException ex)
-    {
-      return BadRequest(new { ex.Message });
-    }
-  }
-
-  // POST api/Tasks/pick-delivery
-  [HttpPost("pick-delivery")]
-  public async Task<ActionResult<PickAndDeliveryTaskDTO>> CreatePickDelivery(PickAndDeliveryTaskDTO dto)
-  {
-    try
-    {
-      if (dto == null) return BadRequest("Task cannot be null");
-
-      var t = await service.AddPickAndDeliveryTask(dto);
-
-      if (t == null)
-        return BadRequest(new { message = "Could not create pick and delivery task" });
-
-      if (t.Id == null)
-        return BadRequest(new { message = "Pick and delivery task Id is null" });
-
-      return CreatedAtAction(nameof(Get), new { id = t.Id }, t);
-    }
-    catch (BusinessRuleValidationException ex)
-    {
-      return BadRequest(new { ex.Message });
-    }
-  }
-
-  // PUT api/Tasks/5
-  [HttpPut("{id}")]
-  public async Task<ActionResult<TaskDTO>> Put(string id, TaskDTO dto)
-  {
-    if (id != dto.Id) return BadRequest();
-
-    try
-    {
-      var t = await service.UpdateAsync(dto);
+      var t = await requestsService.AcceptRequest(new TaskId(id));
       if (t == null) return NotFound();
       return Ok(t);
     }
@@ -102,13 +83,107 @@ public class TasksController : ControllerBase
     }
   }
 
-  // DELETE api/Tasks/5
-  [HttpDelete("{id}")]
-  public async Task<ActionResult<DeviceTaskDto>> Delete(string id)
+  // Patch api/requests/{id}/reject
+  [HttpPatch("{id}/reject")]
+  public async Task<ActionResult<TaskDTO>> RejectRequest(string id)
   {
     try
     {
-      var t = await service.DeleteAsync(new DeviceTaskId(id));
+      var t = await requestsService.RejectRequest(new TaskId(id));
+      if (t == null) return NotFound();
+      return Ok(t);
+    }
+    catch (BusinessRuleValidationException ex)
+    {
+      return BadRequest(new { ex.Message });
+    }
+  }
+
+  // POST api/requests/surveillance
+  [HttpPost("surveillance")]
+  public async Task<ActionResult<TaskDTO>> CreateSurveillance(TaskDTO dto)
+  {
+    try
+    {
+      if (dto == null)
+        return BadRequest("Request is null");
+
+      var t = await requestsService.AddSurveillanceRequest(dto);
+
+      if (t == null)
+        return BadRequest("Failed to create surveillance request");
+
+      if (t.Id == null)
+        return BadRequest("Surveillance request Id is null");
+
+      return CreatedAtAction(nameof(Get), new { id = t.Id }, t);
+    }
+    catch (BusinessRuleValidationException ex)
+    {
+      return BadRequest(new { ex.Message });
+    }
+  }
+
+  // POST api/requests/pick-delivery 
+  [HttpPost("pick-delivery")]
+  public async Task<ActionResult<TaskDTO>> CreatePickDelivery(TaskDTO dto)
+  {
+    try
+    {
+      if (dto == null)
+        return BadRequest("Request DTO is null");
+
+      var t = await requestsService.AddPickAndDeliveryRequest(dto);
+
+      if (t == null)
+        return BadRequest("Failed to create pick and delivery request");
+
+
+      if (t.Id == null)
+        return BadRequest("Pick and Delivery request Id is null");
+
+      return CreatedAtAction(nameof(Get), new { id = t.Id }, t);
+    }
+    catch (BusinessRuleValidationException ex)
+    {
+      return BadRequest(new { ex.Message });
+    }
+  }
+  // PUT api/requests/5
+  [HttpPut("{id}")]
+  public async Task<ActionResult<TaskDTO>> Put(string id, TaskDTO dto)
+  {
+    if (id != dto.Id.ToString()) return BadRequest();
+
+    try
+    {
+      var t = await requestsService.Update(dto);
+      if (t == null) return NotFound();
+      return Ok(t);
+    }
+    catch (BusinessRuleValidationException ex)
+    {
+      return BadRequest(new { ex.Message });
+    }
+  }
+
+  // Inactivate api/requests/5
+  [HttpDelete("{id}")]
+  public async Task<ActionResult<TaskDTO>> SoftDelete(string id)
+  {
+    /* var t = await _svc.InactivateAsync(new RequestId(id));
+    if (t == null) return NotFound();
+    return Ok(t); */
+    return BadRequest(new { Message = "Not implemented" });
+  }
+
+  // DELETE api/requests/5/hard
+  [HttpDelete("{id}/hard")]
+  public async Task<ActionResult<TaskDTO>> HardDelete(string id)
+  {
+    try
+    {
+      var t = await requestsService.Delete(new TaskId(id));
       if (t == null) return NotFound();
       return Ok(t);
     }

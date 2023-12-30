@@ -1,35 +1,30 @@
 using System;
-using DDDSample1.Domain.Requests;
+using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.User;
 
-namespace DDDSample1.Domain.DeviceTasks
+namespace DDDSample1.Domain.Requests
 {
-  public abstract class DeviceTask : Entity<DeviceTaskId>, IAggregateRoot
+  public class DeviceTask : Entity<TaskId>, IAggregateRoot
   {
-    public int StartCoordinateX { get; private set; }
-    public int StartCoordinateY { get; private set; }
-    public int EndCoordinateX { get; private set; }
-    public int EndCoordinateY { get; private set; }
+    public RequestId DeviceTaskId { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+    public string DeviceId { get; private set; }
 
-    public DateTime RequestedAt { get; private set; }
-
-    public RequestState State { get; private set; }
-
-    public UserId UserId { get; private set; }
-
-    public DeviceTask(DeviceTaskId Id, int StartCoordinateX, int StartCoordinateY, int EndCoordinateX, int EndCoordinateY, UserId UserId)
+    public DeviceTask(RequestId DeviceTaskId, string deviceId)
     {
-      this.StartCoordinateX = StartCoordinateX;
-      this.StartCoordinateY = StartCoordinateY;
-      this.EndCoordinateX = EndCoordinateX;
-      this.EndCoordinateY = EndCoordinateY;
-      this.UserId = UserId;
-      this.Id = Id;
-      RequestedAt = DateTime.Now;
-      State = new RequestState(StateEnum.Pending);
+      this.DeviceTaskId = DeviceTaskId;
+      Id = new TaskId(Guid.NewGuid());
+      CreatedAt = DateTime.Now;
+      DeviceId = deviceId;
     }
 
-    public abstract void ExecuteTask();
+    public DeviceTask(TaskId id, RequestId DeviceTaskId, RequestState state, DateTime requestedAt, string deviceId)
+    {
+      this.DeviceTaskId = DeviceTaskId;
+      Id = id;
+      CreatedAt = requestedAt;
+      DeviceId = deviceId;
+    }
+
   }
 }

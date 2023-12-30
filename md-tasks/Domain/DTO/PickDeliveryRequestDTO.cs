@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace DDDSample1.Domain.DTO;
 
-public class PickDeliveryRequestDTO : RequestDTO
+public class PickAndDeliveryRequestDTO : RequestDTO
 {
 
   public string Description { get; set; }
@@ -21,7 +21,7 @@ public class PickDeliveryRequestDTO : RequestDTO
   public string EndFloorCode { get; set; }
 
   [JsonConstructor]
-  public PickDeliveryRequestDTO(string requestedAt, string description, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string confirmationCode, string deviceId, string deviceTaskId) : base(requestedAt, deviceId, deviceTaskId)
+  public PickAndDeliveryRequestDTO(string description, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string confirmationCode, string userId) : base(userId)
   {
     Description = description;
     PickupUserName = pickupUserName;
@@ -33,7 +33,7 @@ public class PickDeliveryRequestDTO : RequestDTO
     ConfirmationCode = confirmationCode;
   }
 
-  public PickDeliveryRequestDTO(string id, string description, string requestedAt, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string deviceTaskId, string confirmationCode, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, string startFloorCode, string endFloorCode, string deviceId) : base(id, "pick_delivery", requestedAt, deviceTaskId, deviceId)
+  public PickAndDeliveryRequestDTO(string id, string description, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string confirmationCode, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, string startFloorCode, string endFloorCode, string userId, string state, string requestedAt) : base(id, "pick_delivery", userId, state, requestedAt)
   {
     Description = description;
     PickupUserName = pickupUserName;

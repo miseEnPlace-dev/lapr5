@@ -3,9 +3,9 @@ using DDDSample1.Domain.User;
 
 namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks
 {
-  public class PickAndDeliveryTask : DeviceTask
+  public class PickAndDeliveryRequest : Request
   {
-    public TaskDescription Description { get; private set; }
+    public RequestDescription Description { get; private set; }
     public ConfirmationCode ConfirmationCode { get; private set; }
     public UserName PickupUserName { get; private set; }
     public UserName DeliveryUserName { get; private set; }
@@ -18,7 +18,7 @@ namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks
     public string StartFloorCode { get; private set; }
     public string EndFloorCode { get; private set; }
 
-    public PickAndDeliveryTask(DeviceTaskId Id, TaskDescription description, UserName pickupUserName, UserName deliveryUserName, UserPhoneNumber pickupUserPhoneNumber, UserPhoneNumber deliveryUserPhoneNumber, RoomId pickupRoomId, RoomId deliveryRoomId, ConfirmationCode confirmationCode, int StartCoordinateX, int StartCoordinateY, int EndCoordinateX, int EndCoordinateY, string startFloorCode, string endFloorCode, UserId UserId) : base(Id, StartCoordinateX, StartCoordinateY, EndCoordinateX, EndCoordinateY, UserId)
+    public PickAndDeliveryRequest(RequestId Id, RequestDescription description, UserName pickupUserName, UserName deliveryUserName, UserPhoneNumber pickupUserPhoneNumber, UserPhoneNumber deliveryUserPhoneNumber, RoomId pickupRoomId, RoomId deliveryRoomId, ConfirmationCode confirmationCode, int StartCoordinateX, int StartCoordinateY, int EndCoordinateX, int EndCoordinateY, string startFloorCode, string endFloorCode, UserId UserId) : base(Id, StartCoordinateX, StartCoordinateY, EndCoordinateX, EndCoordinateY, UserId)
     {
       Description = description;
       ConfirmationCode = confirmationCode;
@@ -32,7 +32,7 @@ namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks
       EndFloorCode = endFloorCode;
     }
 
-    public void ChangeDescription(TaskDescription description)
+    public void ChangeDescription(RequestDescription description)
     {
       Description = description;
     }

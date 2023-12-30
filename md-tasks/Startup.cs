@@ -83,12 +83,12 @@ namespace DDDSample1
     {
       services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-      services.AddTransient<IRequestRepository, RequestRepository>();
-      services.AddTransient<RequestService>();
+      services.AddTransient<ITaskRepository, RequestRepository>();
+      services.AddTransient<Domain.Requests.RequestService>();
 
-      services.AddTransient<ISurveillanceTaskRepository, SurveillanceTaskRepository>();
-      services.AddTransient<IPickAndDeliveryTaskRepository, PickAndDeliveryTaskRepository>();
-      services.AddTransient<DeviceTaskService>();
+      services.AddTransient<ISurveillanceRequestRepository, SurveillanceRequestRepository>();
+      services.AddTransient<IPickAndDeliveryRequestRepository, PickAndDeliveryRequestRepository>();
+      services.AddTransient<Domain.DeviceTasks.RequestService>();
     }
   }
 }

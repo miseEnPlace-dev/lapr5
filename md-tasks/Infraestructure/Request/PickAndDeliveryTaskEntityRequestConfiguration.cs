@@ -7,14 +7,14 @@ using DDDSample1.Domain.Room;
 
 namespace DDDSample1.Infrastructure.Tasks;
 
-internal class PickAndDeliveryTaskEntityTypeConfiguration : IEntityTypeConfiguration<PickAndDeliveryTask>
+internal class PickAndDeliveryRequestEntityTypeConfiguration : IEntityTypeConfiguration<PickAndDeliveryRequest>
 {
-  public void Configure(EntityTypeBuilder<PickAndDeliveryTask> builder)
+  public void Configure(EntityTypeBuilder<PickAndDeliveryRequest> builder)
   {
     //builder.ToTable("PickAndDeliveryTasks", SchemaNames.DDDSample1);
     //builder.Property(b => b.Id);
     builder.Property(b => b.ConfirmationCode).HasConversion(b => b.Code, b => new ConfirmationCode(b));
-    builder.Property(b => b.Description).HasConversion(b => b.Value, b => new TaskDescription(b));
+    builder.Property(b => b.Description).HasConversion(b => b.Value, b => new RequestDescription(b));
     builder.Property(b => b.PickupRoomId).HasConversion(b => b.Value, b => new RoomId(b));
     builder.Property(b => b.DeliveryRoomId).HasConversion(b => b.Value, b => new RoomId(b));
     builder.Property(b => b.PickupUserName).HasConversion(b => b.Name, b => new UserName(b));

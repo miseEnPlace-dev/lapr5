@@ -1,208 +1,181 @@
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Json;
+using System.Linq;
 using System.Threading.Tasks;
-using DDDNetCore.Domain.Request;
-using DDDNetCore.Services;
-using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks;
 using DDDSample1.Domain.DeviceTasks.SurveillanceTasks;
 using DDDSample1.Domain.DTO;
+using DDDSample1.Domain.Floor;
+using DDDSample1.Domain.Room;
 using DDDSample1.Domain.Shared;
+using DDDSample1.Domain.User;
 
-namespace DDDSample1.Domain.Requests
+namespace DDDSample1.Domain.DeviceTasks
 {
-  public class RequestService : IRequestService
+  public class RequestService
   {
     private readonly IUnitOfWork unitOfWork;
-    private readonly IRequestRepository repo;
-    private readonly ISurveillanceTaskRepository surveillanceTaskRepository;
-    private readonly IPickAndDeliveryTaskRepository pickAndDeliveryTaskRepository;
+    private readonly ISurveillanceRequestRepository surveillanceTaskRepository;
+    private readonly IPickAndDeliveryRequestRepository pickAndDeliveryTaskRepository;
 
-    private static readonly HttpClient httpClient = new();
-    private static readonly string BASE_URL = "http://localhost:5000/api";
-
-    public RequestService(IUnitOfWork unitOfWork, IRequestRepository repo, ISurveillanceTaskRepository surveillanceTaskRepository, IPickAndDeliveryTaskRepository pickAndDeliveryTaskRepository)
+    public RequestService(IUnitOfWork unitOfWork, ISurveillanceRequestRepository surveillanceTaskRepository, IPickAndDeliveryRequestRepository pickAndDeliveryTaskRepository)
     {
       this.unitOfWork = unitOfWork;
-      this.repo = repo;
       this.surveillanceTaskRepository = surveillanceTaskRepository;
       this.pickAndDeliveryTaskRepository = pickAndDeliveryTaskRepository;
     }
 
-    public async Task<PaginationDTO<RequestDTO>> GetAll(int page, int limit)
+    public async Task<List<RequestDTO>> GetAllAsync()
     {
-      List<Request> requests = await repo.GetAllAsync(page - 1, limit);
+      List<Request> surTasks = (await surveillanceTaskRepository.GetAllAsync(-1, -1)).Cast<Request>().ToList();
+      List<Request> pickTasks = (await pickAndDeliveryTaskRepository.GetAllAsync(-1, -1)).Cast<Request>().ToList();
+
+      List<Request> tasks = new();
+      tasks.AddRange(surTasks);
+      tasks.AddRange(pickTasks);
 
       List<RequestDTO> result = new();
 
-      foreach (Request request in requests)
+      foreach (Request task in tasks)
       {
-        if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
-          result.Add(await ConvertToDTO(request, "SurveillanceRequestDTO"));
+        if (await surveillanceTaskRepository.GetByIdAsync(task.Id) != null)
+          result.Add(await ConvertToDTO(task, "SurveillanceRequestDTO"));
 
-        if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
-          result.Add(await ConvertToDTO(request, "PickDeliveryRequestDTO"));
+        if (await pickAndDeliveryTaskRepository.GetByIdAsync(task.Id) != null)
+          result.Add(await ConvertToDTO(task, "PickAndDeliveryRequestDTO"));
       }
 
-      return new PaginationDTO<RequestDTO>(result, page, limit, await repo.CountAsync());
+      return result;
     }
 
-    public async Task<PaginationDTO<SurveillanceRequestDTO>> GetAllSurveillance(int page, int limit)
+    public async Task<RequestDTO> GetByIdAsync(RequestId id)
     {
-      List<Request> requests = await repo.GetAllAsync(page - 1, limit);
+      RequestDTO task = null;
+      // var task = await repo.GetByIdAsync(id);
 
-      List<SurveillanceRequestDTO> result = new();
-
-      foreach (Request request in requests)
-        if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
-          result.Add((SurveillanceRequestDTO)await ConvertToDTO(request, "SurveillanceRequestDTO"));
-
-      int count = await surveillanceTaskRepository.CountAsync();
-
-      return new PaginationDTO<SurveillanceRequestDTO>(result, page, limit, count);
-    }
-
-    public async Task<PaginationDTO<PickDeliveryRequestDTO>> GetAllPickAndDelivery(int page, int limit)
-    {
-      List<Request> requests = await repo.GetAllAsync(page - 1, limit);
-
-      List<PickDeliveryRequestDTO> result = new();
-
-      foreach (Request request in requests)
-        if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
-          result.Add((PickDeliveryRequestDTO)await ConvertToDTO(request, "PickDeliveryRequestDTO"));
-
-      int count = await pickAndDeliveryTaskRepository.CountAsync();
-
-      return new PaginationDTO<PickDeliveryRequestDTO>(result, page, limit, count);
-    }
-    public async Task<RequestDTO> GetById(RequestId id)
-    {
-      Request request = await repo.GetByIdAsync(id);
-      if (request == null) return null;
-
-      if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
-        return await ConvertToDTO(request, "SurveillanceRequestDTO");
-
-      if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
-        return await ConvertToDTO(request, "PickDeliveryRequestDTO");
-
+      //if (task == null)
       return null;
+
+      //return new RequestDTO { Id = task.Id };
     }
 
-    public async Task<RequestDTO> AddSurveillanceRequest(RequestDTO dto)
+    public async Task<RequestDTO> AddSurveillanceTask(SurveillanceRequestDTO dto)
     {
       try
       {
-        SurveillanceTask task = await surveillanceTaskRepository.GetByIdAsync(new DeviceTaskId(dto.DeviceTaskId));
-        if (task == null) return null;
-
-        Request r = new(new DeviceTaskId(dto.DeviceTaskId), dto.DeviceId);
-        await repo.AddAsync(r);
+        SurveillanceRequest t = new(new RequestId(Guid.NewGuid().ToString()), new RequestDescription(dto.Description), new UserName(dto.UserName), new UserPhoneNumber(dto.PhoneNumber), new FloorId(dto.FloorId), dto.StartCoordinateX, dto.StartCoordinateY, dto.EndCoordinateX, dto.EndCoordinateY, new UserId(dto.UserId));
+        await surveillanceTaskRepository.AddAsync(t);
         await unitOfWork.CommitAsync();
 
-        return await ConvertToDTO(r, "SurveillanceRequestDTO");
+        return await ConvertToDTO(t, "SurveillanceRequestDTO");
       }
       catch (Exception e)
       {
         Console.WriteLine($"Exception: {e.Message}");
         throw;
       }
-
     }
 
-    public async Task<RequestDTO> AddPickAndDeliveryRequest(RequestDTO dto)
+    public async Task<RequestDTO> AddPickAndDeliveryTask(PickAndDeliveryRequestDTO dto)
     {
       try
       {
-        PickAndDeliveryTask task = await pickAndDeliveryTaskRepository.GetByIdAsync(new DeviceTaskId(dto.DeviceTaskId));
-        if (task == null) return null;
-
-        Request r = new(new DeviceTaskId(dto.DeviceTaskId), dto.DeviceId);
-        await repo.AddAsync(r);
+        PickAndDeliveryRequest t = new(new RequestId(Guid.NewGuid().ToString()), new RequestDescription(dto.Description), new UserName(dto.PickupUserName), new UserName(dto.DeliveryUserName), new UserPhoneNumber(dto.PickupUserPhoneNumber), new UserPhoneNumber(dto.DeliveryUserPhoneNumber), new RoomId(dto.PickupRoomId), new RoomId(dto.DeliveryRoomId), new ConfirmationCode(dto.ConfirmationCode), dto.StartCoordinateX, dto.StartCoordinateY, dto.EndCoordinateX, dto.EndCoordinateY, dto.StartFloorCode, dto.EndFloorCode, new UserId(dto.UserId));
+        await pickAndDeliveryTaskRepository.AddAsync(t);
         await unitOfWork.CommitAsync();
 
-        return await ConvertToDTO(r, "PickDeliveryRequestDTO");
+        return await ConvertToDTO(t, "PickAndDeliveryRequestDTO");
       }
       catch (Exception e)
       {
         Console.WriteLine($"Exception: {e.Message}");
         throw;
       }
-
     }
 
-    public async Task<RequestDTO> Update(RequestDTO dto)
+    public async Task<RequestDto> UpdateAsync(RequestDTO dto)
     {
-      Request request = await repo.GetByIdAsync(new RequestId(dto.Id));
-      if (request == null) return null;
+      RequestDTO task = null;
+      // var task = await repo.GetByIdAsync(new DeviceTaskId(dto.Id));
 
-      await unitOfWork.CommitAsync();
+      if (task == null)
+        return null;
 
-      return await ConvertToDTO(request, dto.GetType().Name);
-    }
+      // change all fields
+      // ...
 
-    public async Task<RequestDTO> Put(RequestDTO dto)
-    {
-      Request request = await repo.GetByIdAsync(new RequestId(dto.Id));
-      if (request == null) return null;
-
-      await unitOfWork.CommitAsync();
-      return await ConvertToDTO(request, dto.GetType().Name);
-    }
-
-    public async Task<RequestDTO> Delete(RequestId id)
-    {
-      Request request = await repo.GetByIdAsync(id);
-      if (request == null) return null;
-
-      repo.Remove(request);
-      await unitOfWork.CommitAsync();
+      await this.unitOfWork.CommitAsync();
 
       return null;
     }
 
-    private async Task<RequestDTO> ConvertToDTO(Request r, string type)
+    public async Task<RequestDto> InactivateAsync(RequestId id)
+    {
+      RequestDto task = null;
+      // var task = await repo.GetByIdAsync(id);
+
+      if (task == null)
+        return null;
+
+      // change all fields
+      // ...
+
+      await this.unitOfWork.CommitAsync();
+
+      return new RequestDto { Id = task.Id };
+    }
+
+    public async Task<RequestDto> DeleteAsync(RequestId id)
+    {
+      RequestDto task = null;
+      // var task = await repo.GetByIdAsync(id);
+
+      if (task == null)
+        return null;
+
+      // if (task.Active)
+      //   throw new BusinessRuleValidationException("It is not possible to delete an active task.");
+
+      // repo.Remove(task);
+      await unitOfWork.CommitAsync();
+
+      return new RequestDto { Id = task.Id };
+    }
+
+    private async Task<RequestDTO> ConvertToDTO(Request t, string type)
     {
       if (type.Equals("SurveillanceRequestDTO"))
       {
-        SurveillanceTask task = await surveillanceTaskRepository.GetByIdAsync(r.DeviceTaskId);
-        if (task == null) return null;
-
+        SurveillanceRequest task = await surveillanceTaskRepository.GetByIdAsync(t.Id);
         return new SurveillanceRequestDTO(
-            r.Id.Value,
+            t.Id.Value,
             task.Description.Value,
-            r.CreatedAt.ToString(),
             task.UserName.Name,
             task.UserPhoneNumber.PhoneNumber,
             task.FloorId.Value,
-            task.Id.Value,
             task.StartCoordinateX,
             task.StartCoordinateY,
             task.EndCoordinateX,
             task.EndCoordinateY,
-            r.DeviceId
+            t.UserId.Value,
+            task.State.State.ToString(),
+            t.RequestedAt.ToString()
         );
       }
 
-      if (type.Equals("PickDeliveryRequestDTO"))
+      if (type.Equals("PickAndDeliveryRequestDTO"))
       {
-        PickAndDeliveryTask task = await pickAndDeliveryTaskRepository.GetByIdAsync(r.DeviceTaskId);
-        if (task == null) return null;
+        PickAndDeliveryRequest task = await pickAndDeliveryTaskRepository.GetByIdAsync(t.Id);
 
-        return new PickDeliveryRequestDTO(
-            r.Id.Value,
+        return new PickAndDeliveryRequestDTO(
+            t.Id.Value,
             task.Description.Value,
-            r.CreatedAt.ToString(),
             task.PickupUserName.Name,
             task.DeliveryUserName.Name,
             task.PickupUserPhoneNumber.PhoneNumber,
             task.DeliveryUserPhoneNumber.PhoneNumber,
             task.PickupRoomId.Value,
             task.DeliveryRoomId.Value,
-            task.Id.Value,
             task.ConfirmationCode.Code,
             task.StartCoordinateX,
             task.StartCoordinateY,
@@ -210,82 +183,13 @@ namespace DDDSample1.Domain.Requests
             task.EndCoordinateY,
             task.StartFloorCode,
             task.EndFloorCode,
-            r.DeviceId
+            t.UserId.Value,
+            task.State.State.ToString(),
+            t.RequestedAt.ToString()
         );
       }
 
       return null;
-    }
-
-    public async Task<RequestDTO> AcceptRequest(RequestId id)
-    {
-      Request request = await repo.GetByIdAsync(id);
-      if (request == null) return null;
-
-      await unitOfWork.CommitAsync();
-
-
-      if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
-        return await ConvertToDTO(request, "SurveillanceRequestDTO");
-
-
-      if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
-        return await ConvertToDTO(request, "PickDeliveryRequestDTO");
-
-      return null;
-    }
-
-    public async Task<RequestDTO> RejectRequest(RequestId id)
-    {
-      Request request = await repo.GetByIdAsync(id);
-      if (request == null) return null;
-
-      await unitOfWork.CommitAsync();
-
-      if (await surveillanceTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
-        return await ConvertToDTO(request, "SurveillanceRequestDTO");
-
-      if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.DeviceTaskId) != null)
-        return await ConvertToDTO(request, "PickDeliveryRequestDTO");
-
-      return null;
-    }
-
-    public async Task<SequenceDTO> GetApprovedTasksSequence()
-    {
-      using HttpResponseMessage response = await httpClient.GetAsync(BASE_URL + "/sequence");
-
-      response.EnsureSuccessStatusCode();
-      var jsonResponse = await response.Content.ReadFromJsonAsync<SequenceResponseDTO>() ?? throw new Exception("Error getting sequence");
-      List<DeviceTask> tasks = new();
-
-      foreach (string taskId in jsonResponse.tasks)
-      {
-        DeviceTask task = await pickAndDeliveryTaskRepository.GetByIdAsync(new DeviceTaskId(taskId));
-        if (task == null) task = await surveillanceTaskRepository.GetByIdAsync(new DeviceTaskId(taskId));
-
-        tasks.Add(task);
-      }
-
-
-      List<PathDTO> fullPath = new();
-      foreach (DeviceTask task in tasks)
-      {
-        string StartFloorCode = task is PickAndDeliveryTask ? ((PickAndDeliveryTask)task).StartFloorCode : ((SurveillanceTask)task).FloorId.Value;
-        string EndFloorCode = task is PickAndDeliveryTask ? ((PickAndDeliveryTask)task).EndFloorCode : ((SurveillanceTask)task).FloorId.Value;
-
-        string url = $"{BASE_URL}/route?fromX={task.StartCoordinateX}&fromY={task.StartCoordinateY}&toX={task.EndCoordinateX}&toY={task.EndCoordinateY}&fromFloor={StartFloorCode}&toFloor={EndFloorCode}&method=elevators";
-        using HttpResponseMessage res = await httpClient.GetAsync(url);
-
-        res.EnsureSuccessStatusCode();
-
-        PathDTO path = PathJsonParser.Parse(await res.Content.ReadAsStringAsync());
-        path.taskId = task.Id.Value;
-        fullPath.Add(path);
-      }
-
-      SequenceDTO result = new(tasks, jsonResponse.time, fullPath);
-      return result;
     }
   }
 }

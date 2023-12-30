@@ -4,10 +4,10 @@ using DDDSample1.Domain.DeviceTasks.SurveillanceTasks;
 
 namespace DDDSample1.Infrastructure.DeviceTasks;
 
-public class SurveillanceTaskRepository : BaseRepository<SurveillanceTask, DeviceTaskId>, ISurveillanceTaskRepository
+public class SurveillanceRequestRepository : BaseRepository<SurveillanceRequest, RequestId>, ISurveillanceRequestRepository
 {
   readonly MySQLDbContext _context;
-  public SurveillanceTaskRepository(MySQLDbContext context) : base(context.SurveillanceTasks)
+  public SurveillanceRequestRepository(MySQLDbContext context) : base(context.SurveillanceRequests)
   {
     _context = context;
   }

@@ -1,26 +1,28 @@
 using Newtonsoft.Json;
-
 namespace DDDSample1.Domain.DTO;
-public abstract class TaskDTO
+
+public class TaskDTO
 {
   public string Id { get; set; }
+  public string CreatedAt { get; set; }
+  public string DeviceTaskId { get; set; }
+  public string DeviceId { get; set; }
   public string Type { get; set; }
-  public string UserId { get; set; }
-  public string State { get; set; }
-  public string RequestedAt { get; set; }
 
   [JsonConstructor]
-  public TaskDTO(string userId)
+  public TaskDTO(string requestedAt, string deviceId, string deviceTaskId)
   {
-    UserId = userId;
+    CreatedAt = requestedAt;
+    DeviceId = deviceId;
+    DeviceTaskId = deviceTaskId;
   }
 
-  public TaskDTO(string id, string type, string userId, string state, string requestedAt)
+  public TaskDTO(string id, string type, string createdAt, string deviceTaskId, string deviceId)
   {
     Id = id;
+    CreatedAt = createdAt;
+    DeviceTaskId = deviceTaskId;
     Type = type;
-    UserId = userId;
-    State = state;
-    RequestedAt = requestedAt;
+    DeviceId = deviceId;
   }
 }

@@ -5,17 +5,17 @@ using Microsoft.EntityFrameworkCore;
 namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks
 {
   [Owned]
-  public class TaskDescription : ValueObject
+  public class RequestDescription : ValueObject
   {
 
     public string Value { get; private set; }
 
-    private TaskDescription()
+    private RequestDescription()
     {
       Value = "";
     }
 
-    public TaskDescription(string description)
+    public RequestDescription(string description)
     {
       ValidateDescription(description);
       Value = description;

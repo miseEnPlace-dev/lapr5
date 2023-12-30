@@ -9,6 +9,6 @@ namespace DDDNetCore.Services
   {
     Task<PaginationDTO<TaskDTO>> GetAll(int page, int limit);
     Task<TaskDTO> AddSurveillanceTask(SurveillanceTaskDTO dto);
-    Task<TaskDTO> AddPickAndDeliveryTask(PickAndDeliveryTaskDTO dto);
+    Task<TaskDTO> AddPickAndDeliveryTask(PickDeliveryTaskDTO dto);
   }
 }
