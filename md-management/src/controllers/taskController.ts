@@ -75,7 +75,7 @@ export default class TaskController implements ITaskController {
 
       if (page && limit) {
         const response = await fetch(
-          `${config.tasksApiUrl}/api/Requests/pick-delivery?limit=${limit}&page=${page}`
+          `${config.tasksApiUrl}/api/requests/pick-delivery?limit=${limit}&page=${page}`
         );
 
         const data = await response.json();
@@ -132,7 +132,6 @@ export default class TaskController implements ITaskController {
   ): Promise<Response | void> {
     try {
       const sequence = await this.taskService.getTaskSequence();
-
       return res.status(200).json(sequence);
     } catch (e) {
       return next(e);

@@ -13,7 +13,7 @@ export default class TaskService implements ITaskService {
 
   async getTaskSequence(): Promise<ISequenceDTO> {
     const data = await this.httpClient.get<ISequenceResponseDTO>(
-      `${config.tasksApiUrl}/api/requests`
+      `${config.tasksApiUrl}/api/requests/sequence`
     );
 
     return SequenceMapper.map(data);
