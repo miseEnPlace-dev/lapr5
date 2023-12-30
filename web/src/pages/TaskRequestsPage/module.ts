@@ -9,6 +9,7 @@ import { Request } from "@/model/Request";
 import { IDeviceModelService } from "@/service/IService/IDeviceModelService";
 import { IDeviceService } from "@/service/IService/IDeviceService";
 import { IRequestService } from "@/service/IService/IRequestService";
+import { ITaskService } from "@/service/IService/ITaskService";
 
 const states = [
   {
@@ -35,6 +36,7 @@ export const useListTaskRequestsModule = () => {
   const deviceModelService = useInjection<IDeviceModelService>(
     TYPES.deviceModelService
   );
+  const taskService = useInjection<ITaskService>(TYPES.taskService);
   const deviceService = useInjection<IDeviceService>(TYPES.deviceService);
   // const { id, username, phoneNumber } = useAuth();
 
@@ -55,6 +57,10 @@ export const useListTaskRequestsModule = () => {
   const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]);
 
   const [devices, setDevices] = useState<Device[]>([]);
+
+  const [device, setDevice] = useState<Device>();
+
+  const [requestId, setRequestId] = useState<string>("");
 
   const deviceInputRef = useRef<HTMLSelectElement>(null);
 
@@ -83,6 +89,17 @@ export const useListTaskRequestsModule = () => {
     fetchDeviceModels();
     fetchDevices();
   }, [fetchDeviceModels, fetchDevices]);
+
+  async function fetchDevice(): Promise<Device | undefined> {
+    if (deviceInputRef.current) {
+      const device = await deviceService.getDevice(
+        deviceInputRef.current.value
+      );
+      setDevice(device);
+    }
+
+    return device;
+  }
 
   const fetchRequests = useCallback(async () => {
     try {
@@ -132,13 +149,24 @@ export const useListTaskRequestsModule = () => {
     } catch (error) {
       setRequests({ data: [] });
     }
-  }, [requestService, stateFilter, userFilter, page, itemsPerPage]);
+  }, [
+    requestService,
+    stateFilter,
+    deviceModelFilter,
+    userFilter,
+    page,
+    itemsPerPage,
+  ]);
 
-  async function handleAcceptRequest(id: string) {
+  async function handleAcceptRequest() {
     try {
-      if (!id || id.length === 0 || id == "")
+      if (!requestId || requestId.length === 0 || requestId == "")
         throw new Error("Invalid request id");
-      await requestService.acceptRequest(id);
+
+      if (!device) throw new Error("Invalid device");
+
+      await taskService.createTask(device.code, requestId);
+      await requestService.acceptRequest(requestId);
       fetchRequests();
     } catch (err) {
       console.log(err);
@@ -183,5 +211,7 @@ export const useListTaskRequestsModule = () => {
     deviceModels,
     devices,
     deviceInputRef,
+    setRequestId,
+    fetchDevice,
   };
 };

@@ -22,10 +22,37 @@ public class RequestsController : ControllerBase
   [HttpGet]
   public async Task<ActionResult<PaginationDTO<RequestDTO>>> GetAll()
   {
+    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit") && Request.Query.ContainsKey("filter") && Request.Query.ContainsKey("value"))
+      if (Request.Query["filter"].ToString() == "state")
+        return await service.GetRequestsByState(RequestStateMapper.ToRequestState(Request.Query["value"].ToString()), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+
+    if (Request.Query["filter"].ToString() == "state" && Request.Query.ContainsKey("value"))
+      return await service.GetRequestsByState(RequestStateMapper.ToRequestState(Request.Query["value"].ToString()), -1, -1);
+
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
       return await svc.GetAll(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
 
     return await svc.GetAll(-1, -1);
+  }
+
+  // GET api/requests/surveillance
+  [HttpGet("surveillance")]
+  public async Task<ActionResult<PaginationDTO<RequestDTO>>> GetAllSurveillance()
+  {
+    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
+      return await service.GetAllSurveillanceAsync(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+
+    return await service.GetAllSurveillanceAsync(-1, -1);
+  }
+
+  // GET api/requests/pick-delivery
+  [HttpGet("pick-delivery")]
+  public async Task<ActionResult<PaginationDTO<RequestDTO>>> GetAllPickDelivery()
+  {
+    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
+      return await service.GetAllPickDeliveryAsync(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+
+    return await service.GetAllPickDeliveryAsync(-1, -1);
   }
 
   // GET api/requests/{id}
@@ -150,4 +177,37 @@ public class RequestsController : ControllerBase
       return BadRequest(new { ex.Message });
     }
   }
+
+  // Patch api/requests/{id}/accept
+  [HttpPatch("{id}/accept")]
+  public async Task<ActionResult<RequestDTO>> AcceptRequest(string id)
+  {
+    try
+    {
+      var t = await service.AcceptRequest(new RequestId(id));
+      if (t == null) return NotFound();
+      return Ok(t);
+    }
+    catch (BusinessRuleValidationException ex)
+    {
+      return BadRequest(new { ex.Message });
+    }
+  }
+
+  // Patch api/requests/{id}/reject
+  [HttpPatch("{id}/reject")]
+  public async Task<ActionResult<RequestDTO>> RejectRequest(string id)
+  {
+    try
+    {
+      var t = await service.RejectRequest(new RequestId(id));
+      if (t == null) return NotFound();
+      return Ok(t);
+    }
+    catch (BusinessRuleValidationException ex)
+    {
+      return BadRequest(new { ex.Message });
+    }
+  }
+
 }

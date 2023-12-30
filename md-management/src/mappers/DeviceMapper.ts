@@ -19,6 +19,7 @@ import IFloorRepo from '@/services/IRepos/IFloorRepo';
 export class DeviceMapper extends Mapper<Device> {
   public static toDTO(device: Device): IDeviceDTO {
     return {
+      id: device.id.toString(),
       code: device.code.value,
       nickname: device.nickname.value,
       description: device.description?.value,

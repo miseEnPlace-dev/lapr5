@@ -8,6 +8,7 @@ import floor from './routes/floorRoute';
 import planning from './routes/planningRoute';
 import role from './routes/roleRoute';
 import room from './routes/roomRoute';
+import request from './routes/requestRoute';
 import task from './routes/taskRoute';
 import { default as auth, default as user } from './routes/userRoute';
 
@@ -25,6 +26,7 @@ export default () => {
   deviceModel(app);
   device(app);
   planning(app);
+  request(app);
   task(app);
 
   return app;

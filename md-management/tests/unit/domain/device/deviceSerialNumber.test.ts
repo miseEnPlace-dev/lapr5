@@ -11,14 +11,12 @@ describe('DeviceSerialNumber', () => {
   it('should create new serial number with 50 characters', () => {
     const result = DeviceSerialNumber.create([...Array(50)].map(() => 'a').join(''));
     expect(result.isSuccess).toBe(true);
-    console.log(result.getValue());
     expect(result.getValue().value).toBe([...Array(50)].map(() => 'a').join(''));
   });
 
   it('should allow spaces', () => {
     const result = DeviceSerialNumber.create('12 a');
     expect(result.isSuccess).toBe(true);
-    console.log(result.getValue());
     expect(result.getValue().value).toBe('12 a');
   });
 

@@ -51,6 +51,9 @@ const TasksPage: React.FC = () => {
     phoneNumber,
     room1InputRef,
     room2InputRef,
+    setFloorCode,
+    floorCode,
+    floorRooms,
   } = useTasksModule();
 
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
@@ -336,7 +339,28 @@ const TasksPage: React.FC = () => {
                           code: floor.code,
                           name: floor.code,
                         }))}
+                        onChange={(e) => setFloorCode(e.target?.value)}
                         inputRef={floorInputRef}
+                      />
+                      <Dropdown
+                        className="w-full"
+                        name="Room 1"
+                        disabled={floorCode === ""}
+                        options={floorRooms.map((room) => ({
+                          code: room.name,
+                          name: room.name,
+                        }))}
+                        inputRef={room1InputRef}
+                      />
+                      <Dropdown
+                        className="w-full"
+                        name="Room 2"
+                        disabled={floorCode === ""}
+                        options={floorRooms.map((room) => ({
+                          code: room.name,
+                          name: room.name,
+                        }))}
+                        inputRef={room2InputRef}
                       />
                     </InputGroup>
                     <InputGroup

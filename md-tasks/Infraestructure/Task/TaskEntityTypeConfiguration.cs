@@ -10,6 +10,7 @@ internal class TaskEntityTypeConfiguration : IEntityTypeConfiguration<DeviceTask
   {
     // builder.ToTable("Tasks", SchemaNames.DDDSample1);
     builder.HasKey(b => new { b.Id, b.RequestId, b.CreatedAt });
+    // builder.Property(b => b.DeviceId).HasColumnType("longtext");
     // builder.OwnsOne(b => b.UserId);
     // builder.Property<bool>("_active").HasColumnName("Active");
   }

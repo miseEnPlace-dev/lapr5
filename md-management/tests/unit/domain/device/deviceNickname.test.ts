@@ -11,14 +11,12 @@ describe('DeviceNickname', () => {
   it('should create new nickname with 50 characters', () => {
     const result = DeviceNickname.create([...Array(50)].map(() => 'a').join(''));
     expect(result.isSuccess).toBe(true);
-    console.log(result.getValue());
     expect(result.getValue().value).toBe([...Array(50)].map(() => 'a').join(''));
   });
 
   it('should allow spaces', () => {
     const result = DeviceNickname.create('12 a');
     expect(result.isSuccess).toBe(true);
-    console.log(result.getValue());
     expect(result.getValue().value).toBe('12 a');
   });
 

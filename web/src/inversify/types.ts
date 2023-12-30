@@ -9,6 +9,7 @@ export const TYPES = {
   routeService: Symbol.for("RouteService"),
   userService: Symbol.for("UserService"),
   requestService: Symbol.for("RequestService"),
+  taskService: Symbol.for("TaskService"),
 
   localStorage: Symbol.for("LocalStorage"),
 

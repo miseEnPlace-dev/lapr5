@@ -12,4 +12,11 @@ public class SurveillanceRequestRepository : BaseRepository<SurveillanceRequest,
   {
     _context = context;
   }
+
+  public async Task<List<SurveillanceRequest>> GetRequestsByState(RequestState state, int page, int limit)
+  {
+    if (page >= 0 && limit >= 0)
+      return await _context.SurveillanceRequests.Where(r => r.State.Equals(state)).Skip(page * limit).Take(limit).ToListAsync();
+    return await _context.SurveillanceRequests.Where(r => r.State.Equals(state)).ToListAsync();
+  }
 }

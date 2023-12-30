@@ -12,4 +12,11 @@ public class PickAndDeliveryRequestRepository : BaseRepository<PickAndDeliveryRe
   {
     _context = context;
   }
+
+  public async Task<List<PickAndDeliveryRequest>> GetRequestsByState(RequestState state, int page, int limit)
+  {
+    if (page >= 0 || limit >= 0)
+      return await _context.PickAndDeliveryRequests.Where(r => r.State.Equals(state)).Skip(page * limit).Take(limit).ToListAsync();
+    return await _context.PickAndDeliveryRequests.Where(r => r.State.Equals(state)).ToListAsync();
+  }
 }

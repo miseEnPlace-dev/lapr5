@@ -1,4 +1,5 @@
 export interface IDeviceDTO {
+  id: string;
   code: string;
   nickname: string;
   modelCode: string;

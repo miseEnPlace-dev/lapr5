@@ -105,7 +105,7 @@
   },
   "elevator": {
     "url": "./models/gltf/elevator.glb",
-    "scale": { "x": 0.005, "y": 0.005, "z": 0.005 }
+    "scale": { "x": 0.005, "y": 0.0025, "z": 0.005 }
   },
   "door": {
     "url": "./models/gltf/mid-poly_wooden_door_with_animations.glb",

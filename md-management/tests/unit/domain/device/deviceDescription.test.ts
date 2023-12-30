@@ -11,14 +11,12 @@ describe('DeviceDescription', () => {
   it('should create new description with 250 characters', () => {
     const result = DeviceDescription.create([...Array(250)].map(() => 'a').join(''));
     expect(result.isSuccess).toBe(true);
-    console.log(result.getValue());
     expect(result.getValue().value).toBe([...Array(250)].map(() => 'a').join(''));
   });
 
   it('should allow spaces', () => {
     const result = DeviceDescription.create('12 a');
     expect(result.isSuccess).toBe(true);
-    console.log(result.getValue());
     expect(result.getValue().value).toBe('12 a');
   });
 

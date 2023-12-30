@@ -10,7 +10,7 @@ import IElevatorController from '@/controllers/IControllers/IElevatorController'
 import IFloorController from '@/controllers/IControllers/IFloorController';
 import IRoleController from '@/controllers/IControllers/IRoleController';
 import IRoomController from '@/controllers/IControllers/IRoomController';
-import ITaskController from '@/controllers/IControllers/ITaskController';
+import IRequestController from '@/controllers/IControllers/IRequestController';
 import IUserController from '@/controllers/IControllers/IUserController';
 import BuildingController from '@/controllers/buildingController';
 import ConnectorController from '@/controllers/connectorController';
@@ -21,7 +21,7 @@ import FloorController from '@/controllers/floorController';
 import PlanningController from '@/controllers/planningController';
 import RoleController from '@/controllers/roleController';
 import RoomController from '@/controllers/roomController';
-import TaskController from '@/controllers/taskController';
+import RequestController from '@/controllers/requestController';
 import UserController from '@/controllers/userController';
 import BuildingSchema from '@/persistence/schemas/buildingSchema';
 import ConnectorSchema from '@/persistence/schemas/connectorSchema';
@@ -56,7 +56,6 @@ import IElevatorService from '@/services/IServices/IElevatorService';
 import IFloorService from '@/services/IServices/IFloorService';
 import IRoleService from '@/services/IServices/IRoleService';
 import IRoomService from '@/services/IServices/IRoomService';
-import { ITaskService } from '@/services/IServices/ITaskService';
 import IUserService from '@/services/IServices/IUserService';
 import BuildingService from '@/services/buildingService';
 import ConnectorService from '@/services/connectorService';
@@ -66,11 +65,16 @@ import ElevatorService from '@/services/elevatorService';
 import FloorService from '@/services/floorService';
 import RoleService from '@/services/roleService';
 import RoomService from '@/services/roomService';
-import TaskService from '@/services/taskService';
+import RequestService from '@/services/requestService';
 import UserService from '@/services/userService';
 import { Logger } from 'winston';
 import Bootstrapper from '../bootstrap';
 import LoggerInstance from '../logger';
+import ITaskController from '@/controllers/IControllers/ITaskController';
+import TaskController from '@/controllers/taskController';
+import TaskService from '@/services/taskService';
+import { ITaskService } from '@/services/IServices/ITaskService';
+import { IRequestService } from '@/services/IServices/IRequestService';
 
 const container = new Container();
 
@@ -93,6 +97,9 @@ container.bind<IUserController>(TYPES.userController).to(UserController);
 container.bind<IUserService>(TYPES.userService).to(UserService);
 container.bind<IUserRepo>(TYPES.userRepo).to(UserRepo);
 container.bind(TYPES.userSchema).to(UserSchema);
+
+container.bind<IRequestController>(TYPES.requestController).to(RequestController);
+container.bind<IRequestService>(TYPES.requestService).to(RequestService);
 
 container.bind<ITaskController>(TYPES.taskController).to(TaskController);
 container.bind<ITaskService>(TYPES.taskService).to(TaskService);

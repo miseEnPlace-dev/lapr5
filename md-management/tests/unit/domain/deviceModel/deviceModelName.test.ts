@@ -11,7 +11,6 @@ describe('DeviceModelName', () => {
   it('should create new code with 100 characters', () => {
     const result = DeviceModelName.create([...Array(100)].map(() => 'a').join(''));
     expect(result.isSuccess).toBe(true);
-    console.log(result.getValue());
     expect(result.getValue().value).toBe([...Array(100)].map(() => 'a').join(''));
   });
 });

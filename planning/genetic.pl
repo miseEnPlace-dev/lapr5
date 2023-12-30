@@ -52,7 +52,7 @@ load_tasks([H|T],N):-
 	((H.type=="pick_delivery",
 		asserta(
 		t(
-			H.deviceTaskId,
+			H.id,
 			cel(H.startFloorCode,H.startCoordinateX,H.startCoordinateY),
 			cel(H.endFloorCode,H.endCoordinateX,H.endCoordinateY)
 		))

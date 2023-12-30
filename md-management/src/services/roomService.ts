@@ -1,20 +1,20 @@
 import { Result } from '@/core/logic/Result';
+import { BuildingCode } from '@/domain/building/buildingCode';
 import { FloorCode } from '@/domain/floor/floorCode';
 import { Room } from '@/domain/room/room';
 import { RoomCategory } from '@/domain/room/roomCategory';
 import { RoomDescription } from '@/domain/room/roomDescription';
 import { RoomDimensions } from '@/domain/room/roomDimensions';
+import { RoomDoor } from '@/domain/room/roomDoor';
 import { RoomName } from '@/domain/room/roomName';
 import { IRoomDTO } from '@/dto/IRoomDTO';
 import { TYPES } from '@/loaders/inversify/types';
 import { RoomMapper } from '@/mappers/RoomMapper';
 import IFloorRepo from '@/services/IRepos/IFloorRepo';
 import { inject, injectable } from 'inversify';
+import IBuildingRepo from './IRepos/IBuildingRepo';
 import IRoomRepo from './IRepos/IRoomRepo';
 import IRoomService from './IServices/IRoomService';
-import IBuildingRepo from './IRepos/IBuildingRepo';
-import { BuildingCode } from '@/domain/building/buildingCode';
-import { RoomDoor } from '@/domain/room/roomDoor';
 
 @injectable()
 export default class RoomService implements IRoomService {
@@ -26,8 +26,6 @@ export default class RoomService implements IRoomService {
 
   public async createRoom(roomDTO: IRoomDTO): Promise<Result<IRoomDTO>> {
     try {
-      console.log(roomDTO);
-
       if (!roomDTO.buildingCode) return Result.fail<IRoomDTO>('Building code not defined');
       const buildingCode = BuildingCode.create(roomDTO.buildingCode).getValue();
       const building = await this.buildingRepo.findByCode(buildingCode);
@@ -76,7 +74,6 @@ export default class RoomService implements IRoomService {
 
         if (category.isFailure) return Result.fail<IRoomDTO>(category.error as string);
 
-        console.log(roomDTO.roomDoor);
         const roomDoor = RoomDoor.create(roomDTO.roomDoor.x, roomDTO.roomDoor.y);
 
         if (roomDoor.isFailure) return Result.fail<IRoomDTO>(roomDoor.error as string);

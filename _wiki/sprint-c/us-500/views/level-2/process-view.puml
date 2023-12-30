@@ -2,16 +2,18 @@
 autonumber
 actor TM as "Task Manager"
 participant UI as "Visualization" <<system (C4)>>
+participant MMD as "Management Master Data" <<system (C4)>>
 participant TMD as "Tasks Master Data" <<system (C4)>>
 participant P as "Planning" <<system (C4)>>
-participant MDD as "MDD" <<system (C4)>>
 
 activate TM
 
 TM -> UI : asks to get the sequence of execution of the approved tasks
 activate UI
 
-UI -> TMD : GET /requests/sequence
+UI -> MMD : GET /task-requests/sequence
+activate MMD
+MMD -> TMD : GET /tasks/sequence
 activate TMD
 TMD -> P : GET /sequence
 activate P
@@ -24,8 +26,13 @@ activate P
 deactivate P
 P --> TMD : 200 (sequence of tasks)
 deactivate P
-TMD --> UI : 200 (sequence of tasks)
+TMD --> MMD : 200 (sequence of tasks)
+MMD -> MMD : enriches the sequence of tasks with the user's & robot information
+activate MMD
+deactivate MMD
 deactivate TMD
+MMD --> UI : 200 (sequence of tasks)
+deactivate MMD
 
 TM <-- UI : returns the sequence of tasks
 deactivate UI
