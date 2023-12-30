@@ -15,6 +15,7 @@ using DDDSample1.Infrastructure.DeviceTasks;
 using System;
 using DDDSample1.Domain.DeviceTasks.SurveillanceTasks;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks;
+using DDDNetCore.Services;
 
 namespace DDDSample1
 {
@@ -84,11 +85,11 @@ namespace DDDSample1
       services.AddTransient<IUnitOfWork, UnitOfWork>();
 
       services.AddTransient<ITaskRepository, RequestRepository>();
-      services.AddTransient<Domain.Requests.TaskService>();
+      services.AddTransient<ITaskService, TaskService>();
 
       services.AddTransient<ISurveillanceRequestRepository, SurveillanceRequestRepository>();
       services.AddTransient<IPickAndDeliveryRequestRepository, PickAndDeliveryRequestRepository>();
-      services.AddTransient<Domain.DeviceTasks.RequestService>();
+      services.AddTransient<IRequestService, RequestService>();
     }
   }
 }

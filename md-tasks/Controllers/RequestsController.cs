@@ -6,6 +6,7 @@ using DDDSample1.Domain.DTO;
 using DDDNetCore.Domain.Request;
 using DDDSample1.Domain.User;
 using System;
+using DDDNetCore.Services;
 
 namespace DDDSample1.Controllers;
 
@@ -13,9 +14,9 @@ namespace DDDSample1.Controllers;
 [ApiController]
 public class RequestsController : ControllerBase
 {
-  private readonly RequestService service;
+  private readonly IRequestService service;
 
-  public RequestsController(RequestService svc)
+  public RequestsController(IRequestService svc)
   {
     service = svc;
   }
@@ -24,9 +25,6 @@ public class RequestsController : ControllerBase
   [HttpGet]
   public async Task<ActionResult<PaginationDTO<RequestDTO>>> GetAll()
   {
-    Console.WriteLine("JDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-    Console.WriteLine("Request.Query: " + Request.Query.ContainsKey("userId"));
-    Console.WriteLine("Request.Query: " + Request.Query["userId"].ToString());
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit") && Request.Query.ContainsKey("filter") && Request.Query.ContainsKey("value"))
       if (Request.Query["filter"].ToString() == "state")
         return await service.GetRequestsByState(RequestStateMapper.ToRequestState(Request.Query["value"].ToString()), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
