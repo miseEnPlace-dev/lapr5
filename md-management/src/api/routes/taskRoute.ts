@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import ITaskController from '@/controllers/IControllers/IRequestController';
+import ITaskController from '@/controllers/IControllers/ITaskController';
 
 import { defaultRoles } from '@/domain/role/defaultRoles';
 import { container } from '@/loaders/inversify';
@@ -19,7 +19,7 @@ export default (app: Router) => {
     (req, res, next) =>
       // #swagger.tags = ['Tasks']
       // #swagger.summary = 'Get Task Requests'
-      ctrl.getTaskRequests(req, res, next)
+      ctrl.getTasks(req, res, next)
   );
 
   route.post(
@@ -30,7 +30,7 @@ export default (app: Router) => {
     (req, res, next) =>
       // #swagger.tags = ['Tasks']
       // #swagger.summary = 'Get Task Requests'
-      ctrl.createSurveillance(req, res, next)
+      ctrl.createTask(req, res, next)
   );
 
   app.use(route);

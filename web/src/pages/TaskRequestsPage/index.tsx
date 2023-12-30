@@ -40,6 +40,7 @@ const TaskRequestsPage: React.FC = () => {
     devices,
     deviceInputRef,
     setRequestId,
+    fetchDevice,
   } = useListTaskRequestsModule();
 
   const [isFilterByStateModalVisible, setIsFilterByStateModalVisible] =
@@ -59,6 +60,7 @@ const TaskRequestsPage: React.FC = () => {
       if (!deviceInputRef.current?.value)
         swal("Error", "You must select a request to add a robot", "error");
       else {
+        await fetchDevice();
         await handleAcceptRequest();
         swal("Success", "Robot added to request", "success");
         setIsAddRobotModalVisible(false);
@@ -403,6 +405,7 @@ const TaskRequestsPage: React.FC = () => {
                       code: device.code,
                       name: device.nickname,
                     }))}
+                    onChange={async () => await fetchDevice()}
                   />
                 </div>
               </div>

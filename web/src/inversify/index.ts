@@ -13,6 +13,7 @@ import { api } from "../service/api";
 import { BuildingService } from "../service/buildingsService";
 import { ElevatorService } from "../service/elevatorService";
 import { FloorService } from "../service/floorService";
+import { TaskService } from "@/service/taskService";
 
 const container = new Container();
 
@@ -26,12 +27,13 @@ container.bind(TYPES.deviceService).to(DeviceService);
 container.bind(TYPES.routeService).to(RouteService);
 container.bind(TYPES.userService).to(UserService);
 container.bind(TYPES.requestService).to(RequestService);
+container.bind(TYPES.taskService).to(TaskService);
 container.bind(TYPES.localStorage).toConstantValue(
   import.meta.env.MODE !== "staging"
     ? window.localStorage
     : {
-        getItem: () => null,
-      }
+      getItem: () => null,
+    }
 );
 container.bind(TYPES.api).toConstantValue(api);
 
