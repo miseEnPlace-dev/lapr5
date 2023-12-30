@@ -7,9 +7,10 @@ namespace DDDSample1.Domain.DeviceTasks
   [Owned]
   public class DeviceTaskId : EntityId
   {
-    public DeviceTaskId(String value) : base(value)
-    {
+    public DeviceTaskId(Guid value) : base(value) { }
 
-    }
+    public DeviceTaskId(string value) : base(value) { }
+
+    public DeviceTaskId() : base(Guid.NewGuid()) { }
   }
 }
