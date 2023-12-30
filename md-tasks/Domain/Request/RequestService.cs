@@ -25,10 +25,10 @@ namespace DDDSample1.Domain.DeviceTasks
       this.pickAndDeliveryTaskRepository = pickAndDeliveryTaskRepository;
     }
 
-    public async Task<List<RequestDTO>> GetAllAsync()
+    public async Task<PaginationDTO<RequestDTO>> GetAllAsync(int page, int limit)
     {
-      List<Request> surTasks = (await surveillanceTaskRepository.GetAllAsync(-1, -1)).Cast<Request>().ToList();
-      List<Request> pickTasks = (await pickAndDeliveryTaskRepository.GetAllAsync(-1, -1)).Cast<Request>().ToList();
+      List<Request> surTasks = (await surveillanceTaskRepository.GetAllAsync(page - 1, limit)).Cast<Request>().ToList();
+      List<Request> pickTasks = (await pickAndDeliveryTaskRepository.GetAllAsync(page - 1, limit)).Cast<Request>().ToList();
 
       List<Request> tasks = new();
       tasks.AddRange(surTasks);
@@ -45,18 +45,21 @@ namespace DDDSample1.Domain.DeviceTasks
           result.Add(await ConvertToDTO(task, "PickAndDeliveryRequestDTO"));
       }
 
-      return result;
+      return new PaginationDTO<RequestDTO>(result, page, limit, await surveillanceTaskRepository.CountAsync() + await pickAndDeliveryTaskRepository.CountAsync());
     }
 
     public async Task<RequestDTO> GetByIdAsync(RequestId id)
     {
-      RequestDTO task = null;
-      // var task = await repo.GetByIdAsync(id);
+      Request req = await surveillanceTaskRepository.GetByIdAsync(id);
 
-      //if (task == null)
+      if (req != null)
+        return await ConvertToDTO(req, "SurveillanceRequestDTO");
+
+      req = await pickAndDeliveryTaskRepository.GetByIdAsync(id);
+      if (req != null)
+        return await ConvertToDTO(req, "PickAndDeliveryRequestDTO");
+
       return null;
-
-      //return new RequestDTO { Id = task.Id };
     }
 
     public async Task<RequestDTO> AddSurveillanceTask(SurveillanceRequestDTO dto)

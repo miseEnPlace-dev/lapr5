@@ -4,14 +4,9 @@ export interface Request {
   userId: string;
   description: string;
   state?: string;
-  requestedAt: string;
-  user: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: string;
-    role: string;
-    state: string;
-  };
+  requestedAt?: string;
+  startCoordinateX: number;
+  startCoordinateY: number;
+  endCoordinateX: number;
+  endCoordinateY: number;
 }

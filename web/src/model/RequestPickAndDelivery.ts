@@ -8,10 +8,6 @@ export interface RequestPickAndDelivery extends Request {
   pickupRoomId: string;
   deliveryRoomId: string;
   confirmationCode: string;
-  startCoordinateX: number;
-  startCoordinateY: number;
-  endCoordinateX: number;
-  endCoordinateY: number;
   startFloorCode: string;
   endFloorCode: string
 }

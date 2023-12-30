@@ -21,10 +21,12 @@ public class RequestsController : ControllerBase
 
   // GET api/Request
   [HttpGet]
-  public async Task<ActionResult<IEnumerable<RequestDTO>>> GetAll()
+  public async Task<ActionResult<PaginationDTO<RequestDTO>>> GetAll()
   {
+    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
+      return await service.GetAllAsync(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
 
-    return await service.GetAllAsync();
+    return await service.GetAllAsync(-1, -1);
   }
 
   // GET api/Request/{id}

@@ -11,6 +11,7 @@ namespace DDDSample1.Infrastructure.Requests
     {
       // builder.ToTable("Requests", SchemaNames.DDDSample1);
       builder.HasKey(b => new { b.Id, b.DeviceTaskId, b.CreatedAt });
+      builder.Property(b => b.DeviceId).HasColumnType("longtext");
       // builder.OwnsOne(b => b.UserId);
       // builder.Property<bool>("_active").HasColumnName("Active");
     }
