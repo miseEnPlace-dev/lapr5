@@ -96,7 +96,7 @@ const TaskSequencePage: React.FC = () => {
         </div>
         {loading && <Loading />}
         {sequence && (
-          <section className="mt-6 flex w-full flex-col items-center gap-y-8 pr-12">
+          <section className="my-6 flex w-full flex-col items-center gap-y-8 pr-12">
             {sequence.tasks.map((request, i) => (
               <motion.article
                 key={request.id}
