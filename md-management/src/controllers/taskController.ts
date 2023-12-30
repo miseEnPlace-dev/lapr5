@@ -36,25 +36,23 @@ export default class TaskController implements ITaskController {
       const page = Number(query.data.page) || undefined;
       const limit = Number(query.data.limit) || undefined;
 
+      let response;
+
       if (!filter && !value && !page && !limit) {
-        const response = await fetch(`${config.tasksApiUrl}/api/requests`);
-
-        const data = await response.json();
-
-        return res.status(200).json(data);
+        response = await fetch(`${config.tasksApiUrl}/api/requests`);
+      } else {
+        response = await fetch(
+          `${config.tasksApiUrl}/api/requests?${filter ? `filter=${filter}` : ''}${
+            value ? `&value=${value}` : ''
+          }${page ? `&page=${page}` : ''}${limit ? `&limit=${limit}` : ''}`
+        );
       }
-
-      const response = await fetch(
-        `${config.tasksApiUrl}/api/requests?${filter ? `filter=${filter}` : ''}${
-          value ? `&value=${value}` : ''
-        }${page ? `&page=${page}` : ''}${limit ? `&limit=${limit}` : ''}`
-      );
 
       const data = await response.json();
 
       for (const request of data.data) {
-        const user = (await this.userService.findUserById(request.userId)).getValue();
-        request.user = user;
+        const user = await this.userService.findUserById(request.userId);
+        request.user = user.isSuccess ? user.getValue() : null;
       }
 
       return res.status(200).json(data);

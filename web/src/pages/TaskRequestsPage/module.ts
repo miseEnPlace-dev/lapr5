@@ -3,12 +3,12 @@ import { useInjection } from "inversify-react";
 
 import { TYPES } from "@/inversify/types";
 import { IPaginationDTO } from "@/dto/IPaginationDTO";
+import { Device } from "@/model/Device";
 import { DeviceModel } from "@/model/DeviceModel";
 import { Request } from "@/model/Request";
 import { IDeviceModelService } from "@/service/IService/IDeviceModelService";
-import { IRequestService } from "@/service/IService/IRequestService";
-import { Device } from "@/model/Device";
 import { IDeviceService } from "@/service/IService/IDeviceService";
+import { IRequestService } from "@/service/IService/IRequestService";
 
 const states = [
   {
@@ -70,7 +70,12 @@ export const useListTaskRequestsModule = () => {
   }, [deviceModelService]);
 
   const fetchDevices = useCallback(async () => {
-    const devices = await deviceService.getDevicesRobots(undefined, undefined, 1, 1000);
+    const devices = await deviceService.getDevicesRobots(
+      undefined,
+      undefined,
+      1,
+      1000
+    );
     setDevices(devices.data);
   }, [deviceService]);
 
@@ -122,6 +127,7 @@ export const useListTaskRequestsModule = () => {
         page,
         itemsPerPage
       );
+
       setRequests(r);
     } catch (error) {
       setRequests({ data: [] });

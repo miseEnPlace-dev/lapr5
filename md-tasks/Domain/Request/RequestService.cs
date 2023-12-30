@@ -34,6 +34,13 @@ namespace DDDSample1.Domain.DeviceTasks
       tasks.AddRange(surTasks);
       tasks.AddRange(pickTasks);
 
+      // with page and limit, cut the list
+      if (page > 0 && limit > 0)
+      {
+        int offset = (page - 1) * limit;
+        tasks = tasks.Skip(offset).Take(limit).ToList();
+      }
+
       List<RequestDTO> result = new();
 
       foreach (Request task in tasks)
