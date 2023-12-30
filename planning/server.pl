@@ -23,7 +23,6 @@
 :- json_object student(student_name:string).
 
 api_url('http://localhost:4000/api').
-tasks_api_url('http://localhost:7000/api').
 
 % define route aliases
 http:location(api, root(api), []). % /api
