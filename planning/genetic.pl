@@ -467,5 +467,3 @@ mutacao23(G1,P,[G|Ind],G2,[G|NInd]):-
 	P1 is P-1,
 	mutacao23(G1,P1,Ind,G2,NInd).
 
-:- planning:load_data.
-:- load_tarefas.

@@ -95,6 +95,7 @@ authenticate():-
 
 api_get_requests(_):-
     authenticate(),
+    planning:load_data(),
     fetch_requests(Requests),
     genetic:load_tasks(Requests.data,0),
     genetic:gera_lim_time(B*X),
