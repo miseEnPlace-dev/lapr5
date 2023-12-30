@@ -19,7 +19,7 @@ export class RequestService implements IRequestService {
   constructor(
     @inject(TYPES.api) private http: HttpService,
     @inject(TYPES.localStorage) private localStorage: Storage
-  ) {}
+  ) { }
 
   async getAllRequests(
     filter?: "state" | "userId",
@@ -138,6 +138,8 @@ export class RequestService implements IRequestService {
   async acceptRequest(id: string): Promise<void> {
     const token = this.localStorage.getItem(localStorageConfig.token);
 
+    console.log("accepting request");
+    console.log(id);
     await this.http.patch(
       "/task-requests/" + id + "/accept",
       {},

@@ -51,6 +51,10 @@ export const useTasksModule = () => {
   const [building1Code, setBuilding1Code] = useState<string | null>("");
   const [building2Code, setBuilding2Code] = useState<string | null>("");
 
+  const [floorCode, setFloorCode] = useState<string | null>("");
+
+  const [floorRooms, setFloorRooms] = useState<Room[]>([]);
+
   const typeInputRef = useRef<HTMLSelectElement>(null);
 
   const floorInputRef = useRef<HTMLSelectElement>(null);
@@ -79,6 +83,9 @@ export const useTasksModule = () => {
       swal("Error", "Type input is not defined", "error");
       return;
     } else {
+
+      console.log(room1InputRef.current?.value, room2InputRef.current?.value)
+
       switch (typeInputRef.current.value) {
         case "pick_delivery":
           if (
@@ -96,7 +103,6 @@ export const useTasksModule = () => {
 
           const room1 = getRoom1();
           const room2 = getRoom2();
-
           if (!room1 || !room2) {
             swal("Error", "Rooms are not defined", "error");
             return;
@@ -127,9 +133,33 @@ export const useTasksModule = () => {
             !emergencyPhoneInputRef.current ||
             !descriptionInputRef.current ||
             !floorInputRef.current ||
-            !id
+            !id ||
+            !room1InputRef.current ||
+            !room2InputRef.current
           )
             throw new Error("Some fields are not defined");
+
+          const room1Surveillance = getRoom1();
+          const room2Surveillance = getRoom2();
+
+          if (!room1Surveillance || !room2Surveillance) {
+            swal("Error", "Rooms are not defined", "error");
+            return;
+          }
+
+          console.log({
+            userName: emergencyNameInputRef.current.value,
+            phoneNumber: emergencyPhoneInputRef.current.value,
+            description: descriptionInputRef.current.value,
+            userId: id,
+            floorId: floorInputRef.current?.value,
+            type: "surveillance",
+            startCoordinateX: room1Surveillance.roomDoor.x,
+            startCoordinateY: room1Surveillance.roomDoor.y,
+            endCoordinateX: room2Surveillance.roomDoor.x,
+            endCoordinateY: room2Surveillance.roomDoor.y,
+          })
+
 
           await requestService.createSurveillanceRequest({
             userName: emergencyNameInputRef.current.value,
@@ -138,6 +168,10 @@ export const useTasksModule = () => {
             userId: id,
             floorId: floorInputRef.current?.value,
             type: "surveillance",
+            startCoordinateX: room1Surveillance.roomDoor.x,
+            startCoordinateY: room1Surveillance.roomDoor.y,
+            endCoordinateX: room2Surveillance.roomDoor.x,
+            endCoordinateY: room2Surveillance.roomDoor.y,
           });
           break;
       }
@@ -168,6 +202,20 @@ export const useTasksModule = () => {
       setBuildings([]);
     }
   }, [buildingService]);
+
+
+  const fetchFloorsRoom = useCallback(async () => {
+    try {
+      if (floorCode && building1Code) {
+        const rooms = await roomService.getFloorRooms(building1Code, floorCode);
+        setFloorRooms(rooms);
+      } else {
+        setFloorRooms([]);
+      }
+    } catch (error) {
+      setFloorRooms([]);
+    }
+  }, [floorCode, building1Code, roomService]);
 
   const fetchFloors = useCallback(async () => {
     try {
@@ -221,6 +269,10 @@ export const useTasksModule = () => {
   }, [fetchBuildings, buildingService]);
 
   useEffect(() => {
+    fetchFloorsRoom();
+  }, [fetchFloorsRoom, roomService, floorCode, building1Code]);
+
+  useEffect(() => {
     fetchFloors();
   }, [fetchFloors, floorService]);
 
@@ -265,5 +317,8 @@ export const useTasksModule = () => {
     phoneNumber,
     room1InputRef,
     room2InputRef,
+    floorCode,
+    setFloorCode,
+    floorRooms,
   };
 };

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { set } from "lodash";
 import swal from "sweetalert";
 
 import { useMenuOptions } from "@/hooks/useMenuOptions";
@@ -38,6 +39,7 @@ const TaskRequestsPage: React.FC = () => {
     deviceModels,
     devices,
     deviceInputRef,
+    setRequestId,
   } = useListTaskRequestsModule();
 
   const [isFilterByStateModalVisible, setIsFilterByStateModalVisible] =
@@ -46,8 +48,27 @@ const TaskRequestsPage: React.FC = () => {
     useState(false);
   const [isAddRobotModalVisible, setIsAddRobotModalVisible] = useState(false);
 
-  async function handleAddRobotClick() {
+  async function handleAddRobot(requestId: string) {
     setIsAddRobotModalVisible(true);
+    setRequestId(requestId);
+  }
+
+  async function handleSaveClick() {
+    try {
+      console.log(deviceInputRef.current?.value);
+      if (!deviceInputRef.current?.value)
+        swal("Error", "You must select a request to add a robot", "error");
+      else {
+        await handleAcceptRequest();
+        swal("Success", "Robot added to request", "success");
+        setIsAddRobotModalVisible(false);
+      }
+    } catch (err: unknown) {
+      if (err instanceof AxiosError && err.response)
+        swal("Error", err.response.data.errors as string, "error");
+
+      swal("Error", err as string, "error");
+    }
   }
 
   async function handleRemoveFilter() {
@@ -264,7 +285,7 @@ const TaskRequestsPage: React.FC = () => {
                       className="relative h-12 w-12 items-center justify-center"
                       name="confirm"
                       type="confirm"
-                      onClick={() => handleAcceptRequest(request.id || "")}
+                      onClick={() => handleAddRobot(request.id || "")}
                     >
                       <CheckIcon className="absolute left-1/2 top-1/2 z-10 h-6 w-6 flex-1 -translate-x-1/2 -translate-y-1/2" />
                     </Button>
@@ -376,19 +397,18 @@ const TaskRequestsPage: React.FC = () => {
                   <Dropdown
                     className="w-full"
                     name="Robot"
-                    placeholder="Ro"
-                    inputRef={deviceModelInputRef}
+                    placeholder="Robot"
+                    inputRef={deviceInputRef}
                     options={devices.map((device) => ({
                       code: device.code,
                       name: device.nickname,
                     }))}
-                    selected={deviceModelFilter ? deviceModelFilter : undefined}
                   />
                 </div>
               </div>
               <Button
                 name="AddRobot"
-                onClick={handleAddRobotClick}
+                onClick={() => handleSaveClick()}
                 type="confirm"
               >
                 Add
