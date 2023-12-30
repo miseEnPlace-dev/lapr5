@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 namespace DDDSample1.Domain.DTO;
 
-public abstract class RequestDTO
+public class RequestDTO
 {
   public string Id { get; set; }
   public string RequestedAt { get; set; }
@@ -11,10 +11,11 @@ public abstract class RequestDTO
   public string Type { get; set; }
 
   [JsonConstructor]
-  public RequestDTO(string requestedAt, string deviceId)
+  public RequestDTO(string requestedAt, string deviceId, string deviceTaskId)
   {
     RequestedAt = requestedAt;
     DeviceId = deviceId;
+    DeviceTaskId = deviceTaskId;
   }
 
   public RequestDTO(string id, string type, string requestedAt, string state, string deviceTaskId, string deviceId)

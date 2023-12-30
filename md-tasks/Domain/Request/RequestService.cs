@@ -128,12 +128,12 @@ namespace DDDSample1.Domain.Requests
       return null;
     }
 
-    public async Task<RequestDTO> AddSurveillanceRequest(SurveillanceRequestDTO dto)
+    public async Task<RequestDTO> AddSurveillanceRequest(RequestDTO dto)
     {
       try
       {
-        //SurveillanceTask task = await surveillanceTaskRepository.GetByIdAsync(new DeviceTaskId(dto.DeviceTaskId));
-        //if (task == null) return null;
+        SurveillanceTask task = await surveillanceTaskRepository.GetByIdAsync(new DeviceTaskId(dto.DeviceTaskId));
+        if (task == null) return null;
 
         Request r = new(new DeviceTaskId(dto.DeviceTaskId), dto.DeviceId);
         await repo.AddAsync(r);
@@ -149,12 +149,12 @@ namespace DDDSample1.Domain.Requests
 
     }
 
-    public async Task<RequestDTO> AddPickAndDeliveryRequest(PickDeliveryRequestDTO dto)
+    public async Task<RequestDTO> AddPickAndDeliveryRequest(RequestDTO dto)
     {
       try
       {
-        //PickAndDeliveryTask task = await pickAndDeliveryTaskRepository.GetByIdAsync(new DeviceTaskId(dto.DeviceTaskId));
-        //if (task == null) return null;
+        PickAndDeliveryTask task = await pickAndDeliveryTaskRepository.GetByIdAsync(new DeviceTaskId(dto.DeviceTaskId));
+        if (task == null) return null;
 
         Request r = new(new DeviceTaskId(dto.DeviceTaskId), dto.DeviceId);
         await repo.AddAsync(r);
@@ -215,6 +215,8 @@ namespace DDDSample1.Domain.Requests
       if (type.Equals("SurveillanceRequestDTO"))
       {
         SurveillanceTask task = await surveillanceTaskRepository.GetByIdAsync(r.DeviceTaskId);
+        if (task == null) return null;
+
         return new SurveillanceRequestDTO(
             r.Id.Value,
             task.Description.Value,
@@ -235,6 +237,7 @@ namespace DDDSample1.Domain.Requests
       if (type.Equals("PickDeliveryRequestDTO"))
       {
         PickAndDeliveryTask task = await pickAndDeliveryTaskRepository.GetByIdAsync(r.DeviceTaskId);
+        if (task == null) return null;
 
         return new PickDeliveryRequestDTO(
             r.Id.Value,

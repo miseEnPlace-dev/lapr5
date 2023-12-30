@@ -117,7 +117,7 @@ public class RequestsController : ControllerBase
 
   // POST api/requests/surveillance
   [HttpPost("surveillance")]
-  public async Task<ActionResult<SurveillanceRequestDTO>> Create(SurveillanceRequestDTO dto)
+  public async Task<ActionResult<RequestDTO>> CreateSurveillance(RequestDTO dto)
   {
     try
     {
@@ -142,7 +142,7 @@ public class RequestsController : ControllerBase
 
   // POST api/requests/pick-delivery 
   [HttpPost("pick-delivery")]
-  public async Task<ActionResult<PickDeliveryRequestDTO>> Create(PickDeliveryRequestDTO dto)
+  public async Task<ActionResult<RequestDTO>> CreatePickDelivery(RequestDTO dto)
   {
     try
     {

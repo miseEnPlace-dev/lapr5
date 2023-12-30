@@ -14,7 +14,7 @@ public class SurveillanceRequestDTO : RequestDTO
   public int EndCoordinateY { get; set; }
 
   [JsonConstructor]
-  public SurveillanceRequestDTO(string requestedAt, string description, string userName, string phoneNumber, string floorId, string deviceId) : base(requestedAt, deviceId)
+  public SurveillanceRequestDTO(string requestedAt, string description, string userName, string phoneNumber, string floorId, string deviceId, string deviceTaskId) : base(requestedAt, deviceId, deviceTaskId)
   {
     UserName = userName;
     PhoneNumber = phoneNumber;

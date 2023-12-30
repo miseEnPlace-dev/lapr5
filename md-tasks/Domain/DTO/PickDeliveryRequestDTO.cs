@@ -21,7 +21,7 @@ public class PickDeliveryRequestDTO : RequestDTO
   public string EndFloorCode { get; set; }
 
   [JsonConstructor]
-  public PickDeliveryRequestDTO(string requestedAt, string description, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string confirmationCode, string deviceId) : base(requestedAt, deviceId)
+  public PickDeliveryRequestDTO(string requestedAt, string description, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string confirmationCode, string deviceId, string deviceTaskId) : base(requestedAt, deviceId, deviceTaskId)
   {
     Description = description;
     PickupUserName = pickupUserName;
