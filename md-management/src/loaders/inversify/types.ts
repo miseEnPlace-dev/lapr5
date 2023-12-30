@@ -43,12 +43,14 @@ const TYPES = {
   connectorSchema: Symbol.for('ConnectorSchema'),
 
   taskController: Symbol.for('TaskController'),
+  taskService: Symbol.for('TaskService'),
 
   planningController: Symbol.for('PlanningController'),
 
   bootstrapper: Symbol.for('Bootstrapper'),
 
   dbClient: Symbol.for('DbClient'),
+  httpClient: Symbol.for('HttpClient'),
 
   logger: Symbol.for('Logger')
 };

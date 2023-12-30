@@ -10,8 +10,8 @@ import IElevatorController from '@/controllers/IControllers/IElevatorController'
 import IFloorController from '@/controllers/IControllers/IFloorController';
 import IRoleController from '@/controllers/IControllers/IRoleController';
 import IRoomController from '@/controllers/IControllers/IRoomController';
-import IUserController from '@/controllers/IControllers/IUserController';
 import ITaskController from '@/controllers/IControllers/ITaskController';
+import IUserController from '@/controllers/IControllers/IUserController';
 import BuildingController from '@/controllers/buildingController';
 import ConnectorController from '@/controllers/connectorController';
 import DeviceController from '@/controllers/deviceController';
@@ -21,8 +21,8 @@ import FloorController from '@/controllers/floorController';
 import PlanningController from '@/controllers/planningController';
 import RoleController from '@/controllers/roleController';
 import RoomController from '@/controllers/roomController';
-import UserController from '@/controllers/userController';
 import TaskController from '@/controllers/taskController';
+import UserController from '@/controllers/userController';
 import BuildingSchema from '@/persistence/schemas/buildingSchema';
 import ConnectorSchema from '@/persistence/schemas/connectorSchema';
 import DeviceModelSchema from '@/persistence/schemas/deviceModelSchema';
@@ -39,6 +39,7 @@ import FloorRepo from '@/repos/floorRepo';
 import RoleRepo from '@/repos/roleRepo';
 import RoomRepo from '@/repos/roomRepo';
 import UserRepo from '@/repos/userRepo';
+import { HttpClient } from '@/services/HttpClient';
 import IBuildingRepo from '@/services/IRepos/IBuildingRepo';
 import IConnectorRepo from '@/services/IRepos/IConnectorRepo';
 import IDeviceModelRepo from '@/services/IRepos/IDeviceModelRepo';
@@ -55,6 +56,7 @@ import IElevatorService from '@/services/IServices/IElevatorService';
 import IFloorService from '@/services/IServices/IFloorService';
 import IRoleService from '@/services/IServices/IRoleService';
 import IRoomService from '@/services/IServices/IRoomService';
+import { ITaskService } from '@/services/IServices/ITaskService';
 import IUserService from '@/services/IServices/IUserService';
 import BuildingService from '@/services/buildingService';
 import ConnectorService from '@/services/connectorService';
@@ -64,6 +66,7 @@ import ElevatorService from '@/services/elevatorService';
 import FloorService from '@/services/floorService';
 import RoleService from '@/services/roleService';
 import RoomService from '@/services/roomService';
+import TaskService from '@/services/taskService';
 import UserService from '@/services/userService';
 import { Logger } from 'winston';
 import Bootstrapper from '../bootstrap';
@@ -92,6 +95,7 @@ container.bind<IUserRepo>(TYPES.userRepo).to(UserRepo);
 container.bind(TYPES.userSchema).to(UserSchema);
 
 container.bind<ITaskController>(TYPES.taskController).to(TaskController);
+container.bind<ITaskService>(TYPES.taskService).to(TaskService);
 
 container.bind<IElevatorController>(TYPES.elevatorController).to(ElevatorController);
 container.bind<IElevatorService>(TYPES.elevatorService).to(ElevatorService);
@@ -119,6 +123,7 @@ container.bind(TYPES.connectorSchema).to(ConnectorSchema);
 container.bind(TYPES.planningController).to(PlanningController);
 
 container.bind(TYPES.bootstrapper).to(Bootstrapper);
+container.bind(TYPES.httpClient).to(HttpClient);
 
 container.bind<Logger>(TYPES.logger).toConstantValue(LoggerInstance);
 
