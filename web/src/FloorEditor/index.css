@@ -207,7 +207,8 @@ canvas {
   height: 100%;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 6s ease-in-out;
+  transition: opacity 6s ease-in-out, transform 6s ease-in-out;
   background-color: black;
   z-index: 9999;
+  transform: scale(1); 
 }
