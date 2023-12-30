@@ -21,15 +21,15 @@ public class TasksController : ControllerBase
 
   // GET api/Tasks
   [HttpGet]
-  public async Task<ActionResult<IEnumerable<DeviceTaskDto>>> GetAll()
+  public async Task<ActionResult<IEnumerable<TaskDTO>>> GetAll()
   {
-    return null;
-    // TODO return await service.GetAllAsync();
+
+    return await service.GetAllAsync();
   }
 
   // GET api/Tasks/{id}
   [HttpGet("{id}")]
-  public async Task<ActionResult<DeviceTaskDto>> Get(string id)
+  public async Task<ActionResult<TaskDTO>> Get(string id)
   {
     var t = await service.GetByIdAsync(new DeviceTaskId(id));
     if (t == null) return NotFound();
@@ -86,7 +86,7 @@ public class TasksController : ControllerBase
 
   // PUT api/Tasks/5
   [HttpPut("{id}")]
-  public async Task<ActionResult<DeviceTaskDto>> Put(string id, DeviceTaskDto dto)
+  public async Task<ActionResult<TaskDTO>> Put(string id, TaskDTO dto)
   {
     if (id != dto.Id) return BadRequest();
 

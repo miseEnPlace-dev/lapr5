@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks;
 using DDDSample1.Domain.DeviceTasks.SurveillanceTasks;
@@ -23,22 +25,38 @@ namespace DDDSample1.Domain.DeviceTasks
       this.pickAndDeliveryTaskRepository = pickAndDeliveryTaskRepository;
     }
 
-    // public async Task<List<TaskDto>> GetAllAsync()
-    // {
-    //   var list = await _repo.GetAllAsync();
-    //   List<TaskDto> listDto = list.ConvertAll(task => new TaskDto(Task) { Id = task.Id.AsString() });
-    //   return listDto;
-    // }
-
-    public async Task<DeviceTaskDto> GetByIdAsync(DeviceTaskId id)
+    public async Task<List<TaskDTO>> GetAllAsync()
     {
-      DeviceTaskDto task = null;
+      List<DeviceTask> surTasks = (await surveillanceTaskRepository.GetAllAsync(-1, -1)).Cast<DeviceTask>().ToList();
+      List<DeviceTask> pickTasks = (await pickAndDeliveryTaskRepository.GetAllAsync(-1, -1)).Cast<DeviceTask>().ToList();
+
+      List<DeviceTask> tasks = new();
+      tasks.AddRange(surTasks);
+      tasks.AddRange(pickTasks);
+
+      List<TaskDTO> result = new();
+
+      foreach (DeviceTask task in tasks)
+      {
+        if (await surveillanceTaskRepository.GetByIdAsync(task.Id) != null)
+          result.Add(await ConvertToDTO(task, "SurveillanceTaskDTO"));
+
+        if (await pickAndDeliveryTaskRepository.GetByIdAsync(task.Id) != null)
+          result.Add(await ConvertToDTO(task, "PickAndDeliveryTaskDTO"));
+      }
+
+      return result;
+    }
+
+    public async Task<TaskDTO> GetByIdAsync(DeviceTaskId id)
+    {
+      TaskDTO task = null;
       // var task = await repo.GetByIdAsync(id);
 
-      if (task == null)
-        return null;
+      //if (task == null)
+      return null;
 
-      return new DeviceTaskDto { Id = task.Id };
+      //return new TaskDTO { Id = task.Id };
     }
 
     public async Task<TaskDTO> AddSurveillanceTask(SurveillanceTaskDTO dto)
@@ -75,9 +93,9 @@ namespace DDDSample1.Domain.DeviceTasks
       }
     }
 
-    public async Task<DeviceTaskDto> UpdateAsync(DeviceTaskDto dto)
+    public async Task<DeviceTaskDto> UpdateAsync(TaskDTO dto)
     {
-      DeviceTaskDto task = null;
+      TaskDTO task = null;
       // var task = await repo.GetByIdAsync(new DeviceTaskId(dto.Id));
 
       if (task == null)
@@ -88,7 +106,7 @@ namespace DDDSample1.Domain.DeviceTasks
 
       await this.unitOfWork.CommitAsync();
 
-      return new DeviceTaskDto { Id = task.Id };
+      return null;
     }
 
     public async Task<DeviceTaskDto> InactivateAsync(DeviceTaskId id)

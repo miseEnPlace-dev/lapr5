@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
-namespace DDDSample1.Domain.DTO;
 
+namespace DDDSample1.Domain.DTO;
 public abstract class TaskDTO
 {
   public string Id { get; set; }
