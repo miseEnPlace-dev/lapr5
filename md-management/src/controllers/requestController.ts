@@ -6,7 +6,7 @@ import { TYPES } from '@/loaders/inversify/types';
 import { ITaskService } from '@/services/IServices/ITaskService';
 import IUserService from '@/services/IServices/IUserService';
 import { z } from 'zod';
-import IRequestController from './IControllers/ITaskController';
+import IRequestController from './IControllers/IRequestController';
 
 const querySchema = z.object({
   filter: z.string().optional(),

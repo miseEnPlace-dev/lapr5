@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import IRequestController from '@/controllers/IControllers/ITaskController';
+import IRequestController from '@/controllers/IControllers/IRequestController';
 
 import { defaultRoles } from '@/domain/role/defaultRoles';
 import { container } from '@/loaders/inversify';

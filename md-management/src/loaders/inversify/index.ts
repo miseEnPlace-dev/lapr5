@@ -10,7 +10,7 @@ import IElevatorController from '@/controllers/IControllers/IElevatorController'
 import IFloorController from '@/controllers/IControllers/IFloorController';
 import IRoleController from '@/controllers/IControllers/IRoleController';
 import IRoomController from '@/controllers/IControllers/IRoomController';
-import IRequestController from '@/controllers/IControllers/ITaskController';
+import IRequestController from '@/controllers/IControllers/IRequestController';
 import IUserController from '@/controllers/IControllers/IUserController';
 import BuildingController from '@/controllers/buildingController';
 import ConnectorController from '@/controllers/connectorController';
