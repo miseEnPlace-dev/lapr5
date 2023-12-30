@@ -5,10 +5,10 @@ import { TYPES } from '@/loaders/inversify/types';
 import { SequenceMapper } from '@/mappers/SequenceMapper';
 import { inject, injectable } from 'inversify';
 import { IHttpClient } from './IServices/IHttpClient';
-import { IRequestService } from './IServices/IRequestService';
+import { ITaskService } from './IServices/ITaskService';
 
 @injectable()
-export default class RequestService implements IRequestService {
+export default class TaskService implements ITaskService {
   constructor(@inject(TYPES.httpClient) private httpClient: IHttpClient) {}
 
   async getTaskSequence(): Promise<ISequenceDTO> {

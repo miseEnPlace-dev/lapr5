@@ -3,10 +3,10 @@ import { inject, injectable } from 'inversify';
 
 import config from '@/config';
 import { TYPES } from '@/loaders/inversify/types';
-import { ITaskService } from '@/services/IServices/ITaskService';
 import IUserService from '@/services/IServices/IUserService';
 import { z } from 'zod';
 import IRequestController from './IControllers/IRequestController';
+import { IRequestService } from '@/services/IServices/IRequestService';
 
 const querySchema = z.object({
   filter: z.string().optional(),
@@ -18,7 +18,7 @@ const querySchema = z.object({
 @injectable()
 export default class RequestController implements IRequestController {
   constructor(
-    @inject(TYPES.taskService) private taskService: ITaskService,
+    @inject(TYPES.taskService) private taskService: IRequestService,
     @inject(TYPES.userService) private userService: IUserService
   ) {}
 

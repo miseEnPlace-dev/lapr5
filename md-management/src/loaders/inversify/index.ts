@@ -56,7 +56,6 @@ import IElevatorService from '@/services/IServices/IElevatorService';
 import IFloorService from '@/services/IServices/IFloorService';
 import IRoleService from '@/services/IServices/IRoleService';
 import IRoomService from '@/services/IServices/IRoomService';
-import { ITaskService } from '@/services/IServices/ITaskService';
 import IUserService from '@/services/IServices/IUserService';
 import BuildingService from '@/services/buildingService';
 import ConnectorService from '@/services/connectorService';
@@ -66,11 +65,16 @@ import ElevatorService from '@/services/elevatorService';
 import FloorService from '@/services/floorService';
 import RoleService from '@/services/roleService';
 import RoomService from '@/services/roomService';
-import TaskService from '@/services/requestService';
+import RequestService from '@/services/requestService';
 import UserService from '@/services/userService';
 import { Logger } from 'winston';
 import Bootstrapper from '../bootstrap';
 import LoggerInstance from '../logger';
+import ITaskController from '@/controllers/IControllers/ITaskController';
+import TaskController from '@/controllers/taskController';
+import TaskService from '@/services/taskService';
+import { ITaskService } from '@/services/IServices/ITaskService';
+import { IRequestService } from '@/services/IServices/IRequestService';
 
 const container = new Container();
 
@@ -95,6 +99,9 @@ container.bind<IUserRepo>(TYPES.userRepo).to(UserRepo);
 container.bind(TYPES.userSchema).to(UserSchema);
 
 container.bind<IRequestController>(TYPES.requestController).to(RequestController);
+container.bind<IRequestService>(TYPES.requestService).to(RequestService);
+
+container.bind<ITaskController>(TYPES.taskController).to(TaskController);
 container.bind<ITaskService>(TYPES.taskService).to(TaskService);
 
 container.bind<IElevatorController>(TYPES.elevatorController).to(ElevatorController);
