@@ -13,5 +13,6 @@ namespace DDDNetCore.Services
     Task<RequestDTO> AddSurveillanceTask(SurveillanceRequestDTO dto);
     Task<RequestDTO> AddPickAndDeliveryTask(PickAndDeliveryRequestDTO dto);
     Task<PaginationDTO<RequestDTO>> GetRequestsByState(RequestState state, int page, int limit);
+    Task<PaginationDTO<RequestDTO>> GetRequestsByUserId(string userId, int page, int limit);
   }
 }

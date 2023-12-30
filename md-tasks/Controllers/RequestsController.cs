@@ -23,11 +23,20 @@ public class RequestsController : ControllerBase
   public async Task<ActionResult<PaginationDTO<RequestDTO>>> GetAll()
   {
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit") && Request.Query.ContainsKey("filter") && Request.Query.ContainsKey("value"))
+    {
       if (Request.Query["filter"].ToString() == "state")
         return await service.GetRequestsByState(RequestStateMapper.ToRequestState(Request.Query["value"].ToString()), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
 
+      if (Request.Query["filter"].ToString() == "userId")
+        return await service.GetRequestsByUserId(Request.Query["value"].ToString(), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+    }
+
+
     if (Request.Query["filter"].ToString() == "state" && Request.Query.ContainsKey("value"))
       return await service.GetRequestsByState(RequestStateMapper.ToRequestState(Request.Query["value"].ToString()), -1, -1);
+
+    if (Request.Query["filter"].ToString() == "userId" && Request.Query.ContainsKey("value"))
+      return await service.GetRequestsByUserId(Request.Query["value"].ToString(), -1, -1);
 
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
       return await service.GetAllAsync(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));

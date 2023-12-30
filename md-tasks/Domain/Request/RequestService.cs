@@ -310,4 +310,21 @@ public class RequestService : IRequestService
 
     return new PaginationDTO<RequestDTO>(requests, page, limit, await surveillanceTaskRepository.CountAsync() + await pickAndDeliveryTaskRepository.CountAsync());
   }
+
+  public async Task<PaginationDTO<RequestDTO>> GetRequestsByUserId(string userId, int page, int limit)
+  {
+    UserId id = new(userId);
+
+    List<SurveillanceRequest> sv = await surveillanceTaskRepository.GetRequestsByUserId(id, page - 1, limit);
+    List<PickAndDeliveryRequest> pd = await pickAndDeliveryTaskRepository.GetRequestsByUserId(id, page - 1, limit);
+
+    List<RequestDTO> requests = new();
+
+    foreach (SurveillanceRequest s in sv)
+      requests.Add(await ConvertToDTO(s, "SurveillanceRequestDTO"));
+    foreach (PickAndDeliveryRequest p in pd)
+      requests.Add(await ConvertToDTO(p, "PickAndDeliveryRequestDTO"));
+
+    return new PaginationDTO<RequestDTO>(requests, page, limit, requests.Count);
+  }
 }
