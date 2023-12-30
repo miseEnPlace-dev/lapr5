@@ -50,8 +50,8 @@ const TaskRequestsPage: React.FC = () => {
   const [isAddRobotModalVisible, setIsAddRobotModalVisible] = useState(false);
 
   async function handleAddRobot(requestId: string) {
-    setIsAddRobotModalVisible(true);
     setRequestId(requestId);
+    setIsAddRobotModalVisible(true);
   }
 
   async function handleSaveClick() {
@@ -391,7 +391,7 @@ const TaskRequestsPage: React.FC = () => {
           <Modal
             setIsVisible={setIsAddRobotModalVisible}
             isVisible={isAddRobotModalVisible}
-            title="Add robot to this task"
+            title="Assign Robot to this Task"
           >
             <div className="flex h-full flex-col justify-between gap-y-4">
               <div className="flex w-full flex-col gap-y-4">

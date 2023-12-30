@@ -29,8 +29,8 @@ namespace DDDSample1.Domain.DeviceTasks
 
     public async Task<PaginationDTO<RequestDTO>> GetAllAsync(int page, int limit)
     {
-      List<Request> surTasks = (await surveillanceTaskRepository.GetAllAsync(page - 1, limit)).Cast<Request>().ToList();
-      List<Request> pickTasks = (await pickAndDeliveryTaskRepository.GetAllAsync(page - 1, limit)).Cast<Request>().ToList();
+      List<Request> surTasks = (await surveillanceTaskRepository.GetAllAsync(-1, -1)).Cast<Request>().ToList();
+      List<Request> pickTasks = (await pickAndDeliveryTaskRepository.GetAllAsync(-1, -1)).Cast<Request>().ToList();
 
       List<Request> tasks = new();
       tasks.AddRange(surTasks);

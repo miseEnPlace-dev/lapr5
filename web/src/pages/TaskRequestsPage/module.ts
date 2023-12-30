@@ -76,14 +76,16 @@ export const useListTaskRequestsModule = () => {
   }, [deviceModelService]);
 
   const fetchDevices = useCallback(async () => {
+    const request = requests?.data.find((r) => r.id == requestId);
+    console.log(request);
     const devices = await deviceService.getDevicesRobots(
-      undefined,
-      undefined,
+      "task",
+      request?.type,
       1,
       1000
     );
     setDevices(devices.data);
-  }, [deviceService]);
+  }, [deviceService, requestId]);
 
   useEffect(() => {
     fetchDeviceModels();
