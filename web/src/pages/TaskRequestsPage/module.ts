@@ -92,7 +92,9 @@ export const useListTaskRequestsModule = () => {
 
   async function fetchDevice(): Promise<Device | undefined> {
     if (deviceInputRef.current) {
-      const device = await deviceService.getDevice(deviceInputRef.current.value);
+      const device = await deviceService.getDevice(
+        deviceInputRef.current.value
+      );
       setDevice(device);
     }
 

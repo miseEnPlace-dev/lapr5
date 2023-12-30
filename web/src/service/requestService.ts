@@ -19,7 +19,7 @@ export class RequestService implements IRequestService {
   constructor(
     @inject(TYPES.api) private http: HttpService,
     @inject(TYPES.localStorage) private localStorage: Storage
-  ) { }
+  ) {}
 
   async getAllRequests(
     filter?: "state" | "userId",

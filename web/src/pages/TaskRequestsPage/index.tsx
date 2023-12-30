@@ -360,7 +360,7 @@ const TaskRequestsPage: React.FC = () => {
                     className="w-full"
                     name="Task"
                     placeholder="Task"
-                    inputRef={deviceInputRef}
+                    inputRef={deviceModelInputRef}
                     options={deviceModels.map((deviceModel) => ({
                       code: deviceModel.code,
                       name: deviceModel.name,
