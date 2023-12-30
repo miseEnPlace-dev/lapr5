@@ -1,6 +1,6 @@
 using DDDSample1.Infrastructure.Shared;
 using DDDSample1.Domain.DeviceTasks;
-using DDDSample1.Domain.DeviceTasks.SurveillanceTask;
+using DDDSample1.Domain.DeviceTasks.SurveillanceTasks;
 
 namespace DDDSample1.Infrastructure.DeviceTasks;
 

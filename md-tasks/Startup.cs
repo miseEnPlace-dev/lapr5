@@ -13,8 +13,8 @@ using DDDSample1.Domain.Requests;
 using DDDSample1.Domain.DeviceTasks;
 using DDDSample1.Infrastructure.DeviceTasks;
 using System;
-using DDDSample1.Domain.DeviceTasks.SurveillanceTask;
-using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
+using DDDSample1.Domain.DeviceTasks.SurveillanceTasks;
+using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks;
 
 namespace DDDSample1
 {

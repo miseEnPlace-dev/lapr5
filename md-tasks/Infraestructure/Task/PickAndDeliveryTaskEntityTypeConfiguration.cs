@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
+using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using DDDSample1.Domain.User;
 using DDDSample1.Domain.Room;
