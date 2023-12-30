@@ -369,9 +369,15 @@ const FloorEditor: React.FC = () => {
   return (
     <>
       <div id="container">
-        <button id="navigate-button" onClick={handleNavigateBack}>
-          <ArrowLeftIcon />
-        </button>
+        <div id="left-menu-options">
+          <button id="navigate-button" onClick={handleNavigateBack}>
+            <ArrowLeftIcon />
+          </button>
+          <div id="current-floor">
+            <span id="piso-atual">Piso atual: </span>
+            <span id="mazeSelected"></span>
+          </div>
+        </div>
         <div id="views-panel">
           <table className="views">
             <tbody>

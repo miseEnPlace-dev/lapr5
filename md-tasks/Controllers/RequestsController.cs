@@ -52,7 +52,6 @@ public class RequestsController : ControllerBase
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
       return await requestsService.GetAllPickAndDelivery(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
 
-
     return await requestsService.GetAllPickAndDelivery(-1, -1);
   }
 
@@ -62,7 +61,6 @@ public class RequestsController : ControllerBase
   {
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
       return await requestsService.GetAllSurveillance(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
-
 
     return await requestsService.GetAllSurveillance(-1, -1);
   }

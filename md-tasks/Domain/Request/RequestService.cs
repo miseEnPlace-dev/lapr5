@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -11,7 +10,6 @@ using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks;
 using DDDSample1.Domain.DeviceTasks.SurveillanceTasks;
 using DDDSample1.Domain.DTO;
 using DDDSample1.Domain.Shared;
-using DDDSample1.Infrastructure.Requests;
 
 namespace DDDSample1.Domain.Requests
 {

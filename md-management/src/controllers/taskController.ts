@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify';
 
 import config from '@/config';
 import { TYPES } from '@/loaders/inversify/types';
-import { SequenceMapper } from '@/mappers/SequenceMapper';
+import { ITaskService } from '@/services/IServices/ITaskService';
 import IUserService from '@/services/IServices/IUserService';
 import { z } from 'zod';
 import ITaskController from './IControllers/ITaskController';
@@ -17,7 +17,10 @@ const querySchema = z.object({
 
 @injectable()
 export default class TaskController implements ITaskController {
-  constructor(@inject(TYPES.userService) private userService: IUserService) {}
+  constructor(
+    @inject(TYPES.taskService) private taskService: ITaskService,
+    @inject(TYPES.userService) private userService: IUserService
+  ) {}
 
   public async getTaskRequests(
     req: Request,
@@ -130,11 +133,9 @@ export default class TaskController implements ITaskController {
     next: NextFunction
   ): Promise<Response | void> {
     try {
-      const response = await fetch(`${config.tasksApiUrl}/api/requests/sequence`);
+      const sequence = await this.taskService.getTaskSequence();
 
-      const data = await response.json();
-
-      return res.status(200).json(SequenceMapper.map(data));
+      return res.status(200).json(sequence);
     } catch (e) {
       return next(e);
     }
