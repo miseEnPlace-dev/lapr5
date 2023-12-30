@@ -84,7 +84,7 @@ namespace DDDSample1
       services.AddTransient<IUnitOfWork, UnitOfWork>();
 
       services.AddTransient<ITaskRepository, RequestRepository>();
-      services.AddTransient<Domain.Requests.RequestService>();
+      services.AddTransient<Domain.Requests.TaskService>();
 
       services.AddTransient<ISurveillanceRequestRepository, SurveillanceRequestRepository>();
       services.AddTransient<IPickAndDeliveryRequestRepository, PickAndDeliveryRequestRepository>();

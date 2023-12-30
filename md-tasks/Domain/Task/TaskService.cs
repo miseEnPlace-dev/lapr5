@@ -13,7 +13,7 @@ using DDDSample1.Domain.Shared;
 
 namespace DDDSample1.Domain.Requests
 {
-  public class RequestService : IRequestService
+  public class TaskService : ITaskService
   {
     private readonly IUnitOfWork unitOfWork;
     private readonly ITaskRepository repo;
@@ -23,7 +23,7 @@ namespace DDDSample1.Domain.Requests
     private static readonly HttpClient httpClient = new();
     private static readonly string BASE_URL = "http://localhost:5000/api";
 
-    public RequestService(IUnitOfWork unitOfWork, ITaskRepository repo, ISurveillanceRequestRepository surveillanceTaskRepository, IPickAndDeliveryRequestRepository pickAndDeliveryTaskRepository)
+    public TaskService(IUnitOfWork unitOfWork, ITaskRepository repo, ISurveillanceRequestRepository surveillanceTaskRepository, IPickAndDeliveryRequestRepository pickAndDeliveryTaskRepository)
     {
       this.unitOfWork = unitOfWork;
       this.repo = repo;

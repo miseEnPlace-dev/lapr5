@@ -7,17 +7,8 @@ namespace DDDNetCore.Services
 {
   public interface IRequestService
   {
-    Task<PaginationDTO<TaskDTO>> GetAll(int page, int limit);
-    Task<PaginationDTO<SurveillanceTaskDTO>> GetAllSurveillance(int page, int limit);
-    Task<PaginationDTO<PickDeliveryTaskDTO>> GetAllPickAndDelivery(int page, int limit);
-    Task<TaskDTO> GetById(TaskId id);
-    Task<SequenceDTO> GetApprovedTasksSequence();
-    Task<TaskDTO> AddSurveillanceRequest(TaskDTO dto);
-    Task<TaskDTO> AddPickAndDeliveryRequest(TaskDTO dto);
-    Task<TaskDTO> Update(TaskDTO dto);
-    Task<TaskDTO> Put(TaskDTO dto);
-    Task<TaskDTO> Delete(TaskId id);
-    Task<TaskDTO> AcceptRequest(TaskId id);
-    Task<TaskDTO> RejectRequest(TaskId id);
+    Task<PaginationDTO<RequestDTO>> GetAllAsync(int page, int limit);
+    Task<RequestDTO> AddSurveillanceTask(SurveillanceRequestDTO dto);
+    Task<RequestDTO> AddPickAndDeliveryTask(PickAndDeliveryRequestDTO dto);
   }
 }

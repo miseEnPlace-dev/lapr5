@@ -13,10 +13,10 @@ namespace DDDSample1.Controllers;
 [ApiController]
 public class TasksController : ControllerBase
 {
-  private readonly IRequestService requestsService;
+  private readonly ITaskService requestsService;
   private readonly Domain.DeviceTasks.RequestService deviceTaskService;
 
-  public TasksController(Domain.Requests.RequestService requestsService)
+  public TasksController(Domain.Requests.TaskService requestsService)
   {
     this.requestsService = requestsService;
   }

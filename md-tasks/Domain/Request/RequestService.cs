@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DDDNetCore.Services;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks;
 using DDDSample1.Domain.DeviceTasks.SurveillanceTasks;
 using DDDSample1.Domain.DTO;
@@ -12,7 +13,7 @@ using DDDSample1.Domain.User;
 
 namespace DDDSample1.Domain.DeviceTasks
 {
-  public class RequestService
+  public class RequestService : IRequestService
   {
     private readonly IUnitOfWork unitOfWork;
     private readonly ISurveillanceRequestRepository surveillanceTaskRepository;
