@@ -13,10 +13,7 @@ public class PickAndDeliveryRequestDTO : RequestDTO
   public string PickupRoomId { get; set; }
   public string DeliveryRoomId { get; set; }
   public string ConfirmationCode { get; set; }
-  public int StartCoordinateX { get; set; }
-  public int StartCoordinateY { get; set; }
-  public int EndCoordinateX { get; set; }
-  public int EndCoordinateY { get; set; }
+
   public string StartFloorCode { get; set; }
   public string EndFloorCode { get; set; }
 
@@ -33,7 +30,7 @@ public class PickAndDeliveryRequestDTO : RequestDTO
     ConfirmationCode = confirmationCode;
   }
 
-  public PickAndDeliveryRequestDTO(string id, string description, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string confirmationCode, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, string startFloorCode, string endFloorCode, string userId, string state, string requestedAt) : base(id, "pick_delivery", userId, state, requestedAt)
+  public PickAndDeliveryRequestDTO(string id, string description, string pickupUserName, string deliveryUserName, string pickupUserPhoneNumber, string deliveryUserPhoneNumber, string pickupRoomId, string deliveryRoomId, string confirmationCode, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY, string startFloorCode, string endFloorCode, string userId, string state, string requestedAt) : base(id, "pick_delivery", userId, state, requestedAt, startCoordinateX, startCoordinateY, endCoordinateX, endCoordinateY)
   {
     Description = description;
     PickupUserName = pickupUserName;

@@ -150,29 +150,6 @@ const TaskRequestsPage: React.FC = () => {
         >
           <div className="flex flex-row gap-x-4">
             <motion.button
-              name="createRequest"
-              initial={{ opacity: 0, y: -100 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.2,
-                delay: requests?.data.length || 0 * ANIMATION_DELAY,
-              }}
-              onClick={() => {
-                setSelectedRequestType(undefined);
-                setIsCreateRequestModalVisible(true);
-              }}
-              className={`flex w-full items-center justify-center gap-x-10 ${
-                stateFilter ? "bg-slate-400" : "bg-slate-300"
-              } py-4 text-gray-500`}
-            >
-              <div className="flex flex-row items-center gap-x-4 text-lg font-bold text-slate-600">
-                {stateFilter ? <FilterIcon /> : ""}
-                Create Request
-              </div>
-            </motion.button>
-          </div>
-          <div className="flex flex-row gap-x-4">
-            <motion.button
               name="filterByState"
               initial={{ opacity: 0, y: -100 }}
               animate={{ opacity: 1, y: 0 }}

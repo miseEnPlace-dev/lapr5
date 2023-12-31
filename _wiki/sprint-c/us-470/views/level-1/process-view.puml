@@ -1,0 +1,32 @@
+@startuml process-view
+autonumber
+
+actor TM as "Task Manager"
+participant SYS as "RobDroneGo System" <<system (C4)>>
+
+activate TM
+
+alt approves task
+  TM -> SYS : approves a task
+  activate SYS
+
+  TM <-- SYS : asks to assign a robot to the task
+  deactivate SYS
+
+  TM -> SYS : selects the desired robot
+  activate SYS
+
+  TM <-- SYS : returns the sucess of the operation
+  deactivate SYS
+
+else rejects task
+  TM -> SYS : rejects a task
+  activate SYS
+
+  TM <-- SYS : returns the sucess of the operation
+  deactivate SYS
+end
+
+deactivate TM
+
+@enduml

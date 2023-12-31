@@ -59,7 +59,7 @@ load_tasks([H|T],N):-
 	);
 		asserta(
 		t(
-			H.deviceTaskId,
+			H.id,
 			cel(H.floorId,H.startCoordinateX,H.startCoordinateY),
 			cel(H.floorId,H.endCoordinateX,H.endCoordinateY)
 		))

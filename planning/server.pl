@@ -74,7 +74,7 @@ fetch_floors(BuildingCode, Floors) :-
 
 fetch_requests(Requests) :-
     api_url(Url),
-    atom_concat(Url, '/task-requests?filter=state&value=accepted', PickDeliveryUrl),
+    atom_concat(Url, '/tasks', PickDeliveryUrl),
     (retractall(genetic:t(_,_,_));true),
     (retractall(genetic:tarefas(_,_,_));true),
     (retract(genetic:n_tarefas(_));true),

@@ -1,3 +1,6 @@
+import { IDeviceDTO } from './IDeviceDTO';
+import { IUserDTO } from './IUserDTO';
+
 export interface ISequenceDTO {
   tasks: {
     id: string;
@@ -9,6 +12,10 @@ export interface ISequenceDTO {
     endFloorCode: string;
     description: string;
     type: 'pick_delivery' | 'surveillance';
+    userId: string;
+    deviceId: string;
+    user?: IUserDTO;
+    device?: IDeviceDTO;
   }[];
   time: number;
   path: {

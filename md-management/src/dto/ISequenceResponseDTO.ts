@@ -1,45 +1,23 @@
 export interface ISequenceResponseDTO {
   tasks: {
-    description: {
-      value: string;
-    };
-    userName?: {
-      name: string;
-    };
-    userPhoneNumber?: {
-      phoneNumber: string;
-    };
-    floorId?: {
-      value: string;
-    };
+    description: string;
+    userName?: string;
+    phoneNumber?: string;
+    floorId?: string;
     startCoordinateX: number;
     startCoordinateY: number;
     endCoordinateX: number;
     endCoordinateY: number;
-    id: {
-      value: string;
-    };
-    confirmationCode?: {
-      code: string;
-    };
-    pickupUserName?: {
-      name: string;
-    };
-    deliveryUserName?: {
-      name: string;
-    };
-    pickupUserPhoneNumber?: {
-      phoneNumber: string;
-    };
-    deliveryUserPhoneNumber?: {
-      phoneNumber: string;
-    };
-    pickupRoomId?: {
-      value: string;
-    };
-    deliveryRoomId?: {
-      value: string;
-    };
+    id: string;
+    deviceId: string;
+    userId: string;
+    confirmationCode?: string;
+    pickupUserName?: string;
+    deliveryUserName?: string;
+    pickupUserPhoneNumber?: string;
+    deliveryUserPhoneNumber?: string;
+    pickupRoomId?: string;
+    deliveryRoomId?: string;
     startFloorCode?: string;
     endFloorCode?: string;
   }[];
