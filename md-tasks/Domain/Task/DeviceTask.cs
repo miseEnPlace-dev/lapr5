@@ -18,7 +18,7 @@ namespace DDDSample1.Domain.Requests
       DeviceId = deviceId;
     }
 
-    public DeviceTask(TaskId id, RequestId requestId, RequestState state, DateTime requestedAt, string deviceId)
+    public DeviceTask(TaskId id, RequestId requestId, DateTime requestedAt, string deviceId)
     {
       this.RequestId = requestId;
       Id = id;

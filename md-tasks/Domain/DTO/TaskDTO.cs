@@ -9,6 +9,8 @@ public class TaskDTO
   public string DeviceId { get; set; }
   public string Type { get; set; }
 
+  public string UserId { get; set; }
+
   [JsonConstructor]
   public TaskDTO(string requestedAt, string deviceId, string requestId)
   {
@@ -17,12 +19,13 @@ public class TaskDTO
     RequestId = requestId;
   }
 
-  public TaskDTO(string id, string type, string createdAt, string requestId, string deviceId)
+  public TaskDTO(string id, string type, string createdAt, string requestId, string deviceId, string userId)
   {
     Id = id;
     CreatedAt = createdAt;
     RequestId = requestId;
     Type = type;
     DeviceId = deviceId;
+    UserId = userId;
   }
 }
