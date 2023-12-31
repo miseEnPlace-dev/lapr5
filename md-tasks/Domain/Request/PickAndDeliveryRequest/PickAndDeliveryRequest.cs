@@ -1,3 +1,4 @@
+using DDDSample1.Domain.Requests;
 using DDDSample1.Domain.Room;
 using DDDSample1.Domain.User;
 
@@ -71,6 +72,12 @@ namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks
     {
       this.DeliveryRoomId = DeliveryRoomId;
     }
+
+    public void ChangeState(StateEnum State)
+    {
+      base.State = new RequestState(State);
+    }
+
 
     public override void ExecuteTask()
     {

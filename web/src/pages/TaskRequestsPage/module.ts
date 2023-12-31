@@ -66,6 +66,21 @@ export const useListTaskRequestsModule = () => {
 
   const itemsPerPage = 3;
 
+  const [selectedRequestType, setSelectedRequestType] = useState<
+    string | undefined
+  >(undefined);
+
+  const requestTypes = [
+    {
+      code: "pick-delivery",
+      name: "Pick and Delivery",
+    },
+    {
+      code: "surveillance",
+      name: "Surveillance",
+    },
+  ];
+
   const handlePagination = (page: number) => {
     setPage(page);
   };
@@ -76,14 +91,16 @@ export const useListTaskRequestsModule = () => {
   }, [deviceModelService]);
 
   const fetchDevices = useCallback(async () => {
+    const request = requests?.data.find((r) => r.id == requestId);
+    console.log(request);
     const devices = await deviceService.getDevicesRobots(
-      undefined,
-      undefined,
+      "task",
+      request?.type,
       1,
       1000
     );
     setDevices(devices.data);
-  }, [deviceService]);
+  }, [deviceService, requestId]);
 
   useEffect(() => {
     fetchDeviceModels();
@@ -92,7 +109,9 @@ export const useListTaskRequestsModule = () => {
 
   async function fetchDevice(): Promise<Device | undefined> {
     if (deviceInputRef.current) {
-      const device = await deviceService.getDevice(deviceInputRef.current.value);
+      const device = await deviceService.getDevice(
+        deviceInputRef.current.value
+      );
       setDevice(device);
     }
 
@@ -147,7 +166,14 @@ export const useListTaskRequestsModule = () => {
     } catch (error) {
       setRequests({ data: [] });
     }
-  }, [requestService, stateFilter, userFilter, page, itemsPerPage]);
+  }, [
+    requestService,
+    stateFilter,
+    deviceModelFilter,
+    userFilter,
+    page,
+    itemsPerPage,
+  ]);
 
   async function handleAcceptRequest() {
     try {
@@ -156,8 +182,8 @@ export const useListTaskRequestsModule = () => {
 
       if (!device) throw new Error("Invalid device");
 
-      await taskService.createTask(device.code, requestId);
-      await requestService.acceptRequest(requestId);
+      // await taskService.createTask(device.code, requestId);
+      await requestService.acceptRequest(requestId, device.code);
       fetchRequests();
     } catch (err) {
       console.log(err);
@@ -202,7 +228,11 @@ export const useListTaskRequestsModule = () => {
     deviceModels,
     devices,
     deviceInputRef,
+    device,
     setRequestId,
     fetchDevice,
+    requestTypes,
+    selectedRequestType,
+    setSelectedRequestType,
   };
 };

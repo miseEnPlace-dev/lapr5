@@ -19,7 +19,7 @@ export class RequestService implements IRequestService {
   constructor(
     @inject(TYPES.api) private http: HttpService,
     @inject(TYPES.localStorage) private localStorage: Storage
-  ) { }
+  ) {}
 
   async getAllRequests(
     filter?: "state" | "userId",
@@ -36,6 +36,30 @@ export class RequestService implements IRequestService {
       params["limit"] = limit.toString();
       params["page"] = page.toString();
     }
+
+    const token = this.localStorage.getItem(localStorageConfig.token);
+
+    const response = await this.http.get<IPaginationDTO<Request>>(
+      "/task-requests",
+      {
+        params,
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    const data = response.data;
+    return data;
+  }
+
+  async getMyRequests(
+    page?: number,
+    limit?: number
+  ): Promise<IPaginationDTO<Request>> {
+    const params = {} as { [key: string]: string };
+    if (page && limit) {
+      params["limit"] = limit.toString();
+      params["page"] = page.toString();
+    }
+    params["user"] = "me";
 
     const token = this.localStorage.getItem(localStorageConfig.token);
 
@@ -135,14 +159,16 @@ export class RequestService implements IRequestService {
     return data;
   }
 
-  async acceptRequest(id: string): Promise<void> {
+  async acceptRequest(id: string, deviceCode: string): Promise<void> {
     const token = this.localStorage.getItem(localStorageConfig.token);
 
     console.log("accepting request");
     console.log(id);
     await this.http.patch(
       "/task-requests/" + id + "/accept",
-      {},
+      {
+        deviceId: deviceCode,
+      },
       {
         headers: { Authorization: `Bearer ${token}` },
       }

@@ -342,27 +342,41 @@ const TasksPage: React.FC = () => {
                         onChange={(e) => setFloorCode(e.target?.value)}
                         inputRef={floorInputRef}
                       />
-                      <Dropdown
-                        className="w-full"
-                        name="Room 1"
-                        disabled={floorCode === ""}
-                        options={floorRooms.map((room) => ({
-                          code: room.name,
-                          name: room.name,
-                        }))}
-                        inputRef={room1InputRef}
-                      />
-                      <Dropdown
-                        className="w-full"
-                        name="Room 2"
-                        disabled={floorCode === ""}
-                        options={floorRooms.map((room) => ({
-                          code: room.name,
-                          name: room.name,
-                        }))}
-                        inputRef={room2InputRef}
-                      />
                     </InputGroup>
+                    {floorCode && (
+                      <div className="flex gap-x-4">
+                        <InputGroup
+                          title="Initial Position"
+                          description="Select the room from which the robot will start the surveillance service."
+                        >
+                          <Dropdown
+                            className="w-full"
+                            name="Room"
+                            disabled={floorCode === ""}
+                            options={floorRooms.map((room) => ({
+                              code: room.name,
+                              name: room.name,
+                            }))}
+                            inputRef={room1InputRef}
+                          />
+                        </InputGroup>
+                        <InputGroup
+                          title="Final Position"
+                          description="Select the room where the robot will end the surveillance service."
+                        >
+                          <Dropdown
+                            className="w-full"
+                            name="Room"
+                            disabled={floorCode === ""}
+                            options={floorRooms.map((room) => ({
+                              code: room.name,
+                              name: room.name,
+                            }))}
+                            inputRef={room2InputRef}
+                          />
+                        </InputGroup>
+                      </div>
+                    )}
                     <InputGroup
                       title="Emergency Contact"
                       description="Provide the Name and Phone Number of someone that the robot can contact in case of an emergency."

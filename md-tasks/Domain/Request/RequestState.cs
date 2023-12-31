@@ -19,11 +19,6 @@ namespace DDDSample1.Domain.Requests
       this.State = State;
     }
 
-    public void ChangeState(StateEnum State)
-    {
-      this.State = State;
-    }
-
     protected override IEnumerable<object> GetEqualityComponents()
     {
       yield return State;

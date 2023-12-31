@@ -4,6 +4,9 @@ using DDDSample1.Domain.DeviceTasks;
 using Microsoft.AspNetCore.Mvc;
 using DDDSample1.Domain.DTO;
 using DDDNetCore.Domain.Request;
+using DDDSample1.Domain.User;
+using System;
+using DDDNetCore.Services;
 
 namespace DDDSample1.Controllers;
 
@@ -11,9 +14,9 @@ namespace DDDSample1.Controllers;
 [ApiController]
 public class RequestsController : ControllerBase
 {
-  private readonly RequestService service;
+  private readonly IRequestService service;
 
-  public RequestsController(RequestService svc)
+  public RequestsController(IRequestService svc)
   {
     service = svc;
   }
@@ -30,10 +33,34 @@ public class RequestsController : ControllerBase
       return await service.GetRequestsByState(RequestStateMapper.ToRequestState(Request.Query["value"].ToString()), -1, -1);
 
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
-      return await service.GetAllAsync(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+      if (Request.Query.ContainsKey("userId"))
+        return await service.GetRequestsByUserIdAsync(new UserId(Request.Query["userId"].ToString()), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+      else
+        return await service.GetAllAsync(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
 
     return await service.GetAllAsync(-1, -1);
   }
+
+  // GET api/Request/surveillance
+  [HttpGet("surveillance")]
+  public async Task<ActionResult<PaginationDTO<RequestDTO>>> GetAllSurveillance()
+  {
+    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
+      return await service.GetAllSurveillanceAsync(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+
+    return await service.GetAllSurveillanceAsync(-1, -1);
+  }
+
+  // GET api/Request/pick-delivery
+  [HttpGet("pick-delivery")]
+  public async Task<ActionResult<PaginationDTO<RequestDTO>>> GetAllPickDelivery()
+  {
+    if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
+      return await service.GetAllPickDeliveryAsync(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+
+    return await service.GetAllPickDeliveryAsync(-1, -1);
+  }
+
 
   // GET api/Request/{id}
   [HttpGet("{id}")]
@@ -128,11 +155,11 @@ public class RequestsController : ControllerBase
 
   // Patch api/requests/{id}/accept
   [HttpPatch("{id}/accept")]
-  public async Task<ActionResult<RequestDTO>> AcceptRequest(string id)
+  public async Task<ActionResult<RequestDTO>> AcceptRequest(string id, TaskDTO dto)
   {
     try
     {
-      var t = await service.AcceptRequest(new RequestId(id));
+      var t = await service.AcceptRequest(new RequestId(id), dto);
       if (t == null) return NotFound();
       return Ok(t);
     }

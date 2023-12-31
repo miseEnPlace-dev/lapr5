@@ -6,21 +6,21 @@ namespace DDDSample1.Domain.Requests
 {
   public class DeviceTask : Entity<TaskId>, IAggregateRoot
   {
-    public RequestId DeviceTaskId { get; private set; }
+    public RequestId RequestId { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public string DeviceId { get; private set; }
 
-    public DeviceTask(RequestId DeviceTaskId, string deviceId)
+    public DeviceTask(RequestId requestId, string deviceId)
     {
-      this.DeviceTaskId = DeviceTaskId;
+      this.RequestId = requestId;
       Id = new TaskId(Guid.NewGuid());
       CreatedAt = DateTime.Now;
       DeviceId = deviceId;
     }
 
-    public DeviceTask(TaskId id, RequestId DeviceTaskId, RequestState state, DateTime requestedAt, string deviceId)
+    public DeviceTask(TaskId id, RequestId requestId, DateTime requestedAt, string deviceId)
     {
-      this.DeviceTaskId = DeviceTaskId;
+      this.RequestId = requestId;
       Id = id;
       CreatedAt = requestedAt;
       DeviceId = deviceId;

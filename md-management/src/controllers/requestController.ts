@@ -7,8 +7,10 @@ import IUserService from '@/services/IServices/IUserService';
 import { z } from 'zod';
 import IRequestController from './IControllers/IRequestController';
 import { IRequestService } from '@/services/IServices/IRequestService';
+import { ISessionDTO } from '@/dto/ISessionDTO';
 
 const querySchema = z.object({
+  user: z.literal('me').optional(),
   filter: z.string().optional(),
   value: z.string().optional(),
   page: z.string().optional(),
@@ -23,28 +25,31 @@ export default class RequestController implements IRequestController {
   ) {}
 
   public async getTaskRequests(
-    req: Request,
+    req: Request & { session: ISessionDTO },
     res: Response,
     next: NextFunction
   ): Promise<Response | void> {
     try {
       const query = querySchema.safeParse(req.query);
       if (!query.success) return res.status(400).json({ message: query.error });
-
+      console.log(query.data);
       const filter = query.data.filter || undefined;
       const value = query.data.value || undefined;
       const page = Number(query.data.page) || undefined;
       const limit = Number(query.data.limit) || undefined;
+      const userId = query.data.user ? req.session.id : undefined;
 
       let response;
 
-      if (!filter && !value && !page && !limit) {
+      if (!filter && !value && !page && !limit && !userId) {
         response = await fetch(`${config.tasksApiUrl}/api/requests`);
       } else {
         response = await fetch(
           `${config.tasksApiUrl}/api/requests?${filter ? `filter=${filter}` : ''}${
             value ? `&value=${value}` : ''
-          }${page ? `&page=${page}` : ''}${limit ? `&limit=${limit}` : ''}`
+          }${page ? `&page=${page}` : ''}${limit ? `&limit=${limit}` : ''}${
+            userId ? `&userId=${userId}` : ''
+          }`
         );
       }
 
@@ -187,7 +192,8 @@ export default class RequestController implements IRequestController {
     try {
       const response = await fetch(config.tasksApiUrl + `/api/requests/${req.params.id}/accept`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req.body)
       });
 
       const data = await response.json();

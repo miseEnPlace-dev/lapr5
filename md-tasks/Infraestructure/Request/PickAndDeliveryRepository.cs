@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using DDDSample1.Domain.Requests;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using DDDSample1.Domain.User;
 
 namespace DDDSample1.Infrastructure.DeviceTasks;
 
@@ -22,5 +23,12 @@ public class PickAndDeliveryRequestRepository : BaseRepository<PickAndDeliveryRe
     if (page >= 0 || limit >= 0)
       return await _context.PickAndDeliveryRequests.Where(r => r.State.Equals(state)).Skip(page * limit).Take(limit).ToListAsync();
     return await _context.PickAndDeliveryRequests.Where(r => r.State.Equals(state)).ToListAsync();
+  }
+
+  public async Task<List<PickAndDeliveryRequest>> GetRequestsByUserIdAsync(UserId id, int page, int limit)
+  {
+    if (page >= 0 || limit >= 0)
+      return await _context.PickAndDeliveryRequests.Where(r => r.UserId.Equals(id)).Skip(page * limit).Take(limit).ToListAsync();
+    return await _context.PickAndDeliveryRequests.Where(r => r.UserId.Equals(id)).ToListAsync();
   }
 }
