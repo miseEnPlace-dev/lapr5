@@ -208,7 +208,8 @@ namespace DDDSample1.Domain.Requests
             task.StartCoordinateY,
             task.EndCoordinateX,
             task.EndCoordinateY,
-            r.DeviceId
+            r.DeviceId,
+            task.UserId.Value
         );
       }
 
@@ -235,7 +236,8 @@ namespace DDDSample1.Domain.Requests
             task.EndCoordinateY,
             task.StartFloorCode,
             task.EndFloorCode,
-            r.DeviceId
+            r.DeviceId,
+            task.UserId.Value
         );
       }
       return null;
