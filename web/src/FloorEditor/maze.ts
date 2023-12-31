@@ -782,13 +782,10 @@ export default class Maze extends THREE.Group {
   }
 
   foundExit(position) {
-    for (const exit of this.exits) {
-      const exitPos = this.cellToCartesian([exit.x, exit.y]);
+    const positionCell = this.cartesianToCell(position);
 
-      if (
-        Math.abs(position.x - exitPos.x) < 0.25 * this.scale.x &&
-        Math.abs(position.z - exitPos.z) < 0.25 * this.scale.z
-      )
+    for (const exit of this.exits) {
+      if (positionCell[0] === exit.x && positionCell[1] === exit.y)
         return exit.floorCode;
     }
     return null;
