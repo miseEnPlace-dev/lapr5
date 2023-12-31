@@ -22,8 +22,9 @@ export default {
 
   databaseURL: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/test',
 
-  allowedEmailDomain: process.env.ALLOWED_EMAIL_DOMAIN || null,
-
+  allowedEmailDomains: process.env.ALLOWED_EMAIL_DOMAINS
+    ? (JSON.parse(process.env.ALLOWED_EMAIL_DOMAINS as string) as string[])
+    : ['gmail.com'],
   /**
    * Your secret sauce
    */
