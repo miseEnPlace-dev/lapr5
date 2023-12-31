@@ -183,13 +183,13 @@ const TaskSequencePage: React.FC = () => {
             </span>
           </div>
         )}
-        {tasks.length < 3 && (
+        {tasks.length > 0 && tasks.length < 3 && (
           <p className="text-slate-500">
             You need at least 3 approved tasks to generate a new sequence.
           </p>
         )}
         {loading && <Loading />}
-        {!loading && sequence && (
+        {!loading && sequence && sequence.tasks.length > 0 && (
           <section className="my-6 flex w-full flex-col items-center gap-y-8 pr-12">
             {sequence.tasks.map((task, i) => (
               <motion.article
