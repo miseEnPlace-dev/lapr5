@@ -19,6 +19,7 @@ public class RequestService : IRequestService
   private readonly IUnitOfWork unitOfWork;
   private readonly ISurveillanceRequestRepository surveillanceTaskRepository;
   private readonly IPickAndDeliveryRequestRepository pickAndDeliveryTaskRepository;
+  private readonly RequestMapper mapper;
 
   private readonly ITaskRepository taskRepository;
 
@@ -28,6 +29,7 @@ public class RequestService : IRequestService
     this.surveillanceTaskRepository = surveillanceTaskRepository;
     this.pickAndDeliveryTaskRepository = pickAndDeliveryTaskRepository;
     this.taskRepository = taskRepository;
+    mapper = new RequestMapper(surveillanceTaskRepository, pickAndDeliveryTaskRepository);
   }
 
   public async Task<PaginationDTO<RequestDTO>> GetAllAsync(int page, int limit)
@@ -51,10 +53,10 @@ public class RequestService : IRequestService
     foreach (Request task in tasks)
     {
       if (await surveillanceTaskRepository.GetByIdAsync(task.Id) != null)
-        result.Add(await ConvertToDTO(task, "SurveillanceRequestDTO"));
+        result.Add(await mapper.ToDto(task, "SurveillanceRequestDTO"));
 
       if (await pickAndDeliveryTaskRepository.GetByIdAsync(task.Id) != null)
-        result.Add(await ConvertToDTO(task, "PickAndDeliveryRequestDTO"));
+        result.Add(await mapper.ToDto(task, "PickAndDeliveryRequestDTO"));
     }
 
     return new PaginationDTO<RequestDTO>(result, page, limit, await surveillanceTaskRepository.CountAsync() + await pickAndDeliveryTaskRepository.CountAsync());
@@ -81,10 +83,10 @@ public class RequestService : IRequestService
     foreach (Request task in tasks)
     {
       if (await surveillanceTaskRepository.GetByIdAsync(task.Id) != null)
-        result.Add(await ConvertToDTO(task, "SurveillanceRequestDTO"));
+        result.Add(await mapper.ToDto(task, "SurveillanceRequestDTO"));
 
       if (await pickAndDeliveryTaskRepository.GetByIdAsync(task.Id) != null)
-        result.Add(await ConvertToDTO(task, "PickAndDeliveryRequestDTO"));
+        result.Add(await mapper.ToDto(task, "PickAndDeliveryRequestDTO"));
     }
 
     return new PaginationDTO<RequestDTO>(result, page, limit, surTasks.Count + pickTasks.Count);
@@ -108,10 +110,10 @@ public class RequestService : IRequestService
 
     foreach (Request task in tasks)
     {
-      result.Add(await ConvertToDTO(task, "SurveillanceRequestDTO"));
+      result.Add(await mapper.ToDto(task, "SurveillanceRequestDTO"));
 
       if (await pickAndDeliveryTaskRepository.GetByIdAsync(task.Id) != null)
-        result.Add(await ConvertToDTO(task, "PickAndDeliveryRequestDTO"));
+        result.Add(await mapper.ToDto(task, "PickAndDeliveryRequestDTO"));
     }
 
     return new PaginationDTO<RequestDTO>(result, page, limit, await surveillanceTaskRepository.CountAsync() + await pickAndDeliveryTaskRepository.CountAsync());
@@ -135,7 +137,7 @@ public class RequestService : IRequestService
 
     foreach (Request task in tasks)
     {
-      result.Add(await ConvertToDTO(task, "PickAndDeliveryRequestDTO"));
+      result.Add(await mapper.ToDto(task, "PickAndDeliveryRequestDTO"));
     }
 
     return new PaginationDTO<RequestDTO>(result, page, limit, await pickAndDeliveryTaskRepository.CountAsync());
@@ -146,11 +148,11 @@ public class RequestService : IRequestService
     Request req = await surveillanceTaskRepository.GetByIdAsync(id);
 
     if (req != null)
-      return await ConvertToDTO(req, "SurveillanceRequestDTO");
+      return await mapper.ToDto(req, "SurveillanceRequestDTO");
 
     req = await pickAndDeliveryTaskRepository.GetByIdAsync(id);
     if (req != null)
-      return await ConvertToDTO(req, "PickAndDeliveryRequestDTO");
+      return await mapper.ToDto(req, "PickAndDeliveryRequestDTO");
 
     return null;
   }
@@ -163,7 +165,7 @@ public class RequestService : IRequestService
       await surveillanceTaskRepository.AddAsync(t);
       await unitOfWork.CommitAsync();
 
-      return await ConvertToDTO(t, "SurveillanceRequestDTO");
+      return await mapper.ToDto(t, "SurveillanceRequestDTO");
     }
     catch (Exception e)
     {
@@ -180,7 +182,7 @@ public class RequestService : IRequestService
       await pickAndDeliveryTaskRepository.AddAsync(t);
       await unitOfWork.CommitAsync();
 
-      return await ConvertToDTO(t, "PickAndDeliveryRequestDTO");
+      return await mapper.ToDto(t, "PickAndDeliveryRequestDTO");
     }
     catch (Exception e)
     {
@@ -238,55 +240,7 @@ public class RequestService : IRequestService
     return null;
   }
 
-  private async Task<RequestDTO> ConvertToDTO(Request t, string type)
-  {
-    if (type.Equals("SurveillanceRequestDTO"))
-    {
-      SurveillanceRequest task = await surveillanceTaskRepository.GetByIdAsync(t.Id);
-      return new SurveillanceRequestDTO(
-          t.Id.Value,
-          task.Description.Value,
-          task.UserName.Name,
-          task.UserPhoneNumber.PhoneNumber,
-          task.FloorId.Value,
-          task.StartCoordinateX,
-          task.StartCoordinateY,
-          task.EndCoordinateX,
-          task.EndCoordinateY,
-          t.UserId.Value,
-          task.State.State.ToString(),
-          t.RequestedAt.ToString()
-      );
-    }
 
-    if (type.Equals("PickAndDeliveryRequestDTO"))
-    {
-      PickAndDeliveryRequest task = await pickAndDeliveryTaskRepository.GetByIdAsync(t.Id);
-
-      return new PickAndDeliveryRequestDTO(
-          t.Id.Value,
-          task.Description.Value,
-          task.PickupUserName.Name,
-          task.DeliveryUserName.Name,
-          task.PickupUserPhoneNumber.PhoneNumber,
-          task.DeliveryUserPhoneNumber.PhoneNumber,
-          task.PickupRoomId.Value,
-          task.DeliveryRoomId.Value,
-          task.ConfirmationCode.Code,
-          task.StartCoordinateX,
-          task.StartCoordinateY,
-          task.EndCoordinateX,
-          task.EndCoordinateY,
-          task.StartFloorCode,
-          task.EndFloorCode,
-          t.UserId.Value,
-          task.State.State.ToString(),
-          t.RequestedAt.ToString()
-      );
-    }
-
-    return null;
-  }
 
   public async Task<RequestDTO> AcceptRequest(RequestId id, TaskDTO taskDTO)
   {
@@ -300,7 +254,7 @@ public class RequestService : IRequestService
       DeviceTask t = new(id, taskDTO.DeviceId);
       await taskRepository.AddAsync(t);
       await unitOfWork.CommitAsync();
-      return await ConvertToDTO(sv, "SurveillanceRequestDTO");
+      return await mapper.ToDto(sv, "SurveillanceRequestDTO");
     }
 
     PickAndDeliveryRequest pd = await pickAndDeliveryTaskRepository.GetByIdAsync(id);
@@ -312,7 +266,7 @@ public class RequestService : IRequestService
       DeviceTask t = new(id, taskDTO.DeviceId);
       await taskRepository.AddAsync(t);
       await unitOfWork.CommitAsync();
-      return await ConvertToDTO(pd, "PickAndDeliveryRequestDTO");
+      return await mapper.ToDto(pd, "PickAndDeliveryRequestDTO");
     }
 
     return null;
@@ -326,7 +280,7 @@ public class RequestService : IRequestService
     {
       sv.ChangeState(StateEnum.Rejected);
       await unitOfWork.CommitAsync();
-      return await ConvertToDTO(sv, "SurveillanceRequestDTO");
+      return await mapper.ToDto(sv, "SurveillanceRequestDTO");
     }
 
     PickAndDeliveryRequest pd = await pickAndDeliveryTaskRepository.GetByIdAsync(id);
@@ -334,7 +288,7 @@ public class RequestService : IRequestService
     {
       pd.ChangeState(StateEnum.Rejected);
       await unitOfWork.CommitAsync();
-      return await ConvertToDTO(pd, "PickAndDeliveryRequestDTO");
+      return await mapper.ToDto(pd, "PickAndDeliveryRequestDTO");
     }
 
     return null;
@@ -361,10 +315,10 @@ public class RequestService : IRequestService
     foreach (Request task in requests)
     {
       if (await surveillanceTaskRepository.GetByIdAsync(task.Id) != null)
-        result.Add(await ConvertToDTO(task, "SurveillanceRequestDTO"));
+        result.Add(await mapper.ToDto(task, "SurveillanceRequestDTO"));
 
       if (await pickAndDeliveryTaskRepository.GetByIdAsync(task.Id) != null)
-        result.Add(await ConvertToDTO(task, "PickAndDeliveryRequestDTO"));
+        result.Add(await mapper.ToDto(task, "PickAndDeliveryRequestDTO"));
     }
 
     return new PaginationDTO<RequestDTO>(result, page, limit, sv.Count + pd.Count);

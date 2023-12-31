@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using DDDSample1.Domain.DeviceTasks;
+using DDDSample1.Domain.DTO;
 
 namespace DDDNetCore.Domain.Request
 {
-  public record SequenceDTO(List<DDDSample1.Domain.DeviceTasks.Request> Tasks, double Time, List<PathDTO> Path);
+  public record SequenceDTO(List<RequestDTO> Tasks, double Time, List<PathDTO> Path);
 }
