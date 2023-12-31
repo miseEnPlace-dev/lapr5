@@ -4,7 +4,6 @@ import { inject, injectable } from 'inversify';
 import config from '@/config';
 import { ISessionDTO } from '@/dto/ISessionDTO';
 import { TYPES } from '@/loaders/inversify/types';
-import { IRequestService } from '@/services/IServices/IRequestService';
 import IUserService from '@/services/IServices/IUserService';
 import { z } from 'zod';
 import IRequestController from './IControllers/IRequestController';
@@ -19,10 +18,7 @@ const querySchema = z.object({
 
 @injectable()
 export default class RequestController implements IRequestController {
-  constructor(
-    @inject(TYPES.taskService) private taskService: IRequestService,
-    @inject(TYPES.userService) private userService: IUserService
-  ) {}
+  constructor(@inject(TYPES.userService) private userService: IUserService) {}
 
   public async getTaskRequests(
     req: Request & { session: ISessionDTO },
@@ -60,7 +56,7 @@ export default class RequestController implements IRequestController {
         request.user = user.isSuccess ? user.getValue() : null;
       }
 
-      return res.status(200).json(data);
+      return res.status(response.status).json(data);
     } catch (e) {
       return next(e);
     }
@@ -85,14 +81,14 @@ export default class RequestController implements IRequestController {
 
         const data = await response.json();
 
-        return res.status(200).json(data);
+        return res.status(response.status).json(data);
       }
 
       const response = await fetch(`${config.tasksApiUrl}/api/requests/pick-delivery`);
 
       const data = await response.json();
 
-      return res.status(200).json(data);
+      return res.status(response.status).json(data);
     } catch (e) {
       return next(e);
     }
@@ -117,14 +113,14 @@ export default class RequestController implements IRequestController {
 
         const data = await response.json();
 
-        return res.status(200).json(data);
+        return res.status(response.status).json(data);
       }
 
       const response = await fetch(`${config.tasksApiUrl}/api/requests/surveillance`);
 
       const data = await response.json();
 
-      return res.status(200).json(data);
+      return res.status(response.status).json(data);
     } catch (e) {
       return next(e);
     }
@@ -144,7 +140,7 @@ export default class RequestController implements IRequestController {
 
       const data = await response.json();
 
-      return res.status(200).json(data);
+      return res.status(response.status).json(data);
     } catch (e) {
       return next(e);
     }
@@ -164,7 +160,7 @@ export default class RequestController implements IRequestController {
 
       const data = await response.json();
 
-      return res.status(200).json(data);
+      return res.status(response.status).json(data);
     } catch (e) {
       return next(e);
     }
@@ -184,7 +180,7 @@ export default class RequestController implements IRequestController {
 
       const data = await response.json();
 
-      return res.status(200).json(data);
+      return res.status(response.status).json(data);
     } catch (e) {
       return next(e);
     }
@@ -203,7 +199,7 @@ export default class RequestController implements IRequestController {
 
       const data = await response.json();
 
-      return res.status(200).json(data);
+      return res.status(response.status).json(data);
     } catch (e) {
       return next(e);
     }
