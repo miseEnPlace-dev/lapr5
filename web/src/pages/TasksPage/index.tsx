@@ -135,7 +135,7 @@ const TasksPage: React.FC = () => {
                     <div className="flex flex-col text-start text-base text-slate-500">
                       <div className="font-bold uppercase">
                         Surveillance &nbsp;&middot;&nbsp;&nbsp;
-                        {request.requestedAt && formatDate(request.requestedAt)}
+                        {request.createdAt && formatDate(request.createdAt)}
                         &nbsp;&nbsp;&middot;&nbsp;&nbsp;
                         <span className={`${getStateTextColor(request.state)}`}>
                           {request.state}
@@ -155,8 +155,7 @@ const TasksPage: React.FC = () => {
                       <div className="flex flex-col text-start text-slate-500">
                         <div className="text-base font-bold uppercase">
                           Pick and Delivery &nbsp;&middot;&nbsp;&nbsp;
-                          {request.requestedAt &&
-                            formatDate(request.requestedAt)}
+                          {request.createdAt && formatDate(request.createdAt)}
                           &nbsp;&nbsp;&middot;&nbsp;&nbsp;
                           <span
                             className={`${getStateTextColor(request.state)}`}
