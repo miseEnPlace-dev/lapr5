@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="407px" preserveAspectRatio="none" style="width:407px;height:407px;background:#FFFFFF;" version="1.1" viewBox="0 0 407 407" width="407px" zoomAndPan="magnify"><defs/><g><rect fill="#FFFFFF" height="224.4" style="stroke:#181818;stroke-width:1.0;" width="10" x="64" y="91.7999"/><rect fill="#FFFFFF" height="29.6" style="stroke:#181818;stroke-width:1.0;" width="10" x="311" y="138"/><rect fill="#FFFFFF" height="29.6" style="stroke:#181818;stroke-width:1.0;" width="10" x="311" y="197.2"/><rect fill="#FFFFFF" height="29.6" style="stroke:#181818;stroke-width:1.0;" width="10" x="311" y="271.5999"/><rect fill="none" height="210.4" style="stroke:#000000;stroke-width:1.5;" width="390.5" x="10" y="98.7999"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="69" x2="69" y1="81.7999" y2="326.1999"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="315.5" x2="315.5" y1="81.7999" y2="326.1999"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92" x="20" y="78.0059">Task Manager</text><ellipse cx="69" cy="13.5" fill="#E2E2F0" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M69,21.5 L69,48.5 M56,29.5 L82,29.5 M69,48.5 L56,63.5 M69,48.5 L82,63.5 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92" x="20" y="338.2059">Task Manager</text><ellipse cx="69" cy="350.4999" fill="#E2E2F0" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M69,358.4999 L69,385.4999 M56,366.4999 L82,366.4999 M69,385.4999 L56,400.4999 M69,385.4999 L82,400.4999 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><rect fill="#E2E2F0" height="49.6998" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="149" x="241.5" y="31.1001"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="93" x="269.5" y="53.5">«system (C4)»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="135" x="248.5" y="70.0059">RobDroneGo System</text><rect fill="#E2E2F0" height="49.6998" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="149" x="241.5" y="325.1999"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="93" x="269.5" y="347.5999">«system (C4)»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="135" x="248.5" y="364.1058">RobDroneGo System</text><rect fill="#FFFFFF" height="224.4" style="stroke:#181818;stroke-width:1.0;" width="10" x="64" y="91.7999"/><rect fill="#FFFFFF" height="29.6" style="stroke:#181818;stroke-width:1.0;" width="10" x="311" y="138"/><rect fill="#FFFFFF" height="29.6" style="stroke:#181818;stroke-width:1.0;" width="10" x="311" y="197.2"/><rect fill="#FFFFFF" height="29.6" style="stroke:#181818;stroke-width:1.0;" width="10" x="311" y="271.5999"/><path d="M10,98.7999 L70,98.7999 L70,106.3999 L60,116.3999 L10,116.3999 L10,98.7999 " fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"/><rect fill="none" height="210.4" style="stroke:#000000;stroke-width:1.5;" width="390.5" x="10" y="98.7999"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="15" x="25" y="111.8769">alt</text><text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacing" textLength="82" x="85" y="111.0189">[approves task]</text><polygon fill="#181818" points="299,134,309,138,299,142,303,138" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="74" x2="305" y1="138" y2="138"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="81" y="132.477">1</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="93" x="92" y="132.477">approves a task</text><polygon fill="#181818" points="85,163.6,75,167.6,85,171.6,81,167.6" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="79" x2="315" y1="167.6" y2="167.6"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="91" y="162.077">2</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="195" x="102" y="162.077">asks to assign a robot to the task</text><polygon fill="#181818" points="299,193.2,309,197.2,299,201.2,303,197.2" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="74" x2="305" y1="197.2" y2="197.2"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="81" y="191.677">3</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="143" x="92" y="191.677">selects the desired robot</text><polygon fill="#181818" points="85,222.8,75,226.8,85,230.8,81,226.8" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="79" x2="315" y1="226.8" y2="226.8"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="91" y="221.277">4</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="202" x="102" y="221.277">returns the sucess of the operation</text><line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="10" x2="400.5" y1="235.8" y2="235.8"/><text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacing" textLength="68" x="15" y="246.0189">[rejects task]</text><polygon fill="#181818" points="299,267.5999,309,271.5999,299,275.5999,303,271.5999" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="74" x2="305" y1="271.5999" y2="271.5999"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="81" y="266.0769">5</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="79" x="92" y="266.0769">rejects a task</text><polygon fill="#181818" points="85,297.1999,75,301.1999,85,305.1999,81,301.1999" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="79" x2="315" y1="301.1999" y2="301.1999"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="7" x="91" y="295.6769">6</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="202" x="102" y="295.6769">returns the sucess of the operation</text><!--MD5=[899f9301bbdf69eb1e84c736555b1934]
+@startuml process-view
+autonumber
+
+actor TM as "Task Manager"
+participant SYS as "RobDroneGo System" <<system (C4)>>
+
+activate TM
+
+alt approves task
+  TM -> SYS : approves a task
+  activate SYS
+
+  TM <- - SYS : asks to assign a robot to the task
+  deactivate SYS
+
+  TM -> SYS : selects the desired robot
+  activate SYS
+
+  TM <- - SYS : returns the sucess of the operation
+  deactivate SYS
+
+else rejects task
+  TM -> SYS : rejects a task
+  activate SYS
+
+  TM <- - SYS : returns the sucess of the operation
+  deactivate SYS
+end
+
+deactivate TM
+
+@enduml
+
+PlantUML version 1.2022.7(Mon Aug 22 18:01:30 BST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>
