@@ -95,24 +95,24 @@ assert_distancias_robot_tarefa(T1) :-
     (T1.Type == "pick_delivery" ->
 				% tarefa de pick_delivery
 				% robot -> tarefa
-        planning:caminho_celulas_edificios(cel(T1.device.floorCode, T1.device.width, T1.device.length), 
+        planning:caminho_celulas_edificios(cel(T1.device.floorCode, T1.device.width, T1.device.depth), 
 				cel(T1.startFloorCode, T1.startCoordinateX, T1.startCoordinateY), _, C),
 
 				% tarefa -> robot
 				planning:caminho_celulas_edificios(cel(T1.endFloorCode, T1.endCoordinateX, T1.endCoordinateY),
-				cel(T1.device.floorCode, T1.device.width, T1.device.length), _, C1),
+				cel(T1.device.floorCode, T1.device.width, T1.device.depth), _, C1),
 
         assert(distancias_robot_tarefa(T1, C)),
 				assert(distancias_tarefa_robot(T1, C1))
     ;
 				% tarefa de surveillance
 				% robot -> tarefa
-        planning:caminho_celulas_edificios(cel(T1.device.floorCode, T1.device.width, T1.device.length), 
+        planning:caminho_celulas_edificios(cel(T1.device.floorCode, T1.device.width, T1.device.depth), 
 				cel(T1.floorId, T1.startCoordinateX, T1.startCoordinateY), _, C),
 
 				% tarefa -> robot
 				planning:caminho_celulas_edificios(cel(T1.floorId, T1.endCoordinateX, T1.endCoordinateY), 
-				cel(T1.device.floorCode, T1.device.width, T1.device.length), _, C1),
+				cel(T1.device.floorCode, T1.device.width, T1.device.depth), _, C1),
 
         assert(distancias_robot_tarefa(T1, C)),
 				assert(distancias_tarefa_robot(T1, C1))
