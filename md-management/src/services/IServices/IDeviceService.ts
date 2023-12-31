@@ -12,4 +12,5 @@ export default interface IDeviceService {
   ): Promise<Result<IPaginationDTO<IDeviceDTO>>>;
   inhibitDevice(code: string): Promise<Result<IDeviceDTO>>;
   getDeviceRobotWithCode(code: string): Promise<Result<IDeviceDTO>>;
+  getDeviceRobotWithId(id: string): Promise<Result<IDeviceDTO>>;
 }

@@ -88,6 +88,14 @@ load_tarefa(Tarefa,[H|T]):-
 	load_tarefa2(Tarefa,H),
 	load_tarefa(Tarefa,T).
 
+assert_initial_task(H) :-
+		fetch_device(H.id, Device),
+    asserta(t(H.deviceTaskId, cel(Device.floorCode, Device.width, Device.length), cel(H.startFloorCode, H.startCoordinateX, H.startCoordinateY))).
+
+assert_final_task(H) :-
+		fetch_device(H.id, Device),
+    asserta(t(H.deviceTaskId, cel(H.endFloorCode, H.endCoordinateX, H.endCoordinateY), cel(Device.floorCode, Device.width, Device.length))).
+
 load_tarefa2(T1,T2):-
 	debug_mode(D),
 	t(T1,S1,F1), t(T2,S2,F2),
