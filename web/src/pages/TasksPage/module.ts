@@ -127,7 +127,6 @@ export const useTasksModule = () => {
           });
           break;
         case "surveillance":
-          console.log("HELLO");
           if (
             !emergencyNameInputRef.current ||
             !emergencyPhoneInputRef.current ||
