@@ -590,122 +590,124 @@ export default class Maze extends THREE.Group {
   collision(method, position, halfSize, direction) {
     const indices = this.cartesianToCell(position);
     if (method !== "obb-aabb") {
-      if (
-        this.wallCollision(
-          indices,
-          [0, 0],
-          0,
-          position,
-          { x: 0.0, z: -0.475 },
-          halfSize,
-          "north wall"
-        ) || // Collision with north wall
-        this.wallCollision(
-          indices,
-          [0, 0],
-          1,
-          position,
-          { x: -0.475, z: 0.0 },
-          halfSize,
-          "west wall"
-        ) || // Collision with west wall
-        this.wallCollision(
-          indices,
-          [1, 0],
-          0,
-          position,
-          { x: 0.0, z: -0.525 },
-          halfSize,
-          "south wall"
-        ) || // Collision with south wall
-        this.wallCollision(
-          indices,
-          [0, 1],
-          1,
-          position,
-          { x: -0.525, z: 0.0 },
-          halfSize,
-          "east wall"
-        ) || // Collision with east wall
-        this.cornerCollision(
-          indices,
-          [1, 0],
-          1,
-          position,
-          { x: -0.475, z: -0.5 },
-          halfSize,
-          "southwest corner (NS-oriented wall)"
-        ) || // Collision with southwest corner (NS-oriented wall)
-        this.cornerCollision(
-          indices,
-          [1, 1],
-          0,
-          position,
-          { x: -0.5, z: -0.525 },
-          halfSize,
-          "southeast corner (WE-oriented wall)"
-        ) || // Collision with southeast corner (WE-oriented wall)
-        this.cornerCollision(
-          indices,
-          [1, 1],
-          1,
-          position,
-          { x: -0.525, z: -0.5 },
-          halfSize,
-          "southeast corner (NS-oriented wall)"
-        ) || // Collision with southeast corner (NS-oriented wall)
-        this.cornerCollision(
-          indices,
-          [0, 1],
-          0,
-          position,
-          { x: -0.5, z: -0.475 },
-          halfSize,
-          "northeast corner (WE-oriented wall)"
-        ) || // Collision with northeast corner (WE-oriented wall)
-        (indices[0] > 0 &&
-          (this.cornerCollision(
+      if (this.map[indices[0]] && this.map[indices[0]][indices[1]]) {
+        if (
+          this.wallCollision(
             indices,
-            [-1, 1],
-            1,
-            position,
-            { x: -0.525, z: 0.5 },
-            halfSize,
-            "northeast corner (NS-oriented wall)"
-          ) || // Collision with northeast corner (NS-oriented wall)
-            this.cornerCollision(
-              indices,
-              [-1, 0],
-              1,
-              position,
-              { x: -0.475, z: 0.5 },
-              halfSize,
-              "northwest corner (NS-oriented wall)"
-            ))) || // Collision with northwest corner (NS-oriented wall)
-        (indices[1] > 0 &&
-          (this.cornerCollision(
-            indices,
-            [0, -1],
+            [0, 0],
             0,
             position,
-            { x: 0.5, z: -0.475 },
+            { x: 0.0, z: -0.475 },
             halfSize,
-            "northwest corner (WE-oriented wall)"
-          ) || // Collision with northwest corner (WE-oriented wall)
-            this.cornerCollision(
+            "north wall"
+          ) || // Collision with north wall
+          this.wallCollision(
+            indices,
+            [0, 0],
+            1,
+            position,
+            { x: -0.475, z: 0.0 },
+            halfSize,
+            "west wall"
+          ) || // Collision with west wall
+          this.wallCollision(
+            indices,
+            [1, 0],
+            0,
+            position,
+            { x: 0.0, z: -0.525 },
+            halfSize,
+            "south wall"
+          ) || // Collision with south wall
+          this.wallCollision(
+            indices,
+            [0, 1],
+            1,
+            position,
+            { x: -0.525, z: 0.0 },
+            halfSize,
+            "east wall"
+          ) || // Collision with east wall
+          this.cornerCollision(
+            indices,
+            [1, 0],
+            1,
+            position,
+            { x: -0.475, z: -0.5 },
+            halfSize,
+            "southwest corner (NS-oriented wall)"
+          ) || // Collision with southwest corner (NS-oriented wall)
+          this.cornerCollision(
+            indices,
+            [1, 1],
+            0,
+            position,
+            { x: -0.5, z: -0.525 },
+            halfSize,
+            "southeast corner (WE-oriented wall)"
+          ) || // Collision with southeast corner (WE-oriented wall)
+          this.cornerCollision(
+            indices,
+            [1, 1],
+            1,
+            position,
+            { x: -0.525, z: -0.5 },
+            halfSize,
+            "southeast corner (NS-oriented wall)"
+          ) || // Collision with southeast corner (NS-oriented wall)
+          this.cornerCollision(
+            indices,
+            [0, 1],
+            0,
+            position,
+            { x: -0.5, z: -0.475 },
+            halfSize,
+            "northeast corner (WE-oriented wall)"
+          ) || // Collision with northeast corner (WE-oriented wall)
+          (indices[0] > 0 &&
+            (this.cornerCollision(
               indices,
-              [1, -1],
+              [-1, 1],
+              1,
+              position,
+              { x: -0.525, z: 0.5 },
+              halfSize,
+              "northeast corner (NS-oriented wall)"
+            ) || // Collision with northeast corner (NS-oriented wall)
+              this.cornerCollision(
+                indices,
+                [-1, 0],
+                1,
+                position,
+                { x: -0.475, z: 0.5 },
+                halfSize,
+                "northwest corner (NS-oriented wall)"
+              ))) || // Collision with northwest corner (NS-oriented wall)
+          (indices[1] > 0 &&
+            (this.cornerCollision(
+              indices,
+              [0, -1],
               0,
               position,
-              { x: 0.5, z: -0.525 },
+              { x: 0.5, z: -0.475 },
               halfSize,
-              "southwest corner (WE-oriented wall)"
-            ))) // Collision with southwest corner (WE-oriented wall)
-      ) {
-        return true;
+              "northwest corner (WE-oriented wall)"
+            ) || // Collision with northwest corner (WE-oriented wall)
+              this.cornerCollision(
+                indices,
+                [1, -1],
+                0,
+                position,
+                { x: 0.5, z: -0.525 },
+                halfSize,
+                "southwest corner (WE-oriented wall)"
+              ))) // Collision with southwest corner (WE-oriented wall)
+        ) {
+          return true;
+        }
+        // No collision
+        return false;
       }
-      // No collision
-      return false;
     } else {
       // Create the object's oriented bounding box (OBB) in 3D space and set its orientation
       const obb = new OBB(position, halfSize);
