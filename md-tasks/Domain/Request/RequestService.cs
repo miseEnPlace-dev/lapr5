@@ -287,21 +287,21 @@ public class RequestService : IRequestService
 
   public async Task<RequestDTO> AcceptRequest(RequestId id)
   {
-    Request req = await surveillanceTaskRepository.GetByIdAsync(id);
+    SurveillanceRequest sv = await surveillanceTaskRepository.GetByIdAsync(id);
 
-    if (req != null)
+    if (sv != null)
     {
-      req.State.ChangeState(StateEnum.Accepted);
+      sv.ChangeState(StateEnum.Accepted);
       await unitOfWork.CommitAsync();
-      return await ConvertToDTO(req, "SurveillanceRequestDTO");
+      return await ConvertToDTO(sv, "SurveillanceRequestDTO");
     }
 
-    req = await pickAndDeliveryTaskRepository.GetByIdAsync(id);
-    if (req != null)
+    PickAndDeliveryRequest pd = await pickAndDeliveryTaskRepository.GetByIdAsync(id);
+    if (pd != null)
     {
-      req.State.ChangeState(StateEnum.Accepted);
+      pd.ChangeState(StateEnum.Accepted);
       await unitOfWork.CommitAsync();
-      return await ConvertToDTO(req, "PickAndDeliveryRequestDTO");
+      return await ConvertToDTO(pd, "PickAndDeliveryRequestDTO");
     }
 
     return null;
@@ -309,21 +309,21 @@ public class RequestService : IRequestService
 
   public async Task<RequestDTO> RejectRequest(RequestId id)
   {
-    Request req = await surveillanceTaskRepository.GetByIdAsync(id);
+    SurveillanceRequest sv = await surveillanceTaskRepository.GetByIdAsync(id);
 
-    if (req != null)
+    if (sv != null)
     {
-      req.State.ChangeState(StateEnum.Rejected);
+      sv.ChangeState(StateEnum.Rejected);
       await unitOfWork.CommitAsync();
-      return await ConvertToDTO(req, "SurveillanceRequestDTO");
+      return await ConvertToDTO(sv, "SurveillanceRequestDTO");
     }
 
-    req = await pickAndDeliveryTaskRepository.GetByIdAsync(id);
-    if (req != null)
+    PickAndDeliveryRequest pd = await pickAndDeliveryTaskRepository.GetByIdAsync(id);
+    if (pd != null)
     {
-      req.State.ChangeState(StateEnum.Rejected);
+      pd.ChangeState(StateEnum.Rejected);
       await unitOfWork.CommitAsync();
-      return await ConvertToDTO(req, "PickAndDeliveryRequestDTO");
+      return await ConvertToDTO(pd, "PickAndDeliveryRequestDTO");
     }
 
     return null;

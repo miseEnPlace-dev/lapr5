@@ -14,7 +14,7 @@ namespace DDDSample1.Domain.DeviceTasks
 
     public DateTime RequestedAt { get; private set; }
 
-    public RequestState State { get; private set; }
+    public RequestState State { get; protected set; }
 
     public UserId UserId { get; private set; }
 
