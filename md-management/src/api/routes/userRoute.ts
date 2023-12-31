@@ -65,7 +65,8 @@ export default (app: Router) => {
   route.get(
     '/users',
     isAuthenticated,
-    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.admin.name),
+    (req, res, next) =>
+      isAuthorizedAs(req, res, next, [defaultRoles.admin.name, defaultRoles.task.name]),
     (req, res, next) =>
       // #swagger.tags = ['Users']
       // #swagger.summary = 'Get users'

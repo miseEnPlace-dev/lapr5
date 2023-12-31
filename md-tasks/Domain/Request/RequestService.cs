@@ -321,6 +321,6 @@ public class RequestService : IRequestService
         result.Add(await mapper.ToDto(task, "PickAndDeliveryRequestDTO"));
     }
 
-    return new PaginationDTO<RequestDTO>(result, page, limit, sv.Count + pd.Count);
+    return new PaginationDTO<RequestDTO>(result, page, limit, requests.Count);
   }
 }
