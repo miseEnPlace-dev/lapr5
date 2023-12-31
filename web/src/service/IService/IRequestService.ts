@@ -22,7 +22,7 @@ export interface IRequestService {
   createPickAndDeliveryRequest(
     request: RequestPickAndDelivery
   ): Promise<RequestPickAndDelivery>;
-  acceptRequest(id: string): Promise<void>;
+  acceptRequest(id: string, deviceCode: string): Promise<void>;
   getAcceptedRequests(): Promise<IPaginationDTO<Request>>;
   rejectRequest(id: string): Promise<void>;
   getRequestsByType(

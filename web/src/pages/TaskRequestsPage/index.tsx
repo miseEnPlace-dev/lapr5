@@ -39,6 +39,7 @@ const TaskRequestsPage: React.FC = () => {
     deviceModels,
     devices,
     deviceInputRef,
+    device,
     setRequestId,
     fetchDevice,
   } = useListTaskRequestsModule();
