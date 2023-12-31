@@ -2,12 +2,12 @@ import { NextFunction, Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 
 import config from '@/config';
+import { ISessionDTO } from '@/dto/ISessionDTO';
 import { TYPES } from '@/loaders/inversify/types';
+import { IRequestService } from '@/services/IServices/IRequestService';
 import IUserService from '@/services/IServices/IUserService';
 import { z } from 'zod';
 import IRequestController from './IControllers/IRequestController';
-import { IRequestService } from '@/services/IServices/IRequestService';
-import { ISessionDTO } from '@/dto/ISessionDTO';
 
 const querySchema = z.object({
   user: z.literal('me').optional(),
@@ -125,20 +125,6 @@ export default class RequestController implements IRequestController {
       const data = await response.json();
 
       return res.status(200).json(data);
-    } catch (e) {
-      return next(e);
-    }
-  }
-
-  public async getTaskSequence(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response | void> {
-    try {
-      const sequence = await this.taskService.getTaskSequence();
-
-      return res.status(200).json(sequence);
     } catch (e) {
       return next(e);
     }

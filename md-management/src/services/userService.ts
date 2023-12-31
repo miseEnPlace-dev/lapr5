@@ -18,12 +18,12 @@ import { Role } from '../domain/role/role';
 
 import { defaultRoles } from '@/domain/role/defaultRoles';
 import { PhoneNumber } from '@/domain/user/phoneNumber';
+import { UserNif } from '@/domain/user/userNif';
 import { UserState } from '@/domain/user/userState';
+import { IPaginationDTO } from '@/dto/IPaginationDTO';
 import { TYPES } from '@/loaders/inversify/types';
 import { inject, injectable } from 'inversify';
 import { Result } from '../core/logic/Result';
-import { UserNif } from '@/domain/user/userNif';
-import { IPaginationDTO } from '@/dto/IPaginationDTO';
 
 @injectable()
 export default class UserService implements IUserService {
