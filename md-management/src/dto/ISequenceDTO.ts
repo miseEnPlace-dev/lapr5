@@ -1,5 +1,3 @@
-import { IUserDTO } from './IUserDTO';
-
 export interface ISequenceDTO {
   tasks: {
     id: string;
@@ -11,7 +9,7 @@ export interface ISequenceDTO {
     endFloorCode: string;
     description: string;
     type: 'pick_delivery' | 'surveillance';
-    user: IUserDTO;
+    userId: string;
   }[];
   time: number;
   path: {
