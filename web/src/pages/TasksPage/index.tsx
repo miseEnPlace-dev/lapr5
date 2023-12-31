@@ -214,7 +214,7 @@ const TasksPage: React.FC = () => {
             title="Create Task Request"
           >
             <div className="flex h-full flex-col justify-between gap-y-4">
-              <div className="flex w-full flex-col gap-y-5">
+              <div className="flex w-full flex-col gap-y-6">
                 <Dropdown
                   options={taskTypes}
                   placeholder="Select Task Type"

@@ -220,7 +220,7 @@ const TaskRequestsPage: React.FC = () => {
               </div>
             </motion.button>
           </div>
-          {!requests ? null : requests.data.length == 0 ? ( // TODO: skeleton component // TODO: skeleton component
+          {!requests ? null : requests.data.length == 0 ? ( // TODO: skeleton component
             <p className="text-slate-500">
               No results were found for your search... Try to change or remove
               the filters.
@@ -242,7 +242,7 @@ const TaskRequestsPage: React.FC = () => {
                     <div className="flex flex-col text-start text-base text-slate-500">
                       <div className="font-bold uppercase">
                         Surveillance &nbsp;&middot;&nbsp;&nbsp;
-                        {request.createdAt && formatDate(request.createdAt)}
+                        {request.requestedAt && formatDate(request.requestedAt)}
                         &nbsp;&nbsp;&middot;&nbsp;&nbsp;
                         <span className={`${getStateTextColor(request.state)}`}>
                           {request.state}
@@ -268,7 +268,8 @@ const TaskRequestsPage: React.FC = () => {
                       <div className="flex flex-col text-start text-slate-500">
                         <div className="text-base font-bold uppercase">
                           Pick and Delivery &nbsp;&middot;&nbsp;&nbsp;
-                          {request.createdAt && formatDate(request.createdAt)}
+                          {request.requestedAt &&
+                            formatDate(request.requestedAt)}
                           &nbsp;&nbsp;&middot;&nbsp;&nbsp;
                           <span
                             className={`${getStateTextColor(request.state)}`}

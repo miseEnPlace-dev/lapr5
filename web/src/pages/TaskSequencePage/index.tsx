@@ -120,7 +120,7 @@ const TaskSequencePage: React.FC = () => {
         <p className="text-slate-500">
           Check the task sequence for all the approved task requests.
         </p>
-        <section className="my-8 flex flex-wrap items-center justify-around gap-x-8">
+        <section className="my-8 flex flex-wrap items-center justify-around gap-8">
           {tasks ? (
             tasks.map((task) => (
               <article
