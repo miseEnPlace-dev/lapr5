@@ -127,6 +127,7 @@ export const useTasksModule = () => {
           });
           break;
         case "surveillance":
+          console.log("HELLO");
           if (
             !emergencyNameInputRef.current ||
             !emergencyPhoneInputRef.current ||
@@ -186,10 +187,16 @@ export const useTasksModule = () => {
   }
 
   function getRoom2(): Room | undefined {
-    if (room2InputRef.current && room2InputRef.current.value)
+    if (room2InputRef.current && room2InputRef.current.value) {
+      if (typeInputRef?.current?.value === "surveillance") {
+        return building1Rooms.find(
+          (room) => room.name === room2InputRef.current!.value
+        );
+      }
       return building2Rooms.find(
         (room) => room.name === room2InputRef.current!.value
       );
+    }
   }
 
   const fetchBuildings = useCallback(async () => {
