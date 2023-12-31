@@ -11,6 +11,10 @@ export interface IRequestService {
     page?: number,
     count?: number
   ): Promise<IPaginationDTO<Request>>;
+  getMyRequests(
+    page?: number,
+    count?: number
+  ): Promise<IPaginationDTO<Request>>;
   createSurveillanceRequest(
     request: RequestSurveillance
   ): Promise<RequestSurveillance>;

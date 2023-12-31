@@ -83,8 +83,7 @@ export const useTasksModule = () => {
       swal("Error", "Type input is not defined", "error");
       return;
     } else {
-
-      console.log(room1InputRef.current?.value, room2InputRef.current?.value)
+      console.log(room1InputRef.current?.value, room2InputRef.current?.value);
 
       switch (typeInputRef.current.value) {
         case "pick_delivery":
@@ -158,8 +157,7 @@ export const useTasksModule = () => {
             startCoordinateY: room1Surveillance.roomDoor.y,
             endCoordinateX: room2Surveillance.roomDoor.x,
             endCoordinateY: room2Surveillance.roomDoor.y,
-          })
-
+          });
 
           await requestService.createSurveillanceRequest({
             userName: emergencyNameInputRef.current.value,
@@ -202,7 +200,6 @@ export const useTasksModule = () => {
       setBuildings([]);
     }
   }, [buildingService]);
-
 
   const fetchFloorsRoom = useCallback(async () => {
     try {
@@ -252,12 +249,7 @@ export const useTasksModule = () => {
 
   const fetchRequests = useCallback(async () => {
     try {
-      const r = await requestService.getAllRequests(
-        undefined,
-        undefined,
-        page,
-        itemsPerPage
-      );
+      const r = await requestService.getMyRequests(page, itemsPerPage);
       setRequests(r);
     } catch (error) {
       setRequests({ data: [] });

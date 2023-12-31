@@ -4,6 +4,9 @@ using DDDSample1.Domain.DeviceTasks;
 using Microsoft.AspNetCore.Mvc;
 using DDDSample1.Domain.DTO;
 using DDDNetCore.Domain.Request;
+using DDDSample1.Domain.User;
+using System;
+using DDDNetCore.Services;
 
 namespace DDDSample1.Controllers;
 
@@ -11,9 +14,9 @@ namespace DDDSample1.Controllers;
 [ApiController]
 public class RequestsController : ControllerBase
 {
-  private readonly RequestService service;
+  private readonly IRequestService service;
 
-  public RequestsController(RequestService svc)
+  public RequestsController(IRequestService svc)
   {
     service = svc;
   }
@@ -23,23 +26,17 @@ public class RequestsController : ControllerBase
   public async Task<ActionResult<PaginationDTO<RequestDTO>>> GetAll()
   {
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit") && Request.Query.ContainsKey("filter") && Request.Query.ContainsKey("value"))
-    {
       if (Request.Query["filter"].ToString() == "state")
         return await service.GetRequestsByState(RequestStateMapper.ToRequestState(Request.Query["value"].ToString()), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
-
-      if (Request.Query["filter"].ToString() == "userId")
-        return await service.GetRequestsByUserId(Request.Query["value"].ToString(), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
-    }
-
 
     if (Request.Query["filter"].ToString() == "state" && Request.Query.ContainsKey("value"))
       return await service.GetRequestsByState(RequestStateMapper.ToRequestState(Request.Query["value"].ToString()), -1, -1);
 
-    if (Request.Query["filter"].ToString() == "userId" && Request.Query.ContainsKey("value"))
-      return await service.GetRequestsByUserId(Request.Query["value"].ToString(), -1, -1);
-
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
-      return await service.GetAllAsync(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+      if (Request.Query.ContainsKey("userId"))
+        return await service.GetRequestsByUserIdAsync(new UserId(Request.Query["userId"].ToString()), int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
+      else
+        return await service.GetAllAsync(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
 
     return await service.GetAllAsync(-1, -1);
   }

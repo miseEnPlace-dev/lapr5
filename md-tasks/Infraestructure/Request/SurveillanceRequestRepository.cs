@@ -25,10 +25,10 @@ public class SurveillanceRequestRepository : BaseRepository<SurveillanceRequest,
     return await _context.SurveillanceRequests.Where(r => r.State.Equals(state)).ToListAsync();
   }
 
-  public async Task<List<SurveillanceRequest>> GetRequestsByUserId(UserId userId, int page, int limit)
+  public async Task<List<SurveillanceRequest>> GetRequestsByUserIdAsync(UserId id, int page, int limit)
   {
     if (page >= 0 && limit >= 0)
-      return await _context.SurveillanceRequests.Where(r => r.UserId.Equals(userId)).Skip(page * limit).Take(limit).ToListAsync();
-    return await _context.SurveillanceRequests.Where(r => r.UserId.Equals(userId)).ToListAsync();
+      return await _context.SurveillanceRequests.Where(r => r.UserId.Equals(id)).Skip(page * limit).Take(limit).ToListAsync();
+    return await _context.SurveillanceRequests.Where(r => r.UserId.Equals(id)).ToListAsync();
   }
 }

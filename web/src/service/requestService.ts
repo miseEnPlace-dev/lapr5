@@ -50,6 +50,30 @@ export class RequestService implements IRequestService {
     return data;
   }
 
+  async getMyRequests(
+    page?: number,
+    limit?: number
+  ): Promise<IPaginationDTO<Request>> {
+    const params = {} as { [key: string]: string };
+    if (page && limit) {
+      params["limit"] = limit.toString();
+      params["page"] = page.toString();
+    }
+    params["user"] = "me";
+
+    const token = this.localStorage.getItem(localStorageConfig.token);
+
+    const response = await this.http.get<IPaginationDTO<Request>>(
+      "/task-requests",
+      {
+        params,
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    const data = response.data;
+    return data;
+  }
+
   async getRequestsByType(
     capability: string,
     page?: number,
