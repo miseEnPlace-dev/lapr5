@@ -31,15 +31,27 @@ export const useModule = () => {
     setSequence(s);
   };
 
+  const executeAll = async () => {
+    for (const task of sequence!.tasks) await executeTask(task.id);
+  };
+
   const executeTask = async (id: string) => {
     await tasksService.finishTask(id);
     setExecuting(id);
-    const newTasks = tasks.filter((task) => task.id !== id);
-    const newSequence = sequence!.tasks.filter((task) => task.id !== id);
-    setTimeout(() => {
-      setTasks(newTasks);
-      setSequence({ ...sequence!, tasks: newSequence });
-    }, 2500);
+    await new Promise<void>((resolve) => {
+      setTimeout(() => {
+        setTasks((tasks) => tasks.filter((task) => task.id !== id));
+        setSequence((sequence) =>
+          sequence
+            ? {
+                ...sequence,
+                tasks: sequence.tasks.filter((task) => task.id !== id),
+              }
+            : undefined
+        );
+        resolve();
+      }, 2500);
+    });
   };
 
   const sanitizeDate = (date: string) => {
@@ -96,5 +108,6 @@ export const useModule = () => {
     loading,
     executeTask,
     executing,
+    executeAll,
   };
 };

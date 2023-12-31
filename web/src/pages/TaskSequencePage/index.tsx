@@ -20,6 +20,7 @@ const TaskSequencePage: React.FC = () => {
     loading,
     executeTask,
     executing,
+    executeAll,
   } = useModule();
 
   const handleGeneratePath = () => {
@@ -70,6 +71,30 @@ const TaskSequencePage: React.FC = () => {
     });
   };
 
+  const handleExecuteAll = () => {
+    swal({
+      title: "Are you sure?",
+      text: "Once executed, all tasks will be marked as completed.",
+      icon: "warning",
+      buttons: ["Cancel", "Execute"],
+      dangerMode: true,
+    }).then((willExecute) => {
+      if (willExecute) {
+        swal("All tasks executed!", {
+          icon: "success",
+          timer: 250,
+        });
+        executeAll();
+      } else {
+        swal({
+          title: "Tasks not executed!",
+          icon: "info",
+          timer: 1500,
+        });
+      }
+    });
+  };
+
   const handleGoToAnimation = (
     route: [
       | {
@@ -90,12 +115,12 @@ const TaskSequencePage: React.FC = () => {
   return (
     <div className="flex">
       <SideBar menuOptions={menuOptions} />
-      <main className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
+      <main className="my-12 flex h-full w-full flex-col gap-y-4 pl-12">
         <h1 className="text-4xl font-bold">Task Sequence</h1>
         <p className="text-slate-500">
           Check the task sequence for all the approved task requests.
         </p>
-        <section className="my-8 flex flex-wrap items-center justify-around gap-x-8">
+        <section className="my-8 flex flex-wrap items-center justify-around gap-8">
           {tasks ? (
             tasks.map((task) => (
               <article
@@ -134,7 +159,12 @@ const TaskSequencePage: React.FC = () => {
         </section>
         {tasks.length > 0 ? (
           <div className="flex w-full items-center justify-center">
-            <Button name="generate" type="confirm" onClick={handleGeneratePath}>
+            <Button
+              name="generate"
+              type="confirm"
+              onClick={handleGeneratePath}
+              disabled={tasks.length < 3}
+            >
               Generate Task Sequence
             </Button>
           </div>
@@ -153,8 +183,13 @@ const TaskSequencePage: React.FC = () => {
             </span>
           </div>
         )}
+        {tasks.length > 0 && tasks.length < 3 && (
+          <p className="text-slate-500">
+            You need at least 3 approved tasks to generate a new sequence.
+          </p>
+        )}
         {loading && <Loading />}
-        {sequence && (
+        {!loading && sequence && sequence.tasks.length > 0 && (
           <section className="my-6 flex w-full flex-col items-center gap-y-8 pr-12">
             {sequence.tasks.map((task, i) => (
               <motion.article
@@ -226,7 +261,7 @@ const TaskSequencePage: React.FC = () => {
             <Button
               name="execute-all"
               type="destroy"
-              onClick={handleGeneratePath}
+              onClick={handleExecuteAll}
               className="px-24"
             >
               Execute All

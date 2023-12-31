@@ -4,18 +4,18 @@ import { inject, injectable } from "inversify";
 
 import { TYPES } from "../inversify/types";
 import { localStorageConfig } from "@/config/localStorageConfig";
+import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Device } from "@/model/Device";
 
 import { HttpService } from "./IService/HttpService";
 import { IDeviceService } from "./IService/IDeviceService";
-import { IPaginationDTO } from "@/dto/IPaginationDTO";
 
 @injectable()
 export class DeviceService implements IDeviceService {
   constructor(
     @inject(TYPES.api) private http: HttpService,
     @inject(TYPES.localStorage) private localStorage: Storage
-  ) { }
+  ) {}
 
   async getDevicesRobots(
     filter?: "task" | "model",
@@ -42,14 +42,16 @@ export class DeviceService implements IDeviceService {
           },
         }
       );
-    }
-    else {
-      response = await this.http.get<IPaginationDTO<Device>>("/devices/robots", {
-        params,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+    } else {
+      response = await this.http.get<IPaginationDTO<Device>>(
+        "/devices/robots",
+        {
+          params,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     }
 
     const data = response.data;

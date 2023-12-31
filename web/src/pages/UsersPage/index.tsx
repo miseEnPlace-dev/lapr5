@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
 import { useMenuOptions } from "@/hooks/useMenuOptions";
@@ -19,7 +18,6 @@ import { AxiosError } from "axios";
 const ANIMATION_DELAY = 0.1;
 
 const UsersPage: React.FC = () => {
-  const navigate = useNavigate();
   const {
     users,
     roles,
@@ -70,7 +68,7 @@ const UsersPage: React.FC = () => {
   return (
     <div className="flex">
       <SideBar menuOptions={menuOptions} />
-      <main className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
+      <main className="my-12 flex h-full w-full flex-col gap-y-4 pl-12">
         <h1 className="text-4xl font-bold">Users</h1>
         <p className="text-slate-500">Manage here all users of the campus.</p>
         <div className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left text-lg">
@@ -94,11 +92,13 @@ const UsersPage: React.FC = () => {
           ) : (
             users.data.map((user, i) => (
               <motion.button
-                initial={{ opacity: 0, x: -100 }}
+                initial={{
+                  opacity: 0,
+                  x: -100,
+                }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.2, delay: ANIMATION_DELAY * i }}
                 key={user.email}
-                // onClick={() => navigate(`/users/${user.id}`)}
                 className="flex w-full cursor-auto items-center gap-x-10 bg-slate-200 px-12 py-8"
               >
                 <h2 className="text-5xl font-bold">

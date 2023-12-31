@@ -26,7 +26,7 @@ export default class DeviceService implements IDeviceService {
     @inject(TYPES.floorRepo) private floorRepo: IFloorRepo
   ) {}
 
-  public async createDevice(deviceDTO: IDeviceDTO): Promise<Result<IDeviceDTO>> {
+  public async createDevice(deviceDTO: Omit<IDeviceDTO, 'id'>): Promise<Result<IDeviceDTO>> {
     try {
       const codeOrError = DeviceCode.create(deviceDTO.code);
       if (codeOrError.isFailure) return Result.fail<IDeviceDTO>(codeOrError.errorValue());

@@ -10,7 +10,6 @@ import { User } from "@/model/User";
 import { IDeviceModelService } from "@/service/IService/IDeviceModelService";
 import { IDeviceService } from "@/service/IService/IDeviceService";
 import { IRequestService } from "@/service/IService/IRequestService";
-import { ITaskService } from "@/service/IService/ITaskService";
 import { IUserService } from "@/service/IService/IUserService";
 
 const states = [
@@ -39,7 +38,6 @@ export const useListTaskRequestsModule = () => {
     TYPES.deviceModelService
   );
   const userService = useInjection<IUserService>(TYPES.userService);
-  const taskService = useInjection<ITaskService>(TYPES.taskService);
   const deviceService = useInjection<IDeviceService>(TYPES.deviceService);
   // const { id, username, phoneNumber } = useAuth();
 
@@ -63,17 +61,11 @@ export const useListTaskRequestsModule = () => {
 
   const [devices, setDevices] = useState<Device[]>([]);
 
-  const [device, setDevice] = useState<Device>();
-
   const [requestId, setRequestId] = useState<string>("");
 
   const deviceInputRef = useRef<HTMLSelectElement>(null);
 
   const itemsPerPage = 3;
-
-  const [selectedRequestType, setSelectedRequestType] = useState<
-    string | undefined
-  >(undefined);
 
   const requestTypes = [
     {
@@ -109,24 +101,13 @@ export const useListTaskRequestsModule = () => {
       1000
     );
     setDevices(devices.data);
-  }, [deviceService, requestId]);
+  }, [deviceService, requestId, requests?.data]);
 
   useEffect(() => {
     fetchDeviceModels();
     fetchUsers();
     fetchDevices();
   }, [fetchDeviceModels, fetchDevices, fetchUsers]);
-
-  async function fetchDevice(): Promise<Device | undefined> {
-    if (deviceInputRef.current) {
-      const device = await deviceService.getDevice(
-        deviceInputRef.current.value
-      );
-      setDevice(device);
-    }
-
-    return device;
-  }
 
   const fetchRequests = useCallback(async () => {
     try {
@@ -177,12 +158,12 @@ export const useListTaskRequestsModule = () => {
       setRequests({ data: [] });
     }
   }, [
+    deviceModelFilter,
     requestService,
     stateFilter,
-    deviceModelFilter,
     userFilter,
     page,
-    itemsPerPage,
+    deviceModelService,
   ]);
 
   async function handleAcceptRequest() {
@@ -190,7 +171,9 @@ export const useListTaskRequestsModule = () => {
       if (!requestId || requestId.length === 0 || requestId == "")
         throw new Error("Invalid request id");
 
-      if (!device) throw new Error("Invalid device");
+      const device = devices.find((d) => d.id == deviceInputRef.current?.value);
+
+      if (!device) throw new Error("Invalid device id");
 
       await requestService.acceptRequest(requestId, device.id);
       fetchRequests();
@@ -237,9 +220,7 @@ export const useListTaskRequestsModule = () => {
     deviceModels,
     devices,
     deviceInputRef,
-    device,
     setRequestId,
-    fetchDevice,
     users,
     requestTypes,
   };

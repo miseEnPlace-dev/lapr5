@@ -1502,9 +1502,9 @@ export default class Bootstrapper {
       serialNumber: 'RBT1',
       isAvailable: true,
       initialCoordinates: {
-        width: 1,
-        depth: 1,
-        floorCode: 'a1'
+        width: 7,
+        depth: 21,
+        floorCode: 'b1'
       }
     });
 
@@ -1516,9 +1516,9 @@ export default class Bootstrapper {
       serialNumber: 'RBT2',
       isAvailable: true,
       initialCoordinates: {
-        width: 1,
-        depth: 1,
-        floorCode: 'a1'
+        width: 7,
+        depth: 21,
+        floorCode: 'b1'
       }
     });
 
@@ -1530,9 +1530,9 @@ export default class Bootstrapper {
       serialNumber: 'RBT3',
       isAvailable: true,
       initialCoordinates: {
-        width: 1,
-        depth: 1,
-        floorCode: 'a1'
+        width: 8,
+        depth: 21,
+        floorCode: 'b2'
       }
     });
 
@@ -1676,7 +1676,10 @@ export default class Bootstrapper {
         description: room.description,
         dimensions: room.dimensions,
         category: room.category,
-        roomDoor: room.roomDoor
+        roomDoor: {
+          x: room.roomDoor.x + 1,
+          y: room.roomDoor.y + 1
+        }
       });
 
       if (res.isFailure) throw new Error(res.errorValue());
@@ -1701,7 +1704,7 @@ export default class Bootstrapper {
     }
   }
 
-  private async loadDevice(device: IDeviceDTO) {
+  private async loadDevice(device: Omit<IDeviceDTO, 'id'>) {
     const deviceExists = await this.deviceService.getDeviceRobotWithCode(device.code);
 
     if (deviceExists.isFailure) {
