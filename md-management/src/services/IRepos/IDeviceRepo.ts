@@ -12,4 +12,5 @@ export default interface IDeviceRepo extends Repo<Device> {
   findByModel(code: string): Promise<Device[] | null>;
   findByTask(task: string): Promise<Device[] | null>;
   count(): Promise<number>;
+  findById(id: UniqueEntityID | string): Promise<Device | null>;
 }
