@@ -11,6 +11,7 @@ export interface ISequenceDTO {
     startFloorCode: string;
     endFloorCode: string;
     description: string;
+    requestedAt: string;
     type: 'pick_delivery' | 'surveillance';
     userId: string;
     deviceId: string;

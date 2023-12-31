@@ -29,7 +29,7 @@ describe("Task Sequece", () => {
   });
 
   it("should be able to list all floors", () => {
-    cy.intercept("GET", BASE_URL + "/buildings/2", {
+    cy.intercept("GET", BASE_URL + "/task-requests/sequence", {
       statusCode: 200,
       body: {
         code: "B2",

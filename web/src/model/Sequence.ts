@@ -1,3 +1,6 @@
+import { Device } from "./Device";
+import { User } from "./User";
+
 export interface Sequence {
   tasks: {
     id: string;
@@ -9,6 +12,8 @@ export interface Sequence {
     endFloorCode: string;
     description: string;
     type: "pick_delivery" | "surveillance";
+    user: User;
+    device: Device;
   }[];
   time: number;
   path: {

@@ -12,7 +12,7 @@ import { useModule } from "./module";
 const TaskSequencePage: React.FC = () => {
   const { menuOptions } = useMenuOptions();
   const {
-    requests,
+    tasks,
     sanitizeTaskType,
     sanitizeDate,
     generateSequence,
@@ -70,27 +70,43 @@ const TaskSequencePage: React.FC = () => {
           Check the task sequence for all the approved task requests.
         </p>
         <section className="my-8 flex flex-wrap items-center justify-around gap-x-8">
-          {requests.map((request) => (
-            <article
-              className="relative flex w-full max-w-[320px] select-none flex-col rounded-lg border border-slate-200 px-12 py-8 hover:brightness-90"
-              key={request.id}
-            >
-              <h2 className="text-2xl font-bold">
-                {request.user.firstName} {request.user.lastName}
-              </h2>
-              <span className="absolute right-2 top-2 text-slate-600">
-                {sanitizeDate(request.requestedAt)}
-              </span>
-              <h2 className="text-base">
-                Type: {sanitizeTaskType(request.type)}
-              </h2>
-              <p className="mt-4 text-sm text-slate-600">
-                Details: {request.description}
+          {tasks ? (
+            tasks.map((task) => (
+              <article
+                className="relative flex w-full max-w-[320px] select-none flex-col rounded-lg border border-slate-200 px-12 py-8 hover:brightness-90"
+                key={task.id}
+              >
+                <h2 className="text-2xl font-bold">
+                  {task.user.firstName} {task.user.lastName}
+                </h2>
+                <span className="absolute right-2 top-2 text-slate-600">
+                  {sanitizeDate(task.createdAt)}
+                </span>
+                <h2 className="text-base">
+                  Type: {sanitizeTaskType(task.type)}
+                </h2>
+                <p className="mt-4 text-sm text-slate-600">
+                  Details: {task.description}
+                </p>
+              </article>
+            ))
+          ) : (
+            <div className="flex w-full flex-col items-center justify-center gap-y-2">
+              <p className="text-2xl">
+                There are no approved tasks to generate a valid sequence...
               </p>
-            </article>
-          ))}
+
+              <span className="text-slate-600">
+                Try to{" "}
+                <Link className="underline" to="/task-requests">
+                  go back
+                </Link>{" "}
+                and approve some tasks first.
+              </span>
+            </div>
+          )}
         </section>
-        {requests.length > 0 ? (
+        {tasks.length > 0 ? (
           <div className="flex w-full items-center justify-center">
             <Button name="generate" type="confirm" onClick={handleGeneratePath}>
               Generate Task Sequence
