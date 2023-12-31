@@ -147,19 +147,6 @@ export const useTasksModule = () => {
             return;
           }
 
-          console.log({
-            userName: emergencyNameInputRef.current.value,
-            phoneNumber: emergencyPhoneInputRef.current.value,
-            description: descriptionInputRef.current.value,
-            userId: id,
-            floorId: floorInputRef.current?.value,
-            type: "surveillance",
-            startCoordinateX: room1Surveillance.roomDoor.x,
-            startCoordinateY: room1Surveillance.roomDoor.y,
-            endCoordinateX: room2Surveillance.roomDoor.x,
-            endCoordinateY: room2Surveillance.roomDoor.y,
-          });
-
           await requestService.createSurveillanceRequest({
             userName: emergencyNameInputRef.current.value,
             phoneNumber: emergencyPhoneInputRef.current.value,

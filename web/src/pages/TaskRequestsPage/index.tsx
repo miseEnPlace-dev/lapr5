@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { set } from "lodash";
 import swal from "sweetalert";
 
 import { useMenuOptions } from "@/hooks/useMenuOptions";
@@ -246,7 +245,7 @@ const TaskRequestsPage: React.FC = () => {
                     <div className="flex flex-col text-start text-base text-slate-500">
                       <div className="font-bold uppercase">
                         Surveillance &nbsp;&middot;&nbsp;&nbsp;
-                        {request.requestedAt && formatDate(request.requestedAt)}
+                        {request.createdAt && formatDate(request.createdAt)}
                         &nbsp;&nbsp;&middot;&nbsp;&nbsp;
                         <span className={`${getStateTextColor(request.state)}`}>
                           {request.state}
@@ -272,8 +271,7 @@ const TaskRequestsPage: React.FC = () => {
                       <div className="flex flex-col text-start text-slate-500">
                         <div className="text-base font-bold uppercase">
                           Pick and Delivery &nbsp;&middot;&nbsp;&nbsp;
-                          {request.requestedAt &&
-                            formatDate(request.requestedAt)}
+                          {request.createdAt && formatDate(request.createdAt)}
                           &nbsp;&nbsp;&middot;&nbsp;&nbsp;
                           <span
                             className={`${getStateTextColor(request.state)}`}
@@ -482,7 +480,7 @@ const TaskRequestsPage: React.FC = () => {
                     placeholder="Robot"
                     inputRef={deviceInputRef}
                     options={devices.map((device) => ({
-                      code: device.code,
+                      code: device.id,
                       name: device.nickname,
                     }))}
                     onChange={async () => await fetchDevice()}
