@@ -35,7 +35,7 @@ export default class TaskController implements ITaskController {
         const userOrError = await this.userService.findUserById(task.userId);
         if (userOrError.isFailure) return res.status(400).json({ message: userOrError.error });
 
-        const deviceOrError = await this.deviceService.getDeviceRobotWithCode(task.deviceId);
+        const deviceOrError = await this.deviceService.findById(task.deviceId);
         if (deviceOrError.isFailure) return res.status(400).json({ message: deviceOrError.error });
 
         const user = userOrError.getValue();
@@ -80,6 +80,24 @@ export default class TaskController implements ITaskController {
       const sequence = await this.taskService.getTaskSequence();
 
       return res.status(200).json(sequence);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  public async finishTask(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
+    try {
+      const response = await fetch(`${config.tasksApiUrl}/api/tasks/${req.params.id}`, {
+        method: 'PATCH'
+      });
+
+      const data = await response.json();
+
+      return res.status(200).json(data);
     } catch (e) {
       return next(e);
     }

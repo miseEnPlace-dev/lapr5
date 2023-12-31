@@ -66,6 +66,7 @@ namespace DDDSample1.Domain.Requests
 
       foreach (DeviceTask task in tasks)
       {
+        if (task.IsFinished) continue;
         if (await surveillanceTaskRepository.GetByIdAsync(task.RequestId) != null)
           result.Add(await ConvertToDTO(task, "SurveillanceTaskDTO"));
 
@@ -268,6 +269,23 @@ namespace DDDSample1.Domain.Requests
       DeviceTask task = await taskRepo.GetByIdAsync(id);
       if (task == null) return null;
 
+      await unitOfWork.CommitAsync();
+
+      if (await surveillanceTaskRepository.GetByIdAsync(task.RequestId) != null)
+        return await ConvertToDTO(task, "SurveillanceTaskDTO");
+
+      if (await pickAndDeliveryTaskRepository.GetByIdAsync(task.RequestId) != null)
+        return await ConvertToDTO(task, "PickDeliveryTaskDTO");
+
+      return null;
+    }
+
+    public async Task<TaskDTO> FinishTask(TaskId id)
+    {
+      DeviceTask task = await taskRepo.GetByIdAsync(id);
+      if (task == null) return null;
+
+      task.Finish();
       await unitOfWork.CommitAsync();
 
       if (await surveillanceTaskRepository.GetByIdAsync(task.RequestId) != null)

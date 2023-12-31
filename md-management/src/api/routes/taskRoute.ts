@@ -43,5 +43,15 @@ export default (app: Router) => {
       ctrl.createTask(req, res, next)
   );
 
+  route.patch(
+    '/tasks/:id',
+    isAuthenticated,
+    (req, res, next) => isAuthorizedAs(req, res, next, defaultRoles.task.name),
+    (req, res, next) =>
+      // #swagger.tags = ['Tasks']
+      // #swagger.summary = 'Finish Task'
+      ctrl.finishTask(req, res, next)
+  );
+
   app.use(route);
 };
