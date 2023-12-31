@@ -1,0 +1,23 @@
+@startuml process-view
+autonumber
+
+actor FM as "Fleet Manager"
+participant SYS as "RobDroneGo System" <<system (C4)>>
+
+activate FM
+
+FM -> SYS : selects filter 
+activate SYS
+
+FM <-- SYS : shows the options and asks to select one
+deactivate SYS
+
+FM -> SYS : selects the option
+activate SYS
+
+FM <-- SYS : returns list of requests
+deactivate SYS
+
+deactivate FM
+
+@enduml
