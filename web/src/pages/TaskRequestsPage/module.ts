@@ -6,10 +6,12 @@ import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Device } from "@/model/Device";
 import { DeviceModel } from "@/model/DeviceModel";
 import { Request } from "@/model/Request";
+import { User } from "@/model/User";
 import { IDeviceModelService } from "@/service/IService/IDeviceModelService";
 import { IDeviceService } from "@/service/IService/IDeviceService";
 import { IRequestService } from "@/service/IService/IRequestService";
 import { ITaskService } from "@/service/IService/ITaskService";
+import { IUserService } from "@/service/IService/IUserService";
 
 const states = [
   {
@@ -36,6 +38,8 @@ export const useListTaskRequestsModule = () => {
   const deviceModelService = useInjection<IDeviceModelService>(
     TYPES.deviceModelService
   );
+  const userService = useInjection<IUserService>(TYPES.userService);
+  const taskService = useInjection<ITaskService>(TYPES.taskService);
   const deviceService = useInjection<IDeviceService>(TYPES.deviceService);
   // const { id, username, phoneNumber } = useAuth();
 
@@ -54,6 +58,8 @@ export const useListTaskRequestsModule = () => {
   const deviceModelInputRef = useRef<HTMLSelectElement>(null);
 
   const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]);
+
+  const [users, setUsers] = useState<User[]>([]);
 
   const [devices, setDevices] = useState<Device[]>([]);
 
@@ -89,9 +95,13 @@ export const useListTaskRequestsModule = () => {
     setDeviceModels(deviceModels.data);
   }, [deviceModelService]);
 
+  const fetchUsers = useCallback(async () => {
+    const users = await userService.getAllUsers(1, 1000);
+    setUsers(users.data);
+  }, [userService]);
+
   const fetchDevices = useCallback(async () => {
     const request = requests?.data.find((r) => r.id == requestId);
-    console.log(request);
     const devices = await deviceService.getDevicesRobots(
       "task",
       request?.type,
@@ -103,8 +113,9 @@ export const useListTaskRequestsModule = () => {
 
   useEffect(() => {
     fetchDeviceModels();
+    fetchUsers();
     fetchDevices();
-  }, [fetchDeviceModels, fetchDevices]);
+  }, [fetchDeviceModels, fetchDevices, fetchUsers]);
 
   async function fetchDevice(): Promise<Device | undefined> {
     if (deviceInputRef.current) {
@@ -154,13 +165,13 @@ export const useListTaskRequestsModule = () => {
           return;
         }
       }
+
       const r = await requestService.getAllRequests(
         stateFilter ? "state" : userFilter ? "userId" : undefined,
         stateFilter || userFilter || undefined,
         page,
         itemsPerPage
       );
-
       setRequests(r);
     } catch (error) {
       setRequests({ data: [] });
@@ -229,8 +240,7 @@ export const useListTaskRequestsModule = () => {
     device,
     setRequestId,
     fetchDevice,
+    users,
     requestTypes,
-    selectedRequestType,
-    setSelectedRequestType,
   };
 };

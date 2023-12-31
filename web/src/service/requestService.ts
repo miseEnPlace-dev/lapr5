@@ -29,8 +29,12 @@ export class RequestService implements IRequestService {
   ): Promise<IPaginationDTO<Request>> {
     const params = {} as { [key: string]: string };
     if (filter && value) {
-      params["filter"] = filter.toString();
-      params["value"] = capitalize(value.toString());
+      if (filter === "userId") {
+        params["user"] = value.toString();
+      } else {
+        params["filter"] = filter.toString();
+        params["value"] = capitalize(value.toString());
+      }
     }
     if (page && limit) {
       params["limit"] = limit.toString();
@@ -38,7 +42,6 @@ export class RequestService implements IRequestService {
     }
 
     const token = this.localStorage.getItem(localStorageConfig.token);
-
     const response = await this.http.get<IPaginationDTO<Request>>(
       "/task-requests",
       {
@@ -46,6 +49,9 @@ export class RequestService implements IRequestService {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
+
+    console.log("params");
+
     const data = response.data;
     return data;
   }

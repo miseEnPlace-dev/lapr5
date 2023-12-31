@@ -9,7 +9,7 @@ import { z } from 'zod';
 import IRequestController from './IControllers/IRequestController';
 
 const querySchema = z.object({
-  user: z.literal('me').optional(),
+  user: z.string().optional(),
   filter: z.string().optional(),
   value: z.string().optional(),
   page: z.string().optional(),
@@ -33,7 +33,11 @@ export default class RequestController implements IRequestController {
       const value = query.data.value || undefined;
       const page = Number(query.data.page) || undefined;
       const limit = Number(query.data.limit) || undefined;
-      const userId = query.data.user ? req.session.id : undefined;
+      const userId = query.data.user
+        ? query.data.user === 'me'
+          ? req.session.id
+          : query.data.user
+        : undefined;
 
       let response;
 
