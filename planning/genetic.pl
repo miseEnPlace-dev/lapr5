@@ -130,7 +130,7 @@ load_tarefa2(T1,T2):-
 	((D==1,write(' W2: '), write(W2), nl);true),
 	asserta(tarefas(T1,T2,W1)),
 	asserta(tarefas(T2,T1,W2)),
-	assert_distancias_robot(T1).
+	assert_distancias_robot_tarefa(T1).
 
 gera_best_bruteforce:-
 	debug_mode(D),
@@ -273,6 +273,8 @@ retira(N,[G1|Resto],G,[G1|Resto1]):-
 
 avalia_populacao([],[]).
 avalia_populacao([H|Resto],[H*V|Resto1]):-
+	[Tarefa | _] = H,
+	distancias_robot_tarefa(Tarefa, V),
 	avalia(H,V),
 	avalia_populacao(Resto,Resto1).
 
@@ -280,7 +282,11 @@ avalia([T1,T2|Resto],V):-
 	tarefas(T1,T2,V1),	
 	avalia([T2|Resto],V2),
 	V is V1 + V2.
-avalia([_],0).
+	
+avalia([H],0) :- 
+	distancias_tarefa_robot(H, Dist),
+	avalia(H, Dist).	
+
 avalia([],0).
 
 ordena_populacao(PopAv,PopAvOrd):-
