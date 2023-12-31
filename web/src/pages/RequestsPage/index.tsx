@@ -23,7 +23,7 @@ const RequestsPage: React.FC = () => {
   return (
     <div className="flex">
       <SideBar menuOptions={menuOptions} />
-      <main className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
+      <main className="my-12 flex h-full w-full flex-col gap-y-4 pl-12">
         <h1 className="text-4xl font-bold">Requests</h1>
         <p className="text-slate-500">
           Manage here all requests from users that want to sign up in
