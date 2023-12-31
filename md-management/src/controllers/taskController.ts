@@ -29,7 +29,7 @@ export default class TaskController implements ITaskController {
       const response = await fetch(`${config.tasksApiUrl}/api/tasks`);
 
       const data = await response.json();
-      const tasks = {};
+      const tasks = [];
 
       for (const task of data.data) {
         const userOrError = await this.userService.findUserById(task.userId);
@@ -40,7 +40,7 @@ export default class TaskController implements ITaskController {
 
         const user = userOrError.getValue();
         const device = deviceOrError.getValue();
-        tasks[task.id] = { ...task, user, device };
+        tasks.push({ ...task, user, device });
       }
 
       data.data = tasks;
