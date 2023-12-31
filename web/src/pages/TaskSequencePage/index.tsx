@@ -18,12 +18,14 @@ const TaskSequencePage: React.FC = () => {
     generateSequence,
     sequence,
     loading,
+    executeTask,
+    executing,
   } = useModule();
 
   const handleGeneratePath = () => {
     swal({
       title: "Are you sure?",
-      text: "Once generated, the tasks will be executed in the order of the sequence.",
+      text: "This action may take a while to complete.",
       icon: "warning",
       buttons: ["Cancel", "Generate"],
       dangerMode: true,
@@ -32,11 +34,35 @@ const TaskSequencePage: React.FC = () => {
         generateSequence();
         swal("Task Sequence generated!", {
           icon: "success",
-          timer: 1500,
+          timer: 1000,
         });
       } else {
         swal({
           title: "Task Sequence not generated!",
+          icon: "info",
+          timer: 1500,
+        });
+      }
+    });
+  };
+
+  const handleExecuteTask = (taskId: string) => {
+    swal({
+      title: "Are you sure?",
+      text: "Once executed, the task will be marked as completed.",
+      icon: "warning",
+      buttons: ["Cancel", "Execute"],
+      dangerMode: true,
+    }).then((willExecute) => {
+      if (willExecute) {
+        swal("Task executed!", {
+          icon: "success",
+          timer: 250,
+        });
+        executeTask(taskId);
+      } else {
+        swal({
+          title: "Task not executed!",
           icon: "info",
           timer: 1500,
         });
@@ -130,41 +156,68 @@ const TaskSequencePage: React.FC = () => {
         {loading && <Loading />}
         {sequence && (
           <section className="my-6 flex w-full flex-col items-center gap-y-8 pr-12">
-            {sequence.tasks.map((request, i) => (
+            {sequence.tasks.map((task, i) => (
               <motion.article
-                key={request.id}
-                initial={{ opacity: 0, x: -100 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.2 * i }}
+                key={task.id}
+                initial={{
+                  opacity: 0,
+                  x: -100,
+                  y: 0,
+                }}
+                animate={{
+                  opacity: executing === task.id ? 0 : 1,
+                  x: 0,
+                  y: executing === task.id ? -20 : 0,
+                }}
+                transition={{
+                  x: { duration: 0.2 * i },
+                  y: { duration: 0.4, delay: 2 },
+                  opacity: {
+                    duration: 0.4,
+                    delay: executing === task.id ? 2 : 0,
+                  },
+                }}
                 className="flex h-28 w-full items-center justify-between rounded-lg bg-slate-100 px-8"
               >
                 <div className="flex items-center">
                   <h2 className="text-5xl font-bold">#{i + 1}</h2>
                   <div className="ml-8 flex flex-col">
                     <span className="text-base capitalize">
-                      <b>From</b> {request.startFloorCode}:{" "}
-                      {request.startCoordinateX}, {request.startCoordinateY}
+                      <b>From</b> {task.startFloorCode}: {task.startCoordinateX}
+                      , {task.startCoordinateY}
                     </span>
                     <span className="text-base capitalize">
-                      <b>To</b> {request.endFloorCode}: {request.endCoordinateX}
-                      , {request.endCoordinateY}{" "}
+                      <b>To</b> {task.endFloorCode}: {task.endCoordinateX},{" "}
+                      {task.endCoordinateY}{" "}
                     </span>
                     <p className="mt-4 text-base text-slate-600">
-                      Details: {request.description}
+                      Details: {task.description}
                     </p>
                   </div>
                 </div>
+                {executing === task.id && (
+                  <div className="h-2 w-64">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: "100%" }}
+                      transition={{ duration: 2 }}
+                      className="h-full rounded-lg bg-green-500"
+                    />
+                  </div>
+                )}
                 <div className="flex items-center gap-x-4">
                   <Button
                     type="reset"
                     name="animation"
-                    onClick={() =>
-                      handleGoToAnimation(sequence.path[request.id])
-                    }
+                    onClick={() => handleGoToAnimation(sequence.path[task.id])}
                   >
                     Go to Animation
                   </Button>
-                  <Button type="confirm" name="execute">
+                  <Button
+                    type="confirm"
+                    name="execute"
+                    onClick={() => handleExecuteTask(task.id)}
+                  >
                     Execute
                   </Button>
                 </div>

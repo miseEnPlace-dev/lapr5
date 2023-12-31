@@ -11,6 +11,7 @@ export const useModule = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [sequence, setSequence] = useState<Sequence>();
   const [loading, setLoading] = useState(false);
+  const [executing, setExecuting] = useState("");
 
   const sanitizeTaskType = (taskType: string) => {
     switch (taskType) {
@@ -28,6 +29,17 @@ export const useModule = () => {
     const s = await tasksService.getSequence();
     setLoading(false);
     setSequence(s);
+  };
+
+  const executeTask = async (id: string) => {
+    await tasksService.finishTask(id);
+    setExecuting(id);
+    const newTasks = tasks.filter((task) => task.id !== id);
+    const newSequence = sequence!.tasks.filter((task) => task.id !== id);
+    setTimeout(() => {
+      setTasks(newTasks);
+      setSequence({ ...sequence!, tasks: newSequence });
+    }, 2500);
   };
 
   const sanitizeDate = (date: string) => {
@@ -82,5 +94,7 @@ export const useModule = () => {
     generateSequence,
     sequence,
     loading,
+    executeTask,
+    executing,
   };
 };

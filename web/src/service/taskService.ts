@@ -43,6 +43,14 @@ export class TaskService implements ITaskService {
     return data;
   }
 
+  async finishTask(id: string): Promise<void> {
+    const token = this.localStorage.getItem(localStorageConfig.token);
+
+    await this.http.patch(`/tasks/${id}`, null, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
+
   async getSequence(): Promise<Sequence> {
     const token = this.localStorage.getItem(localStorageConfig.token);
 
