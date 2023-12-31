@@ -341,6 +341,6 @@ public class RequestService : IRequestService
     foreach (PickAndDeliveryRequest p in pd)
       requests.Add(await ConvertToDTO(p, "PickAndDeliveryRequestDTO"));
 
-    return new PaginationDTO<RequestDTO>(requests, page, limit, await surveillanceTaskRepository.CountAsync() + await pickAndDeliveryTaskRepository.CountAsync());
+    return new PaginationDTO<RequestDTO>(requests, page, limit, requests.Count);
   }
 }

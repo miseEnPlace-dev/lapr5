@@ -41,11 +41,14 @@ const TaskRequestsPage: React.FC = () => {
     deviceInputRef,
     setRequestId,
     fetchDevice,
+    users,
   } = useListTaskRequestsModule();
 
   const [isFilterByStateModalVisible, setIsFilterByStateModalVisible] =
     useState(false);
   const [isFilterByModelModalVisible, setIsFilterByModelModalVisible] =
+    useState(false);
+  const [isFilterByUserModalVisible, setIsFilterByUserModalVisible] =
     useState(false);
   const [isAddRobotModalVisible, setIsAddRobotModalVisible] = useState(false);
 
@@ -79,7 +82,7 @@ const TaskRequestsPage: React.FC = () => {
     setDeviceModelFilter(null);
 
     setIsFilterByStateModalVisible(false);
-    // setIsFilterByUserModalVisible(false);
+    setIsFilterByUserModalVisible(false);
     setIsFilterByModelModalVisible(false);
   }
 
@@ -111,6 +114,24 @@ const TaskRequestsPage: React.FC = () => {
       setDeviceModelFilter(null);
 
       setIsFilterByStateModalVisible(false);
+    } catch (err: unknown) {
+      if (err instanceof AxiosError && err.response)
+        swal("Error", err.response.data.errors as string, "error");
+
+      swal("Error", err as string, "error");
+    }
+  }
+
+  async function handleFilterByUserIdClick() {
+    try {
+      if (!userInputRef.current?.value) setUserFilter(null);
+      else setUserFilter(userInputRef.current.value);
+
+      // Only one filter is valid, remove the other
+      setStateFilter(null);
+      setDeviceModelFilter(null);
+
+      setIsFilterByUserModalVisible(false);
     } catch (err: unknown) {
       if (err instanceof AxiosError && err.response)
         swal("Error", err.response.data.errors as string, "error");
@@ -181,6 +202,24 @@ const TaskRequestsPage: React.FC = () => {
               <div className="flex flex-row items-center gap-x-4 text-lg font-bold text-slate-600">
                 {deviceModelFilter ? <FilterIcon /> : ""}
                 Filter Requests By Device Model
+              </div>
+            </motion.button>
+            <motion.button
+              name="filterByUser"
+              initial={{ opacity: 0, y: -100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.2,
+                delay: requests?.data.length || 0 * ANIMATION_DELAY,
+              }}
+              onClick={() => setIsFilterByUserModalVisible(true)}
+              className={`flex w-full items-center justify-center gap-x-10 ${
+                userFilter ? "bg-slate-400" : "bg-slate-300"
+              } py-4 text-gray-500`}
+            >
+              <div className="flex flex-row items-center gap-x-4 text-lg font-bold text-slate-600">
+                {userFilter ? <FilterIcon /> : ""}
+                Filter Requests By User
               </div>
             </motion.button>
           </div>
@@ -381,6 +420,46 @@ const TaskRequestsPage: React.FC = () => {
               <Button
                 name="listfilter"
                 onClick={handleFilterByDeviceModelClick}
+                type="confirm"
+              >
+                List
+              </Button>
+            </div>
+          </Modal>
+
+          <Modal
+            setIsVisible={setIsFilterByUserModalVisible}
+            isVisible={isFilterByUserModalVisible}
+            title="Filter Requests by User"
+          >
+            <div className="flex h-full flex-col justify-between gap-y-4">
+              <div className="flex w-full flex-col gap-y-4">
+                <div className="flex w-full flex-col gap-x-8 gap-y-4">
+                  <Dropdown
+                    className="w-full"
+                    name="User"
+                    placeholder="User"
+                    inputRef={userInputRef}
+                    options={users.map((user) => ({
+                      code: user.id,
+                      name: `${user.firstName} ${user.lastName}`,
+                    }))}
+                    selected={userFilter ? userFilter : undefined}
+                  />
+                  {userFilter && (
+                    <Button
+                      name="removeFilter"
+                      onClick={handleRemoveFilter}
+                      type="reset"
+                    >
+                      Remove Filter
+                    </Button>
+                  )}
+                </div>
+              </div>
+              <Button
+                name="listfilter"
+                onClick={handleFilterByUserIdClick}
                 type="confirm"
               >
                 List

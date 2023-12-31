@@ -38,7 +38,6 @@ export class RequestService implements IRequestService {
     }
 
     const token = this.localStorage.getItem(localStorageConfig.token);
-
     const response = await this.http.get<IPaginationDTO<Request>>(
       "/task-requests",
       {
@@ -46,6 +45,9 @@ export class RequestService implements IRequestService {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
+
+    console.log("params");
+
     const data = response.data;
     return data;
   }
