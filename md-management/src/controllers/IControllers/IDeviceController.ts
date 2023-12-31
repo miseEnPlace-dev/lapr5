@@ -5,4 +5,5 @@ export default interface IDeviceController {
   getDevicesRobots(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
   inhibitDevice(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
   getDeviceRobot(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
+  getDeviceRobotById(req: Request, res: Response, next: NextFunction): Promise<Response | void>;
 }

@@ -1,3 +1,4 @@
+import { IDeviceDTO } from './IDeviceDTO';
 import { IUserDTO } from './IUserDTO';
 
 export interface ISequenceDTO {
@@ -11,7 +12,10 @@ export interface ISequenceDTO {
     endFloorCode: string;
     description: string;
     type: 'pick_delivery' | 'surveillance';
-    user: IUserDTO;
+    userId: string;
+    deviceId: string;
+    user?: IUserDTO;
+    device?: IDeviceDTO;
   }[];
   time: number;
   path: {

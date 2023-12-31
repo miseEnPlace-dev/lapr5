@@ -24,15 +24,17 @@ export class SequenceMapper {
 
     return {
       tasks: sequence.tasks.map(task => ({
-        id: task.id.value,
+        id: task.id,
         startCoordinateX: task.startCoordinateX,
         startCoordinateY: task.startCoordinateY,
         endCoordinateX: task.endCoordinateX,
         endCoordinateY: task.endCoordinateY,
-        description: task.description.value,
+        description: task.description,
         type: task.deliveryRoomId ? 'pick_delivery' : 'surveillance',
-        endFloorCode: task.floorId ? task.floorId.value : task.startFloorCode!,
-        startFloorCode: task.floorId ? task.floorId.value : task.endFloorCode!
+        endFloorCode: task.floorId ? task.floorId : task.startFloorCode!,
+        startFloorCode: task.floorId ? task.floorId : task.endFloorCode!,
+        userId: task.userId,
+        deviceId: task.deviceId
       })),
       time: sequence.time,
       path
