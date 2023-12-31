@@ -20,6 +20,7 @@ const TaskSequencePage: React.FC = () => {
     loading,
     executeTask,
     executing,
+    executeAll,
   } = useModule();
 
   const handleGeneratePath = () => {
@@ -63,6 +64,30 @@ const TaskSequencePage: React.FC = () => {
       } else {
         swal({
           title: "Task not executed!",
+          icon: "info",
+          timer: 1500,
+        });
+      }
+    });
+  };
+
+  const handleExecuteAll = () => {
+    swal({
+      title: "Are you sure?",
+      text: "Once executed, all tasks will be marked as completed.",
+      icon: "warning",
+      buttons: ["Cancel", "Execute"],
+      dangerMode: true,
+    }).then((willExecute) => {
+      if (willExecute) {
+        swal("All tasks executed!", {
+          icon: "success",
+          timer: 250,
+        });
+        executeAll();
+      } else {
+        swal({
+          title: "Tasks not executed!",
           icon: "info",
           timer: 1500,
         });
@@ -226,7 +251,7 @@ const TaskSequencePage: React.FC = () => {
             <Button
               name="execute-all"
               type="destroy"
-              onClick={handleGeneratePath}
+              onClick={handleExecuteAll}
               className="px-24"
             >
               Execute All
