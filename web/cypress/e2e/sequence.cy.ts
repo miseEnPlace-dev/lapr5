@@ -1,31 +1,31 @@
 const BASE_URL = "http://localhost:4000/api";
 
-describe("Floors", () => {
+describe("Task Sequece", () => {
   beforeEach(() => {
     cy.visit("/login");
     cy.intercept("POST", BASE_URL + "/users/login", {
       statusCode: 200,
       body: {
         userDTO: {
-          firstName: "Campus",
-          lastName: "Campus",
-          role: "campus",
+          firstName: "Task",
+          lastName: "Manager",
+          role: "task",
         },
       },
     });
-    cy.get("input[name=Email]").type("campus@isep.ipp.pt");
-    cy.get("input[name=Password]").type("campus");
+    cy.get("input[name=Email]").type("task@isep.ipp.pt");
+    cy.get("input[name=Password]").type("task");
     cy.get("button[name=login]").click();
     localStorage.setItem("token", "token");
     cy.intercept("GET", BASE_URL + "/me", {
       statusCode: 200,
       body: {
-        firstName: "Campus",
-        lastName: "Campus",
-        role: "campus",
+        firstName: "Task",
+        lastName: "Manager",
+        role: "task",
       },
     });
-    cy.visit("/buildings/2/floors");
+    cy.visit("/task-sequence");
   });
 
   it("should be able to list all floors", () => {

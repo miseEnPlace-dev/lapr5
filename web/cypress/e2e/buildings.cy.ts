@@ -13,7 +13,7 @@ describe("Buildings", () => {
         },
       },
     });
-    cy.get("input[name=Email]").type("campus@campus.com");
+    cy.get("input[name=Email]").type("campus@isep.ipp.pt");
     cy.get("input[name=Password]").type("campus");
     cy.get("button[name=login]").click();
     localStorage.setItem("token", "token");
