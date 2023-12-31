@@ -220,6 +220,7 @@ const TasksPage: React.FC = () => {
                   placeholder="Select Task Type"
                   className="w-full"
                   name="Task Type"
+                  defaultValue={type || ""}
                   inputRef={typeInputRef}
                   onChange={(e) => setType(e.target.value)}
                 />

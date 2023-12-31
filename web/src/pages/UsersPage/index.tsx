@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
 import { useMenuOptions } from "@/hooks/useMenuOptions";
@@ -19,7 +18,6 @@ import { AxiosError } from "axios";
 const ANIMATION_DELAY = 0.1;
 
 const UsersPage: React.FC = () => {
-  const navigate = useNavigate();
   const {
     users,
     roles,
