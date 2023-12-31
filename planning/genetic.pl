@@ -26,6 +26,8 @@ lim_time(2).
 :- dynamic n_tarefas/1.
 :- dynamic tarefas/3.
 :- dynamic t/3.
+:- dynamic distancias_robot_tarefa/2.
+:- dynamic distancias_tarefa_robot/2.
 
 debug_mode(0).
 
@@ -88,21 +90,33 @@ load_tarefa(Tarefa,[H|T]):-
 	load_tarefa2(Tarefa,H),
 	load_tarefa(Tarefa,T).
 
-assert_initial_task(H) :-
-		fetch_device(H.id, Device),
-		(H.Type == "pick_delivery",
-			asserta(t(H.deviceTaskId, cel(Device.floorCode, Device.width, Device.length), cel(H.startFloorCode, H.startCoordinateX, H.startCoordinateY)))
-		;
-			asserta(t(H.deviceTaskId, cel(Device.floorCode, Device.width, Device.length), cel(H.floorId, H.startCoordinateX, H.startCoordinateY)))
-		).
+assert_distancias_robot_tarefa(T1) :-
 
-assert_final_task(H) :-
-		fetch_device(H.id, Device),
-		(H.Type == "pick_delivery",
-			assertz(t(H.deviceTaskId, cel(H.endFloorCode, H.endCoordinateX, H.endCoordinateY), cel(Device.floorCode, Device.width, Device.length)))
-		;
-			assertz(t(H.deviceTaskId, cel(H.floorId, H.endCoordinateX, H.endCoordinateY), cel(Device.floorCode, Device.width, Device.length)))
-		).
+    (T1.Type == "pick_delivery" ->
+				% tarefa de pick_delivery
+				% robot -> tarefa
+        planning:caminho_celulas_edificios(cel(T1.device.floorCode, T1.device.width, T1.device.length), 
+				cel(T1.startFloorCode, T1.startCoordinateX, T1.startCoordinateY), _, C),
+
+				% tarefa -> robot
+				planning:caminho_celulas_edificios(cel(T1.endFloorCode, T1.endCoordinateX, T1.endCoordinateY),
+				cel(T1.device.floorCode, T1.device.width, T1.device.length), _, C1),
+
+        assert(distancias_robot_tarefa(T1, C)),
+				assert(distancias_tarefa_robot(T1, C1))
+    ;
+				% tarefa de surveillance
+				% robot -> tarefa
+        planning:caminho_celulas_edificios(cel(T1.device.floorCode, T1.device.width, T1.device.length), 
+				cel(T1.floorId, T1.startCoordinateX, T1.startCoordinateY), _, C),
+
+				% tarefa -> robot
+				planning:caminho_celulas_edificios(cel(T1.floorId, T1.endCoordinateX, T1.endCoordinateY), 
+				cel(T1.device.floorCode, T1.device.width, T1.device.length), _, C1),
+
+        assert(distancias_robot_tarefa(T1, C)),
+				assert(distancias_tarefa_robot(T1, C1))
+    ).
 
 load_tarefa2(T1,T2):-
 	debug_mode(D),
@@ -115,7 +129,8 @@ load_tarefa2(T1,T2):-
 	planning:caminho_celulas_edificios(F2,S1,_,W2),
 	((D==1,write(' W2: '), write(W2), nl);true),
 	asserta(tarefas(T1,T2,W1)),
-	asserta(tarefas(T2,T1,W2)).
+	asserta(tarefas(T2,T1,W2)),
+	assert_distancias_robot(T1).
 
 gera_best_bruteforce:-
 	debug_mode(D),
@@ -262,12 +277,11 @@ avalia_populacao([H|Resto],[H*V|Resto1]):-
 	avalia_populacao(Resto,Resto1).
 
 avalia([T1,T2|Resto],V):-
-	tarefas(T1,T2,V1),
+	tarefas(T1,T2,V1),	
 	avalia([T2|Resto],V2),
 	V is V1 + V2.
 avalia([_],0).
 avalia([],0).
-
 
 ordena_populacao(PopAv,PopAvOrd):-
 	bsort(PopAv,PopAvOrd).
