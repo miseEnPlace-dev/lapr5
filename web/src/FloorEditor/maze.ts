@@ -377,7 +377,7 @@ export default class Maze extends THREE.Group {
                 };
 
                 const room = this.rooms.find(
-                  (room) => room.roomDoor.x === i && room.roomDoor.y === j
+                  (room) => room.roomDoor.x === i + 1 && room.roomDoor.y === j + 1
                 );
 
                 if (room) gltf.scene.name = room.name;
@@ -491,7 +491,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.x -
-              (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
+            (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
@@ -501,7 +501,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.z -
-              (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
+            (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
@@ -515,7 +515,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.z -
-              (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
+            (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
           ) < radius
         ) {
           document
@@ -533,7 +533,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.x -
-              (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
+            (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
@@ -548,7 +548,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.z -
-              (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
+            (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
           ) < radius
         ) {
           this.playOpenDoorAnimation(row, column);
