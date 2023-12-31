@@ -29,8 +29,12 @@ export class RequestService implements IRequestService {
   ): Promise<IPaginationDTO<Request>> {
     const params = {} as { [key: string]: string };
     if (filter && value) {
-      params["filter"] = filter.toString();
-      params["value"] = capitalize(value.toString());
+      if (filter === "userId") {
+        params["user"] = value.toString();
+      } else {
+        params["filter"] = filter.toString();
+        params["value"] = capitalize(value.toString());
+      }
     }
     if (page && limit) {
       params["limit"] = limit.toString();
