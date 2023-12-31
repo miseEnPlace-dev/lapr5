@@ -192,7 +192,8 @@ export default class RequestController implements IRequestController {
     try {
       const response = await fetch(config.tasksApiUrl + `/api/requests/${req.params.id}/accept`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req.body)
       });
 
       const data = await response.json();
