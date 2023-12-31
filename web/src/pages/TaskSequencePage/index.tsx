@@ -159,7 +159,12 @@ const TaskSequencePage: React.FC = () => {
         </section>
         {tasks.length > 0 ? (
           <div className="flex w-full items-center justify-center">
-            <Button name="generate" type="confirm" onClick={handleGeneratePath}>
+            <Button
+              name="generate"
+              type="confirm"
+              onClick={handleGeneratePath}
+              disabled={tasks.length < 3}
+            >
               Generate Task Sequence
             </Button>
           </div>
@@ -178,8 +183,13 @@ const TaskSequencePage: React.FC = () => {
             </span>
           </div>
         )}
+        {tasks.length < 3 && (
+          <p className="text-slate-500">
+            You need at least 3 approved tasks to generate a new sequence.
+          </p>
+        )}
         {loading && <Loading />}
-        {sequence && (
+        {!loading && sequence && (
           <section className="my-6 flex w-full flex-col items-center gap-y-8 pr-12">
             {sequence.tasks.map((task, i) => (
               <motion.article
