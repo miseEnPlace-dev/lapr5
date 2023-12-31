@@ -67,10 +67,6 @@ export const useListTaskRequestsModule = () => {
 
   const itemsPerPage = 3;
 
-  const [selectedRequestType, setSelectedRequestType] = useState<
-    string | undefined
-  >(undefined);
-
   const requestTypes = [
     {
       code: "pick-delivery",
@@ -105,7 +101,7 @@ export const useListTaskRequestsModule = () => {
       1000
     );
     setDevices(devices.data);
-  }, [deviceService, requestId]);
+  }, [deviceService, requestId, requests?.data]);
 
   useEffect(() => {
     fetchDeviceModels();
@@ -162,12 +158,12 @@ export const useListTaskRequestsModule = () => {
       setRequests({ data: [] });
     }
   }, [
+    deviceModelFilter,
     requestService,
     stateFilter,
-    deviceModelFilter,
     userFilter,
     page,
-    itemsPerPage,
+    deviceModelService,
   ]);
 
   async function handleAcceptRequest() {
