@@ -8,5 +8,5 @@ export interface Request {
   startCoordinateY: number;
   endCoordinateX: number;
   endCoordinateY: number;
-  createdAt?: string;
+  requestedAt?: string;
 }
