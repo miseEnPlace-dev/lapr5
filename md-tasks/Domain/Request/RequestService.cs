@@ -20,11 +20,14 @@ public class RequestService : IRequestService
   private readonly ISurveillanceRequestRepository surveillanceTaskRepository;
   private readonly IPickAndDeliveryRequestRepository pickAndDeliveryTaskRepository;
 
-  public RequestService(IUnitOfWork unitOfWork, ISurveillanceRequestRepository surveillanceTaskRepository, IPickAndDeliveryRequestRepository pickAndDeliveryTaskRepository)
+  private readonly ITaskRepository taskRepository;
+
+  public RequestService(IUnitOfWork unitOfWork, ISurveillanceRequestRepository surveillanceTaskRepository, IPickAndDeliveryRequestRepository pickAndDeliveryTaskRepository, ITaskRepository taskRepository)
   {
     this.unitOfWork = unitOfWork;
     this.surveillanceTaskRepository = surveillanceTaskRepository;
     this.pickAndDeliveryTaskRepository = pickAndDeliveryTaskRepository;
+    this.taskRepository = taskRepository;
   }
 
   public async Task<PaginationDTO<RequestDTO>> GetAllAsync(int page, int limit)
@@ -285,13 +288,17 @@ public class RequestService : IRequestService
     return null;
   }
 
-  public async Task<RequestDTO> AcceptRequest(RequestId id)
+  public async Task<RequestDTO> AcceptRequest(RequestId id, TaskDTO taskDTO)
   {
     SurveillanceRequest sv = await surveillanceTaskRepository.GetByIdAsync(id);
 
     if (sv != null)
     {
       sv.ChangeState(StateEnum.Accepted);
+      await unitOfWork.CommitAsync();
+
+      DeviceTask t = new(id, taskDTO.DeviceId);
+      await taskRepository.AddAsync(t);
       await unitOfWork.CommitAsync();
       return await ConvertToDTO(sv, "SurveillanceRequestDTO");
     }
@@ -300,6 +307,10 @@ public class RequestService : IRequestService
     if (pd != null)
     {
       pd.ChangeState(StateEnum.Accepted);
+      await unitOfWork.CommitAsync();
+
+      DeviceTask t = new(id, taskDTO.DeviceId);
+      await taskRepository.AddAsync(t);
       await unitOfWork.CommitAsync();
       return await ConvertToDTO(pd, "PickAndDeliveryRequestDTO");
     }

@@ -10,7 +10,7 @@ namespace DDDSample1.Infrastructure.Requests
     public void Configure(EntityTypeBuilder<DeviceTask> builder)
     {
       // builder.ToTable("Requests", SchemaNames.DDDSample1);
-      builder.HasKey(b => new { b.Id, b.DeviceTaskId, b.CreatedAt });
+      builder.HasKey(b => new { b.Id, b.RequestId, b.CreatedAt });
       builder.Property(b => b.DeviceId).HasColumnType("longtext");
       // builder.OwnsOne(b => b.UserId);
       // builder.Property<bool>("_active").HasColumnName("Active");
