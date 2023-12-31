@@ -7,6 +7,7 @@ import Button from "@/components/Button";
 import Dropdown from "@/components/Dropdown";
 import Input from "@/components/Input";
 import InputGroup from "@/components/InputGroup";
+import Loading from "@/components/Loading";
 import Modal from "@/components/Modal";
 import Pagination from "@/components/Pagination";
 import SideBar from "@/components/SideBar";
@@ -110,7 +111,9 @@ const TasksPage: React.FC = () => {
           >
             +
           </motion.button>
-          {!requests ? null : requests.data.length == 0 ? ( // TODO: skeleton component // TODO: skeleton component
+          {!requests ? (
+            <Loading loadingText={false} />
+          ) : requests.data.length == 0 ? (
             <p className="text-slate-500">
               No results were found for your search... Create your first request
               or try to change or remove the filters.
