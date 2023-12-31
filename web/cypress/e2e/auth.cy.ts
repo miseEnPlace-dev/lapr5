@@ -16,7 +16,7 @@ describe("Auth", () => {
         },
       },
     });
-    cy.get("input[name=Email]").type("campus@campus.com");
+    cy.get("input[name=Email]").type("campus@isep.ipp.pt");
     cy.get("input[name=Password]").type("campus");
     cy.get("button[name=login]").click();
     cy.url().should("include", "/");
@@ -26,7 +26,7 @@ describe("Auth", () => {
   });
 
   it("should not be able to click in button when password is empty", () => {
-    cy.get("input[name=Email]").type("campus@campus.com");
+    cy.get("input[name=Email]").type("campus@isep.ipp.pt");
     cy.get("button[name=login]").should("be.disabled");
   });
 
@@ -58,7 +58,7 @@ describe("Auth", () => {
   });
 
   it("should not be able to click in submit button with invalid email format 2", () => {
-    cy.get("input[name=Email]").type("@campus.com");
+    cy.get("input[name=Email]").type("@isep.ipp.pt");
     cy.get("input[name=Password]").type("campus");
     cy.get("button[name=login]").should("be.disabled");
   });
