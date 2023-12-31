@@ -99,9 +99,9 @@ assert_initial_task(H) :-
 assert_final_task(H) :-
 		fetch_device(H.id, Device),
 		(H.Type == "pick_delivery",
-			asserta(t(H.deviceTaskId, cel(H.endFloorCode, H.endCoordinateX, H.endCoordinateY), cel(Device.floorCode, Device.width, Device.length))).
+			assertz(t(H.deviceTaskId, cel(H.endFloorCode, H.endCoordinateX, H.endCoordinateY), cel(Device.floorCode, Device.width, Device.length))).
 		;
-			asserta(t(H.deviceTaskId, cel(H.floorId, H.endCoordinateX, H.endCoordinateY), cel(Device.floorCode, Device.width, Device.length))).
+			assertz(t(H.deviceTaskId, cel(H.floorId, H.endCoordinateX, H.endCoordinateY), cel(Device.floorCode, Device.width, Device.length))).
 		).
 
 load_tarefa2(T1,T2):-

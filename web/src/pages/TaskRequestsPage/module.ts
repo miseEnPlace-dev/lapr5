@@ -36,7 +36,6 @@ export const useListTaskRequestsModule = () => {
   const deviceModelService = useInjection<IDeviceModelService>(
     TYPES.deviceModelService
   );
-  const taskService = useInjection<ITaskService>(TYPES.taskService);
   const deviceService = useInjection<IDeviceService>(TYPES.deviceService);
   // const { id, username, phoneNumber } = useAuth();
 
@@ -182,8 +181,7 @@ export const useListTaskRequestsModule = () => {
 
       if (!device) throw new Error("Invalid device");
 
-      // await taskService.createTask(device.code, requestId);
-      await requestService.acceptRequest(requestId, device.code);
+      await requestService.acceptRequest(requestId, device.id);
       fetchRequests();
     } catch (err) {
       console.log(err);
