@@ -342,16 +342,31 @@ public class RequestService : IRequestService
 
   public async Task<PaginationDTO<RequestDTO>> GetRequestsByState(RequestState state, int page, int limit)
   {
-    List<SurveillanceRequest> sv = await surveillanceTaskRepository.GetRequestsByState(state, page - 1, limit);
-    List<PickAndDeliveryRequest> pd = await pickAndDeliveryTaskRepository.GetRequestsByState(state, page - 1, limit);
+    List<Request> sv = (await surveillanceTaskRepository.GetRequestsByState(state, -1, -1)).Cast<Request>().ToList();
+    List<Request> pd = (await pickAndDeliveryTaskRepository.GetRequestsByState(state, -1, -1)).Cast<Request>().ToList();
 
-    List<RequestDTO> requests = new();
+    List<Request> requests = new();
+    requests.AddRange(sv);
+    requests.AddRange(pd);
 
-    foreach (SurveillanceRequest s in sv)
-      requests.Add(await ConvertToDTO(s, "SurveillanceRequestDTO"));
-    foreach (PickAndDeliveryRequest p in pd)
-      requests.Add(await ConvertToDTO(p, "PickAndDeliveryRequestDTO"));
+    // with page and limit, cut the list
+    if (page > 0 && limit > 0)
+    {
+      int offset = (page - 1) * limit;
+      requests = requests.Skip(offset).Take(limit).ToList();
+    }
 
-    return new PaginationDTO<RequestDTO>(requests, page, limit, await surveillanceTaskRepository.CountAsync() + await pickAndDeliveryTaskRepository.CountAsync());
+    List<RequestDTO> result = new();
+
+    foreach (Request task in requests)
+    {
+      if (await surveillanceTaskRepository.GetByIdAsync(task.Id) != null)
+        result.Add(await ConvertToDTO(task, "SurveillanceRequestDTO"));
+
+      if (await pickAndDeliveryTaskRepository.GetByIdAsync(task.Id) != null)
+        result.Add(await ConvertToDTO(task, "PickAndDeliveryRequestDTO"));
+    }
+
+    return new PaginationDTO<RequestDTO>(result, page, limit, sv.Count + pd.Count);
   }
 }
