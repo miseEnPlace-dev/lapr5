@@ -42,16 +42,12 @@ const TaskRequestsPage: React.FC = () => {
     device,
     setRequestId,
     fetchDevice,
-    requestTypes,
-    selectedRequestType,
     setSelectedRequestType,
   } = useListTaskRequestsModule();
 
   const [isFilterByStateModalVisible, setIsFilterByStateModalVisible] =
     useState(false);
   const [isFilterByModelModalVisible, setIsFilterByModelModalVisible] =
-    useState(false);
-  const [isCreateRequestModalVisible, setIsCreateRequestModalVisible] =
     useState(false);
   const [isAddRobotModalVisible, setIsAddRobotModalVisible] = useState(false);
 
@@ -122,15 +118,6 @@ const TaskRequestsPage: React.FC = () => {
         swal("Error", err.response.data.errors as string, "error");
 
       swal("Error", err as string, "error");
-    }
-  }
-
-  function handleRequestTypeChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    try {
-      const selected = e.target.value;
-      console.log(selected);
-    } catch (err: unknown) {
-      console.log(err);
     }
   }
 
@@ -453,37 +440,6 @@ const TaskRequestsPage: React.FC = () => {
                 type="confirm"
               >
                 Add
-              </Button>
-            </div>
-          </Modal>
-
-          <Modal
-            setIsVisible={setIsCreateRequestModalVisible}
-            isVisible={isCreateRequestModalVisible}
-            title="Create Request"
-          >
-            <div className="flex h-full flex-col justify-between gap-y-4">
-              <div className="flex w-full flex-col gap-y-4">
-                <div className="flex w-full flex-col gap-x-8 gap-y-4">
-                  <Dropdown
-                    className="w-full"
-                    name="Task"
-                    placeholder="Task"
-                    options={requestTypes.map((t) => ({
-                      code: t.code,
-                      name: t.name,
-                    }))}
-                    onChange={handleRequestTypeChange}
-                    selected={selectedRequestType}
-                  />
-                </div>
-              </div>
-              <Button
-                name="createreq"
-                // onClick={handleFilterByDeviceModelClick}
-                type="confirm"
-              >
-                Create
               </Button>
             </div>
           </Modal>
