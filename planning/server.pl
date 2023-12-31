@@ -80,12 +80,6 @@ fetch_requests(Requests) :-
     (retract(genetic:n_tarefas(_));true),
     read_api(PickDeliveryUrl, Requests).
 
-fetch_device(DeviceId, Device) :-
-    api_url(Url),
-    atom_concat(Url, '/devices/id/', BaseUrl),
-    atom_concat(BaseUrl, DeviceId, DeviceUrl),
-    read_api(DeviceUrl, Device).
-
 password('admin').
 email('admin@isep.ipp.pt').
 
