@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DDDSample1.Infrastructure.Requests;
 
-public class RequestRepository : BaseRepository<Domain.Requests.DeviceTask, TaskId>, ITaskRepository
+public class RequestRepository : BaseRepository<DeviceTask, TaskId>, ITaskRepository
 {
   readonly MySQLDbContext _context;
-  public RequestRepository(MySQLDbContext context) : base(context.Requests)
+  public RequestRepository(MySQLDbContext context) : base(context.Tasks)
   {
     _context = context;
   }

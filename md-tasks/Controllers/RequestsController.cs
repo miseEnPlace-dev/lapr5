@@ -155,11 +155,11 @@ public class RequestsController : ControllerBase
 
   // Patch api/requests/{id}/accept
   [HttpPatch("{id}/accept")]
-  public async Task<ActionResult<RequestDTO>> AcceptRequest(string id)
+  public async Task<ActionResult<RequestDTO>> AcceptRequest(string id, TaskDTO dto)
   {
     try
     {
-      var t = await service.AcceptRequest(new RequestId(id));
+      var t = await service.AcceptRequest(new RequestId(id), dto);
       if (t == null) return NotFound();
       return Ok(t);
     }

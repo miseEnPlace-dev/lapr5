@@ -161,14 +161,16 @@ export class RequestService implements IRequestService {
     return data;
   }
 
-  async acceptRequest(id: string): Promise<void> {
+  async acceptRequest(id: string, deviceCode: string): Promise<void> {
     const token = this.localStorage.getItem(localStorageConfig.token);
 
     console.log("accepting request");
     console.log(id);
     await this.http.patch(
       "/task-requests/" + id + "/accept",
-      {},
+      {
+        deviceId: deviceCode,
+      },
       {
         headers: { Authorization: `Bearer ${token}` },
       }

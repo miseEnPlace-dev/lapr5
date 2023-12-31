@@ -3,20 +3,20 @@ import { IDeviceDTO } from '@/dto/IDeviceDTO';
 
 import { Device } from '@/domain/device/device';
 import { DeviceCode } from '@/domain/device/deviceCode';
+import { DeviceCoordinates } from '@/domain/device/deviceCoordinates';
 import { DeviceDescription } from '@/domain/device/deviceDescription';
 import { DeviceNickname } from '@/domain/device/deviceNickname';
 import { DeviceSerialNumber } from '@/domain/device/deviceSerialNumber';
 import { DeviceModelCode } from '@/domain/deviceModel/deviceModelCode';
+import { FloorCode } from '@/domain/floor/floorCode';
+import { IPaginationDTO } from '@/dto/IPaginationDTO';
 import { TYPES } from '@/loaders/inversify/types';
 import { DeviceMapper } from '@/mappers/DeviceMapper';
 import { inject, injectable } from 'inversify';
 import IDeviceModelRepo from './IRepos/IDeviceModelRepo';
 import IDeviceRepo from './IRepos/IDeviceRepo';
-import IDeviceService from './IServices/IDeviceService';
-import { IPaginationDTO } from '@/dto/IPaginationDTO';
-import { DeviceCoordinates } from '@/domain/device/deviceCoordinates';
-import { FloorCode } from '@/domain/floor/floorCode';
 import IFloorRepo from './IRepos/IFloorRepo';
+import IDeviceService from './IServices/IDeviceService';
 
 @injectable()
 export default class DeviceService implements IDeviceService {
@@ -83,6 +83,18 @@ export default class DeviceService implements IDeviceService {
       const deviceDTOResult = DeviceMapper.toDTO(deviceResult) as IDeviceDTO;
 
       return Result.ok<IDeviceDTO>(deviceDTOResult);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async findById(id: string): Promise<Result<IDeviceDTO>> {
+    try {
+      const device = await this.deviceRepo.findById(id);
+      if (!device) return Result.fail<IDeviceDTO>('Device not found');
+
+      const deviceDTO = DeviceMapper.toDTO(device) as IDeviceDTO;
+      return Result.ok<IDeviceDTO>(deviceDTO);
     } catch (e) {
       throw e;
     }

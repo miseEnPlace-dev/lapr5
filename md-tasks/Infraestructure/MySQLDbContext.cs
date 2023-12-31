@@ -9,7 +9,7 @@ namespace DDDSample1.Infrastructure
 {
   public class MySQLDbContext : DbContext
   {
-    public DbSet<DeviceTask> Requests { get; set; }
+    public DbSet<DeviceTask> Tasks { get; set; }
 
     public DbSet<SurveillanceRequest> SurveillanceRequests { get; set; }
     public DbSet<PickAndDeliveryRequest> PickAndDeliveryRequests { get; set; }

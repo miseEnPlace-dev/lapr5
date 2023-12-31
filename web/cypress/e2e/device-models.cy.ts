@@ -14,7 +14,7 @@ describe("Device Models", () => {
         },
       },
     });
-    cy.get("input[name=Email]").type("fleet@fleet.com");
+    cy.get("input[name=Email]").type("fleet@isep.ipp.pt");
     cy.get("input[name=Password]").type("fleet");
     cy.get("button[name=login]").click();
     localStorage.setItem("token", "token");

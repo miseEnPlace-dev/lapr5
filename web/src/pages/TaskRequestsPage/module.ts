@@ -71,6 +71,21 @@ export const useListTaskRequestsModule = () => {
 
   const itemsPerPage = 3;
 
+  const [selectedRequestType, setSelectedRequestType] = useState<
+    string | undefined
+  >(undefined);
+
+  const requestTypes = [
+    {
+      code: "pick-delivery",
+      name: "Pick and Delivery",
+    },
+    {
+      code: "surveillance",
+      name: "Surveillance",
+    },
+  ];
+
   const handlePagination = (page: number) => {
     setPage(page);
   };
@@ -177,8 +192,8 @@ export const useListTaskRequestsModule = () => {
 
       if (!device) throw new Error("Invalid device");
 
-      await taskService.createTask(device.code, requestId);
-      await requestService.acceptRequest(requestId);
+      // await taskService.createTask(device.code, requestId);
+      await requestService.acceptRequest(requestId, device.code);
       fetchRequests();
     } catch (err) {
       console.log(err);
@@ -223,8 +238,10 @@ export const useListTaskRequestsModule = () => {
     deviceModels,
     devices,
     deviceInputRef,
+    device,
     setRequestId,
     fetchDevice,
     users,
+    requestTypes,
   };
 };

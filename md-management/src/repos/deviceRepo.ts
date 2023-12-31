@@ -31,6 +31,16 @@ export default class DeviceRepo implements IDeviceRepo {
     return await deviceSchema.count();
   }
 
+  async findById(id: UniqueEntityID): Promise<Device | null> {
+    const query = { domainId: id };
+    const deviceRecord = await deviceSchema.findOne(
+      query as FilterQuery<IDevicePersistence & Document>
+    );
+
+    if (deviceRecord != null) return DeviceMapper.toDomain(deviceRecord);
+    return null;
+  }
+
   public async findByTask(task: string): Promise<Device[] | null> {
     const query: PipelineStage[] = [
       {
