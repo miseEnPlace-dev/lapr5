@@ -58,8 +58,8 @@ export const useTasksModule = () => {
   const typeInputRef = useRef<HTMLSelectElement>(null);
 
   const floorInputRef = useRef<HTMLSelectElement>(null);
-  const room1InputRef = useRef<HTMLSelectElement>(null);
-  const room2InputRef = useRef<HTMLSelectElement>(null);
+  const [room1Code, setRoom1Code] = useState("");
+  const [room2Code, setRoom2Code] = useState("");
 
   const pickupUserNameInputRef = useRef<HTMLInputElement>(null);
   const pickupUserPhoneInputRef = useRef<HTMLInputElement>(null);
@@ -83,8 +83,6 @@ export const useTasksModule = () => {
       swal("Error", "Type input is not defined", "error");
       return;
     } else {
-      console.log(room1InputRef.current?.value, room2InputRef.current?.value);
-
       switch (typeInputRef.current.value) {
         case "pick_delivery":
           if (
@@ -95,8 +93,8 @@ export const useTasksModule = () => {
             !confirmationCodeInputRef.current ||
             !descriptionInputRef.current ||
             !id ||
-            !room1InputRef.current ||
-            !room2InputRef.current
+            !room1Code ||
+            !room2Code
           )
             throw new Error("Some fields are not defined");
 
@@ -134,8 +132,8 @@ export const useTasksModule = () => {
             !descriptionInputRef.current ||
             !floorInputRef.current ||
             !id ||
-            !room1InputRef.current ||
-            !room2InputRef.current
+            !room1Code ||
+            !room2Code
           )
             throw new Error("Some fields are not defined");
 
@@ -167,23 +165,16 @@ export const useTasksModule = () => {
   }
 
   function getRoom1(): Room | undefined {
-    if (room1InputRef.current && room1InputRef.current.value)
-      return building1Rooms.find(
-        (room) => room.name === room1InputRef.current!.value
-      );
+    if (room1Code)
+      return building1Rooms.find((room) => room.name === room1Code);
   }
 
   function getRoom2(): Room | undefined {
-    if (room2InputRef.current && room2InputRef.current.value) {
+    if (room2Code)
       if (typeInputRef?.current?.value === "surveillance") {
-        return building1Rooms.find(
-          (room) => room.name === room2InputRef.current!.value
-        );
+        return building1Rooms.find((room) => room.name === room2Code);
       }
-      return building2Rooms.find(
-        (room) => room.name === room2InputRef.current!.value
-      );
-    }
+    return building2Rooms.find((room) => room.name === room2Code);
   }
 
   const fetchBuildings = useCallback(async () => {
@@ -301,8 +292,10 @@ export const useTasksModule = () => {
     floorInputRef,
     username,
     phoneNumber,
-    room1InputRef,
-    room2InputRef,
+    room1Code,
+    room2Code,
+    setRoom1Code,
+    setRoom2Code,
     floorCode,
     setFloorCode,
     floorRooms,
