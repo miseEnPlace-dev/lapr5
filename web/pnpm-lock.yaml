@@ -11,6 +11,9 @@ dependencies:
   '@fontsource/rubik':
     specifier: ^5.0.17
     version: 5.0.17
+  '@react-oauth/google':
+    specifier: ^0.12.1
+    version: 0.12.1(react-dom@18.2.0)(react@18.2.0)
   '@react-three/fiber':
     specifier: ^8.15.10
     version: 8.15.10(react-dom@18.2.0)(react@18.2.0)(three@0.158.0)
@@ -2862,6 +2865,16 @@ packages:
 
   /@protobufjs/utf8@1.1.0:
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
+    dev: false
+
+  /@react-oauth/google@0.12.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-qagsy22t+7UdkYAiT5ZhfM4StXi9PPNvw0zuwNmabrWyMKddczMtBIOARflbaIj+wHiQjnMAsZmzsUYuXeyoSg==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /@react-three/fiber@8.15.10(react-dom@18.2.0)(react@18.2.0)(three@0.158.0):

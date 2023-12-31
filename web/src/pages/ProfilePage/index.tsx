@@ -161,20 +161,24 @@ const ProfilePage: React.FC = () => {
               defaultValue={user?.phoneNumber || ""}
             />
           )}
-          <Input
-            name="New Password"
-            type="password"
-            autoComplete="new-password"
-            inputRef={passwordInputRef}
-            placeholder="Insert a new password"
-          />
-          <Input
-            name="Confirm your New Password"
-            type="password"
-            autoComplete="new-password"
-            inputRef={confirmPasswordInputRef}
-            placeholder="Reinsert your new password"
-          />
+          {user?.email.split("@")[1] !== "gmail.com" && (
+            <>
+              <Input
+                name="New Password"
+                type="password"
+                autoComplete="new-password"
+                inputRef={passwordInputRef}
+                placeholder="Insert a new password"
+              />
+              <Input
+                name="Confirm your New Password"
+                type="password"
+                autoComplete="new-password"
+                inputRef={confirmPasswordInputRef}
+                placeholder="Reinsert your new password"
+              />
+            </>
+          )}
         </div>
         <Button
           type="confirm"

@@ -1,4 +1,5 @@
 import { IPaginationDTO } from "@/dto/IPaginationDTO";
+import { GoogleUserInfo } from "@/model/GoogleUserInfo";
 import { Role } from "@/model/Role";
 import { User } from "@/model/User";
 
@@ -17,4 +18,6 @@ export interface IUserService {
   getRequests(): Promise<User[]>;
   acceptRequest(id: string): Promise<void>;
   rejectRequest(id: string): Promise<void>;
+  checkIfUserExistsByGoogleCredential(credential: string): Promise<boolean>;
+  getGoogleUserInfo(credential: string): Promise<GoogleUserInfo>;
 }

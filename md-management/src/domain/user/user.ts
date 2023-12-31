@@ -13,7 +13,7 @@ interface UserProps {
   firstName: string;
   lastName: string;
   email: UserEmail;
-  password: UserPassword;
+  password?: UserPassword;
   role: Role;
   phoneNumber: PhoneNumber;
   nif?: UserNif;
@@ -37,7 +37,7 @@ export class User extends AggregateRoot<UserProps> {
     return this.props.lastName;
   }
 
-  get password(): UserPassword {
+  get password(): UserPassword | undefined {
     return this.props.password;
   }
 
