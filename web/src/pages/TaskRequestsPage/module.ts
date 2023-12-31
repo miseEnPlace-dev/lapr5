@@ -66,6 +66,21 @@ export const useListTaskRequestsModule = () => {
 
   const itemsPerPage = 3;
 
+  const [selectedRequestType, setSelectedRequestType] = useState<
+    string | undefined
+  >(undefined);
+
+  const requestTypes = [
+    {
+      code: "pick-delivery",
+      name: "Pick and Delivery",
+    },
+    {
+      code: "surveillance",
+      name: "Surveillance",
+    },
+  ];
+
   const handlePagination = (page: number) => {
     setPage(page);
   };
@@ -216,5 +231,8 @@ export const useListTaskRequestsModule = () => {
     device,
     setRequestId,
     fetchDevice,
+    requestTypes,
+    selectedRequestType,
+    setSelectedRequestType,
   };
 };

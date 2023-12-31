@@ -42,11 +42,16 @@ const TaskRequestsPage: React.FC = () => {
     device,
     setRequestId,
     fetchDevice,
+    requestTypes,
+    selectedRequestType,
+    setSelectedRequestType,
   } = useListTaskRequestsModule();
 
   const [isFilterByStateModalVisible, setIsFilterByStateModalVisible] =
     useState(false);
   const [isFilterByModelModalVisible, setIsFilterByModelModalVisible] =
+    useState(false);
+  const [isCreateRequestModalVisible, setIsCreateRequestModalVisible] =
     useState(false);
   const [isAddRobotModalVisible, setIsAddRobotModalVisible] = useState(false);
 
@@ -120,6 +125,15 @@ const TaskRequestsPage: React.FC = () => {
     }
   }
 
+  function handleRequestTypeChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    try {
+      const selected = e.target.value;
+      console.log(selected);
+    } catch (err: unknown) {
+      console.log(err);
+    }
+  }
+
   function getStateTextColor(state: string | undefined) {
     switch (state) {
       case "Pending":
@@ -147,6 +161,29 @@ const TaskRequestsPage: React.FC = () => {
           aria-label="tasks-container"
           className="mr-12 mt-8 flex flex-col justify-between gap-y-6 text-left text-lg"
         >
+          <div className="flex flex-row gap-x-4">
+            <motion.button
+              name="createRequest"
+              initial={{ opacity: 0, y: -100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.2,
+                delay: requests?.data.length || 0 * ANIMATION_DELAY,
+              }}
+              onClick={() => {
+                setSelectedRequestType(undefined);
+                setIsCreateRequestModalVisible(true);
+              }}
+              className={`flex w-full items-center justify-center gap-x-10 ${
+                stateFilter ? "bg-slate-400" : "bg-slate-300"
+              } py-4 text-gray-500`}
+            >
+              <div className="flex flex-row items-center gap-x-4 text-lg font-bold text-slate-600">
+                {stateFilter ? <FilterIcon /> : ""}
+                Create Request
+              </div>
+            </motion.button>
+          </div>
           <div className="flex flex-row gap-x-4">
             <motion.button
               name="filterByState"
@@ -416,6 +453,37 @@ const TaskRequestsPage: React.FC = () => {
                 type="confirm"
               >
                 Add
+              </Button>
+            </div>
+          </Modal>
+
+          <Modal
+            setIsVisible={setIsCreateRequestModalVisible}
+            isVisible={isCreateRequestModalVisible}
+            title="Create Request"
+          >
+            <div className="flex h-full flex-col justify-between gap-y-4">
+              <div className="flex w-full flex-col gap-y-4">
+                <div className="flex w-full flex-col gap-x-8 gap-y-4">
+                  <Dropdown
+                    className="w-full"
+                    name="Task"
+                    placeholder="Task"
+                    options={requestTypes.map((t) => ({
+                      code: t.code,
+                      name: t.name,
+                    }))}
+                    onChange={handleRequestTypeChange}
+                    selected={selectedRequestType}
+                  />
+                </div>
+              </div>
+              <Button
+                name="createreq"
+                // onClick={handleFilterByDeviceModelClick}
+                type="confirm"
+              >
+                Create
               </Button>
             </div>
           </Modal>
