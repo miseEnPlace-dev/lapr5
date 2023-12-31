@@ -13,4 +13,5 @@ export default interface IDeviceService {
   inhibitDevice(code: string): Promise<Result<IDeviceDTO>>;
   getDeviceRobotWithCode(code: string): Promise<Result<IDeviceDTO>>;
   getDeviceRobotWithId(id: string): Promise<Result<IDeviceDTO>>;
+  findById(id: string): Promise<Result<IDeviceDTO>>;
 }

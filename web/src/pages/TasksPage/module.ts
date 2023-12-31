@@ -102,6 +102,7 @@ export const useTasksModule = () => {
 
           const room1 = getRoom1();
           const room2 = getRoom2();
+
           if (!room1 || !room2) {
             swal("Error", "Rooms are not defined", "error");
             return;

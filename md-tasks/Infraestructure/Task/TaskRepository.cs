@@ -14,5 +14,4 @@ public class RequestRepository : BaseRepository<DeviceTask, TaskId>, ITaskReposi
   {
     _context = context;
   }
-
 }

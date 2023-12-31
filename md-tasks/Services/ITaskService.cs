@@ -21,5 +21,6 @@ namespace DDDNetCore.Services
     Task<TaskDTO> Delete(TaskId id);
     Task<TaskDTO> AcceptRequest(TaskId id);
     Task<TaskDTO> RejectRequest(TaskId id);
+    Task<TaskDTO> FinishTask(TaskId id);
   }
 }

@@ -84,4 +84,22 @@ export default class TaskController implements ITaskController {
       return next(e);
     }
   }
+
+  public async finishTask(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
+    try {
+      const response = await fetch(`${config.tasksApiUrl}/api/tasks/${req.params.id}`, {
+        method: 'PATCH'
+      });
+
+      const data = await response.json();
+
+      return res.status(200).json(data);
+    } catch (e) {
+      return next(e);
+    }
+  }
 }

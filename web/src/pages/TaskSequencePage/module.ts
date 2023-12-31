@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { useInjection } from "inversify-react";
 
 import { TYPES } from "@/inversify/types";
-import { Request } from "@/model/Request";
 import { Sequence } from "@/model/Sequence";
-import { IRequestService } from "@/service/IService/IRequestService";
+import { Task } from "@/model/Task";
+import { ITaskService } from "@/service/IService/ITaskService";
 
 export const useModule = () => {
-  const requestService = useInjection<IRequestService>(TYPES.requestService);
-  const [requests, setRequests] = useState<Request[]>([]);
+  const tasksService = useInjection<ITaskService>(TYPES.taskService);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [sequence, setSequence] = useState<Sequence>();
   const [loading, setLoading] = useState(false);
+  const [executing, setExecuting] = useState("");
 
   const sanitizeTaskType = (taskType: string) => {
     switch (taskType) {
@@ -25,9 +26,20 @@ export const useModule = () => {
 
   const generateSequence = async () => {
     setLoading(true);
-    const s = await requestService.getSequence();
+    const s = await tasksService.getSequence();
     setLoading(false);
     setSequence(s);
+  };
+
+  const executeTask = async (id: string) => {
+    await tasksService.finishTask(id);
+    setExecuting(id);
+    const newTasks = tasks.filter((task) => task.id !== id);
+    const newSequence = sequence!.tasks.filter((task) => task.id !== id);
+    setTimeout(() => {
+      setTasks(newTasks);
+      setSequence({ ...sequence!, tasks: newSequence });
+    }, 2500);
   };
 
   const sanitizeDate = (date: string) => {
@@ -67,19 +79,22 @@ export const useModule = () => {
   };
 
   useEffect(() => {
-    const fetchRequests = async () => {
-      const { data } = await requestService.getAcceptedRequests();
-      setRequests(data);
+    const fetchTasks = async () => {
+      const data = await tasksService.getTasks();
+      console.log({ data });
+      setTasks(data);
     };
-    fetchRequests();
-  }, [requestService]);
+    fetchTasks();
+  }, [tasksService]);
 
   return {
-    requests,
+    tasks,
     sanitizeTaskType,
     sanitizeDate,
     generateSequence,
     sequence,
     loading,
+    executeTask,
+    executing,
   };
 };

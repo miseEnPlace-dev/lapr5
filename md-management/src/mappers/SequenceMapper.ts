@@ -34,7 +34,8 @@ export class SequenceMapper {
         endFloorCode: task.floorId ? task.floorId : task.startFloorCode!,
         startFloorCode: task.floorId ? task.floorId : task.endFloorCode!,
         userId: task.userId,
-        deviceId: task.deviceId
+        deviceId: task.deviceId,
+        requestedAt: task.createdAt
       })),
       time: sequence.time,
       path

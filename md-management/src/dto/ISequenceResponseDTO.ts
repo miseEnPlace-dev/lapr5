@@ -11,6 +11,7 @@ export interface ISequenceResponseDTO {
     id: string;
     deviceId: string;
     userId: string;
+    createdAt: string;
     confirmationCode?: string;
     pickupUserName?: string;
     deliveryUserName?: string;
