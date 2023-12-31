@@ -33,7 +33,8 @@ export class SequenceMapper {
         type: task.deliveryRoomId ? 'pick_delivery' : 'surveillance',
         endFloorCode: task.floorId ? task.floorId : task.startFloorCode!,
         startFloorCode: task.floorId ? task.floorId : task.endFloorCode!,
-        userId: task.userId
+        userId: task.userId,
+        deviceId: task.deviceId
       })),
       time: sequence.time,
       path

@@ -9,6 +9,7 @@ export interface ISequenceResponseDTO {
     endCoordinateX: number;
     endCoordinateY: number;
     id: string;
+    deviceId: string;
     userId: string;
     confirmationCode?: string;
     pickupUserName?: string;
