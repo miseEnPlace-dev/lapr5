@@ -35,7 +35,7 @@ export default class TaskController implements ITaskController {
         const userOrError = await this.userService.findUserById(task.userId);
         if (userOrError.isFailure) return res.status(400).json({ message: userOrError.error });
 
-        const deviceOrError = await this.deviceService.findById(task.deviceId);
+        const deviceOrError = await this.deviceService.getDeviceRobotWithCode(task.deviceId);
         if (deviceOrError.isFailure) return res.status(400).json({ message: deviceOrError.error });
 
         const user = userOrError.getValue();
