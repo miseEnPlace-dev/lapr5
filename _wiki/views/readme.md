@@ -48,21 +48,31 @@ Note that, as mentioned earlier, this is just one possible implementation and th
 
 #### Logical View
 
-![MDM Level 3 Logical View](level-3/mdm-logical-view/assets/mdm-logical-view.svg)
+![MDM Level 3 Logical View](level-3/mdm-logical-view/assets/logical-view.svg)
 
 #### Implementation View
 
-![MDM Level 3 Implementation View](level-3/mdm-implementation-view/assets/mdm-implementation-view.svg)
+![MDM Level 3 Implementation View](level-3/mdm-implementation-view/assets/implementation-view.svg)
+
+### MD Tasks
+
+#### Logical View
+
+![MDM Level 3 Logical View](level-3/mdt-logical-view/assets/logical-view.svg)
+
+#### Implementation View
+
+![MDM Level 3 Implementation View](level-3/mdt-implementation-view/assets/implementation-view.svg)
 
 ### Visualization
 
 #### Logical View
 
-![UI Level 3 Logical View](level-3/ui-logical-view/assets/ui-logical-view.svg)
+![UI Level 3 Logical View](level-3/ui-logical-view/assets/logical-view.svg)
 
 #### Implementation View
 
-![UI Level 3 Implementation View](level-3/ui-implementation-view/assets/ui-implementation-view.svg)
+![UI Level 3 Implementation View](level-3/ui-implementation-view/assets/implementation-view.svg)
 
 ## Use Case Diagram
 
@@ -73,3 +83,7 @@ Note that, as mentioned earlier, this is just one possible implementation and th
 ### Sprint B
 
 ![Sprint B Use Case Diagram](assets/ucd-sprint-b.svg)
+
+### Sprint C
+
+![Sprint C Use Case Diagram](assets/ucd-sprint-c.svg)

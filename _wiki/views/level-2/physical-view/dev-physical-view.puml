@@ -12,6 +12,8 @@ node "Server 1: ?" as S1 {
   }
   component "Planning" as P <<component>>  { 
   }
+  component "MDTasks" as MDT <<component>>  { 
+  }
   component "HTTP Server" as SERV <<component>> { 
   }
   folder "Visualization" as V {

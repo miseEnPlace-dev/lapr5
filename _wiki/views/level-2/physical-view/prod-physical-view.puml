@@ -17,8 +17,18 @@ node "Server 4: ?" as S4 {
   }
 }
 
+node "Server 6: ?" as S6 {
+  component "MDTasks" as MDT <<component>>  { 
+  }
+}
+
 node "Server 3: ?" as S3 {
   database "MongoDB" as DB <<database>> {
+  }
+}
+
+node "Server 5: ?" as S5 {
+  database "MySQL" as MYSQLDB <<database>> {
   }
 }
 
@@ -30,8 +40,11 @@ node "Server 2: ?" as S2 {
 } 
 
 LOCAL -- S1 : http/s
-LOCAL -- S2 : http/s
+LOCAL --- S2 : http/s
 S1 -- DB : tcp
 S1 -- S4 : http/s
+S6 -- MYSQLDB : tcp
+S6 -- S4 : http/s
+S6 -- S1 : http/s
 
 @enduml
