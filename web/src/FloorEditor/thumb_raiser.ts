@@ -720,11 +720,11 @@ export default class ThumbRaiser {
         clearTimeout(transitionTimeout);
       }, 5000);
     } else {
-      this.changeMaze(index);
+      this.changeMaze(index, true);
     }
   }
 
-  changeMaze(index: number) {
+  changeMaze(index: number, exit?: boolean) {
     // Clear any existing timeouts or intervals that might be pending
     clearTimeout();
     clearInterval();
@@ -738,16 +738,30 @@ export default class ThumbRaiser {
     // Remove the old maze from the scene
     this.scene.remove(this.maze);
 
+    const oldFloor = this.maze.name;
+
     // Update the reference to the new maze
     this.maze = newMaze;
 
     // Add the new maze to the scene
     this.scene.add(this.maze);
 
+    let cellPos;
     // Update player position and direction
-    const cellPos = this.maze.cellToCartesian(
-      this.mazeParameters.mazes[index].maze.player.initialPosition
-    );
+    if (exit) {
+      const e = this.maze.exits.find((e) => e.floorCode === oldFloor);
+      if (e.x == -1) cellPos = this.maze.cellToCartesian([e.x + 1, e.y]);
+      else if (e.y == -1) cellPos = this.maze.cellToCartesian([e.x, e.y + 1]);
+      else if (e.x == this.maze.maze.maze.size.depth)
+        cellPos = this.maze.cellToCartesian([e.x - 1, e.y]);
+      else if (e.y == this.maze.maze.maze.size.width)
+        cellPos = this.maze.cellToCartesian([e.x, e.y - 1]);
+      else cellPos = this.maze.cellToCartesian([e.x, e.y]);
+    } else
+      cellPos = this.maze.cellToCartesian(
+        this.mazeParameters.mazes[index].maze.player.initialPosition
+      );
+
     this.player.position.set(cellPos.x, cellPos.y, cellPos.z);
     this.player.direction =
       this.mazeParameters.mazes[index].maze.player.initialDirection;
@@ -758,10 +772,10 @@ export default class ThumbRaiser {
 
     if (mazeSelect) {
       mazeSelect.innerHTML =
-        `<option key=${floorName} value=${this.mazeParameters.mazes.findIndex(
-          (m) => m.name === floorName
+        `<option key=${oldFloor} value=${this.mazeParameters.mazes.findIndex(
+          (m) => m.name === oldFloor
         )}>
-          ${floorName}
+          ${oldFloor}
         </option>` +
         this.mazeParameters.mazes[index].maze.maze.elevator.floors.map(
           (floor) =>
@@ -774,7 +788,7 @@ export default class ThumbRaiser {
     }
 
     const currentMaze = document.getElementById("mazeSelected");
-    if (currentMaze) currentMaze.innerHTML = floorName;
+    if (currentMaze) currentMaze.innerHTML = oldFloor;
 
     // Hide the maps-panel
     document
