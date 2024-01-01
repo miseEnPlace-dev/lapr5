@@ -17,7 +17,7 @@ interface UserProps {
   role: Role;
   phoneNumber: PhoneNumber;
   nif?: UserNif;
-  state: UserState;
+  state?: UserState;
 }
 
 export class User extends AggregateRoot<UserProps> {
@@ -73,7 +73,7 @@ export class User extends AggregateRoot<UserProps> {
     this.props.phoneNumber = phoneNumber;
   }
 
-  get state(): UserState {
+  get state(): UserState | undefined {
     return this.props.state;
   }
 
@@ -93,7 +93,7 @@ export class User extends AggregateRoot<UserProps> {
     super(props, id);
   }
 
-  public static create(props: Omit<UserProps, 'state'>, id?: UniqueEntityID): Result<User> {
+  public static create(props: UserProps, id?: UniqueEntityID): Result<User> {
     const guardedProps = [
       { argument: props.firstName, argumentName: 'First Name' },
       { argument: props.lastName, argumentName: 'Last Name' },
@@ -110,7 +110,7 @@ export class User extends AggregateRoot<UserProps> {
       const user = new User(
         {
           ...props,
-          state: UserState.create('active')
+          state: props.state ? props.state : UserState.create('active')
         },
         id
       );
