@@ -65,7 +65,7 @@ const FloorEditor: React.FC = () => {
       thumbRaiser = new ThumbRaiser(
         {}, // General Parameters
         {
-          enabled: true,
+          enabled: false,
           introductionClips: [
             {
               url: "./clips/el-gringo-12613.mp3",

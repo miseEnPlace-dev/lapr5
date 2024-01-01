@@ -2,7 +2,7 @@
 autonumber
 actor TM as "Task Manager"
 participant UI as "Visualization" <<system (C4)>>
-participant MMD as "Management Master Data" <<system (C4)>>
+participant MDM as "Management Master Data" <<system (C4)>>
 participant TMD as "Tasks Master Data" <<system (C4)>>
 participant P as "Planning" <<system (C4)>>
 
@@ -11,35 +11,44 @@ activate TM
 TM -> UI : asks to get the sequence of execution of the approved tasks
 activate UI
 
-UI -> MMD : GET /devices
-activate MMD
-MMD --> UI : 200 (list of devices)
-deactivate MMD
+UI -> MDM : GET /devices
+activate MDM
+MDM --> UI : 200 (list of devices)
+deactivate MDM
+UI --> TM : shows list of available devices
 deactivate UI
 
-UI -> MMD : GET /task-requests/sequence
+TM -> UI : selects a device
 activate UI
-activate MMD
-MMD -> TMD : GET /tasks/sequence
+UI -> MDM : GET /tasks/sequence?deviceId=deviceId
+activate MDM
+MDM -> TMD : GET /tasks/sequence?deviceId=deviceId
 activate TMD
-TMD -> P : GET /sequence
+TMD -> P : GET /sequence?deviceId=deviceId
 activate P
-P -> TMD : GET /requests/pick-delivery?status=approved
+P -> MDM : GET /tasks?deviceId=deviceId
+activate MDM
+MDM -> TMD : GET /tasks?filter=device&value=deviceId
 activate TMD
-TMD --> P : GET /requests/pick-delivery?status=approved
+TMD --> MDM : 200 (list of tasks for given device)
 deactivate TMD
+MDM --> P : 200 (list of tasks for given device)
+deactivate MDM
 P -> P : runs algorithm to get the sequence of tasks
 activate P
 deactivate P
-P --> TMD : 200 (sequence of tasks)
+P --> TMD : 200 (sequence of tasks ids)
 deactivate P
-TMD --> MMD : 200 (sequence of tasks)
-MMD -> MMD : enriches the sequence of tasks with the user's & robot information
-activate MMD
-deactivate MMD
+TMD -> TMD : enriches the sequence with task information
+activate TMD
 deactivate TMD
-MMD --> UI : 200 (sequence of tasks)
-deactivate MMD
+TMD --> MDM : 200 (sequence of tasks)
+MDM -> MDM : enriches the sequence of tasks with the user's & robot information
+activate MDM
+deactivate MDM
+deactivate TMD
+MDM --> UI : 200 (sequence of tasks)
+deactivate MDM
 
 TM <-- UI : returns the sequence of tasks
 deactivate UI

@@ -6,12 +6,12 @@ participant SYS as "RobDroneGo System" <<system (C4)>>
 
 activate ADM
 
-ADM -> SYS : asks to create a new user
+ADM -> SYS : asks to list new user's requests
 activate SYS
-ADM <-- SYS : asks user's personal data, including his role in the system
+ADM <-- SYS : lists new user's requests
 deactivate SYS
 
-ADM -> SYS : enters user's personal data
+ADM -> SYS : approves or rejects a new user's request
 activate SYS
 
 ADM <-- SYS : returns a confirmation message

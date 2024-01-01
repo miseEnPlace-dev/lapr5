@@ -34,8 +34,8 @@ public class RequestService : IRequestService
 
   public async Task<PaginationDTO<RequestDTO>> GetAllAsync(int page, int limit)
   {
-    List<Request> surTasks = (await surveillanceTaskRepository.GetAllAsync(-1, -1)).Cast<Request>().ToList();
-    List<Request> pickTasks = (await pickAndDeliveryTaskRepository.GetAllAsync(-1, -1)).Cast<Request>().ToList();
+    List<Request> surTasks = (await surveillanceTaskRepository.GetAllOrderedByRequestedAt(-1, -1)).Cast<Request>().ToList();
+    List<Request> pickTasks = (await pickAndDeliveryTaskRepository.GetAllOrderedByRequestedAt(-1, -1)).Cast<Request>().ToList();
 
     List<Request> tasks = new();
     tasks.AddRange(surTasks);
