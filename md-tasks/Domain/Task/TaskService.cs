@@ -60,7 +60,7 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<PaginationDTO<TaskDTO>> GetAll(int page, int limit)
     {
-      List<DeviceTask> tasks = await taskRepo.GetAllAsync(page - 1, limit);
+      List<DeviceTask> tasks = await taskRepo.GetAllOrderedByCreatedAt(page - 1, limit);
 
       List<TaskDTO> result = new();
 
@@ -98,7 +98,7 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<PaginationDTO<SurveillanceTaskDTO>> GetAllSurveillance(int page, int limit)
     {
-      List<DeviceTask> tasks = await taskRepo.GetAllAsync(page - 1, limit);
+      List<DeviceTask> tasks = await taskRepo.GetAllOrderedByCreatedAt(page - 1, limit);
 
       List<SurveillanceTaskDTO> result = new();
 
@@ -113,7 +113,7 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<PaginationDTO<PickDeliveryTaskDTO>> GetAllPickAndDelivery(int page, int limit)
     {
-      List<DeviceTask> tasks = await taskRepo.GetAllAsync(page - 1, limit);
+      List<DeviceTask> tasks = await taskRepo.GetAllOrderedByCreatedAt(page - 1, limit);
 
       List<PickDeliveryTaskDTO> result = new();
 
