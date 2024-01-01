@@ -27,9 +27,12 @@ export class UserEmail extends ValueObject<UserEmailProps> {
     if (!regex.test(email)) return Result.fail<UserEmail>('Invalid email format');
 
     const domain = /[^@]*$/.exec(email)![0];
-    if (config.allowedEmailDomain && domain != config.allowedEmailDomain)
+    if (config.allowedEmailDomains && !config.allowedEmailDomains.includes(domain))
       return Result.fail<UserEmail>(
-        'Invalid email domain: it should be ' + config.allowedEmailDomain
+        'Invalid email domain: ' +
+          domain +
+          '. Allowed domains: ' +
+          config.allowedEmailDomains.join(', ')
       );
 
     return Result.ok<UserEmail>(new UserEmail({ value: email }));

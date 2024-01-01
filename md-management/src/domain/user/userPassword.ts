@@ -76,4 +76,12 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
       })
     );
   }
+
+  public static createEmpty(): Result<UserPassword> {
+    return Result.ok<UserPassword>(
+      new UserPassword({
+        value: ''
+      })
+    );
+  }
 }

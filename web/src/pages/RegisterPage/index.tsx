@@ -1,68 +1,30 @@
-import { useRef, useState } from "react";
-import { useInjection } from "inversify-react";
-import { Link, useNavigate } from "react-router-dom";
-import swal from "sweetalert";
-
-import { TYPES } from "@/inversify/types";
-import { useNif } from "@/hooks/useNif";
-import { usePhoneNumber } from "@/hooks/usePhoneNumber";
-import { IUserService } from "@/service/IService/IUserService";
+import { Link } from "react-router-dom";
 
 import Button from "../../components/Button";
 import Input from "../../components/Input";
-import { useEmail } from "../../hooks/useEmail";
-
-import { Axios, AxiosError } from "axios";
+import { useRegisterPageModule } from "./module";
 
 const RegisterPage: React.FC = () => {
-  const navigate = useNavigate();
-
-  const userService = useInjection<IUserService>(TYPES.userService);
-
-  const { email, setEmail, isEmailValid } = useEmail("");
-  const [password, setPassword] = useState("");
-  const { phoneNumber, setPhoneNumber, isPhoneNumberValid } =
-    usePhoneNumber("");
-  const { nif, setNif, isNifValid } = useNif("");
-  const firstNameInputRef = useRef<HTMLInputElement>(null);
-  const lastNameInputRef = useRef<HTMLInputElement>(null);
-  const [isAgreed, setIsAgreed] = useState(false);
-
-  const handleRegister = async () => {
-    if (
-      !isEmailValid ||
-      !password ||
-      !firstNameInputRef.current ||
-      !lastNameInputRef.current ||
-      !isPhoneNumberValid ||
-      !isNifValid ||
-      !isAgreed
-    )
-      return;
-
-    try {
-      await userService.register({
-        email,
-        password,
-        firstName: firstNameInputRef.current.value,
-        lastName: lastNameInputRef.current?.value,
-        nif,
-        phoneNumber,
-        role: "user",
-      });
-      swal(
-        "Success",
-        "You must now wait for an Administrator to approve your account",
-        "success"
-      );
-      navigate("/login");
-    } catch (err) {
-      if (err instanceof AxiosError && err.response?.data.message)
-        swal("Error", err.response.data.message, "error");
-      else swal("Error", "Error creating account", "error");
-      setPassword("");
-    }
-  };
+  const {
+    email,
+    setEmail,
+    isEmailValid,
+    password,
+    setPassword,
+    phoneNumber,
+    setPhoneNumber,
+    isPhoneNumberValid,
+    nif,
+    setNif,
+    isNifValid,
+    firstNameInputRef,
+    lastNameInputRef,
+    isAgreed,
+    setIsAgreed,
+    handleRegister,
+    googleUserInfo,
+    handleRegisterWithGoogle,
+  } = useRegisterPageModule();
 
   return (
     <div className="flex h-screen items-center justify-center">
@@ -76,83 +38,167 @@ const RegisterPage: React.FC = () => {
             src="/assets/logos/light/svg/logo-no-background.svg"
             alt="Logo dark"
           />
+          {googleUserInfo && (
+            <div className="mt-5 flex w-full flex-col items-center justify-center">
+              <h3 className="mb-1 text-xl font-bold text-slate-700">
+                Welcome, {googleUserInfo.name}!
+              </h3>
+              <p className="text-slate-600">
+                Please fill in the rest of your information to complete your
+                account.
+              </p>
+            </div>
+          )}
         </div>
         <form className="flex w-full flex-col gap-y-4">
-          <div className="flex w-full items-center gap-x-4">
-            <Input
-              placeholder="First Name"
-              type="text"
-              className="w-full"
-              inputRef={firstNameInputRef}
-            />
-            <Input
-              placeholder="Last Name"
-              className="w-full"
-              type="text"
-              inputRef={lastNameInputRef}
-            />
-          </div>
-          <div className="flex w-full items-center gap-x-4">
-            <Input
-              placeholder="Phone Number"
-              type="text"
-              className="w-3/4"
-              value={phoneNumber}
-              onChange={setPhoneNumber}
-            />
-            <Input
-              placeholder="NIF"
-              type="text"
-              className="w-full"
-              value={nif}
-              onChange={setNif}
-            />
-          </div>
-          <Input
-            placeholder="Email"
-            type="email"
-            value={email}
-            onChange={setEmail}
-          />
-          <Input
-            placeholder="Password"
-            type="password"
-            value={password}
-            onChange={setPassword}
-          />
-          <div className="flex items-center gap-x-2">
-            <input
-              type="checkbox"
-              onChange={(e) => setIsAgreed(e.target.checked)}
-            />
-            <label className="text-slate-600">
-              I agree to the{" "}
-              <Link to="/privacy-policy" className="text-primary underline">
-                Privacy Policy
-              </Link>
-            </label>
-          </div>
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              handleRegister();
-            }}
-            name="register"
-            disabled={
-              !isEmailValid ||
-              !password ||
-              !isPhoneNumberValid ||
-              !isAgreed ||
-              !isNifValid
-            }
-            className="mt-2 w-full"
-          >
-            Register
-          </Button>
+          {!googleUserInfo ? (
+            <>
+              <div className="flex w-full items-center gap-x-4">
+                <Input
+                  placeholder="First Name"
+                  type="text"
+                  className="w-full"
+                  inputRef={firstNameInputRef}
+                />
+                <Input
+                  placeholder="Last Name"
+                  className="w-full"
+                  type="text"
+                  inputRef={lastNameInputRef}
+                />
+              </div>
+              <div className="flex w-full items-center gap-x-4">
+                <Input
+                  placeholder="Phone Number"
+                  type="text"
+                  className="w-3/4"
+                  value={phoneNumber}
+                  onChange={setPhoneNumber}
+                />
+                <Input
+                  placeholder="NIF"
+                  type="text"
+                  className="w-full"
+                  value={nif}
+                  onChange={setNif}
+                />
+              </div>
+              <Input
+                placeholder="Email"
+                type="email"
+                value={email}
+                onChange={setEmail}
+              />
+              <Input
+                placeholder="Password"
+                type="password"
+                value={password}
+                onChange={setPassword}
+              />
+              <div className="flex items-center gap-x-2">
+                <input
+                  type="checkbox"
+                  onChange={(e) => setIsAgreed(e.target.checked)}
+                />
+                <label className="text-slate-600">
+                  I agree to the{" "}
+                  <Link to="/privacy-policy" className="text-primary underline">
+                    Privacy Policy
+                  </Link>
+                </label>
+              </div>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleRegister();
+                }}
+                name="register"
+                disabled={
+                  !isEmailValid ||
+                  !password ||
+                  !isPhoneNumberValid ||
+                  !isAgreed ||
+                  !isNifValid
+                }
+                className="mt-2 w-full"
+              >
+                Register
+              </Button>
+            </>
+          ) : (
+            <>
+              <div className="flex w-full items-center gap-x-4">
+                <Input
+                  placeholder="First Name"
+                  type="text"
+                  className="w-full"
+                  disabled
+                  value={googleUserInfo.given_name}
+                  onChange={setEmail}
+                />
+                <Input
+                  placeholder="Last Name"
+                  className="w-full"
+                  disabled
+                  value={googleUserInfo.family_name}
+                  type="text"
+                  onChange={setEmail}
+                />
+              </div>
+              <div className="flex w-full items-center gap-x-4">
+                <Input
+                  placeholder="Phone Number"
+                  type="text"
+                  className="w-3/4"
+                  value={phoneNumber}
+                  onChange={setPhoneNumber}
+                />
+                <Input
+                  placeholder="NIF"
+                  type="text"
+                  className="w-full"
+                  value={nif}
+                  onChange={setNif}
+                />
+              </div>
+              <Input
+                placeholder="Email"
+                type="email"
+                disabled
+                value={googleUserInfo.email}
+                onChange={setEmail}
+              />
+              <div className="flex items-center gap-x-2">
+                <input
+                  type="checkbox"
+                  onChange={(e) => setIsAgreed(e.target.checked)}
+                />
+                <label className="text-slate-600">
+                  I agree to the{" "}
+                  <Link to="/privacy-policy" className="text-primary underline">
+                    Privacy Policy
+                  </Link>
+                </label>
+              </div>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleRegisterWithGoogle();
+                }}
+                name="register"
+                disabled={!isPhoneNumberValid || !isAgreed || !isNifValid}
+                className="mt-2 w-full"
+              >
+                Register
+              </Button>
+            </>
+          )}
         </form>
-        <Link to="/login" className="text-slate-600 underline">
-          Already have an account? Login here
-        </Link>
+        {!googleUserInfo && (
+          <Link to="/login" className="text-slate-600 underline">
+            Already have an account? Login here
+          </Link>
+        )}
       </main>
     </div>
   );

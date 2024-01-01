@@ -3,11 +3,14 @@ import { inject, injectable } from "inversify";
 import { TYPES } from "@/inversify/types";
 import { localStorageConfig } from "@/config/localStorageConfig";
 import { IPaginationDTO } from "@/dto/IPaginationDTO";
+import { GoogleUserInfo } from "@/model/GoogleUserInfo";
 import { Role } from "@/model/Role";
 import { User } from "@/model/User";
 
 import { HttpService } from "./IService/HttpService";
 import { IUserService, UserSession } from "./IService/IUserService";
+
+import axios from "axios";
 
 @injectable()
 export class UserService implements IUserService {
@@ -108,6 +111,27 @@ export class UserService implements IUserService {
         },
       }
     );
+  }
+
+  async checkIfUserExistsByGoogleCredential(
+    credential: string
+  ): Promise<boolean> {
+    const email = await this.getGoogleUserInfo(credential).then(
+      (info) => info.email
+    );
+    const exists = await this.http.get<{
+      exists: boolean;
+    }>(`/users/${email}`);
+
+    return exists.data?.exists;
+  }
+
+  async getGoogleUserInfo(credential: string): Promise<GoogleUserInfo> {
+    const res = await axios.get<GoogleUserInfo>(
+      "https://oauth2.googleapis.com/tokeninfo?id_token=" + credential
+    );
+
+    return res.data;
   }
 
   async rejectRequest(id: string): Promise<void> {

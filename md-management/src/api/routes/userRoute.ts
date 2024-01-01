@@ -22,7 +22,8 @@ const signUpSchema = z.object({
   password: z
     .string()
     .min(8)
-    .max(255),
+    .max(255)
+    .optional(),
   role: z
     .string()
     .min(1)
@@ -58,6 +59,10 @@ const signInSchema = z.object({
     .max(255)
 });
 
+const googleSignInSchema = z.object({
+  credential: z.string()
+});
+
 export default (app: Router) => {
   const route = Router();
   const userController = container.get<IUserController>(TYPES.userController);
@@ -75,6 +80,16 @@ export default (app: Router) => {
       // #swagger.responses[200] = { description: 'The users' }
       // #swagger.responses[400] = { description: 'Invalid input' }
       userController.getUsers(req, res, next)
+  );
+
+  route.get('/users/:email', (req, res, next) =>
+    // #swagger.tags = ['Users']
+    // #swagger.summary = 'Get users'
+    // #swagger.description = 'Get all users'
+    // #swagger.queryParameters['filter'] = { description: 'Filter users', in: 'query', required: false }
+    // #swagger.responses[200] = { description: 'The users' }
+    // #swagger.responses[400] = { description: 'Invalid input' }
+    userController.userExists(req, res, next)
   );
 
   route.post('/users/signup', validate(signUpSchema), (req, res, next) =>
@@ -147,6 +162,16 @@ export default (app: Router) => {
     // #swagger.responses[200] = { description: 'The logged user' }
     // #swagger.responses[400] = { description: 'Invalid input' }
     userController.signIn(req, res, next)
+  );
+
+  route.post('/users/google-login', validate(googleSignInSchema), (req, res, next) =>
+    // #swagger.tags = ['Users']
+    // #swagger.summary = 'Sign in'
+    // #swagger.description = 'Sign in a user'
+    // #swagger.parameters['user'] = { description: 'User login credentials', in: 'body', required: true }
+    // #swagger.responses[200] = { description: 'The logged user' }
+    // #swagger.responses[400] = { description: 'Invalid input' }
+    userController.signInWithGoogle(req, res, next)
   );
 
   /**

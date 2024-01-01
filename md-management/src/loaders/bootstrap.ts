@@ -1502,9 +1502,9 @@ export default class Bootstrapper {
       serialNumber: 'RBT1',
       isAvailable: true,
       initialCoordinates: {
-        width: 1,
-        depth: 1,
-        floorCode: 'a1'
+        width: 7,
+        depth: 21,
+        floorCode: 'b1'
       }
     });
 
@@ -1516,9 +1516,9 @@ export default class Bootstrapper {
       serialNumber: 'RBT2',
       isAvailable: true,
       initialCoordinates: {
-        width: 1,
-        depth: 1,
-        floorCode: 'a1'
+        width: 7,
+        depth: 21,
+        floorCode: 'b1'
       }
     });
 
@@ -1530,9 +1530,9 @@ export default class Bootstrapper {
       serialNumber: 'RBT3',
       isAvailable: true,
       initialCoordinates: {
-        width: 1,
-        depth: 1,
-        floorCode: 'a1'
+        width: 8,
+        depth: 21,
+        floorCode: 'b2'
       }
     });
 
