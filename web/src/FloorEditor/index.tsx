@@ -370,7 +370,11 @@ const FloorEditor: React.FC = () => {
           initialZoom: 0.32,
           zoomMin: 0.32,
           zoomMax: 2.56,
-        } // Mini-map view camera parameters
+        }, // Mini-map view camera parameters
+        {
+          isAutomated: !!route,
+          route,
+        } // automated parameters
       );
     }
 

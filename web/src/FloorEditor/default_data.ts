@@ -236,3 +236,8 @@ export const cameraData = {
   far: 100.0, // Back clipping plane
   initialFogDensity: 0.00025, // Doesn't apply to mini-map camera
 };
+
+export const automatedData = {
+  isAutomated: false,
+  route: null,
+};

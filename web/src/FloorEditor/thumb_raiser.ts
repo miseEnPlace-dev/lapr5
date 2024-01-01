@@ -24,6 +24,7 @@ import CubeTexture from "./cubetexture.ts";
 import {
   ambientLightData,
   audioData,
+  automatedData,
   cameraData,
   collisionDetectionData,
   cubeTextureData,
@@ -388,7 +389,8 @@ export default class ThumbRaiser {
     firstPersonViewCameraParameters,
     thirdPersonViewCameraParameters,
     topViewCameraParameters,
-    miniMapCameraParameters
+    miniMapCameraParameters,
+    automatedParameters
   ) {
     this.currentCamera = -1;
     this.generalParameters = merge({}, generalData, generalParameters);
@@ -448,6 +450,9 @@ export default class ThumbRaiser {
       cameraData,
       miniMapCameraParameters
     );
+
+    this.automatedParameters = merge({}, automatedData, automatedParameters);
+    this.currRouteIndex = 0;
 
     // Set the game state
     this.gameRunning = false;
@@ -575,8 +580,8 @@ export default class ThumbRaiser {
       LOCAL_STORAGE_PREFIX + "fixedViewCamera"
     )
       ? JSON.parse(
-        localStorage.getItem(LOCAL_STORAGE_PREFIX + "fixedViewCamera")
-      )
+          localStorage.getItem(LOCAL_STORAGE_PREFIX + "fixedViewCamera")
+        )
       : true;
     this.firstPersonViewCamera.checkBox =
       document.getElementById("first-person");
@@ -584,8 +589,8 @@ export default class ThumbRaiser {
       LOCAL_STORAGE_PREFIX + "firstPersonViewCamera"
     )
       ? JSON.parse(
-        localStorage.getItem(LOCAL_STORAGE_PREFIX + "firstPersonViewCamera")
-      )
+          localStorage.getItem(LOCAL_STORAGE_PREFIX + "firstPersonViewCamera")
+        )
       : true;
     this.thirdPersonViewCamera.checkBox =
       document.getElementById("third-person");
@@ -593,8 +598,8 @@ export default class ThumbRaiser {
       LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera"
     )
       ? JSON.parse(
-        localStorage.getItem(LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera")
-      )
+          localStorage.getItem(LOCAL_STORAGE_PREFIX + "thirdPersonViewCamera")
+        )
       : true;
     this.topViewCamera.checkBox = document.getElementById("top");
     this.topViewCamera.checkBox.checked = localStorage.getItem(
@@ -709,7 +714,6 @@ export default class ThumbRaiser {
         }
         clearTimeout(transitionTimeout);
       }, 5000);
-
     } else {
       this.changeMaze(index);
     }
@@ -736,9 +740,12 @@ export default class ThumbRaiser {
     this.scene.add(this.maze);
 
     // Update player position and direction
-    const cellPos = this.maze.cellToCartesian(this.mazeParameters.mazes[index].maze.player.initialPosition);
+    const cellPos = this.maze.cellToCartesian(
+      this.mazeParameters.mazes[index].maze.player.initialPosition
+    );
     this.player.position.set(cellPos.x, cellPos.y, cellPos.z);
-    this.player.direction = this.mazeParameters.mazes[index].maze.player.initialDirection;
+    this.player.direction =
+      this.mazeParameters.mazes[index].maze.player.initialDirection;
 
     // Update UI elements
     const mazeSelect = document.getElementById("maze") as HTMLSelectElement;
@@ -746,12 +753,16 @@ export default class ThumbRaiser {
 
     if (mazeSelect) {
       mazeSelect.innerHTML =
-        `<option key=${floorName} value=${this.mazeParameters.mazes.findIndex((m) => m.name === floorName)}>
+        `<option key=${floorName} value=${this.mazeParameters.mazes.findIndex(
+          (m) => m.name === floorName
+        )}>
           ${floorName}
         </option>` +
         this.mazeParameters.mazes[index].maze.maze.elevator.floors.map(
           (floor) =>
-            `<option key=${floor} value=${this.mazeParameters.mazes.findIndex((m) => m.name === floor)}>
+            `<option key=${floor} value=${this.mazeParameters.mazes.findIndex(
+              (m) => m.name === floor
+            )}>
               ${floor}
             </option>`
         );
@@ -761,7 +772,9 @@ export default class ThumbRaiser {
     if (currentMaze) currentMaze.innerHTML = floorName;
 
     // Hide the maps-panel
-    document.getElementById("maps-panel")?.setAttribute("style", "display:none");
+    document
+      .getElementById("maps-panel")
+      ?.setAttribute("style", "display:none");
 
     // Make sure the renderer is updated
     this.renderer.render(this.scene, this.camera);
@@ -1317,12 +1330,12 @@ export default class ThumbRaiser {
                   ((mouseIncrement.x / this.miniMapCamera.viewport.width) *
                     (this.miniMapCamera.orthographic.left -
                       this.miniMapCamera.orthographic.right)) /
-                  this.miniMapCamera.orthographic.zoom,
+                    this.miniMapCamera.orthographic.zoom,
                   0.0,
                   ((mouseIncrement.y / this.miniMapCamera.viewport.height) *
                     (this.miniMapCamera.orthographic.top -
                       this.miniMapCamera.orthographic.bottom)) /
-                  this.miniMapCamera.orthographic.zoom
+                    this.miniMapCamera.orthographic.zoom
                 );
                 this.miniMapCamera.updateTarget(targetIncrement);
               }
@@ -1338,13 +1351,13 @@ export default class ThumbRaiser {
         (((event.clientX - rect.left) * canvas.width) /
           rect.width /
           canvas.width) *
-        2 -
+          2 -
         1;
       pos.y =
         (((event.clientY - rect.top) * canvas.height) /
           rect.height /
           canvas.height) *
-        -2 +
+          -2 +
         1;
 
       const raycaster = new THREE.Raycaster();
@@ -1643,11 +1656,18 @@ export default class ThumbRaiser {
         this.animations = new Animations(this.player);
 
         // Set the player's position and direction
-        this.player.position.set(
-          this.maze.initialPosition.x,
-          this.maze.initialPosition.y,
-          this.maze.initialPosition.z
-        );
+        // if automated set to the first pos of the route
+        if (!this.automatedParameters.isAutomated) {
+          this.player.position.set(
+            this.maze.initialPosition.x,
+            this.maze.initialPosition.y,
+            this.maze.initialPosition.z
+          );
+        } else {
+          const route = this.automatedParameters.route;
+          const pos = this.maze.cellToCartesian([route[0].x, route[0].y]);
+          this.player.position.set(pos.x, this.maze.initialPosition.y, pos.z);
+        }
         this.player.direction = this.maze.initialDirection;
 
         // Set the spotlight target
@@ -1812,35 +1832,56 @@ export default class ThumbRaiser {
           }
           let playerTurned = false;
           let directionDeg = this.player.direction;
-          if (this.player.keyStates.left) {
-            playerTurned = true;
-            directionDeg += directionIncrement;
-          } else if (this.player.keyStates.right) {
-            playerTurned = true;
-            directionDeg -= directionIncrement;
-          }
+
           const directionRad = THREE.MathUtils.degToRad(directionDeg);
           let playerMoved = false;
           const position = this.player.position.clone();
-          if (this.player.keyStates.backward) {
-            playerMoved = true;
-            position.sub(
-              new THREE.Vector3(
-                coveredDistance * Math.sin(directionRad),
-                0.0,
-                coveredDistance * Math.cos(directionRad)
-              )
-            );
-          } else if (this.player.keyStates.forward) {
-            playerMoved = true;
-            position.add(
-              new THREE.Vector3(
-                coveredDistance * Math.sin(directionRad),
-                0.0,
-                coveredDistance * Math.cos(directionRad)
-              )
-            );
+
+          // enable player controls if automated
+          if (!this.automatedParameters.isAutomated) {
+            if (this.player.keyStates.left) {
+              playerTurned = true;
+              directionDeg += directionIncrement;
+            } else if (this.player.keyStates.right) {
+              playerTurned = true;
+              directionDeg -= directionIncrement;
+            }
+
+            if (this.player.keyStates.backward) {
+              playerMoved = true;
+              position.sub(
+                new THREE.Vector3(
+                  coveredDistance * Math.sin(directionRad),
+                  0.0,
+                  coveredDistance * Math.cos(directionRad)
+                )
+              );
+            } else if (this.player.keyStates.forward) {
+              playerMoved = true;
+              position.add(
+                new THREE.Vector3(
+                  coveredDistance * Math.sin(directionRad),
+                  0.0,
+                  coveredDistance * Math.cos(directionRad)
+                )
+              );
+            }
+          } else {
+            // const position = this.player.position.clone();
+            // console.log(position);
+
+            // automate player controls
+            const route = this.automatedParameters.route;
+            const current = route[this.currRouteIndex];
+            const pos = this.maze.cellToCartesian([current.x, current.y]);
+
+            if (this.currRouteIndex === 0) {
+              // this.player.position.set(pos.x, this.maze.initialPosition.y, pos.z);
+              console.log(pos);
+              this.currRouteIndex++;
+            }
           }
+
           this.maze.models.forEach((model) => {
             model.forEach((clip) => {
               clip.mixer.update(0.01);
