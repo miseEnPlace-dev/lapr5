@@ -371,6 +371,8 @@ import Stats from "three/addons/libs/stats.module.js";
 
 export const LOCAL_STORAGE_PREFIX = "@thumb-raiser:";
 
+const CELL_TO_CARTESIAN_OFFSET = { x: 1.5, y: 1.25 };
+
 export default class ThumbRaiser {
   constructor(
     generalParameters,
@@ -1669,8 +1671,8 @@ export default class ThumbRaiser {
         } else {
           const route = this.automatedParameters.route;
           const pos = this.maze.cellToCartesian([
-            route[0].x - 1,
-            route[0].y - 1,
+            route[0].x - CELL_TO_CARTESIAN_OFFSET.x,
+            route[0].y - CELL_TO_CARTESIAN_OFFSET.y,
           ]);
           this.player.position.set(pos.x, this.maze.initialPosition.y, pos.z);
         }
@@ -1883,12 +1885,13 @@ export default class ThumbRaiser {
               this.currRouteIndex++;
             } else if (this.currRouteIndex === route.length) {
               this.automatedParameters.isAutomated = false;
-              console.log("end");
+              this.player.direction += 180;
+              this.finalSequence();
             } else {
               const currentRoutePos = route[this.currRouteIndex];
               const goToPos = this.maze.cellToCartesian([
-                currentRoutePos.x - 1,
-                currentRoutePos.y - 1,
+                currentRoutePos.x - CELL_TO_CARTESIAN_OFFSET.x,
+                currentRoutePos.y - CELL_TO_CARTESIAN_OFFSET.y,
               ]);
 
               // advance to next route pos if close enough
@@ -1920,14 +1923,38 @@ export default class ThumbRaiser {
                 // console.log("goToPos", goToPos.x, goToPos.z);
                 // console.log(moveX, moveZ);
 
-                playerMoved = true;
-                position.add(
-                  new THREE.Vector3(
-                    coveredDistance * moveX,
-                    0.0,
-                    coveredDistance * moveZ
-                  )
-                );
+                // fix rotation
+                const shouldBeRotation = Math.atan2(moveX, moveZ);
+                const rotationDiff = shouldBeRotation - directionRad;
+                const rotationDiffDeg =
+                  THREE.MathUtils.radToDeg(rotationDiff) % 360;
+                const rotationDiffAbs = Math.abs(rotationDiffDeg);
+
+                // console.log(rotationDiffAbs);
+
+                if (rotationDiffAbs < 1.0 || rotationDiffAbs > 359.0) {
+                  playerMoved = true;
+                  position.add(
+                    new THREE.Vector3(
+                      coveredDistance * moveX,
+                      0.0,
+                      coveredDistance * moveZ
+                    )
+                  );
+                } else {
+                  playerTurned = true;
+                  if (rotationDiffAbs < 180) {
+                    directionDeg +=
+                      rotationDiffDeg > 0
+                        ? directionIncrement
+                        : -directionIncrement;
+                  } else {
+                    directionDeg +=
+                      rotationDiffDeg > 0
+                        ? -directionIncrement
+                        : directionIncrement;
+                  }
+                }
               }
             }
           }
