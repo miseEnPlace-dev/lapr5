@@ -190,7 +190,10 @@ const TaskSequencePage: React.FC = () => {
         )}
         {loading && <Loading />}
         {!loading && sequence && sequence.tasks.length > 0 && (
-          <section className="my-6 flex w-full flex-col items-center gap-y-8 pr-12">
+          <section className="relative my-6 flex w-full flex-col items-center gap-y-8 pr-12">
+            <h2 className="absolute -top-12 right-12 text-xl font-bold">
+              Est. time: {sequence.time.toFixed(1)}
+            </h2>
             {sequence.tasks.map((task, i) => (
               <motion.article
                 key={task.id}
@@ -212,10 +215,18 @@ const TaskSequencePage: React.FC = () => {
                     delay: executing === task.id ? 2 : 0,
                   },
                 }}
-                className="flex h-28 w-full items-center justify-between rounded-lg bg-slate-100 px-8"
+                className="flex h-32 w-full items-center justify-between rounded-lg bg-slate-100 px-8"
               >
                 <div className="flex items-center">
                   <h2 className="text-5xl font-bold">#{i + 1}</h2>
+                  <div className="ml-8 flex h-full flex-col justify-between">
+                    <h2 className="text-base">
+                      <b>By</b> {task.user.firstName} {task.user.lastName}
+                    </h2>
+                    <h2 className="text-base">
+                      <b>Type</b> {sanitizeTaskType(task.type)}
+                    </h2>
+                  </div>
                   <div className="ml-8 flex flex-col">
                     <span className="text-base capitalize">
                       <b>From</b> {task.startFloorCode}: {task.startCoordinateX}
