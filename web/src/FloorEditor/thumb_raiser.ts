@@ -770,10 +770,12 @@ export default class ThumbRaiser {
 
     if (mazeSelect) {
       mazeSelect.innerHTML =
-        `<option key=${oldFloor} value=${this.mazeParameters.mazes.findIndex(
-          (m) => m.name === oldFloor
+        `<option key=${
+          this.maze.name
+        } value=${this.mazeParameters.mazes.findIndex(
+          (m) => m.name === this.maze.name
         )}>
-          ${oldFloor}
+          ${this.maze.name}
         </option>` +
         this.mazeParameters.mazes[index].maze.maze.elevator.floors.map(
           (floor) =>
@@ -786,7 +788,7 @@ export default class ThumbRaiser {
     }
 
     const currentMaze = document.getElementById("mazeSelected");
-    if (currentMaze) currentMaze.innerHTML = oldFloor;
+    if (currentMaze) currentMaze.innerHTML = this.maze.name;
 
     // Hide the maps-panel
     document
