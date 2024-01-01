@@ -49,7 +49,7 @@ describe('User', () => {
 
   it('should create a new user', () => {
     const result = User.create({
-      email: UserEmail.create('email@email.com').getValue(),
+      email: UserEmail.create('email@isep.ipp.pt').getValue(),
       password: UserPassword.create({
         value: 'Password1'
       }).getValue(),

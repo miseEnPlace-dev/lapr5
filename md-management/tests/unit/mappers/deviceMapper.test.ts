@@ -6,21 +6,21 @@ import { UniqueEntityID } from '../../../src/core/domain/UniqueEntityID';
 import { Device } from '../../../src/domain/device/device';
 import { DeviceCode } from '../../../src/domain/device/deviceCode';
 import { DeviceNickname } from '../../../src/domain/device/deviceNickname';
-import { container } from '../../../src/loaders/inversify';
-import { DeviceMapper } from '../../../src/mappers/DeviceMapper';
-import { DeviceModelCode } from '../../../src/domain/deviceModel/deviceModelCode';
 import { DeviceModel } from '../../../src/domain/deviceModel/deviceModel';
-import { DeviceModelName } from '../../../src/domain/deviceModel/deviceModelName';
 import { DeviceModelBrand } from '../../../src/domain/deviceModel/deviceModelBrand';
+import { DeviceModelCode } from '../../../src/domain/deviceModel/deviceModelCode';
+import { DeviceModelName } from '../../../src/domain/deviceModel/deviceModelName';
 import { Task } from '../../../src/domain/shared/task';
+import { container } from '../../../src/loaders/inversify';
 import { TYPES } from '../../../src/loaders/inversify/types';
+import { DeviceMapper } from '../../../src/mappers/DeviceMapper';
 import IDeviceModelRepo from '../../../src/services/IRepos/IDeviceModelRepo';
 
 import { stub } from 'sinon';
-import { DeviceCoordinates } from '../../../src/domain/device/deviceCoordinates';
-import { FloorCode } from '../../../src/domain/floor/floorCode';
-import { Floor } from '../../../src/domain/floor/floor';
 import { BuildingCode } from '../../../src/domain/building/buildingCode';
+import { DeviceCoordinates } from '../../../src/domain/device/deviceCoordinates';
+import { Floor } from '../../../src/domain/floor/floor';
+import { FloorCode } from '../../../src/domain/floor/floorCode';
 import { FloorDimensions } from '../../../src/domain/floor/floorDimensions';
 import IFloorRepo from '../../../src/services/IRepos/IFloorRepo';
 
@@ -36,6 +36,7 @@ describe('Device Mapper', () => {
   it('should map device to a dto', () => {
     const deviceDTO = {
       code: '1',
+      id: '1',
       nickname: 'name',
       modelCode: '1',
       serialNumber: '1',
@@ -47,24 +48,27 @@ describe('Device Mapper', () => {
       }
     };
 
-    const device = Device.create({
-      code: DeviceCode.create('1').getValue(),
-      nickname: DeviceNickname.create('name').getValue(),
-      model: DeviceModel.create({
-        code: DeviceModelCode.create('1').getValue(),
-        type: 'robot',
-        name: DeviceModelName.create('name').getValue(),
-        brand: DeviceModelBrand.create('brand').getValue(),
-        capabilities: [Task.create('pick_delivery').getValue()]
-      }).getValue(),
-      serialNumber: DeviceCode.create('1').getValue(),
-      isAvailable: true,
-      initialCoordinates: DeviceCoordinates.create(
-        1,
-        1,
-        FloorCode.create('b1').getValue()
-      ).getValue()
-    });
+    const device = Device.create(
+      {
+        code: DeviceCode.create('1').getValue(),
+        nickname: DeviceNickname.create('name').getValue(),
+        model: DeviceModel.create({
+          code: DeviceModelCode.create('1').getValue(),
+          type: 'robot',
+          name: DeviceModelName.create('name').getValue(),
+          brand: DeviceModelBrand.create('brand').getValue(),
+          capabilities: [Task.create('pick_delivery').getValue()]
+        }).getValue(),
+        serialNumber: DeviceCode.create('1').getValue(),
+        isAvailable: true,
+        initialCoordinates: DeviceCoordinates.create(
+          1,
+          1,
+          FloorCode.create('b1').getValue()
+        ).getValue()
+      },
+      UniqueEntityID.create('1')
+    );
 
     const result = DeviceMapper.toDTO(device.getValue());
 

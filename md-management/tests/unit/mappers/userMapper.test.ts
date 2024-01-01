@@ -3,20 +3,19 @@ import 'reflect-metadata';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { UniqueEntityID } from '../../../src/core/domain/UniqueEntityID';
+import { Role } from '../../../src/domain/role/role';
+import { RoleName } from '../../../src/domain/role/roleName';
+import { RoleTitle } from '../../../src/domain/role/roleTitle';
+import { PhoneNumber } from '../../../src/domain/user/phoneNumber';
 import { User } from '../../../src/domain/user/user';
 import { UserEmail } from '../../../src/domain/user/userEmail';
 import { UserPassword } from '../../../src/domain/user/userPassword';
-import { PhoneNumber } from '../../../src/domain/user/phoneNumber';
-import { Role } from '../../../src/domain/role/role';
 import { container } from '../../../src/loaders/inversify';
-import { UserMapper } from '../../../src/mappers/UserMapper';
-import { RoleName } from '../../../src/domain/role/roleName';
-import { RoleTitle } from '../../../src/domain/role/roleTitle';
 import { TYPES } from '../../../src/loaders/inversify/types';
+import { UserMapper } from '../../../src/mappers/UserMapper';
 import IRoleRepo from '../../../src/services/IRepos/IRoleRepo';
 
 import { stub } from 'sinon';
-import { UserState } from '../../../src/domain/user/userState';
 
 describe('User Mapper', () => {
   beforeEach(() => {
@@ -32,7 +31,7 @@ describe('User Mapper', () => {
       id: '1',
       firstName: 'firstName',
       lastName: 'lastName',
-      email: 'email@email.com',
+      email: 'email@isep.ipp.pt',
       password: '',
       phoneNumber: '911234567',
       role: 'ADMIN',
@@ -43,7 +42,7 @@ describe('User Mapper', () => {
       {
         firstName: 'firstName',
         lastName: 'lastName',
-        email: UserEmail.create('email@email.com').getValue(),
+        email: UserEmail.create('email@isep.ipp.pt').getValue(),
         password: UserPassword.create({
           value: 'Password-1',
           hashed: false
@@ -52,8 +51,7 @@ describe('User Mapper', () => {
         role: Role.create({
           name: RoleName.create('ADMIN').getValue(),
           title: RoleTitle.create('ADMIN').getValue()
-        }).getValue(),
-        state: UserState.create('active')
+        }).getValue()
       },
       UniqueEntityID.create('1')
     );
@@ -68,7 +66,7 @@ describe('User Mapper', () => {
       {
         firstName: 'firstName',
         lastName: 'lastName',
-        email: UserEmail.create('email@email.com').getValue(),
+        email: UserEmail.create('email@isep.ipp.pt').getValue(),
         password: UserPassword.create({
           value: 'Password-1',
           hashed: false
@@ -77,8 +75,7 @@ describe('User Mapper', () => {
         role: Role.create({
           name: RoleName.create('ADMIN').getValue(),
           title: RoleTitle.create('ADMIN').getValue()
-        }).getValue(),
-        state: UserState.create('active')
+        }).getValue()
       },
       UniqueEntityID.create('1')
     );
@@ -89,7 +86,7 @@ describe('User Mapper', () => {
       domainId: '1',
       firstName: 'firstName',
       lastName: 'lastName',
-      email: 'email@email.com',
+      email: 'email@isep.ipp.pt',
       password: 'Password-1',
       phoneNumber: '911234567',
       role: 'ADMIN',
@@ -107,14 +104,13 @@ describe('User Mapper', () => {
       {
         firstName: 'firstName',
         lastName: 'lastName',
-        email: UserEmail.create('email@email.com').getValue(),
+        email: UserEmail.create('email@isep.ipp.pt').getValue(),
         password: UserPassword.create({
           value: 'Password-1',
           hashed: true
         }).getValue(),
         phoneNumber: PhoneNumber.create('911234567').getValue(),
-        role,
-        state: UserState.create('active')
+        role
       },
       UniqueEntityID.create('1')
     );
@@ -128,7 +124,7 @@ describe('User Mapper', () => {
       domainId: '1',
       firstName: 'firstName',
       lastName: 'lastName',
-      email: 'email@email.com',
+      email: 'email@isep.ipp.pt',
       password: 'Password-1',
       phoneNumber: '911234567',
       role: 'ADMIN',
@@ -150,7 +146,7 @@ describe('User Mapper', () => {
           domainId: '1',
           firstName: 'firstName',
           lastName: 'lastName',
-          email: 'email@email.com',
+          email: 'email@isep.ipp.pt',
           password: 'Password-1',
           phoneNumber: '911234567',
           role: 'ADMIN',

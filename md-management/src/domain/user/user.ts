@@ -93,7 +93,7 @@ export class User extends AggregateRoot<UserProps> {
     super(props, id);
   }
 
-  public static create(props: UserProps, id?: UniqueEntityID): Result<User> {
+  public static create(props: Omit<UserProps, 'state'>, id?: UniqueEntityID): Result<User> {
     const guardedProps = [
       { argument: props.firstName, argumentName: 'First Name' },
       { argument: props.lastName, argumentName: 'Last Name' },
@@ -109,7 +109,8 @@ export class User extends AggregateRoot<UserProps> {
     } else {
       const user = new User(
         {
-          ...props
+          ...props,
+          state: UserState.create('active')
         },
         id
       );

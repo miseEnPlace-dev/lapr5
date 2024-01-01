@@ -10,11 +10,11 @@ import { UserPassword } from '../domain/user/userPassword';
 
 import { IUserPersistence } from '@/dataschema/IUserPersistence';
 import { PhoneNumber } from '@/domain/user/phoneNumber';
+import { UserNif } from '@/domain/user/userNif';
 import { UserState } from '@/domain/user/userState';
 import { container } from '@/loaders/inversify';
 import { TYPES } from '@/loaders/inversify/types';
 import IRoleRepo from '@/services/IRepos/IRoleRepo';
-import { UserNif } from '@/domain/user/userNif';
 
 export class UserMapper extends Mapper<User> {
   public static toDTO(user: User): IUserDTO {

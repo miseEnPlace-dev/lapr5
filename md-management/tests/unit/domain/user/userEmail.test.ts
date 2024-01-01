@@ -25,9 +25,9 @@ describe('User Email', () => {
   });
 
   it('should create a new email', () => {
-    const result = UserEmail.create('email@email.com');
+    const result = UserEmail.create('email@isep.ipp.pt');
 
     expect(result.isSuccess).toBe(true);
-    expect(result.getValue().value).toBe('email@email.com');
+    expect(result.getValue().value).toBe('email@isep.ipp.pt');
   });
 });

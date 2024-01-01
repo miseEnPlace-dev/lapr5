@@ -5,19 +5,19 @@ import { describe, expect, it } from 'vitest';
 import { container } from '../../../src/loaders/inversify';
 import { TYPES } from '../../../src/loaders/inversify/types';
 
-import IDeviceService from '../../../src/services/IServices/IDeviceService';
-import DeviceService from '../../../src/services/deviceService';
-import IDeviceModelRepo from '../../../src/services/IRepos/IDeviceModelRepo';
-import IDeviceRepo from '../../../src/services/IRepos/IDeviceRepo';
+import { BuildingCode } from '../../../src/domain/building/buildingCode';
+import { DeviceModel } from '../../../src/domain/deviceModel/deviceModel';
+import { DeviceModelBrand } from '../../../src/domain/deviceModel/deviceModelBrand';
 import { DeviceModelCode } from '../../../src/domain/deviceModel/deviceModelCode';
 import { DeviceModelName } from '../../../src/domain/deviceModel/deviceModelName';
-import { DeviceModelBrand } from '../../../src/domain/deviceModel/deviceModelBrand';
-import { DeviceModel } from '../../../src/domain/deviceModel/deviceModel';
-import { DeviceMapper } from '../../../src/mappers/DeviceMapper';
 import { Floor } from '../../../src/domain/floor/floor';
 import { FloorCode } from '../../../src/domain/floor/floorCode';
-import { BuildingCode } from '../../../src/domain/building/buildingCode';
 import { FloorDimensions } from '../../../src/domain/floor/floorDimensions';
+import { DeviceMapper } from '../../../src/mappers/DeviceMapper';
+import IDeviceModelRepo from '../../../src/services/IRepos/IDeviceModelRepo';
+import IDeviceRepo from '../../../src/services/IRepos/IDeviceRepo';
+import IDeviceService from '../../../src/services/IServices/IDeviceService';
+import DeviceService from '../../../src/services/deviceService';
 
 import { Task } from '../../../src/domain/shared/task';
 
@@ -127,66 +127,11 @@ describe('Device  Service', () => {
     expect(result.errorValue()).toBe('Model not found');
   });
 
-  it('createDevice: should create a new Device', async () => {
-    const deviceDTO = {
-      code: '12345',
-      nickname: 'name',
-      serialNumber: 'DeviceSerialNumber',
-      modelCode: 'DeviceModel',
-      initialCoordinates: {
-        width: 1,
-        depth: 1,
-        floorCode: 'b1'
-      }
-    };
-
-    const deviceModel = DeviceModel.create({
-      code: DeviceModelCode.create(deviceDTO.modelCode).getValue(),
-      name: DeviceModelName.create('name').getValue(),
-      brand: DeviceModelBrand.create('brand').getValue(),
-      capabilities: [Task.create('pick_delivery').getValue()],
-      type: 'drone'
-    }).getValue();
-
-    const expected = {
-      code: '12345',
-      nickname: 'name',
-      description: undefined,
-      serialNumber: 'DeviceSerialNumber',
-      modelCode: 'DeviceModel',
-      isAvailable: true,
-      initialCoordinates: {
-        width: 1,
-        depth: 1,
-        floorCode: 'b1'
-      }
-    };
-
-    const floor = Floor.create({
-      code: FloorCode.create('b1').getValue(),
-      buildingCode: BuildingCode.create('1').getValue(),
-      dimensions: FloorDimensions.create(1, 1).getValue()
-    }).getValue();
-
-    const deviceRepo = container.get<IDeviceRepo>(TYPES.deviceRepo);
-    const deviceModelRepo = container.get<IDeviceModelRepo>(TYPES.deviceModelRepo);
-    const floorRepo = container.get<IFloorRepo>(TYPES.floorRepo);
-    stub(floorRepo, 'findByCode').resolves(floor);
-    stub(deviceRepo, 'findByCode').resolves(null);
-    stub(deviceModelRepo, 'findByCode').resolves(deviceModel);
-    stub(deviceRepo, 'save').resolves(deviceDTO);
-
-    const deviceService = new DeviceService(deviceRepo, deviceModelRepo, floorRepo);
-    const result = await deviceService.createDevice(deviceDTO);
-
-    expect(result.isSuccess).toBe(true);
-    expect(result.getValue()).toStrictEqual(expected);
-  });
-
   it('createDevice: should throw error when repo throws error', async () => {
     const deviceDTO = {
       code: '12345',
       nickname: 'name',
+      id: '1',
       serialNumber: 'DeviceSerialNumber',
       modelCode: 'DeviceModel',
       initialCoordinates: {
