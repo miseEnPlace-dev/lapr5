@@ -26,6 +26,8 @@ lim_time(2).
 :- dynamic n_tarefas/1.
 :- dynamic tarefas/3.
 :- dynamic t/3.
+:- dynamic distancias_robot_tarefa/2.
+:- dynamic distancias_tarefa_robot/2.
 
 debug_mode(0).
 
@@ -55,14 +57,36 @@ load_tasks([H|T],N):-
 			H.id,
 			cel(H.startFloorCode,H.startCoordinateX,H.startCoordinateY),
 			cel(H.endFloorCode,H.endCoordinateX,H.endCoordinateY)
-		))
+		)),
+		planning:caminho_celulas_edificios(
+			cel(H.device.initialCoordinates.floorCode, H.device.initialCoordinates.width, H.device.initialCoordinates.depth), 
+			cel(H.startFloorCode, H.startCoordinateX, H.startCoordinateY), _, C),
+
+		% tarefa -> robot
+		planning:caminho_celulas_edificios(
+			cel(H.endFloorCode, H.endCoordinateX, H.endCoordinateY),
+			cel(H.device.initialCoordinates.floorCode, H.device.initialCoordinates.width, H.device.initialCoordinates.depth), _, C1),
+
+		asserta(distancias_robot_tarefa(H.id, C)),
+		asserta(distancias_tarefa_robot(H.id, C1))
 	);
 		asserta(
 		t(
 			H.id,
 			cel(H.floorId,H.startCoordinateX,H.startCoordinateY),
 			cel(H.floorId,H.endCoordinateX,H.endCoordinateY)
-		))
+		)),
+		planning:caminho_celulas_edificios(
+			cel(H.device.initialCoordinates.floorCode, H.device.initialCoordinates.width, H.device.initialCoordinates.depth), 
+			cel(H.floorId, H.startCoordinateX, H.startCoordinateY), _, C),
+
+		% tarefa -> robot
+		planning:caminho_celulas_edificios(
+			cel(H.floorId, H.endCoordinateX, H.endCoordinateY), 
+			cel(H.device.initialCoordinates.floorCode, H.device.initialCoordinates.width, H.device.initialCoordinates.depth), _, C1),
+
+		asserta(distancias_robot_tarefa(H.id, C)),
+		asserta(distancias_tarefa_robot(H.id, C1))
 	),
 	N1 is N+1,
 	load_tasks(T,N1).
@@ -87,6 +111,7 @@ load_tarefa(_,[]).
 load_tarefa(Tarefa,[H|T]):-
 	load_tarefa2(Tarefa,H),
 	load_tarefa(Tarefa,T).
+
 
 load_tarefa2(T1,T2):-
 	debug_mode(D),
@@ -242,16 +267,19 @@ retira(N,[G1|Resto],G,[G1|Resto1]):-
 
 avalia_populacao([],[]).
 avalia_populacao([H|Resto],[H*V|Resto1]):-
-	avalia(H,V),
+	[Tarefa|_]=H,
+	distancias_robot_tarefa(Tarefa, V1),
+	avalia(H,V2),
+	V is V1+V2,
 	avalia_populacao(Resto,Resto1).
 
 avalia([T1,T2|Resto],V):-
-	tarefas(T1,T2,V1),
+	tarefas(T1,T2,V1),	
 	avalia([T2|Resto],V2),
 	V is V1 + V2.
-avalia([_],0).
+	
+avalia([H],Dist):-distancias_tarefa_robot(H, Dist).
 avalia([],0).
-
 
 ordena_populacao(PopAv,PopAvOrd):-
 	bsort(PopAv,PopAvOrd).

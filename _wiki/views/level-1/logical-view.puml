@@ -7,10 +7,14 @@ interface "Fleet Manager UI" as FUI
 interface "Task Manager UI" as TUI
 interface "User UI" as UUI 
 interface "Filesystem API" as FS
+interface "Google OAuth2 API" as GA
+interface "Google Identity Services SDK" as GS
 
 component "RobDroneGo System" <<component>> <<system (C4)>> {
   portin " " as P1
   portout " " as P2
+  portout " " as P3
+  portout " " as P4
 }
 
 AUI -- P1
@@ -19,5 +23,7 @@ FUI -- P1
 TUI -- P1
 UUI -- P1
 P2 --( FS
+P3 --( GA
+P4 --( GS
 
 @enduml

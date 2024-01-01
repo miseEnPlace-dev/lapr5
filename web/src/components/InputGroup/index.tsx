@@ -18,9 +18,9 @@ const InputGroup: React.FC<InputGroupProps> = ({
         <p className="text-sm ">{description}</p>
       </div>
       <div
-        className={`flex w-full flex-col items-center gap-x-4 gap-y-4 rounded-lg md:flex-row ${
-          bgAlt ? `bg-slate-100` : `bg-slate-200`
-        } bg-opacity-50 p-5 shadow-sm`}
+        className={`relative flex w-full flex-col items-center gap-4 rounded-lg md:flex-row ${
+          bgAlt ? `bg-slate-100/50` : `bg-slate-200/50`
+        } p-5 shadow-sm`}
       >
         {children}
       </div>

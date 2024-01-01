@@ -3,11 +3,13 @@
 top to bottom direction
 
 interface "MD API" as API
+interface "Google Identity Services SDK" as GS
 interface "UI" as UI
 
 component "Visualization" as VIS <<component>> <<container (C4)>> {
   portin "MD Management API" as P1
   portin "UI API" as P2
+  portin "Google Authentication" as P3
 
   Interface "Module API" as MODULE_API
 
@@ -45,9 +47,11 @@ component "Visualization" as VIS <<component>> <<container (C4)>> {
 API -- P1
 ROUTE -- P2
 UI -- P2
+GS -- P3
 
 P1 --- HTTP
 COMPONENT --( MODULE_API
+COMPONENT -- P3
 
 HTTP_API )-- SRV
 HTTP_API -up- HTTP

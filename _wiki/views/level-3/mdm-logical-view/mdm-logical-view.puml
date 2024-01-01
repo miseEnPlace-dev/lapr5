@@ -4,11 +4,13 @@ top to bottom direction
 
 interface "MD API" as API
 interface "Filesystem API" as FS
+interface "Google OAuth2 API" as GA
 
 component "MD Management" as MDM <<component>> <<container (C4)>> {
   portin " " as P1
   portin "Persistence API" as P2
   portout " " as P3
+  portout " " as P4
 
   Interface "Controller API" as CTRL_API
   Interface "Data Model API" as DATA_API
@@ -55,7 +57,7 @@ API -- P1
 ROUTE --- P1
 PERSISTENCE -- P2
 P3 --( FS
-
+P4 --( GA
 
 ROUTE --( CTRL_API
 CTRL -up- CTRL_API
@@ -69,6 +71,7 @@ CTRL --( SRV_API
 SRV -up-( SRV_API
 SRV -up-( DTO_API
 SRV -- P3
+SRV -- P4
 CTRL --( DTO_API
 DTO --( DTO_API
 

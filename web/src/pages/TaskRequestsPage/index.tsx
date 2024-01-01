@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { set } from "lodash";
 import swal from "sweetalert";
 
 import { useMenuOptions } from "@/hooks/useMenuOptions";
@@ -39,9 +38,7 @@ const TaskRequestsPage: React.FC = () => {
     deviceModels,
     devices,
     deviceInputRef,
-    device,
     setRequestId,
-    fetchDevice,
     users,
   } = useListTaskRequestsModule();
 
@@ -64,7 +61,6 @@ const TaskRequestsPage: React.FC = () => {
       if (!deviceInputRef.current?.value)
         swal("Error", "You must select a request to add a robot", "error");
       else {
-        await fetchDevice();
         await handleAcceptRequest();
         swal("Success", "Robot added to request", "success");
         setIsAddRobotModalVisible(false);
@@ -159,7 +155,7 @@ const TaskRequestsPage: React.FC = () => {
   return (
     <div className="flex">
       <SideBar menuOptions={menuOptions} />
-      <main className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
+      <main className="my-12 flex h-full w-full flex-col gap-y-4 pl-12">
         <h1 className="text-4xl font-bold">Task Requests</h1>
         <p className="text-slate-500">
           Manage here all task requests from system.
@@ -224,7 +220,7 @@ const TaskRequestsPage: React.FC = () => {
               </div>
             </motion.button>
           </div>
-          {!requests ? null : requests.data.length == 0 ? ( // TODO: skeleton component // TODO: skeleton component
+          {!requests ? null : requests.data.length == 0 ? ( // TODO: skeleton component
             <p className="text-slate-500">
               No results were found for your search... Try to change or remove
               the filters.
@@ -482,10 +478,9 @@ const TaskRequestsPage: React.FC = () => {
                     placeholder="Robot"
                     inputRef={deviceInputRef}
                     options={devices.map((device) => ({
-                      code: device.code,
+                      code: device.id,
                       name: device.nickname,
                     }))}
-                    onChange={async () => await fetchDevice()}
                   />
                 </div>
               </div>

@@ -50,8 +50,10 @@ const TasksPage: React.FC = () => {
     floorInputRef,
     username,
     phoneNumber,
-    room1InputRef,
-    room2InputRef,
+    room1Code,
+    room2Code,
+    setRoom1Code,
+    setRoom2Code,
     setFloorCode,
     floorCode,
     floorRooms,
@@ -91,7 +93,7 @@ const TasksPage: React.FC = () => {
   return (
     <div className="flex">
       <SideBar menuOptions={menuOptions} />
-      <main className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
+      <main className="my-12 flex h-full w-full flex-col gap-y-4 pl-12">
         <h1 className="text-4xl font-bold">Tasks</h1>
         <p className="text-slate-500">Manage here all your task requests.</p>
         <div
@@ -214,12 +216,13 @@ const TasksPage: React.FC = () => {
             title="Create Task Request"
           >
             <div className="flex h-full flex-col justify-between gap-y-4">
-              <div className="flex w-full flex-col gap-y-5">
+              <div className="flex w-full flex-col gap-y-6">
                 <Dropdown
                   options={taskTypes}
                   placeholder="Select Task Type"
                   className="w-full"
                   name="Task Type"
+                  defaultValue={type || ""}
                   inputRef={typeInputRef}
                   onChange={(e) => setType(e.target.value)}
                 />
@@ -239,13 +242,30 @@ const TasksPage: React.FC = () => {
                         <Dropdown
                           className="w-full"
                           name="Room"
-                          inputRef={room1InputRef}
+                          value={room1Code}
+                          onChange={(e) => setRoom1Code(e.target?.value)}
                           disabled={building1Code === ""}
                           options={building1Rooms.map((room) => ({
                             code: room.name,
                             name: room.name,
                           }))}
                         />
+                        {room1Code && (
+                          <span className="absolute right-2 top-2 text-sm text-slate-500">
+                            Door:{" "}
+                            {
+                              building1Rooms.find(
+                                (room) => room.name == room1Code
+                              )?.roomDoor.x
+                            }{" "}
+                            x{" "}
+                            {
+                              building1Rooms.find(
+                                (room) => room.name == room1Code
+                              )?.roomDoor.y
+                            }
+                          </span>
+                        )}
                       </InputGroup>
                       <InputGroup
                         title="Delivery Location"
@@ -260,13 +280,30 @@ const TasksPage: React.FC = () => {
                         <Dropdown
                           className="w-full"
                           name="Room"
-                          inputRef={room2InputRef}
+                          value={room2Code}
+                          onChange={(e) => setRoom2Code(e.target?.value)}
                           disabled={building2Code === ""}
                           options={building2Rooms.map((room) => ({
                             code: room.name,
                             name: room.name,
                           }))}
                         />
+                        {room2Code && (
+                          <span className="absolute right-2 top-2 text-sm text-slate-500">
+                            Door:{" "}
+                            {
+                              building1Rooms.find(
+                                (room) => room.name == room2Code
+                              )?.roomDoor.x
+                            }{" "}
+                            x{" "}
+                            {
+                              building1Rooms.find(
+                                (room) => room.name == room2Code
+                              )?.roomDoor.y
+                            }
+                          </span>
+                        )}
                       </InputGroup>
                     </div>
                     <div className="flex w-full items-center gap-x-4">
@@ -284,7 +321,7 @@ const TasksPage: React.FC = () => {
                         <Input
                           placeholder="Phone Number"
                           type="text"
-                          className="w-2/3"
+                          className="w-full"
                           defaultValue={phoneNumber || ""}
                           inputRef={pickupUserPhoneInputRef}
                         />
@@ -302,7 +339,7 @@ const TasksPage: React.FC = () => {
                         <Input
                           placeholder="Phone Number"
                           type="text"
-                          className="w-2/3"
+                          className="w-full"
                           inputRef={deliveryUserPhoneInputRef}
                         />
                       </InputGroup>
@@ -360,8 +397,25 @@ const TasksPage: React.FC = () => {
                               code: room.name,
                               name: room.name,
                             }))}
-                            inputRef={room1InputRef}
+                            value={room1Code}
+                            onChange={(e) => setRoom1Code(e.target?.value)}
                           />
+                          {room1Code && (
+                            <span className="absolute right-2 top-2 text-sm text-slate-500">
+                              Door:{" "}
+                              {
+                                building1Rooms.find(
+                                  (room) => room.name == room1Code
+                                )?.roomDoor.x
+                              }{" "}
+                              x{" "}
+                              {
+                                building1Rooms.find(
+                                  (room) => room.name == room1Code
+                                )?.roomDoor.y
+                              }
+                            </span>
+                          )}
                         </InputGroup>
                         <InputGroup
                           title="Final Position"
@@ -375,8 +429,25 @@ const TasksPage: React.FC = () => {
                               code: room.name,
                               name: room.name,
                             }))}
-                            inputRef={room2InputRef}
+                            value={room2Code}
+                            onChange={(e) => setRoom2Code(e.target?.value)}
                           />
+                          {room2Code && (
+                            <span className="absolute right-2 top-2 text-sm text-slate-500">
+                              Door:{" "}
+                              {
+                                building1Rooms.find(
+                                  (room) => room.name == room2Code
+                                )?.roomDoor.x
+                              }{" "}
+                              x{" "}
+                              {
+                                building1Rooms.find(
+                                  (room) => room.name == room2Code
+                                )?.roomDoor.y
+                              }
+                            </span>
+                          )}
                         </InputGroup>
                       </div>
                     )}

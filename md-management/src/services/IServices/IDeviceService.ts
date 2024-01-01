@@ -3,7 +3,7 @@ import { IDeviceDTO } from '@/dto/IDeviceDTO';
 import { IPaginationDTO } from '@/dto/IPaginationDTO';
 
 export default interface IDeviceService {
-  createDevice(deviceDTO: IDeviceDTO): Promise<Result<IDeviceDTO>>;
+  createDevice(deviceDTO: Omit<IDeviceDTO, 'id'>): Promise<Result<IDeviceDTO>>;
   getDevicesRobots(
     filterStr?: string,
     value?: string,
@@ -12,5 +12,6 @@ export default interface IDeviceService {
   ): Promise<Result<IPaginationDTO<IDeviceDTO>>>;
   inhibitDevice(code: string): Promise<Result<IDeviceDTO>>;
   getDeviceRobotWithCode(code: string): Promise<Result<IDeviceDTO>>;
+  getDeviceRobotWithId(id: string): Promise<Result<IDeviceDTO>>;
   findById(id: string): Promise<Result<IDeviceDTO>>;
 }

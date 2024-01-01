@@ -24,6 +24,7 @@ import { IPaginationDTO } from '@/dto/IPaginationDTO';
 import { TYPES } from '@/loaders/inversify/types';
 import { inject, injectable } from 'inversify';
 import { Result } from '../core/logic/Result';
+import { IGoogleUserInfoDTO } from '@/dto/IGoogleUserInfoDTO';
 
 @injectable()
 export default class UserService implements IUserService {
@@ -84,15 +85,24 @@ export default class UserService implements IUserService {
           'User already exists with email: ' + userDTO.email
         );
 
-      const salt = randomBytes(32);
-      const hashedPassword = await argon2.hash(userDTO.password ? userDTO.password : '', { salt });
+      let passwordOrError: Result<UserPassword>;
+      if (userDTO.password !== undefined) {
+        const salt = randomBytes(32);
+        const hashedPassword = await argon2.hash(userDTO.password ? userDTO.password : '', {
+          salt
+        });
 
-      const passwordOrError = UserPassword.create({
-        value: hashedPassword,
-        hashed: true
-      });
-      if (passwordOrError.isFailure)
-        return Result.fail<{ user: IUserDTO; token: string }>(passwordOrError.error);
+        passwordOrError = UserPassword.create({
+          value: hashedPassword,
+          hashed: true
+        });
+        if (passwordOrError.isFailure)
+          return Result.fail<{ user: IUserDTO; token: string }>(passwordOrError.error);
+      } else {
+        passwordOrError = UserPassword.createEmpty();
+        if (passwordOrError.isFailure)
+          return Result.fail<{ user: IUserDTO; token: string }>(passwordOrError.error);
+      }
 
       const emailOrError = UserEmail.create(userDTO.email);
       if (emailOrError.isFailure)
@@ -146,7 +156,7 @@ export default class UserService implements IUserService {
 
   async signIn(
     email: string,
-    password: string
+    password?: string
   ): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
     const user = await this.userRepo.findByEmail(email);
 
@@ -155,18 +165,22 @@ export default class UserService implements IUserService {
     if (user.state.value === UserState.Pending.value) throw new Error('User not activated');
     if (user.state.value === UserState.Rejected.value) throw new Error('User not allowed');
 
+    const userDTO = UserMapper.toDTO(user) as IUserDTO;
+
     /**
      * We use verify from argon2 to prevent 'timing based' attacks
      */
-    const validPassword = await argon2.verify(user.password.value, password);
-    if (validPassword) {
-      const token = this.generateToken(user) as string;
+    if (user.password && password) {
+      const validPassword = await argon2.verify(user.password.value, password);
+      if (validPassword) {
+        const token = this.generateToken(user) as string;
 
-      const userDTO = UserMapper.toDTO(user) as IUserDTO;
-      return Result.ok<{ userDTO: IUserDTO; token: string }>({ userDTO: userDTO, token: token });
+        return Result.ok<{ userDTO: IUserDTO; token: string }>({ userDTO: userDTO, token: token });
+      }
+      throw new Error('Invalid Password');
     }
-
-    throw new Error('Invalid Password');
+    const token = this.generateToken(user) as string;
+    return Result.ok<{ userDTO: IUserDTO; token: string }>({ userDTO: userDTO, token: token });
   }
 
   private generateToken(user: User) {
@@ -238,6 +252,19 @@ export default class UserService implements IUserService {
 
     await this.userRepo.delete(userId);
     return Result.ok<void>();
+  }
+
+  async userExists(email: string): Promise<Result<boolean>> {
+    const user = await this.userRepo.findByEmail(email);
+    const found = !!user;
+
+    return Result.ok<boolean>(found);
+  }
+
+  async getGoogleUserInfo(credential: string): Promise<IGoogleUserInfoDTO> {
+    const res = await fetch('https://oauth2.googleapis.com/tokeninfo?id_token=' + credential);
+
+    return res.json();
   }
 
   async updateUser(userDTO: IUserDTO, email: string): Promise<Result<IUserDTO>> {

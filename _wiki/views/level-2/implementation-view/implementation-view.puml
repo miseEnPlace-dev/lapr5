@@ -10,10 +10,17 @@ package "RobDroneGo System" {
 
   folder "Planning" as P {
   }
+
+  folder "MD Tasks" as MDT {
+  }
 }
 
 
 MDM <.. V
 P <.. MDM
+MDM <.. P
+
+MDT <.. MDM
+P <. MDT
 
 @enduml

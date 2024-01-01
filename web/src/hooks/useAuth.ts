@@ -67,6 +67,25 @@ export function useAuth() {
     }
   };
 
+  const loginWithGoogle = async (credential: string) => {
+    const res = await api("/users/google-login", {
+      method: "POST",
+      data: {
+        credential,
+      },
+    });
+
+    if (res.status === 200) {
+      setIsAuthenticated(true);
+      setRole(res.data.userDTO.role);
+      setUsername(`${res.data.userDTO.firstName} ${res.data.userDTO.lastName}`);
+      localStorage.setItem(localStorageConfig.token, res.data.token);
+      return Promise.resolve();
+    } else {
+      return Promise.reject(res.data.message);
+    }
+  };
+
   const logout = () => {
     return new Promise<void>((res) => {
       setIsAuthenticated(false);
@@ -79,6 +98,7 @@ export function useAuth() {
   return {
     isAuthenticated,
     login,
+    loginWithGoogle,
     role,
     username,
     logout,

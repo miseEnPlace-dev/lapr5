@@ -9,8 +9,13 @@ activate TM
 
 TM -> SYS : asks to get the sequence of execution of the approved tasks
 activate SYS
+TM <-- SYS : asks to the desired device to execute the tasks
+deactivate SYS
 
-TM <-- SYS : returns the sequence of tasks
+TM -> SYS : selecs a device
+activate SYS
+
+TM <-- SYS : returns the sequence of approved tasks for the given device
 deactivate SYS
 
 deactivate TM

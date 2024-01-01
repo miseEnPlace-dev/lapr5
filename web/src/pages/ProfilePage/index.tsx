@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
@@ -98,7 +97,7 @@ const ProfilePage: React.FC = () => {
   return (
     <div className="flex">
       <SideBar menuOptions={menuOptions} />
-      <main className="mt-12 flex h-full w-full flex-col gap-y-4 pl-12">
+      <main className="my-12 flex h-full w-full flex-col gap-y-4 pl-12">
         <h1 className="text-4xl font-bold">
           Welcome, <span className="text-primary">{username}</span>
         </h1>
@@ -161,20 +160,24 @@ const ProfilePage: React.FC = () => {
               defaultValue={user?.phoneNumber || ""}
             />
           )}
-          <Input
-            name="New Password"
-            type="password"
-            autoComplete="new-password"
-            inputRef={passwordInputRef}
-            placeholder="Insert a new password"
-          />
-          <Input
-            name="Confirm your New Password"
-            type="password"
-            autoComplete="new-password"
-            inputRef={confirmPasswordInputRef}
-            placeholder="Reinsert your new password"
-          />
+          {user?.email.split("@")[1] !== "gmail.com" && (
+            <>
+              <Input
+                name="New Password"
+                type="password"
+                autoComplete="new-password"
+                inputRef={passwordInputRef}
+                placeholder="Insert a new password"
+              />
+              <Input
+                name="Confirm your New Password"
+                type="password"
+                autoComplete="new-password"
+                inputRef={confirmPasswordInputRef}
+                placeholder="Reinsert your new password"
+              />
+            </>
+          )}
         </div>
         <Button
           type="confirm"

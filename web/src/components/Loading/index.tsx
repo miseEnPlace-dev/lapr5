@@ -52,7 +52,7 @@ const Loading: React.FC<LoadingProps> = ({ loadingText = true }) => {
           <RepeatIcon className="ml-4 h-8 w-8 animate-spin" />
         </h1>
       )}
-      <Skeleton className="mt-4 h-24 w-full" count={5} />
+      <Skeleton className="mt-8 h-28 w-full" count={4} />
     </div>
   );
 };

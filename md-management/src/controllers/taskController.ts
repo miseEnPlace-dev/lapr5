@@ -26,7 +26,9 @@ export default class TaskController implements ITaskController {
 
   public async getTasks(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const response = await fetch(`${config.tasksApiUrl}/api/tasks`);
+      const response = req.query.deviceId
+        ? await fetch(`${config.tasksApiUrl}/api/tasks?filter=device&value=${req.query.deviceId}`)
+        : await fetch(`${config.tasksApiUrl}/api/tasks`);
 
       const data = await response.json();
       const tasks = [];
@@ -77,9 +79,28 @@ export default class TaskController implements ITaskController {
     next: NextFunction
   ): Promise<Response | void> {
     try {
-      const sequence = await this.taskService.getTaskSequence();
+      const deviceId = req.query.deviceId as string;
+      const sequence = await this.taskService.getTaskSequence(deviceId);
 
       return res.status(200).json(sequence);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  public async finishTask(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
+    try {
+      const response = await fetch(`${config.tasksApiUrl}/api/tasks/${req.params.id}`, {
+        method: 'PATCH'
+      });
+
+      const data = await response.json();
+
+      return res.status(200).json(data);
     } catch (e) {
       return next(e);
     }

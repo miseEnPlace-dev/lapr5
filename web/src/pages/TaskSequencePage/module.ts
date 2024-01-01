@@ -2,15 +2,22 @@ import { useEffect, useState } from "react";
 import { useInjection } from "inversify-react";
 
 import { TYPES } from "@/inversify/types";
-import { Request } from "@/model/Request";
+import { Device } from "@/model/Device";
 import { Sequence } from "@/model/Sequence";
-import { IRequestService } from "@/service/IService/IRequestService";
+import { Task } from "@/model/Task";
+import { IDeviceService } from "@/service/IService/IDeviceService";
+import { ITaskService } from "@/service/IService/ITaskService";
 
 export const useModule = () => {
-  const requestService = useInjection<IRequestService>(TYPES.requestService);
-  const [requests, setRequests] = useState<Request[]>([]);
+  const tasksService = useInjection<ITaskService>(TYPES.taskService);
+  const devicesService = useInjection<IDeviceService>(TYPES.deviceService);
+
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [sequence, setSequence] = useState<Sequence>();
   const [loading, setLoading] = useState(false);
+  const [executing, setExecuting] = useState("");
+  const [devices, setDevices] = useState<Device[]>([]);
+  const [selectedDevice, setSelectedDevice] = useState("");
 
   const sanitizeTaskType = (taskType: string) => {
     switch (taskType) {
@@ -25,9 +32,32 @@ export const useModule = () => {
 
   const generateSequence = async () => {
     setLoading(true);
-    const s = await requestService.getSequence();
+    const s = await tasksService.getSequence();
     setLoading(false);
     setSequence(s);
+  };
+
+  const executeAll = async () => {
+    for (const task of sequence!.tasks) await executeTask(task.id);
+  };
+
+  const executeTask = async (id: string) => {
+    await tasksService.finishTask(id);
+    setExecuting(id);
+    await new Promise<void>((resolve) => {
+      setTimeout(() => {
+        setTasks((tasks) => tasks.filter((task) => task.id !== id));
+        setSequence((sequence) =>
+          sequence
+            ? {
+                ...sequence,
+                tasks: sequence.tasks.filter((task) => task.id !== id),
+              }
+            : undefined
+        );
+        resolve();
+      }, 2500);
+    });
   };
 
   const sanitizeDate = (date: string) => {
@@ -67,19 +97,35 @@ export const useModule = () => {
   };
 
   useEffect(() => {
-    const fetchRequests = async () => {
-      const { data } = await requestService.getAcceptedRequests();
-      setRequests(data);
+    const fetchDevices = async () => {
+      const data = (await devicesService.getDevicesRobots()).data;
+      setDevices(data);
     };
-    fetchRequests();
-  }, [requestService]);
+
+    fetchDevices();
+  }, [devicesService]);
+
+  useEffect(() => {
+    if (!selectedDevice) return;
+    const fetchTasks = async () => {
+      const data = await tasksService.getDeviceTasks(selectedDevice);
+      setTasks(data);
+    };
+    fetchTasks();
+  }, [selectedDevice, tasksService]);
 
   return {
-    requests,
+    tasks,
     sanitizeTaskType,
     sanitizeDate,
     generateSequence,
     sequence,
     loading,
+    executeTask,
+    executing,
+    executeAll,
+    devices,
+    setSelectedDevice,
+    selectedDevice,
   };
 };

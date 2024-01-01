@@ -9,7 +9,6 @@ import { IPaginationDTO } from "@/dto/IPaginationDTO";
 import { Request } from "@/model/Request";
 import { RequestPickAndDelivery } from "@/model/RequestPickAndDelivery";
 import { RequestSurveillance } from "@/model/RequestSurveillance";
-import { Sequence } from "@/model/Sequence";
 
 import { HttpService } from "./IService/HttpService";
 import { IRequestService } from "./IService/IRequestService";
@@ -29,8 +28,12 @@ export class RequestService implements IRequestService {
   ): Promise<IPaginationDTO<Request>> {
     const params = {} as { [key: string]: string };
     if (filter && value) {
-      params["filter"] = filter.toString();
-      params["value"] = capitalize(value.toString());
+      if (filter === "userId") {
+        params["user"] = value.toString();
+      } else {
+        params["filter"] = filter.toString();
+        params["value"] = capitalize(value.toString());
+      }
     }
     if (page && limit) {
       params["limit"] = limit.toString();
@@ -127,7 +130,7 @@ export class RequestService implements IRequestService {
     const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http.post<RequestSurveillance>(
-      "/task-requests/Surveillance",
+      "/task-requests/surveillance",
       request,
       {
         headers: {
@@ -147,7 +150,7 @@ export class RequestService implements IRequestService {
     const token = this.localStorage.getItem(localStorageConfig.token);
 
     const response = await this.http.post<RequestPickAndDelivery>(
-      "/task-requests/Pick-Delivery",
+      "/task-requests/pick-delivery",
       request,
       {
         headers: {
@@ -161,19 +164,13 @@ export class RequestService implements IRequestService {
     return data;
   }
 
-  async acceptRequest(id: string, deviceCode: string): Promise<void> {
+  async acceptRequest(id: string, deviceId: string): Promise<void> {
     const token = this.localStorage.getItem(localStorageConfig.token);
 
-    console.log("accepting request");
-    console.log(id);
     await this.http.patch(
       "/task-requests/" + id + "/accept",
-      {
-        deviceId: deviceCode,
-      },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
+      { deviceId },
+      { headers: { Authorization: `Bearer ${token}` } }
     );
   }
 
@@ -185,15 +182,5 @@ export class RequestService implements IRequestService {
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     );
-  }
-
-  async getSequence(): Promise<Sequence> {
-    const token = this.localStorage.getItem(localStorageConfig.token);
-
-    const res = await this.http.get<Sequence>("/task-requests/sequence", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    return res.data;
   }
 }

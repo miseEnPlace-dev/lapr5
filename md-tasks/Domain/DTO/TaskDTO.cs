@@ -8,6 +8,10 @@ public class TaskDTO
   public string RequestId { get; set; }
   public string DeviceId { get; set; }
   public string Type { get; set; }
+  public int StartCoordinateX { get; set; }
+  public int StartCoordinateY { get; set; }
+  public int EndCoordinateX { get; set; }
+  public int EndCoordinateY { get; set; }
 
   public string UserId { get; set; }
 
@@ -19,7 +23,7 @@ public class TaskDTO
     RequestId = requestId;
   }
 
-  public TaskDTO(string id, string type, string createdAt, string requestId, string deviceId, string userId)
+  public TaskDTO(string id, string type, string createdAt, string requestId, string deviceId, string userId, int startCoordinateX, int startCoordinateY, int endCoordinateX, int endCoordinateY)
   {
     Id = id;
     CreatedAt = createdAt;
@@ -27,5 +31,9 @@ public class TaskDTO
     Type = type;
     DeviceId = deviceId;
     UserId = userId;
+    StartCoordinateX = startCoordinateX;
+    StartCoordinateY = startCoordinateY;
+    EndCoordinateX = endCoordinateX;
+    EndCoordinateY = endCoordinateY;
   }
 }

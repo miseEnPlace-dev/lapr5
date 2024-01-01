@@ -66,6 +66,7 @@ namespace DDDSample1.Domain.Requests
 
       foreach (DeviceTask task in tasks)
       {
+        if (task.IsFinished) continue;
         if (await surveillanceTaskRepository.GetByIdAsync(task.RequestId) != null)
           result.Add(await ConvertToDTO(task, "SurveillanceTaskDTO"));
 
@@ -74,6 +75,25 @@ namespace DDDSample1.Domain.Requests
       }
 
       return new PaginationDTO<TaskDTO>(result, page, limit, await taskRepo.CountAsync());
+    }
+
+    public async Task<PaginationDTO<TaskDTO>> GetWithDeviceId(string deviceId)
+    {
+      List<DeviceTask> tasks = await taskRepo.GetAllWithDeviceIdAsync(deviceId);
+
+      List<TaskDTO> result = new();
+
+      foreach (DeviceTask task in tasks)
+      {
+        if (task.IsFinished) continue;
+        if (await surveillanceTaskRepository.GetByIdAsync(task.RequestId) != null)
+          result.Add(await ConvertToDTO(task, "SurveillanceTaskDTO"));
+
+        if (await pickAndDeliveryTaskRepository.GetByIdAsync(task.RequestId) != null)
+          result.Add(await ConvertToDTO(task, "PickDeliveryTaskDTO"));
+      }
+
+      return new PaginationDTO<TaskDTO>(result, 1, 1, await taskRepo.CountAsync());
     }
 
     public async Task<PaginationDTO<SurveillanceTaskDTO>> GetAllSurveillance(int page, int limit)
@@ -265,61 +285,75 @@ namespace DDDSample1.Domain.Requests
 
     public async Task<TaskDTO> RejectRequest(TaskId id)
     {
-      DeviceTask request = await taskRepo.GetByIdAsync(id);
-      if (request == null) return null;
+      DeviceTask task = await taskRepo.GetByIdAsync(id);
+      if (task == null) return null;
 
       await unitOfWork.CommitAsync();
 
-      if (await surveillanceTaskRepository.GetByIdAsync(request.RequestId) != null)
-        return await ConvertToDTO(request, "SurveillanceTaskDTO");
+      if (await surveillanceTaskRepository.GetByIdAsync(task.RequestId) != null)
+        return await ConvertToDTO(task, "SurveillanceTaskDTO");
 
-      if (await pickAndDeliveryTaskRepository.GetByIdAsync(request.RequestId) != null)
-        return await ConvertToDTO(request, "PickDeliveryTaskDTO");
+      if (await pickAndDeliveryTaskRepository.GetByIdAsync(task.RequestId) != null)
+        return await ConvertToDTO(task, "PickDeliveryTaskDTO");
 
       return null;
     }
 
-    public async Task<SequenceDTO> GetApprovedTasksSequence()
+    public async Task<TaskDTO> FinishTask(TaskId id)
     {
-      using HttpResponseMessage response = await httpClient.GetAsync(BASE_URL + "/sequence");
+      DeviceTask task = await taskRepo.GetByIdAsync(id);
+      if (task == null) return null;
+
+      task.Finish();
+      await unitOfWork.CommitAsync();
+
+      if (await surveillanceTaskRepository.GetByIdAsync(task.RequestId) != null)
+        return await ConvertToDTO(task, "SurveillanceTaskDTO");
+
+      if (await pickAndDeliveryTaskRepository.GetByIdAsync(task.RequestId) != null)
+        return await ConvertToDTO(task, "PickDeliveryTaskDTO");
+
+      return null;
+    }
+
+    public async Task<SequenceDTO> GetApprovedTasksSequence(string deviceId)
+    {
+      using HttpResponseMessage response = await httpClient.GetAsync(BASE_URL + "/sequence?deviceId=" + deviceId);
 
       response.EnsureSuccessStatusCode();
       var jsonResponse = await response.Content.ReadFromJsonAsync<SequenceResponseDTO>() ?? throw new Exception("Error getting sequence");
-      List<RequestDTO> requests = new();
+      List<TaskDTO> tasks = new();
 
       foreach (string taskId in jsonResponse.tasks)
       {
         DeviceTask task = await taskRepo.GetByIdAsync(new TaskId(taskId));
-        string type = "PickAndDeliveryRequestDTO";
+        string taskType = "PickDeliveryTaskDTO";
         Request request = await pickAndDeliveryTaskRepository.GetByIdAsync(task.RequestId);
         if (request == null)
-        {
-          request = await surveillanceTaskRepository.GetByIdAsync(task.RequestId);
-          type = "SurveillanceRequestDTO";
-        }
+          taskType = "SurveillanceTaskDTO";
 
-        RequestDTO requestDto = await requestMapper.ToDto(request, type);
+        TaskDTO taskDto = await ConvertToDTO(task, taskType);
 
-        requests.Add(requestDto);
+        tasks.Add(taskDto);
       }
 
       List<PathDTO> fullPath = new();
-      foreach (RequestDTO request in requests)
+      foreach (TaskDTO task in tasks)
       {
-        string StartFloorCode = request is PickAndDeliveryRequestDTO ? ((PickAndDeliveryRequestDTO)request).StartFloorCode : ((SurveillanceRequestDTO)request).FloorId;
-        string EndFloorCode = request is PickAndDeliveryRequestDTO ? ((PickAndDeliveryRequestDTO)request).EndFloorCode : ((SurveillanceRequestDTO)request).FloorId;
+        string StartFloorCode = task is PickDeliveryTaskDTO ? ((PickDeliveryTaskDTO)task).StartFloorCode : ((SurveillanceTaskDTO)task).FloorId;
+        string EndFloorCode = task is PickDeliveryTaskDTO ? ((PickDeliveryTaskDTO)task).EndFloorCode : ((SurveillanceTaskDTO)task).FloorId;
 
-        string url = $"{BASE_URL}/route?fromX={request.StartCoordinateX}&fromY={request.StartCoordinateY}&toX={request.EndCoordinateX}&toY={request.EndCoordinateY}&fromFloor={StartFloorCode}&toFloor={EndFloorCode}&method=elevators";
+        string url = $"{BASE_URL}/route?fromX={task.StartCoordinateX}&fromY={task.StartCoordinateY}&toX={task.EndCoordinateX}&toY={task.EndCoordinateY}&fromFloor={StartFloorCode}&toFloor={EndFloorCode}&method=elevators";
         using HttpResponseMessage res = await httpClient.GetAsync(url);
 
         res.EnsureSuccessStatusCode();
 
         PathDTO path = PathJsonParser.Parse(await res.Content.ReadAsStringAsync());
-        path.taskId = request.Id;
+        path.taskId = task.Id;
         fullPath.Add(path);
       }
 
-      SequenceDTO result = new(requests, jsonResponse.time, fullPath);
+      SequenceDTO result = new(tasks, jsonResponse.time, fullPath);
       return result;
     }
   }

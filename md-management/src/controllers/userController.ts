@@ -114,6 +114,26 @@ export default class UserController implements IUserController {
     }
   }
 
+  async signInWithGoogle(
+    req: Request,
+    res: Response,
+    next?: NextFunction
+  ): Promise<Response | void> {
+    try {
+      const { credential } = req.body;
+      const googleUserInfo = await this.userService.getGoogleUserInfo(credential);
+
+      const result = await this.userService.signIn(googleUserInfo.email);
+
+      if (result.isFailure) return res.status(403).json({ message: result.errorValue() });
+
+      const { userDTO, token } = result.getValue();
+      return res.status(200).json({ userDTO, token });
+    } catch (e) {
+      return res.status(400).json({ message: (e as { message: string }).message });
+    }
+  }
+
   async signOut(req: Request, res: Response, next: NextFunction) {
     try {
       // TODO AuthService.Logout(req.user) do some clever stuff
@@ -148,6 +168,21 @@ export default class UserController implements IUserController {
 
       const userDTO = result.getValue();
       return res.status(200).json(userDTO);
+    } catch (e) {
+      console.error('🔥 error %o', e);
+      return next(e);
+    }
+  }
+
+  async userExists(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await this.userService.userExists(req.params.email);
+
+      if (result.isFailure) return res.status(400).json({ message: result.errorValue() });
+
+      return res.status(200).json({
+        exists: result.getValue()
+      });
     } catch (e) {
       console.error('🔥 error %o', e);
       return next(e);

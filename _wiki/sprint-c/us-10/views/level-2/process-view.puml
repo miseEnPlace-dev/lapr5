@@ -1,0 +1,30 @@
+@startuml process-view
+autonumber
+actor ADM as "Administrator"
+participant UI as "Visualization" <<system (C4)>>
+participant MMD as "Management Master Data" <<system (C4)>>
+participant TMD as "Tasks Master Data" <<system (C4)>>
+participant P as "Planning" <<system (C4)>>
+
+activate ADM
+
+ADM -> UI : asks to create a new user
+activate UI
+ADM <-- UI : asks user's personal data, including his role in the system
+deactivate UI
+
+ADM -> UI : enters user's personal data
+activate UI
+
+UI -> MMD : POST /users
+activate MMD
+MMD --> UI : 201 (Created)
+deactivate MMD
+
+ADM <-- UI : returns a confirmation message
+deactivate UI
+
+deactivate ADM
+
+@enduml
+

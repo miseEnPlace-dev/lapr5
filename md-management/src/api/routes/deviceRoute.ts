@@ -58,5 +58,11 @@ export default (app: Router) => {
     ctrl.getDeviceRobot(req, res, next)
   );
 
+  route.get('/devices/id/:deviceId', (req, res, next) =>
+    // #swagger.tags = ['Devices']
+    // #swagger.summary = 'Get a robot'
+    ctrl.getDeviceRobot(req, res, next)
+  );
+
   app.use(route);
 };

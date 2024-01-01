@@ -1,0 +1,58 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor ADM as "Administrator"
+box "<<system (C4>>\nVisualization"<<center>>
+  participant CMP as "UI Component" <<component (C4)>>
+  participant MOD as "Module" <<component (C4)>>
+  participant SRV as "Service" <<component (C4)>>
+  participant HTTP as "HTTP" <<component (C4)>>
+end box
+
+box "<<system (C4)>>\nMD Management" <<center>>#LightYellow
+  participant MDM as "MD Management" <<component (C4)>>
+end box
+
+activate ADM
+
+ADM -> CMP : asks to create a new user
+activate CMP
+
+ADM <-- CMP : asks user's personal data, including his role in the system
+deactivate CMP
+
+ADM -> CMP : inputs required data
+activate CMP
+CMP -> MOD : create user
+activate MOD
+MOD -> MOD : validate user
+activate MOD
+deactivate MOD
+
+MOD -> SRV : create user
+activate SRV
+SRV -> HTTP : post('/user')
+
+activate HTTP
+
+HTTP -> MDM : POST /user
+activate MDM
+MDM --> HTTP : 201 (Created)
+deactivate MDM
+
+HTTP --> SRV : user
+deactivate HTTP
+
+SRV --> MOD : user
+deactivate SRV
+MOD --> CMP : user
+deactivate MOD
+
+ADM <-- CMP : returns confirmation message
+deactivate CMP
+
+
+deactivate ADM
+
+@enduml

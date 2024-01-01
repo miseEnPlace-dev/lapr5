@@ -29,7 +29,7 @@ http:location(api, root(api), []). % /api
 
 % define your routes here
 :- http_handler(api(route), api_get_route, []). % /api/route?fromX=xx&fromY=yy&fromFloor=abc&toX=xx&toY=yy&toFloor=cba&method=elevators
-:- http_handler(api(sequence), api_get_requests, []). % /api/sequence
+:- http_handler(api(sequence), api_get_requests, []). % /api/sequence?deviceId=xx
 
 :- dynamic bearer_token/1.
 
@@ -72,11 +72,15 @@ fetch_floors(BuildingCode, Floors) :-
     atom_concat(FloorsUrl2, '/floors', FloorsUrl3),
     read_api(FloorsUrl3, Floors).
 
-fetch_requests(Requests) :-
+fetch_requests(DeviceId,Requests) :-
     api_url(Url),
-    atom_concat(Url, '/tasks', PickDeliveryUrl),
+    atom_concat(Url, '/tasks', Url2),
+    atom_concat(Url2, '?filter=device&value=', Url3),
+    atom_concat(Url3, DeviceId, PickDeliveryUrl),
     (retractall(genetic:t(_,_,_));true),
     (retractall(genetic:tarefas(_,_,_));true),
+    (retractall(genetic:distancias_robot_tarefa(_,_));true),
+    (retractall(genetic:distancias_tarefa_robot(_,_));true),
     (retract(genetic:n_tarefas(_));true),
     read_api(PickDeliveryUrl, Requests).
 
@@ -92,10 +96,11 @@ authenticate():-
     post_api(AuthUrl, JsonData, Out),
     (retract(bearer_token(_));true), assertz(bearer_token(Out.token)), !.
 
-api_get_requests(_):-
+api_get_requests(Request):-
     authenticate(),
     planning:load_data(),
-    fetch_requests(Requests),
+    http_parameters(Request, [ deviceId(DeviceId, [ string ]) ]),
+    fetch_requests(DeviceId,Requests),
     genetic:load_tasks(Requests.data,0),
     genetic:gera_lim_time(B*X),
     prolog_to_json(json([tasks=B, time=X]), JsonOut),

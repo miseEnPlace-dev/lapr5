@@ -140,6 +140,9 @@ namespace DDDNetCore.Migrations
                     b.Property<string>("DeviceId")
                         .HasColumnType("longtext");
 
+                    b.Property<ulong>("IsFinished")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id", "RequestId", "CreatedAt");
 
                     b.ToTable("Tasks");

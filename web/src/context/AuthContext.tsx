@@ -7,12 +7,14 @@ const AuthContext = createContext<{
   role: string | null;
   username: string | null;
   login: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: (credential: string) => Promise<void>;
   logout: () => Promise<void>;
 }>({
   isAuthenticated: false,
   role: null,
   username: null,
   login: () => Promise.resolve(),
+  loginWithGoogle: () => Promise.resolve(),
   logout: () => Promise.resolve(),
 });
 

@@ -6,13 +6,18 @@ interface "Fleet Manager UI" as FUI
 interface "Task Manager UI" as TUI
 interface "User UI" as UUI
 interface "Filesystem API" as FS
+interface "Google OAuth2 API" as GA
+interface "Google Identity Services SDK" as GS
 
 component "RobDroneGo System" <<component>> <<system (C4)>> {
   portin " " as P1
   portout " " as P2
+  portout " " as P3
+  portout " " as P4
 
   Interface "API-Management" as API
   Interface "API-Planning" as PAPI
+  Interface "API-Tasks" as TAPI
   
   component "Visualization" as V <<component>> <<container (C4)>> {
   }
@@ -22,16 +27,24 @@ component "RobDroneGo System" <<component>> <<system (C4)>> {
 
   component "Planning" as P <<component>> <<container (C4)>> {
   }
+
+  component "MD Tasks" as MDT <<component>> <<container (C4)>> {
+  }
 }
 
 
 V -- P1
 V -- P2
+V -- P4
 MDM -up- API
+MDM -- P3
 V --( API
 P --( API
 P -- PAPI
 MDM -up-( PAPI
+MDT -- TAPI
+MDM -up-( TAPI
+MDT --( PAPI
 
 AUI -- P1
 CUI -- P1
@@ -39,5 +52,7 @@ FUI -- P1
 TUI -- P1
 UUI -- P1
 P2 --( FS
+P3 --( GA
+P4 --( GS
 
 @enduml

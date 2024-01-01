@@ -26,7 +26,7 @@ export default class DeviceService implements IDeviceService {
     @inject(TYPES.floorRepo) private floorRepo: IFloorRepo
   ) {}
 
-  public async createDevice(deviceDTO: IDeviceDTO): Promise<Result<IDeviceDTO>> {
+  public async createDevice(deviceDTO: Omit<IDeviceDTO, 'id'>): Promise<Result<IDeviceDTO>> {
     try {
       const codeOrError = DeviceCode.create(deviceDTO.code);
       if (codeOrError.isFailure) return Result.fail<IDeviceDTO>(codeOrError.errorValue());
@@ -196,6 +196,18 @@ export default class DeviceService implements IDeviceService {
     try {
       const deviceCode = DeviceCode.create(code).getValue();
       const device = await this.deviceRepo.findByCode(deviceCode);
+      if (!device) return Result.fail<IDeviceDTO>('Device not found');
+
+      const deviceDTOResult = DeviceMapper.toDTO(device) as IDeviceDTO;
+      return Result.ok<IDeviceDTO>(deviceDTOResult);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async getDeviceRobotWithId(id: string): Promise<Result<IDeviceDTO>> {
+    try {
+      const device = await this.deviceRepo.findByDomainId(id);
       if (!device) return Result.fail<IDeviceDTO>('Device not found');
 
       const deviceDTOResult = DeviceMapper.toDTO(device) as IDeviceDTO;
