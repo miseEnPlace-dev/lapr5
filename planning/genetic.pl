@@ -51,7 +51,7 @@ count([_|T],N1,N):-
 
 
 load_tasks([H|T],N):-
-	((H.type=="pick_delivery",(
+	((H.type=="pick_delivery",
 		asserta(
 		t(
 			H.id,
@@ -59,17 +59,17 @@ load_tasks([H|T],N):-
 			cel(H.endFloorCode,H.endCoordinateX,H.endCoordinateY)
 		)),
 		planning:caminho_celulas_edificios(
-			cel(H.device.initialCoordinates.floorCode, H.device.initialCoordinates.depth, H.device.initialCoordinates.width), 
+			cel(H.device.initialCoordinates.floorCode, H.device.initialCoordinates.width, H.device.initialCoordinates.depth), 
 			cel(H.startFloorCode, H.startCoordinateX, H.startCoordinateY), _, C),
 
 		% tarefa -> robot
 		planning:caminho_celulas_edificios(
 			cel(H.endFloorCode, H.endCoordinateX, H.endCoordinateY),
-			cel(H.device.initialCoordinates.floorCode, H.device.initialCoordinates.depth, H.device.initialCoordinates.width), _, C1),
+			cel(H.device.initialCoordinates.floorCode, H.device.initialCoordinates.width, H.device.initialCoordinates.depth), _, C1),
 
 		asserta(distancias_robot_tarefa(H.id, C)),
 		asserta(distancias_tarefa_robot(H.id, C1))
-	));(
+	);
 		asserta(
 		t(
 			H.id,
@@ -77,17 +77,17 @@ load_tasks([H|T],N):-
 			cel(H.floorId,H.endCoordinateX,H.endCoordinateY)
 		)),
 		planning:caminho_celulas_edificios(
-			cel(H.device.initialCoordinates.floorCode, H.device.initialCoordinates.depth, H.device.initialCoordinates.width), 
+			cel(H.device.initialCoordinates.floorCode, H.device.initialCoordinates.width, H.device.initialCoordinates.depth), 
 			cel(H.floorId, H.startCoordinateX, H.startCoordinateY), _, C),
 
 		% tarefa -> robot
 		planning:caminho_celulas_edificios(
 			cel(H.floorId, H.endCoordinateX, H.endCoordinateY), 
-			cel(H.device.floorCode, H.device.initialCoordinates.depth, H.device.initialCoordinates.width), _, C1),
+			cel(H.device.initialCoordinates.floorCode, H.device.initialCoordinates.width, H.device.initialCoordinates.depth), _, C1),
 
 		asserta(distancias_robot_tarefa(H.id, C)),
 		asserta(distancias_tarefa_robot(H.id, C1))
-	));true,
+	),
 	N1 is N+1,
 	load_tasks(T,N1).
 
@@ -268,8 +268,9 @@ retira(N,[G1|Resto],G,[G1|Resto1]):-
 avalia_populacao([],[]).
 avalia_populacao([H|Resto],[H*V|Resto1]):-
 	[Tarefa|_]=H,
-	distancias_robot_tarefa(Tarefa, V),
-	avalia(H,V),
+	distancias_robot_tarefa(Tarefa, V1),
+	avalia(H,V2),
+	V is V1+V2,
 	avalia_populacao(Resto,Resto1).
 
 avalia([T1,T2|Resto],V):-
@@ -277,9 +278,7 @@ avalia([T1,T2|Resto],V):-
 	avalia([T2|Resto],V2),
 	V is V1 + V2.
 	
-avalia([H],Dist) :- 
-	distancias_tarefa_robot(H, Dist).
-
+avalia([H],Dist):-distancias_tarefa_robot(H, Dist).
 avalia([],0).
 
 ordena_populacao(PopAv,PopAvOrd):-

@@ -77,6 +77,8 @@ fetch_requests(Requests) :-
     atom_concat(Url, '/tasks', PickDeliveryUrl),
     (retractall(genetic:t(_,_,_));true),
     (retractall(genetic:tarefas(_,_,_));true),
+    (retractall(genetic:distancias_robot_tarefa(_,_));true),
+    (retractall(genetic:distancias_tarefa_robot(_,_));true),
     (retract(genetic:n_tarefas(_));true),
     read_api(PickDeliveryUrl, Requests).
 
