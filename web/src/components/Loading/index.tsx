@@ -14,7 +14,7 @@ const Loading: React.FC<LoadingProps> = ({ loadingText = true }) => {
     <div className="mt-6 w-full pr-8">
       {loadingText && (
         <h1 className="flex w-full items-center justify-center text-center text-4xl font-bold">
-          Aguarde
+          Loading
           <div className="flex justify-start">
             <motion.span
               animate={{ translateY: [-5, 0, -5] }}

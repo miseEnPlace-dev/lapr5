@@ -454,6 +454,9 @@ export default class ThumbRaiser {
     this.automatedParameters = merge({}, automatedData, automatedParameters);
     this.currRouteIndex = 0;
 
+    this.startAutomated = false;
+    setTimeout(() => (this.startAutomated = true), 3000);
+
     // Set the game state
     this.gameRunning = false;
 
@@ -1280,17 +1283,17 @@ export default class ThumbRaiser {
         );
 
         if (this.mouse.camera) {
-          const raycaster = new THREE.Raycaster();
+          // const raycaster = new THREE.Raycaster();
           const mouseCoords = new THREE.Vector2();
 
           mouseCoords.x = (event.clientX / window.innerWidth) * 2 - 1;
           mouseCoords.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-          const projection = this.mouse.camera.projection;
-          raycaster.setFromCamera(
-            mouseCoords.clone(),
-            this.mouse.camera[projection]
-          );
+          // const projection = this.mouse.camera.projection;
+          // raycaster.setFromCamera(
+          //   mouseCoords.clone(),
+          //   this.mouse.camera[projection]
+          // );
           // const objects = raycaster.intersectObjects(this.scene.children);
           // console.log(objects);
         }
@@ -1665,7 +1668,10 @@ export default class ThumbRaiser {
           );
         } else {
           const route = this.automatedParameters.route;
-          const pos = this.maze.cellToCartesian([route[0].x, route[0].y]);
+          const pos = this.maze.cellToCartesian([
+            route[0].x - 1,
+            route[0].y - 1,
+          ]);
           this.player.position.set(pos.x, this.maze.initialPosition.y, pos.z);
         }
         this.player.direction = this.maze.initialDirection;
@@ -1866,19 +1872,63 @@ export default class ThumbRaiser {
                 )
               );
             }
-          } else {
+          } else if (this.startAutomated) {
             // const position = this.player.position.clone();
             // console.log(position);
 
-            // automate player controls
             const route = this.automatedParameters.route;
-            const current = route[this.currRouteIndex];
-            const pos = this.maze.cellToCartesian([current.x, current.y]);
 
+            // automate player controls
             if (this.currRouteIndex === 0) {
-              // this.player.position.set(pos.x, this.maze.initialPosition.y, pos.z);
-              console.log(pos);
               this.currRouteIndex++;
+            } else if (this.currRouteIndex === route.length) {
+              this.automatedParameters.isAutomated = false;
+              console.log("end");
+            } else {
+              const currentRoutePos = route[this.currRouteIndex];
+              const goToPos = this.maze.cellToCartesian([
+                currentRoutePos.x - 1,
+                currentRoutePos.y - 1,
+              ]);
+
+              // advance to next route pos if close enough
+              if (
+                position.x < goToPos.x + 0.1 &&
+                position.x > goToPos.x - 0.1 &&
+                position.z < goToPos.z + 0.1 &&
+                position.z > goToPos.z - 0.1
+              ) {
+                this.currRouteIndex++;
+              } else {
+                const moveX =
+                  position.x < goToPos.x
+                    ? 1
+                    : position.x < goToPos.x + 0.1 &&
+                      position.x > goToPos.x - 0.1
+                    ? 0
+                    : -1;
+
+                const moveZ =
+                  position.z < goToPos.z
+                    ? 1
+                    : position.z < goToPos.z + 0.1 &&
+                      position.z > goToPos.z - 0.1
+                    ? 0
+                    : -1;
+
+                // console.log("position", position.x, position.z);
+                // console.log("goToPos", goToPos.x, goToPos.z);
+                // console.log(moveX, moveZ);
+
+                playerMoved = true;
+                position.add(
+                  new THREE.Vector3(
+                    coveredDistance * moveX,
+                    0.0,
+                    coveredDistance * moveZ
+                  )
+                );
+              }
             }
           }
 
