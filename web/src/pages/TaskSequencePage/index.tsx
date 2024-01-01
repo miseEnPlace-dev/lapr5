@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
 import { useMenuOptions } from "@/hooks/useMenuOptions";
@@ -12,6 +12,7 @@ import { useModule } from "./module";
 
 const TaskSequencePage: React.FC = () => {
   const { menuOptions } = useMenuOptions();
+  const navigate = useNavigate();
   const {
     tasks,
     sanitizeTaskType,
@@ -113,7 +114,8 @@ const TaskSequencePage: React.FC = () => {
         },
     ]
   ) => {
-    console.log("route ", route);
+    // console.log("route ", route);
+    navigate("/floor-editor?route=" + JSON.stringify(route));
   };
 
   return (

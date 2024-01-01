@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import * as THREE from "three";
 
 import "./index.css";
@@ -18,6 +18,7 @@ import ThumbRaiser from "./thumb_raiser";
 const FloorEditor: React.FC = () => {
   const floorService = useInjection<IFloorService>(TYPES.floorService);
   const [floors, setFloors] = React.useState<Floor[]>([]);
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     async function fetchFloors() {
@@ -34,6 +35,30 @@ const FloorEditor: React.FC = () => {
   useEffect(() => {
     if (floors.length === 0) return;
     let thumbRaiser: ThumbRaiser | undefined;
+
+    let selectedMaze = 0;
+    let route:
+      | [
+          {
+            floor: string;
+            x: number;
+            y: number;
+          }, // TODO fix
+          // | {
+          //     floor1: string;
+          //     floor2: string;
+          //     type: string;
+          //   },
+        ]
+      | null = null;
+
+    const routeParam = searchParams.get("route");
+    if (routeParam) {
+      route = JSON.parse(routeParam);
+      selectedMaze = floors.findIndex(
+        (f) => f.code === (route && route[0].floor)
+      );
+    }
 
     function initialize() {
       // Initialize the game
@@ -250,7 +275,7 @@ const FloorEditor: React.FC = () => {
                 };
             })
             .filter((maze) => maze !== undefined),
-          selected: 0,
+          selected: selectedMaze,
         }, // Maze parameters
         { helpersColor: new THREE.Color(0x0055ff) }, // Player parameters
         {

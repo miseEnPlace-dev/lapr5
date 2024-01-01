@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useInjection } from "inversify-react";
 
 import { TYPES } from "@/inversify/types";
+import SequenceContext from "@/context/SequenceContext";
 import { Device } from "@/model/Device";
-import { Sequence } from "@/model/Sequence";
 import { Task } from "@/model/Task";
 import { IDeviceService } from "@/service/IService/IDeviceService";
 import { ITaskService } from "@/service/IService/ITaskService";
@@ -13,11 +13,12 @@ export const useModule = () => {
   const devicesService = useInjection<IDeviceService>(TYPES.deviceService);
 
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [sequence, setSequence] = useState<Sequence>();
+  const { sequence, setSequence, selectedDevice, setSelectedDevice } =
+    useContext(SequenceContext);
+
   const [loading, setLoading] = useState(false);
   const [executing, setExecuting] = useState("");
   const [devices, setDevices] = useState<Device[]>([]);
-  const [selectedDevice, setSelectedDevice] = useState("");
 
   const sanitizeTaskType = (taskType: string) => {
     switch (taskType) {
