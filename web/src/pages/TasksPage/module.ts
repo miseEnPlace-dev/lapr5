@@ -161,6 +161,11 @@ export const useTasksModule = () => {
       }
     }
 
+    setRoom1Code("");
+    setRoom2Code("");
+    setFloorCode("");
+    setType(null);
+
     fetchRequests();
   }
 
