@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DDDSample1.Domain.DeviceModel;
 using DDDSample1.Domain.Requests;
 using DDDSample1.Infrastructure.Shared;
 using Microsoft.EntityFrameworkCore;
@@ -13,5 +14,10 @@ public class RequestRepository : BaseRepository<DeviceTask, TaskId>, ITaskReposi
   public RequestRepository(MySQLDbContext context) : base(context.Tasks)
   {
     _context = context;
+  }
+
+  public async Task<List<DeviceTask>> GetAllWithDeviceIdAsync(string deviceId)
+  {
+    return await _context.Tasks.Where(t => t.DeviceId == deviceId).ToListAsync();
   }
 }

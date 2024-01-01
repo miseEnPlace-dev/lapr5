@@ -77,6 +77,25 @@ namespace DDDSample1.Domain.Requests
       return new PaginationDTO<TaskDTO>(result, page, limit, await taskRepo.CountAsync());
     }
 
+    public async Task<PaginationDTO<TaskDTO>> GetWithDeviceId(string deviceId)
+    {
+      List<DeviceTask> tasks = await taskRepo.GetAllWithDeviceIdAsync(deviceId);
+
+      List<TaskDTO> result = new();
+
+      foreach (DeviceTask task in tasks)
+      {
+        if (task.IsFinished) continue;
+        if (await surveillanceTaskRepository.GetByIdAsync(task.RequestId) != null)
+          result.Add(await ConvertToDTO(task, "SurveillanceTaskDTO"));
+
+        if (await pickAndDeliveryTaskRepository.GetByIdAsync(task.RequestId) != null)
+          result.Add(await ConvertToDTO(task, "PickDeliveryTaskDTO"));
+      }
+
+      return new PaginationDTO<TaskDTO>(result, 1, 1, await taskRepo.CountAsync());
+    }
+
     public async Task<PaginationDTO<SurveillanceTaskDTO>> GetAllSurveillance(int page, int limit)
     {
       List<DeviceTask> tasks = await taskRepo.GetAllAsync(page - 1, limit);
@@ -297,9 +316,9 @@ namespace DDDSample1.Domain.Requests
       return null;
     }
 
-    public async Task<SequenceDTO> GetApprovedTasksSequence()
+    public async Task<SequenceDTO> GetApprovedTasksSequence(string deviceId)
     {
-      using HttpResponseMessage response = await httpClient.GetAsync(BASE_URL + "/sequence");
+      using HttpResponseMessage response = await httpClient.GetAsync(BASE_URL + "/sequence?deviceId=" + deviceId);
 
       response.EnsureSuccessStatusCode();
       var jsonResponse = await response.Content.ReadFromJsonAsync<SequenceResponseDTO>() ?? throw new Exception("Error getting sequence");

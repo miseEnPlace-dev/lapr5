@@ -10,10 +10,11 @@ namespace DDDNetCore.Services
 
     Task<TaskDTO> Create(TaskDTO dto);
     Task<PaginationDTO<TaskDTO>> GetAll(int page, int limit);
+    Task<PaginationDTO<TaskDTO>> GetWithDeviceId(string deviceId);
     Task<PaginationDTO<SurveillanceTaskDTO>> GetAllSurveillance(int page, int limit);
     Task<PaginationDTO<PickDeliveryTaskDTO>> GetAllPickAndDelivery(int page, int limit);
     Task<TaskDTO> GetById(TaskId id);
-    Task<SequenceDTO> GetApprovedTasksSequence();
+    Task<SequenceDTO> GetApprovedTasksSequence(string deviceId);
     Task<TaskDTO> AddSurveillanceRequest(TaskDTO dto);
     Task<TaskDTO> AddPickAndDeliveryRequest(TaskDTO dto);
     Task<TaskDTO> Update(TaskDTO dto);

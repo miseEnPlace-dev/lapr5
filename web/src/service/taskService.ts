@@ -18,6 +18,17 @@ export class TaskService implements ITaskService {
     @inject(TYPES.localStorage) private localStorage: Storage
   ) {}
 
+  async getDeviceTasks(deviceId: string): Promise<Task[]> {
+    const token = this.localStorage.getItem(localStorageConfig.token);
+
+    const response = await this.http.get<IPaginationDTO<Task>>(
+      `/tasks?deviceId=${deviceId}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    const data = response.data.data;
+    return data;
+  }
+
   async createTask(requestId: string, deviceId: string): Promise<Task> {
     const token = this.localStorage.getItem(localStorageConfig.token);
 

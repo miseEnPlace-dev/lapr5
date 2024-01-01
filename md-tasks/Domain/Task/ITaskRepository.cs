@@ -6,5 +6,6 @@ namespace DDDSample1.Domain.Requests
 {
   public interface ITaskRepository : IRepository<DeviceTask, TaskId>
   {
+    Task<List<DeviceTask>> GetAllWithDeviceIdAsync(string deviceId);
   }
 }

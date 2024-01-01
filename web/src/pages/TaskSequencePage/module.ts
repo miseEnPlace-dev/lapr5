@@ -2,16 +2,22 @@ import { useEffect, useState } from "react";
 import { useInjection } from "inversify-react";
 
 import { TYPES } from "@/inversify/types";
+import { Device } from "@/model/Device";
 import { Sequence } from "@/model/Sequence";
 import { Task } from "@/model/Task";
+import { IDeviceService } from "@/service/IService/IDeviceService";
 import { ITaskService } from "@/service/IService/ITaskService";
 
 export const useModule = () => {
   const tasksService = useInjection<ITaskService>(TYPES.taskService);
+  const devicesService = useInjection<IDeviceService>(TYPES.deviceService);
+
   const [tasks, setTasks] = useState<Task[]>([]);
   const [sequence, setSequence] = useState<Sequence>();
   const [loading, setLoading] = useState(false);
   const [executing, setExecuting] = useState("");
+  const [devices, setDevices] = useState<Device[]>([]);
+  const [selectedDevice, setSelectedDevice] = useState("");
 
   const sanitizeTaskType = (taskType: string) => {
     switch (taskType) {
@@ -91,13 +97,22 @@ export const useModule = () => {
   };
 
   useEffect(() => {
+    const fetchDevices = async () => {
+      const data = (await devicesService.getDevicesRobots()).data;
+      setDevices(data);
+    };
+
+    fetchDevices();
+  }, [devicesService]);
+
+  useEffect(() => {
+    if (!selectedDevice) return;
     const fetchTasks = async () => {
-      const data = await tasksService.getTasks();
-      console.log({ data });
+      const data = await tasksService.getDeviceTasks(selectedDevice);
       setTasks(data);
     };
     fetchTasks();
-  }, [tasksService]);
+  }, [selectedDevice, tasksService]);
 
   return {
     tasks,
@@ -109,5 +124,8 @@ export const useModule = () => {
     executeTask,
     executing,
     executeAll,
+    devices,
+    setSelectedDevice,
+    selectedDevice,
   };
 };

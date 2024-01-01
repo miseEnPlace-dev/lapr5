@@ -4,6 +4,7 @@ import swal from "sweetalert";
 
 import { useMenuOptions } from "@/hooks/useMenuOptions";
 import Button from "@/components/Button";
+import Dropdown from "@/components/Dropdown";
 import Loading from "@/components/Loading";
 import SideBar from "@/components/SideBar";
 
@@ -21,6 +22,9 @@ const TaskSequencePage: React.FC = () => {
     executeTask,
     executing,
     executeAll,
+    devices,
+    setSelectedDevice,
+    selectedDevice,
   } = useModule();
 
   const handleGeneratePath = () => {
@@ -120,6 +124,16 @@ const TaskSequencePage: React.FC = () => {
         <p className="text-slate-500">
           Check the task sequence for all the approved task requests.
         </p>
+        <Dropdown
+          name="Devices"
+          options={devices.map((d) => ({
+            code: d.id,
+            name: d.nickname,
+          }))}
+          value={selectedDevice}
+          onChange={(e) => setSelectedDevice(e.target.value)}
+          className="mx-auto w-96"
+        />
         <section className="my-8 flex flex-wrap items-center justify-around gap-8">
           {tasks ? (
             tasks.map((task) => (

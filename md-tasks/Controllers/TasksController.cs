@@ -51,6 +51,9 @@ public class TasksController : ControllerBase
     if (Request.Query.ContainsKey("page") && Request.Query.ContainsKey("limit"))
       return await taskSvc.GetAll(int.Parse(Request.Query["page"].ToString()), int.Parse(Request.Query["limit"].ToString()));
 
+    if (Request.Query.ContainsKey("filter") && Request.Query.ContainsKey("value") && Request.Query["filter"].ToString() == "device")
+      return await taskSvc.GetWithDeviceId(Request.Query["value"].ToString());
+
     return await taskSvc.GetAll(-1, -1);
   }
 
@@ -58,7 +61,10 @@ public class TasksController : ControllerBase
   [HttpGet("sequence")]
   public async Task<ActionResult<SequenceDTO>> GetSequence()
   {
-    return Ok(await taskSvc.GetApprovedTasksSequence());
+    if (Request.Query.ContainsKey("deviceId"))
+      return Ok(await taskSvc.GetApprovedTasksSequence(Request.Query["deviceId"].ToString()));
+
+    return BadRequest("Specify a device id");
   }
 
   // GET api/requests/{id}
