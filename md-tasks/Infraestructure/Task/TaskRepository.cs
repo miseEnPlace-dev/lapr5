@@ -16,8 +16,15 @@ public class RequestRepository : BaseRepository<DeviceTask, TaskId>, ITaskReposi
     _context = context;
   }
 
+  public async Task<List<DeviceTask>> GetAllOrderedByCreatedAt(int page, int limit)
+  {
+    if (page >= 0 && limit >= 0)
+      return await _context.Tasks.OrderBy(r => r.CreatedAt).Skip(page * limit).Take(limit).ToListAsync();
+    return await _context.Tasks.OrderBy(r => r.CreatedAt).ToListAsync();
+  }
+
   public async Task<List<DeviceTask>> GetAllWithDeviceIdAsync(string deviceId)
   {
-    return await _context.Tasks.Where(t => t.DeviceId == deviceId).ToListAsync();
+    return await _context.Tasks.OrderBy(t => t.CreatedAt).Where(t => t.DeviceId == deviceId).ToListAsync();
   }
 }

@@ -16,42 +16,75 @@ end box
 
 activate ADM
 
-ADM -> CMP : asks to create a new user
+ADM -> CMP : asks to list new user's requests
 activate CMP
-
-ADM <-- CMP : asks user's personal data, including his role in the system
-deactivate CMP
-
-ADM -> CMP : inputs required data
-activate CMP
-CMP -> MOD : create user
+CMP -> MOD : list new user's requests
 activate MOD
-MOD -> MOD : validate user
-activate MOD
-deactivate MOD
-
-MOD -> SRV : create user
+MOD -> SRV : list new user's requests
 activate SRV
-SRV -> HTTP : post('/user')
-
+SRV -> HTTP : get('/requests')
 activate HTTP
 
-HTTP -> MDM : POST /user
+HTTP -> MDM : GET /requests
 activate MDM
-MDM --> HTTP : 201 (Created)
+MDM --> HTTP : 200 (OK)
 deactivate MDM
-
-HTTP --> SRV : user
+HTTP --> SRV : requests
 deactivate HTTP
-
-SRV --> MOD : user
+SRV --> MOD : requests
 deactivate SRV
-MOD --> CMP : user
+MOD --> CMP : requests
 deactivate MOD
-
-ADM <-- CMP : returns confirmation message
+CMP --> ADM : requests
 deactivate CMP
 
+alt approves request
+
+ADM -> CMP : approves user request
+activate CMP
+CMP -> MOD : approves user request
+activate MOD
+MOD -> SRV : approves user request
+activate SRV
+SRV -> HTTP : patch('/users/:id/accept')
+activate HTTP
+HTTP -> MDM : PATCH /users/:id/accept
+activate MDM
+MDM --> HTTP : 204 (No Content)
+deactivate MDM
+HTTP --> SRV 
+deactivate HTTP
+SRV --> MOD
+deactivate SRV
+MOD --> CMP
+deactivate MOD
+CMP --> ADM
+deactivate CMP
+
+else rejects request
+
+ADM -> CMP : rejects user request
+activate CMP
+CMP -> MOD : rejects user request
+activate MOD
+MOD -> SRV : rejects user request
+activate SRV
+SRV -> HTTP : patch('/users/:id/reject')
+activate HTTP
+HTTP -> MDM : PATCH /users/:id/reject
+activate MDM
+MDM --> HTTP : 204 (No Content)
+deactivate MDM
+HTTP --> SRV
+deactivate HTTP
+SRV --> MOD
+deactivate SRV
+MOD --> CMP
+deactivate MOD
+CMP --> ADM
+deactivate CMP
+
+end
 
 deactivate ADM
 

@@ -1,8 +1,8 @@
-# US [10] - As Admin, I want to crate a new user in the system.
+# US [80] - As Admin, I want to approve or reject a new user in the system.
 
 |              |                        |
 | ------------ | ---------------------- |
-| ID           | 10                     |
+| ID           | 80                     |
 | Sprint       | C                      |
 | Module       | 1.3 - Users Management |
 | UC           | ARQSI                  |
@@ -10,7 +10,7 @@
 
 ## 1. Requirements
 
-> ### "US10 - As Admin, I want to crate a new user in the system."
+> ### "US80 - As Admin, I want to approve or reject a new user in the system."
 
 ## 1.1. Client Specifications
 

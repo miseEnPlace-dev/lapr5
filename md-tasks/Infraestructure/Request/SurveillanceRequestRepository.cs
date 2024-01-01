@@ -18,17 +18,24 @@ public class SurveillanceRequestRepository : BaseRepository<SurveillanceRequest,
     _context = context;
   }
 
+  public async Task<List<SurveillanceRequest>> GetAllOrderedByRequestedAt(int page, int limit)
+  {
+    if (page >= 0 && limit >= 0)
+      return await _context.SurveillanceRequests.OrderBy(r => r.RequestedAt).Skip(page * limit).Take(limit).ToListAsync();
+    return await _context.SurveillanceRequests.OrderBy(r => r.RequestedAt).ToListAsync();
+  }
+
   public async Task<List<SurveillanceRequest>> GetRequestsByState(RequestState state, int page, int limit)
   {
     if (page >= 0 && limit >= 0)
-      return await _context.SurveillanceRequests.Where(r => r.State.Equals(state)).Skip(page * limit).Take(limit).ToListAsync();
-    return await _context.SurveillanceRequests.Where(r => r.State.Equals(state)).ToListAsync();
+      return await _context.SurveillanceRequests.OrderBy(r => r.RequestedAt).Where(r => r.State.Equals(state)).Skip(page * limit).Take(limit).ToListAsync();
+    return await _context.SurveillanceRequests.OrderBy(r => r.RequestedAt).Where(r => r.State.Equals(state)).ToListAsync();
   }
 
   public async Task<List<SurveillanceRequest>> GetRequestsByUserIdAsync(UserId id, int page, int limit)
   {
     if (page >= 0 && limit >= 0)
-      return await _context.SurveillanceRequests.Where(r => r.UserId.Equals(id)).Skip(page * limit).Take(limit).ToListAsync();
-    return await _context.SurveillanceRequests.Where(r => r.UserId.Equals(id)).ToListAsync();
+      return await _context.SurveillanceRequests.OrderBy(r => r.RequestedAt).Where(r => r.UserId.Equals(id)).Skip(page * limit).Take(limit).ToListAsync();
+    return await _context.SurveillanceRequests.OrderBy(r => r.RequestedAt).Where(r => r.UserId.Equals(id)).ToListAsync();
   }
 }
