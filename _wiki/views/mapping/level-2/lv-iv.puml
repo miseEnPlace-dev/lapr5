@@ -10,6 +10,8 @@ folder "RobDroneGo" {
 
   folder "Planning" as PP {
   }
+  folder "MD Tasks" as PMDT {
+  }
 }
 
 
@@ -29,6 +31,7 @@ component "RobDroneGo System" <<component>> <<system (C4)>> {
 
   Interface "API-Management" as API
   Interface "API-Planning" as PAPI
+  Interface "API-Tasks" as TAPI
   
   component "Visualization" as V <<component>> <<container (C4)>> {
   }
@@ -37,6 +40,8 @@ component "RobDroneGo System" <<component>> <<system (C4)>> {
   }
 
   component "Planning" as P <<component>> <<container (C4)>> {
+  }
+  component "MD Tasks" as MDT <<component>> <<container (C4)>> {
   }
 }
 
@@ -47,6 +52,9 @@ V --( API
 P --( API
 P -- PAPI
 MDM -up-( PAPI
+MDT -- TAPI
+MDM -up-( TAPI
+MDT --( PAPI
 
 AUI -- P1
 CUI -- P1
@@ -57,5 +65,6 @@ UUI -- P1
 PV ..> V : <<manifest>>
 PMDM ..> MDM : <<manifest>>
 PP ..> P : <<manifest>>
+PMDT ..> MDT : <<manifest>>
 
 @enduml

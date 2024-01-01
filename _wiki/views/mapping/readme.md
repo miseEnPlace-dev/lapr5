@@ -19,7 +19,3 @@ For the global overview of the system, refer to the [views](../readme.md) docume
 ### Logical View - Implementation View
 
 ![Logical View - Implementation View](./level-3/assets/lv-iv.svg)
-
-### Implementation View - Physical View
-
-![Implementation View - Physical View](./level-3/assets/iv-pv.svg)

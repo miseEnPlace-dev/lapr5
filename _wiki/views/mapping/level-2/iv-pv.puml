@@ -17,6 +17,12 @@ node "Server 1: ?" as S1 {
 
   artifact "Planning" as AP <<artifact>> {
   }
+
+  component "MD Tasks" as IMDT <<component>> {
+  }
+
+  artifact "MD Tasks" as AMDT <<artifact>> {
+  }
 }
 
 node "Server 2: ?" as S2 {
@@ -38,5 +44,6 @@ LOCAL -- S2 : http/s
 AV ..> IV : <<manifest>>
 AP ..> IP : <<manifest>>
 AMDM ..> IMDM : <<manifest>>
+AMDT ..> IMDT : <<manifest>>
 
 @enduml
