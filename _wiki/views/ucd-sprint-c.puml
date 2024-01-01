@@ -19,8 +19,6 @@ rectangle "Task Manager" as task {
   usecase "480. Consult all request pending" as consultAllRequestPending
   usecase "490. List request by User, State or device type" as listRequestByUserStateOrDeviceType
   usecase "500. Obtain sequence of tasks" as obtainSequenceOfTasks
-
-
 }
 
 rectangle "Administrator" as admin {

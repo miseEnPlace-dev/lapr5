@@ -11,7 +11,14 @@ activate TM
 TM -> UI : asks to get the sequence of execution of the approved tasks
 activate UI
 
+UI -> MMD : GET /devices
+activate MMD
+MMD --> UI : 200 (list of devices)
+deactivate MMD
+deactivate UI
+
 UI -> MMD : GET /task-requests/sequence
+activate UI
 activate MMD
 MMD -> TMD : GET /tasks/sequence
 activate TMD
