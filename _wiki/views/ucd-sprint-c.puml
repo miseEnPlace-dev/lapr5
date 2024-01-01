@@ -1,4 +1,4 @@
-@startuml ucd-sprint-a
+@startuml ucd-sprint-c
 
 skinparam usecase {
     BackgroundColor LightBlue

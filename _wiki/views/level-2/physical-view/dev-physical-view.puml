@@ -18,8 +18,12 @@ node "Server 1: ?" as S1 {
   }
   folder "Visualization" as V {
   }
-  node "Docker" <<container>> {
+  node "DockerM" <<container>> {
     database "MongoDB" as DB <<database>> {
+    }
+  }
+  node "DockerT" <<container>> {
+    database "Mysql" as DBT <<database>> {
     }
   }
 }
