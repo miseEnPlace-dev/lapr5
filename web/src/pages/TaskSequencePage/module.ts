@@ -28,9 +28,9 @@ export const useModule = () => {
       case "pick_delivery":
         return "Pick & Delivery";
       case "surveillance":
-        return "Vigilância";
+        return "Surveillance";
       default:
-        return "Tarefa";
+        return "Task";
     }
   };
 
@@ -120,7 +120,7 @@ export const useModule = () => {
   useEffect(() => {
     const fetchDevices = async () => {
       const data = (
-        await devicesService.getDevicesRobots(undefined, undefined, 0, 20)
+        await devicesService.getDevicesRobots(undefined, undefined, 1, 1000)
       ).data;
       setDevices(data);
     };
