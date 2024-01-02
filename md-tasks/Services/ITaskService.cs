@@ -15,13 +15,7 @@ namespace DDDNetCore.Services
     Task<PaginationDTO<PickDeliveryTaskDTO>> GetAllPickAndDelivery(int page, int limit);
     Task<TaskDTO> GetById(TaskId id);
     Task<SequenceDTO> GetApprovedTasksSequence(string deviceId);
-    Task<TaskDTO> AddSurveillanceRequest(TaskDTO dto);
-    Task<TaskDTO> AddPickAndDeliveryRequest(TaskDTO dto);
-    Task<TaskDTO> Update(TaskDTO dto);
-    Task<TaskDTO> Put(TaskDTO dto);
     Task<TaskDTO> Delete(TaskId id);
-    Task<TaskDTO> AcceptRequest(TaskId id);
-    Task<TaskDTO> RejectRequest(TaskId id);
     Task<TaskDTO> FinishTask(TaskId id);
   }
 }

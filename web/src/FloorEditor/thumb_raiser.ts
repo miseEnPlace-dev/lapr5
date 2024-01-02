@@ -1848,7 +1848,7 @@ export default class ThumbRaiser {
       if (!this.animations.actionInProgress) {
         const route = this.automatedParameters.route;
         const currentRoutePos =
-          this.currRouteIndex < route.length
+          route && this.currRouteIndex < route.length
             ? route[this.currRouteIndex]
             : null;
 

@@ -269,22 +269,6 @@ retira(N,[G1|Resto],G,[G1|Resto1]):-
 	N1 is N-1,
 	retira(N1,Resto,G,Resto1).
 
-% avalia_populacao([],[]).
-% avalia_populacao([H|Resto],[H*V|Resto1]):-
-% 	debug_mode(D),
-% 	%((D == 1,write('AAAAAA '), nl, nl); true),
-% 	avalia(H,V),
-% 	avalia_populacao(Resto,Resto1).
-
-% avalia([T1,T2|Resto],V):-
-% 	debug_mode(D),
-% 	%((D == 1, write('AAAAAA '), nl, nl); true),
-% 	tarefas(T1,T2,V1),
-% 	avalia([T2|Resto],V2),
-% 	V is V1 + V2.
-% avalia([_],0).
-% avalia([],0).
-
 avalia_populacao([],[]).
 avalia_populacao([H|Resto],[H*V|Resto1]):-
 	[Tarefa|_]=H,
@@ -373,25 +357,17 @@ gera_geracao_time(T, G, Pop, Melhor) :-
 		avalia_populacao(NPop, NPopAv),
 		ordena_populacao(NPopAv, NPopOrd),
 		[M3, M4 | Resto] = NPopOrd,
-		%((D == 1, write('NPopOrd = '), write(NPopOrd), nl, nl); true),
     ListaMelhores = [M1, M2, M3, M4],
-		%((D == 1, write('ListaMelhores = '), write(ListaMelhores), nl, nl); true),
     remove_repetidos(ListaMelhores, PopNovaDosMelhores),
-		%((D == 1, write('PopNovaDosMelhores = '), write(PopNovaDosMelhores), nl, nl); true),
 		length(PopNovaDosMelhores, X),
-		%((D == 1, write('X = '), write(X), nl, nl); true),
 		Elementos_Retirar is X - 2,
-		%((D == 1, write('Elementos_Retirar = '), write(Elementos_Retirar), nl, nl); true),
 		remove_ultimos_n(Resto, Elementos_Retirar, PopNova),
 		append(PopNovaDosMelhores, PopNova, Result),
-		%((D == 1, write('Result '), write(Result), nl, nl); true),
 		ordena_populacao(Result, PopNovaOrd),
-		%((D == 1, write('Populacao ordenada final: '), write(PopNovaOrd), nl, nl); true),
     ((D == 1, write('Melhor 1 individuo atual: '), write(M3), nl, nl); true),
     ((D == 1, write('Melhor 2 individuo atual: '), write(M4), nl, nl); true),
     G1 is G + 1,
     gera_geracao_time(T, G1, PopNovaOrd, Melhor).
-
 
 remove_ultimos_n(List, 0, List).
 
@@ -401,12 +377,15 @@ remove_ultimos_n([_|Tail], N, Result) :-
     remove_ultimos_n(Tail, N1, Result).
 
 remove_repetidos([], []).
+
 remove_repetidos([X | T], Result) :-
     member(X, T),
     !,
     remove_repetidos(T, Result).
+
 remove_repetidos([X | T], [X | Result]) :-
     remove_repetidos(T, Result).
+
 
 retira_pior([_|Resto], Melhor, [Melhor|Resto]) :- !.
 

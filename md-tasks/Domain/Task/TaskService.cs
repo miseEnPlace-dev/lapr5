@@ -17,18 +17,20 @@ namespace DDDSample1.Domain.Requests
   {
     private readonly IUnitOfWork unitOfWork;
     private readonly ITaskRepository taskRepo;
-    private readonly ISurveillanceRequestRepository surveillanceRequestRepository;
-    private readonly IPickAndDeliveryRequestRepository pickAndDeliveryRequestRepository;
+    private readonly TaskMapper mapper;
+
+    private readonly ISurveillanceRequestRepository svReqRepo;
+    private readonly IPickAndDeliveryRequestRepository pdReqRepo;
 
     private static readonly HttpClient httpClient = new();
     private static readonly string BASE_URL = "http://localhost:5000/api";
 
-    public TaskService(IUnitOfWork unitOfWork, ITaskRepository taskRepo, ISurveillanceRequestRepository surveillanceRequestRepository, IPickAndDeliveryRequestRepository pickAndDeliveryRequestRepository)
+    public TaskService(IUnitOfWork unitOfWork, ITaskRepository taskRepo, ISurveillanceRequestRepository svReqRepo, IPickAndDeliveryRequestRepository pdReqRepo)
     {
       this.unitOfWork = unitOfWork;
       this.taskRepo = taskRepo;
-      this.surveillanceRequestRepository = surveillanceRequestRepository;
-      this.pickAndDeliveryRequestRepository = pickAndDeliveryRequestRepository;
+      this.svReqRepo = svReqRepo;
+      this.pdReqRepo = pdReqRepo;
     }
 
     public async Task<TaskDTO> Create(TaskDTO dto)
@@ -36,17 +38,17 @@ namespace DDDSample1.Domain.Requests
       try
       {
         DeviceTask task = null;
-        SurveillanceRequest surRequest = await surveillanceRequestRepository.GetByIdAsync(new RequestId(dto.RequestId));
+        SurveillanceRequest surRequest = await svReqRepo.GetByIdAsync(new RequestId(dto.RequestId));
         if (surRequest != null) task = new DeviceTask(new RequestId(dto.RequestId), dto.DeviceId);
 
-        PickAndDeliveryRequest pickRequest = await pickAndDeliveryRequestRepository.GetByIdAsync(new RequestId(dto.RequestId));
+        PickAndDeliveryRequest pickRequest = await pdReqRepo.GetByIdAsync(new RequestId(dto.RequestId));
         if (pickRequest != null) task = new DeviceTask(new RequestId(dto.RequestId), dto.DeviceId);
 
         if (task == null) return null;
         await taskRepo.AddAsync(task);
         await unitOfWork.CommitAsync();
 
-        return await ConvertToDTO(task, "TaskDTO");
+        return await mapper.ToDto(task, "TaskDTO");
       }
       catch (Exception e)
       {
@@ -65,11 +67,11 @@ namespace DDDSample1.Domain.Requests
       foreach (DeviceTask task in tasks)
       {
         if (task.IsFinished) continue;
-        if (await surveillanceRequestRepository.GetByIdAsync(task.RequestId) != null)
-          result.Add(await ConvertToDTO(task, "SurveillanceTaskDTO"));
+        if (await svReqRepo.GetByIdAsync(task.RequestId) != null)
+          result.Add(await mapper.ToDto(task, "SurveillanceTaskDTO"));
 
-        if (await pickAndDeliveryRequestRepository.GetByIdAsync(task.RequestId) != null)
-          result.Add(await ConvertToDTO(task, "PickDeliveryTaskDTO"));
+        if (await pdReqRepo.GetByIdAsync(task.RequestId) != null)
+          result.Add(await mapper.ToDto(task, "PickDeliveryTaskDTO"));
       }
 
       return new PaginationDTO<TaskDTO>(result, page, limit, await taskRepo.CountAsync());
@@ -84,11 +86,11 @@ namespace DDDSample1.Domain.Requests
       foreach (DeviceTask task in tasks)
       {
         if (task.IsFinished) continue;
-        if (await surveillanceRequestRepository.GetByIdAsync(task.RequestId) != null)
-          result.Add(await ConvertToDTO(task, "SurveillanceTaskDTO"));
+        if (await svReqRepo.GetByIdAsync(task.RequestId) != null)
+          result.Add(await mapper.ToDto(task, "SurveillanceTaskDTO"));
 
-        if (await pickAndDeliveryRequestRepository.GetByIdAsync(task.RequestId) != null)
-          result.Add(await ConvertToDTO(task, "PickDeliveryTaskDTO"));
+        if (await pdReqRepo.GetByIdAsync(task.RequestId) != null)
+          result.Add(await mapper.ToDto(task, "PickDeliveryTaskDTO"));
       }
 
       return new PaginationDTO<TaskDTO>(result, 1, 1, await taskRepo.CountAsync());
@@ -101,10 +103,10 @@ namespace DDDSample1.Domain.Requests
       List<SurveillanceTaskDTO> result = new();
 
       foreach (DeviceTask task in tasks)
-        if (await surveillanceRequestRepository.GetByIdAsync(task.RequestId) != null)
-          result.Add((SurveillanceTaskDTO)await ConvertToDTO(task, "SurveillanceTaskDTO"));
+        if (await svReqRepo.GetByIdAsync(task.RequestId) != null)
+          result.Add((SurveillanceTaskDTO)await mapper.ToDto(task, "SurveillanceTaskDTO"));
 
-      int count = await surveillanceRequestRepository.CountAsync();
+      int count = await svReqRepo.CountAsync();
 
       return new PaginationDTO<SurveillanceTaskDTO>(result, page, limit, count);
     }
@@ -116,10 +118,10 @@ namespace DDDSample1.Domain.Requests
       List<PickDeliveryTaskDTO> result = new();
 
       foreach (DeviceTask task in tasks)
-        if (await pickAndDeliveryRequestRepository.GetByIdAsync(task.RequestId) != null)
-          result.Add((PickDeliveryTaskDTO)await ConvertToDTO(task, "PickDeliveryTaskDTO"));
+        if (await pdReqRepo.GetByIdAsync(task.RequestId) != null)
+          result.Add((PickDeliveryTaskDTO)await mapper.ToDto(task, "PickDeliveryTaskDTO"));
 
-      int count = await pickAndDeliveryRequestRepository.CountAsync();
+      int count = await pdReqRepo.CountAsync();
 
       return new PaginationDTO<PickDeliveryTaskDTO>(result, page, limit, count);
     }
@@ -129,72 +131,13 @@ namespace DDDSample1.Domain.Requests
       DeviceTask task = await taskRepo.GetByIdAsync(id);
       if (task == null) return null;
 
-      if (await surveillanceRequestRepository.GetByIdAsync(task.RequestId) != null)
-        return await ConvertToDTO(task, "SurveillanceTaskDTO");
+      if (await svReqRepo.GetByIdAsync(task.RequestId) != null)
+        return await mapper.ToDto(task, "SurveillanceTaskDTO");
 
-      if (await pickAndDeliveryRequestRepository.GetByIdAsync(task.RequestId) != null)
-        return await ConvertToDTO(task, "PickDeliveryTaskDTO");
+      if (await pdReqRepo.GetByIdAsync(task.RequestId) != null)
+        return await mapper.ToDto(task, "PickDeliveryTaskDTO");
 
       return null;
-    }
-
-    public async Task<TaskDTO> AddSurveillanceRequest(TaskDTO dto)
-    {
-      try
-      {
-        SurveillanceRequest task = await surveillanceRequestRepository.GetByIdAsync(new RequestId(dto.RequestId));
-        if (task == null) return null;
-
-        DeviceTask r = new(new RequestId(dto.RequestId), dto.DeviceId);
-        await taskRepo.AddAsync(r);
-        await unitOfWork.CommitAsync();
-
-        return await ConvertToDTO(r, "SurveillanceTaskDTO");
-      }
-      catch (Exception e)
-      {
-        Console.WriteLine($"Exception: {e.Message}");
-        throw;
-      }
-    }
-
-    public async Task<TaskDTO> AddPickAndDeliveryRequest(TaskDTO dto)
-    {
-      try
-      {
-        PickAndDeliveryRequest task = await pickAndDeliveryRequestRepository.GetByIdAsync(new RequestId(dto.RequestId));
-        if (task == null) return null;
-
-        DeviceTask r = new(new RequestId(dto.RequestId), dto.DeviceId);
-        await taskRepo.AddAsync(r);
-        await unitOfWork.CommitAsync();
-
-        return await ConvertToDTO(r, "PickDeliveryTaskDTO");
-      }
-      catch (Exception e)
-      {
-        Console.WriteLine($"Exception: {e.Message}");
-        throw;
-      }
-    }
-
-    public async Task<TaskDTO> Update(TaskDTO dto)
-    {
-      DeviceTask task = await taskRepo.GetByIdAsync(new TaskId(dto.Id));
-      if (task == null) return null;
-
-      await unitOfWork.CommitAsync();
-
-      return await ConvertToDTO(task, dto.GetType().Name);
-    }
-
-    public async Task<TaskDTO> Put(TaskDTO dto)
-    {
-      DeviceTask task = await taskRepo.GetByIdAsync(new TaskId(dto.Id));
-      if (task == null) return null;
-
-      await unitOfWork.CommitAsync();
-      return await ConvertToDTO(task, dto.GetType().Name);
     }
 
     public async Task<TaskDTO> Delete(TaskId id)
@@ -208,94 +151,6 @@ namespace DDDSample1.Domain.Requests
       return null;
     }
 
-    private async Task<TaskDTO> ConvertToDTO(DeviceTask r, string type)
-    {
-      if (type.Equals("SurveillanceTaskDTO"))
-      {
-        SurveillanceRequest task = await surveillanceRequestRepository.GetByIdAsync(r.RequestId);
-        if (task == null) return null;
-
-        return new SurveillanceTaskDTO(
-            r.Id.Value,
-            task.Description.Value,
-            r.CreatedAt.ToString(),
-            task.UserName.Name,
-            task.UserPhoneNumber.PhoneNumber,
-            task.FloorId.Value,
-            task.Id.Value,
-            task.StartCoordinateX,
-            task.StartCoordinateY,
-            task.EndCoordinateX,
-            task.EndCoordinateY,
-            r.DeviceId,
-            task.UserId.Value
-        );
-      }
-
-      if (type.Equals("PickDeliveryTaskDTO"))
-      {
-        PickAndDeliveryRequest task = await pickAndDeliveryRequestRepository.GetByIdAsync(r.RequestId);
-        if (task == null) return null;
-
-        return new PickDeliveryTaskDTO(
-            r.Id.Value,
-            task.Description.Value,
-            r.CreatedAt.ToString(),
-            task.PickupUserName.Name,
-            task.DeliveryUserName.Name,
-            task.PickupUserPhoneNumber.PhoneNumber,
-            task.DeliveryUserPhoneNumber.PhoneNumber,
-            task.PickupRoomId.Value,
-            task.DeliveryRoomId.Value,
-            task.Id.Value,
-            task.ConfirmationCode.Code,
-            task.StartCoordinateX,
-            task.StartCoordinateY,
-            task.EndCoordinateX,
-            task.EndCoordinateY,
-            task.StartFloorCode,
-            task.EndFloorCode,
-            r.DeviceId,
-            task.UserId.Value
-        );
-      }
-      return null;
-    }
-
-    public async Task<TaskDTO> AcceptRequest(TaskId id)
-    {
-      DeviceTask request = await taskRepo.GetByIdAsync(id);
-      if (request == null) return null;
-
-      await unitOfWork.CommitAsync();
-
-
-      if (await surveillanceRequestRepository.GetByIdAsync(request.RequestId) != null)
-        return await ConvertToDTO(request, "SurveillanceTaskDTO");
-
-
-      if (await pickAndDeliveryRequestRepository.GetByIdAsync(request.RequestId) != null)
-        return await ConvertToDTO(request, "PickDeliveryTaskDTO");
-
-      return null;
-    }
-
-    public async Task<TaskDTO> RejectRequest(TaskId id)
-    {
-      DeviceTask task = await taskRepo.GetByIdAsync(id);
-      if (task == null) return null;
-
-      await unitOfWork.CommitAsync();
-
-      if (await surveillanceRequestRepository.GetByIdAsync(task.RequestId) != null)
-        return await ConvertToDTO(task, "SurveillanceTaskDTO");
-
-      if (await pickAndDeliveryRequestRepository.GetByIdAsync(task.RequestId) != null)
-        return await ConvertToDTO(task, "PickDeliveryTaskDTO");
-
-      return null;
-    }
-
     public async Task<TaskDTO> FinishTask(TaskId id)
     {
       DeviceTask task = await taskRepo.GetByIdAsync(id);
@@ -304,11 +159,11 @@ namespace DDDSample1.Domain.Requests
       task.Finish();
       await unitOfWork.CommitAsync();
 
-      if (await surveillanceRequestRepository.GetByIdAsync(task.RequestId) != null)
-        return await ConvertToDTO(task, "SurveillanceTaskDTO");
+      if (await svReqRepo.GetByIdAsync(task.RequestId) != null)
+        return await mapper.ToDto(task, "SurveillanceTaskDTO");
 
-      if (await pickAndDeliveryRequestRepository.GetByIdAsync(task.RequestId) != null)
-        return await ConvertToDTO(task, "PickDeliveryTaskDTO");
+      if (await pdReqRepo.GetByIdAsync(task.RequestId) != null)
+        return await mapper.ToDto(task, "PickDeliveryTaskDTO");
 
       return null;
     }
@@ -325,11 +180,11 @@ namespace DDDSample1.Domain.Requests
       {
         DeviceTask task = await taskRepo.GetByIdAsync(new TaskId(taskId));
         string taskType = "PickDeliveryTaskDTO";
-        Request request = await pickAndDeliveryRequestRepository.GetByIdAsync(task.RequestId);
+        Request request = await pdReqRepo.GetByIdAsync(task.RequestId);
         if (request == null)
           taskType = "SurveillanceTaskDTO";
 
-        TaskDTO taskDto = await ConvertToDTO(task, taskType);
+        TaskDTO taskDto = await mapper.ToDto(task, taskType);
 
         tasks.Add(taskDto);
       }

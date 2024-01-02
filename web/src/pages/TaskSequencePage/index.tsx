@@ -114,7 +114,6 @@ const TaskSequencePage: React.FC = () => {
         },
     ]
   ) => {
-    // console.log("route ", route);
     navigate("/floor-editor?route=" + JSON.stringify(route));
   };
 

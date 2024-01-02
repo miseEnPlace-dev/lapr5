@@ -14,7 +14,7 @@ namespace DDDSample1.Controllers;
 public class TasksController : ControllerBase
 {
   private readonly ITaskService taskSvc;
-  private readonly IRequestService reqSvc;
+
   public TasksController(ITaskService taskSvc)
   {
     this.taskSvc = taskSvc;
@@ -45,6 +45,7 @@ public class TasksController : ControllerBase
     }
   }
 
+  // GET api/tasks
   [HttpGet]
   public async Task<ActionResult<PaginationDTO<TaskDTO>>> GetAll()
   {
@@ -57,7 +58,7 @@ public class TasksController : ControllerBase
     return await taskSvc.GetAll(-1, -1);
   }
 
-  // GET api/requests/sequence
+  // GET api/tasks/sequence
   [HttpGet("sequence")]
   public async Task<ActionResult<SequenceDTO>> GetSequence()
   {
@@ -67,7 +68,7 @@ public class TasksController : ControllerBase
     return BadRequest("Specify a device id");
   }
 
-  // GET api/requests/{id}
+  // GET api/tasks/{id}
   [HttpGet("{id}")]
   public async Task<ActionResult<TaskDTO>> Get(string id)
   {
@@ -76,7 +77,7 @@ public class TasksController : ControllerBase
     return Ok(t);
   }
 
-  // PATCH api/requests/{id}
+  // PATCH api/tasks/{id}
   [HttpPatch("{id}")]
   public async Task<ActionResult<TaskDTO>> Update(string id)
   {

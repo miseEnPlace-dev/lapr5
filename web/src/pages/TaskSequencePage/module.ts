@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useInjection } from "inversify-react";
+import swal from "sweetalert";
 
 import { TYPES } from "@/inversify/types";
 import SequenceContext from "@/context/SequenceContext";
@@ -7,6 +8,8 @@ import { Device } from "@/model/Device";
 import { Task } from "@/model/Task";
 import { IDeviceService } from "@/service/IService/IDeviceService";
 import { ITaskService } from "@/service/IService/ITaskService";
+
+import { AxiosError } from "axios";
 
 export const useModule = () => {
   const tasksService = useInjection<ITaskService>(TYPES.taskService);
@@ -33,9 +36,26 @@ export const useModule = () => {
 
   const generateSequence = async () => {
     setLoading(true);
-    const s = await tasksService.getSequence();
-    setLoading(false);
-    setSequence(s);
+    try {
+      const s = await tasksService.getSequence(selectedDevice);
+      setLoading(false);
+      setSequence(s);
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        swal({
+          title: "An error occurred",
+          text: err.response?.data?.message || err.message,
+          icon: "error",
+        });
+      } else {
+        swal({
+          title: "An error occurred",
+          text: "More details in the console.",
+          icon: "error",
+        });
+        console.log(err);
+      }
+    }
   };
 
   const executeAll = async () => {
