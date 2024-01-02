@@ -114,7 +114,6 @@ const TaskSequencePage: React.FC = () => {
         },
     ]
   ) => {
-    // console.log("route ", route);
     navigate("/floor-editor?route=" + JSON.stringify(route));
   };
 
@@ -136,7 +135,10 @@ const TaskSequencePage: React.FC = () => {
           onChange={(e) => setSelectedDevice(e.target.value)}
           className="mx-auto w-96"
         />
-        <section className="my-8 flex flex-wrap items-center justify-around gap-8">
+        <section
+          id="tasks"
+          className="my-8 flex flex-wrap items-center justify-around gap-8"
+        >
           {tasks ? (
             tasks.map((task) => (
               <article
@@ -206,7 +208,10 @@ const TaskSequencePage: React.FC = () => {
         )}
         {loading && <Loading />}
         {!loading && sequence && sequence.tasks.length > 0 && (
-          <section className="relative my-6 flex w-full flex-col items-center gap-y-8 pr-12">
+          <section
+            id="sequence"
+            className="relative my-6 flex w-full flex-col items-center gap-y-8 pr-12"
+          >
             <h2 className="absolute -top-12 right-12 text-xl font-bold">
               Est. time: {sequence.time.toFixed(1)}
             </h2>

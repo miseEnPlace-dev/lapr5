@@ -2,7 +2,6 @@ using System;
 using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks;
 using DDDSample1.Domain.Floor;
 using DDDSample1.Domain.Requests;
-using DDDSample1.Domain.Room;
 using DDDSample1.Domain.User;
 
 namespace DDDSample1.Domain.DeviceTasks.SurveillanceTasks

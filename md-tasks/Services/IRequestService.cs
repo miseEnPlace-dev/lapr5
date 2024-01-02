@@ -18,7 +18,6 @@ namespace DDDNetCore.Services
     Task<RequestDTO> AddPickAndDeliveryTask(PickAndDeliveryRequestDTO dto);
     Task<PaginationDTO<RequestDTO>> GetRequestsByState(RequestState state, int page, int limit);
     Task<RequestDTO> UpdateAsync(RequestDTO dto);
-    Task<RequestDTO> InactivateAsync(RequestId id);
     Task<RequestDTO> AcceptRequest(RequestId id, TaskDTO taskDTO);
     Task<RequestDTO> RejectRequest(RequestId id);
     Task<RequestDTO> DeleteAsync(RequestId id);

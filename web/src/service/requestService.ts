@@ -49,8 +49,6 @@ export class RequestService implements IRequestService {
       }
     );
 
-    console.log("params");
-
     const data = response.data;
     return data;
   }

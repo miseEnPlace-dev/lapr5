@@ -80,6 +80,7 @@ export const useModule = () => {
             if (k === "exp") return undefined;
             if (k === "iat") return undefined;
             if (k === "password") return undefined;
+            if (k === "role") return undefined;
             return v;
           },
           2

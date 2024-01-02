@@ -37,9 +37,7 @@ export class DeviceService implements IDeviceService {
         "/devices/robots?filter=" + filter + "&value=" + value,
         {
           params,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
     } else {
@@ -47,9 +45,7 @@ export class DeviceService implements IDeviceService {
         "/devices/robots",
         {
           params,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
     }

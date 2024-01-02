@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using DDDSample1.Domain.DTO;
 using DDDNetCore.Domain.Request;
 using DDDSample1.Domain.User;
-using System;
 using DDDNetCore.Services;
 
 namespace DDDSample1.Controllers;
@@ -21,7 +20,7 @@ public class RequestsController : ControllerBase
     service = svc;
   }
 
-  // GET api/Request
+  // GET api/requests
   [HttpGet]
   public async Task<ActionResult<PaginationDTO<RequestDTO>>> GetAll()
   {
@@ -41,7 +40,7 @@ public class RequestsController : ControllerBase
     return await service.GetAllAsync(-1, -1);
   }
 
-  // GET api/Request/surveillance
+  // GET api/requests/surveillance
   [HttpGet("surveillance")]
   public async Task<ActionResult<PaginationDTO<RequestDTO>>> GetAllSurveillance()
   {
@@ -51,7 +50,7 @@ public class RequestsController : ControllerBase
     return await service.GetAllSurveillanceAsync(-1, -1);
   }
 
-  // GET api/Request/pick-delivery
+  // GET api/requests/pick-delivery
   [HttpGet("pick-delivery")]
   public async Task<ActionResult<PaginationDTO<RequestDTO>>> GetAllPickDelivery()
   {
@@ -62,7 +61,7 @@ public class RequestsController : ControllerBase
   }
 
 
-  // GET api/Request/{id}
+  // GET api/requests/{id}
   [HttpGet("{id}")]
   public async Task<ActionResult<RequestDTO>> Get(string id)
   {
@@ -71,7 +70,7 @@ public class RequestsController : ControllerBase
     return t;
   }
 
-  // POST api/Request/surveillance
+  // POST api/requests/surveillance
   [HttpPost("surveillance")]
   public async Task<ActionResult<SurveillanceRequestDTO>> Create(SurveillanceRequestDTO dto)
   {
@@ -95,7 +94,7 @@ public class RequestsController : ControllerBase
     }
   }
 
-  // POST api/Request/pick-delivery
+  // POST api/requests/pick-delivery
   [HttpPost("pick-delivery")]
   public async Task<ActionResult<PickAndDeliveryRequestDTO>> CreatePickDelivery(PickAndDeliveryRequestDTO dto)
   {
@@ -119,7 +118,7 @@ public class RequestsController : ControllerBase
     }
   }
 
-  // PUT api/Request/5
+  // PUT api/requests/5
   [HttpPut("{id}")]
   public async Task<ActionResult<RequestDTO>> Put(string id, RequestDTO dto)
   {
@@ -137,7 +136,7 @@ public class RequestsController : ControllerBase
     }
   }
 
-  // DELETE api/Request/5
+  // DELETE api/requests/5
   [HttpDelete("{id}")]
   public async Task<ActionResult<RequestDTO>> Delete(string id)
   {
@@ -153,7 +152,7 @@ public class RequestsController : ControllerBase
     }
   }
 
-  // Patch api/requests/{id}/accept
+  // PATCH api/requests/{id}/accept
   [HttpPatch("{id}/accept")]
   public async Task<ActionResult<RequestDTO>> AcceptRequest(string id, TaskDTO dto)
   {
@@ -169,7 +168,7 @@ public class RequestsController : ControllerBase
     }
   }
 
-  // Patch api/requests/{id}/reject
+  // PATCH api/requests/{id}/reject
   [HttpPatch("{id}/reject")]
   public async Task<ActionResult<RequestDTO>> RejectRequest(string id)
   {
@@ -184,5 +183,4 @@ public class RequestsController : ControllerBase
       return BadRequest(new { ex.Message });
     }
   }
-
 }
