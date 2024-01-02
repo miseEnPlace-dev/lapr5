@@ -15,11 +15,11 @@ export default class RequestService implements IRequestService {
   ) {}
 
   async getRequests(
-    filter: string | undefined,
-    value: string | undefined,
-    userId: string | undefined,
-    page: string | undefined,
-    limit: string | undefined
+    filter?: string,
+    value?: string,
+    userId?: string,
+    page?: string,
+    limit?: string
   ): Promise<IPaginationDTO<IRequestDTO>> {
     const query = { filter, value, userId, page, limit };
     const data = await this.httpClient.get<IPaginationDTO<IRequestDTO>>(
@@ -35,10 +35,7 @@ export default class RequestService implements IRequestService {
     return data;
   }
 
-  async getPDRequests(
-    page: string | undefined,
-    limit: string | undefined
-  ): Promise<IPaginationDTO<IRequestDTO>> {
+  async getPDRequests(page?: string, limit?: string): Promise<IPaginationDTO<IRequestDTO>> {
     const query = { page, limit };
     const data = await this.httpClient.get<IPaginationDTO<IRequestDTO>>(
       `${config.tasksApiUrl}/api/requests/pick-delivery`,
@@ -53,10 +50,7 @@ export default class RequestService implements IRequestService {
     return data;
   }
 
-  async getSVRequests(
-    page: string | undefined,
-    limit: string | undefined
-  ): Promise<IPaginationDTO<IRequestDTO>> {
+  async getSVRequests(page?: string, limit?: string): Promise<IPaginationDTO<IRequestDTO>> {
     const query = { page, limit };
     const data = await this.httpClient.get<IPaginationDTO<IRequestDTO>>(
       `${config.tasksApiUrl}/api/requests/surveillance`,
