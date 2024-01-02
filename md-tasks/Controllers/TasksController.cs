@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using DDDNetCore.Domain.Request;
-using DDDNetCore.Services;
-using DDDSample1.Domain.DTO;
-using DDDSample1.Domain.Requests;
-using DDDSample1.Domain.Shared;
+﻿using System.Threading.Tasks;
+using MDTasks.DTO;
+using MDTasks.Domain.Shared;
+using MDTasks.Domain.Task;
+using MDTasks.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DDDSample1.Controllers;
+namespace MDTasks.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

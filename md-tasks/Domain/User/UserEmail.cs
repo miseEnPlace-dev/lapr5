@@ -1,35 +1,33 @@
 using System.Collections.Generic;
-using DDDSample1.Domain.Shared;
+using MDTasks.Domain.Shared;
 
-namespace DDDSample1.Domain.User
+namespace MDTasks.Domain.User;
+
+public class UserEmail : ValueObject
 {
-  public class UserEmail : ValueObject
+  public string Email { get; private set; }
+
+  private UserEmail()
   {
+    Email = "";
+  }
 
-    public string Email { get; private set; }
+  public UserEmail(string email)
+  {
+    ValidateEmail(email);
+    Email = email;
+  }
 
-    private UserEmail()
+  private static void ValidateEmail(string email)
+  {
+    if (email.Length < 4)
     {
-      Email = "";
+      throw new BusinessRuleValidationException("Email must at least 4 characters");
     }
+  }
 
-    public UserEmail(string email)
-    {
-      ValidateEmail(email);
-      Email = email;
-    }
-
-    private static void ValidateEmail(string email)
-    {
-      if (email.Length < 4)
-      {
-        throw new BusinessRuleValidationException("Email must at least 4 characters");
-      }
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-      yield return Email;
-    }
+  protected override IEnumerable<object> GetEqualityComponents()
+  {
+    yield return Email;
   }
 }

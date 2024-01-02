@@ -5,19 +5,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using DDDSample1.Infrastructure;
-using DDDSample1.Infrastructure.Shared;
-using DDDSample1.Domain.Shared;
-using DDDSample1.Infrastructure.Requests;
-using DDDSample1.Domain.Requests;
-using DDDSample1.Domain.DeviceTasks;
-using DDDSample1.Infrastructure.DeviceTasks;
-using System;
-using DDDSample1.Domain.DeviceTasks.SurveillanceTasks;
-using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks;
-using DDDNetCore.Services;
+using MDTasks.Infrastructure;
+using MDTasks.Infrastructure.Shared;
+using MDTasks.Domain.Shared;
+using MDTasks.Infrastructure.Requests;
+using MDTasks.Infrastructure.Tasks;
+using MDTasks.Services;
 
-namespace DDDSample1
+namespace MDTasks
 {
   public class Startup
   {
@@ -31,8 +26,8 @@ namespace DDDSample1
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      // services.AddDbContext<DDDSample1DbContext>(opt =>
-      //     opt.UseInMemoryDatabase("DDDSample1DB")
+      // services.AddDbContext<MDTasksDbContext>(opt =>
+      //     opt.UseInMemoryDatabase("MDTasksDB")
       //     .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
 
       // services.AddDbContext<SqliteDatabaseContext>(opt => opt.UseSqlite()

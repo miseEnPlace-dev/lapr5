@@ -1,37 +1,36 @@
 using System.Collections.Generic;
-using DDDSample1.Domain.Shared;
+using MDTasks.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 
-namespace DDDSample1.Domain.Requests
+namespace MDTasks.Domain.Request;
+
+[Owned]
+public class RequestState : ValueObject
 {
-  [Owned]
-  public class RequestState : ValueObject
+  public RequestStateEnum State { get; private set; }
+
+  private RequestState()
   {
-    public StateEnum State { get; private set; }
+    State = RequestStateEnum.Pending;
+  }
 
-    private RequestState()
-    {
-      State = StateEnum.Pending;
-    }
+  public RequestState(RequestStateEnum State)
+  {
+    this.State = State;
+  }
 
-    public RequestState(StateEnum State)
-    {
-      this.State = State;
-    }
+  protected override IEnumerable<object> GetEqualityComponents()
+  {
+    yield return State;
+  }
 
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-      yield return State;
-    }
+  public string AsString()
+  {
+    return State.ToString();
+  }
 
-    public string AsString()
-    {
-      return State.ToString();
-    }
-
-    public bool Equals(RequestState other)
-    {
-      return State == other.State;
-    }
+  public bool Equals(RequestState other)
+  {
+    return State == other.State;
   }
 }

@@ -1,47 +1,46 @@
 using System.Collections.Generic;
-using DDDSample1.Domain.Shared;
+using MDTasks.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 
-namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks
+namespace MDTasks.Domain.Request;
+
+[Owned]
+public class RequestDescription : ValueObject
 {
-  [Owned]
-  public class RequestDescription : ValueObject
+
+  public string Value { get; private set; }
+
+  private RequestDescription()
   {
+    Value = "";
+  }
 
-    public string Value { get; private set; }
+  public RequestDescription(string description)
+  {
+    ValidateDescription(description);
+    Value = description;
+  }
 
-    private RequestDescription()
+  private static void ValidateDescription(string description)
+  {
+    if (description.Length > 255)
     {
-      Value = "";
+      throw new BusinessRuleValidationException("Description cannot be longer than 256 characters.");
     }
 
-    public RequestDescription(string description)
+    if (string.IsNullOrEmpty(description))
     {
-      ValidateDescription(description);
-      Value = description;
+      throw new BusinessRuleValidationException("Description cannot be empty.");
     }
+  }
 
-    private static void ValidateDescription(string description)
-    {
-      if (description.Length > 255)
-      {
-        throw new BusinessRuleValidationException("Description cannot be longer than 256 characters.");
-      }
+  public override string ToString()
+  {
+    return Value;
+  }
 
-      if (string.IsNullOrEmpty(description))
-      {
-        throw new BusinessRuleValidationException("Description cannot be empty.");
-      }
-    }
-
-    public override string ToString()
-    {
-      return Value;
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-      yield return Value;
-    }
+  protected override IEnumerable<object> GetEqualityComponents()
+  {
+    yield return Value;
   }
 }

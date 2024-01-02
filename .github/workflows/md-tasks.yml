@@ -24,7 +24,7 @@ jobs:
       - name: Setup .NET 7.0
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '7.0'
+          dotnet-version: "7.0"
 
       - name: Install dependencies
         run: dotnet restore DDDNetCore.csproj
@@ -32,8 +32,8 @@ jobs:
       - name: Build
         run: dotnet build DDDNetCore.csproj -c Release -o ./dist
 
-      # - name: Test
-      #   run: dotnet test DDDNetCore.csproj
+      - name: Test
+        run: dotnet test DDDNetCore.csproj
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3

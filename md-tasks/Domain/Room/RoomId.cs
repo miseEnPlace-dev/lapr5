@@ -1,13 +1,11 @@
-namespace DDDSample1.Domain.Room
+namespace MDTasks.Domain.Room;
+
+public class RoomId
 {
-  public class RoomId
+  public string Value { get; private set; }
+
+  public RoomId(string value)
   {
-
-    public string Value { get; private set; }
-
-    public RoomId(string value)
-    {
-      Value = value;
-    }
+    Value = value;
   }
 }
