@@ -1,0 +1,55 @@
+@startuml process-view2
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+box "<<container (C4)>>\nMD Management" <<center>>#LightYellow
+  participant ROUTE as ":Route"
+  participant CTRLMDD as ":Controller"
+  participant SVCMDD as ":RequestService"
+  participant USVCMDD as ":UserService"
+  participant HTTP as ":HTTP"
+end box
+
+
+box "<<container (C4)>>\nMD Tasks" <<center>>#LightBlue
+  participant MDTCTRL as ":Controller"  
+end box
+
+
+
+?o-> ROUTE : GET /task-requests?filter=state&value=value
+activate ROUTE
+ROUTE -> CTRLMDD : getTaskRequests()
+activate CTRLMDD
+
+CTRLMDD -> SVCMDD : getTaskRequests(filter, value)
+activate SVCMDD
+
+SVCMDD -> HTTP : getTaskRequests(filter, value)
+activate HTTP
+
+HTTP -> MDTCTRL : GET /Request?filter=state&value=value
+activate MDTCTRL
+
+MDTCTRL --> HTTP : 200 (OK)
+deactivate MDTCTRL
+
+HTTP --> SVCMDD : reqDtoList
+deactivate HTTP
+
+loop for each request in reqDtoList
+SVCMDD -> USVCMDD : getUserById(request.userId)
+activate USVCMDD
+USVCMDD --> SVCMDD : user
+deactivate USVCMDD
+end loop
+
+SVCMDD --> CTRLMDD : reqDtoList
+deactivate SVCMDD
+
+CTRLMDD --> ROUTE : reqDtoList
+deactivate CTRLMDD
+<-- HTTP : 200 (OK)
+
+
+@enduml
