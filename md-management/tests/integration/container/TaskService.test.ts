@@ -125,4 +125,71 @@ describe('TaskService', () => {
 
     expect(() => taskService.getTaskSequence('1')).rejects.toThrow('Device not found');
   });
+
+  it('should fetch md tasks', async () => {
+    const userService = container.get<IUserService>(TYPES.userService);
+    const deviceService = container.get<IDeviceService>(TYPES.deviceService);
+    const httpClient = container.get<IHttpClient>(TYPES.httpClient);
+
+    const deviceDTO = {
+      name: 'Device Example',
+      description: 'dd',
+      id: '1',
+      state: 'active',
+      floorId: 'b2',
+      type: 'surveillance'
+    };
+
+    const userDTO = {
+      email: 'email@isep.ipp.pt',
+      firstName: 'John',
+      lastName: 'Doe',
+      phoneNumber: '912345678',
+      role: 'role',
+      id: '1',
+      state: 'active'
+    };
+
+    const httpStub = stub(httpClient, 'get').resolves({
+      tasks: [
+        {
+          userName: 'User Example',
+          phoneNumber: '912345678',
+          floorId: 'b2',
+          description: 'dd',
+          id: '1',
+          createdAt: '12/31/2023 6:40:44PM',
+          requestId: '1',
+          deviceId: '1',
+          type: 'surveillance',
+          startCoordinateX: 5,
+          startCoordinateY: 21,
+          endCoordinateX: 6,
+          endCoordinateY: 13,
+          userId: '1'
+        }
+      ],
+      time: 1,
+      path: [
+        {
+          taskId: '1',
+          route: []
+        }
+      ]
+    });
+
+    stub(userService, 'findUserById').resolves(Result.ok(userDTO));
+    stub(deviceService, 'findById').resolves(Result.ok(deviceDTO));
+
+    container.rebind<IHttpClient>(TYPES.httpClient).toConstantValue(httpClient);
+    container.rebind<IUserService>(TYPES.userService).toConstantValue(userService);
+    container.rebind<IDeviceService>(TYPES.deviceService).toConstantValue(deviceService);
+
+    const taskService = container.get<ITaskService>(TYPES.taskService);
+
+    await taskService.getTaskSequence('1');
+
+    expect(httpStub.calledOnce).toBe(true);
+    expect(httpStub.calledWith('http://localhost:7000/tasks/sequence?deviceId=1'));
+  });
 });

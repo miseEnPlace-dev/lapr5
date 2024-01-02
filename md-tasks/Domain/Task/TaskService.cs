@@ -156,7 +156,6 @@ namespace DDDSample1.Domain.Requests
         Console.WriteLine($"Exception: {e.Message}");
         throw;
       }
-
     }
 
     public async Task<TaskDTO> AddPickAndDeliveryRequest(TaskDTO dto)
@@ -177,7 +176,6 @@ namespace DDDSample1.Domain.Requests
         Console.WriteLine($"Exception: {e.Message}");
         throw;
       }
-
     }
 
     public async Task<TaskDTO> Update(TaskDTO dto)
