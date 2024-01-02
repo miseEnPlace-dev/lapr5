@@ -22,12 +22,12 @@ export default class TaskService implements ITaskService {
   async getTasks(deviceId?: string): Promise<IPaginationDTO<ITaskDTO>> {
     const data = await this.httpClient.get<IPaginationDTO<ITaskDTO>>(
       `${config.tasksApiUrl}/api/tasks`,
-      { deviceId }
+      { filter: 'device', value: deviceId }
     );
 
-    const tasks = [];
+    const tasks: ITaskDTO[] = [];
 
-    data.data.forEach(async task => {
+    for (const task of data.data) {
       const userOrError = await this.userService.findUserById(task.userId);
       if (userOrError.isFailure) throw userOrError.error;
 
@@ -38,9 +38,9 @@ export default class TaskService implements ITaskService {
       task.device = deviceOrError.getValue();
 
       tasks.push(task);
-    });
+    }
 
-    return data;
+    return { ...data, data: tasks };
   }
 
   async getTaskSequence(deviceId: string): Promise<ISequenceDTO> {
