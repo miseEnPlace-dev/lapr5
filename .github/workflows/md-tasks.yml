@@ -61,4 +61,5 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ~/deploy-mdtasks/md-tasks/dist
-            DDDNetCore > log.txt 2>&1 &
+            killall -9 DDDNetCore
+            DDDNetCore > /dev/null 2>&1 & 
