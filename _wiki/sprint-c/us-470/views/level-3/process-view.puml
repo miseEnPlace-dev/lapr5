@@ -1,3 +1,61 @@
 @startuml process-view
 autonumber
 
+box "<<container (C4)>>\nMD Tasks" <<center>>#LightBlue
+  participant ROUTE as ":Route"
+  participant MDTCTRL as ":Controller"
+  participant MDTSRV as ":RequestService"
+  participant MDTSRV2 as ":TaskService"
+  participant MDTDTO as "dto:requestDTO"
+  participant MDTREPO as ":RequestRepo"
+  participant MDTREPO2 as ":TaskRepo"
+  participant BUILD as "request:Request"
+  participant BUILD2 as "task:Task"
+end box
+
+?o-> ROUTE : PATCH /requests/{id}/accept {robotId}
+activate ROUTE
+
+ROUTE -> MDTCTRL : acceptRequest(requestId, robotId)
+activate MDTCTRL
+
+MDTCTRL -> MDTSRV : getById(requestId)
+activate MDTSRV
+
+MDTSRV -> MDTREPO : getById(requestId)
+activate MDTREPO
+deactivate MDTREPO
+
+MDTSRV --> BUILD : changeState(accepted)
+activate BUILD
+deactivate BUILD
+
+MDTSRV --> MDTREPO : save(request)
+activate MDTREPO
+deactivate MDTREPO
+
+MDTSRV --> MDTREPO2 : create(requestId, deviceId)
+activate MDTREPO2
+
+MDTREPO2 --> BUILD2** : create(requestId, deviceId)
+
+deactivate MDTREPO2
+
+MDTSRV --> MDTREPO2 : save(task)
+activate MDTREPO2
+deactivate MDTREPO2
+
+MDTSRV --> MDTDTO** : create(reqDTO)
+deactivate MDTDTO
+deactivate MDTREPO
+
+MDTSRV --> MDTCTRL : sucess(reqDTO)
+deactivate MDTSRV
+
+MDTCTRL --> ROUTE : sucess(reqDTO)
+deactivate MDTCTRL
+
+<-- ROUTE : 200 OK
+deactivate ROUTE
+
+@enduml
