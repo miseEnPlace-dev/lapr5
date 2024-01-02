@@ -1,0 +1,107 @@
+[
+  [
+    { "floor": "b1", "x": 3, "y": 3 },
+    { "floor": "b1", "x": 4, "y": 3 },
+    { "floor": "b1", "x": 5, "y": 3 },
+    { "floor": "b1", "x": 6, "y": 3 },
+    { "floor": "b1", "x": 6, "y": 4 },
+    { "floor": "b1", "x": 6, "y": 5 },
+    { "floor": "b1", "x": 6, "y": 6 },
+    { "floor": "b1", "x": 6, "y": 7 },
+    { "floor": "b1", "x": 6, "y": 8 },
+    { "floor": "b1", "x": 6, "y": 9 },
+    { "floor": "b1", "x": 6, "y": 10 },
+    { "floor": "b1", "x": 6, "y": 11 },
+    { "floor": "b1", "x": 6, "y": 12 },
+    { "floor": "b1", "x": 6, "y": 13 },
+    { "floor": "b1", "x": 6, "y": 14 },
+    { "floor": "b1", "x": 6, "y": 15 },
+    { "floor": "b1", "x": 6, "y": 16 },
+    { "floor": "b1", "x": 6, "y": 17 },
+    { "floor": "b1", "x": 7, "y": 17 },
+    { "floor": "b1", "x": 8, "y": 17 },
+    { "floor": "b1", "x": 9, "y": 17 },
+    { "floor": "b1", "x": 9, "y": 16 },
+    { "floor": "b1", "x": 9, "y": 15 },
+    { "floor": "b1", "x": 9, "y": 16 },
+    { "floor": "b1", "x": 9, "y": 17 },
+    { "floor": "b1", "x": 8, "y": 17 },
+    { "floor": "b1", "x": 7, "y": 17 },
+    { "floor": "b1", "x": 6, "y": 17 },
+    { "floor": "b1", "x": 6, "y": 18 },
+    { "floor": "b1", "x": 6, "y": 19 },
+    { "floor": "b1", "x": 6, "y": 20 },
+    { "floor": "b1", "x": 6, "y": 21 },
+    { "floor": "b1", "x": 7, "y": 21 },
+    { "floor": "b1", "x": 8, "y": 21 },
+    { "floor": "b1", "x": 8, "y": 22 }
+  ],
+
+  // connector
+  [
+    { "floor": "a2", "x": 2, "y": 22 },
+    { "floor": "a2", "x": 3, "y": 22 },
+    { "floor": "a2", "x": 4, "y": 22 },
+    { "floor": "a2", "x": 5, "y": 22 },
+    { "floor": "a2", "x": 5, "y": 23 },
+    { "floor1": "a2", "floor2": "b2", "type": "connector" }
+    // { "floor": "b2", "x": 7, "y": 1 },
+    // { "floor": "b2", "x": 7, "y": 2 }
+  ],
+
+  // elevator
+  [
+    { "floor": "a1", "x": 4, "y": 22 },
+    { "floor": "a1", "x": 3, "y": 22 },
+    { "floor": "a1", "x": 2, "y": 22 },
+    { "floor1": "a1", "floor2": "a2", "type": "elevator" },
+    { "floor": "a2", "x": 2, "y": 22 },
+    { "floor": "a2", "x": 3, "y": 22 }
+  ],
+
+  // walk + elevator + connector
+  [
+    { "floor": "b2", "x": 6, "y": 5 },
+    { "floor": "b2", "x": 6, "y": 6 },
+    { "floor": "b2", "x": 6, "y": 7 },
+    { "floor": "b2", "x": 6, "y": 8 },
+    { "floor": "b2", "x": 7, "y": 8 },
+    { "floor": "b2", "x": 8, "y": 8 },
+    { "floor": "b2", "x": 9, "y": 8 },
+    { "floor": "b2", "x": 9, "y": 7 },
+    { "floor": "b2", "x": 9, "y": 6 },
+    { "floor": "b2", "x": 9, "y": 5 },
+    { "floor": "b2", "x": 9, "y": 4 },
+    { "floor": "b2", "x": 9, "y": 3 },
+    { "floor": "b2", "x": 9, "y": 2 },
+    { "floor": "b2", "x": 8, "y": 2 },
+    { "floor": "b2", "x": 7, "y": 2 },
+    { "floor": "b2", "x": 7, "y": 1 },
+    { "floor1": "b2", "floor2": "a2", "type": "connector" },
+    { "floor": "a2", "x": 5, "y": 23 },
+    { "floor": "a2", "x": 5, "y": 22 },
+    { "floor": "a2", "x": 4, "y": 22 },
+    { "floor": "a2", "x": 3, "y": 22 },
+    { "floor": "a2", "x": 2, "y": 22 },
+    { "floor1": "a2", "floor2": "a1", "type": "elevator" },
+    { "floor": "a2", "x": 2, "y": 22 },
+    { "floor": "a2", "x": 3, "y": 22 },
+    { "floor": "a2", "x": 4, "y": 22 },
+    { "floor": "a2", "x": 5, "y": 22 }
+  ],
+
+  // a2
+  [
+    { "floor": "a2", "x": 6, "y": 16 },
+    { "floor": "a2", "x": 6, "y": 17 },
+    { "floor": "a2", "x": 6, "y": 18 },
+    { "floor": "a2", "x": 6, "y": 19 },
+    { "floor": "a2", "x": 6, "y": 20 },
+    { "floor": "a2", "x": 5, "y": 21 },
+    { "floor": "a2", "x": 5, "y": 22 },
+    { "floor": "a2", "x": 5, "y": 23 },
+    { "floor1": "a2", "floor2": "b2", "type": "connector" },
+    { "floor": "b2", "x": 7, "y": 1 },
+    { "floor": "b2", "x": 7, "y": 2 }
+  ]
+]
