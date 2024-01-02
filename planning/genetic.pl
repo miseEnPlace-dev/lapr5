@@ -133,8 +133,7 @@ gera_best_bruteforce:-
 	findall(Tarefa,t(Tarefa,_,_),Tarefas),
 	findall(P, permutation(Tarefas,P), Pop),
 	avalia_populacao(Pop,PopAv),
-	ordena_populacao(PopAv,PopOrd),
-	melhor_individuo(PopOrd,Ind),
+	ordena_populacao(PopAv,[Ind|_]),
 	get_time(Tf),
 	((D==1,write('Melhor individuo: '), write(Ind), nl);true),
 	((D==1,write('Tempo de execução: '), T is Tf - Ti, write(T), nl, nl);true).
