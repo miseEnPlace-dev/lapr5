@@ -1,0 +1,68 @@
+name: MD-Tasks CI/CD
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  # push:
+  #   branches: [main]
+  #   paths:
+  #     - "md-tasks/**"
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: md-tasks/
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 7.0
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.0'
+
+      - name: Install dependencies
+        run: dotnet restore DDDNetCore.csproj
+
+      - name: Build
+        run: dotnet build DDDNetCore.csproj -c Release -o ./dist
+
+      # - name: Test
+      #   run: dotnet test DDDNetCore.csproj
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: md-tasks/dist
+
+      - name: Copy Files
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "md-tasks/*"
+          target: "~/deploy-mdtasks"
+          rm: true
+
+      - name: Deploy Server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/deploy-mdtasks/md-tasks
+            dotnet tool restore
+            export ASPNETCORE_ENVIRONMENT="Production" ASPNETCORE_URLS="http://localhost:7000"
+            dotnet ef database update
+            killall -9 DDDNetCore
+            nohup ./dist/DDDNetCore > /dev/null 2>&1 &

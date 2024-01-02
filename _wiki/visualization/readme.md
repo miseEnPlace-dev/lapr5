@@ -31,3 +31,28 @@ The visualization module is a module that is based on the `web` module. It is a 
 It fetches all the floor data from the `md-management` module and renders it in a 3D environment.
 
 In this module, the user can see the floor plan, the doors, the rooms, the elevators & the corridors. By going near an elevator or a door, the user can change the current floor using the menu that appears.
+
+## Automatic Navigation
+
+**WRITE HERE ABOUT THE AUTOMATIC NAVIGATION**
+
+## Manual Navigation
+
+### Controls
+
+The user can navigate through the 3D environment using the following controls:
+
+- `UP ARROW` - Move forward
+- `DOWN ARROW` - Move backward
+- `LEFT ARROW` - Move left
+- `RIGHT ARROW` - Move right
+- `V` - Toggle between the 4 available cameras in fullscreen mode
+- `Mouse Wheel` - Zoom in/out
+- `Mouse Left Button` - Rotate the camera
+- `Mouse Right Button` - Move the viewport
+
+### Menus
+
+The left side menu controls the available viewport cameras. The user can click on the camera icon to change what cameras are available at a given time. This decision persists between sessions.
+
+The top menu controls the current camera. The user can adjust some fields using manual controls, like zoom, height, etc.

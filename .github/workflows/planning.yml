@@ -1,0 +1,45 @@
+name: Planning CI/CD
+
+on:
+  # schedule:
+  #   - cron: "0 6 * * *"
+  # push:
+  #   branches: [main]
+  #   paths:
+  #     - "planning/**"
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: planning/
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Copy Files
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "planning/*"
+          target: "~/deploy-planning"
+          rm: true
+
+      - name: Deploy Prolog
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/deploy-planning/planning
+            killall -9 swipl
+            nohup swipl -s server.pl &

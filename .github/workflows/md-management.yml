@@ -68,5 +68,5 @@ jobs:
           script: |
             cd ~/deploy/md-management
             pnpm i --frozen-lockfile
-            export MONGODB_URI="${{ secrets.MONGODB_URI }}" JWT_SECRET="${{ secrets.JWT_SECRET }}" ALLOWED_DOMAINS='${{ vars.ALLOWED_DOMAINS }}' PORT="2226" NODE_ENV="production"
+            export MONGODB_URI="${{ secrets.MONGODB_URI }}" JWT_SECRET="${{ secrets.JWT_SECRET }}" PLANNING_API_URL="http://localhost:5000" TASKS_API_URL="http://localhost:7000" ALLOWED_EMAIL_DOMAIN="isep.ipp.pt" ALLOWED_DOMAINS='${{ vars.ALLOWED_DOMAINS }}' PORT="2226" NODE_ENV="production"
             pm2 restart md-management --update-env || pm2 start dist/index.js --name md-management

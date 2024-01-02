@@ -158,26 +158,146 @@ export default class Maze extends THREE.Group {
           const i = exit.x;
           const j = exit.y;
 
-          for (let k = 0; k < 2; k++) {
-            let geometry = wall.geometries[k].clone();
-            geometry.applyMatrix4(
-              new THREE.Matrix4().makeTranslation(
-                j - this.halfSize.width - 0.5,
-                0.5,
-                i - this.halfSize.depth - 0.5
-              )
-            );
+          if (j == -1 || j == this.size.width) {
+            for (let k = 0; k < 2; k++) {
+              let geometry = wall.geometries[k].clone();
+              geometry.applyMatrix4(
+                new THREE.Matrix4().makeTranslation(
+                  j - this.halfSize.width + 0.5,
+                  0.25,
+                  i - this.halfSize.depth
+                )
+              );
 
-            geometry.computeBoundingBox();
-            geometry.boundingBox.applyMatrix4(
-              new THREE.Matrix4().makeScale(
-                this.scale.x,
-                this.scale.y,
-                this.scale.z
-              )
-            );
-            geometries[k].push(geometry);
+              geometry.computeBoundingBox();
+              geometry.boundingBox.applyMatrix4(
+                new THREE.Matrix4().makeScale(
+                  this.scale.x,
+                  this.scale.y,
+                  this.scale.z
+                )
+              );
+              geometries[k].push(geometry);
+            }
+            for (let k = 0; k < 2; k++) {
+              let geometry = wall.geometries[k].clone();
+              geometry.applyMatrix4(
+                new THREE.Matrix4().makeTranslation(
+                  j - this.halfSize.width + 0.5,
+                  0.25,
+                  i - this.halfSize.depth + 1
+                )
+              );
+
+              geometry.computeBoundingBox();
+              geometry.boundingBox.applyMatrix4(
+                new THREE.Matrix4().makeScale(
+                  this.scale.x,
+                  this.scale.y,
+                  this.scale.z
+                )
+              );
+              geometries[k].push(geometry);
+            }
           }
+
+          if (i == -1 || i == this.size.depth) {
+            for (let k = 0; k < 2; k++) {
+              let geometry = wall.geometries[k].clone();
+              geometry.applyMatrix4(
+                new THREE.Matrix4().makeRotationY(Math.PI / 2.0)
+              );
+              geometry.applyMatrix4(
+                new THREE.Matrix4().makeTranslation(
+                  j - this.halfSize.width,
+                  0.25,
+                  i - this.halfSize.depth + 0.5
+                )
+              );
+
+              geometry.computeBoundingBox();
+              geometry.boundingBox.applyMatrix4(
+                new THREE.Matrix4().makeScale(
+                  this.scale.x,
+                  this.scale.y,
+                  this.scale.z
+                )
+              );
+              geometries[k].push(geometry);
+            }
+            for (let k = 0; k < 2; k++) {
+              let geometry = wall.geometries[k].clone();
+              geometry.applyMatrix4(
+                new THREE.Matrix4().makeRotationY(Math.PI / 2.0)
+              );
+              geometry.applyMatrix4(
+                new THREE.Matrix4().makeTranslation(
+                  j - this.halfSize.width + 1,
+                  0.25,
+                  i - this.halfSize.depth + 0.5
+                )
+              );
+
+              geometry.computeBoundingBox();
+              geometry.boundingBox.applyMatrix4(
+                new THREE.Matrix4().makeScale(
+                  this.scale.x,
+                  this.scale.y,
+                  this.scale.z
+                )
+              );
+              geometries[k].push(geometry);
+            }
+          }
+
+          // Create the ground
+          const ground = new Ground({
+            size: new THREE.Vector3(1, description.ground.size.height, 1),
+            segments: new THREE.Vector3(
+              description.ground.segments.width,
+              description.ground.segments.height,
+              description.ground.segments.depth
+            ),
+            materialParameters: {
+              color: new THREE.Color(
+                parseInt(description.ground.primaryColor, 16)
+              ),
+              mapUrl: description.ground.maps.color.url,
+              aoMapUrl: description.ground.maps.ao.url,
+              aoMapIntensity: description.ground.maps.ao.intensity,
+              displacementMapUrl: description.ground.maps.displacement.url,
+              displacementScale: description.ground.maps.displacement.scale,
+              displacementBias: description.ground.maps.displacement.bias,
+              normalMapUrl: description.ground.maps.normal.url,
+              normalMapType:
+                normalMapTypes[description.ground.maps.normal.type],
+              normalScale: new THREE.Vector2(
+                description.ground.maps.normal.scale.x,
+                description.ground.maps.normal.scale.y
+              ),
+              bumpMapUrl: description.ground.maps.bump.url,
+              bumpScale: description.ground.maps.bump.scale,
+              roughnessMapUrl: description.ground.maps.roughness.url,
+              roughness: description.ground.maps.roughness.rough,
+              wrapS: wrappingModes[description.ground.wrapS],
+              wrapT: wrappingModes[description.ground.wrapT],
+              repeat: new THREE.Vector2(
+                description.ground.repeat.u,
+                description.ground.repeat.v
+              ),
+              magFilter: magnificationFilters[description.ground.magFilter],
+              minFilter: minificationFilters[description.ground.minFilter],
+            },
+            secondaryColor: new THREE.Color(
+              parseInt(description.ground.secondaryColor, 16)
+            ),
+          });
+          ground.position.set(
+            j - this.halfSize.width + 0.5,
+            -description.ground.size.height / 2,
+            i - this.halfSize.depth + 0.5
+          );
+          this.add(ground);
         }
       }
 
@@ -377,7 +497,8 @@ export default class Maze extends THREE.Group {
                 };
 
                 const room = this.rooms.find(
-                  (room) => room.roomDoor.x === i + 1 && room.roomDoor.y === j + 1
+                  (room) =>
+                    room.roomDoor.x === i + 1 && room.roomDoor.y === j + 1
                 );
 
                 if (room) gltf.scene.name = room.name;
@@ -491,7 +612,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.x -
-            (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
+              (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
@@ -501,7 +622,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.z -
-            (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
+              (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
@@ -515,7 +636,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.z -
-            (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
+              (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
           ) < radius
         ) {
           document
@@ -533,7 +654,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.x -
-            (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
+              (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)
           ) < radius
         ) {
           console.log("Collision with " + name + ".");
@@ -548,7 +669,7 @@ export default class Maze extends THREE.Group {
         if (
           Math.abs(
             position.z -
-            (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
+              (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)
           ) < radius
         ) {
           this.playOpenDoorAnimation(row, column);

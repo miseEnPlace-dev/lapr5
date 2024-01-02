@@ -292,13 +292,13 @@ const TasksPage: React.FC = () => {
                           <span className="absolute right-2 top-2 text-sm text-slate-500">
                             Door:{" "}
                             {
-                              building1Rooms.find(
+                              building2Rooms.find(
                                 (room) => room.name == room2Code
                               )?.roomDoor.x
                             }{" "}
                             x{" "}
                             {
-                              building1Rooms.find(
+                              building2Rooms.find(
                                 (room) => room.name == room2Code
                               )?.roomDoor.y
                             }
