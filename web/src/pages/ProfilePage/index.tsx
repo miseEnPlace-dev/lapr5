@@ -113,6 +113,7 @@ const ProfilePage: React.FC = () => {
               className="w-full"
               inputRef={firstNameInputRef}
               defaultValue={user?.firstName || ""}
+              disabled={user?.email.split("@")[1] === "gmail.com"}
             />
             <Input
               name="Last Name"
@@ -121,6 +122,7 @@ const ProfilePage: React.FC = () => {
               className="w-full"
               inputRef={lastNameInputRef}
               defaultValue={user?.lastName || ""}
+              disabled={user?.email.split("@")[1] === "gmail.com"}
             />
           </div>
           <Input name="Role" type="text" defaultValue={role || ""} disabled />
