@@ -28,129 +28,68 @@ describe("Task Sequece", () => {
     cy.visit("/task-sequence");
   });
 
-  it("should be able to list all floors", () => {
-    cy.intercept("GET", BASE_URL + "/task-requests/sequence", {
+  it("should see no approved tasks message", () => {
+    cy.intercept("GET", BASE_URL + "/tasks", {
       statusCode: 200,
-      body: {
-        code: "B2",
-        name: "Building 2",
-        description: "description",
-        dimensions: {
-          width: 8,
-          length: 7,
-        },
-      },
+      body: {},
     });
 
-    cy.intercept("GET", BASE_URL + "/buildings/2/floors", {
-      statusCode: 200,
-      body: [
-        {
-          code: "B2",
-          buildingCode: "B2",
-          description: "piso 3",
-          dimensions: {
-            width: 8,
-            length: 7,
-          },
-        },
-        {
-          code: "1",
-          buildingCode: "B2",
-          description: "piso 3",
-          dimensions: {
-            width: 8,
-            length: 7,
-          },
-        },
-      ],
-    });
-
-    cy.get("main").get("h2").should("contain", "Floors");
-    cy.get("div[aria-label=floors-container")
-      .children()
-      .should("have.length", 2);
+    cy.get("main")
+      .get("p")
+      .should(
+        "contain",
+        "There are no approved tasks to generate a valid sequence..."
+      );
   });
 
-  it("should be able to create a floors", () => {
-    cy.intercept("GET", BASE_URL + "/buildings/2", {
+  it("should be able to navigate to requests page", () => {
+    cy.intercept("GET", BASE_URL + "/tasks", {
       statusCode: 200,
-      body: {
-        code: "B2",
-        name: "Building 2",
-        description: "description",
-        dimensions: {
-          width: 8,
-          length: 7,
-        },
-      },
+      body: {},
     });
 
-    cy.intercept("GET", BASE_URL + "/buildings/2/floors", {
-      statusCode: 200,
-      body: [],
-    });
-    cy.intercept("POST", BASE_URL + "/buildings/2/floors", {
-      statusCode: 201,
-      body: {
-        floor: {
-          code: "1",
-          buildingCode: "2",
-          description: "piso 3",
-          dimensions: {
-            width: 8,
-            length: 7,
-          },
-        },
-      },
-    });
-
-    cy.get("button[name=add-floor]").click();
-    cy.get("section[aria-label=modal-overlay]")
-      .get("span")
-      .should("contain", "Add Floor");
-
-    cy.get("input[name=code]").type("B1");
-    cy.get("input[name=width]").type("20");
-    cy.get("input[name=length]").type("20");
-    cy.get("textarea[name=description]").type("description");
-    cy.get("button[name=save]").click();
-
-    cy.get("div[class=swal-modal]").should(
-      "contain",
-      "Floor saved successfully"
-    );
+    cy.get("main").get("a").click();
+    cy.url().should("include", "/task-requests");
   });
 
-  it("should get error when create floor fails", () => {
-    cy.intercept("GET", BASE_URL + "/buildings/2", {
+  it("should have all devices in select", () => {
+    cy.intercept("GET", BASE_URL + "/devices/robots", {
       statusCode: 200,
       body: {
-        code: "B2",
-        name: "Building 2",
-        description: "description",
-        dimensions: {
-          width: 8,
-          length: 7,
-        },
+        data: [
+          {
+            id: "9ca683d6-178f-4991-9b90-6c7a3bdb9659",
+            code: "guard",
+            nickname: "ISEP Guard",
+            description: "ISEP Security Guard",
+            serialNumber: "RBT1",
+            modelCode: "SRV",
+            isAvailable: true,
+            initialCoordinates: {
+              width: 7,
+              depth: 21,
+              floorCode: "b1",
+            },
+          },
+          {
+            id: "1d18a4f0-1982-4a7f-9227-8b70473c64af",
+            code: "deliver",
+            nickname: "ISEP Delivery Guy",
+            description: "ISEP Pick and Delivery Robot",
+            serialNumber: "RBT2",
+            modelCode: "DLV",
+            isAvailable: true,
+            initialCoordinates: {
+              width: 7,
+              depth: 21,
+              floorCode: "b1",
+            },
+          },
+        ],
       },
     });
-    cy.intercept("GET", BASE_URL + "/buildings/2/floors", {
-      statusCode: 200,
-      body: [],
-    });
-    cy.intercept("POST", BASE_URL + "/buildings/2/floors", {
-      statusCode: 400,
-      message: "Error message",
-    });
 
-    cy.get("button[name=add-floor]").click();
-    cy.get("input[name=code]").type("B1");
-    cy.get("input[name=width]").type("20");
-    cy.get("input[name=length]").type("20");
-    cy.get("textarea[name=description]").type("description");
-    cy.get("button[name=save]").click();
-
-    cy.get("div[class=swal-modal]").should("contain", "Error");
+    cy.get("main").get("select").should("have.length", 2);
+    cy.get("main").get("select").eq(0).should("contain", "b1");
   });
 });
