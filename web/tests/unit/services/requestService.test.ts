@@ -25,7 +25,7 @@ describe("Room Service", () => {
     });
 
     const result = await requestSvc.acceptRequest("12345", "23456");
-    expect(result).toEqual({});
+    expect(result).toEqual(undefined);
   });
 
   it("rejectRequest: should return the request", async () => {
@@ -39,6 +39,6 @@ describe("Room Service", () => {
     });
 
     const result = await requestSvc.rejectRequest("12345");
-    expect(result).toEqual({});
+    expect(result).toEqual(undefined);
   });
 });
