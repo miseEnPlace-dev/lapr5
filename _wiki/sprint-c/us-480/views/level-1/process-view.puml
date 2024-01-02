@@ -1,0 +1,23 @@
+@startuml process-view
+autonumber
+
+actor U as "User"
+participant SYS as "RobDroneGo System" <<system (C4)>>
+
+activate U
+
+U -> SYS : wants to consult the unapproved requests
+activate SYS
+
+U <-- SYS : lists the unapproved requests
+deactivate SYS
+
+U -> SYS : selects a robot
+activate SYS
+
+U <-- SYS : returns sucess
+deactivate SYS
+
+deactivate U
+
+@enduml
