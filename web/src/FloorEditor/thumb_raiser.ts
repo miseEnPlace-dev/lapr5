@@ -1861,7 +1861,7 @@ export default class ThumbRaiser {
           );
 
           const nextRoutePos =
-            this.currRouteIndex < route.length - 1
+            route && this.currRouteIndex < route.length - 1
               ? route[this.currRouteIndex + 1]
               : null;
 

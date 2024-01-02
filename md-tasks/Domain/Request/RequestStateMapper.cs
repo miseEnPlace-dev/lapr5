@@ -11,6 +11,7 @@ namespace DDDNetCore.Domain.Request
         "pending" => new RequestState(StateEnum.Pending),
         "accepted" => new RequestState(StateEnum.Accepted),
         "rejected" => new RequestState(StateEnum.Rejected),
+        "executed" => new RequestState(StateEnum.Executed),
         _ => new RequestState(StateEnum.Pending),
       };
     }
