@@ -3,18 +3,24 @@ import { IHttpClient } from './IServices/IHttpClient';
 
 @injectable()
 export class HttpClient implements IHttpClient {
-  async get<T>(url: string): Promise<T> {
-    const response = await fetch(url);
-
-    const data = await response.json();
-
-    return data;
+  async get<T>(url: string, query?: { [key: string]: string | undefined }): Promise<T> {
+    let fetchUrl = url;
+    if (query) {
+      fetchUrl +=
+        '?' +
+        new URLSearchParams(
+          Object.entries(query).map(([key, value]) => [key, value ?? ''])
+        ).toString();
+    }
+    const response = await fetch(fetchUrl);
+    return await response.json();
   }
 
-  async post<T>(url: string, body: unknown): Promise<T> {
+  async post<T>(url: string, body?: unknown): Promise<T> {
     const response = await fetch(url, {
       method: 'POST',
-      body: JSON.stringify(body)
+      body: body ? JSON.stringify(body) : undefined,
+      headers: { 'Content-Type': 'application/json' }
     });
 
     const data = await response.json();
@@ -22,10 +28,23 @@ export class HttpClient implements IHttpClient {
     return data;
   }
 
-  async put<T>(url: string, body: unknown): Promise<T> {
+  async put<T>(url: string, body?: unknown): Promise<T> {
     const response = await fetch(url, {
       method: 'PUT',
-      body: JSON.stringify(body)
+      body: body ? JSON.stringify(body) : undefined,
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    const data = await response.json();
+
+    return data;
+  }
+
+  async patch<T>(url: string, body?: unknown): Promise<T> {
+    const response = await fetch(url, {
+      method: 'PATCH',
+      body: body ? JSON.stringify(body) : undefined,
+      headers: { 'Content-Type': 'application/json' }
     });
 
     const data = await response.json();
