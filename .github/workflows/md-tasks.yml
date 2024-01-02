@@ -63,4 +63,5 @@ jobs:
             cd ~/deploy-mdtasks/md-tasks
             dotnet ef database update
             killall -9 DDDNetCore
+            export ASPNETCORE_ENVIRONMENT="Production" ASPNETCORE_URLS="http://localhost:7000"
             nohup ./dist/DDDNetCore > /dev/null 2>&1 &
