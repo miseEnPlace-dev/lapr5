@@ -37,9 +37,7 @@ public class RequestService : IRequestService
     List<Request> surTasks = (await surveillanceTaskRepository.GetAllOrderedByRequestedAt(-1, -1)).Cast<Request>().ToList();
     List<Request> pickTasks = (await pickAndDeliveryTaskRepository.GetAllOrderedByRequestedAt(-1, -1)).Cast<Request>().ToList();
 
-    List<Request> tasks = new();
-    tasks.AddRange(surTasks);
-    tasks.AddRange(pickTasks);
+    reqs = reqs.OrderBy(t => t.RequestedAt).ToList();
 
     // with page and limit, cut the list
     if (page > 0 && limit > 0)
@@ -67,9 +65,7 @@ public class RequestService : IRequestService
     List<Request> surTasks = (await surveillanceTaskRepository.GetRequestsByUserIdAsync(id, -1, -1)).Cast<Request>().ToList();
     List<Request> pickTasks = (await pickAndDeliveryTaskRepository.GetRequestsByUserIdAsync(id, -1, -1)).Cast<Request>().ToList();
 
-    List<Request> tasks = new();
-    tasks.AddRange(surTasks);
-    tasks.AddRange(pickTasks);
+    requests = requests.OrderBy(t => t.RequestedAt).ToList();
 
     // with page and limit, cut the list
     if (page > 0 && limit > 0)
