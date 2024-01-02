@@ -123,6 +123,19 @@ describe("Task Request", () => {
       },
     });
 
+    cy.intercept(
+      "GET",
+      BASE_URL +
+        "/devices/robots?filter=task&value=undefined&limit=1000&page=1",
+      {
+        statusCode: 200,
+        body: {
+          meta: { total: 0, limit: 1000, page: 1, totalPages: 0 },
+          data: [],
+        },
+      }
+    );
+
     cy.intercept("GET", BASE_URL + "/device-models?limit=1000&page=1", {
       statusCode: 200,
       body: {
