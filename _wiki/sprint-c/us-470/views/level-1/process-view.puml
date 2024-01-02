@@ -6,8 +6,8 @@ participant SYS as "RobDroneGo System" <<system (C4)>>
 
 activate TM
 
-alt approves task
-  TM -> SYS : approves a task
+alt approves request
+  TM -> SYS : approves a request
   activate SYS
 
   TM <-- SYS : asks to assign a robot to the task
@@ -19,8 +19,8 @@ alt approves task
   TM <-- SYS : returns the sucess of the operation
   deactivate SYS
 
-else rejects task
-  TM -> SYS : rejects a task
+else rejects request
+  TM -> SYS : rejects a request
   activate SYS
 
   TM <-- SYS : returns the sucess of the operation
