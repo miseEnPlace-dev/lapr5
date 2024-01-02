@@ -157,13 +157,22 @@ namespace DDDSample1.Domain.Requests
       if (task == null) return null;
 
       task.Finish();
-      await unitOfWork.CommitAsync();
 
-      if (await svReqRepo.GetByIdAsync(task.RequestId) != null)
+      SurveillanceRequest sv = await svReqRepo.GetByIdAsync(task.RequestId);
+      if (sv != null)
+      {
+        sv.ChangeState(StateEnum.Executed);
+        await unitOfWork.CommitAsync();
         return await mapper.ToDto(task, "SurveillanceTaskDTO");
+      }
 
-      if (await pdReqRepo.GetByIdAsync(task.RequestId) != null)
+      PickAndDeliveryRequest pd = await pdReqRepo.GetByIdAsync(task.RequestId);
+      if (pd != null)
+      {
+        pd.ChangeState(StateEnum.Executed);
+        await unitOfWork.CommitAsync();
         return await mapper.ToDto(task, "PickDeliveryTaskDTO");
+      }
 
       return null;
     }
