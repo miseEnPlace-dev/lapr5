@@ -45,6 +45,28 @@ describe("Auth", () => {
     cy.url().should("include", "/login");
   });
 
+  it("should be able to create a new user", () => {
+    cy.intercept("POST", BASE_URL + "/users/login", {
+      statusCode: 200,
+      body: {
+        userDTO: {
+          firstName: "Campus",
+          lastName: "Campus",
+          role: "admin",
+        },
+      },
+    });
+    cy.get("input[name=Email]").type("campus@isep.ipp.pt");
+    cy.get("input[name=Password]").type("campus");
+    cy.get("button[name=login]").click();
+    cy.url().should("include", "/");
+
+    cy.get("button[name=logout]").click();
+    cy.url().should("include", "/login");
+
+    cy.visit("/users");
+  });
+
   it("should not be able to click in button when password is empty", () => {
     cy.get("input[name=Email]").type("campus@isep.ipp.pt");
     cy.get("button[name=login]").should("be.disabled");
