@@ -65,10 +65,10 @@ export class TaskService implements ITaskService {
   async getSequence(deviceId: string): Promise<Sequence> {
     const token = this.localStorage.getItem(localStorageConfig.token);
 
-    const res = await this.http.get<Sequence>("/tasks/sequence", {
-      params: { deviceId },
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await this.http.get<Sequence>(
+      `/tasks/sequence?deviceId=${deviceId}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
 
     return res.data;
   }
