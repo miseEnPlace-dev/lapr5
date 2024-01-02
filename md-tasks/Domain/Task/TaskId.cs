@@ -1,18 +1,15 @@
 using System;
-using DDDSample1.Domain.Shared;
+using MDTasks.Domain.Shared;
 using Newtonsoft.Json;
 
-namespace DDDSample1.Domain.Requests
+namespace MDTasks.Domain.Task;
+
+public class TaskId : EntityId
 {
-  public class TaskId : EntityId
-  {
+  [JsonConstructor]
+  public TaskId(Guid value) : base(value) { }
 
-    [JsonConstructor]
-    public TaskId(Guid value) : base(value) { }
+  public TaskId(string value) : base(value) { }
 
-    public TaskId(string value) : base(value) { }
-
-    public TaskId() : base(Guid.NewGuid()) { }
-
-  }
+  public TaskId() : base(Guid.NewGuid()) { }
 }

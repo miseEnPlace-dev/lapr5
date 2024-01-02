@@ -1,35 +1,33 @@
 using System.Collections.Generic;
-using DDDSample1.Domain.Shared;
+using MDTasks.Domain.Shared;
 
-namespace DDDSample1.Domain.User
+namespace MDTasks.Domain.User;
+
+public class UserName : ValueObject
 {
-  public class UserName : ValueObject
+  public string Name { get; private set; }
+
+  private UserName()
   {
+    Name = "";
+  }
 
-    public string Name { get; private set; }
+  public UserName(string Name)
+  {
+    ValidateName(Name);
+    this.Name = Name;
+  }
 
-    private UserName()
+  private static void ValidateName(string Name)
+  {
+    if (string.IsNullOrEmpty(Name))
     {
-      Name = "";
+      throw new BusinessRuleValidationException("Name cannot be empty or null");
     }
+  }
 
-    public UserName(string Name)
-    {
-      ValidateName(Name);
-      this.Name = Name;
-    }
-
-    private static void ValidateName(string Name)
-    {
-      if (string.IsNullOrEmpty(Name))
-      {
-        throw new BusinessRuleValidationException("Name cannot be empty or null");
-      }
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-      yield return Name;
-    }
+  protected override IEnumerable<object> GetEqualityComponents()
+  {
+    yield return Name;
   }
 }

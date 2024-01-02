@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
-using DDDSample1.Domain.Shared;
-using DDDSample1.Domain.DeviceTasks;
+using MDTasks.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
-using DDDSample1.Domain.DTO;
-using DDDNetCore.Domain.Request;
-using DDDSample1.Domain.User;
-using DDDNetCore.Services;
+using MDTasks.DTO;
+using MDTasks.Domain.User;
+using MDTasks.Services;
+using MDTasks.Mappers;
+using MDTasks.Domain.Request;
 
-namespace DDDSample1.Controllers;
+namespace MDTasks.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -59,7 +59,6 @@ public class RequestsController : ControllerBase
 
     return await service.GetAllPickDeliveryAsync(-1, -1);
   }
-
 
   // GET api/requests/{id}
   [HttpGet("{id}")]

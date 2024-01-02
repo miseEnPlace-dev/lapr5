@@ -1,23 +1,18 @@
-using DDDSample1.Domain.Shared;
+namespace MDTasks.Domain.Floor;
 
-namespace DDDSample1.Domain.Floor
+public class Floor
 {
-  public class Floor
+  public string FloorCode { get; private set; }
+
+  private Floor() { }
+
+  public Floor(string floorCode)
   {
+    FloorCode = floorCode;
+  }
 
-    public string FloorCode { get; private set; }
-
-    private Floor()
-    { }
-
-    public Floor(string floorCode)
-    {
-      FloorCode = floorCode;
-    }
-
-    public void ChangeFloorCode(string floorCode)
-    {
-      FloorCode = floorCode;
-    }
+  public void ChangeFloorCode(string floorCode)
+  {
+    FloorCode = floorCode;
   }
 }

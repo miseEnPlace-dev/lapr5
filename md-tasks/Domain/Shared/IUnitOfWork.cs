@@ -1,9 +1,8 @@
 using System.Threading.Tasks;
 
-namespace DDDSample1.Domain.Shared
+namespace MDTasks.Domain.Shared;
+
+public interface IUnitOfWork
 {
-  public interface IUnitOfWork
-  {
-    Task<int> CommitAsync();
-  }
+  Task<int> CommitAsync();
 }

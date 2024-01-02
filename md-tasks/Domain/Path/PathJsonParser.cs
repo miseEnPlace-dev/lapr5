@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
 using System.Text.Json;
+using MDTasks.DTO;
+
+namespace MDTasks.Domain.Path;
 
 public class PathJsonParser
 {

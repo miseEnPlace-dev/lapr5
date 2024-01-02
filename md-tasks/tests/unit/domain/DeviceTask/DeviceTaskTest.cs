@@ -1,33 +1,32 @@
 using System;
-using DDDSample1.Domain.DeviceTasks;
+using MDTasks.Domain.Task;
 
-namespace DDDSample1.Domain.Requests.Tests
+namespace MDTasks.Domain.Request.Tests;
+
+public class DeviceTaskTests
 {
-  public class DeviceTaskTests
+  [Fact]
+  public void DeviceTask_ShouldSetPropertiesCorrectly()
   {
-    [Fact]
-    public void DeviceTask_ShouldSetPropertiesCorrectly()
-    {
-      var requestId = new RequestId(Guid.NewGuid());
-      var deviceId = "Device123";
+    var requestId = new RequestId(Guid.NewGuid());
+    var deviceId = "Device123";
 
-      var deviceTask = new DeviceTask(requestId, deviceId);
+    var deviceTask = new DeviceTask(requestId, deviceId);
 
-      Assert.Equal(requestId, deviceTask.RequestId);
-      Assert.Equal(deviceId, deviceTask.DeviceId);
-      Assert.False(deviceTask.IsFinished);
-    }
+    Assert.Equal(requestId, deviceTask.RequestId);
+    Assert.Equal(deviceId, deviceTask.DeviceId);
+    Assert.False(deviceTask.IsFinished);
+  }
 
-    [Fact]
-    public void DeviceTask_ShouldFinishTask()
-    {
-      var requestId = new RequestId(Guid.NewGuid());
-      var deviceId = "Device123";
-      var deviceTask = new DeviceTask(requestId, deviceId);
+  [Fact]
+  public void DeviceTask_ShouldFinishTask()
+  {
+    var requestId = new RequestId(Guid.NewGuid());
+    var deviceId = "Device123";
+    var deviceTask = new DeviceTask(requestId, deviceId);
 
-      deviceTask.Finish();
+    deviceTask.Finish();
 
-      Assert.True(deviceTask.IsFinished);
-    }
+    Assert.True(deviceTask.IsFinished);
   }
 }

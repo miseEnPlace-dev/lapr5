@@ -1,37 +1,36 @@
 using System.Collections.Generic;
-using DDDSample1.Domain.Shared;
+using MDTasks.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 
-namespace DDDSample1.Domain.DeviceTasks.PickAndDeliveryTasks
+namespace MDTasks.Domain.Request;
+
+[Owned]
+public class ConfirmationCode : ValueObject
 {
-  [Owned]
-  public class ConfirmationCode : ValueObject
+
+  public string Code { get; private set; }
+
+  private ConfirmationCode()
   {
+    Code = "";
+  }
 
-    public string Code { get; private set; }
+  public ConfirmationCode(string code)
+  {
+    ValidateCode(code);
+    Code = code;
+  }
 
-    private ConfirmationCode()
+  private static void ValidateCode(string code)
+  {
+    if (code.Length < 4 || code.Length > 6 || string.IsNullOrEmpty(code))
     {
-      Code = "";
+      throw new BusinessRuleValidationException("Confirmation code must at least 4 characters and at most 6 characters.");
     }
+  }
 
-    public ConfirmationCode(string code)
-    {
-      ValidateCode(code);
-      Code = code;
-    }
-
-    private static void ValidateCode(string code)
-    {
-      if (code.Length < 4 || code.Length > 6 || string.IsNullOrEmpty(code))
-      {
-        throw new BusinessRuleValidationException("Confirmation code must at least 4 characters and at most 6 characters.");
-      }
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-      yield return Code;
-    }
+  protected override IEnumerable<object> GetEqualityComponents()
+  {
+    yield return Code;
   }
 }

@@ -1,10 +1,10 @@
-// using DDDSample1.Domain.DeviceModel;
-// using DDDSample1.Domain.DeviceTasks;
-// using DDDSample1.Domain.DeviceTasks.PickAndDeliveryTask;
-// using DDDSample1.Domain.Requests;
-// using DDDSample1.Domain.Room;
-// using DDDSample1.Domain.Shared;
-// using DDDSample1.Domain.User;
+// using MDTasks.Domain.DeviceModel;
+// using MDTasks.Domain.DeviceTasks;
+// using MDTasks.Domain.DeviceTasks.PickAndDeliveryTask;
+// using MDTasks.Domain.Requests;
+// using MDTasks.Domain.Room;
+// using MDTasks.Domain.Shared;
+// using MDTasks.Domain.User;
 
 
 // namespace tests;
