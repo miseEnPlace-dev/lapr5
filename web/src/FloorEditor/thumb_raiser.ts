@@ -371,7 +371,7 @@ import Stats from "three/addons/libs/stats.module.js";
 
 export const LOCAL_STORAGE_PREFIX = "@thumb-raiser:";
 
-const CELL_TO_CARTESIAN_OFFSET = { x: 1.5, y: 1.25 };
+const CELL_TO_CARTESIAN_OFFSET = { x: 1.25, y: 1.25 };
 
 export default class ThumbRaiser {
   constructor(
@@ -801,7 +801,8 @@ export default class ThumbRaiser {
     // Make sure the renderer is updated
     if (this.camera) this.renderer.render(this.scene, this.camera);
 
-    this.updatingMaze = false;
+    // load the new maze before continuing
+    setTimeout(() => (this.updatingMaze = false), 1000);
   }
 
   updateViewsPanel() {
@@ -1842,6 +1843,12 @@ export default class ThumbRaiser {
 
       // Update the player
       if (!this.animations.actionInProgress) {
+        const route = this.automatedParameters.route;
+        const currentRoutePos =
+          this.currRouteIndex < route.length
+            ? route[this.currRouteIndex]
+            : null;
+
         // Check if the player found the exit
         const f = this.maze.foundExit(this.player.position);
         if (f) {
@@ -1849,6 +1856,22 @@ export default class ThumbRaiser {
           const mazeIndex = this.mazeParameters.mazes.findIndex(
             (maze) => maze.name === f
           );
+
+          const nextRoutePos =
+            this.currRouteIndex < route.length - 1
+              ? route[this.currRouteIndex + 1]
+              : null;
+
+          if (
+            this.automatedParameters.isAutomated &&
+            nextRoutePos &&
+            nextRoutePos.type &&
+            nextRoutePos.type === "connector"
+          ) {
+            this.currRouteIndex += 2;
+            this.updatingMaze = true;
+            console.log("(automated) found connector");
+          }
           this.updateMaze(mazeIndex, true);
         } else {
           let coveredDistance = this.player.walkingSpeed * deltaT;
@@ -1864,7 +1887,7 @@ export default class ThumbRaiser {
           let playerMoved = false;
           const position = this.player.position.clone();
 
-          // enable player controls if automated
+          // enable player controls if not automated
           if (!this.automatedParameters.isAutomated) {
             if (this.player.keyStates.left) {
               playerTurned = true;
@@ -1894,30 +1917,37 @@ export default class ThumbRaiser {
               );
             }
           } else if (this.startAutomated) {
-            // const position = this.player.position.clone();
-            // console.log(position);
+            // console.log(this.maze.cartesianToCell(position));
+            // console.log(currentRoutePos);
 
-            const route = this.automatedParameters.route;
-
-            // automate player controls
+            // automate player movement
             if (!this.updatingMaze) {
               if (this.currRouteIndex === 0) {
                 this.currRouteIndex++;
-              } else if (this.currRouteIndex === route.length) {
+              } else if (this.currRouteIndex >= route.length) {
                 this.automatedParameters.isAutomated = false;
                 this.finalSequence();
               } else {
-                const currentRoutePos = route[this.currRouteIndex];
-
                 if (currentRoutePos.type) {
-                  if (currentRoutePos.type === "elevator") {
-                    console.log("elevator");
+                  console.log("(automated) " + currentRoutePos.type);
+
+                  if (
+                    currentRoutePos.type === "elevator" ||
+                    currentRoutePos.type === "connector"
+                  ) {
                     const nextFloor = this.mazeParameters.mazes.findIndex(
                       (m) => m.name === currentRoutePos.floor2
                     );
-                    this.currRouteIndex++;
+
+                    if (currentRoutePos.type === "connector")
+                      this.currRouteIndex += 2;
+                    else this.currRouteIndex++;
+
                     this.updatingMaze = true;
-                    this.updateMaze(nextFloor, false);
+                    this.updateMaze(
+                      nextFloor,
+                      currentRoutePos.type !== "elevator"
+                    );
                   }
                 } else {
                   const goToPos = this.maze.cellToCartesian([
