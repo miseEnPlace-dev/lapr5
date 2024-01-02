@@ -13,6 +13,6 @@ export interface IRequestService {
   getSVRequests(page?: string, limit?: string): Promise<IPaginationDTO<IRequestDTO>>;
   createSurveillance(body: unknown): Promise<IRequestDTO>;
   createPickDelivery(body: unknown): Promise<IRequestDTO>;
-  acceptRequest(id: string): Promise<IRequestDTO>;
+  acceptRequest(id: string, deviceId: string): Promise<IRequestDTO>;
   rejectRequest(id: string): Promise<IRequestDTO>;
 }

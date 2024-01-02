@@ -41,6 +41,8 @@ export class HttpClient implements IHttpClient {
   }
 
   async patch<T>(url: string, body?: unknown): Promise<T> {
+    console.log(body);
+
     const response = await fetch(url, {
       method: 'PATCH',
       body: body ? JSON.stringify(body) : undefined,

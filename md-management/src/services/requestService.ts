@@ -89,9 +89,10 @@ export default class RequestService implements IRequestService {
     return data;
   }
 
-  async acceptRequest(id: string): Promise<IRequestDTO> {
+  async acceptRequest(id: string, deviceId: string): Promise<IRequestDTO> {
     const data = await this.httpClient.patch<IRequestDTO>(
-      `${config.tasksApiUrl}/api/requests/${id}/accept`
+      `${config.tasksApiUrl}/api/requests/${id}/accept`,
+      { deviceId }
     );
     return data;
   }
