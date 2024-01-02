@@ -32,17 +32,18 @@ lim_time(2).
 debug_mode(0).
 
 % t(id_tarefa, inicio, fim).
-% t(t1, cel("b2",8,21),cel("c3",8,2)).
-% t(t2, cel("b1",7,20),cel("b2",6,20)).
-% t(t3, cel("b3",9,20),cel("b3",8,20)).
-% t(t4, cel("b2",6,19),cel("b2",9,18)).
-% t(t5, cel("b3",8,18),cel("b3",8,17)).
+%t(t1, cel("b2",8,21),cel("c3",8,2)).
+%t(t2, cel("b1",7,20),cel("b2",6,20)).
+%t(t3, cel("b3",9,20),cel("b3",8,20)).
+%t(t4, cel("b2",6,19),cel("b2",9,18)).
+%t(t5, cel("b3",8,18),cel("b3",8,17)).
 
-% t(t6,cel("c3",8,2),cel("b2",8,21)).
-% t(t7,cel("b2",6,20),cel("b1",7,20)).
-% t(t8,cel("b3",8,20),cel("b3",9,20)).
-% t(t9,cel("b2",9,18),cel("b2",6,19)).
-% t(t10,cel("b3",8,17),cel("b3",8,18)).
+%t(t6,cel("c3",8,2),cel("b2",8,21)).
+%t(t7,cel("b2",6,20),cel("b1",7,20)).
+%t(t8,cel("b3",8,20),cel("b3",9,20)).
+%t(t9,cel("b2",9,18),cel("b2",6,19)).
+%t(t10,cel("b3",8,17),cel("b3",8,18)).
+%n_tarefas(8).
 
 count([],N,N):-!.
 count([_|T],N1,N):-
@@ -156,7 +157,10 @@ gera_lim_time(Melhor):-
 	((D==1,write('PopAv='),write(PopAv),nl);true),
 	ordena_populacao(PopAv,PopOrd),
 	get_time(Ti),
-	gera_geracao_time(Ti,0,PopOrd,Melhor), !.
+  [M1, M2 | _] = PopOrd,
+  ((D == 1, write('Melhor 1 individuo passado: '), write(M1), nl, nl); true),
+  ((D == 1, write('Melhor 2 individuo passado: '), write(M2), nl, nl); true),
+	gera_geracao_time(Ti,0,PopOrd, Melhor), !.
 
 gera_estab:-
     debug_mode(D),
@@ -265,6 +269,22 @@ retira(N,[G1|Resto],G,[G1|Resto1]):-
 	N1 is N-1,
 	retira(N1,Resto,G,Resto1).
 
+% avalia_populacao([],[]).
+% avalia_populacao([H|Resto],[H*V|Resto1]):-
+% 	debug_mode(D),
+% 	%((D == 1,write('AAAAAA '), nl, nl); true),
+% 	avalia(H,V),
+% 	avalia_populacao(Resto,Resto1).
+
+% avalia([T1,T2|Resto],V):-
+% 	debug_mode(D),
+% 	%((D == 1, write('AAAAAA '), nl, nl); true),
+% 	tarefas(T1,T2,V1),
+% 	avalia([T2|Resto],V2),
+% 	V is V1 + V2.
+% avalia([_],0).
+% avalia([],0).
+
 avalia_populacao([],[]).
 avalia_populacao([H|Resto],[H*V|Resto1]):-
 	[Tarefa|_]=H,
@@ -322,32 +342,71 @@ gera_geracao_ger(N,G,Pop,Melhor):-
 	N1 is N+1,
 	gera_geracao_ger(N1,G,NPopNova,Melhor).
 
-gera_geracao_time(T,G,Pop,Ind):-
+gera_geracao_time(T, G, Pop, Ind) :-
 	debug_mode(D),
 	lim_time(Lim),
 	get_time(Ti),
 	Tf is Ti - T,
 	Tf > Lim,
 	((D==1,write('Geração '), write(G), write(':'), nl, write(Pop), nl);true),
+  [M1, M2 | _] = Pop,
+  ((D == 1, write('Melhor 1 individuo passado: '), write(M1), nl, nl); true),
+  ((D == 1, write('Melhor 2 individuo passado: '), write(M2), nl, nl); true),
 	cruzamento(Pop,NPop1),
 	mutacao(NPop1,NPop),
 	avalia_populacao(NPop,NPopAv),
 	ordena_populacao(NPopAv,NPopOrd),
-	melhor_individuo(NPopOrd,Ind),
-	((D==1,write('Melhor individuo: '), write(Ind), nl, nl);true),!.
-
-gera_geracao_time(T, N, Pop,Melhor) :-
-	debug_mode(D),
-	((D == 1, write('Geração '), write(N), write(':'), nl, write(Pop), nl); true),
-	cruzamento(Pop, NPop1),
-	mutacao(NPop1, NPop),
 	avalia_populacao(NPop, NPopAv),
-	ordena_populacao(NPopAv, NPopOrd),
-	melhor_individuo(Pop, MelhorInd),
-	retira_pior(NPopOrd, MelhorInd, NPopNova),
-	((D == 1, write('Melhor individuo: '), write(MelhorInd), nl, nl); true),
-	N1 is N + 1,
-	gera_geracao_time(T, N1, NPopNova,Melhor).
+  ordena_populacao(NPopAv, NPopOrd), 
+	[Ind, M4 | _] = NPopOrd,
+	((D == 1, write('Melhor 1 individuo atual: '), write(Ind), nl, nl); true),
+	((D == 1, write('Melhor 2 individuo atual: '), write(M4), nl, nl); true),!.
+
+gera_geracao_time(T, G, Pop, Melhor) :-
+    debug_mode(D),
+    ((D == 1, write('Geração '), write(G), write(':'), nl, write(Pop), nl); true),
+    [M1, M2 | _] = Pop,
+    ((D == 1, write('Melhor 1 individuo passado: '), write(M1), nl, nl); true),
+    ((D == 1, write('Melhor 2 individuo passado: '), write(M2), nl, nl); true),
+    cruzamento(Pop, NPop1),
+    mutacao(NPop1, NPop),
+		avalia_populacao(NPop, NPopAv),
+		ordena_populacao(NPopAv, NPopOrd),
+		[M3, M4 | Resto] = NPopOrd,
+		%((D == 1, write('NPopOrd = '), write(NPopOrd), nl, nl); true),
+    ListaMelhores = [M1, M2, M3, M4],
+		%((D == 1, write('ListaMelhores = '), write(ListaMelhores), nl, nl); true),
+    remove_repetidos(ListaMelhores, PopNovaDosMelhores),
+		%((D == 1, write('PopNovaDosMelhores = '), write(PopNovaDosMelhores), nl, nl); true),
+		length(PopNovaDosMelhores, X),
+		%((D == 1, write('X = '), write(X), nl, nl); true),
+		Elementos_Retirar is X - 2,
+		%((D == 1, write('Elementos_Retirar = '), write(Elementos_Retirar), nl, nl); true),
+		remove_ultimos_n(Resto, Elementos_Retirar, PopNova),
+		append(PopNovaDosMelhores, PopNova, Result),
+		%((D == 1, write('Result '), write(Result), nl, nl); true),
+		ordena_populacao(Result, PopNovaOrd),
+		%((D == 1, write('Populacao ordenada final: '), write(PopNovaOrd), nl, nl); true),
+    ((D == 1, write('Melhor 1 individuo atual: '), write(M3), nl, nl); true),
+    ((D == 1, write('Melhor 2 individuo atual: '), write(M4), nl, nl); true),
+    G1 is G + 1,
+    gera_geracao_time(T, G1, PopNovaOrd, Melhor).
+
+
+remove_ultimos_n(List, 0, List).
+
+remove_ultimos_n([_|Tail], N, Result) :-
+    N > 0,
+    N1 is N - 1,
+    remove_ultimos_n(Tail, N1, Result).
+
+remove_repetidos([], []).
+remove_repetidos([X | T], Result) :-
+    member(X, T),
+    !,
+    remove_repetidos(T, Result).
+remove_repetidos([X | T], [X | Result]) :-
+    remove_repetidos(T, Result).
 
 retira_pior([_|Resto], Melhor, [Melhor|Resto]) :- !.
 
