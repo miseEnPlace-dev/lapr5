@@ -6,11 +6,11 @@ export class HttpClient implements IHttpClient {
   async get<T>(url: string, query?: { [key: string]: string | undefined }): Promise<T> {
     let fetchUrl = url;
     if (query) {
-      fetchUrl +=
-        '?' +
-        new URLSearchParams(
-          Object.entries(query).map(([key, value]) => [key, value ?? ''])
-        ).toString();
+      const searchParams = new URLSearchParams();
+      for (const [key, value] of Object.entries(query)) {
+        if (value) searchParams.append(key, value);
+      }
+      fetchUrl += '?' + searchParams.toString();
     }
     const response = await fetch(fetchUrl);
     return await response.json();
