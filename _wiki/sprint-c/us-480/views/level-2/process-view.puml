@@ -1,0 +1,30 @@
+@startuml process-view
+autonumber
+actor TM as "User"
+participant UI as "Visualization" <<system (C4)>>
+participant MDD as "MDD" <<system (C4)>>
+participant TMD as "Tasks Master Data" <<system (C4)>>
+participant P as "Planning" <<system (C4)>>
+
+activate TM
+
+TM -> UI : requests a new request
+activate UI
+
+UI -> MDD : GET /task-requests?filter=state&value=Pending
+activate MDD
+
+MDD -> TMD : Get /requests?filter=state&value=Pending
+activate TMD
+deactivate MDD
+deactivate TMD
+
+MDD --> UI : 200 OK (requests)
+deactivate MDD
+
+TM <-- UI : 200 OK (requests)
+deactivate UI
+
+deactivate TM
+
+@enduml
