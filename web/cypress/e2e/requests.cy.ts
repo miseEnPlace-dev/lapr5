@@ -1,6 +1,6 @@
-const BASE_URL = "http://localhost:4000/api";
-
 describe("Task Request", () => {
+  const BASE_URL = "http://localhost:4000/api";
+
   beforeEach(() => {
     cy.visit("/login");
     cy.intercept("POST", BASE_URL + "/users/login", {
@@ -93,6 +93,32 @@ describe("Task Request", () => {
               state: "active",
             },
           },
+          {
+            userName: "User Example",
+            phoneNumber: "912345678",
+            floorId: "b3",
+            description: "22Make it in time",
+            id: "bbe96647-0d6c-44d2-b4d3-1cd3f624c4ed",
+            type: "surveillance",
+            userId: "c7dcd734-66f7-4d9c-8ba2-887923d41401",
+            state: "Pending",
+            requestedAt: "15/15/2023 22:33:18 AM",
+            startCoordinateX: 6,
+            startCoordinateY: 19,
+            endCoordinateX: 5,
+            endCoordinateY: 21,
+            user: {
+              id: "c7dcd734-66f7-4d9c-8ba2-887923d41401",
+              firstName: "User",
+              lastName: "Example",
+              email: "user@isep.ipp.pt",
+              phoneNumber: "912345678",
+              nif: "123456789",
+              password: "",
+              role: "user",
+              state: "active",
+            },
+          },
         ],
       },
     });
@@ -127,6 +153,35 @@ describe("Task Request", () => {
             code: "SRV",
             name: "Surveillance Master",
             type: "robot",
+          },
+        ],
+      },
+    });
+
+    cy.intercept("GET", BASE_URL + "/robots?limit=1000&page=1", {
+      statusCode: 200,
+      body: {
+        meta: { total: 2, limit: 1000, page: 1, totalPages: 1 },
+        data: [
+          {
+            id: "9af5f68e-f343-4d5e-b183-3c57987c2e0f",
+            code: "guard",
+            nickname: "ISEP Guard",
+            description: "ISEP Security Guard",
+            serialNumber: "RBT1",
+            modelCode: "SRV",
+            isAvailable: true,
+            initialCoordinates: { width: 7, depth: 21, floorCode: "b1" },
+          },
+          {
+            id: "3971692e-e1ef-418d-8e8e-97f1737ab646",
+            code: "master",
+            nickname: "ISEP Master Robot",
+            description: "ISEP Master All in One Robot",
+            serialNumber: "RBT3",
+            modelCode: "ALL",
+            isAvailable: true,
+            initialCoordinates: { width: 8, depth: 21, floorCode: "b2" },
           },
         ],
       },
@@ -462,5 +517,77 @@ describe("Task Request", () => {
       "contain",
       "No results were found for your search... Try to change or remove the filters."
     );
+  });
+
+  it("should accept a request", () => {
+    cy.intercept(
+      "PATCH",
+      BASE_URL + "/task-requests/3971692e-e1ef-418d-8e8e-97f1737ab646/accept",
+      {
+        statusCode: 200,
+        body: {
+          userName: "User Example",
+          phoneNumber: "912345678",
+          floorId: "b2",
+          description: "test",
+          id: "90ec1530-1e41-4ba6-ac73-a07beb8832c9",
+          type: "surveillance",
+          userId: "d7e5a24a-2de3-4592-bff9-44dd986ab032",
+          state: "Accepted",
+          requestedAt: "15/12/2023 22:30:36",
+          startCoordinateX: 6,
+          startCoordinateY: 13,
+          endCoordinateX: 6,
+          endCoordinateY: 13,
+        },
+      }
+    );
+
+    cy.intercept(
+      "GET",
+      BASE_URL + "/task-requests/pick-delivery?limit=3&page=1",
+      {
+        statusCode: 200,
+        body: {
+          meta: {
+            page: 1,
+            limit: 3,
+            total: 0,
+            totalPages: 0,
+          },
+          data: [],
+        },
+      }
+    );
+
+    cy.get("button[name=confirm]").click();
+    cy.get("select[name=Robot]").select("3971692e-e1ef-418d-8e8e-97f1737ab646");
+  });
+
+  it("should reject a request", () => {
+    cy.intercept(
+      "PATCH",
+      BASE_URL + "/task-requests/3971692e-e1ef-418d-8e8e-97f1737ab646/reject",
+      {
+        statusCode: 200,
+        body: {
+          userName: "User Example",
+          phoneNumber: "912345678",
+          floorId: "b2",
+          description: "test",
+          id: "90ec1530-1e41-4ba6-ac73-a07beb8832c9",
+          type: "surveillance",
+          userId: "d7e5a24a-2de3-4592-bff9-44dd986ab032",
+          state: "Accepted",
+          requestedAt: "15/12/2023 22:30:36",
+          startCoordinateX: 6,
+          startCoordinateY: 13,
+          endCoordinateX: 6,
+          endCoordinateY: 13,
+        },
+      }
+    );
+
+    cy.get("button[name=delete]").click();
   });
 });
