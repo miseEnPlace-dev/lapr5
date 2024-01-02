@@ -1,0 +1,40 @@
+@startuml process-view
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor CM as "Campus Manager"
+
+box "«system (C4)»\nRobDroneGo" <<center>>
+  participant UI as "Visualization" <<container (C4)>>
+  participant MDM as "MD Management" <<container (C4)>>
+  participant MDT as "MD Tasks" <<container (C4)>>
+  participant P as "Planing" <<container (C4)>>
+end box
+
+activate CM
+
+CM -> UI : selects filter by state
+activate UI
+
+CM <-- UI : shows all states and asks to select one
+deactivate UI
+
+CM -> UI : selects the state
+activate UI
+
+UI -> MDM : GET /task-requests?filter=state&value=accepted
+activate MDM
+
+UI <-- MDM : 200 OK
+deactivate MDM
+
+alt there are request with selected state
+  CM <-- UI : shows the requests list
+else the list is empty
+  CM <-- UI : shows error message "No requests found."
+  deactivate UI
+end
+
+deactivate CM
+
+@enduml
