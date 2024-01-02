@@ -99,7 +99,9 @@ export const useModule = () => {
 
   useEffect(() => {
     const fetchDevices = async () => {
-      const data = (await devicesService.getDevicesRobots()).data;
+      const data = (
+        await devicesService.getDevicesRobots(undefined, undefined, 0, 20)
+      ).data;
       setDevices(data);
     };
 
