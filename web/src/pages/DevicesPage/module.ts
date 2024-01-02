@@ -117,6 +117,7 @@ export const useListDeviceModule = () => {
     }
 
     const device: Device = {
+      id: "",
       code: codeInputRef.current.value,
       nickname: nicknameInputRef.current.value,
       modelCode: modelCodeInputRef.current?.value || "",

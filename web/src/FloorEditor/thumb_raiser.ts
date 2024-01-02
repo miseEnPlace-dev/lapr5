@@ -500,9 +500,12 @@ export default class ThumbRaiser {
       this.mazeParameters.mazes[this.mazeParameters.selected]
     );
 
-    const floors = this.mazeParameters.mazes[0].maze.maze.elevator.floors;
+    const floors =
+      this.mazeParameters.mazes[this.mazeParameters.selected].maze.maze.elevator
+        .floors;
     const mazeSelect = document.getElementById("maze") as HTMLSelectElement;
-    const floorName = this.mazeParameters.mazes[0].name;
+    const floorName =
+      this.mazeParameters.mazes[this.mazeParameters.selected].name;
     if (mazeSelect)
       mazeSelect.innerHTML =
         `<option key=${floorName} value=${this.mazeParameters.mazes.findIndex(
