@@ -46,7 +46,7 @@ deactivate MDTCTRL
 
 CTRLMDD --> ROUTE : sucess(reqDTO)
 deactivate CTRLMDD
-<-- ROUTE : 201 OK
+<-- ROUTE : 201 CREATED
 deactivate ROUTE
 
 @enduml

@@ -221,7 +221,7 @@ const TaskRequestsPage: React.FC = () => {
             </motion.button>
           </div>
           {!requests ? null : requests.data.length == 0 ? ( // TODO: skeleton component
-            <p className="text-slate-500">
+            <p aria-label="noResults" className="text-slate-500">
               No results were found for your search... Try to change or remove
               the filters.
             </p>
@@ -375,7 +375,7 @@ const TaskRequestsPage: React.FC = () => {
                 </div>
               </div>
               <Button
-                name="listfilter"
+                name="listFilter"
                 onClick={handleFilterByStateClick}
                 type="confirm"
               >
@@ -394,8 +394,8 @@ const TaskRequestsPage: React.FC = () => {
                 <div className="flex w-full flex-col gap-x-8 gap-y-4">
                   <Dropdown
                     className="w-full"
-                    name="Task"
-                    placeholder="Task"
+                    name="DeviceModel"
+                    placeholder="Device Model"
                     inputRef={deviceModelInputRef}
                     options={deviceModels.map((deviceModel) => ({
                       code: deviceModel.code,
@@ -415,7 +415,7 @@ const TaskRequestsPage: React.FC = () => {
                 </div>
               </div>
               <Button
-                name="listfilter"
+                name="listFilter"
                 onClick={handleFilterByDeviceModelClick}
                 type="confirm"
               >
@@ -455,7 +455,7 @@ const TaskRequestsPage: React.FC = () => {
                 </div>
               </div>
               <Button
-                name="listfilter"
+                name="listFilter"
                 onClick={handleFilterByUserIdClick}
                 type="confirm"
               >
