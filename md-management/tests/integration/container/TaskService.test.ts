@@ -189,7 +189,7 @@ describe('TaskService', () => {
 
     await taskService.getTaskSequence('1');
 
-    expect(httpStub.calledOnce).toBe(true);
-    expect(httpStub.calledWith('http://localhost:7000/tasks/sequence?deviceId=1'));
+    expect(httpStub.calledOnce);
+    expect(httpStub.calledWith('http://localhost:7000/api/tasks/sequence?deviceId=1'));
   });
 });
