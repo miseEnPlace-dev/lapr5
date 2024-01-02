@@ -42,4 +42,4 @@ jobs:
           script: |
             cd ~/deploy-planning/planning
             killall -9 swipl
-            nohup swipl server.pl > /dev/null 2>&1 &
+            sh -c 'nohup swipl server.pl > /dev/null 2>&1 &'
