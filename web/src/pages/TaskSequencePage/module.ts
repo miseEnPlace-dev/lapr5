@@ -86,13 +86,13 @@ export const useModule = () => {
     const datePart = dateArray[0].split("/");
     const timePart = dateArray[1].split(":");
 
-    const ampm = timePart[2].slice(2);
-    const hour = parseInt(timePart[0]) + (ampm === "PM" ? 12 : 0);
+    // const ampm = timePart[2].slice(2);
+    const hour = parseInt(timePart[0]); // + (ampm === "PM" ? 12 : 0);
     const minute = parseInt(timePart[1]);
     const seconds = parseInt(timePart[2].slice(0, 2));
 
-    const day = parseInt(datePart[1]);
-    const month = parseInt(datePart[0]);
+    const day = parseInt(datePart[0]);
+    const month = parseInt(datePart[1]);
     const year = parseInt(datePart[2]);
 
     const newDate = new Date(year, month - 1, day, hour, minute, seconds);

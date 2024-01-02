@@ -31,6 +31,7 @@ namespace DDDSample1.Domain.Requests
       this.taskRepo = taskRepo;
       this.svReqRepo = svReqRepo;
       this.pdReqRepo = pdReqRepo;
+      mapper = new TaskMapper(svReqRepo, pdReqRepo);
     }
 
     public async Task<TaskDTO> Create(TaskDTO dto)
