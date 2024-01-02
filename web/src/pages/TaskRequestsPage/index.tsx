@@ -81,6 +81,7 @@ const TaskRequestsPage: React.FC = () => {
     setIsFilterByStateModalVisible(false);
     setIsFilterByUserModalVisible(false);
     setIsFilterByModelModalVisible(false);
+    handlePagination(1);
   }
 
   async function handleFilterByDeviceModelClick() {
@@ -91,6 +92,7 @@ const TaskRequestsPage: React.FC = () => {
       // Only one filter is valid, remove the other
       setUserFilter(null);
       setStateFilter(null);
+      handlePagination(1);
 
       setIsFilterByModelModalVisible(false);
     } catch (err: unknown) {
@@ -109,6 +111,7 @@ const TaskRequestsPage: React.FC = () => {
       // Only one filter is valid, remove the other
       setUserFilter(null);
       setDeviceModelFilter(null);
+      handlePagination(1);
 
       setIsFilterByStateModalVisible(false);
     } catch (err: unknown) {
@@ -127,6 +130,7 @@ const TaskRequestsPage: React.FC = () => {
       // Only one filter is valid, remove the other
       setStateFilter(null);
       setDeviceModelFilter(null);
+      handlePagination(1);
 
       setIsFilterByUserModalVisible(false);
     } catch (err: unknown) {
