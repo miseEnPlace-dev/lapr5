@@ -1,0 +1,38 @@
+@startuml process-view3
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+box "<<container (C4)>>\nMD Tasks" <<center>>#LightBlue
+  participant MDTCTRL as ":Controller"  
+  participant MDTSRV as ":Service"
+  participant MDTDTO as ":requestDTO"
+  participant MDTREPO as ":Repo"
+end box
+
+
+?o-> MDTCTRL : GET /Request?filter=state&value=value
+activate MDTCTRL
+
+MDTCTRL -> MDTSRV : GetRequestsByState(value)
+activate MDTSRV
+
+MDTSRV -> MDTREPO : GetRequestsByState(value)
+activate MDTREPO
+
+
+MDTREPO --> MDTSRV : requestsList
+deactivate MDTDTO
+deactivate MDTREPO
+
+loop for each request in requestsList
+MDTSRV --> MDTDTO** : createDTO(reqDTO)
+end loop
+
+
+MDTSRV --> MDTCTRL : reqDtoList
+deactivate MDTSRV
+
+<-- MDTCTRL : 200 (OK)
+deactivate MDTCTRL
+
+@enduml

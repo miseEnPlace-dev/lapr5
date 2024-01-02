@@ -22,7 +22,7 @@
 
 ### Answer
 
-"considerar "tipo de robot"
+"considerar "tipo de robot""
 
 ## 2. Analysis
 
@@ -52,4 +52,15 @@ The views presented here are the ones that are relevant to this user story.
 
 ##### Processes
 
-![Level 3 Processes View](views/level-3/assets/process-view.svg)
+###### Visualization
+
+![Level 3 Processes View](views/level-3/assets/process-view1.svg)
+
+###### MD-Management
+
+![Level 3 Processes View](views/level-3/assets/process-view2.svg)
+
+###### MD-Tasks
+
+![Level 3 Processes View](views/level-3/assets/process-view3.svg)
+

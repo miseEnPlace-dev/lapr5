@@ -1,0 +1,50 @@
+@startuml process-view1
+autonumber
+skinparam DefaultTextAlignment<<center>> center
+
+actor ADM as "Administrator"
+box "<<system (C4>>\nVisualization"<<center>>
+  participant CMP as "UI Component" <<component (C4)>>
+  participant MOD as "Module" <<component (C4)>>
+  participant SRV as "Service" <<component (C4)>>
+  participant HTTP as "HTTP" <<component (C4)>>
+end box
+
+box "<<container (C4)>>\nMD Management" <<center>>#LightYellow
+  participant ROUTE as ":Route" <<component (C4)>>
+end box
+
+activate ADM
+
+ADM -> CMP : selects filter by state
+activate CMP
+
+CMP -> ADM : states options 
+deactivate CMP
+
+ADM -> CMP : selects state options
+activate CMP
+CMP -> MOD : list requests by state
+activate MOD
+MOD -> SRV : getAllRequests(state, value)
+activate SRV
+SRV -> HTTP : get('/task-requests?filter=state&value=value')
+activate HTTP
+
+HTTP -> ROUTE : GET /task-requests?filter=state&value=value
+activate ROUTE
+
+ROUTE --> HTTP : 200 (OK)
+deactivate ROUTE
+HTTP --> SRV : requests
+deactivate HTTP
+SRV --> MOD : requests
+deactivate SRV
+MOD --> CMP : requests
+deactivate MOD
+CMP --> ADM : requests
+deactivate CMP
+
+deactivate ADM
+
+@enduml
