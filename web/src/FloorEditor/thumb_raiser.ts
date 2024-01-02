@@ -455,6 +455,7 @@ export default class ThumbRaiser {
 
     this.automatedParameters = merge({}, automatedData, automatedParameters);
     this.currRouteIndex = 0;
+    this.updatingMaze = false;
 
     this.startAutomated = false;
     setTimeout(() => (this.startAutomated = true), 3000);
@@ -768,7 +769,7 @@ export default class ThumbRaiser {
 
     // Update UI elements
     const mazeSelect = document.getElementById("maze") as HTMLSelectElement;
-    const floorName = this.mazeParameters.mazes[index].name;
+    // const floorName = this.mazeParameters.mazes[index].name;
 
     if (mazeSelect) {
       mazeSelect.innerHTML =
@@ -798,7 +799,9 @@ export default class ThumbRaiser {
       ?.setAttribute("style", "display:none");
 
     // Make sure the renderer is updated
-    this.renderer.render(this.scene, this.camera);
+    if (this.camera) this.renderer.render(this.scene, this.camera);
+
+    this.updatingMaze = false;
   }
 
   updateViewsPanel() {
@@ -1897,78 +1900,92 @@ export default class ThumbRaiser {
             const route = this.automatedParameters.route;
 
             // automate player controls
-            if (this.currRouteIndex === 0) {
-              this.currRouteIndex++;
-            } else if (this.currRouteIndex === route.length) {
-              this.automatedParameters.isAutomated = false;
-              this.player.direction += 180;
-              this.finalSequence();
-            } else {
-              const currentRoutePos = route[this.currRouteIndex];
-              const goToPos = this.maze.cellToCartesian([
-                currentRoutePos.x - CELL_TO_CARTESIAN_OFFSET.x,
-                currentRoutePos.y - CELL_TO_CARTESIAN_OFFSET.y,
-              ]);
-
-              // advance to next route pos if close enough
-              if (
-                position.x < goToPos.x + 0.1 &&
-                position.x > goToPos.x - 0.1 &&
-                position.z < goToPos.z + 0.1 &&
-                position.z > goToPos.z - 0.1
-              ) {
+            if (!this.updatingMaze) {
+              if (this.currRouteIndex === 0) {
                 this.currRouteIndex++;
+              } else if (this.currRouteIndex === route.length) {
+                this.automatedParameters.isAutomated = false;
+                this.finalSequence();
               } else {
-                const moveX =
-                  position.x < goToPos.x
-                    ? 1
-                    : position.x < goToPos.x + 0.1 &&
-                      position.x > goToPos.x - 0.1
-                    ? 0
-                    : -1;
+                const currentRoutePos = route[this.currRouteIndex];
 
-                const moveZ =
-                  position.z < goToPos.z
-                    ? 1
-                    : position.z < goToPos.z + 0.1 &&
-                      position.z > goToPos.z - 0.1
-                    ? 0
-                    : -1;
-
-                // console.log("position", position.x, position.z);
-                // console.log("goToPos", goToPos.x, goToPos.z);
-                // console.log(moveX, moveZ);
-
-                // fix rotation
-                const shouldBeRotation = Math.atan2(moveX, moveZ);
-                const rotationDiff = shouldBeRotation - directionRad;
-                const rotationDiffDeg =
-                  THREE.MathUtils.radToDeg(rotationDiff) % 360;
-                const rotationDiffAbs = Math.abs(rotationDiffDeg);
-
-                // console.log(rotationDiffAbs);
-
-                if (rotationDiffAbs < 1.0 || rotationDiffAbs > 359.0) {
-                  playerMoved = true;
-                  position.add(
-                    new THREE.Vector3(
-                      coveredDistance * moveX,
-                      0.0,
-                      coveredDistance * moveZ
-                    )
-                  );
+                if (currentRoutePos.type) {
+                  if (currentRoutePos.type === "elevator") {
+                    console.log("elevator");
+                    const nextFloor = this.mazeParameters.mazes.findIndex(
+                      (m) => m.name === currentRoutePos.floor2
+                    );
+                    this.currRouteIndex++;
+                    this.updatingMaze = true;
+                    this.updateMaze(nextFloor, false);
+                  }
                 } else {
-                  playerTurned = true;
-                  if (rotationDiffAbs < 180) {
-                    directionDeg +=
-                      rotationDiffDeg > 0
-                        ? directionIncrement
-                        : -directionIncrement;
+                  const goToPos = this.maze.cellToCartesian([
+                    currentRoutePos.x - CELL_TO_CARTESIAN_OFFSET.x,
+                    currentRoutePos.y - CELL_TO_CARTESIAN_OFFSET.y,
+                  ]);
+
+                  // advance to next route pos if close enough
+                  if (
+                    position.x < goToPos.x + 0.1 &&
+                    position.x > goToPos.x - 0.1 &&
+                    position.z < goToPos.z + 0.1 &&
+                    position.z > goToPos.z - 0.1
+                  ) {
+                    this.currRouteIndex++;
                   } else {
-                    directionDeg +=
-                      rotationDiffDeg > 0
-                        ? -directionIncrement
-                        : directionIncrement;
+                    const moveX =
+                      position.x < goToPos.x
+                        ? 1
+                        : position.x < goToPos.x + 0.1 &&
+                          position.x > goToPos.x - 0.1
+                        ? 0
+                        : -1;
+
+                    const moveZ =
+                      position.z < goToPos.z
+                        ? 1
+                        : position.z < goToPos.z + 0.1 &&
+                          position.z > goToPos.z - 0.1
+                        ? 0
+                        : -1;
+
+                    // console.log("position", position.x, position.z);
+                    // console.log("goToPos", goToPos.x, goToPos.z);
+                    // console.log(moveX, moveZ);
+
+                    // fix rotation
+                    const shouldBeRotation = Math.atan2(moveX, moveZ);
+                    const rotationDiff = shouldBeRotation - directionRad;
+                    const rotationDiffDeg =
+                      THREE.MathUtils.radToDeg(rotationDiff) % 360;
+                    const rotationDiffAbs = Math.abs(rotationDiffDeg);
+
+                    // console.log(rotationDiffAbs);
+
+                    if (rotationDiffAbs < 1.0 || rotationDiffAbs > 359.0) {
+                      playerMoved = true;
+                      position.add(
+                        new THREE.Vector3(
+                          coveredDistance * moveX,
+                          0.0,
+                          coveredDistance * moveZ
+                        )
+                      );
+                    } else {
+                      playerTurned = true;
+                      if (rotationDiffAbs < 180) {
+                        directionDeg +=
+                          rotationDiffDeg > 0
+                            ? directionIncrement
+                            : -directionIncrement;
+                      } else {
+                        directionDeg +=
+                          rotationDiffDeg > 0
+                            ? -directionIncrement
+                            : directionIncrement;
+                      }
+                    }
                   }
                 }
               }
