@@ -14,7 +14,7 @@ namespace DDDSample1.Controllers;
 public class TasksController : ControllerBase
 {
   private readonly ITaskService taskSvc;
-  private readonly IRequestService reqSvc;
+
   public TasksController(ITaskService taskSvc)
   {
     this.taskSvc = taskSvc;
