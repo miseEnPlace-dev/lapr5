@@ -61,7 +61,8 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ~/deploy-mdtasks/md-tasks
+            dotnet tool restore
+            export ASPNETCORE_ENVIRONMENT="Production" ASPNETCORE_URLS="http://localhost:7000"
             dotnet ef database update
             killall -9 DDDNetCore
-            export ASPNETCORE_ENVIRONMENT="Production" ASPNETCORE_URLS="http://localhost:7000"
             nohup ./dist/DDDNetCore > /dev/null 2>&1 &
