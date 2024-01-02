@@ -79,6 +79,7 @@ export default class TaskController implements ITaskController {
     next: NextFunction
   ): Promise<Response | void> {
     try {
+      if (!req.query.deviceId) return res.status(400).json({ message: 'Missing device id' });
       const deviceId = req.query.deviceId as string;
       const sequence = await this.taskService.getTaskSequence(deviceId);
 
