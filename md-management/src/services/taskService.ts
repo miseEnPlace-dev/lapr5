@@ -8,6 +8,8 @@ import IDeviceService from './IServices/IDeviceService';
 import { IHttpClient } from './IServices/IHttpClient';
 import { ITaskService } from './IServices/ITaskService';
 import IUserService from './IServices/IUserService';
+import { ITaskDTO } from '@/dto/ITaskDTO';
+import { IPaginationDTO } from '@/dto/IPaginationDTO';
 
 @injectable()
 export default class TaskService implements ITaskService {
@@ -16,6 +18,30 @@ export default class TaskService implements ITaskService {
     @inject(TYPES.deviceService) private deviceService: IDeviceService,
     @inject(TYPES.httpClient) private httpClient: IHttpClient
   ) {}
+
+  async getTasks(deviceId?: string): Promise<IPaginationDTO<ITaskDTO>> {
+    const data = await this.httpClient.get<IPaginationDTO<ITaskDTO>>(
+      `${config.tasksApiUrl}/api/tasks`,
+      { deviceId }
+    );
+
+    const tasks = [];
+
+    data.data.forEach(async task => {
+      const userOrError = await this.userService.findUserById(task.userId);
+      if (userOrError.isFailure) throw userOrError.error;
+
+      const deviceOrError = await this.deviceService.findById(task.deviceId);
+      if (deviceOrError.isFailure) throw deviceOrError.error;
+
+      task.user = userOrError.getValue();
+      task.device = deviceOrError.getValue();
+
+      tasks.push(task);
+    });
+
+    return data;
+  }
 
   async getTaskSequence(deviceId: string): Promise<ISequenceDTO> {
     const data = await this.httpClient.get<ISequenceResponseDTO>(
@@ -36,5 +62,13 @@ export default class TaskService implements ITaskService {
     }
 
     return sequence;
+  }
+
+  async createTask(body: unknown): Promise<ITaskDTO> {
+    return await this.httpClient.post<ITaskDTO>(`${config.tasksApiUrl}/api/tasks`, body);
+  }
+
+  async finishTask(id: string): Promise<ITaskDTO> {
+    return await this.httpClient.patch<ITaskDTO>(`${config.tasksApiUrl}/api/tasks/${id}`);
   }
 }

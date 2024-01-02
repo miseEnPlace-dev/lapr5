@@ -106,7 +106,9 @@ export default class RequestController implements IRequestController {
     next: NextFunction
   ): Promise<Response | void> {
     try {
-      const data = await this.requestSvc.acceptRequest(req.params.id);
+      const deviceId = req.body.deviceId;
+      if (!deviceId) return res.status(400).json({ message: 'deviceId is required' });
+      const data = await this.requestSvc.acceptRequest(req.params.id, deviceId as string);
       return res.status(200).json(data);
     } catch (e) {
       return next(e);

@@ -1,11 +1,8 @@
 @startuml process-view
 autonumber
-box "<<container (C4)>>\nMD Management" <<center>>#LightGreen
-  participant ROUTE as ":Route"
-  participant CTRLMDD as ":Controller"
-end box
 
 box "<<container (C4)>>\nMD Tasks" <<center>>#LightBlue
+  participant ROUTE as ":Route"
   participant MDTCTRL as ":Controller"
   participant MDTSRV as ":Service"
   participant MDTDTO as "dto:requestDTO"
@@ -13,35 +10,30 @@ box "<<container (C4)>>\nMD Tasks" <<center>>#LightBlue
   participant BUILD as "request:Request"
 end box
 
-?o-> ROUTE : POST /requests
+?o-> ROUTE : POST /requests/surveillance
 activate ROUTE
 
-ROUTE -> CTRLMDD : create(request)
-activate CTRLMDD
-
-CTRLMDD -> MDTCTRL : create(requestDTO)
+ROUTE -> MDTCTRL : create(requestSurveillance)
 activate MDTCTRL
 
-MDTCTRL -> MDTSRV : create(requestDTO)
+MDTCTRL -> MDTSRV : create(requestSurveillance)
 activate MDTSRV
 
-MDTSRV -> MDTREPO : create(requestDTO)
+MDTSRV -> MDTREPO : create(requestSurveillance)
 activate MDTREPO
 
 MDTREPO -> BUILD** : create
-deactivate MDTDTO
 
-MDTREPO --> MDTDTO** : createDTO(reqDTO)
-activate MDTDTO
+MDTREPO --> MDTSRV : request
 
-MDTDTO --> MDTSRV : sucess(reqDTO)
+MDTSRV --> MDTDTO** : create(reqDTO)
 deactivate MDTDTO
 deactivate MDTREPO
 
 MDTSRV --> MDTCTRL : sucess(reqDTO)
 deactivate MDTSRV
 
-MDTCTRL --> CTRLMDD : sucess(reqDTO)
+MDTCTRL --> ROUTE : sucess(reqDTO)
 deactivate MDTCTRL
 
 CTRLMDD --> ROUTE : sucess(reqDTO)

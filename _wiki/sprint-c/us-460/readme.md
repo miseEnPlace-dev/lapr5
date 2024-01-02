@@ -1,8 +1,8 @@
-# US [480] - As Task Manager, I want to consult the unapproved requested tasks
+# US [460] - As an User I want to request a tasks
 
 |              |                        |
 | ------------ | ---------------------- |
-| ID           | 480                    |
+| ID           | 460                    |
 | Sprint       | C                      |
 | Module       | 1.4 - Tasks Management |
 | UC           | ARQSI                  |
@@ -10,7 +10,7 @@
 
 ## 1. Requirements
 
-> ### "US480 - As Task Manager, I want to request a task."
+> ### "US460 - As an User I want to request a tasks."
 
 ## 1.1. Client Specifications
 
@@ -50,4 +50,10 @@ The views presented here are the ones that are relevant to this user story.
 
 ##### Processes
 
-![Level 3 Processes View](views/level-3/assets/process-view.svg)
+##### Surveillance
+
+![Level 3 Processes View](views/level-3/assets/process-view1.svg)
+
+##### Pick And Delivery
+
+![Level 3 Processes View](views/level-3/assets/process-view1.svg)
