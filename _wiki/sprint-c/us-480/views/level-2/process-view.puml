@@ -8,13 +8,13 @@ participant P as "Planning" <<system (C4)>>
 
 activate TM
 
-TM -> UI : requests a new request
+TM -> UI : wants to consult the unapproved requests
 activate UI
 
 UI -> MDD : GET /task-requests?filter=state&value=Pending
 activate MDD
 
-MDD -> TMD : Get /requests?filter=state&value=Pending
+MDD -> TMD : GET /requests?filter=state&value=Pending
 activate TMD
 deactivate MDD
 deactivate TMD

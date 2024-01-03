@@ -46,7 +46,7 @@ export const useListTaskRequestsModule = () => {
   );
   const [page, setPage] = useState<number>(1);
 
-  const [stateFilter, setStateFilter] = useState<string | null>("");
+  const [stateFilter, setStateFilter] = useState<string | null>("Pending");
   const stateInputRef = useRef<HTMLSelectElement>(null);
 
   const [userFilter, setUserFilter] = useState<string | null>("");
