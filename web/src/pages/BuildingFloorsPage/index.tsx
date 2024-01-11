@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
 import Input from "@/components/Input";
+import InputGroup from "@/components/InputGroup";
 import ListFloors from "@/components/ListFloors";
 import Modal from "@/components/Modal";
 import Selector from "@/components/Selector";
@@ -89,38 +90,40 @@ const BuildingFloorsPage: React.FC = () => {
           <div className="flex h-full flex-col justify-between gap-y-4">
             <div className="flex flex-col items-center justify-between gap-x-8 gap-y-4">
               <Input
-                name="code"
+                name="Code"
                 className="w-full"
                 placeholder="Code"
                 inputRef={floorCodeInputRef}
               />
               <TextArea
-                name="description"
+                name="Description"
                 className="w-full"
                 placeholder="Description"
                 defaultValue={floor?.description}
                 inputRef={floorDescriptionInputRef}
               />
-              <div className="flex w-full items-center justify-between gap-x-12">
+
+              <InputGroup
+                title="Dimensions"
+                description="Specify the dimensions of the floor."
+              >
                 <Input
-                  name="width"
                   className="w-full"
-                  placeholder="Width (m)"
+                  placeholder="Width"
                   type="number"
                   step={0.1}
                   defaultValue={floor?.dimensions.width}
                   inputRef={floorWidthInputRef}
                 />
                 <Input
-                  name="length"
-                  defaultValue={floor?.dimensions.length}
                   className="w-full"
-                  placeholder="Length (m)"
-                  step={0.1}
+                  placeholder="Length"
                   type="number"
+                  step={0.1}
+                  defaultValue={floor?.dimensions.length}
                   inputRef={floorLengthInputRef}
                 />
-              </div>
+              </InputGroup>
             </div>
             <Button
               name="save"

@@ -46,7 +46,7 @@ const ListFloors: React.FC<ListFloorsProps> = ({ floors, buildingCode }) => {
                   {floor.description}
                 </h3>
                 <div className="text-left text-sm text-slate-600">
-                  {floor.dimensions.length} x {floor.dimensions.width}
+                  {floor.dimensions.width} x {floor.dimensions.length}
                 </div>
               </div>
             </motion.button>

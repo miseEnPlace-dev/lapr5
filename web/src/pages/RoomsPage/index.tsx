@@ -4,6 +4,7 @@ import swal from "sweetalert";
 
 import Dropdown from "@/components/Dropdown";
 import Input from "@/components/Input";
+import InputGroup from "@/components/InputGroup";
 import ListRooms from "@/components/ListRooms";
 import Modal from "@/components/Modal";
 import TextArea from "@/components/TextArea";
@@ -93,7 +94,10 @@ const RoomsPage: React.FC = () => {
                   defaultValue={room?.description}
                   inputRef={roomDescriptionInputRef}
                 />
-                <div className="flex w-full items-center justify-between gap-x-12">
+                <InputGroup
+                  title="Room Dimensions"
+                  description="Specify the dimensions of the room."
+                >
                   <Input
                     className="w-full"
                     placeholder="Width (m)"
@@ -108,23 +112,26 @@ const RoomsPage: React.FC = () => {
                     type="number"
                     inputRef={roomLengthInputRef}
                   />
-                </div>
-                <div className="flex w-full items-center justify-between gap-x-12">
+                </InputGroup>
+                <InputGroup
+                  title="Door Coordinates"
+                  description="Specify the coordinates of the room's door."
+                >
                   <Input
                     className="w-full"
-                    placeholder="Door X coordinate"
+                    placeholder="X Coordinate"
                     type="number"
                     step={1}
                     inputRef={doorXInputRef}
                   />
                   <Input
                     className="w-full"
-                    placeholder="Door Y coordinate (m)"
+                    placeholder="Y Coordinate"
                     step={1}
                     type="number"
                     inputRef={doorYInputRef}
                   />
-                </div>
+                </InputGroup>
                 <Dropdown
                   className="w-full"
                   name="Category"

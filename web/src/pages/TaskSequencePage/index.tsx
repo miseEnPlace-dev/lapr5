@@ -148,9 +148,7 @@ const TaskSequencePage: React.FC = () => {
                 <h2 className="text-2xl font-bold">
                   {task.user.firstName} {task.user.lastName}
                 </h2>
-                <span className="absolute right-2 top-2 text-slate-600">
-                  {sanitizeDate(task.createdAt)}
-                </span>
+                <span className="absolute right-2 top-2 text-slate-600"> </span>
                 <h2 className="text-base">
                   Type: {sanitizeTaskType(task.type)}
                 </h2>

@@ -44,8 +44,7 @@ export const useModule = () => {
     if (
       !firstNameInputRef.current ||
       !lastNameInputRef.current ||
-      !phoneNumberInputRef.current ||
-      !nifInputRef.current
+      !phoneNumberInputRef.current
     )
       throw new Error("Invalid data");
 

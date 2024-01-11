@@ -1,0 +1,114 @@
+{
+  "maze": {
+    "size": { "width": 22, "depth": 10 },
+    "map": [
+      [3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,  0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 4, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 12, 2, 2, 2, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
+    ],
+    "exits": [],
+    "elevator": {
+      "x": 2, 
+      "y": 22
+    },
+    "exitLocation": {
+      "x": 1,
+      "y": 1
+    }
+  },
+  "ground": {
+    "size": { "width": 22.0, "height": 0.0625, "depth": 10.0 },
+    "segments": { "width": 1, "height": 1, "depth": 1 },
+    "primaryColor": "0xffffff",
+    "maps": {
+      "color": {
+        "url": "./textures/ground_luxury-vinyl-plank-light-bl/luxury-vinyl-plank_light_albedo.png"
+      },
+      "ao": {
+        "url": "./textures/ground_luxury-vinyl-plank-light-bl/luxury-vinyl-plank_light_ao.png",
+        "intensity": 1.0
+      },
+      "displacement": {
+        "url": "",
+        "scale": 1.0,
+        "bias": 0.0
+      },
+      "normal": {
+        "url": "./textures/ground_luxury-vinyl-plank-light-bl/luxury-vinyl-plank_light_normal-ogl.png",
+        "type": 0,
+        "scale": { "x": 2.0, "y": 2.0 }
+      },
+      "bump": {
+        "url": "",
+        "scale": 1.0
+      },
+      "roughness": {
+        "url": "./textures/ground_luxury-vinyl-plank-light-bl/luxury-vinyl-plank_light_roughness.png",
+        "rough": 1.0
+      }
+    },
+    "wrapS": 1,
+    "wrapT": 1,
+    "repeat": { "u": 4.0, "v": 4.0 },
+    "magFilter": 1,
+    "minFilter": 5,
+    "secondaryColor": "0x6b554b"
+  },
+  "wall": {
+    "segments": { "width": 1, "height": 2, "depth": 2 },
+    "primaryColor": "0xffffff",
+    "maps": {
+      "color": {
+        "url": "./textures/wall_fiber-textured-wall-bl/fiber-textured-wall1_albedo.png"
+      },
+      "ao": {
+        "url": "./textures/wall_fiber-textured-wall-bl/fiber-textured-wall1_ao.png",
+        "intensity": 2.0
+      },
+      "displacement": {
+        "url": "",
+        "scale": 1.0,
+        "bias": 0.0
+      },
+      "normal": {
+        "url": "./textures/wall_fiber-textured-wall-bl/fiber-textured-wall1_normal-ogl.png",
+        "type": 0,
+        "scale": { "x": 1.0, "y": 1.0 }
+      },
+      "bump": {
+        "url": "",
+        "scale": 1.0
+      },
+      "roughness": {
+        "url": "./textures/wall_fiber-textured-wall-bl/fiber-textured-wall1_roughness.png",
+        "rough": 1.0
+      }
+    },
+    "wrapS": 1,
+    "wrapT": 0,
+    "repeat": { "u": 2.0, "v": 1.0 },
+    "magFilter": 1,
+    "minFilter": 5,
+    "secondaryColor": "0xffffff"
+  },
+  "elevator": {
+    "url": "./models/gltf/elevator.glb",
+    "scale": { "x": 0.005, "y": 0.0025, "z": 0.005 }
+  },
+  "door": {
+    "url": "./models/gltf/mid-poly_wooden_door_with_animations.glb",
+    "scale": { "x": 0.5, "y": 0.25, "z": 0.25 }
+  },
+  "player": {
+    "initialPosition": [0.5, 20.5],
+    "initialDirection": 90.0
+  }
+}
